@@ -1,0 +1,37 @@
+Sitemap byte sizes and URL counts
+    4404     25 audit-raw/_citynmg-sitemap.xml
+   66193    156 audit-raw/_customers-sitemap.xml
+    4969     10 audit-raw/_downloadcenter-sitemap.xml
+    5753     27 audit-raw/_franchise-sitemap.xml
+    2470     10 audit-raw/_joboffers-sitemap.xml
+    1082      4 audit-raw/author-sitemap.xml
+    1754      8 audit-raw/category-sitemap.xml
+    5450      3 audit-raw/jet-menu-sitemap.xml
+   38731     26 audit-raw/page-sitemap.xml
+  225543    207 audit-raw/post-sitemap.xml
+   12148     63 audit-raw/post_tag-sitemap.xml
+
+Representative page status/title/meta
+
+URL https://abadis-med.com/
+<title>صفحه اصلی &raquo; مخازن طبی آبادیس
+<meta property="og:title" content="صفحه اصلی &raquo; مخازن طبی آبادیس" />
+
+URL https://abadis-med.com/en/
+<title>Home | Abadis Med
+<meta property="og:title" content="Home" />
+
+URL https://abadis-med.com/arabic/
+<title>مخزن طبی ابادیس
+
+URL https://abadis-med.com/%d9%85%d8%ad%d8%a7%d8%b3%d8%a8%d9%87-%da%af%d8%b1/
+<title>محاسبه گر &raquo; مخازن طبی آبادیس
+<meta property="og:title" content="محاسبه گر &raquo; مخازن طبی آبادیس" />
+
+URL https://abadis-med.com/%d9%85%d8%ad%d8%b5%d9%88%d9%84%d8%a7%d8%aa/%d8%a7%d8%aa%d8%b5%d8%a7%d9%84%d8%a7%d8%aa/
+<title>اتصالات &raquo; مخازن طبی آبادیس
+<meta property="og:title" content="اتصالات &raquo; مخازن طبی آبادیس" />
+
+URL https://abadis-med.com/%d8%af%d8%b1%d8%a8%d8%a7%d8%b1%d9%87-%d9%85%d8%a7/
+<title>درباره ما &raquo; مخازن طبی آبادیس
+<meta property="og:title" content="درباره ما &raquo; مخازن طبی آبادیس" />
