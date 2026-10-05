@@ -1,0 +1,8 @@
+HTTP/2 200 
+content-type: text/html; charset=UTF-8
+link: <https://abadis-med.com/wp-json/>; rel="https://api.w.org/"
+link: <https://abadis-med.com/wp-json/wp/v2/pages/6>; rel="alternate"; title="JSON"; type="application/json"
+link: <https://abadis-med.com/>; rel=shortlink
+date: Fri, 25 Sep 2026 12:38:56 GMT
+alt-svc: h3=":443"; ma=2592000, h3-29=":443"; ma=2592000
+

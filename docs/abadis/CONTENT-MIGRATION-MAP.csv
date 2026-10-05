@@ -1,0 +1,12 @@
+current_type,rest_base,hierarchical,taxonomies,wp_total_observed,current_storage_notes,target_content_model,migration_action,classification,human_review_required
+post,posts,False,category|post_tag,221,WordPress posts (news/articles/legacy),post,PRESERVE URLs; separate news vs technical in IA,FACT+RECOMMENDATION,no
+page,pages,True,,26,WordPress page; Elementor template observed on samples,page,PRESERVE URLs; rebuild templates in Nuxt,FACT+RECOMMENDATION,no
+attachment,media,False,,1727,Media library; attachment pages often noindex,media,Preserve media file URLs; REVIEW attachment page indexing,FACT,yes
+nav_menu_item,menu-items,False,nav_menu,,Observed in WP types API,unknown,REVIEW,FACT,no
+wp_block,blocks,False,wp_pattern_category,,Observed in WP types API,unknown,REVIEW,FACT,no
+jet-menu,jet-menu,False,,,JetMenu CPT,navigation,Replace with Nuxt navigation config; do not migrate as public pages,INFERENCE+RECOMMENDATION,yes
+jet-engine,jet-engine,False,,,JetEngine internal type,system,Do not migrate as content,INFERENCE,no
+_joboffers,_joboffers,False,,9,JetEngine CPT for jobs,job,Map to JobOffer CPT; REVIEW active vs archived,FACT+RECOMMENDATION,yes
+_downloadcenter,_downloadcenter,False,,9,JetEngine CPT for downloads,download,Map to Download CPT + file fields; preserve public URLs,FACT+RECOMMENDATION,no
+_customers,_customers,False,,155,JetEngine CPT customer logos/records,customer,Map to Customer; REVIEW SEO indexability,FACT+RECOMMENDATION,yes
+_franchise,_franchise,False,_citynmg,26,JetEngine CPT representatives; taxonomy _citynmg,franchise,Map to Representative + City taxonomy,FACT+RECOMMENDATION,yes

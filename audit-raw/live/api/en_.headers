@@ -1,0 +1,16 @@
+HTTP/2 301 
+content-type: text/html; charset=UTF-8
+x-redirect-by: WordPress
+location: https://www.abadis-med.com/en/
+content-length: 0
+date: Fri, 25 Sep 2026 12:41:22 GMT
+alt-svc: h3=":443"; ma=2592000, h3-29=":443"; ma=2592000
+
+HTTP/2 200 
+content-type: text/html; charset=UTF-8
+link: <https://www.abadis-med.com/en/wp-json/>; rel="https://api.w.org/"
+link: <https://www.abadis-med.com/en/wp-json/wp/v2/pages/1214>; rel="alternate"; type="application/json"
+link: <https://www.abadis-med.com/en/>; rel=shortlink
+date: Fri, 25 Sep 2026 12:41:25 GMT
+alt-svc: h3=":443"; ma=2592000, h3-29=":443"; ma=2592000
+

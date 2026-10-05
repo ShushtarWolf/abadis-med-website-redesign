@@ -1,0 +1,14 @@
+HTTP/2 200 
+content-type: application/json; charset=UTF-8
+x-robots-tag: noindex
+x-content-type-options: nosniff
+access-control-expose-headers: X-WP-Total, X-WP-TotalPages, Link
+access-control-allow-headers: Authorization, X-WP-Nonce, Content-Disposition, Content-MD5, Content-Type
+x-wp-total: 31
+x-wp-totalpages: 7
+link: <https://abadis-med.com/wp-json/wp/v2/_citynmg?per_page=5&page=2>; rel="next"
+allow: GET
+vary: Origin
+date: Fri, 25 Sep 2026 12:41:07 GMT
+alt-svc: h3=":443"; ma=2592000, h3-29=":443"; ma=2592000
+

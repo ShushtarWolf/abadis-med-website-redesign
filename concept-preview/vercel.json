@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/%D9%85%D8%AD%D8%B5%D9%88%D9%84%D8%A7%D8%AA/%DA%A9%DB%8C%D8%B3%D9%87-%D8%B3%D8%A7%DA%A9%D8%B4%D9%86/",
+      "permanent": false
+    }
+  ]
+}

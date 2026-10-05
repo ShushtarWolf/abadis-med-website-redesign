@@ -1,0 +1,6 @@
+url,language_guess,http_status_observed,title,meta_description,canonical,robots_meta,html_lang,h1_count,h1,hreflang_count,schema_types,img_count,img_missing_alt,forms,in_sitemap,notes,classification
+https://abadis-med.com/en/,en,200,Home | Abadis Med,,,,en-US,0,,0,WebSite|ImageObject|WebPage|BreadcrumbList,,59,0,no,FACT from n8n execution 3 (2026-09-25),FACT
+https://abadis-med.com/arabic/,ar,200,مخزن طبی ابادیس,,,,fa-IR,0,,0,,,30,0,no,FACT: arabic root; html lang incorrectly fa-IR; no Yoast/schema in smoke crawl,FACT
+https://abadis-med.com/,fa,200,صفحه اصلی » مخازن طبی آبادیس,,,,fa-IR,0,,0,WebPage|ImageObject|BreadcrumbList|WebSite,,69,0,yes,FACT from n8n execution 3,FACT
+https://abadis-med.com/فرصت-های-همکاری/,fa,200,فرصت های همکاری » مخازن طبی آبادیس,,,,fa-IR,0,,0,WebPage|WebSite,,19,1,yes,FACT: form signals present,FACT
+https://abadis-med.com/محاسبه-گر/,fa,200,محاسبه گر » مخازن طبی آبادیس,,,,fa-IR,0,,0,WebPage|WebSite,,13,1,yes,FACT: calculator page; form signals present,FACT
