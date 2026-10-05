@@ -1,0 +1,8 @@
+---
+description: Warn before token-heavy tasks to save usage
+alwaysApply: true
+---
+
+Before starting any task likely to use a lot of tokens (reading large files or the whole repo, big or unscoped searches, many tool calls or agents, long research, or browser work), briefly warn me that it will use a lot of usage, suggest a cheaper way if there is one, and wait for my OK before doing it.
+
+Keep GitHub searches scoped to this repo, never fetch the full file list when only changed files matter, and keep replies short.
