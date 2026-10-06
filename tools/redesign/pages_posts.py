@@ -15,10 +15,19 @@ def prepare():
     for p in load('posts.json'):
         c = classify(p, kc)
         path = u.unquote(u.urlsplit(p['url']).path)
+        if not path.endswith('/') and '.' not in path.rsplit('/', 1)[-1]:
+            path += '/'
         if c is None:
-            POST_MAP[path] = 'careers/#jobs'; continue
+            POST_MAP[path] = 'careers/#jobs'
+            POST_MAP[path.rstrip('/')] = 'careers/#jobs'
+            continue
         p = dict(p, cat=c, t=strip_title(p['title']), rel=f'{c}/{p["id"]}/')
-        POST_MAP[path] = p['rel']
+        for key in {path, path.rstrip('/'), (p.get('path') or path)}:
+            if not key:
+                continue
+            k = key if key.endswith('/') or '.' in key.rsplit('/', 1)[-1] else key + '/'
+            POST_MAP[k] = p['rel']
+            POST_MAP[k.rstrip('/')] = p['rel']
         POSTS.append(p)
     POSTS.sort(key=lambda x: x['date'], reverse=True)
     # posts that exist on the live site but were never archived -> listed, linked to the live URL

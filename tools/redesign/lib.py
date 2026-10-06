@@ -136,12 +136,39 @@ PAGE_MAP = {
     '/محصولات/دیگر-محصولات/': 'products/other/', '/محصولات/اتصالات-2/': 'products/connectors/', '/محصولات/فیلتر/': 'products/filters/', '/محصولات/اکسسوری/': 'products/connectors/',
 }
 POST_MAP = {}   # decoded path -> site-relative url (filled by posts builder)
+# Alternate live slugs that point at an existing post/page (ZWNJ / old redirects / EN slug).
+POST_ALIASES = {
+    '/شرکتهای-دانشبنیان-در-صنعت-تجهیزات/': 'articles/17269/',
+    '/انواع-عفونت‌های-بیمارستانی/': 'articles/713/',
+    '/types-of-hospital-infections/': 'articles/713/',
+    # Until /en/ ships (prompt 3), point EN product URLs at the FA equivalent.
+    '/en/products/suction-bag/': 'products/suction-bag/',
+}
 def norm_path(url):
     s = u.urlsplit(url.strip())
     if s.netloc and s.netloc.lower().replace('www.', '') != 'abadis-med.com': return None
     p = u.unquote(s.path or '/')
     if not p.endswith('/') and '.' not in p.rsplit('/', 1)[-1]: p += '/'
     return p, s.fragment
+def _slash_variants(p):
+    bare = p.rstrip('/') or '/'
+    if bare == '/':
+        return ['/']
+    return [bare + '/', bare]
+def _post_lookup(p):
+    for c in _slash_variants(p):
+        if c in POST_MAP:
+            return POST_MAP[c]
+        if c in POST_ALIASES:
+            return POST_ALIASES[c]
+    zp = (p.replace('\u200c', '').rstrip('/') + '/') if p != '/' else '/'
+    for k, v in POST_MAP.items():
+        if (k.replace('\u200c', '').rstrip('/') + '/') == zp:
+            return v
+    for k, v in POST_ALIASES.items():
+        if (k.replace('\u200c', '').rstrip('/') + '/') == zp:
+            return v
+    return None
 def internal(url):
     """Map an abadis-med.com URL to a site-relative path ('' = home) or None."""
     if not url or url.startswith(('mailto:', 'tel:', '#')): return None
@@ -149,10 +176,13 @@ def internal(url):
     if not r: return None
     p, frag = r
     if p.startswith('/wp-content/'): return None
-    hit = PAGE_MAP.get(p) if p in PAGE_MAP else POST_MAP.get(p)
+    hit = PAGE_MAP.get(p)
     if hit is None:
-        zp = p.replace('\u200c', '')
-        hit = next((v for k, v in POST_MAP.items() if k.replace('\u200c', '') == zp), None)
+        for c in _slash_variants(p):
+            if c in PAGE_MAP:
+                hit = PAGE_MAP[c]; break
+    if hit is None:
+        hit = _post_lookup(p)
     if hit is None and p.startswith('/_joboffers/'):
         hit = JOB_MAP.get(p)
     if hit is None: return None
