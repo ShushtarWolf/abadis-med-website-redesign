@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>محاسبه‌گر دایال نئومورفیک — مخازن طبی آبادیس</title>
+<meta name="description" content="نمونه محاسبه‌گر دایال نئومورفیک آبادیس روی قالب رسمی وب‌سایت؛ پوسته روشن، تیره و نوآر.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#e8f3f3">
+<script>(function(){var t;try{var q=new URLSearchParams(location.search).get('theme');if(q){localStorage.setItem('abadis-theme',q)}t=localStorage.getItem('abadis-theme')}catch(e){}var d=document.documentElement;d.dataset.theme=(t==='dark'||t==='noir')?t:'light';d.classList.add('js')})();</script>
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="../../assets/img/apple-touch-icon.png">
+<meta property="og:locale" content="fa_IR"><meta property="og:site_name" content="مخازن طبی آبادیس">
+<meta property="og:title" content="محاسبه‌گر دایال نئومورفیک — مخازن طبی آبادیس"><meta property="og:description" content="نمونه محاسبه‌گر دایال نئومورفیک آبادیس روی قالب رسمی وب‌سایت؛ پوسته روشن، تیره و نوآر.">
+<meta property="og:image" content="../../assets/img/og-image.jpg">
+<link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/css/site.css">
+
+<style>
+/* Dial page layout — sits under fixed site header */
+.dial-page { padding: 100px 0 64px; }
+.dial-page .wrap { width: min(720px, 100%); }
+.dial-page .section-head { text-align: center; margin-inline: auto; }
+
+/* Neumorphic tokens — follow site theme */
+.neu {
+  --neu-bg: var(--bg);
+  --neu-ink: var(--ink);
+  --neu-muted: var(--muted);
+  --neu-out: 8px 8px 16px rgba(11,46,50,.10), -8px -8px 16px rgba(255,255,255,.85);
+  --neu-btn: 4px 4px 10px rgba(11,46,50,.10), -4px -4px 10px rgba(255,255,255,.85);
+  --neu-nav: var(--brand);
+}
+[data-theme="dark"] .neu {
+  --neu-out: 8px 8px 18px #031012, -8px -8px 18px #0f3034;
+  --neu-btn: 4px 4px 10px #031012, -4px -4px 10px #0f3034;
+}
+[data-theme="noir"] .neu {
+  --neu-out: 8px 8px 18px #050409, -8px -8px 18px #1c1a2e;
+  --neu-btn: 4px 4px 10px #050409, -4px -4px 10px #1c1a2e;
+  --neu-nav: var(--brand);
+}
+
+.neu-stage {
+  display: flex; flex-direction: column; align-items: center; gap: 22px;
+  padding: 28px 18px 8px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+  user-select: none; -webkit-tap-highlight-color: transparent;
+}
+.dial-wrap { position: relative; width: min(280px, 72vw); aspect-ratio: 1; }
+.preset {
+  position: absolute; font: inherit; font-size: .72rem; font-weight: 800;
+  color: var(--neu-ink); cursor: pointer; padding: 4px 6px; border-radius: 8px;
+  background: transparent; border: 0; transition: background .2s; z-index: 2;
+}
+.preset:hover, .preset:focus-visible { background: var(--chip-bg); outline: none; color: var(--chip-ink); }
+.preset.p-tl { top: 2%; left: 2%; }
+.preset.p-tr { top: 2%; right: 2%; }
+.preset.p-bl { bottom: 8%; left: 2%; }
+.preset.p-br { bottom: 8%; right: 2%; }
+
+.dial {
+  position: absolute; inset: 18%; border-radius: 50%;
+  background: var(--neu-bg); box-shadow: var(--neu-out);
+  cursor: grab; touch-action: none;
+}
+.dial:active { cursor: grabbing; }
+.dial-ticks { position: absolute; inset: 8%; width: 84%; height: 84%; pointer-events: none; color: var(--neu-ink); }
+.dial-inner { position: absolute; inset: 0; border-radius: 50%; background: var(--neu-bg); box-shadow: var(--neu-out); }
+.dial-knob {
+  position: absolute; left: 50%; top: 14%; width: 18%; aspect-ratio: 1; margin-left: -9%;
+  border-radius: 50%; background: var(--neu-bg);
+  box-shadow: var(--neu-btn), inset 2px 2px 4px rgba(255,255,255,.35);
+  pointer-events: none;
+}
+[data-theme="dark"] .dial-knob, [data-theme="noir"] .dial-knob {
+  box-shadow: var(--neu-btn), inset 1px 1px 3px rgba(255,255,255,.06);
+}
+.dial-center-dot {
+  position: absolute; left: 50%; top: 50%; width: 10px; height: 10px;
+  margin: -5px 0 0 -5px; border-radius: 50%; background: var(--neu-ink); opacity: .15; pointer-events: none;
+}
+.caption {
+  display: flex; align-items: center; gap: 12px; color: var(--neu-muted);
+  font-size: .82rem; font-weight: 600; width: 100%; max-width: 280px; justify-content: center;
+}
+.caption::before, .caption::after {
+  content: ""; flex: 1; height: 1px; opacity: .35;
+  background: linear-gradient(90deg, transparent, var(--neu-muted));
+}
+.caption::after { background: linear-gradient(270deg, transparent, var(--neu-muted)); }
+
+.neu-cards {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; margin-top: 8px;
+}
+.neu-card {
+  background: var(--neu-bg); box-shadow: var(--neu-out); border-radius: 16px;
+  padding: 16px 10px 14px; text-align: center; display: flex; flex-direction: column; gap: 6px; min-width: 0;
+}
+.neu-card .t { font-size: .68rem; font-weight: 700; color: var(--neu-muted); line-height: 1.4; }
+.neu-card .v {
+  font-size: clamp(.85rem, 3.2vw, 1.05rem); font-weight: 900; color: var(--neu-ink);
+  letter-spacing: -.02em; line-height: 1.25; direction: ltr; unicode-bidi: plaintext;
+}
+.neu-card .u { font-size: .65rem; font-weight: 600; color: var(--neu-muted); }
+.neu-note { margin-top: 18px; text-align: center; color: var(--muted); font-size: .85rem; }
+
+@media (max-width: 520px) {
+  .neu-cards { grid-template-columns: 1fr; }
+  .dial-wrap { width: min(260px, 78vw); }
+}
+</style>
+
+</head>
+<body>
+<a class="skip" href="#main">پرش به محتوا</a>
+<header class="header solid" id="header">
+  <a class="logo" href="../../" aria-label="مخازن طبی آبادیس — خانه">
+    <img class="lg-light" src="../../assets/img/abadis-logo.png" width="658" height="309" alt="مخازن طبی آبادیس">
+    <img class="lg-dark" src="../../assets/img/abadis-logo-on-teal.png" width="670" height="309" alt="مخازن طبی آبادیس">
+  </a>
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mainNav">منو</button>
+  <nav class="nav" id="mainNav" aria-label="منوی اصلی"><a href="../../">خانه</a><a href="../../products/">محصولات</a><a href="../../csr/">مسئولیت اجتماعی</a><a href="../../contact/">ارتباط با ما</a></nav>
+  <div class="theme-switch" role="group" aria-label="حالت نمایش">
+    <button type="button" data-set="light" aria-pressed="true"><span class="dot"></span>روشن</button>
+    <button type="button" data-set="dark" aria-pressed="false"><span class="dot"></span>تیره</button>
+    <button type="button" data-set="noir" aria-pressed="false"><span class="dot"></span>نوآر</button>
+  </div>
+  <a class="header-cta" href="../../contact/">تماس با فروش</a>
+</header>
+
+<main id="main">
+  <section class="section dial-page neu" aria-label="محاسبه‌گر دایال نئومورفیک">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">نمونه دایال ۱ · نئومورفیک</p>
+        <h2>محاسبه‌گر صرفه‌جویی آبادیس</h2>
+        <p>دایال چرخشی با حس لمسی نئومورفیک؛ مقدار را بچرخانید یا از پیش‌فرض‌ها انتخاب کنید. نتایج با فرمول رسمی آبادیس (عمل جراحی سالانه) محاسبه می‌شود.</p>
+      </div>
+      <div class="neu-stage reveal">
+        <div class="dial-wrap" id="dialWrap">
+          <button type="button" class="preset p-tl" data-value="1000">۱۰۰۰</button>
+          <button type="button" class="preset p-tr" data-value="15000">۱۵۰۰۰</button>
+          <button type="button" class="preset p-bl" data-value="5000">۵۰۰۰</button>
+          <button type="button" class="preset p-br" data-value="30000">۳۰۰۰۰</button>
+          <svg class="dial-ticks" viewBox="0 0 200 200" aria-hidden="true" id="tickSvg"></svg>
+          <div class="dial" id="dial" role="slider" aria-valuemin="1000" aria-valuemax="30000" aria-valuenow="10000" aria-label="تعداد عمل جراحی سالانه">
+            <div class="dial-inner">
+              <div class="dial-knob" id="knob"></div>
+              <div class="dial-center-dot"></div>
+            </div>
+          </div>
+        </div>
+        <p class="caption">تعداد عمل سالانه را بچرخانید</p>
+        <div class="neu-cards">
+          <div class="neu-card">
+            <div class="t">پس‌انداز ماهانه</div>
+            <div class="v" id="vMonth">۰</div>
+            <div class="u">تومان</div>
+          </div>
+          <div class="neu-card">
+            <div class="t">پس‌انداز سالانه</div>
+            <div class="v" id="vYear">۰</div>
+            <div class="u">تومان</div>
+          </div>
+          <div class="neu-card">
+            <div class="t">پس‌انداز ۳ ساله</div>
+            <div class="v" id="v3y">۰</div>
+            <div class="u">تومان</div>
+          </div>
+        </div>
+      </div>
+      <p class="neu-note reveal">فرمول: cost = n × ۲٫۵ × ۸۵۰۰۰ · پوسته با روشن / تیره / نوآر هماهنگ است.</p>
+    </div>
+  </section>
+</main>
+<footer class="site-footer">
+  <div class="wrap foot-inner">
+    <div>
+      <img src="../../assets/img/abadis-logo-on-teal.png" width="670" height="309" alt="مخازن طبی آبادیس" loading="lazy">
+      <p>با ما در ارتباط باشید...</p>
+      <div class="foot-links">
+        <a href="../../products/">محصولات آبادیس</a>
+        <a href="../../csr/">نجات زاگرس، مسئولیت اجتماعی آبادیس</a>
+        <a href="../../contact/">ارتباط با ما</a>
+        <a href="https://abadis-med.com/" target="_blank" rel="noopener">abadis-med.com</a>
+      </div>
+    </div>
+    <div>
+      <h3>تماس</h3>
+      <dl>
+        <dt>مرکز تماس:</dt><dd><a href="tel:+982192001017" dir="ltr">02192001017</a></dd>
+        <dt>تلفن تماس:</dt><dd><a href="tel:+982122671845" dir="ltr">02122671845</a> | <a href="tel:+982122205502" dir="ltr">02122205502</a><br><a href="tel:+982122215503" dir="ltr">02122215503</a> | <a href="tel:+982122218910" dir="ltr">02122218910</a></dd>
+        <dt>فکس:</dt><dd><span dir="ltr">02141425555</span> | داخلی 28544</dd>
+        <dt>پست الکترونیک:</dt><dd><a href="mailto:info@abadis-med.com">info@abadis-med.com</a></dd>
+        <dt>واتس‌اپ:</dt><dd><a href="https://wa.me/989100145809" target="_blank" rel="noopener" dir="ltr">+989100145809</a></dd>
+      </dl>
+    </div>
+    <div>
+      <h3>نشانی</h3>
+      <p><b>نشانی دفتر مرکزی:</b><br>ایران، تهران، قیطریه، خیابان اندرزگو، پلاک 104، واحد2</p>
+      <p><b>نشانی کارخانه:</b><br>ایران،تهران،شهرک صنعتی شمس آباد، بلوار گلستان، کوچه گلشن ۱۹،پلاک۱۷</p>
+    </div>
+  </div>
+  <div class="wrap foot-copy">کلیه حقوق مادی و معنوی این وبسایت متعلق است به: مخازن طبی آبادیس · نسخهٔ پیش‌نمایش بازطراحی</div>
+</footer>
+<script src="../../assets/js/site.js" defer></script>
+
+<script>
+(function () {
+
+  // Abadis formulas (live abadis-med.com calculator)
+  function surgery(n) {
+    return { water: n * 1.6 * 9.3, cost: n * 2.5 * 85000, hours: n * 1.7 / 60 * 2.2 * 7.1 };
+  }
+  function beds(a, b) {
+    return {
+      water: ((a * 254) + (b * 67)) * 1.6 * 9.3,
+      cost: ((a * 200) + (b * 50)) * 2.5 * 85000,
+      hours: ((a * 254) + (b * 67)) * 1.7 * 2.2 * 7.1 / 60
+    };
+  }
+  function fa(n) { return Math.round(n).toLocaleString('fa-IR'); }
+  function fa1(x) { return x.toLocaleString('fa-IR', { maximumFractionDigits: 1 }); }
+  function readableToman(t) {
+    if (t >= 1e12) return fa1(t / 1e12) + ' هزار میلیارد تومان';
+    if (t >= 1e9) return fa1(t / 1e9) + ' میلیارد تومان';
+    if (t >= 1e6) return fa1(t / 1e6) + ' میلیون تومان';
+    return fa(t) + ' تومان';
+  }
+  function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
+
+  var MIN = 1000, MAX = 30000, STEP = 100;
+  var n = 10000;
+  var dial = document.getElementById('dial');
+  var tickSvg = document.getElementById('tickSvg');
+
+  (function buildTicks() {
+    var ns = 'http://www.w3.org/2000/svg';
+    var cx = 100, cy = 100, rOut = 96, rIn = 88, rMajor = 84;
+    for (var i = 0; i < 60; i++) {
+      var a = (i / 60) * Math.PI * 2 - Math.PI / 2;
+      var major = i % 5 === 0;
+      var r1 = major ? rMajor : rIn;
+      var line = document.createElementNS(ns, 'line');
+      line.setAttribute('x1', cx + Math.cos(a) * r1);
+      line.setAttribute('y1', cy + Math.sin(a) * r1);
+      line.setAttribute('x2', cx + Math.cos(a) * rOut);
+      line.setAttribute('y2', cy + Math.sin(a) * rOut);
+      line.setAttribute('stroke', 'currentColor');
+      line.setAttribute('stroke-width', major ? '1.6' : '0.9');
+      line.setAttribute('opacity', major ? '0.45' : '0.28');
+      tickSvg.appendChild(line);
+    }
+  })();
+
+  function angleFromValue(v) {
+    var t = (v - MIN) / (MAX - MIN);
+    return t * 270 - 135;
+  }
+  function valueFromAngle(deg) {
+    var d = deg;
+    while (d > 180) d -= 360;
+    while (d < -180) d += 360;
+    d = clamp(d, -135, 135);
+    var t = (d + 135) / 270;
+    return Math.round((MIN + t * (MAX - MIN)) / STEP) * STEP;
+  }
+  function pointerAngle(clientX, clientY) {
+    var rect = dial.getBoundingClientRect();
+    var cx = rect.left + rect.width / 2;
+    var cy = rect.top + rect.height / 2;
+    return Math.atan2(clientY - cy, clientX - cx) * 180 / Math.PI + 90;
+  }
+  function updateUI() {
+    var out = surgery(n);
+    var annual = out.cost;
+    var monthly = annual / 12;
+    var three = annual * 3;
+    document.getElementById('vMonth').textContent = fa(monthly);
+    document.getElementById('vYear').textContent = fa(annual);
+    document.getElementById('v3y').textContent = fa(three);
+    dial.setAttribute('aria-valuenow', n);
+    dial.style.transform = 'rotate(' + angleFromValue(n) + 'deg)';
+  }
+  function setN(v) { n = clamp(v, MIN, MAX); updateUI(); }
+
+  var dragging = false;
+  function onDown(e) {
+    dragging = true;
+    if (dial.setPointerCapture && e.pointerId != null) try { dial.setPointerCapture(e.pointerId); } catch (_) {}
+    var x = e.clientX != null ? e.clientX : e.touches[0].clientX;
+    var y = e.clientY != null ? e.clientY : e.touches[0].clientY;
+    setN(valueFromAngle(pointerAngle(x, y)));
+    e.preventDefault();
+  }
+  function onMove(e) {
+    if (!dragging) return;
+    var x = e.clientX != null ? e.clientX : (e.touches && e.touches[0] && e.touches[0].clientX);
+    var y = e.clientY != null ? e.clientY : (e.touches && e.touches[0] && e.touches[0].clientY);
+    if (x == null) return;
+    setN(valueFromAngle(pointerAngle(x, y)));
+    e.preventDefault();
+  }
+  function onUp() { dragging = false; }
+
+  dial.addEventListener('pointerdown', onDown);
+  window.addEventListener('pointermove', onMove);
+  window.addEventListener('pointerup', onUp);
+  dial.addEventListener('touchstart', onDown, { passive: false });
+  window.addEventListener('touchmove', onMove, { passive: false });
+  window.addEventListener('touchend', onUp);
+
+  document.querySelectorAll('.preset').forEach(function (btn) {
+    btn.addEventListener('click', function () { setN(+btn.getAttribute('data-value')); });
+  });
+  updateUI();
+})();
+</script>
+
+</body>
+</html>
