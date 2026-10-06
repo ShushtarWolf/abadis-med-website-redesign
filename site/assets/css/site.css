@@ -605,15 +605,9 @@ details.letter[open] summary { margin-bottom: 12px; }
   .page-hero { padding: 108px 0 40px; }
 }
 
-/* ISO certificate — footer, every page. Replicates the live abadis-med.com footer block:
-   the archived cert strip (wp-content/uploads/2022/12/abd-certs-768x119-1-copy.webp, cropped to the ISO
-   segment) rendered at the live scale (~0.34 desktop / ~0.47 mobile), with the outlined
-   «مشاهده مجوز ISO» button under it. */
-.foot-iso { margin-top: 22px; width: 266px; max-width: 100%; display: flex; flex-direction: column; align-items: center; gap: 16px; }
-.site-footer img.foot-iso-img { height: 41px; width: auto; margin: 0; display: block; }
-.site-footer a.foot-iso-btn { display: block; width: 100%; box-sizing: border-box; text-align: center; padding: 8px 16px; font-size: .86rem; line-height: 1.4; color: #fff; background: transparent; border: 1px solid #fff; border-radius: 6px; text-decoration: none; transition: background .2s; }
-.site-footer a.foot-iso-btn:hover, .site-footer a.foot-iso-btn:focus-visible { background: rgba(255,255,255,.1); }
-@media (max-width: 560px) {
-  .foot-iso { width: 100%; }
-  .site-footer img.foot-iso-img { height: 56px; }
-}
+/* Certificates strip — footer, every page. The live abadis-med.com footer image
+   (wp-content/uploads/2022/12/abd-certs-768x119-1-copy.webp, unmodified), at the live size:
+   ~262px wide in the left column on desktop, full column width on mobile. */
+.foot-certs { margin-top: 22px; width: 262px; max-width: 100%; }
+.site-footer .foot-certs img { display: block; width: 100%; height: auto; margin: 0; }
+@media (max-width: 560px) { .foot-certs { width: 100%; } }
