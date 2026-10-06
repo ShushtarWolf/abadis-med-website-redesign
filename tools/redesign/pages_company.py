@@ -27,8 +27,14 @@ def about(write):
         link = f'<a class="more-link" href="{esc(bt["href"])}" target="_blank" rel="noopener">{esc(bt["text"])} ↗</a>' if bt.get('href') else ''
         partners.append(f'<div class="card partner reveal"><div class="logo-box">{logo}</div>{tx["html"]}{link}</div>')
     members = []
+    # team member videos from abadismedit (assets/team-videos, merged from team-assets-2026-10-06)
+    VIDEOS = {'علیرضا حسنعلی': ('alireza', 'team-member'), 'نوید حسنعلی': ('navid', 'team-member-navid')}
     for b in [b for b in bl if b['t'] == 'member']:
         ph = '' if 'abadis-lg-01' in (b['img'] or '') else picture(p, b['img'], b['name'], 400)
+        if b['name'] in VIDEOS:
+            d, n = VIDEOS[b['name']]; v = f'{p}assets/team-videos/{d}/{n}'
+            ph = (f'<video width="522" height="782" autoplay muted playsinline preload="metadata" poster="{v}-poster.webp" aria-label="{esc(b["name"])}">'
+                  f'<source src="{v}.webm" type="video/webm"><source src="{v}.mp4" type="video/mp4"></video>')
         av = f'<div class="av">{ph}</div>' if ph else f'<div class="av" aria-hidden="true">{esc(b["name"][:1])}</div>'
         members.append(f'<div class="member">{av}<strong>{esc(b["name"])}</strong><span>{esc(b["role"])}</span></div>')
     main = f'''{mosaic_hero(p, [('آشنایی با ما', None)], 'شرکت دانش‌بنیان مخازن طبی آبادیس', 'آشنایی با <em>آبادیس</em>', strip_tags(first), label='آشنایی با ما')}
