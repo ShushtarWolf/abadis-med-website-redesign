@@ -7,6 +7,10 @@
 <meta name="description" content="راه‌های ارتباط با مخازن طبی آبادیس: مرکز تماس، تلفن، ایمیل، واتس‌اپ و نشانی دفتر مرکزی و کارخانه.">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#e8f3f3">
+<meta name="abadis-form-endpoint" content="">
+<meta name="abadis-form-mailto" content="info@abadis-med.com">
+
+
 <script>(function(){var t;try{var q=new URLSearchParams(location.search).get('theme');if(q){localStorage.setItem('abadis-theme',q)}t=localStorage.getItem('abadis-theme')}catch(e){}var d=document.documentElement;d.dataset.theme=(t==='dark'||t==='noir')?t:'light';d.classList.add('js')})();</script>
 <link rel="icon" href="../favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
@@ -17,6 +21,8 @@
 <link rel="preload" href="../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../assets/css/site.css">
+
+
 
 <link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/contact/">
 <link rel="alternate" hreflang="en" href="https://abadis-med.com/en/contact-us/">
@@ -70,16 +76,18 @@
       </dl>
       <div class="doc-links"><a href="../dealers/">لیست نمایندگان</a><a href="../contact/">صفحهٔ فعلی ارتباط با ما</a></div>
     </div>
-    <form class="card form reveal" id="leadForm">
+    <form class="card form reveal" id="leadForm" data-abadis-form="contact" data-mailto-form="info@abadis-med.com" data-subject="درخواست از وب‌سایت">
       <h2 style="font-size:1.4rem">فرم درخواست</h2>
+      <input type="hidden" name="form_name" value="contact">
+      <label class="hp-field" aria-hidden="true">Leave blank<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label>
       <label>نام و نام خانوادگی<input name="name" required autocomplete="name"></label>
       <label>مرکز درمانی / شرکت<input name="org" autocomplete="organization"></label>
-      <label>تلفن تماس<input name="phone" type="tel" dir="ltr" required autocomplete="tel"></label>
+      <label>تلفن تماس<input name="phone" type="tel" dir="ltr" required autocomplete="tel" inputmode="tel"></label>
       <label>موضوع<select name="topic"><option>استعلام قیمت</option><option>درخواست نمونه</option><option>نمایندگی و همکاری</option><option>صادرات</option><option>پشتیبانی و نصب</option></select></label>
       <label>پیام<textarea name="msg"></textarea></label>
-      <button class="btn btn-primary" type="submit">آماده‌سازی ایمیل</button>
-      <p class="hint">این پیش‌نمایش سرور فرم ندارد؛ با زدن دکمه، ایمیل آماده در برنامهٔ ایمیل شما باز می‌شود.</p>
-      <p class="form-status" id="formStatus" role="status"></p>
+      <button class="btn btn-primary" type="submit">ارسال درخواست</button>
+      <p class="hint form-offline-hint">این پیش‌نمایش سرور فرم ندارد؛ با زدن دکمه، ایمیل آماده در برنامهٔ ایمیل شما باز می‌شود.</p>
+      <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
     </form>
   </div></section>
 <!-- phase2:contact -->

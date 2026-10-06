@@ -10,6 +10,10 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 SITE = ROOT / 'site'
 DATA = pathlib.Path(__file__).resolve().parent / 'data'
 SITE_ORIGIN = 'https://abadis-med.com'
+# Public form POST URL (Formspree / Worker / n8n). Empty ⇒ client falls back to mailto.
+# Override locally with env ABADIS_FORM_ENDPOINT; never commit secrets or private keys.
+FORM_ENDPOINT = os.environ.get('ABADIS_FORM_ENDPOINT', '').strip()
+FORM_MAILTO = 'info@abadis-med.com'
 RAW = pathlib.Path(os.environ.get(
     'ABADIS_IMG_RAW',
     str(pathlib.Path(__file__).resolve().parent / '.img-raw'),

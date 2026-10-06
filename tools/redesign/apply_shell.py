@@ -23,6 +23,19 @@ def inject_hreflang(s, p, fa_path):
         return re.sub(r'(<link rel="canonical"[^>]*>\n?)', r'\1' + block, s, count=1)
     return s.replace('</head>', block + '</head>', 1)
 
+def inject_form_meta(s):
+    from lib import FORM_ENDPOINT, FORM_MAILTO
+    from lib import esc as _esc
+    # lib.esc is html.escape
+    meta = (
+        f'<meta name="abadis-form-endpoint" content="{_esc(FORM_ENDPOINT)}">\n'
+        f'<meta name="abadis-form-mailto" content="{_esc(FORM_MAILTO)}">\n'
+    )
+    s = re.sub(r'\s*<meta name="abadis-form-(?:endpoint|mailto)" content="[^"]*">\n?', '\n', s)
+    if re.search(r'<meta name="theme-color"', s):
+        return re.sub(r'(<meta name="theme-color"[^>]*>\n?)', r'\1' + meta, s, count=1)
+    return s.replace('</head>', meta + '</head>', 1)
+
 HAND = {
     'index.html': ('', None, ''),
     'products/suction-bag/index.html': ('../../', 'products', 'products/suction-bag/'),
@@ -36,6 +49,7 @@ for rel, (p, cur, fa_path) in HAND.items():
     s, b = re.subn(r'<footer class="site-footer">.*?</footer>',
                    lambda m: footer(p, cur, lang='fa'), s, count=1, flags=re.S)
     s = inject_hreflang(s, p, fa_path)
+    s = inject_form_meta(s)
     # internal links that used to point at the live site
     s = s.replace('https://abadis-med.com/راهنمای-نصب/راهنمای-استفاده-کاربر-نهایی/" target="_blank" rel="noopener"', f'{p}install-guide/end-user/"')
     s = s.replace('href="https://abadis-med.com/محصولات/کیسه-ساکشن/" target="_blank" rel="noopener">صفحه محصول در سایت آبادیس</a>', f'href="{p}downloads/">مرکز دانلود</a>')

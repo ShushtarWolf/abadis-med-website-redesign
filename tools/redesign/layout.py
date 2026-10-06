@@ -1,6 +1,6 @@
 """Shared <head>, header, footer and hero markup for all redesign pages."""
 from lib import esc
-from lib import SITE_ORIGIN
+from lib import SITE_ORIGIN, FORM_ENDPOINT, FORM_MAILTO
 from i18n import LANGS, NAV as I18N_NAV, SECONDARY as I18N_SECONDARY, switcher_html, hreflang_tags
 
 # Back-compat aliases (FA)
@@ -40,6 +40,8 @@ def head(p, title, desc, og=None, lang='fa', fa_path='', canonical_path=None):
 <meta name="description" content="{d}">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#e8f3f3">
+<meta name="abadis-form-endpoint" content="{esc(FORM_ENDPOINT)}">
+<meta name="abadis-form-mailto" content="{esc(FORM_MAILTO)}">
 <script>(function(){{var t;try{{var q=new URLSearchParams(location.search).get('theme');if(q){{localStorage.setItem('abadis-theme',q)}}t=localStorage.getItem('abadis-theme')}}catch(e){{}}var d=document.documentElement;d.dataset.theme=(t==='dark'||t==='noir')?t:'light';d.classList.add('js')}})();</script>
 <link rel="icon" href="{p}favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="{p}assets/img/favicon-32.png">

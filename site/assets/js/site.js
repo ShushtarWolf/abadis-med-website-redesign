@@ -242,25 +242,106 @@
     });
   }
 
-  /* ---------- contact form: honest mailto hand-off (no fake "sent") ---------- */
-  const form = document.getElementById('leadForm');
-  if (form) form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const d = new FormData(form);
-    const body = ['نام: ' + d.get('name'), 'مرکز درمانی / شرکت: ' + d.get('org'), 'تلفن: ' + d.get('phone'), 'موضوع: ' + d.get('topic'), '', d.get('msg')].join('\n');
-    location.href = 'mailto:info@abadis-med.com?subject=' + encodeURIComponent('درخواست از وب‌سایت — ' + d.get('topic')) + '&body=' + encodeURIComponent(body);
-    const s = document.getElementById('formStatus');
-    if (s) s.textContent = 'برنامهٔ ایمیل شما باز شد؛ پیام بعد از ارسال از همان‌جا به دست ما می‌رسد.';
-  });
-  /* ---------- phase 2: generic mailto forms (careers) ---------- */
-  document.querySelectorAll('form[data-mailto-form]').forEach((f) => f.addEventListener('submit', (e) => {
-    e.preventDefault();
+  /* ---------- forms: POST to configurable endpoint, mailto fallback ---------- */
+  const formEndpoint = (document.querySelector('meta[name="abadis-form-endpoint"]')?.content || '').trim();
+  const formMailtoDefault = (document.querySelector('meta[name="abadis-form-mailto"]')?.content || 'info@abadis-med.com').trim();
+  document.querySelectorAll('.form-offline-hint').forEach((el) => { el.hidden = !!formEndpoint; });
+
+  const asciiDigits = (s) => String(s ?? '').replace(/[۰-۹]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+    .replace(/[٠-٩]/g, (d) => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+
+  function formBodyLines(fd) {
     const lines = [];
-    new FormData(f).forEach((v, k) => lines.push(k + ': ' + v));
-    location.href = 'mailto:' + f.dataset.mailtoForm + '?subject=' + encodeURIComponent(f.dataset.subject || 'درخواست از وب‌سایت') + '&body=' + encodeURIComponent(lines.join('\n'));
-    const s = f.querySelector('.form-status');
-    if (s) s.textContent = 'برنامهٔ ایمیل شما باز شد؛ پیام بعد از ارسال از همان‌جا به دست ما می‌رسد.';
-  }));
+    fd.forEach((v, k) => {
+      if (k === '_gotcha' || k === 'form_name') return;
+      if (typeof v === 'string' && !v.trim()) return;
+      lines.push(k + ': ' + v);
+    });
+    return lines.join('\n');
+  }
+
+  function openMailto(form, fd) {
+    const to = form.dataset.mailtoForm || formMailtoDefault;
+    let subject = form.dataset.subject || 'درخواست از وب‌سایت';
+    if (form.id === 'leadForm' && fd.get('topic')) subject += ' — ' + fd.get('topic');
+    const body = form.id === 'leadForm'
+      ? ['نام: ' + (fd.get('name') || ''), 'مرکز درمانی / شرکت: ' + (fd.get('org') || ''),
+         'تلفن: ' + (fd.get('phone') || ''), 'موضوع: ' + (fd.get('topic') || ''), '', fd.get('msg') || ''].join('\n')
+      : formBodyLines(fd);
+    location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  }
+
+  function setFormStatus(form, text, isError) {
+    const s = form.querySelector('.form-status') || document.getElementById('formStatus');
+    if (!s) return;
+    s.textContent = text;
+    s.classList.toggle('is-error', !!isError);
+  }
+
+  document.querySelectorAll('form[data-abadis-form], form#leadForm, form[data-mailto-form]').forEach((form) => {
+    if (form.dataset.formBound) return;
+    form.dataset.formBound = '1';
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      const btn = form.querySelector('[type="submit"]');
+      const fd = new FormData(form);
+      // honeypot: pretend success, do nothing
+      if ((fd.get('_gotcha') || '').toString().trim()) {
+        setFormStatus(form, 'پیام شما ثبت شد. به‌زودی با شما تماس می‌گیریم.', false);
+        form.reset();
+        return;
+      }
+      // normalize Persian/Arabic digits in tel-like fields
+      ['phone', 'تلفن ثابت', 'تلفن همراه', 'شماره شناسنامه', 'تاریخ تولد'].forEach((k) => {
+        if (fd.has(k)) fd.set(k, asciiDigits(fd.get(k)));
+      });
+      if (!fd.get('form_name')) fd.set('form_name', form.dataset.abadisForm || form.id || 'form');
+
+      if (!formEndpoint) {
+        openMailto(form, fd);
+        setFormStatus(form, 'برنامهٔ ایمیل شما باز شد؛ پیام بعد از ارسال از همان‌جا به دست ما می‌رسد.', false);
+        return;
+      }
+
+      if (btn) btn.disabled = true;
+      setFormStatus(form, 'در حال ارسال…', false);
+      try {
+        const res = await fetch(formEndpoint, {
+          method: 'POST',
+          body: fd,
+          headers: { Accept: 'application/json' },
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        setFormStatus(form, 'پیام شما ثبت شد. به‌زودی با شما تماس می‌گیریم.', false);
+        form.reset();
+      } catch (err) {
+        setFormStatus(form, 'ارسال از طریق سرور ممکن نشد؛ ایمیل آماده باز می‌شود.', true);
+        openMailto(form, fd);
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    });
+  });
+
+  /* careers list fields: clone row */
+  document.querySelectorAll('[data-list-add]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const root = btn.closest('[data-list-field]');
+      const rows = root && root.querySelector('.list-rows');
+      const first = rows && rows.querySelector('.list-row');
+      if (!first) return;
+      const clone = first.cloneNode(true);
+      clone.querySelectorAll('input').forEach((inp) => {
+        inp.value = '';
+        inp.removeAttribute('required');
+        const base = inp.getAttribute('name') || '';
+        const n = rows.querySelectorAll('.list-row').length + 1;
+        inp.setAttribute('name', base.replace(/ \(\d+\)$/, '') + ' (' + n + ')');
+      });
+      rows.appendChild(clone);
+    });
+  });
 
   /* ---------- phase 2: paged lists + live search ---------- */
   const faNum = (n) => new Intl.NumberFormat('fa-IR').format(n);

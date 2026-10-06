@@ -7,6 +7,8 @@
 <meta name="description" content="فرصت های همکاری و موقعیت های شغلی شرکت دانش‌بنیان مخازن طبی آبادیس">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#e8f3f3">
+<meta name="abadis-form-endpoint" content="">
+<meta name="abadis-form-mailto" content="info@abadis-med.com">
 <script>(function(){var t;try{var q=new URLSearchParams(location.search).get('theme');if(q){localStorage.setItem('abadis-theme',q)}t=localStorage.getItem('abadis-theme')}catch(e){}var d=document.documentElement;d.dataset.theme=(t==='dark'||t==='noir')?t:'light';d.classList.add('js')})();</script>
 <link rel="icon" href="../favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
@@ -57,22 +59,69 @@
   <section class="section section--alt" id="apply"><div class="wrap" style="max-width:860px">
     <div class="card reveal">
       <h2 style="font-size:1.4rem;margin-bottom:6px">ثبت درخواست</h2>
-      <p class="note" style="margin-bottom:16px">پیش‌نمایش: این فرم پس از اتصال به سرور سایت فعال می‌شود؛ فعلاً با ارسال، ایمیل آماده به info@abadis-med.com باز می‌شود.</p>
-      <form class="form" data-mailto-form="info@abadis-med.com" data-subject="ثبت درخواست همکاری">
+      <p class="note form-offline-hint" style="margin-bottom:16px">پیش‌نمایش: این فرم پس از اتصال به سرور سایت فعال می‌شود؛ فعلاً با ارسال، ایمیل آماده به info@abadis-med.com باز می‌شود.</p>
+      <form class="form" data-abadis-form="careers" data-mailto-form="info@abadis-med.com" data-subject="ثبت درخواست همکاری">
+        <input type="hidden" name="form_name" value="careers">
+        <label class="hp-field" aria-hidden="true">Leave blank<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label>
         <label>عنوان شغلی *<select name="عنوان شغلی" required><option value="">انتخاب کنید</option><option>مدیرعامل</option><option>مدیر فروش</option><option>مدیر بازرگانی</option><option>مدیر حسابداری</option><option>مدیر مالی</option><option>مدیر منابع انسانی</option><option>مدیر محصول</option><option>مدیر کارخانه</option><option>سرپرست فنی کارخانه</option><option>حسابداری ارشد</option><option>حسابداری فروش</option><option>کارشناس فروش</option><option>انباردار</option><option>اپراتور دستگاه تزریق</option><option>کارشناس دستگاه تزریق</option><option>تحصیلدار</option><option>کارشناس نصب و راه اندازی</option><option>کارشناس پشتیبان فروش</option><option>مسئول دفتر</option><option>منشی</option><option>کارمند وصول</option></select></label>
-        <h3 style="font-size:1.05rem;margin-top:6px">مشخصات فردی *</h3>
+        <h3 class="form-block-title">مشخصات فردی *</h3>
         <div class="grid g-2" style="gap:12px">
-          <label>نام<input name="نام" required></label><label>نام خانوادگی<input name="نام خانوادگی" required></label>
-          <label>نام پدر<input name="نام پدر"></label><label>وضعیت نظام وظیفه<input name="وضعیت نظام وظیفه"></label>
-          <label>تاریخ تولد *<input name="تاریخ تولد" placeholder="۱۳۷۰/۰۱/۰۱" required></label><label>محل تولد<input name="محل تولد"></label>
-          <label>شماره شناسنامه<input name="شماره شناسنامه"></label><label>محل صدور<input name="محل صدور"></label>
+          <label>نام<input name="نام" required autocomplete="given-name"></label>
+          <label>نام خانوادگی<input name="نام خانوادگی" required autocomplete="family-name"></label>
+          <label>نام پدر<input name="نام پدر" required></label>
+          <label>وضعیت نظام وظیفه<input name="وضعیت نظام وظیفه" required></label>
+          <label>تاریخ تولد *<input name="تاریخ تولد" placeholder="۱۳۷۰/۰۱/۰۱" required inputmode="numeric"></label>
+          <label>محل تولد<input name="محل تولد" required></label>
+          <label>شماره شناسنامه<input name="شماره شناسنامه" required inputmode="numeric"></label>
+          <label>محل صدور<input name="محل صدور" required></label>
         </div>
         <label>وضعیت تاهل *<select name="وضعیت تاهل" required><option value="">انتخاب کنید</option><option>مجرد</option><option>متاهل</option></select></label>
         <label>آیا بیماری خاص و یا سابقه بستری شدن در بیمارستان دارید؟ *<select name="بیماری خاص یا سابقه بستری" required><option value="">انتخاب کنید</option><option>بلی</option><option>خیر</option></select></label>
+        <label>آدرس محل سکونت *<input name="آدرس محل سکونت" required autocomplete="street-address" placeholder="لطفا نشانی کامل محل سکونت خود را وارد نمایید."></label>
+        <div class="grid g-2" style="gap:12px">
+          <label>تلفن ثابت *<input name="تلفن ثابت" type="tel" dir="ltr" required inputmode="tel" autocomplete="tel-national"></label>
+          <label>تلفن همراه *<input name="تلفن همراه" type="tel" dir="ltr" required inputmode="tel" autocomplete="tel"></label>
+        </div>
+        <div class="list-field" data-list-field>
+        <h3 class="form-block-title">سوابق تحصیلی *</h3>
+        
+        <div class="list-rows"><div class="list-row grid g-2" style="gap:12px"><label>مقطع تحصیلی<input name="سوابق تحصیلی — مقطع تحصیلی" autocomplete="off" required></label><label>نام موسسه آموزشی<input name="سوابق تحصیلی — نام موسسه آموزشی" autocomplete="off" required></label><label>نوع مدرک آموزشی<input name="سوابق تحصیلی — نوع مدرک آموزشی" autocomplete="off" required></label><label>نام گرایش یا رشته<input name="سوابق تحصیلی — نام گرایش یا رشته" autocomplete="off" required></label><label>زمان آموزش (شروع - خاتمه)<input name="سوابق تحصیلی — زمان آموزش (شروع - خاتمه)" autocomplete="off" required></label><label>معدل<input name="سوابق تحصیلی — معدل" autocomplete="off" required></label></div></div>
+        <button type="button" class="btn btn-ghost list-add" data-list-add>افزودن ردیف</button>
+      </div>
+        <div class="list-field" data-list-field>
+        <h3 class="form-block-title">سوابق کاری *</h3>
+        <p class="note">برای اضافه کردن ردیف روی «افزودن ردیف» کلیک کنید.</p>
+        <div class="list-rows"><div class="list-row grid g-2" style="gap:12px"><label>نام سازمان<input name="سوابق کاری — نام سازمان" autocomplete="off" required></label><label>عنوان شغل<input name="سوابق کاری — عنوان شغل" autocomplete="off" required></label><label>مدت همکاری(شروع-خاتمه)<input name="سوابق کاری — مدت همکاری(شروع-خاتمه)" autocomplete="off" required></label><label>آخرین دریافتی<input name="سوابق کاری — آخرین دریافتی" autocomplete="off" required></label><label>نام مدیر<input name="سوابق کاری — نام مدیر" autocomplete="off" required></label><label>تلفن تماس<input name="سوابق کاری — تلفن تماس" autocomplete="off" required></label><label>علت قطع همکاری<input name="سوابق کاری — علت قطع همکاری" autocomplete="off" required></label></div></div>
+        <button type="button" class="btn btn-ghost list-add" data-list-add>افزودن ردیف</button>
+      </div>
+        <div class="grid g-2" style="gap:12px">
+          <label>آخرین حقوق دریافتی *<input name="آخرین حقوق دریافتی" required inputmode="numeric"></label>
+          <label>حقوق درخواستی *<input name="حقوق درخواستی" required inputmode="numeric"></label>
+        </div>
+        <label>طریق مراجعه به شرکت جهت استخدام *<input name="طریق مراجعه به شرکت جهت استخدام" required></label>
+        <h3 class="form-block-title">انتظار شما از محیط کارتان چیست؟ (به ترتیب شماره گذاری فرمایید) *</h3>
+        <p class="note">به هر مورد عددی از ۱ تا ۸ بدهید (بدون تکرار).</p>
+        <div class="grid g-2" style="gap:12px"><label>امنیت شغلی<input type="number" inputmode="numeric" min="1" max="8" name="انتظار از محیط کار — امنیت شغلی" required></label><label>محیط آرام<input type="number" inputmode="numeric" min="1" max="8" name="انتظار از محیط کار — محیط آرام" required></label><label>همکاران<input type="number" inputmode="numeric" min="1" max="8" name="انتظار از محیط کار — همکاران" required></label><label>نزدیکی محل<input type="number" inputmode="numeric" min="1" max="8" name="انتظار از محیط کار — نزدیکی محل" required></label><label>پیشرفت شغلی<input type="number" inputmode="numeric" min="1" max="8" name="انتظار از محیط کار — پیشرفت شغلی" required></label><label>مرتبط با تحصیلات<input type="number" inputmode="numeric" min="1" max="8" name="انتظار از محیط کار — مرتبط با تحصیلات" required></label><label>درآمد<input type="number" inputmode="numeric" min="1" max="8" name="انتظار از محیط کار — درآمد" required></label><label>پرستیژ<input type="number" inputmode="numeric" min="1" max="8" name="انتظار از محیط کار — پرستیژ" required></label></div>
+        <div class="list-field" data-list-field>
+        <h3 class="form-block-title">شغل فعلی *</h3>
+        <p class="note">چنانچه در حال حاضر مشاغل دیگری دارید نسبت به تکمیل این بخش اقدام نمایید.</p>
+        <div class="list-rows"><div class="list-row grid g-2" style="gap:12px"><label>نام سازمان<input name="شغل فعلی — نام سازمان" autocomplete="off" required></label><label>عنوان شغل<input name="شغل فعلی — عنوان شغل" autocomplete="off" required></label><label>مدت همکاری(شروع-خاتمه)<input name="شغل فعلی — مدت همکاری(شروع-خاتمه)" autocomplete="off" required></label><label>آخرین دریافتی<input name="شغل فعلی — آخرین دریافتی" autocomplete="off" required></label><label>نام مدیر<input name="شغل فعلی — نام مدیر" autocomplete="off" required></label><label>تلفن تماس<input name="شغل فعلی — تلفن تماس" autocomplete="off" required></label><label>علت قطع همکاری<input name="شغل فعلی — علت قطع همکاری" autocomplete="off" required></label></div></div>
+        <button type="button" class="btn btn-ghost list-add" data-list-add>افزودن ردیف</button>
+      </div>
+        <fieldset class="check-set">
+          <legend>آشنایی با زبان های خارجی</legend>
+          <div class="check-row"><label class="check"><input type="checkbox" name="زبان‌های خارجی" value="انگلیسی"> انگلیسی</label><label class="check"><input type="checkbox" name="زبان‌های خارجی" value="آلمانی"> آلمانی</label><label class="check"><input type="checkbox" name="زبان‌های خارجی" value="اسپانیایی"> اسپانیایی</label><label class="check"><input type="checkbox" name="زبان‌های خارجی" value="سایر زبان ها"> سایر زبان ها</label></div>
+        </fieldset>
+        <div class="list-field" data-list-field>
+        <h3 class="form-block-title">آشنایی با کامپیوتر *</h3>
+        <p class="note">برای اضافه کردن ردیف روی «افزودن ردیف» کلیک کنید.</p>
+        <div class="list-rows"><div class="list-row grid g-2" style="gap:12px"><label>نوع نرم افزار<input name="آشنایی با کامپیوتر — نوع نرم افزار" autocomplete="off" required></label><label>میزان آشنایی (متوسط-خوب-عالی)<input name="آشنایی با کامپیوتر — میزان آشنایی (متوسط-خوب-عالی)" autocomplete="off" required></label><label>توضیحات<input name="آشنایی با کامپیوتر — توضیحات" autocomplete="off" required></label></div></div>
+        <button type="button" class="btn btn-ghost list-add" data-list-add>افزودن ردیف</button>
+      </div>
+        <label>در مورد توانایی، مهارت ها و شغل مناسب و ایده آل خود در یک پارا گراف توضیح دهید ؟<textarea name="توانایی و مهارت و شغل ایده‌آل" rows="5"></textarea></label>
         <button class="btn btn-primary" type="submit">ثبت درخواست</button>
         <p class="form-status" role="status" aria-live="polite"></p>
       </form>
-      <p class="note" style="margin-top:14px">ادامهٔ فیلدهای فرم سایت فعلی (پس از پرسش بیماری خاص) در نسخهٔ آرشیوشده ثبت نشده بود.</p>
     </div>
   </div></section>
 </main>

@@ -331,12 +331,48 @@ FORM_TITLES = 'مدیرعامل مدیر فروش مدیر بازرگانی مد
 FORM_OPTS = ['مدیرعامل', 'مدیر فروش', 'مدیر بازرگانی', 'مدیر حسابداری', 'مدیر مالی', 'مدیر منابع انسانی', 'مدیر محصول', 'مدیر کارخانه', 'سرپرست فنی کارخانه',
              'حسابداری ارشد', 'حسابداری فروش', 'کارشناس فروش', 'انباردار', 'اپراتور دستگاه تزریق', 'کارشناس دستگاه تزریق', 'تحصیلدار',
              'کارشناس نصب و راه اندازی', 'کارشناس پشتیبان فروش', 'مسئول دفتر', 'منشی', 'کارمند وصول']
+# List columns from live Gravity Form #2 (فرصت های همکاری), WP REST 2026-10-06 — no file upload field.
+EDU_COLS = ['مقطع تحصیلی', 'نام موسسه آموزشی', 'نوع مدرک آموزشی', 'نام گرایش یا رشته', 'زمان آموزش (شروع - خاتمه)', 'معدل']
+WORK_COLS = ['نام سازمان', 'عنوان شغل', 'مدت همکاری(شروع-خاتمه)', 'آخرین دریافتی', 'نام مدیر', 'تلفن تماس', 'علت قطع همکاری']
+EXPECT_COLS = ['امنیت شغلی', 'محیط آرام', 'همکاران', 'نزدیکی محل', 'پیشرفت شغلی', 'مرتبط با تحصیلات', 'درآمد', 'پرستیژ']
+COMPUTER_COLS = ['نوع نرم افزار', 'میزان آشنایی (متوسط-خوب-عالی)', 'توضیحات']
+LANG_OPTS = ['انگلیسی', 'آلمانی', 'اسپانیایی', 'سایر زبان ها']
+
+def _list_field(title, prefix, cols, required=True, note=''):
+    req = ' required' if required else ''
+    cells = ''.join(
+        f'<label>{esc(c)}<input name="{esc(prefix)} — {esc(c)}" autocomplete="off"{req}></label>'
+        for c in cols
+    )
+    note_h = f'<p class="note">{esc(note)}</p>' if note else ''
+    return f'''<div class="list-field" data-list-field>
+        <h3 class="form-block-title">{esc(title)}{" *" if required else ""}</h3>
+        {note_h}
+        <div class="list-rows"><div class="list-row grid g-2" style="gap:12px">{cells}</div></div>
+        <button type="button" class="btn btn-ghost list-add" data-list-add>افزودن ردیف</button>
+      </div>'''
+
 def careers(write):
     jobs = load('jobs.json')
     p = '../'
     cards = ''.join(f'''<div class="card job reveal"><h3>{esc(j["title"])}</h3><span class="dates">تاریخ انتشار: {fa(j["pub"])} · تاریخ انقضاء: {fa(j["exp"])}</span><span class="badge-exp">منقضی شده</span><a class="more-link" href="jobs/{JOB_SLUGS[j["title"]]}/">مشاهده موقعیت ←</a></div>''' for j in jobs)
     opts = ''.join(f'<option>{o}</option>' for o in FORM_OPTS)
     assert ' '.join(FORM_OPTS) == FORM_TITLES
+    langs = ''.join(
+        f'<label class="check"><input type="checkbox" name="زبان‌های خارجی" value="{esc(x)}"> {esc(x)}</label>'
+        for x in LANG_OPTS
+    )
+    expect = ''.join(
+        f'<label>{esc(c)}<input type="number" inputmode="numeric" min="1" max="8" name="انتظار از محیط کار — {esc(c)}" required></label>'
+        for c in EXPECT_COLS
+    )
+    edu = _list_field('سوابق تحصیلی', 'سوابق تحصیلی', EDU_COLS, True)
+    work = _list_field('سوابق کاری', 'سوابق کاری', WORK_COLS, True,
+                       'برای اضافه کردن ردیف روی «افزودن ردیف» کلیک کنید.')
+    current = _list_field('شغل فعلی', 'شغل فعلی', WORK_COLS, True,
+                          'چنانچه در حال حاضر مشاغل دیگری دارید نسبت به تکمیل این بخش اقدام نمایید.')
+    computer = _list_field('آشنایی با کامپیوتر', 'آشنایی با کامپیوتر', COMPUTER_COLS, True,
+                           'برای اضافه کردن ردیف روی «افزودن ردیف» کلیک کنید.')
     main = f'''{page_hero(p, [('فرصت های همکاری', None)], 'فرصت های همکاری', 'جای شما در آبادیس خالیست...')}
   <section class="section" id="jobs"><div class="wrap">
     <h2 class="reveal" style="margin-bottom:18px">موقعیت های شغلی</h2>
@@ -345,25 +381,52 @@ def careers(write):
   <section class="section section--alt" id="apply"><div class="wrap" style="max-width:860px">
     <div class="card reveal">
       <h2 style="font-size:1.4rem;margin-bottom:6px">ثبت درخواست</h2>
-      <p class="note" style="margin-bottom:16px">پیش‌نمایش: این فرم پس از اتصال به سرور سایت فعال می‌شود؛ فعلاً با ارسال، ایمیل آماده به info@abadis-med.com باز می‌شود.</p>
-      <form class="form" data-mailto-form="info@abadis-med.com" data-subject="ثبت درخواست همکاری">
+      <p class="note form-offline-hint" style="margin-bottom:16px">پیش‌نمایش: این فرم پس از اتصال به سرور سایت فعال می‌شود؛ فعلاً با ارسال، ایمیل آماده به info@abadis-med.com باز می‌شود.</p>
+      <form class="form" data-abadis-form="careers" data-mailto-form="info@abadis-med.com" data-subject="ثبت درخواست همکاری">
+        <input type="hidden" name="form_name" value="careers">
+        <label class="hp-field" aria-hidden="true">Leave blank<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label>
         <label>عنوان شغلی *<select name="عنوان شغلی" required><option value="">انتخاب کنید</option>{opts}</select></label>
-        <h3 style="font-size:1.05rem;margin-top:6px">مشخصات فردی *</h3>
+        <h3 class="form-block-title">مشخصات فردی *</h3>
         <div class="grid g-2" style="gap:12px">
-          <label>نام<input name="نام" required></label><label>نام خانوادگی<input name="نام خانوادگی" required></label>
-          <label>نام پدر<input name="نام پدر"></label><label>وضعیت نظام وظیفه<input name="وضعیت نظام وظیفه"></label>
-          <label>تاریخ تولد *<input name="تاریخ تولد" placeholder="۱۳۷۰/۰۱/۰۱" required></label><label>محل تولد<input name="محل تولد"></label>
-          <label>شماره شناسنامه<input name="شماره شناسنامه"></label><label>محل صدور<input name="محل صدور"></label>
+          <label>نام<input name="نام" required autocomplete="given-name"></label>
+          <label>نام خانوادگی<input name="نام خانوادگی" required autocomplete="family-name"></label>
+          <label>نام پدر<input name="نام پدر" required></label>
+          <label>وضعیت نظام وظیفه<input name="وضعیت نظام وظیفه" required></label>
+          <label>تاریخ تولد *<input name="تاریخ تولد" placeholder="۱۳۷۰/۰۱/۰۱" required inputmode="numeric"></label>
+          <label>محل تولد<input name="محل تولد" required></label>
+          <label>شماره شناسنامه<input name="شماره شناسنامه" required inputmode="numeric"></label>
+          <label>محل صدور<input name="محل صدور" required></label>
         </div>
         <label>وضعیت تاهل *<select name="وضعیت تاهل" required><option value="">انتخاب کنید</option><option>مجرد</option><option>متاهل</option></select></label>
         <label>آیا بیماری خاص و یا سابقه بستری شدن در بیمارستان دارید؟ *<select name="بیماری خاص یا سابقه بستری" required><option value="">انتخاب کنید</option><option>بلی</option><option>خیر</option></select></label>
+        <label>آدرس محل سکونت *<input name="آدرس محل سکونت" required autocomplete="street-address" placeholder="لطفا نشانی کامل محل سکونت خود را وارد نمایید."></label>
+        <div class="grid g-2" style="gap:12px">
+          <label>تلفن ثابت *<input name="تلفن ثابت" type="tel" dir="ltr" required inputmode="tel" autocomplete="tel-national"></label>
+          <label>تلفن همراه *<input name="تلفن همراه" type="tel" dir="ltr" required inputmode="tel" autocomplete="tel"></label>
+        </div>
+        {edu}
+        {work}
+        <div class="grid g-2" style="gap:12px">
+          <label>آخرین حقوق دریافتی *<input name="آخرین حقوق دریافتی" required inputmode="numeric"></label>
+          <label>حقوق درخواستی *<input name="حقوق درخواستی" required inputmode="numeric"></label>
+        </div>
+        <label>طریق مراجعه به شرکت جهت استخدام *<input name="طریق مراجعه به شرکت جهت استخدام" required></label>
+        <h3 class="form-block-title">انتظار شما از محیط کارتان چیست؟ (به ترتیب شماره گذاری فرمایید) *</h3>
+        <p class="note">به هر مورد عددی از ۱ تا ۸ بدهید (بدون تکرار).</p>
+        <div class="grid g-2" style="gap:12px">{expect}</div>
+        {current}
+        <fieldset class="check-set">
+          <legend>آشنایی با زبان های خارجی</legend>
+          <div class="check-row">{langs}</div>
+        </fieldset>
+        {computer}
+        <label>در مورد توانایی، مهارت ها و شغل مناسب و ایده آل خود در یک پارا گراف توضیح دهید ؟<textarea name="توانایی و مهارت و شغل ایده‌آل" rows="5"></textarea></label>
         <button class="btn btn-primary" type="submit">ثبت درخواست</button>
         <p class="form-status" role="status" aria-live="polite"></p>
       </form>
-      <p class="note" style="margin-top:14px">ادامهٔ فیلدهای فرم سایت فعلی (پس از پرسش بیماری خاص) در نسخهٔ آرشیوشده ثبت نشده بود.</p>
     </div>
   </div></section>'''
-    write('careers/index.html', page(p, 'careers', 'فرصت های همکاری', 'فرصت های همکاری و موقعیت های شغلی شرکت دانش‌بنیان مخازن طبی آبادیس', main))
+    write('careers/index.html', page(p, 'careers', 'فرصت های همکاری', 'فرصت های همکاری و موقعیت های شغلی شرکت دانش‌بنیان مخازن طبی آبادیس', main, fa_path='careers/'))
     p = '../../../'
     for j in jobs:
         slug = JOB_SLUGS[j['title']]
