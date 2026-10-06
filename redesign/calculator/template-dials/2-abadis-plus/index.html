@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>محاسبه‌گر آبادیس+ — مخازن طبی آبادیس</title>
-<meta name="description" content="دایال ۲۷۰ درجه با کشش مغناطیسی و چهار کارت صرفه‌جویی روی قالب رسمی وب‌سایت آبادیس.">
+<meta name="description" content="محاسبه‌گر صرفه‌جویی آبادیس بر مبنای تعداد عمل جراحی در سال و تعداد تخت اتاق عمل و ICU|CCU؛ همان ورودی‌ها و فرمول محاسبه‌گر سایت abadis-med.com.">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#e8f3f3">
 <script>(function(){var t;try{var q=new URLSearchParams(location.search).get('theme');if(q){localStorage.setItem('abadis-theme',q)}t=localStorage.getItem('abadis-theme')}catch(e){}var d=document.documentElement;d.dataset.theme=(t==='dark'||t==='noir')?t:'light';d.classList.add('js')})();</script>
@@ -12,15 +12,15 @@
 <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="../../assets/img/apple-touch-icon.png">
 <meta property="og:locale" content="fa_IR"><meta property="og:site_name" content="مخازن طبی آبادیس">
-<meta property="og:title" content="محاسبه‌گر آبادیس+ — مخازن طبی آبادیس"><meta property="og:description" content="دایال ۲۷۰ درجه با کشش مغناطیسی و چهار کارت صرفه‌جویی روی قالب رسمی وب‌سایت آبادیس.">
+<meta property="og:title" content="محاسبه‌گر آبادیس+ — مخازن طبی آبادیس"><meta property="og:description" content="محاسبه‌گر صرفه‌جویی آبادیس بر مبنای تعداد عمل جراحی در سال و تعداد تخت اتاق عمل و ICU|CCU؛ همان ورودی‌ها و فرمول محاسبه‌گر سایت abadis-med.com.">
 <meta property="og:image" content="../../assets/img/og-image.jpg">
 <link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../../assets/css/site.css">
-
 <style>
 .dial-page { padding: 100px 0 64px; }
-.dial-page .wrap { width: min(1100px, 100%); }
+.dial-page .wrap { width: min(1000px, 100%); }
+.dial-page .section-head { text-align: center; margin-inline: auto; max-width: 40rem; }
 .plus-stage {
   --cyan: var(--accent);
   --cyan-dim: color-mix(in srgb, var(--accent) 35%, transparent);
@@ -29,106 +29,118 @@
   --plus-ink: var(--ink);
   --plus-muted: var(--muted);
   --dial-face: radial-gradient(circle at 40% 35%, var(--surface-2) 0%, var(--deep) 70%);
+  display: flex; flex-direction: column; align-items: center; gap: 18px;
+  padding: 26px 20px 24px; margin-bottom: 28px; border-radius: 24px;
+  background: var(--surface); border: 1px solid var(--card-border); box-shadow: var(--shadow);
   user-select: none; -webkit-tap-highlight-color: transparent;
 }
-[data-theme="light"] .plus-stage {
-  --dial-face: radial-gradient(circle at 40% 35%, #e8f3f3 0%, #0b2e32 78%);
-}
-[data-theme="noir"] .plus-stage {
-  --cyan: #c4b5fd;
-  --cyan-dim: rgba(196,181,253,.35);
-}
+[data-theme="light"] .plus-stage { --dial-face: radial-gradient(circle at 40% 35%, #e8f3f3 0%, #0b2e32 78%); }
+[data-theme="noir"] .plus-stage { --cyan: #c4b5fd; --cyan-dim: rgba(196,181,253,.35); }
+.calc-title { font-size: clamp(1.1rem, 3.4vw, 1.4rem); font-weight: 900; color: var(--plus-ink); text-align: center; }
 
-.stage {
-  display: grid;
-  grid-template-columns: 1fr minmax(220px, 340px) 1fr;
-  grid-template-rows: 1fr 1fr;
-  grid-template-areas: "tl dial tr" "bl dial br";
-  gap: 12px 14px; align-items: center; min-height: 0; padding: 8px 0;
-}
-.dial-col { grid-area: dial; display: flex; flex-direction: column; align-items: center; gap: 14px; justify-content: center; }
-.dial-wrap { position: relative; width: min(300px, 70vw); aspect-ratio: 1; }
+.ctls { display: grid; grid-template-columns: 1fr; gap: 18px 28px; width: 100%; justify-items: center; }
+.ctls.two { grid-template-columns: 1fr 1fr; }
+.ctl { display: flex; flex-direction: column; align-items: center; gap: 12px; min-width: 0; width: 100%; }
+.dial-wrap { position: relative; width: min(330px, 84vw); aspect-ratio: 1; }
+.ctls.two .dial-wrap { width: min(250px, 40vw); }
 
 .preset {
-  position: absolute; text-align: center; cursor: pointer; background: none; border: none;
-  color: var(--plus-ink); font: inherit; z-index: 3; padding: 4px; transition: color .2s, transform .15s;
+  position: absolute; left: calc(var(--x) * 1%); top: calc(var(--y) * 1%); transform: translate(-50%, -50%);
+  text-align: center; cursor: pointer; background: none; border: none; border-radius: 8px;
+  color: var(--plus-ink); font: inherit; z-index: 3; padding: 2px 4px; transition: color .2s, transform .15s;
 }
-.preset:hover { color: var(--cyan); transform: scale(1.06); }
+.preset:hover { color: var(--cyan); transform: translate(-50%, -50%) scale(1.06); }
+.preset:focus-visible { outline: 2px solid var(--cyan); }
 .preset.active { color: var(--cyan); }
 .preset.active .unit { color: var(--cyan); opacity: .85; }
 .preset.active .num { text-shadow: 0 0 12px var(--cyan-dim); }
 .preset .num { display: block; font-size: .78rem; font-weight: 800; line-height: 1.2; }
 .preset .unit { display: block; font-size: .62rem; color: var(--plus-muted); font-weight: 600; }
-.preset.p-1 { top: 8%; left: 4%; }
-.preset.p-2 { top: -2%; left: 50%; transform: translateX(-50%); }
-.preset.p-2:hover, .preset.p-2.active { transform: translateX(-50%) scale(1.06); }
-.preset.p-3 { top: 14%; right: 0%; }
-.preset.p-4 { bottom: 18%; right: 2%; }
-.preset.p-5 { bottom: 22%; left: 2%; }
 
+.dial-ring { position: absolute; inset: 13%; width: 74%; height: 74%; pointer-events: none; overflow: visible; }
+.ctls.two .dial-ring { inset: 4%; width: 92%; height: 92%; }
+.ring-track { fill: none; stroke: color-mix(in srgb, var(--cyan) 14%, transparent); stroke-width: 6; stroke-linecap: round; }
+.ring-arc {
+  fill: none; stroke: var(--cyan); stroke-width: 6; stroke-linecap: round;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--cyan) 70%, transparent));
+  transition: stroke-dasharray .28s ease;
+}
 .dial {
-  position: absolute; inset: 12%; border-radius: 50%; background: var(--dial-face);
+  position: absolute; inset: 20%; border-radius: 50%; background: var(--dial-face);
   box-shadow: 0 0 0 1px var(--card-border), 0 20px 50px rgba(0,0,0,.35), inset 0 2px 20px rgba(0,0,0,.35);
-  cursor: grab; touch-action: none; display: grid; place-items: center;
+  cursor: grab; touch-action: none; display: grid; place-items: center; outline: none;
 }
-.dial:active { cursor: grabbing; }
-.dial-ring { position: absolute; inset: -6%; width: 112%; height: 112%; pointer-events: none; }
+.ctls.two .dial { inset: 12%; }
+.dial:focus-visible { box-shadow: 0 0 0 3px var(--cyan), 0 20px 50px rgba(0,0,0,.35); }
+.dial.dragging { cursor: grabbing; }
 .pointer {
-  position: absolute; top: 4%; left: 50%; transform: translateX(-50%);
+  position: absolute; top: 5%; left: 50%; transform: translateX(-50%);
   width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent;
-  border-top: 12px solid var(--ink); z-index: 4; pointer-events: none;
-  filter: drop-shadow(0 0 4px rgba(255,255,255,.35));
+  border-bottom: 12px solid #fff; pointer-events: none;
+  filter: drop-shadow(0 0 4px var(--cyan));
 }
-[data-theme="light"] .pointer { border-top-color: #0a2e32; }
 .dial-logo {
-  font-size: clamp(1.6rem, 6vw, 2.2rem); font-weight: 900; color: var(--cyan);
+  font-size: clamp(1.4rem, 5.4vw, 2.1rem); font-weight: 900; color: var(--cyan);
   text-shadow: 0 0 24px var(--cyan-dim); letter-spacing: -.02em; pointer-events: none; line-height: 1;
   direction: rtl; unicode-bidi: isolate;
 }
-.caption {
-  display: flex; align-items: center; gap: 10px; color: var(--plus-muted); font-size: .82rem; font-weight: 600;
-}
+.ctls.two .dial-logo { font-size: clamp(1.1rem, 4vw, 1.6rem); }
+.caption { display: flex; align-items: center; gap: 10px; color: var(--plus-muted); font-size: .8rem; font-weight: 600; text-align: center; }
 .caption .chev { color: var(--cyan); font-size: .9rem; opacity: .8; }
 
+.readout { display: flex; align-items: center; gap: 10px; width: 100%; max-width: 300px; justify-content: center; }
+.rv {
+  flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 7px 10px;
+  border-radius: 14px; background: var(--card); border: 1px solid var(--card-border);
+}
+.rl { font-size: .74rem; font-weight: 700; color: var(--plus-muted); text-align: center; }
+.rn { font-size: clamp(1.15rem, 4vw, 1.45rem); font-weight: 900; color: var(--cyan); line-height: 1.2; text-shadow: 0 0 12px var(--cyan-dim); }
+.step {
+  width: 40px; height: 40px; flex-shrink: 0; border-radius: 12px; cursor: pointer;
+  border: 1px solid var(--card-border); background: var(--card); color: var(--cyan);
+  font: inherit; font-size: 1.3rem; font-weight: 900; line-height: 1; touch-action: manipulation; transition: border-color .2s, transform .1s;
+}
+.step:hover { border-color: var(--cyan); }
+.step:active { transform: scale(.95); }
+.step:disabled { opacity: .35; cursor: not-allowed; }
+.step:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+
+.presets { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center; }
+.combos-lbl { width: 100%; text-align: center; font-size: .74rem; font-weight: 700; color: var(--plus-muted); }
+.pre {
+  font: inherit; font-size: .78rem; font-weight: 800; color: var(--plus-ink); cursor: pointer;
+  padding: 6px 12px; border-radius: 999px; background: var(--card); border: 1px solid var(--card-border);
+}
+.pre:hover, .pre:focus-visible { border-color: var(--cyan); color: var(--cyan); outline: none; }
+.pre.active { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 12px var(--cyan-dim); }
+
+.gcards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; width: 100%; }
 .gcard {
   background: var(--card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--card-border); border-radius: 14px; padding: 14px 14px 12px;
-  display: flex; flex-direction: column; gap: 6px; position: relative; overflow: hidden; min-width: 0;
-  box-shadow: var(--shadow);
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; min-width: 0; box-shadow: var(--shadow);
 }
-.gcard.tl { grid-area: tl; } .gcard.tr { grid-area: tr; } .gcard.bl { grid-area: bl; } .gcard.br { grid-area: br; }
 .gcard-icon {
-  width: 32px; height: 32px; border-radius: 8px; background: color-mix(in srgb, var(--cyan) 12%, transparent);
-  display: grid; place-items: center; color: var(--cyan); margin-bottom: 2px;
+  width: 34px; height: 34px; border-radius: 9px; background: color-mix(in srgb, var(--cyan) 12%, transparent);
+  display: grid; place-items: center; color: var(--cyan);
 }
 .gcard-icon svg { width: 18px; height: 18px; }
-.gcard-title { font-size: .72rem; font-weight: 700; color: var(--plus-muted); line-height: 1.4; }
-.gcard-value {
-  font-size: clamp(1rem, 2.8vw, 1.25rem); font-weight: 900; color: var(--plus-ink);
-  direction: ltr; unicode-bidi: plaintext; letter-spacing: -.02em;
-}
-.gcard-sub { font-size: .68rem; color: var(--plus-muted); font-weight: 600; }
-.gcard-bar { margin-top: 8px; height: 3px; border-radius: 2px; background: color-mix(in srgb, var(--cyan) 12%, transparent); overflow: hidden; }
+.gcard-title { font-size: .74rem; font-weight: 700; color: var(--plus-muted); line-height: 1.5; min-height: 2.2em; }
+.gcard-value { font-size: clamp(1rem, 2.8vw, 1.3rem); font-weight: 900; color: var(--cyan); overflow-wrap: anywhere; letter-spacing: -.01em; }
+.gcard-sub { font-size: .7rem; color: var(--plus-muted); font-weight: 600; }
+.gcard-bar { align-self: stretch; margin-top: 6px; height: 3px; border-radius: 2px; background: color-mix(in srgb, var(--cyan) 12%, transparent); overflow: hidden; }
 .gcard-bar > i {
-  display: block; height: 100%; width: 0%;
-  background: linear-gradient(90deg, var(--cyan-dim), var(--cyan));
-  border-radius: 2px; box-shadow: 0 0 8px var(--cyan); transition: width .35s ease;
+  display: block; height: 100%; transform-origin: right center; transform: scaleX(0);
+  background: linear-gradient(270deg, var(--cyan-dim), var(--cyan)); box-shadow: 0 0 8px var(--cyan); transition: transform .35s ease;
 }
-.plus-note { margin-top: 18px; text-align: center; color: var(--muted); font-size: .85rem; }
 
-@media (max-width: 720px) {
-  .stage {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto auto;
-    grid-template-areas: "dial dial" "tr tl" "br bl";
-    gap: 10px;
-  }
-  .dial-wrap { width: min(260px, 78vw); }
-  .gcard { padding: 12px 10px 10px; }
-  .gcard-value { font-size: .95rem; }
+@media (max-width: 680px) {
+  .gcards { grid-template-columns: 1fr; }
+  .gcard-title { min-height: 0; }
+  .ctls.two { grid-template-columns: 1fr; }
+  .ctls.two .dial-wrap { width: min(250px, 70vw); }
 }
 </style>
-
 </head>
 <body>
 <a class="skip" href="#main">پرش به محتوا</a>
@@ -148,73 +160,64 @@
 </header>
 
 <main id="main">
-  <section class="section dial-page" aria-label="محاسبه‌گر آبادیس+">
+  <section class="section dial-page" aria-labelledby="pageTitle">
     <div class="wrap">
-      <div class="section-head reveal" style="text-align:center;margin-inline:auto;max-width:40rem">
+      <div class="section-head reveal">
         <p class="eyebrow">نمونه دایال ۲ · آبادیس+</p>
-        <h2>دایال ۲۷۰° با کشش مغناطیسی</h2>
-        <p>چرخش در بازهٔ ۲۷۰ درجه، قفل روی ۱۰۰۰ / ۵۰۰۰ / ۱۰۰۰۰ / ۱۵۰۰۰ / ۳۰۰۰۰ و چهار کارت صرفه‌جویی با فرمول رسمی آبادیس.</p>
+        <h1 id="pageTitle">محاسبه‌گر صرفه‌جویی آبادیس</h1>
+        <p>مقدار هر ورودی را با چرخاندن دایال، دکمه‌های + و − یا مقادیر آماده تنظیم کنید. نتایج دقیقاً با فرمول محاسبه‌گر سایت آبادیس محاسبه می‌شوند.</p>
       </div>
-      <div class="plus-stage reveal">
-        <div class="stage">
-          <article class="gcard tl">
-            <div class="gcard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg></div>
-            <div class="gcard-title">پس‌انداز کل (۳ ساله)</div>
-            <div class="gcard-value" id="vTotal">۰ تومان</div>
-            <div class="gcard-sub">معادل ریالی هزینه</div>
-            <div class="gcard-bar"><i id="barTotal"></i></div>
-          </article>
-          <article class="gcard tr">
-            <div class="gcard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
-            <div class="gcard-title">صرفه‌جویی آب سالانه</div>
-            <div class="gcard-value" id="vWater">۰ لیتر</div>
-            <div class="gcard-sub">H₂O</div>
-            <div class="gcard-bar"><i id="barWater"></i></div>
-          </article>
-          <div class="dial-col">
-            <div class="dial-wrap" id="dialWrap">
-              <button type="button" class="preset p-1" data-value="30000"><span class="num">۳۰۰۰۰</span><span class="unit">عمل</span></button>
-              <button type="button" class="preset p-2" data-value="15000"><span class="num">۱۵۰۰۰</span><span class="unit">عمل</span></button>
-              <button type="button" class="preset p-3" data-value="10000"><span class="num">۱۰۰۰۰</span><span class="unit">عمل</span></button>
-              <button type="button" class="preset p-4" data-value="5000"><span class="num">۵۰۰۰</span><span class="unit">عمل</span></button>
-              <button type="button" class="preset p-5" data-value="1000"><span class="num">۱۰۰۰</span><span class="unit">عمل</span></button>
-              <div class="pointer" aria-hidden="true"></div>
-              <svg class="dial-ring" viewBox="0 0 220 220" aria-hidden="true">
-                <defs>
-                  <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="var(--brand-3)"/>
-                    <stop offset="100%" stop-color="var(--accent)"/>
-                  </linearGradient>
-                </defs>
-                <circle cx="110" cy="110" r="100" fill="none" stroke="color-mix(in srgb, var(--accent) 10%, transparent)" stroke-width="6"/>
-                <circle id="progressArc" cx="110" cy="110" r="100" fill="none" stroke="url(#arcGrad)" stroke-width="6"
-                  stroke-linecap="round" stroke-dasharray="628.3" stroke-dashoffset="628.3"
-                  transform="rotate(-90 110 110)"
-                  style="filter: drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 70%, transparent)); transition: stroke-dashoffset .28s ease;"/>
-              </svg>
-              <div class="dial" id="dial" role="slider" aria-valuemin="1000" aria-valuemax="30000" aria-valuenow="0" aria-label="تعداد عمل جراحی سالانه">
-                <span class="dial-logo">آبادیس+</span>
-              </div>
+      <div class="plus-stage reveal" role="region" aria-labelledby="s1t">
+        <h2 class="calc-title" id="s1t">بر مبنای تعداد عمل جراحی در سال</h2>
+        <div class="ctls">
+          <div class="ctl">
+            <div class="dial-wrap">
+              <button type="button" class="preset" data-preset-for="n" data-value="1000"><span class="num">۱٬۰۰۰</span><span class="unit">عمل</span></button>
+              <button type="button" class="preset" data-preset-for="n" data-value="5000"><span class="num">۵٬۰۰۰</span><span class="unit">عمل</span></button>
+              <button type="button" class="preset" data-preset-for="n" data-value="10000"><span class="num">۱۰٬۰۰۰</span><span class="unit">عمل</span></button>
+              <button type="button" class="preset" data-preset-for="n" data-value="15000"><span class="num">۱۵٬۰۰۰</span><span class="unit">عمل</span></button>
+              <button type="button" class="preset" data-preset-for="n" data-value="20000"><span class="num">۲۰٬۰۰۰</span><span class="unit">عمل</span></button>
+              <button type="button" class="preset" data-preset-for="n" data-value="25000"><span class="num">۲۵٬۰۰۰</span><span class="unit">عمل</span></button>
+              <svg class="dial-ring" viewBox="0 0 220 220" aria-hidden="true"><circle class="ring-track" cx="110" cy="110" r="100" pathLength="360" stroke-dasharray="270 360" transform="rotate(135 110 110)"/><circle class="ring-arc" data-arc cx="110" cy="110" r="100" pathLength="360" stroke-dasharray="0 360" transform="rotate(135 110 110)"/></svg>
+              <div class="dial" data-dial="n" role="slider" tabindex="0" aria-label="تعداد عمل در سال" aria-valuemin="0" aria-valuemax="30000" aria-valuenow="0"><span class="pointer" aria-hidden="true"></span><span class="dial-logo">آبادیس+</span></div>
             </div>
-            <p class="caption"><span class="chev">&lt;</span> تعداد عمل را بچرخانید <span class="chev">&gt;</span></p>
+            <p class="caption"><span class="chev">&lt;</span> تعداد عمل در سال را بچرخانید <span class="chev">&gt;</span></p>
+            <div class="readout"><button type="button" class="step" data-step-for="n" data-dir="-1" aria-label="کاهش تعداد عمل در سال">−</button><div class="rv"><span class="rl">تعداد عمل در سال</span><span class="rn" data-val="n">۰</span></div><button type="button" class="step" data-step-for="n" data-dir="1" aria-label="افزایش تعداد عمل در سال">+</button></div>
           </div>
-          <article class="gcard bl">
-            <div class="gcard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
-            <div class="gcard-title">صرفه‌جویی هزینه سالانه</div>
-            <div class="gcard-value" id="vAnnual">۰ تومان</div>
-            <div class="gcard-sub">COST</div>
-            <div class="gcard-bar"><i id="barAnnual"></i></div>
-          </article>
-          <article class="gcard br">
-            <div class="gcard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg></div>
-            <div class="gcard-title">صرفه‌جویی زمان کادر</div>
-            <div class="gcard-value" id="vHours">۰ ساعت</div>
-            <div class="gcard-sub">TIME</div>
-            <div class="gcard-bar"><i id="barHours"></i></div>
-          </article>
+        </div>
+        <div class="gcards">
+          <article class="gcard"><div class="gcard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.7s-6 6.6-6 11.1a6 6 0 0 0 12 0C18 9.3 12 2.7 12 2.7z"/></svg></div><div class="gcard-title">صرفه جویی در مصرف آب (لیتر)</div><div class="gcard-value" data-out="s-water">۰</div><div class="gcard-sub">لیتر</div><div class="gcard-bar" aria-hidden="true"><i data-bar="s-water"></i></div></article>
+          <article class="gcard"><div class="gcard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/></svg></div><div class="gcard-title">هزینه مربوط به شست و شو و ضد عفونی (تومان)</div><div class="gcard-value" data-out="s-cost">۰</div><div class="gcard-sub">تومان</div><div class="gcard-bar" aria-hidden="true"><i data-bar="s-cost"></i></div></article>
+          <article class="gcard"><div class="gcard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><div class="gcard-title">صرفه جویی در زمان کادر درمان (ساعت)</div><div class="gcard-value" data-out="s-hours">۰</div><div class="gcard-sub">ساعت</div><div class="gcard-bar" aria-hidden="true"><i data-bar="s-hours"></i></div></article>
         </div>
       </div>
-      <p class="plus-note reveal">۲۷۰° · مغناطیس پیش‌فرض · فرمول surgery(n) · پوسته روشن / تیره / نوآر</p>
+      <div class="plus-stage reveal" role="region" aria-labelledby="s2t">
+        <h2 class="calc-title" id="s2t">بر مبنای تعداد تخت در مراکز درمانی</h2>
+        <div class="ctls two">
+          <div class="ctl">
+            <div class="dial-wrap">
+              <svg class="dial-ring" viewBox="0 0 220 220" aria-hidden="true"><circle class="ring-track" cx="110" cy="110" r="100" pathLength="360" stroke-dasharray="270 360" transform="rotate(135 110 110)"/><circle class="ring-arc" data-arc cx="110" cy="110" r="100" pathLength="360" stroke-dasharray="0 360" transform="rotate(135 110 110)"/></svg>
+              <div class="dial" data-dial="a" role="slider" tabindex="0" aria-label="تعداد تخت اتاق عمل" aria-valuemin="0" aria-valuemax="700" aria-valuenow="0"><span class="pointer" aria-hidden="true"></span><span class="dial-logo">آبادیس+</span></div>
+            </div>
+            <p class="caption"><span class="chev">&lt;</span> تعداد تخت اتاق عمل را بچرخانید <span class="chev">&gt;</span></p>
+            <div class="readout"><button type="button" class="step" data-step-for="a" data-dir="-1" aria-label="کاهش تعداد تخت اتاق عمل">−</button><div class="rv"><span class="rl">تعداد تخت اتاق عمل</span><span class="rn" data-val="a">۰</span></div><button type="button" class="step" data-step-for="a" data-dir="1" aria-label="افزایش تعداد تخت اتاق عمل">+</button></div>
+          </div>
+          <div class="ctl">
+            <div class="dial-wrap">
+              <svg class="dial-ring" viewBox="0 0 220 220" aria-hidden="true"><circle class="ring-track" cx="110" cy="110" r="100" pathLength="360" stroke-dasharray="270 360" transform="rotate(135 110 110)"/><circle class="ring-arc" data-arc cx="110" cy="110" r="100" pathLength="360" stroke-dasharray="0 360" transform="rotate(135 110 110)"/></svg>
+              <div class="dial" data-dial="b" role="slider" tabindex="0" aria-label="تعداد تخت ICU|CCU" aria-valuemin="0" aria-valuemax="700" aria-valuenow="0"><span class="pointer" aria-hidden="true"></span><span class="dial-logo">آبادیس+</span></div>
+            </div>
+            <p class="caption"><span class="chev">&lt;</span> تعداد تخت ICU|CCU را بچرخانید <span class="chev">&gt;</span></p>
+            <div class="readout"><button type="button" class="step" data-step-for="b" data-dir="-1" aria-label="کاهش تعداد تخت ICU|CCU">−</button><div class="rv"><span class="rl">تعداد تخت ICU|CCU</span><span class="rn" data-val="b">۰</span></div><button type="button" class="step" data-step-for="b" data-dir="1" aria-label="افزایش تعداد تخت ICU|CCU">+</button></div>
+          </div>
+        </div>
+        <div class="presets combos" role="group" aria-label="مقادیر آماده (تخت اتاق عمل + ICU|CCU)"><span class="combos-lbl">مقادیر آماده (تخت اتاق عمل + ICU|CCU):</span><button type="button" class="pre" data-chip-a="10" data-chip-b="10" aria-label="۱۰ تخت اتاق عمل و ۱۰ تخت ICU|CCU">۱۰ + ۱۰</button><button type="button" class="pre" data-chip-a="20" data-chip-b="10" aria-label="۲۰ تخت اتاق عمل و ۱۰ تخت ICU|CCU">۲۰ + ۱۰</button><button type="button" class="pre" data-chip-a="50" data-chip-b="20" aria-label="۵۰ تخت اتاق عمل و ۲۰ تخت ICU|CCU">۵۰ + ۲۰</button><button type="button" class="pre" data-chip-a="100" data-chip-b="50" aria-label="۱۰۰ تخت اتاق عمل و ۵۰ تخت ICU|CCU">۱۰۰ + ۵۰</button><button type="button" class="pre" data-chip-a="300" data-chip-b="100" aria-label="۳۰۰ تخت اتاق عمل و ۱۰۰ تخت ICU|CCU">۳۰۰ + ۱۰۰</button><button type="button" class="pre" data-chip-a="700" data-chip-b="700" aria-label="۷۰۰ تخت اتاق عمل و ۷۰۰ تخت ICU|CCU">۷۰۰ + ۷۰۰</button></div>
+        <div class="gcards">
+          <article class="gcard"><div class="gcard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.7s-6 6.6-6 11.1a6 6 0 0 0 12 0C18 9.3 12 2.7 12 2.7z"/></svg></div><div class="gcard-title">صرفه جویی در مصرف آب (لیتر)</div><div class="gcard-value" data-out="b-water">۰</div><div class="gcard-sub">لیتر</div><div class="gcard-bar" aria-hidden="true"><i data-bar="b-water"></i></div></article>
+          <article class="gcard"><div class="gcard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/></svg></div><div class="gcard-title">هزینه مربوط به شست و شو و ضد عفونی (تومان)</div><div class="gcard-value" data-out="b-cost">۰</div><div class="gcard-sub">تومان</div><div class="gcard-bar" aria-hidden="true"><i data-bar="b-cost"></i></div></article>
+          <article class="gcard"><div class="gcard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><div class="gcard-title">صرفه جویی در زمان کادر درمان (ساعت)</div><div class="gcard-value" data-out="b-hours">۰</div><div class="gcard-sub">ساعت</div><div class="gcard-bar" aria-hidden="true"><i data-bar="b-hours"></i></div></article>
+        </div>
+      </div>
     </div>
   </section>
 </main>
@@ -251,62 +254,13 @@
 <script src="../../assets/js/site.js" defer></script>
 
 <script>
+/* Page 2 — Abadis+ 270 degree sweep with magnetic presets (snapIfNear / MAGNET_DIST) on the surgery dial */
 (function () {
-
-  // Abadis formulas (live abadis-med.com calculator)
-  function surgery(n) {
-    return { water: n * 1.6 * 9.3, cost: n * 2.5 * 85000, hours: n * 1.7 / 60 * 2.2 * 7.1 };
-  }
-  function beds(a, b) {
-    return {
-      water: ((a * 254) + (b * 67)) * 1.6 * 9.3,
-      cost: ((a * 200) + (b * 50)) * 2.5 * 85000,
-      hours: ((a * 254) + (b * 67)) * 1.7 * 2.2 * 7.1 / 60
-    };
-  }
-  function fa(n) { return Math.round(n).toLocaleString('fa-IR'); }
-  function fa1(x) { return x.toLocaleString('fa-IR', { maximumFractionDigits: 1 }); }
-  function readableToman(t) {
-    if (t >= 1e12) return fa1(t / 1e12) + ' هزار میلیارد تومان';
-    if (t >= 1e9) return fa1(t / 1e9) + ' میلیارد تومان';
-    if (t >= 1e6) return fa1(t / 1e6) + ' میلیون تومان';
-    return fa(t) + ' تومان';
-  }
-  function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
-
-  var MIN = 1000, MAX = 30000, STEP = 100;
-  var PRESETS = [1000, 5000, 10000, 15000, 30000];
-  var MAGNET_DIST = 1200;
-  var nVal = 0, interacted = false;
-  var CIRC = 2 * Math.PI * 100;
-  var ANGLE_MIN = -135, ANGLE_MAX = 135, ANGLE_SPAN = 270;
-  var dial = document.getElementById('dial');
-  var arc = document.getElementById('progressArc');
-  var logo = dial.querySelector('.dial-logo');
-  var presetBtns = Array.prototype.slice.call(document.querySelectorAll('.preset'));
-
-  function angleFromValue(v) {
-    return ((v - MIN) / (MAX - MIN)) * ANGLE_SPAN + ANGLE_MIN;
-  }
-  function valueFromAngle(deg) {
-    var d = deg;
-    while (d > 180) d -= 360;
-    while (d < -180) d += 360;
-    d = clamp(d, ANGLE_MIN, ANGLE_MAX);
-    var t = (d - ANGLE_MIN) / ANGLE_SPAN;
-    return Math.round((MIN + t * (MAX - MIN)) / STEP) * STEP;
-  }
-  function pointerAngle(clientX, clientY) {
-    var rect = dial.getBoundingClientRect();
-    var cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 2;
-    return Math.atan2(clientY - cy, clientX - cx) * 180 / Math.PI + 90;
-  }
+  var PRESETS = [1000, 5000, 10000, 15000, 20000, 25000];
+  var MAGNET_DIST = 1200, STEP = 100;
   function nearestPreset(v) {
     var best = PRESETS[0], bestDist = Math.abs(v - best);
-    for (var i = 1; i < PRESETS.length; i++) {
-      var d = Math.abs(v - PRESETS[i]);
-      if (d < bestDist) { best = PRESETS[i]; bestDist = d; }
-    }
+    for (var i = 1; i < PRESETS.length; i++) { var d = Math.abs(v - PRESETS[i]); if (d < bestDist) { best = PRESETS[i]; bestDist = d; } }
     return { value: best, dist: bestDist };
   }
   function applyMagnet(v) {
@@ -316,113 +270,184 @@
     strength = strength * strength;
     return Math.round((v + (n.value - v) * strength * 0.55) / STEP) * STEP;
   }
-  function setArcTransition(on) {
-    arc.style.transition = on ? 'stroke-dashoffset .28s ease' : 'none';
+  function snapIfNear(v) {
+    var n = nearestPreset(v);
+    return n.dist < MAGNET_DIST ? n.value : null;
   }
-  function highlightPreset(v) {
-    presetBtns.forEach(function (btn) {
-      var pv = +btn.getAttribute('data-value');
-      if (interacted && pv === v) btn.classList.add('active');
-      else btn.classList.remove('active');
-    });
-  }
-  function updateUI() {
-    var out = interacted ? surgery(nVal) : { water: 0, cost: 0, hours: 0 };
-    var annual = out.cost, total = annual * 3;
-    document.getElementById('vTotal').textContent = readableToman(total);
-    document.getElementById('vAnnual').textContent = readableToman(annual);
-    document.getElementById('vWater').textContent = fa(out.water) + ' لیتر';
-    document.getElementById('vHours').textContent = fa(out.hours) + ' ساعت';
-    var t = interacted ? (nVal - MIN) / (MAX - MIN) : 0;
-    var maxOut = surgery(MAX);
-    arc.style.strokeDashoffset = String(CIRC * (1 - t));
-    document.getElementById('barTotal').style.width = (t * 100) + '%';
-    document.getElementById('barAnnual').style.width = (t * 100) + '%';
-    document.getElementById('barWater').style.width = (maxOut.water ? (out.water / maxOut.water * 100) : 0) + '%';
-    document.getElementById('barHours').style.width = (maxOut.hours ? (out.hours / maxOut.hours * 100) : 0) + '%';
-    dial.setAttribute('aria-valuenow', nVal);
-    if (interacted) {
-      var ang = angleFromValue(nVal);
-      dial.style.transform = 'rotate(' + ang + 'deg)';
-      logo.style.transform = 'rotate(' + (-ang) + 'deg)';
-    } else {
-      dial.style.transform = 'none';
-      logo.style.transform = 'none';
+  function arcOf(el) { return el.parentNode.querySelector('[data-arc]'); }
+  window.DIAL_PAGE = {
+    init: function (LIM) {
+      document.querySelectorAll('.preset[data-value]').forEach(function (b) {
+        var f = (+b.getAttribute('data-value') - LIM.n.min) / (LIM.n.max - LIM.n.min);
+        var a = (-135 + f * 270) * Math.PI / 180, R = 45;
+        b.style.setProperty('--x', (50 + R * Math.sin(a)).toFixed(2));
+        b.style.setProperty('--y', (50 - R * Math.cos(a)).toFixed(2));
+      });
+    },
+    transform: function (key, v) { return key === 'n' ? applyMagnet(v) : v; },
+    dragStart: function (key, el) { arcOf(el).style.transition = 'none'; },
+    release: function (key, v, el) {
+      document.querySelectorAll('[data-arc]').forEach(function (a) { a.style.transition = ''; });
+      return key === 'n' ? snapIfNear(v) : null;
+    },
+    view: function (key, el, v, f, angle) {
+      el.style.transform = 'rotate(' + angle + 'deg)';
+      el.querySelector('.dial-logo').style.transform = 'rotate(' + (-angle) + 'deg)';
+      arcOf(el).setAttribute('stroke-dasharray', (f * 270).toFixed(2) + ' 360');
+    },
+    after: function (res, max) {
+      document.querySelectorAll('[data-bar]').forEach(function (i) {
+        var p = i.getAttribute('data-bar').split('-');
+        i.style.transform = 'scaleX(' + (max[p[0]][p[1]] ? res[p[0]][p[1]] / max[p[0]][p[1]] : 0) + ')';
+      });
     }
-    highlightPreset(nVal);
+  };
+})();
+</script>
+<script>
+/* Abadis savings calculator — shared engine (inlined per page).
+   Uses ONLY the inputs and formulas of the live calculator at abadis-med.com/محاسبه-گر/ */
+(function () {
+  'use strict';
+  var F = {
+    surgery: function (n) {
+      return { water: n * 1.6 * 9.3, cost: n * 2.5 * 85000, hours: n * 1.7 / 60 * 2.2 * 7.1 };
+    },
+    beds: function (a, b) {
+      return {
+        water: ((a * 254) + (b * 67)) * 1.6 * 9.3,
+        cost: ((a * 200) + (b * 50)) * 2.5 * 85000,
+        hours: ((a * 254) + (b * 67)) * 1.7 * 2.2 * 7.1 / 60
+      };
+    }
+  };
+  var LIM = {
+    n: { min: 0, max: 30000, step: 100 },
+    a: { min: 0, max: 700, step: 1 },
+    b: { min: 0, max: 700, step: 1 }
+  };
+  var state = { n: 10000, a: 10, b: 10 };
+  var MAX_OUT = { s: F.surgery(LIM.n.max), b: F.beds(LIM.a.max, LIM.b.max) };
+  var page = window.DIAL_PAGE || {};
+  var ANG_MIN = -135, ANG_SPAN = 270;
+
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function fa(x) { return Math.round(x).toLocaleString('fa-IR'); }
+  function norm(key, v) { var L = LIM[key]; return clamp(Math.round(v / L.step) * L.step, L.min, L.max); }
+  function frac(key) { var L = LIM[key]; return (state[key] - L.min) / (L.max - L.min); }
+  function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+
+  var dials = $$('[data-dial]');
+
+  function render() {
+    var res = { s: F.surgery(state.n), b: F.beds(state.a, state.b) };
+    $$('[data-out]').forEach(function (el) {
+      var p = el.getAttribute('data-out').split('-'); // e.g. s-water, b-cost
+      el.textContent = fa(res[p[0]][p[1]]);
+    });
+    $$('[data-val]').forEach(function (el) { el.textContent = fa(state[el.getAttribute('data-val')]); });
+    $$('[data-preset-for]').forEach(function (el) {
+      var on = +el.getAttribute('data-value') === state[el.getAttribute('data-preset-for')];
+      el.classList.toggle('active', on); el.setAttribute('aria-pressed', String(on));
+    });
+    $$('[data-chip-a]').forEach(function (el) {
+      var on = +el.getAttribute('data-chip-a') === state.a && +el.getAttribute('data-chip-b') === state.b;
+      el.classList.toggle('active', on); el.setAttribute('aria-pressed', String(on));
+    });
+    $$('[data-step-for]').forEach(function (el) {
+      var k = el.getAttribute('data-step-for'), d = +el.getAttribute('data-dir');
+      el.disabled = d < 0 ? state[k] <= LIM[k].min : state[k] >= LIM[k].max;
+    });
+    dials.forEach(function (el) {
+      var k = el.getAttribute('data-dial');
+      el.setAttribute('aria-valuenow', String(state[k]));
+      el.setAttribute('aria-valuetext', fa(state[k]));
+      if (page.view) page.view(k, el, state[k], frac(k), ANG_MIN + frac(k) * ANG_SPAN);
+    });
+    if (page.after) page.after(res, MAX_OUT, state);
   }
-  function setBeds(v, fromUser) {
-    if (fromUser) interacted = true;
-    nVal = clamp(Math.round(v), MIN, MAX);
-    updateUI();
-  }
-  function snapIfNear() {
-    if (!interacted) return;
-    setArcTransition(true);
-    setBeds(nearestPreset(nVal).value, true);
+  function set(key, v) {
+    var nv = norm(key, v);
+    if (nv === state[key]) return;
+    state[key] = nv; render();
   }
 
-  var dragging = false, activePointerId = null;
-  function eventXY(e) {
-    if (e.clientX != null) return { x: e.clientX, y: e.clientY };
-    if (e.touches && e.touches[0]) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
-    if (e.changedTouches && e.changedTouches[0]) return { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
-    return null;
+  /* rotary drag: 270 degree sweep, 0 at top, clockwise = increase */
+  function valueFromPointer(el, key, x, y) {
+    var r = el.getBoundingClientRect();
+    var d = Math.atan2(y - (r.top + r.height / 2), x - (r.left + r.width / 2)) * 180 / Math.PI + 90;
+    while (d > 180) d -= 360;
+    while (d < -180) d += 360;
+    var L = LIM[key];
+    if (d > 135 || d < -135) return frac(key) > 0.5 ? L.max : L.min; /* dead zone at bottom: stay at nearer end */
+    return L.min + ((d - ANG_MIN) / ANG_SPAN) * (L.max - L.min);
   }
-  function onDown(e) {
-    if (e.type === 'touchstart' && e.pointerType == null && window.PointerEvent) return;
-    dragging = true;
-    activePointerId = e.pointerId != null ? e.pointerId : null;
-    setArcTransition(false);
-    if (dial.setPointerCapture && activePointerId != null) try { dial.setPointerCapture(activePointerId); } catch (_) {}
-    var pt = eventXY(e); if (!pt) return;
-    setBeds(applyMagnet(valueFromAngle(pointerAngle(pt.x, pt.y))), true);
-    e.preventDefault();
-  }
-  function onMove(e) {
-    if (!dragging) return;
-    if (activePointerId != null && e.pointerId != null && e.pointerId !== activePointerId) return;
-    if (e.type === 'touchmove' && e.pointerType == null && window.PointerEvent) return;
-    var pt = eventXY(e); if (!pt) return;
-    setBeds(applyMagnet(valueFromAngle(pointerAngle(pt.x, pt.y))), true);
-    e.preventDefault();
-  }
-  function onUp(e) {
-    if (!dragging) return;
-    if (activePointerId != null && e && e.pointerId != null && e.pointerId !== activePointerId) return;
-    if (e && e.type === 'touchend' && e.pointerType == null && window.PointerEvent) return;
-    dragging = false; activePointerId = null; snapIfNear();
-  }
-
-  dial.addEventListener('pointerdown', onDown);
-  dial.addEventListener('pointermove', onMove);
-  dial.addEventListener('pointerup', onUp);
-  dial.addEventListener('pointercancel', onUp);
-  window.addEventListener('pointermove', onMove);
-  window.addEventListener('pointerup', onUp);
-  window.addEventListener('pointercancel', onUp);
-  dial.addEventListener('touchstart', onDown, { passive: false });
-  window.addEventListener('touchmove', onMove, { passive: false });
-  window.addEventListener('touchend', onUp);
-  window.addEventListener('touchcancel', onUp);
-
-  presetBtns.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      setArcTransition(true);
-      setBeds(+btn.getAttribute('data-value'), true);
+  dials.forEach(function (el) {
+    var key = el.getAttribute('data-dial'), pid = null;
+    function apply(e) {
+      var v = valueFromPointer(el, key, e.clientX, e.clientY);
+      if (page.transform) v = page.transform(key, norm(key, v));
+      set(key, v);
+    }
+    el.addEventListener('pointerdown', function (e) {
+      pid = e.pointerId; el.classList.add('dragging');
+      try { el.setPointerCapture(pid); } catch (_) {}
+      if (page.dragStart) page.dragStart(key, el);
+      apply(e); e.preventDefault();
+    });
+    el.addEventListener('pointermove', function (e) {
+      if (pid === null || e.pointerId !== pid) return;
+      apply(e); e.preventDefault();
+    });
+    function up(e) {
+      if (pid === null || (e && e.pointerId !== pid)) return;
+      pid = null; el.classList.remove('dragging');
+      if (page.release) { var v = page.release(key, state[key]); if (v != null) set(key, v); }
+    }
+    el.addEventListener('pointerup', up);
+    el.addEventListener('pointercancel', up);
+    el.addEventListener('lostpointercapture', up);
+    el.addEventListener('keydown', function (e) {
+      var L = LIM[key], s = L.step * (e.shiftKey ? 10 : 1), v = null;
+      if (e.key === 'ArrowUp' || e.key === 'ArrowRight') v = state[key] + s;
+      else if (e.key === 'ArrowDown' || e.key === 'ArrowLeft') v = state[key] - s;
+      else if (e.key === 'PageUp') v = state[key] + L.step * 10;
+      else if (e.key === 'PageDown') v = state[key] - L.step * 10;
+      else if (e.key === 'Home') v = L.min;
+      else if (e.key === 'End') v = L.max;
+      if (v === null) return;
+      set(key, v); e.preventDefault();
     });
   });
-  dial.tabIndex = 0;
-  dial.addEventListener('keydown', function (e) {
-    var delta = 0;
-    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') delta = STEP * 5;
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') delta = -STEP * 5;
-    if (!delta) return;
-    setArcTransition(true);
-    setBeds((interacted ? nVal : MIN) + delta, true);
-    e.preventDefault();
+
+  /* +/- steppers with press-and-hold repeat */
+  $$('[data-step-for]').forEach(function (btn) {
+    var key = btn.getAttribute('data-step-for'), dir = +btn.getAttribute('data-dir'), t1 = 0, t2 = 0;
+    function step() { set(key, state[key] + dir * LIM[key].step); }
+    function stop() { clearTimeout(t1); clearInterval(t2); t1 = t2 = 0; }
+    btn.addEventListener('pointerdown', function (e) {
+      if (e.button !== 0 && e.pointerType === 'mouse') return;
+      stop(); step();
+      t1 = setTimeout(function () { t2 = setInterval(function () { if (btn.disabled) stop(); else step(); }, 60); }, 420);
+    });
+    ['pointerup', 'pointerleave', 'pointercancel', 'blur'].forEach(function (ev) { btn.addEventListener(ev, stop); });
+    btn.addEventListener('click', function (e) { if (e.detail === 0) step(); }); /* keyboard activation */
   });
-  updateUI();
+
+  $$('[data-preset-for]').forEach(function (btn) {
+    btn.addEventListener('click', function () { set(btn.getAttribute('data-preset-for'), +btn.getAttribute('data-value')); });
+  });
+  $$('[data-chip-a]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      state.a = norm('a', +btn.getAttribute('data-chip-a'));
+      state.b = norm('b', +btn.getAttribute('data-chip-b'));
+      render();
+    });
+  });
+
+  if (page.init) page.init(LIM);
+  render();
+  window.AbadisCalc = { F: F, LIM: LIM, state: state, set: set, fa: fa };
 })();
 </script>
 
