@@ -90,7 +90,11 @@ function detailCell(t) {
   if (!t?.details) return '';
   const d = t.details;
   const bits = [];
+  if (d.total != null) bits.push(`total=${d.total}`);
   if (d.broken != null) bits.push(`broken=${d.broken}`);
+  if (d.nonWpContentExternal != null) bits.push(`livePostHrefs=${d.nonWpContentExternal}`);
+  if (d.postCardExt != null) bits.push(`post-card-ext=${d.postCardExt}`);
+  if (d.note) bits.push(d.note);
   if (d.internalBad != null) bits.push(`bad=${d.internalBad}`);
   if (d.consoleErrors != null) bits.push(`console=${d.consoleErrors}`);
   if (d.overflow) bits.push(`overflow=${d.overflow.length}`);
