@@ -9,7 +9,10 @@ from PIL import Image, ImageSequence
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 SITE = ROOT / 'site'
 DATA = pathlib.Path(__file__).resolve().parent / 'data'
-RAW = pathlib.Path(os.environ.get('ABADIS_IMG_RAW', '/workspace/abadis-wb/img-raw'))
+RAW = pathlib.Path(os.environ.get(
+    'ABADIS_IMG_RAW',
+    str(pathlib.Path(__file__).resolve().parent / '.img-raw'),
+))
 OUT_IMG = SITE / 'assets/img/c'
 esc = html.escape
 
@@ -54,33 +57,48 @@ for k, v in IMGMAP.items():
     if v.get('ok'): _IMG_BY_PATH[_key(k)] = v['file']
 _done = {}
 def img(url, maxw=1400):
-    """Return dict(src, w, h) relative to site root for a remote abadis image, or None if not archived."""
+    """Return dict(src, w, h) relative to site root for a remote abadis image, or None if not archived.
+
+    Prefers an already-built WebP in OUT_IMG (so rebuilds work without the raw cache).
+    Converts from RAW only when the output is missing and the raw file exists.
+    """
     if not url: return None
     if url.startswith('//'): url = 'https:' + url
-    f = _IMG_BY_PATH.get(_key(url))
-    if not f or not (RAW / f).exists(): return None
-    ck = (f, maxw)
+    key = _key(url)
+    f = _IMG_BY_PATH.get(key)
+    name = hashlib.sha1(key.encode()).hexdigest()[:12] + f'-{maxw}.webp'
+    ck = (key, maxw)
     if ck in _done: return _done[ck]
     OUT_IMG.mkdir(parents=True, exist_ok=True)
-    name = hashlib.sha1(_key(url).encode()).hexdigest()[:12] + f'-{maxw}.webp'
     out = OUT_IMG / name
+    # Reuse built WebP even when RAW is absent (typical on a PC / fresh clone).
+    if out.exists():
+        try:
+            with Image.open(out) as im:
+                nw, nh = im.size
+            r = {'src': 'assets/img/c/' + name, 'w': nw, 'h': nh}
+            _done[ck] = r
+            return r
+        except Exception as e:
+            print('IMG FAIL', url, e); return None
+    if not f or not (RAW / f).exists():
+        return None
     try:
         im = Image.open(RAW / f)
         animated = getattr(im, 'is_animated', False) and im.format == 'GIF'
         w, h = im.size
         if w > maxw: nw, nh = maxw, round(h * maxw / w)
         else: nw, nh = w, h
-        if not out.exists():
-            if animated:
-                frames, durs = [], []
-                for fr in ImageSequence.Iterator(im):
-                    frames.append(fr.convert('RGBA').resize((nw, nh), Image.LANCZOS)); durs.append(fr.info.get('duration', 100))
-                frames[0].save(out, 'WEBP', save_all=True, append_images=frames[1:], duration=durs, loop=0, quality=70, method=4)
-            else:
-                mode = 'RGBA' if (im.mode in ('RGBA', 'LA', 'P') and 'transparency' in im.info) or im.mode in ('RGBA', 'LA') else 'RGB'
-                im2 = im.convert(mode)
-                if (nw, nh) != (w, h): im2 = im2.resize((nw, nh), Image.LANCZOS)
-                im2.save(out, 'WEBP', quality=78, method=5)
+        if animated:
+            frames, durs = [], []
+            for fr in ImageSequence.Iterator(im):
+                frames.append(fr.convert('RGBA').resize((nw, nh), Image.LANCZOS)); durs.append(fr.info.get('duration', 100))
+            frames[0].save(out, 'WEBP', save_all=True, append_images=frames[1:], duration=durs, loop=0, quality=70, method=4)
+        else:
+            mode = 'RGBA' if (im.mode in ('RGBA', 'LA', 'P') and 'transparency' in im.info) or im.mode in ('RGBA', 'LA') else 'RGB'
+            im2 = im.convert(mode)
+            if (nw, nh) != (w, h): im2 = im2.resize((nw, nh), Image.LANCZOS)
+            im2.save(out, 'WEBP', quality=78, method=5)
     except Exception as e:
         print('IMG FAIL', url, e); return None
     r = {'src': 'assets/img/c/' + name, 'w': nw, 'h': nh}
