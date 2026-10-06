@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>محاسبه‌گر — مخازن طبی آبادیس</title>
-<meta name="description" content="محاسبه آنلاین میزان صرفه‌جویی در مصرف آب و زباله‌های عفونی مرکز درمانی با کیسه ساکشن یکبار مصرف آبادیس.">
+<title>محاسبه گر — مخازن طبی آبادیس</title>
+<meta name="description" content="محاسبه‌گر صرفه جویی کیسه ساکشن یکبار مصرف آبادیس: مصرف آب، هزینه شست و شو و ضد عفونی و زمان کادر درمان.">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#e8f3f3">
 <script>(function(){var t;try{var q=new URLSearchParams(location.search).get('theme');if(q){localStorage.setItem('abadis-theme',q)}t=localStorage.getItem('abadis-theme')}catch(e){}var d=document.documentElement;d.dataset.theme=(t==='dark'||t==='noir')?t:'light';d.classList.add('js')})();</script>
@@ -12,12 +12,11 @@
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
 <meta property="og:locale" content="fa_IR"><meta property="og:site_name" content="مخازن طبی آبادیس">
-<meta property="og:title" content="محاسبه‌گر — مخازن طبی آبادیس"><meta property="og:description" content="محاسبه آنلاین میزان صرفه‌جویی در مصرف آب و زباله‌های عفونی مرکز درمانی با کیسه ساکشن یکبار مصرف آبادیس.">
+<meta property="og:title" content="محاسبه گر — مخازن طبی آبادیس"><meta property="og:description" content="محاسبه‌گر صرفه جویی کیسه ساکشن یکبار مصرف آبادیس: مصرف آب، هزینه شست و شو و ضد عفونی و زمان کادر درمان.">
 <meta property="og:image" content="../assets/img/og-image.jpg">
 <link rel="preload" href="../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../assets/css/site.css">
-
 </head>
 <body>
 <a class="skip" href="#main">پرش به محتوا</a>
@@ -38,7 +37,7 @@
   </button>
 </header>
 <main id="main">
-  <section class="hero hero--short" aria-label="محاسبه‌گر">
+  <section class="hero hero--short" aria-label="محاسبه گر">
     <div class="mosaic" data-tile="12" style="background-image:url('../assets/media/or-poster.jpg')" aria-hidden="true">
       <video muted loop playsinline autoplay preload="auto" poster="../assets/media/or-poster.jpg" disablepictureinpicture disableremoteplayback tabindex="-1">
         <source src="../assets/media/or-mosaic.mp4" type="video/mp4">
@@ -46,20 +45,27 @@
     </div>
     <div class="hero-inner">
       <p class="crumbs"><a href="../">خانه</a> › محاسبه‌گر</p>
-      <span class="chip">صرفه‌جویی در آب و زباله‌های عفونی</span>
-      <h1><em>محاسبه‌گر</em> صرفه‌جویی</h1>
-      <p class="lead">جهت محاسبه آنلاین میزان صرفه‌جویی در مصرف آب و زباله‌های عفونی مرکز خود می‌توانید روی دکمه زیر کلیک نمایید.</p>
+      <span class="chip">کیسه ساکشن یکبار مصرف</span>
+      <h1>محاسبه <em>گر</em></h1>
+      <p class="lead">صرفه جویی در مصرف آب، هزینه شست و شو و ضد عفونی و زمان کادر درمان</p>
     </div>
   </section>
-
-  <section class="section section--alt"><div class="wrap">
-    <div class="soon reveal">
-      <span class="chip">به‌زودی با طرح جدید</span>
-      <h2>این صفحه در حال بازطراحی است</h2>
-      <p>نسخهٔ کامل این صفحه در مرحلهٔ بعدی بازطراحی با طرح جدید آبادیس ساخته می‌شود. تا آن زمان می‌توانید نسخهٔ فعلی را در سایت آبادیس ببینید.</p>
-      <div class="cta-actions"><a class="btn btn-primary" href="https://abadis-med.com/محاسبه-گر/" target="_blank" rel="noopener">محاسبه‌گر فعلی ↗</a><a class="btn btn-ghost" href="../contact/">ارتباط با ما</a></div>
+  <section class="section"><div class="wrap">
+    <div class="calc-grid">
+      <form class="calc reveal" id="calcSurg" onsubmit="return false">
+        <h2>بر مبنای تعداد عمل جراحی در سال</h2>
+        <div class="form"><label>تعداد عمل در سال *<input type="number" inputmode="numeric" min="0" step="1" name="s" placeholder="مثلاً ۵۰۰۰"></label></div>
+        <div class="calc-out"><div><span>صرفه جویی در مصرف آب (لیتر)</span><output id="cs0">۰</output></div><div><span>هزینه مربوط به شست و شو و ضد عفونی (تومان)</span><output id="cs1">۰</output></div><div><span>صرفه جویی در زمان کادر درمان (ساعت)</span><output id="cs2">۰</output></div></div>
+      </form>
+      <form class="calc reveal" id="calcBeds" onsubmit="return false">
+        <h2>بر مبنای تعداد تخت در مراکز درمانی</h2>
+        <div class="form grid g-2" style="gap:12px"><label>تعداد تخت اتاق عمل *<input type="number" inputmode="numeric" min="0" step="1" name="o"></label><label>تعداد تخت ICU|CCU *<input type="number" inputmode="numeric" min="0" step="1" name="i"></label></div>
+        <div class="calc-out"><div><span>صرفه جویی در مصرف آب (لیتر)</span><output id="cb0">۰</output></div><div><span>هزینه مربوط به شست و شو و ضد عفونی (تومان)</span><output id="cb1">۰</output></div><div><span>صرفه جویی در زمان کادر درمان (ساعت)</span><output id="cb2">۰</output></div></div>
+      </form>
     </div>
+    <p class="note" style="margin-top:18px">ضرایب محاسبه همان ضرایب محاسبه‌گر سایت فعلی آبادیس است.</p>
   </div></section>
+  <section class="section" style="padding-top:0"><div class="wrap"><div class="doc-links"><a href="../products/suction-bag/">کیسه ساکشن یکبار مصرف</a><a href="../csr/#sdg">توسعه پایدار</a><a href="../contact/">ارتباط با ما</a></div></div></section>
 </main>
 <footer class="site-footer">
   <div class="wrap foot-inner">
@@ -75,6 +81,17 @@
         <a href="../articles/">مقالات</a>
         <a href="../contact/">ارتباط با ما</a>
         <a href="../calculator/">محاسبه‌گر</a>
+      </div>
+    </div>
+    <div>
+      <h3>بیشتر</h3>
+      <div class="foot-links">
+        <a href="../customers/">مشتریان ما</a>
+        <a href="../experiences/">تجارب ما</a>
+        <a href="../downloads/">مرکز دانلود</a>
+        <a href="../install-guide/">راهنمای نصب</a>
+        <a href="../faq/">پرسش های متداول</a>
+        <a href="../careers/">فرصت های همکاری</a>
       </div>
     </div>
     <div>
@@ -94,6 +111,17 @@
   <div class="wrap foot-copy">کلیه حقوق مادی و معنوی این وبسایت متعلق است به: مخازن طبی آبادیس · نسخهٔ پیش‌نمایش بازطراحی</div>
 </footer>
 <script src="../assets/js/site.js" defer></script>
-
+<script>
+(function(){
+  var nf = new Intl.NumberFormat('fa-IR', {maximumFractionDigits: 1});
+  function r(x, d){ var m = Math.pow(10, d); return Math.round(x * m) / m; }
+  function v(f, n){ var x = parseFloat(String(f.elements[n].value).replace(/[۰-۹]/g, function(c){return '۰۱۲۳۴۵۶۷۸۹'.indexOf(c)})); return isFinite(x) && x > 0 ? x : 0; }
+  function set(id, x){ document.getElementById(id).textContent = nf.format(x); }
+  var s = document.getElementById('calcSurg'), b = document.getElementById('calcBeds');
+  function surg(){ var S = v(s, 's'); set('cs0', r(S*1.6*9.3, 0)); set('cs1', r(S*2.5*85000, 1)); set('cs2', r(S*1.7/60*2.2*7.1, 1)); }
+  function beds(){ var O = v(b, 'o'), I = v(b, 'i'), u = O*254 + I*67; set('cb0', r(u*1.6*9.3, 0)); set('cb1', r((O*200 + I*50)*2.5*85000, 1)); set('cb2', r(u*1.7*2.2*7.1/60, 1)); }
+  s.addEventListener('input', surg); b.addEventListener('input', beds); surg(); beds();
+})();
+</script>
 </body>
 </html>
