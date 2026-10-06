@@ -18,6 +18,10 @@
 <link rel="preload" href="../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../assets/css/site.css">
 <link rel="preload" href="../assets/img/zagros-koh.jpg" as="image">
+<link rel="stylesheet" href="./zagros-hero.css">
+<link rel="preload" as="image" href="./img/hero/bg-dry.webp" type="image/webp">
+<script>if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('zh-reduced');</script>
+<noscript><style>.zh-track{height:auto}.zh-stage{position:relative}.zh-bg-green{opacity:1}.zh-canister{opacity:1;transform:translate3d(-50%,0,0)}.zh-hint{display:none}</style></noscript>
 </head>
 <body>
 <a class="skip" href="#main">پرش به محتوا</a>
@@ -40,14 +44,45 @@
 <div class="csr-bg" data-src="../assets/img/zagros-koh.jpg" aria-hidden="true"></div>
 <div class="csr-veil" aria-hidden="true"></div>
 <main id="main" class="csr-page">
-  <section class="csr-hero" aria-label="نجات زاگرس">
-    <div>
-      <span class="chip">پویش نجات زاگرس · کاشت نهال بلوط</span>
-      <h1>نجات زاگرس،‌مسئولیت اجتماعی آبادیس</h1>
-      <p class="lead">کاشت نهال بلوط در ارتفاعات زاگرس؛ تا مکانی به نام آبادیس و به یاد صنعت سلامت کشور ثبت شود.</p>
-      <div class="hero-actions" style="justify-content:center"><a class="btn btn-primary" href="#story">داستان پویش</a><a class="btn btn-ghost" href="../news/16094/" style="color:var(--brand)">صفحهٔ فعلی پویش ↗</a></div>
+  <div class="zh-track" id="hero">
+    <div class="zh-stage" id="zhStage">
+      <div class="zh-bg" aria-hidden="true">
+        <picture>
+          <source type="image/webp" srcset="./img/hero/bg-dry-1280.webp 1280w, ./img/hero/bg-dry.webp 1920w" sizes="(max-aspect-ratio: 16/9) 177.78vh, 100vw">
+          <img class="zh-bg-layer zh-bg-dry" src="./img/hero/bg-dry.jpg" srcset="./img/hero/bg-dry-1280.jpg 1280w, ./img/hero/bg-dry.jpg 1920w" sizes="(max-aspect-ratio: 16/9) 177.78vh, 100vw" alt="" width="1920" height="1080" decoding="async" fetchpriority="high">
+        </picture>
+        <picture>
+          <source type="image/webp" srcset="./img/hero/bg-mid-1280.webp 1280w, ./img/hero/bg-mid.webp 1920w" sizes="(max-aspect-ratio: 16/9) 177.78vh, 100vw">
+          <img class="zh-bg-layer zh-bg-mid" src="./img/hero/bg-mid.jpg" srcset="./img/hero/bg-mid-1280.jpg 1280w, ./img/hero/bg-mid.jpg 1920w" sizes="(max-aspect-ratio: 16/9) 177.78vh, 100vw" alt="" width="1920" height="1080" decoding="async">
+        </picture>
+        <picture>
+          <source type="image/webp" srcset="./img/hero/bg-green-1280.webp 1280w, ./img/hero/bg-green.webp 1920w" sizes="(max-aspect-ratio: 16/9) 177.78vh, 100vw">
+          <img class="zh-bg-layer zh-bg-green" src="./img/hero/bg-green.jpg" srcset="./img/hero/bg-green-1280.jpg 1280w, ./img/hero/bg-green.jpg 1920w" sizes="(max-aspect-ratio: 16/9) 177.78vh, 100vw" alt="" width="1920" height="1080" decoding="async">
+        </picture>
+      </div>
+      <div class="zh-spots" id="zhSpots" aria-hidden="true"></div>
+      <div class="zh-canister" id="zhCanister" aria-hidden="true">
+        <span class="zh-canister-glow"></span>
+        <picture>
+          <source type="image/webp" srcset="./img/hero/canister.webp">
+          <img src="./img/hero/canister.png" alt="" width="399" height="900" decoding="async">
+        </picture>
+      </div>
+      <div class="zh-marks" id="zhMarks" aria-hidden="true"></div>
+      <div class="zh-dusk" aria-hidden="true"></div>
+      <div class="zh-veil" aria-hidden="true"></div>
+      <div class="zh-exit" id="zhExit" aria-hidden="true"></div>
+      <section class="csr-hero" aria-label="نجات زاگرس">
+        <div>
+          <span class="chip">پویش نجات زاگرس · کاشت نهال بلوط</span>
+          <h1>نجات زاگرس،‌مسئولیت اجتماعی آبادیس</h1>
+          <p class="lead">کاشت نهال بلوط در ارتفاعات زاگرس؛ تا مکانی به نام آبادیس و به یاد صنعت سلامت کشور ثبت شود.</p>
+          <div class="hero-actions" style="justify-content:center"><a class="btn btn-primary" href="#story">داستان پویش</a><a class="btn btn-ghost" href="../news/16094/" style="color:var(--brand)">صفحهٔ فعلی پویش ↗</a></div>
+        </div>
+      </section>
+      <div class="zh-hint" id="zhHint" aria-hidden="true"><i></i></div>
     </div>
-  </section>
+  </div>
 
   <section class="section" style="padding-top:0"><div class="wrap">
     <div class="glass csr-stats reveal">
@@ -184,6 +219,7 @@
   <div class="wrap foot-copy">کلیه حقوق مادی و معنوی این وبسایت متعلق است به: مخازن طبی آبادیس · نسخهٔ پیش‌نمایش بازطراحی</div>
 </footer>
 <script src="../assets/js/site.js" defer></script>
+<script src="./zagros-hero.js" defer></script>
 
 </body>
 </html>
