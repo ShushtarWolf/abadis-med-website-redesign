@@ -1,5 +1,5 @@
 /* Abadis Med redesign — shared behaviour.
-   Theme switch (light/dark/noir, persisted), header, mobile menu,
+   Theme toggle (light/dark/noir, persisted), transparent header, mobile menu,
    mosaic (square-grid) video, lightbox, scroll reveal, CSR background fade.
    Deliberately NO mousemove / hover-driven motion. */
 (() => {
@@ -8,32 +8,100 @@
   const THEMES = ['light', 'dark', 'noir'];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---------- theme ---------- */
+  /* ---------- theme ----------
+     One compact button (left corner of the header) cycles light → dark → noir.
+     The new theme is revealed as a growing circle from the button (View
+     Transitions API); browsers without it get a soft crossfade.
+     Choice persists in localStorage; ?theme= in the URL still works. */
+  const header = document.getElementById('header');
+  const toggle = document.querySelector('.theme-toggle');
+  const NAMES = { light: 'روشن', dark: 'تیره', noir: 'نوآر' };
+  const nextOf = (t) => THEMES[(THEMES.indexOf(t) + 1) % THEMES.length];
   function setTheme(t, save) {
     if (!THEMES.includes(t)) t = 'light';
     root.dataset.theme = t;
     if (save) { try { localStorage.setItem(KEY, t); } catch (_) {} }
-    document.querySelectorAll('.theme-switch button').forEach((b) =>
-      b.setAttribute('aria-pressed', String(b.dataset.set === t)));
+    if (toggle) {
+      const label = 'حالت نمایش: ' + NAMES[t] + ' — تغییر به ' + NAMES[nextOf(t)];
+      toggle.setAttribute('aria-label', label); toggle.title = label;
+    }
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.content = t === 'light' ? '#e8f3f3' : t === 'dark' ? '#061719' : '#0a0a12';
     document.dispatchEvent(new CustomEvent('themechange', { detail: t }));
   }
-  document.querySelectorAll('.theme-switch button').forEach((b) =>
-    b.addEventListener('click', () => setTheme(b.dataset.set, true)));
   setTheme(root.dataset.theme || 'light', false);
+  if (toggle) toggle.addEventListener('click', () => {
+    const next = nextOf(root.dataset.theme || 'light');
+    toggle.classList.remove('spin'); void toggle.offsetWidth; toggle.classList.add('spin');
+    if (reduce) { setTheme(next, true); return; }
+    if (document.startViewTransition) {
+      const r = toggle.getBoundingClientRect();
+      const x = r.left + r.width / 2, y = r.top + r.height / 2;
+      const end = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+      const vt = document.startViewTransition(() => { setTheme(next, true); tone(); });
+      vt.ready.then(() => {
+        root.animate({ clipPath: ['circle(0px at ' + x + 'px ' + y + 'px)', 'circle(' + end + 'px at ' + x + 'px ' + y + 'px)'] },
+          { duration: 750, easing: 'cubic-bezier(.65,0,.35,1)', pseudoElement: '::view-transition-new(root)' });
+      }).catch(() => {});
+    } else {
+      root.classList.add('theme-fade');
+      setTheme(next, true);
+      setTimeout(() => root.classList.remove('theme-fade'), 550);
+    }
+  });
 
-  /* ---------- header ---------- */
-  const header = document.getElementById('header');
-  if (header && !header.classList.contains('solid')) {
-    const on = () => header.classList.toggle('scrolled', scrollY > 40);
-    addEventListener('scroll', on, { passive: true }); on();
+  /* ---------- header ----------
+     Transparent in every theme. `.scrolled` only fades in an untinted blur;
+     `.on-light` (light theme only) switches the ink + logo to teal while the
+     bar sits over light content, and back to white over dark bands. */
+  const DARK = '.hero, .deep, .site-footer, .cta-band, .media-frame, .product-visual, [data-tone="dark"]';
+  const zones = header ? [...header.querySelectorAll('.logo, .nav, .menu-btn, .theme-toggle')] : [];
+  const isLightAt = (x, y) => {
+    const el = document.elementsFromPoint(x, y).find((n) => !header.contains(n));
+    return !!el && !el.closest(DARK);
+  };
+  /* Each part of the bar (logo, menu, buttons) picks its own ink from what is
+     directly underneath it, so nothing turns white-on-mint or teal-on-teal. */
+  function tone() {
+    if (!header) return;
+    const light = (root.dataset.theme || 'light') === 'light';
+    const mobileMenu = menuBtnVisible();
+    zones.forEach((z) => {
+      let on = false;
+      if (light && !(z.classList.contains('nav') && mobileMenu)) {
+        const r = z.getBoundingClientRect();
+        if (r.width && r.height) {
+          const y = r.top + r.height / 2;
+          const xs = z.classList.contains('nav') ? [r.left + r.width * .15, r.left + r.width * .5, r.left + r.width * .85] : [r.left + r.width / 2];
+          on = xs.filter((x) => isLightAt(x, y)).length * 2 > xs.length;
+        }
+      }
+      z.classList.toggle('on-light', on);
+    });
+  }
+  function menuBtnVisible() {
+    const m = header && header.querySelector('.menu-btn');
+    return !!m && getComputedStyle(m).display !== 'none';
+  }
+  if (header) {
+    let ticking = false;
+    const on = () => {
+      if (ticking) return; ticking = true;
+      requestAnimationFrame(() => { ticking = false; header.classList.toggle('scrolled', scrollY > 24); tone(); });
+    };
+    addEventListener('scroll', on, { passive: true });
+    addEventListener('resize', on);
+    document.addEventListener('themechange', on);
+    addEventListener('load', on);
+    on();
   }
   const menuBtn = document.querySelector('.menu-btn');
-  if (menuBtn) menuBtn.addEventListener('click', () => {
-    const open = header.classList.toggle('open');
-    menuBtn.setAttribute('aria-expanded', String(open));
-  });
+  if (menuBtn && header) {
+    const setOpen = (open) => { header.classList.toggle('open', open); menuBtn.setAttribute('aria-expanded', String(open)); };
+    menuBtn.addEventListener('click', () => setOpen(!header.classList.contains('open')));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+    document.addEventListener('click', (e) => { if (!header.contains(e.target)) setOpen(false); });
+  }
 
   /* ---------- scroll reveal ---------- */
   const rev = document.querySelectorAll('.reveal');
