@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>محاسبه‌گر صرفه‌جویی آبادیس — طرح دایال با دکمه‌های +/−</title>
+  <meta name="description" content="محاسبه‌گر صرفه‌جویی آبادیس (طرح دایال با استپر): با دکمه‌های +/− و مقادیر آماده، صرفه‌جویی در مصرف آب، هزینه شست‌وشو و ضدعفونی و زمان کادر درمان را ببینید." />
+  <meta name="theme-color" content="#e8f3f3" />
+  <script>
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('abadis-theme'); } catch (e) {}
+      if (t !== 'dark' && t !== 'light') t = (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png" />
+  <link rel="preload" href="../fonts/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="../fonts/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="../common/abadis-common.css" />
+  <style>
+
+    .dial-sec { background: var(--bg); }
+    /* Normal document flow — no tall scroll tracks / sticky scrub */
+    #calc1 .calc-track,
+    #calc2 .calc-track { height: auto; }
+    #calc1 .calc-pin,
+    #calc2 .calc-pin {
+      position: relative;
+      top: auto;
+      height: auto;
+      overflow: visible;
+      padding: 76px 24px 48px;
+    }
+    #calc2 { background: radial-gradient(70% 50% at 50% 0%, rgba(46,196,198,.08), transparent 70%), var(--bg); }
+    .dev { max-width: 1180px; margin: 0 auto; display: grid; grid-template-rows: auto auto; gap: 12px; }
+    .dev-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px 20px; flex-wrap: wrap; }
+    .dev-tag { display: inline-flex; gap: 8px; align-items: center; font-size: .7rem; font-weight: 800; letter-spacing: .12em; color: var(--teal); }
+    .dev-tag::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #3ddc84; box-shadow: 0 0 0 3px rgba(61,220,132,.2), 0 0 10px #3ddc84; }
+    [data-theme="dark"] .dev-tag { color: #2ec4c6; }
+    .dev-head h2 { font-size: clamp(1.1rem, 2.3vw, 1.65rem); font-weight: 900; line-height: 1.35; }
+    .dev-hint { color: var(--muted); font-size: .8rem; }
+    .dev-ctl { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+    .dev-body { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "w k c" "h k s"; gap: 14px 24px; min-height: 0; }
+    .dev-body > * { min-width: 0; min-height: 0; }
+
+    /* device bezel look */
+    .bezel { border-radius: 20px; padding: 9px; background: linear-gradient(160deg, #f9fbfb, #dfe8e9); border: 1px solid rgba(5,104,107,.12); box-shadow: 0 14px 34px rgba(11,46,50,.10), inset 0 1px 0 #fff; }
+    [data-theme="dark"] .bezel { background: linear-gradient(160deg, #183a3e, #0c2427); border-color: rgba(46,196,198,.16); box-shadow: 0 14px 34px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06); }
+
+    /* knob */
+    .knob-area { grid-area: k; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+    .knob-wrap { position: relative; width: min(330px, 40vh); aspect-ratio: 1; }
+    .knob-scale { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+    .knob-scale .tick { stroke: rgba(5,104,107,.35); stroke-width: 1.4; }
+    .knob-scale .tick.major { stroke: var(--teal); stroke-width: 2.2; }
+    [data-theme="dark"] .knob-scale .tick { stroke: rgba(168,213,214,.35); }
+    [data-theme="dark"] .knob-scale .tick.major { stroke: #2ec4c6; }
+    .knob-track { fill: none; stroke: rgba(5,104,107,.12); stroke-width: 5; stroke-linecap: round; }
+    [data-theme="dark"] .knob-track { stroke: rgba(168,213,214,.14); }
+    .knob-arc { fill: none; stroke: url(#arcGrad); stroke-width: 5; stroke-linecap: round; filter: drop-shadow(0 0 4px rgba(46,196,198,.55)); }
+    .knob { position: absolute; inset: 15%; border-radius: 50%;
+      background: repeating-conic-gradient(from 0deg, rgba(0,0,0,.08) 0 1.5deg, rgba(255,255,255,.5) 1.5deg 3deg), radial-gradient(circle at 35% 28%, #ffffff, #e2eaeb 45%, #b7c7c8 100%);
+      box-shadow: 0 22px 44px rgba(11,46,50,.28), 0 4px 10px rgba(11,46,50,.18), inset 0 -8px 16px rgba(0,0,0,.14), inset 0 6px 12px rgba(255,255,255,.9);
+      transition: transform .35s cubic-bezier(.2,.75,.25,1); }
+    [data-theme="dark"] .knob { background: repeating-conic-gradient(from 0deg, rgba(0,0,0,.25) 0 1.5deg, rgba(255,255,255,.07) 1.5deg 3deg), radial-gradient(circle at 35% 28%, #3c5357, #1f3336 50%, #0d1c1e 100%);
+      box-shadow: 0 22px 44px rgba(0,0,0,.55), inset 0 -8px 16px rgba(0,0,0,.4), inset 0 4px 10px rgba(255,255,255,.08); }
+    .knob::before { content: ""; position: absolute; inset: 15%; border-radius: 50%; background: radial-gradient(circle at 40% 32%, #fdfefe, #d4dfe0 75%); box-shadow: inset 0 3px 8px rgba(0,0,0,.13), 0 1px 0 rgba(255,255,255,.9); }
+    [data-theme="dark"] .knob::before { background: radial-gradient(circle at 40% 32%, #2e4649, #142729 75%); box-shadow: inset 0 3px 8px rgba(0,0,0,.45); }
+    .knob-mark { position: absolute; left: 50%; top: 5%; width: 6px; height: 17%; margin-left: -3px; border-radius: 3px; background: var(--teal); box-shadow: 0 0 10px rgba(46,196,198,.7); }
+    [data-theme="dark"] .knob-mark { background: #2ec4c6; }
+    .knob-logo { position: absolute; inset: 0; display: grid; place-items: center; font-weight: 900; font-size: clamp(.9rem, 2vw, 1.15rem); color: rgba(5,104,107,.55); pointer-events: none; }
+    [data-theme="dark"] .knob-logo { color: rgba(46,196,198,.6); }
+
+    /* LCD + steppers */
+    .lcd { display: flex; gap: 10px; }
+    .lcd-row { display: flex; align-items: center; gap: 8px; direction: ltr; /* − left, + right even in RTL page */ }
+    .lcd-cell { background: #061719; color: #d9f2f2; border-radius: 12px; padding: 6px 16px 4px; min-width: 150px; text-align: center; box-shadow: inset 0 2px 10px rgba(0,0,0,.6); border: 1px solid rgba(46,196,198,.18); position: relative; transition: border-color .3s, box-shadow .3s, opacity .3s; cursor: pointer; }
+    .lcd-cell .lbl { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: .72rem; font-weight: 700; color: rgba(217,242,242,.72); }
+    .lcd-cell .led { width: 7px; height: 7px; border-radius: 50%; background: #234; transition: background .3s, box-shadow .3s; }
+    .lcd-cell .odo { font-size: clamp(1.8rem, 3.4vw, 2.6rem); color: #7fe9ea; text-shadow: 0 0 12px rgba(46,196,198,.45); }
+    .lcd-cell.active { border-color: #2ec4c6; box-shadow: inset 0 2px 10px rgba(0,0,0,.6), 0 0 0 3px rgba(46,196,198,.18); }
+    .lcd-cell.active .led { background: #3ddc84; box-shadow: 0 0 8px #3ddc84; }
+    .lcd-cell.idle { opacity: .7; }
+    .lcd-cell .hold { position: absolute; top: 4px; left: 6px; font-size: .6rem; font-weight: 800; color: #072326; background: #2ec4c6; border-radius: 999px; padding: 0 6px; opacity: 0; transition: opacity .3s; }
+    .lcd-cell.held .hold { opacity: 1; }
+
+    .stepper {
+      display: flex; flex-direction: column; gap: 6px; flex: none;
+    }
+    .step-btn {
+      width: 40px; height: 40px; border-radius: 12px; border: 1px solid rgba(5,104,107,.18);
+      background: linear-gradient(160deg, #f9fbfb, #dfe8e9); color: var(--teal);
+      font-family: inherit; font-size: 1.35rem; font-weight: 900; line-height: 1;
+      cursor: pointer; display: grid; place-items: center;
+      box-shadow: 0 4px 12px rgba(11,46,50,.08), inset 0 1px 0 #fff;
+      transition: background .2s, color .2s, border-color .2s, transform .15s, box-shadow .2s;
+      user-select: none; -webkit-user-select: none; touch-action: manipulation;
+    }
+    .step-btn:hover { border-color: var(--accent); color: #05686b; transform: translateY(-1px); }
+    .step-btn:active { transform: translateY(1px) scale(.96); box-shadow: inset 0 2px 6px rgba(0,0,0,.12); }
+    .step-btn:disabled { opacity: .35; cursor: not-allowed; transform: none; }
+    .step-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    [data-theme="dark"] .step-btn {
+      background: linear-gradient(160deg, #183a3e, #0c2427); color: #2ec4c6;
+      border-color: rgba(46,196,198,.22); box-shadow: 0 4px 12px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.06);
+    }
+    [data-theme="dark"] .step-btn:hover { border-color: #2ec4c6; }
+
+    /* monitors */
+    .mon { display: flex; }
+    .mon-w { grid-area: w; } .mon-c { grid-area: c; } .mon-h { grid-area: h; }
+    .mon-screen { flex: 1; border-radius: 13px; background-color: #061719;
+      background-image: linear-gradient(rgba(46,196,198,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(46,196,198,.07) 1px, transparent 1px);
+      background-size: 18px 18px; box-shadow: inset 0 2px 14px rgba(0,0,0,.65); color: #d9f2f2; position: relative; overflow: hidden;
+      display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 4px 14px; padding: 10px 16px; }
+    .mon-screen::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,.05) 48%, transparent 52%); transform: translateX(-100%); animation: sweep 5.5s linear infinite; pointer-events: none; }
+    @keyframes sweep { to { transform: translateX(100%); } }
+    .mon-w .mon-screen { --mc: #62d9ff; } .mon-c .mon-screen { --mc: #8fe27c; } .mon-h .mon-screen { --mc: #ffc861; }
+    .gauge { width: 132px; height: 86px; overflow: visible; }
+    .g-track { fill: none; stroke: rgba(217,242,242,.12); stroke-width: 7; stroke-linecap: round; }
+    .g-arc { fill: none; stroke: var(--mc); stroke-width: 7; stroke-linecap: round; filter: drop-shadow(0 0 4px var(--mc)); }
+    .g-tick { stroke: rgba(217,242,242,.35); stroke-width: 1.2; }
+    .g-needle { stroke: #f4fbfb; stroke-width: 2.4; stroke-linecap: round; }
+    .g-hub { fill: #f4fbfb; }
+    .mon-txt { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .mon-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: .72rem; font-weight: 800; color: rgba(217,242,242,.78); }
+    .mon-top i { font-style: normal; font-size: .62rem; letter-spacing: .1em; color: var(--mc); }
+    .mon-val { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+    .mon-val .odo { font-size: clamp(1.15rem, 1.75vw, 1.6rem); color: var(--mc); text-shadow: 0 0 10px color-mix(in srgb, var(--mc) 45%, transparent); }
+    .mon-val small { font-size: .74rem; font-weight: 700; color: rgba(217,242,242,.72); }
+    .mon-sub { font-size: .72rem; color: rgba(217,242,242,.74); line-height: 1.5; }
+    .mon-sub b { color: #fff; }
+
+    .dev-sum { grid-area: s; display: flex; }
+    .dev-sum .sum-in { flex: 1; border-radius: 13px; background: var(--card); padding: 12px 16px; display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+    .sum-text { font-size: .86rem; line-height: 1.7; color: var(--ink); }
+    .sum-text b { color: var(--teal); font-weight: 900; }
+    [data-theme="dark"] .sum-text b { color: #2ec4c6; }
+    .sum-note { display: block; font-size: .7rem; color: var(--muted); }
+    .dev-sum .hero-btn { align-self: flex-start; padding: 10px 20px; font-size: .84rem; }
+
+    @media (min-width: 861px) {
+      .mon-screen { grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; align-content: center; gap: 6px; padding: 12px 18px; }
+      .gauge { width: min(200px, 100%); height: auto; }
+      .mon-txt { align-items: center; }
+      .mon-top { justify-content: center; gap: 10px; font-size: .8rem; }
+      .mon-val { justify-content: center; }
+      .mon-val .odo { font-size: clamp(1.3rem, 1.9vw, 1.85rem); }
+      .mon-sub { font-size: .76rem; }
+    }
+    @media (max-width: 860px) {
+      #calc1 .calc-pin, #calc2 .calc-pin { padding: 60px 12px 28px; }
+      .dev { gap: 8px; }
+      .dev-head { align-items: stretch; flex-direction: column; gap: 4px; }
+      .dev-head h2 { font-size: 1.05rem; }
+      .dev-hint { font-size: .7rem; }
+      .dev-ctl { align-items: stretch; }
+      .dev-body { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; grid-template-areas: "k" "w" "c" "h" "s"; gap: 7px; }
+      .knob-area { flex-direction: row; gap: 10px; justify-content: space-between; align-items: center; }
+      .knob-wrap { width: 112px; flex: none; }
+      .knob-logo { font-size: .65rem; }
+      .lcd { flex: 1; flex-direction: column; gap: 6px; }
+      .lcd-row { gap: 6px; }
+      .lcd-cell { min-width: 0; flex: 1; padding: 3px 10px 2px; }
+      .lcd-cell .odo { font-size: 1.55rem; }
+      #calc2 .lcd-cell .odo { font-size: 1.25rem; }
+      .stepper { gap: 4px; }
+      .step-btn { width: 34px; height: 34px; border-radius: 10px; font-size: 1.15rem; }
+      .bezel { padding: 5px; border-radius: 15px; }
+      .mon-screen { padding: 4px 12px; gap: 0 10px; border-radius: 11px; }
+      .gauge { width: 78px; height: 52px; }
+      .mon-val .odo { font-size: 1.2rem; }
+      .mon-sub { font-size: .66rem; }
+      .dev-sum .sum-in { flex-direction: row; align-items: center; padding: 7px 10px; gap: 8px; }
+      .sum-text { font-size: .7rem; line-height: 1.55; }
+      .sum-note { display: none; }
+      .dev-sum .hero-btn { padding: 8px 11px; font-size: .72rem; align-self: center; }
+    }
+    @media (min-width: 861px) and (max-height: 780px) { .knob-wrap { width: min(280px, 36vh); } .gauge { width: min(150px, 100%); } }
+    @media (prefers-reduced-motion: reduce) {
+      .knob { transition: none; }
+    }
+
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="arcGrad" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#05686b"/><stop offset="1" stop-color="#2ec4c6"/></linearGradient></defs></svg>
+  <header class="header" id="header">
+    <a class="logo" href="#top">آبادیس<span>مخازن طبی</span></a>
+    <nav class="nav">
+      <a href="#calc1">بر مبنای تعداد عمل جراحی</a>
+      <a href="#calc2">بر مبنای تعداد تخت</a>
+      <a href="#contact">ارتباط با ما</a>
+    </nav>
+    <div class="header-actions">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="حالت شب" title="حالت شب" aria-pressed="false">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+      </button>
+      <a class="header-cta" href="tel:02192001017">تماس با فروش</a>
+    </div>
+  </header>
+
+  <section class="intro" id="top">
+    <div class="eyebrow">ابزار محاسبه · طرح دایال با +/−</div>
+    <h1>محاسبه‌گر صرفه‌جویی <em>آبادیس</em></h1>
+    <p>با دکمه‌های +/− یا مقادیر آماده، تعداد عمل یا تخت را تنظیم کنید؛ سه نمایشگر، صرفه‌جویی آب، هزینه شست‌وشو و ضدعفونی و زمان کادر درمان را همزمان نشان می‌دهند.</p>
+  </section>
+
+  <section class="calc dial-sec" id="calc1" aria-labelledby="calc1-t">
+    <div class="calc-track"><div class="calc-pin"><div class="dev">
+      <div class="dev-head">
+        <div><div class="dev-tag">CH-1 · ورودی: تعداد عمل</div><h2 id="calc1-t">بر مبنای تعداد عمل جراحی در سال</h2><p class="dev-hint" data-hint>دکمه‌های +/− یا مقادیر آماده را برای تنظیم تعداد عمل استفاده کنید</p></div>
+        <div class="dev-ctl"><div class="chips" role="group" aria-label="مقادیر آماده">
+              <button class="chip" type="button" data-n="1000">۱٬۰۰۰</button>
+              <button class="chip" type="button" data-n="5000">۵٬۰۰۰</button>
+              <button class="chip" type="button" data-n="10000">۱۰٬۰۰۰</button>
+              <button class="chip" type="button" data-n="15000">۱۵٬۰۰۰</button>
+              <button class="chip" type="button" data-n="30000">۳۰٬۰۰۰</button>
+            </div></div>
+      </div>
+      <div class="dev-body">
+        <div class="knob-area">
+            <div class="knob-wrap">
+              <svg class="knob-scale" viewBox="0 0 200 200" aria-hidden="true"><g class="ticks"></g><circle class="knob-track" cx="100" cy="100" r="93" pathLength="360" stroke-dasharray="300 360" transform="rotate(120 100 100)"/><circle class="knob-arc" cx="100" cy="100" r="93" pathLength="360" stroke-dasharray="0 360" transform="rotate(120 100 100)"/></svg>
+              <div class="knob" aria-hidden="true"><span class="knob-mark"></span></div>
+              <div class="knob-logo" aria-hidden="true">آبادیس</div>
+            </div>
+            <div class="lcd">
+              <div class="lcd-row" data-stepper="n">
+                <button class="step-btn" type="button" data-dir="-1" aria-label="کاهش تعداد عمل">−</button>
+                <div class="lcd-cell active"><span class="lbl"><span class="led"></span>تعداد عمل در سال</span><span class="odo" data-odo="n" data-digits="5"></span></div>
+                <button class="step-btn" type="button" data-dir="1" aria-label="افزایش تعداد عمل">+</button>
+              </div>
+            </div>
+          </div>
+        <div class="mon mon-w bezel" data-gauge="water"><div class="mon-screen">
+              <svg class="gauge" viewBox="0 0 132 86" aria-hidden="true"><g class="g-ticks"></g><path class="g-track" d="M14 76 A52 52 0 0 1 118 76" pathLength="100"/><path class="g-arc" d="M14 76 A52 52 0 0 1 118 76" pathLength="100" stroke-dasharray="0 100"/><line class="g-needle" x1="66" y1="76" x2="66" y2="34" transform="rotate(-90 66 76)"/><circle class="g-hub" cx="66" cy="76" r="4.5"/></svg>
+              <div class="mon-txt"><div class="mon-top"><span>صرفه‌جویی در مصرف آب</span><i>H₂O</i></div><div class="mon-val"><span class="odo" data-odo="water" data-digits="7"></span><small>لیتر</small></div><div class="mon-sub" data-sub="tubs"></div></div>
+            </div></div>
+        <div class="mon mon-c bezel" data-gauge="cost"><div class="mon-screen">
+              <svg class="gauge" viewBox="0 0 132 86" aria-hidden="true"><g class="g-ticks"></g><path class="g-track" d="M14 76 A52 52 0 0 1 118 76" pathLength="100"/><path class="g-arc" d="M14 76 A52 52 0 0 1 118 76" pathLength="100" stroke-dasharray="0 100"/><line class="g-needle" x1="66" y1="76" x2="66" y2="34" transform="rotate(-90 66 76)"/><circle class="g-hub" cx="66" cy="76" r="4.5"/></svg>
+              <div class="mon-txt"><div class="mon-top"><span>هزینه شست‌وشو و ضدعفونی</span><i>COST</i></div><div class="mon-val"><span class="odo" data-odo="cost" data-digits="13"></span><small>تومان</small></div><div class="mon-sub" data-sub="read"></div></div>
+            </div></div>
+        <div class="mon mon-h bezel" data-gauge="hours"><div class="mon-screen">
+              <svg class="gauge" viewBox="0 0 132 86" aria-hidden="true"><g class="g-ticks"></g><path class="g-track" d="M14 76 A52 52 0 0 1 118 76" pathLength="100"/><path class="g-arc" d="M14 76 A52 52 0 0 1 118 76" pathLength="100" stroke-dasharray="0 100"/><line class="g-needle" x1="66" y1="76" x2="66" y2="34" transform="rotate(-90 66 76)"/><circle class="g-hub" cx="66" cy="76" r="4.5"/></svg>
+              <div class="mon-txt"><div class="mon-top"><span>زمان کادر درمان</span><i>TIME</i></div><div class="mon-val"><span class="odo" data-odo="hours" data-digits="6"></span><small>ساعت</small></div><div class="mon-sub" data-sub="shifts"></div></div>
+            </div></div>
+        <div class="dev-sum bezel"><div class="sum-in"><p class="sum-text" data-sum></p><a class="hero-btn" href="tel:02192001017">مشاوره با کارشناس فروش</a></div></div>
+      </div>
+    </div></div></div>
+  </section>
+
+  <section class="calc dial-sec" id="calc2" aria-labelledby="calc2-t">
+    <div class="calc-track"><div class="calc-pin"><div class="dev">
+      <div class="dev-head">
+        <div><div class="dev-tag">CH-2 · ورودی: تعداد تخت</div><h2 id="calc2-t">بر مبنای تعداد تخت</h2><p class="dev-hint" data-hint>دکمه‌های +/− هر کانال یا مقادیر آماده را برای تنظیم تخت اتاق عمل و ICU|CCU استفاده کنید</p></div>
+        <div class="dev-ctl"><div class="chips" role="group" aria-label="ترکیب‌های آماده (تخت اتاق عمل + ICU|CCU)">
+              <button class="chip" type="button" data-a="10" data-b="10">۱۰ + ۱۰</button>
+              <button class="chip" type="button" data-a="20" data-b="10">۲۰ + ۱۰</button>
+              <button class="chip" type="button" data-a="50" data-b="20">۵۰ + ۲۰</button>
+              <button class="chip" type="button" data-a="100" data-b="50">۱۰۰ + ۵۰</button>
+              <button class="chip" type="button" data-a="300" data-b="100">۳۰۰ + ۱۰۰</button>
+              <button class="chip" type="button" data-a="700" data-b="700">۷۰۰ + ۷۰۰</button>
+            </div></div>
+      </div>
+      <div class="dev-body">
+        <div class="knob-area">
+            <div class="knob-wrap">
+              <svg class="knob-scale" viewBox="0 0 200 200" aria-hidden="true"><g class="ticks"></g><circle class="knob-track" cx="100" cy="100" r="93" pathLength="360" stroke-dasharray="300 360" transform="rotate(120 100 100)"/><circle class="knob-arc" cx="100" cy="100" r="93" pathLength="360" stroke-dasharray="0 360" transform="rotate(120 100 100)"/></svg>
+              <div class="knob" aria-hidden="true"><span class="knob-mark"></span></div>
+              <div class="knob-logo" aria-hidden="true">آبادیس</div>
+            </div>
+            <div class="lcd">
+              <div class="lcd-row" data-stepper="a">
+                <button class="step-btn" type="button" data-dir="-1" aria-label="کاهش تخت اتاق عمل">−</button>
+                <div class="lcd-cell active" data-ch="a"><span class="lbl"><span class="led"></span>تخت اتاق عمل</span><span class="odo" data-odo="a" data-digits="3"></span></div>
+                <button class="step-btn" type="button" data-dir="1" aria-label="افزایش تخت اتاق عمل">+</button>
+              </div>
+              <div class="lcd-row" data-stepper="b">
+                <button class="step-btn" type="button" data-dir="-1" aria-label="کاهش تخت ICU|CCU">−</button>
+                <div class="lcd-cell idle" data-ch="b"><span class="lbl"><span class="led"></span>تخت ICU|CCU</span><span class="odo" data-odo="b" data-digits="3"></span></div>
+                <button class="step-btn" type="button" data-dir="1" aria-label="افزایش تخت ICU|CCU">+</button>
+              </div>
+            </div>
+          </div>
+        <div class="mon mon-w bezel" data-gauge="water"><div class="mon-screen">
+              <svg class="gauge" viewBox="0 0 132 86" aria-hidden="true"><g class="g-ticks"></g><path class="g-track" d="M14 76 A52 52 0 0 1 118 76" pathLength="100"/><path class="g-arc" d="M14 76 A52 52 0 0 1 118 76" pathLength="100" stroke-dasharray="0 100"/><line class="g-needle" x1="66" y1="76" x2="66" y2="34" transform="rotate(-90 66 76)"/><circle class="g-hub" cx="66" cy="76" r="4.5"/></svg>
+              <div class="mon-txt"><div class="mon-top"><span>صرفه‌جویی در مصرف آب</span><i>H₂O</i></div><div class="mon-val"><span class="odo" data-odo="water" data-digits="7"></span><small>لیتر</small></div><div class="mon-sub" data-sub="tubs"></div></div>
+            </div></div>
+        <div class="mon mon-c bezel" data-gauge="cost"><div class="mon-screen">
+              <svg class="gauge" viewBox="0 0 132 86" aria-hidden="true"><g class="g-ticks"></g><path class="g-track" d="M14 76 A52 52 0 0 1 118 76" pathLength="100"/><path class="g-arc" d="M14 76 A52 52 0 0 1 118 76" pathLength="100" stroke-dasharray="0 100"/><line class="g-needle" x1="66" y1="76" x2="66" y2="34" transform="rotate(-90 66 76)"/><circle class="g-hub" cx="66" cy="76" r="4.5"/></svg>
+              <div class="mon-txt"><div class="mon-top"><span>هزینه شست‌وشو و ضدعفونی</span><i>COST</i></div><div class="mon-val"><span class="odo" data-odo="cost" data-digits="11"></span><small>تومان</small></div><div class="mon-sub" data-sub="read"></div></div>
+            </div></div>
+        <div class="mon mon-h bezel" data-gauge="hours"><div class="mon-screen">
+              <svg class="gauge" viewBox="0 0 132 86" aria-hidden="true"><g class="g-ticks"></g><path class="g-track" d="M14 76 A52 52 0 0 1 118 76" pathLength="100"/><path class="g-arc" d="M14 76 A52 52 0 0 1 118 76" pathLength="100" stroke-dasharray="0 100"/><line class="g-needle" x1="66" y1="76" x2="66" y2="34" transform="rotate(-90 66 76)"/><circle class="g-hub" cx="66" cy="76" r="4.5"/></svg>
+              <div class="mon-txt"><div class="mon-top"><span>زمان کادر درمان</span><i>TIME</i></div><div class="mon-val"><span class="odo" data-odo="hours" data-digits="6"></span><small>ساعت</small></div><div class="mon-sub" data-sub="shifts"></div></div>
+            </div></div>
+        <div class="dev-sum bezel"><div class="sum-in"><p class="sum-text" data-sum></p><a class="hero-btn" href="tel:02192001017">مشاوره با کارشناس فروش</a></div></div>
+      </div>
+    </div></div></div>
+  </section>
+
+  <p class="foot-note"><b>*</b> محاسبات بر اساس فرمول‌های محاسبه‌گر فعلی آبادیس</p>
+
+  <section class="cta-band">
+    <h2>برای محاسبه دقیق مرکز درمانی خود با ما صحبت کنید</h2>
+    <p>کارشناسان فروش مخازن طبی آبادیس آماده پاسخ‌گویی به پرسش‌های شما هستند.</p>
+    <a class="hero-btn" href="tel:02192001017">مشاوره با کارشناس فروش</a>
+    <p class="cta-sub">مرکز تماس: <a href="tel:02192001017" dir="ltr">021-92001017</a> · <a href="https://abadis-med.com/ارتباط-با-ما/" target="_blank" rel="noopener">صفحه ارتباط با ما</a></p>
+  </section>
+
+  <footer class="site-footer" id="contact">
+    <div class="foot-inner">
+      <div class="foot-brand">
+        <strong>مخازن طبی آبادیس</strong>
+        <span>با ما در ارتباط باشید...</span>
+        <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px;align-items:flex-start">
+          <a href="https://abadis-med.com/ارتباط-با-ما/" target="_blank" rel="noopener">صفحه ارتباط با ما</a>
+          <a href="https://abadis-med.com/" target="_blank" rel="noopener">abadis-med.com</a>
+        </div>
+      </div>
+      <div>
+        <h3>تماس</h3>
+        <dl>
+          <dt>مرکز تماس:</dt><dd><a href="tel:+982192001017" dir="ltr">02192001017</a></dd>
+          <dt>تلفن تماس:</dt><dd><a href="tel:+982122671845" dir="ltr">02122671845</a> | <a href="tel:+982122205502" dir="ltr">02122205502</a><br><a href="tel:+982122215503" dir="ltr">02122215503</a> | <a href="tel:+982122218910" dir="ltr">02122218910</a></dd>
+          <dt>فکس:</dt><dd><span dir="ltr">02141425555</span> | داخلی 28544</dd>
+          <dt>پست الکترونیک:</dt><dd><a href="mailto:info@abadis-med.com">info@abadis-med.com</a></dd>
+          <dt>واتس‌اپ:</dt><dd><a href="https://wa.me/989100145809" target="_blank" rel="noopener" dir="ltr">+989100145809</a></dd>
+        </dl>
+      </div>
+      <div>
+        <h3>نشانی</h3>
+        <p><b>نشانی دفتر مرکزی:</b><br>ایران، تهران، قیطریه، خیابان اندرزگو، پلاک 104، واحد2</p>
+        <p><b>نشانی کارخانه:</b><br>ایران،تهران،شهرک صنعتی شمس آباد، بلوار گلستان، کوچه گلشن ۱۹،پلاک۱۷</p>
+      </div>
+    </div>
+    <div class="foot-copy">مخازن طبی آبادیس · محاسبه‌گر صرفه‌جویی · طرح دایال با +/−</div>
+  </footer>
+
+  <script src="../common/abadis-common.js"></script>
+  <script>
+
+    (() => {
+      const A = Abadis, fa = A.fa, F = A.F, clamp = A.clamp;
+      const NS = 'http://www.w3.org/2000/svg';
+
+      const LIMITS = {
+        n: { min: 0, max: 30000, step: 100 },
+        a: { min: 0, max: 700, step: 1 },
+        b: { min: 0, max: 700, step: 1 },
+      };
+
+      function ticksKnob(g) {
+        for (let i = 0; i <= 40; i++) {
+          const ang = (-150 + i * 7.5) * Math.PI / 180, major = i % 5 === 0;
+          const r1 = 99, r2 = major ? 107 : 104;
+          const l = document.createElementNS(NS, 'line');
+          l.setAttribute('x1', 100 + r1 * Math.sin(ang)); l.setAttribute('y1', 100 - r1 * Math.cos(ang));
+          l.setAttribute('x2', 100 + r2 * Math.sin(ang)); l.setAttribute('y2', 100 - r2 * Math.cos(ang));
+          l.setAttribute('class', 'tick' + (major ? ' major' : '')); g.appendChild(l);
+        }
+      }
+      function ticksGauge(g) {
+        for (let i = 0; i <= 10; i++) {
+          const ang = (-90 + i * 18) * Math.PI / 180, r1 = 60, r2 = i % 5 === 0 ? 66 : 63.5;
+          const l = document.createElementNS(NS, 'line');
+          l.setAttribute('x1', 66 + r1 * Math.sin(ang)); l.setAttribute('y1', 76 - r1 * Math.cos(ang));
+          l.setAttribute('x2', 66 + r2 * Math.sin(ang)); l.setAttribute('y2', 76 - r2 * Math.cos(ang));
+          l.setAttribute('class', 'g-tick'); g.appendChild(l);
+        }
+      }
+
+      /* Hold-to-repeat helper */
+      function bindHold(btn, onStep) {
+        let delayT = 0, repT = 0, active = false;
+        const clear = () => {
+          active = false;
+          if (delayT) { clearTimeout(delayT); delayT = 0; }
+          if (repT) { clearInterval(repT); repT = 0; }
+        };
+        const start = (e) => {
+          if (btn.disabled) return;
+          if (e.type === 'mousedown' && e.button !== 0) return;
+          e.preventDefault();
+          active = true;
+          onStep();
+          delayT = setTimeout(() => {
+            if (!active) return;
+            repT = setInterval(() => { if (active && !btn.disabled) onStep(); else clear(); }, 55);
+          }, 380);
+        };
+        btn.addEventListener('mousedown', start);
+        btn.addEventListener('touchstart', start, { passive: false });
+        ['mouseup', 'mouseleave', 'blur'].forEach((ev) => btn.addEventListener(ev, clear));
+        btn.addEventListener('touchend', clear);
+        btn.addEventListener('touchcancel', clear);
+        btn.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onStep(); }
+        });
+      }
+
+      function createStepperCalc(root, kind) {
+        ticksKnob(root.querySelector('.knob-scale .ticks'));
+        const knob = root.querySelector('.knob'), arc = root.querySelector('.knob-arc');
+        const gauges = {};
+        root.querySelectorAll('[data-gauge]').forEach((m) => {
+          ticksGauge(m.querySelector('.g-ticks'));
+          gauges[m.dataset.gauge] = { arc: m.querySelector('.g-arc'), needle: m.querySelector('.g-needle') };
+        });
+        const sub = {}; root.querySelectorAll('[data-sub]').forEach((e) => { sub[e.dataset.sub] = e; });
+        const sum = root.querySelector('[data-sum]'), hint = root.querySelector('[data-hint]');
+        const chA = root.querySelector('[data-ch="a"]'), chB = root.querySelector('[data-ch="b"]');
+
+        const keys = kind === 'surgery' ? ['n'] : ['a', 'b'];
+        const odos = {}, odoList = [];
+        root.querySelectorAll('[data-odo]').forEach((el) => {
+          const o = new A.Odo(el, +el.dataset.digits || 6);
+          odoList.push([el.dataset.odo, o]);
+          if (!odos[el.dataset.odo]) odos[el.dataset.odo] = o;
+        });
+        const chips = [...root.querySelectorAll('.chip')];
+
+        const target = {}, shown = {}, disp = {};
+        keys.forEach((k) => { target[k] = 0; shown[k] = 0; disp[k] = 0; });
+        let focus = kind === 'surgery' ? 'n' : 'a';
+        let raf = 0, last = performance.now();
+
+        function setFocus(key) {
+          focus = key;
+          if (kind === 'beds') {
+            chA.classList.toggle('active', focus === 'a');
+            chA.classList.toggle('idle', focus !== 'a');
+            chB.classList.toggle('active', focus === 'b');
+            chB.classList.toggle('idle', focus !== 'b');
+            hint.textContent = focus === 'a'
+              ? 'کانال فعال: تخت اتاق عمل · با +/− یا مقادیر آماده تنظیم کنید'
+              : 'کانال فعال: تخت ICU|CCU · با +/− یا مقادیر آماده تنظیم کنید';
+          }
+        }
+
+        function nudge(key, dir) {
+          const lim = LIMITS[key];
+          const next = clamp(disp[key] + dir * lim.step, lim.min, lim.max);
+          target[key] = next;
+          setFocus(key);
+          kick();
+        }
+
+        function setValues(vals) {
+          keys.forEach((k) => {
+            if (vals[k] == null) return;
+            const lim = LIMITS[k];
+            target[k] = clamp(Math.round(vals[k] / lim.step) * lim.step, lim.min, lim.max);
+          });
+          if (vals.focus) setFocus(vals.focus);
+          else if (kind === 'beds' && vals.b != null) setFocus('b');
+          kick();
+        }
+
+        function syncButtons() {
+          root.querySelectorAll('[data-stepper]').forEach((row) => {
+            const key = row.dataset.stepper;
+            const lim = LIMITS[key];
+            const v = disp[key];
+            row.querySelectorAll('.step-btn').forEach((btn) => {
+              const dir = +btn.dataset.dir;
+              btn.disabled = dir < 0 ? v <= lim.min : v >= lim.max;
+            });
+          });
+        }
+
+        function paint(force) {
+          const out = kind === 'surgery' ? F.surgery({ n: disp.n }) : F.beds({ a: disp.a, b: disp.b });
+          const W = Math.round(out.water), C = Math.round(out.cost), H = Math.round(out.hours);
+          const vals = { n: disp.n, a: disp.a, b: disp.b, water: W, cost: C, hours: H };
+          odoList.forEach(([key, o]) => { if (vals[key] != null) o.set(vals[key]); });
+
+          let f, ang;
+          if (kind === 'surgery') {
+            f = disp.n / LIMITS.n.max;
+            ang = -150 + f * 300;
+          } else {
+            f = focus === 'a' ? disp.a / LIMITS.a.max : disp.b / LIMITS.b.max;
+            ang = -150 + (disp.a + disp.b) / 700 * 300;
+          }
+          knob.style.transform = 'rotate(' + ang.toFixed(2) + 'deg)';
+          arc.setAttribute('stroke-dasharray', (f * 300).toFixed(2) + ' 360');
+
+          const fr = kind === 'surgery'
+            ? { water: disp.n / 30000, cost: disp.n / 30000, hours: disp.n / 30000 }
+            : {
+                water: (disp.a * 254 + disp.b * 67) / (321 * 700),
+                cost: (disp.a * 200 + disp.b * 50) / (250 * 700),
+                hours: (disp.a * 254 + disp.b * 67) / (321 * 700),
+              };
+          ['water', 'cost', 'hours'].forEach((k) => {
+            const g = gauges[k], v = Math.min(1, fr[k]);
+            g.arc.setAttribute('stroke-dasharray', (v * 100).toFixed(2) + ' 100');
+            g.needle.setAttribute('transform', 'rotate(' + (-90 + v * 180).toFixed(2) + ' 66 76)');
+          });
+
+          sub.tubs.innerHTML = W > 0 ? '≈ <b>' + fa(W / 200) + '</b> وان حمام ۲۰۰ لیتری (تقریبی)' : 'معادل وان حمام ۲۰۰ لیتری (تقریبی)';
+          sub.read.innerHTML = C >= 1e6 ? '≈ <b>' + A.readableToman(C) + '</b>' : '&nbsp;';
+          sub.shifts.innerHTML = H > 0 ? '≈ <b>' + fa(H / 8) + '</b> شیفت کاری ۸ ساعته' : 'معادل شیفت کاری ۸ ساعته';
+
+          chips.forEach((c) => c.classList.toggle('on',
+            c.dataset.n != null ? +c.dataset.n === disp.n : (+c.dataset.a === disp.a && +c.dataset.b === disp.b)));
+          syncButtons();
+
+          if (kind === 'surgery') {
+            sum.innerHTML = disp.n > 0
+              ? 'با <b>' + fa(disp.n) + '</b> عمل جراحی در سال: حدود <b>' + fa(W) + '</b> لیتر آب، <b>' + fa(C) + '</b> تومان هزینه شست‌وشو و ضدعفونی و <b>' + fa(H) + '</b> ساعت از زمان کادر درمان.<span class="sum-note">* محاسبات بر اساس فرمول‌های محاسبه‌گر فعلی آبادیس</span>'
+              : 'با دکمه‌های +/− یا مقادیر آماده، تعداد عمل جراحی در سال را تنظیم کنید.';
+          } else {
+            sum.innerHTML = (disp.a + disp.b) > 0
+              ? 'با <b>' + fa(disp.a) + '</b> تخت اتاق عمل و <b>' + fa(disp.b) + '</b> تخت ICU|CCU: حدود <b>' + fa(W) + '</b> لیتر آب، <b>' + fa(C) + '</b> تومان هزینه شست‌وشو و ضدعفونی و <b>' + fa(H) + '</b> ساعت از زمان کادر درمان.<span class="sum-note">* محاسبات بر اساس فرمول‌های محاسبه‌گر فعلی آبادیس</span>'
+              : 'با دکمه‌های +/− یا مقادیر آماده، تعداد تخت اتاق عمل و ICU|CCU را تنظیم کنید.';
+          }
+        }
+
+        function tick(now) {
+          raf = 0;
+          const dt = Math.min(64, Math.max(0, now - last)); last = now;
+          const k = A.reduced ? 1 : 1 - Math.exp(-dt / 110);
+          let busy = false, changed = false;
+          keys.forEach((key) => {
+            const lim = LIMITS[key];
+            let s = shown[key] + (target[key] - shown[key]) * k;
+            if (Math.abs(target[key] - s) < lim.step * 0.5) s = target[key]; else busy = true;
+            shown[key] = s;
+            const d = clamp(Math.round(s / lim.step) * lim.step, lim.min, lim.max);
+            if (d !== disp[key]) { disp[key] = d; changed = true; }
+          });
+          if (changed || !busy) paint();
+          if (busy) kick();
+        }
+        function kick() { if (!raf) raf = requestAnimationFrame(tick); }
+
+        /* steppers */
+        root.querySelectorAll('[data-stepper]').forEach((row) => {
+          const key = row.dataset.stepper;
+          row.querySelectorAll('.step-btn').forEach((btn) => {
+            bindHold(btn, () => nudge(key, +btn.dataset.dir));
+          });
+          const cell = row.querySelector('.lcd-cell');
+          if (cell) cell.addEventListener('click', () => { setFocus(key); paint(); });
+        });
+
+        /* chips */
+        chips.forEach((c) => c.addEventListener('click', () => {
+          if (c.dataset.n != null) setValues({ n: +c.dataset.n, focus: 'n' });
+          else setValues({ a: +c.dataset.a, b: +c.dataset.b, focus: 'b' });
+        }));
+
+        setFocus(focus);
+        document.documentElement.classList.add('no-anim');
+        paint(true);
+        requestAnimationFrame(() => requestAnimationFrame(() => document.documentElement.classList.remove('no-anim')));
+
+        return { setValues, disp, kick };
+      }
+
+      const c1 = createStepperCalc(document.getElementById('calc1'), 'surgery');
+      const c2 = createStepperCalc(document.getElementById('calc2'), 'beds');
+      window.ABADIS_CALCS = { calc1: c1, calc2: c2 };
+      /* Theme + header scroll already wired by abadis-common.js; A.start() is for scroll calcs — skip it. */
+    })();
+
+  </script>
+</body>
+</html>
