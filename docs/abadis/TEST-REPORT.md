@@ -1,50 +1,55 @@
 # Abadis redesign — TEST REPORT
 
-- **Date:** 2026-10-06T16:40:10.017Z
-- **SHA:** `e8efab8` (branch tip when suite ran; site HTML unchanged since prompt 0 `20a5a37`)
+- **Date:** 2026-10-06T20:37:20.712Z
+- **SHA:** `9591580481a37dd8a4c3beec87ad8aa72359d085`
 - **Base:** http://127.0.0.1:8080
-- **Pages:** 219
+- **Pages:** 403
 - **Totals:** ✅ 12 · ❌ 1 · ⚠️ 3 · ❓ 0
 
 ## Results
 
 | # | Test | Scope | Result | Details / shots |
 |---|------|-------|--------|-----------------|
-| 1 | Internal links (linkinator) | full recurse | ⚠️ warn | broken=0 |
-| 2 | 404 and broken assets | 219 pages | ✅ pass | bad=0 |
-| 3 | Console / page errors | 219 pages | ✅ pass | console=0 |
+| 1 | Internal links (linkinator) | full recurse | ❌ fail | total=1659; broken=2; livePostHrefs=246 |
+| 2 | 404 and broken assets | 403 pages | ✅ pass | bad=0 |
+| 3 | Console / page errors | 403 pages | ✅ pass | console=0 |
 | 4 | Three themes + color contrast | 7 pages × 3 themes | ⚠️ warn | {"themeOk":true,"contrastFails":[{"page":"/contact/","theme":"light","count":1,"nodes":3}],"themeFails":[]} |
 | 5 | Responsive / no horizontal scroll | 8 pages × viewports | ✅ pass | overflow=0 |
-| 6 | Lighthouse mobile | 5 key pages | ⚠️ warn | lh-calc.json: a11y 100 / perf 85 / seo 63; lh-csr.json: a11y 100 / perf 71 / seo 63; lh-home.json: a11y 100 / perf 74 / seo 63; lh-news.json: a11y 98 / perf 84 / seo 63; lh-suction.json: a11y 96 / perf 78 / seo 63 |
-| 7 | RTL / lang=fa | representative FA pages | ✅ pass | fails=0 |
+| 6 | Lighthouse mobile | 5 key pages | ⚠️ warn | SEO may be low due to noindex (warn, not fail alone); lh-calc.json: a11y 100 / perf 89 / seo 66; lh-csr.json: a11y 100 / perf 72 / seo 63; lh-home.json: a11y 100 / perf 82 / seo 54; lh-news.json: a11y 98 / perf 81 / seo 66; lh-suction.json: a11y 96 / perf 76 / seo 54 |
+| 7 | RTL / LTR lang+dir | representative FA + EN + AR pages | ✅ pass | fails=0 |
 | 8 | Kalameh font | home/about/news/products | ✅ pass | fails=0 |
 | 9 | Calculator formulas | /calculator/ + 5 designs have ABADIS_FORMULAS | ✅ pass | formulas=ok |
-| 10 | CSR Zagros scroll | 375 + 1440 | ✅ pass | {"results":[{"vp":{"w":375,"h":812},"s0":{"scrollY":80,"mid":0,"green":0},"s50":{"scrollY":1218,"mid":1,"green":0.026},"s100":{"scrollY":2436,"mid":1,"green":1},"progressed":tru… |
+| 10 | CSR Zagros scroll | 375 + 1440 | ✅ pass | {"results":[{"vp":{"w":375,"h":812},"s0":{"scrollY":80,"mid":0,"green":0},"s50":{"scrollY":1218,"mid":1,"green":0.023},"s100":{"scrollY":2436,"mid":1,"green":1},"progressed":tru… |
 | 11 | Suction-bag 3D viewer | 375 + 1440 + WebGL-off probe | ✅ pass | {"results":[{"vp":{"w":375,"h":812},"hasCanvas":true,"w":375,"h":812,"overflow":false,"glbStatus":200,"ok":true},{"vp":{"w":1440,"h":900},"hasCanvas":true,"w":1440,"h":900,"over… |
 | 12 | Theme toggle cycle + persist | home | ✅ pass | {"seq":["dark","noir","light"],"stored":"light","after":"light","rmTheme":"dark","cycleOk":true,"persistOk":true} |
 | 13 | Header transparent / scrolled / on-light | home about products news (light) | ✅ pass | fails=0 |
-| 14 | Forms contact + careers | /contact/ /careers/ | ✅ pass | {"hasLead":true,"contactEmptyBlocked":true,"contactMailtoBuilt":true,"contactMailto":"mailto:info@abadis-med.com?subject=%D8%AF%D8%B1%D8%AE%D9%88%D8%A7%D8%B3%D8%AA%20%D8%A7%D8%B… |
+| 14 | Forms contact + careers | /contact/ /careers/ | ✅ pass | {"hasLead":true,"endpointEmpty":true,"contactEmptyBlocked":true,"contactMailto":null,"contactStatus":"برنامهٔ ایمیل شما باز شد؛ پیام بعد از ارسال از همان‌جا به دست ما می‌رسد.","… |
 | 15 | Brand rules | nav order, footer certs, yellow CSS, pointermove | ✅ pass | yellow=0; pointermove=0 |
-| 16 | Meta title/description/h1/alt | 219 pages | ❌ fail | dupTitles=1; missingAltPages=0 |
+| 16 | Meta title/description/h1/alt | 403 pages | ⚠️ warn | dupTitles=0; missingAltPages=1 |
 
 ## Bugs (do not fix in this prompt)
 
 | Severity | Test | Page | Detail |
 |----------|------|------|--------|
-| major | 16 | /install-guide/tanks/ | duplicate title with /articles/2615/: راهنمای نصب مخازن — مخازن طبی آبادیس |
-| minor | 1 | / | 25 unique hrefs to abadis-med.com (non wp-content); 18 post-card ext on news/articles indexes |
+| critical | 1 | http://127.0.0.1:8080/en/representatives/ | 0 http://no.105/ |
+| critical | 1 | http://127.0.0.1:8080/en/contact-us/ | 0 http://02192001017 |
+| minor | 1 | / | 246 unique hrefs to abadis-med.com (non wp-content) — missing posts / live fallbacks |
 | minor | 4 | /contact/ | contrast light: 1 |
+| minor | 16 | /arabic/الحوسبة/ | missing meta description |
+| minor | 16 | /en/calculator/ | missing meta description |
+| minor | 16 | /en/collaboration-opportunities/ | missing meta description |
 | minor | 16 | /news/1124/ | missing meta description |
+| minor | 16 | /en/ | imgs without alt: 18 |
 
 ## Lighthouse (mobile)
 
 | Page | Perf | a11y | Best practices | SEO |
 |------|------|------|----------------|-----|
-| http://127.0.0.1:8080/calculator/ | 85 | 100 | 100 | 63 |
-| http://127.0.0.1:8080/csr/ | 71 | 100 | 100 | 63 |
-| http://127.0.0.1:8080/ | 74 | 100 | 100 | 63 |
-| http://127.0.0.1:8080/news/ | 84 | 98 | 100 | 63 |
-| http://127.0.0.1:8080/products/suction-bag/ | 78 | 96 | 96 | 63 |
+| http://127.0.0.1:8080/calculator/ | 89 | 100 | 100 | 66 |
+| http://127.0.0.1:8080/csr/ | 72 | 100 | 100 | 63 |
+| http://127.0.0.1:8080/ | 82 | 100 | 100 | 54 |
+| http://127.0.0.1:8080/news/ | 81 | 98 | 100 | 66 |
+| http://127.0.0.1:8080/products/suction-bag/ | 76 | 96 | 96 | 54 |
 
 ## Screenshots (curated)
 

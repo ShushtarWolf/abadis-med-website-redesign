@@ -5,7 +5,8 @@ const BASE = process.env.BASE || 'http://127.0.0.1:8080';
 export default defineConfig({
   testDir: '.',
   testMatch: /site\.spec\.mjs$/,
-  timeout: 120_000,
+  // Full crawl is ~400 pages; give long headroom for tests 2+3 and 16.
+  timeout: 1_800_000,
   expect: { timeout: 15_000 },
   fullyParallel: false,
   workers: 1,

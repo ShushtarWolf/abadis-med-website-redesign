@@ -62,6 +62,7 @@ test.beforeAll(() => {
 // 2 + 3: HTTP ≥400 / requestfailed + console errors on all pages
 // ---------------------------------------------------------------------------
 test('2+3 crawl: broken assets and console errors (all pages)', async ({ browser }) => {
+  test.setTimeout(1_800_000);
   const pages = allPageUrls();
   const badStatus = [];
   const failedReq = [];
@@ -221,22 +222,29 @@ test('5 responsive viewports + no horizontal scroll', async ({ browser }) => {
 // ---------------------------------------------------------------------------
 // 7: RTL / lang
 // ---------------------------------------------------------------------------
-test('7 RTL and lang=fa on Persian pages', async ({ page }) => {
+test('7 RTL/LTR lang+dir on FA/EN/AR pages', async ({ page }) => {
   const fails = [];
   for (const u of REPS) {
-    if (u.startsWith('/en/') || u.startsWith('/arabic/')) continue;
     await page.goto(u, { waitUntil: 'domcontentloaded' });
     const meta = await page.evaluate(() => ({
       lang: document.documentElement.getAttribute('lang'),
       dir: document.documentElement.getAttribute('dir'),
     }));
-    if (meta.lang !== 'fa' && meta.lang !== 'fa-IR') fails.push({ page: u, ...meta, reason: 'lang' });
-    if (meta.dir !== 'rtl') fails.push({ page: u, ...meta, reason: 'dir' });
+    if (u.startsWith('/en/')) {
+      if (meta.lang !== 'en') fails.push({ page: u, ...meta, reason: 'lang' });
+      if (meta.dir !== 'ltr') fails.push({ page: u, ...meta, reason: 'dir' });
+    } else if (u.startsWith('/arabic/')) {
+      if (meta.lang !== 'ar') fails.push({ page: u, ...meta, reason: 'lang' });
+      if (meta.dir !== 'rtl') fails.push({ page: u, ...meta, reason: 'dir' });
+    } else {
+      if (meta.lang !== 'fa' && meta.lang !== 'fa-IR') fails.push({ page: u, ...meta, reason: 'lang' });
+      if (meta.dir !== 'rtl') fails.push({ page: u, ...meta, reason: 'dir' });
+    }
   }
   const ok = fails.length === 0;
   record(7, {
-    name: 'RTL / lang=fa',
-    scope: 'representative FA pages',
+    name: 'RTL / LTR lang+dir',
+    scope: 'representative FA + EN + AR pages',
     result: ok ? 'pass' : 'fail',
     details: { fails },
   });
@@ -581,54 +589,74 @@ test('13 header transparency and on-light', async ({ page }) => {
 test('14 contact and careers forms', async ({ page }) => {
   const details = {};
 
-  // contact required validation
   await page.goto('/contact/', { waitUntil: 'domcontentloaded' });
   const lead = page.locator('#leadForm');
   details.hasLead = await lead.count() > 0;
+  details.endpointEmpty = await page.evaluate(() => {
+    const ep = document.querySelector('meta[name="abadis-form-endpoint"]')?.content || '';
+    return !ep.trim();
+  });
   if (details.hasLead) {
-    const blocked = await page.evaluate(() => {
-      const f = document.getElementById('leadForm');
-      return !f.checkValidity();
-    });
-    details.contactEmptyBlocked = blocked;
+    details.contactEmptyBlocked = await page.evaluate(() => !document.getElementById('leadForm').checkValidity());
 
     await page.fill('input[name="name"]', 'تست');
     await page.fill('input[name="org"]', 'بیمارستان');
     await page.fill('input[name="phone"]', '۰۹۱۲۱۲۳۴۵۶۷');
-    await page.selectOption('select[name="topic"]', { index: 1 }).catch(async () => {
-      await page.fill('input[name="topic"]', 'عمومی').catch(() => {});
-    });
+    await page.selectOption('select[name="topic"]', { index: 1 }).catch(() => {});
     await page.fill('textarea[name="msg"]', 'پیام آزمایشی');
 
-    let mailto = null;
-    page.on('request', (req) => {
-      if (req.url().startsWith('mailto:')) mailto = req.url();
+    // site.js assigns location.href = 'mailto:…' when endpoint empty — capture via CDP
+    details.contactMailto = null;
+    const client = await page.context().newCDPSession(page);
+    await client.send('Page.setInterceptFileChooserDialog', { enabled: false }).catch(() => {});
+    page.on('framenavigated', () => {});
+    await page.evaluate(() => {
+      window.__mailtoHits = [];
+      const loc = window.location;
+      try {
+        // Spy on assignments used by openMailto()
+        const proto = Object.getPrototypeOf(loc);
+        const desc = Object.getOwnPropertyDescriptor(proto, 'href');
+        Object.defineProperty(proto, 'href', {
+          configurable: true,
+          enumerable: true,
+          get() { return desc.get.call(this); },
+          set(v) {
+            window.__mailtoHits.push(String(v));
+            if (String(v).startsWith('mailto:')) return;
+            return desc.set.call(this, v);
+          },
+        });
+      } catch (e) {
+        window.__mailtoHits.push('spy-failed:' + e.message);
+      }
     });
-    // Playwright may not navigate to mailto; intercept via evaluate
-    const href = await page.evaluate(() => {
-      const f = document.getElementById('leadForm');
-      const d = new FormData(f);
-      const body = ['نام: ' + d.get('name'), 'مرکز درمانی / شرکت: ' + d.get('org'), 'تلفن: ' + d.get('phone'), 'موضوع: ' + d.get('topic'), '', d.get('msg')].join('\n');
-      return 'mailto:info@abadis-med.com?subject=' + encodeURIComponent('درخواست از وب‌سایت — ' + d.get('topic')) + '&body=' + encodeURIComponent(body);
+    await lead.locator('button[type="submit"]').first().click();
+    await page.waitForTimeout(400);
+    details.contactMailto = await page.evaluate(() => {
+      const hits = window.__mailtoHits || [];
+      return hits.find((h) => h.startsWith('mailto:')) || hits[hits.length - 1] || null;
     });
-    details.contactMailtoBuilt = href.startsWith('mailto:info@abadis-med.com');
-    await lead.locator('button[type="submit"], input[type="submit"]').first().click().catch(() => {});
-    await page.waitForTimeout(300);
-    details.contactMailto = mailto;
+    // Also accept success status text as evidence mailto path ran
+    const status = await page.locator('#formStatus, .form-status').first().textContent().catch(() => '');
+    details.contactStatus = (status || '').trim();
+    details.contactMailtoBuilt = !!(
+      (details.contactMailto && details.contactMailto.startsWith('mailto:info@abadis-med.com'))
+      || /ایمیل/.test(details.contactStatus)
+    );
   }
 
-  // careers
   await page.goto('/careers/', { waitUntil: 'domcontentloaded' });
-  const careersForm = page.locator('form[data-mailto-form]');
+  const careersForm = page.locator('form[data-mailto-form], form[data-abadis-form="careers"]');
   details.hasCareers = await careersForm.count() > 0;
   if (details.hasCareers) {
     details.careersEmptyBlocked = await page.evaluate(() => {
-      const f = document.querySelector('form[data-mailto-form]');
+      const f = document.querySelector('form[data-mailto-form], form[data-abadis-form="careers"]');
       return f ? !f.checkValidity() : null;
     });
   }
 
-  const ok = details.hasLead && details.contactEmptyBlocked && details.contactMailtoBuilt && details.hasCareers;
+  const ok = details.hasLead && details.contactEmptyBlocked && details.contactMailtoBuilt && details.hasCareers && details.careersEmptyBlocked;
   record(14, {
     name: 'Forms contact + careers',
     scope: '/contact/ /careers/',
@@ -645,7 +673,8 @@ test('14 contact and careers forms', async ({ page }) => {
 test('15 brand rules (footer, nav, no yellow, pointermove audit)', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
   const nav = await page.evaluate(() => {
-    const links = [...document.querySelectorAll('header nav a')].map((a) => a.textContent.trim());
+    // Main menu only — exclude .lang-switch (FA/EN/ع)
+    const links = [...document.querySelectorAll('header nav#mainNav a')].map((a) => a.textContent.trim());
     return links;
   });
   const navOk = EXPECTED_NAV.every((t, i) => nav[i] === t) && nav.length === EXPECTED_NAV.length;
@@ -720,6 +749,7 @@ test('15 brand rules (footer, nav, no yellow, pointermove audit)', async ({ page
 // 16: meta title/description/h1/alt
 // ---------------------------------------------------------------------------
 test('16 meta uniqueness and basics', async ({ page }) => {
+  test.setTimeout(1_800_000);
   const pages = allPageUrls();
   const titles = new Map();
   const dupTitles = [];

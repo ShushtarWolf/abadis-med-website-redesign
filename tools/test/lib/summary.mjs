@@ -66,6 +66,17 @@ export const REPS = [
   '/calculator/hospital/',
   '/calculator/scale/',
   '/calculator/flood/',
+  // i18n (prompt 3)
+  '/en/',
+  '/en/about-us/',
+  '/en/products/',
+  '/en/latest-news/',
+  '/en/contact-us/',
+  '/arabic/',
+  '/arabic/من-نحن/',
+  '/arabic/منتجات/',
+  '/arabic/الاخبار/',
+  '/arabic/اتصل-بنا/',
 ];
 
 export const EXPECTED_NAV = [
