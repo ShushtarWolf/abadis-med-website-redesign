@@ -145,6 +145,7 @@ a { color: var(--brand); }
   .header { padding: 10px 16px; gap: 10px; }
   .menu-btn { display: inline-grid; margin-inline-start: auto; }
   .logo img { height: 44px; }
+  .anchors { top: 64px; }
   /* the menu opens as its own floating panel; the header bar itself stays transparent */
   .nav {
     position: absolute; top: calc(100% + 4px); inset-inline: 12px; margin: 0;
