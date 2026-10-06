@@ -107,7 +107,10 @@ def build(write):
     {nav}
   </div></section>'''
             og = (p + r['src']) if r else None
-            write(f'{cat}/{x["id"]}/index.html', page(p, cat, x['t'], excerpt(x), main, og=og, lightbox='data-gallery' in body))
+            # Document title includes section so it never collides with same-named pages
+            # (e.g. article 2615 «راهنمای نصب مخازن» vs /install-guide/tanks/).
+            doc_title = f'{x["t"]} | {LABEL[cat]}'
+            write(f'{cat}/{x["id"]}/index.html', page(p, cat, doc_title, excerpt(x), main, og=og, lightbox='data-gallery' in body))
     home_teasers()
 
 def home_teasers():
