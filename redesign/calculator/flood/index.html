@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>محاسبه‌گر صرفه‌جویی آبادیس — طرح سیلاب</title>
+  <meta name="description" content="محاسبه‌گر صرفه‌جویی آبادیس (طرح سیلاب): با اسکرول، صرفه‌جویی در مصرف آب، هزینه شست‌وشو و ضدعفونی و زمان کادر درمان را ببینید." />
+  <meta name="theme-color" content="#e8f3f3" />
+  <script>
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('abadis-theme'); } catch (e) {}
+      if (t !== 'dark' && t !== 'light') t = (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png" />
+  <link rel="preload" href="../fonts/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="../fonts/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="../common/abadis-common.css" />
+  <style>
+
+    .fl-sec { background: linear-gradient(180deg, #f7fbfb 0%, #edf6f6 60%); }
+    [data-theme="dark"] .fl-sec { background: linear-gradient(180deg, #071d20 0%, #0a2427 60%); }
+    #calc1 .calc-track { height: 430vh; }
+    #calc2 .calc-track { height: 680vh; }
+    .calc-pin { padding: 0; --lav: 176,156,246; --lavd: 112,88,214; --w0: #a8e0db; --w1: #3cc0cc; --w2: #0e86a0; --w3: #14516b; --fs: .4; }
+    [data-theme="dark"] .calc-pin { --lav: 150,128,236; --lavd: 92,70,190; --w0: #6a929a; --w1: #148596; --w2: #0a5570; --w3: #0d3444; }
+    /* top block: input + cost headline */
+    .fl-top { position: absolute; z-index: 1; top: 0; left: 0; right: 0; padding: 88px 24px 0; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .fl-top h2 { font-size: 1rem; font-weight: 800; color: var(--muted); }
+    .fl-inrow { display: flex; justify-content: center; align-items: baseline; gap: 22px; flex-wrap: wrap; }
+    .fl-in { display: inline-flex; align-items: baseline; gap: 8px; font-size: .9rem; font-weight: 800; color: var(--muted); transition: opacity .3s; }
+    .fl-in .odo { font-size: 2.3rem; color: var(--teal); }
+    [data-theme="dark"] .fl-in .odo { color: #2ec4c6; }
+    .fl-in.idle { opacity: .45; }
+    .fl-in .hold { font-size: .62rem; font-weight: 800; background: var(--accent); color: #072326; border-radius: 999px; padding: 0 7px; opacity: 0; transition: opacity .3s; }
+    .fl-in.held .hold { opacity: 1; }
+    .fl-head { margin-top: 4px; display: flex; flex-direction: column; align-items: center; }
+    .fl-head .lb { font-size: .86rem; font-weight: 800; color: var(--muted); }
+    .fl-head .val { display: flex; align-items: baseline; gap: 10px; }
+    .fl-head .odo { font-size: clamp(2.6rem, 5.6vw, 4.5rem); color: var(--teal-dark); }
+    [data-theme="dark"] .fl-head .odo { color: #e6f3f3; }
+    .fl-head .u { font-size: 1.1rem; font-weight: 900; color: var(--teal); }
+    [data-theme="dark"] .fl-head .u { color: #2ec4c6; }
+    .fl-hint { font-size: .76rem; color: var(--muted); margin-top: 2px; }
+    .fl-top .chips { margin-top: 6px; justify-content: center; max-width: 100%; }
+    .fl-top .chip { background: transparent; }
+    .fl-top .confirm { margin-top: 6px; }
+
+    /* water */
+    .sea { position: absolute; z-index: 2; left: 0; right: 0; top: 0; height: 100%; transform: translateY(60%); transition: transform .5s cubic-bezier(.2,.75,.25,1); will-change: transform; pointer-events: none; }
+    .sea .body { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.34) 0, rgba(255,255,255,0) 30px), url(img/water-d.jpg) center top / 100% auto no-repeat, var(--w3); }
+    [data-theme="dark"] .sea .body::after { content: ""; position: absolute; inset: 0; background: rgba(3,18,26,.38); }
+    .wv { position: absolute; left: -100%; width: 200%; height: 48px; animation: drift 14s linear infinite; }
+    .wv3 { top: -40px; opacity: .45; animation-duration: 21s; } .wv3 path { fill: var(--w0); }
+    .wv2 { top: -34px; opacity: .7; animation-duration: 11s; animation-direction: reverse; } .wv2 path { fill: var(--w0); }
+    .wv1 { top: -30px; } .wv1 .fill { fill: var(--w0); }
+    .wv1 .hl { fill: none; stroke: #fff; stroke-width: 2.2; stroke-opacity: .85; vector-effect: non-scaling-stroke; }
+    [data-theme="dark"] .wv1 .hl { stroke-opacity: .55; }
+    @keyframes drift { to { transform: translateX(50%); } }
+    .glint { position: absolute; top: 2px; left: 0; width: 34%; height: 10px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,255,255,.75), rgba(255,255,255,0)); animation: glint 7s ease-in-out infinite; }
+    .glint.g2 { top: 14px; width: 22%; height: 7px; animation-duration: 9.5s; animation-delay: -4s; opacity: .7; }
+    @keyframes glint { 0% { transform: translateX(-40%); opacity: 0; } 30%, 70% { opacity: 1; } 100% { transform: translateX(320%); opacity: 0; } }
+    .caus { position: absolute; inset: 0; overflow: hidden; -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 26px, rgba(0,0,0,.55) 40%, transparent 78%); mask-image: linear-gradient(180deg, transparent 0, #000 26px, rgba(0,0,0,.55) 40%, transparent 78%); }
+    .caus i { position: absolute; left: -576px; top: -576px; right: -576px; bottom: -576px; background-image: url(img/caustic.webp); background-size: 384px 384px; opacity: .3; animation: caus1 23s linear infinite; }
+    .caus i + i { background-size: 576px 576px; opacity: .16; animation: caus2 31s linear infinite; }
+    [data-theme="dark"] .caus i { opacity: .2; } [data-theme="dark"] .caus i + i { opacity: .12; }
+    @keyframes caus1 { to { transform: translate(384px, 384px); } }
+    @keyframes caus2 { to { transform: translate(-576px, 576px); } }
+    .bubbles span { position: absolute; border-radius: 50%; background: radial-gradient(circle at 34% 30%, rgba(255,255,255,.8) 0 16%, rgba(255,255,255,.14) 42%, rgba(255,255,255,.03) 70%); border: 1px solid rgba(255,255,255,.28); animation: rise 8s ease-in infinite; }
+    @keyframes rise { 0% { transform: translate(0, 60px); opacity: 0; } 15% { opacity: .9; } 50% { transform: translate(6px, -20px); } 100% { transform: translate(-4px, -140px); opacity: 0; } }
+    /* surface tags */
+    .floats { position: absolute; left: 0; right: 0; top: -30px; display: flex; justify-content: space-between; align-items: flex-start; padding: 0 9%; z-index: 4; }
+    .buoy { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; animation: bob 4.2s ease-in-out infinite; }
+    .buoy:nth-child(2) { animation-delay: -2.1s; }
+    @keyframes bob { 50% { transform: translateY(5px) rotate(-1deg); } }
+    .buoy .tag { background: #fff; border-radius: 18px; padding: 6px 18px 4px; box-shadow: 0 14px 30px rgba(5,60,62,.22), inset 0 -3px 0 rgba(5,104,107,.12); display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+    [data-theme="dark"] .buoy .tag { background: #0f3337; box-shadow: 0 14px 30px rgba(0,0,0,.4), inset 0 0 0 1px rgba(46,196,198,.3); }
+    .buoy .tag i { width: 28px; height: 28px; border-radius: 9px; display: grid; place-items: center; background: rgba(46,196,198,.16); color: var(--teal); flex: none; }
+    [data-theme="dark"] .buoy .tag i { color: #2ec4c6; }
+    .buoy .tag i svg { width: 17px; height: 17px; }
+    .buoy .odo { font-size: 1.7rem; color: var(--ink); }
+    [data-theme="dark"] .buoy .odo { color: #2ec4c6; }
+    .buoy .u { font-size: .82rem; font-weight: 800; color: var(--muted); }
+    .buoy .cap { margin-top: 10px; font-size: .84rem; font-weight: 800; color: #fff; text-shadow: 0 1px 2px rgba(0,40,50,.35); }
+    .buoy .eq { font-size: .76rem; color: rgba(255,255,255,.9); min-height: 1.3em; text-shadow: 0 1px 2px rgba(0,40,50,.35); }
+    html:not([data-theme="dark"]) .buoy .cap { color: #08343d; text-shadow: 0 0 6px rgba(255,255,255,.8); }
+    html:not([data-theme="dark"]) .buoy .eq { color: #0b4450; text-shadow: 0 0 6px rgba(255,255,255,.8); }
+
+    /* washing & disinfection fluid: translucent denser layer settling in the lower water (visual share only) */
+    .fluid { position: absolute; z-index: 3; left: 0; right: 0; top: 0; height: 100%; transform: translateY(100%); transition: transform .5s cubic-bezier(.2,.75,.25,1), opacity .4s; will-change: transform; pointer-events: none; }
+    .fluid .fb { position: absolute; inset: 0; background: url(img/fluid-d.webp) center top / 100% 520px no-repeat; }
+    .fluid .fb::before { content: ""; position: absolute; left: 0; right: 0; top: 518px; bottom: 0; background: rgba(150,122,226,.8); }
+    .fluid .fw { position: absolute; top: 0; left: -8%; width: 116%; height: 520px; background: url(img/wisp-d.webp) center top / 100% 100% no-repeat; animation: wisp 24s ease-in-out infinite alternate; }
+    @keyframes wisp { from { transform: translate3d(-3%, 4px, 0); } to { transform: translate3d(3%, -6px, 0); } }
+    [data-theme="dark"] .fluid .fb, [data-theme="dark"] .fluid .fw { filter: brightness(.78) saturate(.95); }
+    .flabel { position: absolute; top: 78px; right: 5%; transform: translateY(-50%); }
+    .flabel .tag { background: #f6f3ff; border-radius: 16px; padding: 5px 16px 3px; display: flex; align-items: center; gap: 8px; white-space: nowrap; box-shadow: 0 12px 26px rgba(60,40,140,.25), inset 0 -3px 0 rgba(127,110,224,.18); }
+    [data-theme="dark"] .flabel .tag { background: #241d4d; box-shadow: 0 12px 26px rgba(0,0,0,.4), inset 0 0 0 1px rgba(201,189,251,.35); }
+    .flabel .k { font-size: .74rem; font-weight: 800; color: #5b4bb8; }
+    [data-theme="dark"] .flabel .k { color: #cfc4ff; }
+    .flabel .v { display: flex; align-items: baseline; gap: 6px; }
+    .flabel .odo { font-size: 1.35rem; color: #3b2d8f; }
+    [data-theme="dark"] .flabel .odo { color: #e6e0ff; }
+    .flabel .u { font-size: .74rem; font-weight: 800; color: #6c5fb0; }
+    [data-theme="dark"] .flabel .u { color: #cfc4ff; }
+
+    /* staff: sink and stack on the tank floor */
+    .pile { position: absolute; z-index: 4; left: 20%; bottom: 0; width: 0; height: 0; pointer-events: none; }
+    .fig { position: absolute; left: 0; bottom: 0; width: calc(var(--fs) * var(--w) * 1px); height: calc(var(--fs) * var(--h) * 1px); opacity: 0; transform-origin: 50% 70%;
+      transition: transform .9s cubic-bezier(.5,0,.85,.6), opacity .8s ease-in; }
+    .fig.on { opacity: 1; transition: transform 2.6s cubic-bezier(.16,.6,.26,1), opacity .6s; }
+    .fig i { display: block; width: 100%; height: 100%; animation: sway 6s ease-in-out infinite; transform-origin: 50% 80%; }
+    .fig:nth-child(2n) i { animation-duration: 7.4s; animation-delay: -3s; }
+    .fig img { display: block; width: 100%; height: 100%; }
+    .fig.fl img { transform: scaleX(-1); }
+    @keyframes sway { 50% { transform: translateY(-1.5px) rotate(.7deg); } }
+    /* base (tank floor) with legend + CTA */
+    .base { position: absolute; z-index: 6; left: 0; right: 0; bottom: 0; padding: 12px 16px 14px; display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center;
+      background: linear-gradient(180deg, #0f3d42 0%, #0a2b2e 100%); border-top: 3px solid rgba(110,220,226,.35); box-shadow: 0 -10px 24px rgba(3,30,34,.25); }
+    [data-theme="dark"] .base { background: linear-gradient(180deg, #0a2629 0%, #051517 100%); border-top-color: rgba(46,196,198,.28); }
+    .legend { display: flex; justify-content: center; align-items: center; gap: 4px 16px; flex-wrap: wrap; font-size: .74rem; font-weight: 700; color: #d4e7e8; }
+    .legend span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .legend i { width: 12px; height: 12px; border-radius: 4px; display: inline-block; border: 1px solid rgba(255,255,255,.55); }
+    .legend .lw { background: linear-gradient(#a6ecf0, #0e86a0); }
+    .legend .lf { background: linear-gradient(rgb(176,156,246), rgb(112,88,214)); }
+    .legend img { width: auto; height: 24px; }
+    .fl-sum { font-size: .8rem; color: #d4e7e8; max-width: 780px; line-height: 1.7; }
+    .fl-sum b { font-weight: 900; color: #fff; }
+    .base .hero-btn { padding: 10px 22px; font-size: .86rem; }
+    .base .note { font-size: .68rem; color: #8fb3b5; }
+    @media (max-width: 860px) {
+      .fl-top { padding: 66px 10px 0; }
+      .fl-top h2 { font-size: .8rem; }
+      .fl-inrow { gap: 14px; }
+      .fl-in { font-size: .7rem; gap: 6px; }
+      .fl-in .odo { font-size: 1.7rem; }
+      #calc2 .fl-in .odo { font-size: 1.45rem; }
+      .fl-head .lb { font-size: .7rem; }
+      .fl-head .odo { font-size: 2.05rem; }
+      .fl-head .u { font-size: .8rem; }
+      .fl-hint { font-size: .64rem; }
+      .floats { padding: 0 10px; top: -36px; }
+      .buoy .tag { flex-direction: column; gap: 0; padding: 5px 12px 3px; border-radius: 14px; }
+      .buoy .tag i { display: none; }
+      .buoy .odo { font-size: 1.1rem; }
+      .buoy .u { font-size: .6rem; }
+      .buoy .cap { margin-top: 6px; font-size: .64rem; }
+      .buoy .eq { font-size: .58rem; }
+      .flabel { right: 3%; }
+      .flabel .tag { flex-direction: column; align-items: center; gap: 0; padding: 4px 12px 2px; border-radius: 13px; }
+      .flabel .k { font-size: .58rem; }
+      .flabel .odo { font-size: 1rem; }
+      .flabel .u { font-size: .58rem; }
+      .pile { left: 2%; }
+      .calc-pin { --fs: .25; }
+      .sea .body { background-image: linear-gradient(180deg, rgba(255,255,255,.34) 0, rgba(255,255,255,0) 26px), url(img/water-m.jpg); }
+      .fluid .fb { background-image: url(img/fluid-m.webp); background-size: 100% 450px; }
+      .fluid .fb::before { top: 448px; }
+      .fluid .fw { height: 450px; background-image: url(img/wisp-m.webp); }
+      .base { padding: 8px 10px 10px; gap: 5px; }
+      .legend { font-size: .6rem; gap: 2px 10px; }
+      .legend i { width: 10px; height: 10px; }
+      .fl-sum { display: none; }
+      .base .hero-btn { padding: 8px 18px; font-size: .78rem; }
+      .base .note { font-size: .58rem; }
+    }
+    @media (max-width: 860px) and (max-height: 760px) { .calc-pin { --fs: .22; } }
+    @media (prefers-reduced-motion: reduce) { .sea, .fluid, .fig, .fig.on { transition: none; } }
+
+  </style>
+</head>
+<body>
+
+  <header class="header" id="header">
+    <a class="logo" href="#top">آبادیس<span>مخازن طبی</span></a>
+    <nav class="nav">
+      <a href="#calc1">بر مبنای تعداد عمل جراحی</a>
+      <a href="#calc2">بر مبنای تعداد تخت</a>
+      <a href="#contact">ارتباط با ما</a>
+    </nav>
+    <div class="header-actions">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="حالت شب" title="حالت شب" aria-pressed="false">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+      </button>
+      <a class="header-cta" href="tel:02192001017">تماس با فروش</a>
+    </div>
+  </header>
+
+  <section class="intro" id="top">
+    <div class="eyebrow">ابزار محاسبه · طرح سیلاب</div>
+    <h1>صرفه‌جویی که <em>بالا می‌آید</em></h1>
+    <p>اسکرول کنید؛ آب و مایع شست‌وشوی صرفه‌جویی‌شده بالا می‌آیند و کادر درمانِ آزادشده، کف مخزن روی هم جمع می‌شود.</p>
+  </section>
+
+  <section class="calc fl-sec" id="calc1" aria-labelledby="calc1-t" data-per="200">
+    <div class="calc-track"><div class="calc-pin">
+      <div class="fl-top"><h2 id="calc1-t">بر مبنای تعداد عمل جراحی در سال</h2><div class="fl-inrow"><span class="fl-in"><span class="odo" data-odo="n" data-digits="5"></span>عمل جراحی در سال</span></div>
+        <div class="fl-head"><span class="lb">صرفه‌جویی در هزینه شست‌وشو و ضدعفونی</span><span class="val"><span class="odo" data-odo="cost" data-digits="13"></span><span class="u">تومان</span></span></div>
+        <p class="fl-hint" data-hint>اسکرول کنید تا آب و مایع شست‌وشو بالا بیاید</p><div class="chips" role="group" aria-label="مقادیر آماده">
+              <button class="chip" type="button" data-n="1000">۱٬۰۰۰</button>
+              <button class="chip" type="button" data-n="5000">۵٬۰۰۰</button>
+              <button class="chip" type="button" data-n="10000">۱۰٬۰۰۰</button>
+              <button class="chip" type="button" data-n="15000">۱۵٬۰۰۰</button>
+              <button class="chip" type="button" data-n="30000">۳۰٬۰۰۰</button>
+            </div></div>
+      <div class="sea">
+        <div class="body"></div>
+        <div class="caus" aria-hidden="true"><i></i><i></i></div>
+        <div class="bubbles" aria-hidden="true"><span style="width:10px;height:10px;left:9%;top:46%;animation-duration:9s;animation-delay:-1s"></span><span style="width:5px;height:5px;left:14%;top:38%;animation-duration:7s;animation-delay:-3s"></span><span style="width:7px;height:7px;left:31%;top:58%;animation-duration:11s;animation-delay:-6s"></span><span style="width:4px;height:4px;left:44%;top:34%;animation-duration:6s;animation-delay:-2s"></span><span style="width:12px;height:12px;left:57%;top:64%;animation-duration:10s;animation-delay:-4s"></span><span style="width:6px;height:6px;left:69%;top:42%;animation-duration:8s;animation-delay:-5s"></span><span style="width:4px;height:4px;left:81%;top:52%;animation-duration:7s;animation-delay:-1s"></span><span style="width:9px;height:9px;left:90%;top:36%;animation-duration:9s;animation-delay:-7s"></span></div>
+        <svg class="wv wv3" viewBox="0 0 2880 48" preserveAspectRatio="none" aria-hidden="true"><path d="M0 26.0 L16 26.1 L32 25.4 L48 23.9 L64 22.1 L80 20.6 L96 19.9 L112 20.2 L128 21.0 L144 21.9 L160 22.3 L176 21.9 L192 20.9 L208 19.7 L224 18.9 L240 18.9 L256 19.5 L272 20.5 L288 21.2 L304 21.6 L320 21.7 L336 22.0 L352 22.7 L368 24.2 L384 25.9 L400 27.5 L416 28.1 L432 27.5 L448 25.7 L464 23.2 L480 20.8 L496 19.0 L512 18.1 L528 17.8 L544 17.8 L560 17.7 L576 17.6 L592 17.7 L608 18.4 L624 20.0 L640 22.3 L656 24.7 L672 26.5 L688 27.2 L704 26.8 L720 25.4 L736 23.9 L752 22.8 L768 22.4 L784 22.5 L800 22.7 L816 22.5 L832 21.8 L848 20.9 L864 20.0 L880 19.7 L896 20.1 L912 20.8 L928 21.5 L944 21.5 L960 20.8 L976 19.8 L992 18.8 L1008 18.6 L1024 19.5 L1040 21.3 L1056 23.5 L1072 25.3 L1088 26.3 L1104 26.5 L1120 26.1 L1136 25.6 L1152 25.2 L1168 24.9 L1184 24.4 L1200 23.2 L1216 21.4 L1232 19.0 L1248 16.8 L1264 15.4 L1280 15.3 L1296 16.5 L1312 18.6 L1328 20.8 L1344 22.5 L1360 23.5 L1376 24.0 L1392 24.3 L1408 24.7 L1424 25.4 L1440 26.0 L1456 26.1 L1472 25.4 L1488 23.9 L1504 22.1 L1520 20.6 L1536 19.9 L1552 20.2 L1568 21.0 L1584 21.9 L1600 22.3 L1616 21.9 L1632 20.9 L1648 19.7 L1664 18.9 L1680 18.9 L1696 19.5 L1712 20.5 L1728 21.2 L1744 21.6 L1760 21.7 L1776 22.0 L1792 22.7 L1808 24.2 L1824 25.9 L1840 27.5 L1856 28.1 L1872 27.5 L1888 25.7 L1904 23.2 L1920 20.8 L1936 19.0 L1952 18.1 L1968 17.8 L1984 17.8 L2000 17.7 L2016 17.6 L2032 17.7 L2048 18.4 L2064 20.0 L2080 22.3 L2096 24.7 L2112 26.5 L2128 27.2 L2144 26.8 L2160 25.4 L2176 23.9 L2192 22.8 L2208 22.4 L2224 22.5 L2240 22.7 L2256 22.5 L2272 21.8 L2288 20.9 L2304 20.0 L2320 19.7 L2336 20.1 L2352 20.8 L2368 21.5 L2384 21.5 L2400 20.8 L2416 19.8 L2432 18.8 L2448 18.6 L2464 19.5 L2480 21.3 L2496 23.5 L2512 25.3 L2528 26.3 L2544 26.5 L2560 26.1 L2576 25.6 L2592 25.2 L2608 24.9 L2624 24.4 L2640 23.2 L2656 21.4 L2672 19.0 L2688 16.8 L2704 15.4 L2720 15.3 L2736 16.5 L2752 18.6 L2768 20.8 L2784 22.5 L2800 23.5 L2816 24.0 L2832 24.3 L2848 24.7 L2864 25.4 L2880 26.0 V48 H0 Z"/></svg>
+        <svg class="wv wv2" viewBox="0 0 2880 48" preserveAspectRatio="none" aria-hidden="true"><path d="M0 31.5 L16 32.1 L32 31.2 L48 29.3 L64 27.5 L80 26.0 L96 25.0 L112 23.8 L128 22.3 L144 20.6 L160 19.5 L176 19.7 L192 21.3 L208 23.6 L224 25.5 L240 26.1 L256 25.6 L272 24.5 L288 23.8 L304 23.9 L320 24.7 L336 25.6 L352 26.0 L368 26.3 L384 27.0 L400 28.4 L416 30.6 L432 32.8 L448 33.7 L464 33.1 L480 31.0 L496 28.4 L512 26.3 L528 25.3 L544 24.9 L560 24.6 L576 24.0 L592 23.3 L608 22.9 L624 23.4 L640 24.5 L656 25.5 L672 25.5 L688 24.2 L704 22.2 L720 20.5 L736 19.9 L752 20.8 L768 22.7 L784 24.5 L800 26.0 L816 27.0 L832 28.2 L848 29.7 L864 31.4 L880 32.5 L896 32.3 L912 30.7 L928 28.4 L944 26.5 L960 25.9 L976 26.4 L992 27.5 L1008 28.2 L1024 28.1 L1040 27.3 L1056 26.4 L1072 26.0 L1088 25.7 L1104 25.0 L1120 23.6 L1136 21.4 L1152 19.2 L1168 18.3 L1184 18.9 L1200 21.0 L1216 23.6 L1232 25.7 L1248 26.7 L1264 27.1 L1280 27.4 L1296 28.0 L1312 28.7 L1328 29.1 L1344 28.6 L1360 27.5 L1376 26.5 L1392 26.5 L1408 27.8 L1424 29.8 L1440 31.5 L1456 32.1 L1472 31.2 L1488 29.3 L1504 27.5 L1520 26.0 L1536 25.0 L1552 23.8 L1568 22.3 L1584 20.6 L1600 19.5 L1616 19.7 L1632 21.3 L1648 23.6 L1664 25.5 L1680 26.1 L1696 25.6 L1712 24.5 L1728 23.8 L1744 23.9 L1760 24.7 L1776 25.6 L1792 26.0 L1808 26.3 L1824 27.0 L1840 28.4 L1856 30.6 L1872 32.8 L1888 33.7 L1904 33.1 L1920 31.0 L1936 28.4 L1952 26.3 L1968 25.3 L1984 24.9 L2000 24.6 L2016 24.0 L2032 23.3 L2048 22.9 L2064 23.4 L2080 24.5 L2096 25.5 L2112 25.5 L2128 24.2 L2144 22.2 L2160 20.5 L2176 19.9 L2192 20.8 L2208 22.7 L2224 24.5 L2240 26.0 L2256 27.0 L2272 28.2 L2288 29.7 L2304 31.4 L2320 32.5 L2336 32.3 L2352 30.7 L2368 28.4 L2384 26.5 L2400 25.9 L2416 26.4 L2432 27.5 L2448 28.2 L2464 28.1 L2480 27.3 L2496 26.4 L2512 26.0 L2528 25.7 L2544 25.0 L2560 23.6 L2576 21.4 L2592 19.2 L2608 18.3 L2624 18.9 L2640 21.0 L2656 23.6 L2672 25.7 L2688 26.7 L2704 27.1 L2720 27.4 L2736 28.0 L2752 28.7 L2768 29.1 L2784 28.6 L2800 27.5 L2816 26.5 L2832 26.5 L2848 27.8 L2864 29.8 L2880 31.5 V48 H0 Z"/></svg>
+        <svg class="wv wv1" viewBox="0 0 2880 48" preserveAspectRatio="none" aria-hidden="true"><path class="fill" d="M0 35.5 L16 35.0 L32 34.0 L48 33.0 L64 32.4 L80 32.2 L96 32.5 L112 33.0 L128 33.5 L144 33.6 L160 33.4 L176 33.0 L192 32.7 L208 32.7 L224 33.2 L240 34.1 L256 35.2 L272 36.0 L288 36.0 L304 35.2 L320 33.4 L336 30.9 L352 28.2 L368 25.8 L384 24.2 L400 23.4 L416 23.3 L432 23.8 L448 24.4 L464 24.9 L480 25.1 L496 25.1 L512 25.1 L528 25.5 L544 26.2 L560 27.4 L576 28.7 L592 29.8 L608 30.4 L624 30.2 L640 29.3 L656 28.0 L672 26.8 L688 26.1 L704 26.3 L720 27.4 L736 29.3 L752 31.5 L768 33.6 L784 35.2 L800 36.2 L816 36.5 L832 36.5 L848 36.4 L864 36.4 L880 36.5 L896 36.7 L912 36.5 L928 35.9 L944 34.5 L960 32.7 L976 30.5 L992 28.5 L1008 27.2 L1024 26.7 L1040 27.1 L1056 28.2 L1072 29.5 L1088 30.5 L1104 31.0 L1120 30.6 L1136 29.6 L1152 28.2 L1168 26.8 L1184 25.8 L1200 25.2 L1216 25.0 L1232 24.9 L1248 24.7 L1264 24.3 L1280 23.7 L1296 23.1 L1312 22.9 L1328 23.4 L1344 24.7 L1360 26.8 L1376 29.4 L1392 32.0 L1408 34.1 L1424 35.3 L1440 35.5 L1456 35.0 L1472 34.0 L1488 33.0 L1504 32.4 L1520 32.2 L1536 32.5 L1552 33.0 L1568 33.5 L1584 33.6 L1600 33.4 L1616 33.0 L1632 32.7 L1648 32.7 L1664 33.2 L1680 34.1 L1696 35.2 L1712 36.0 L1728 36.0 L1744 35.2 L1760 33.4 L1776 30.9 L1792 28.2 L1808 25.8 L1824 24.2 L1840 23.4 L1856 23.3 L1872 23.8 L1888 24.4 L1904 24.9 L1920 25.1 L1936 25.1 L1952 25.1 L1968 25.5 L1984 26.2 L2000 27.4 L2016 28.7 L2032 29.8 L2048 30.4 L2064 30.2 L2080 29.3 L2096 28.0 L2112 26.8 L2128 26.1 L2144 26.3 L2160 27.4 L2176 29.3 L2192 31.5 L2208 33.6 L2224 35.2 L2240 36.2 L2256 36.5 L2272 36.5 L2288 36.4 L2304 36.4 L2320 36.5 L2336 36.7 L2352 36.5 L2368 35.9 L2384 34.5 L2400 32.7 L2416 30.5 L2432 28.5 L2448 27.2 L2464 26.7 L2480 27.1 L2496 28.2 L2512 29.5 L2528 30.5 L2544 31.0 L2560 30.6 L2576 29.6 L2592 28.2 L2608 26.8 L2624 25.8 L2640 25.2 L2656 25.0 L2672 24.9 L2688 24.7 L2704 24.3 L2720 23.7 L2736 23.1 L2752 22.9 L2768 23.4 L2784 24.7 L2800 26.8 L2816 29.4 L2832 32.0 L2848 34.1 L2864 35.3 L2880 35.5 V48 H0 Z"/><path class="hl" d="M0 35.5 L16 35.0 L32 34.0 L48 33.0 L64 32.4 L80 32.2 L96 32.5 L112 33.0 L128 33.5 L144 33.6 L160 33.4 L176 33.0 L192 32.7 L208 32.7 L224 33.2 L240 34.1 L256 35.2 L272 36.0 L288 36.0 L304 35.2 L320 33.4 L336 30.9 L352 28.2 L368 25.8 L384 24.2 L400 23.4 L416 23.3 L432 23.8 L448 24.4 L464 24.9 L480 25.1 L496 25.1 L512 25.1 L528 25.5 L544 26.2 L560 27.4 L576 28.7 L592 29.8 L608 30.4 L624 30.2 L640 29.3 L656 28.0 L672 26.8 L688 26.1 L704 26.3 L720 27.4 L736 29.3 L752 31.5 L768 33.6 L784 35.2 L800 36.2 L816 36.5 L832 36.5 L848 36.4 L864 36.4 L880 36.5 L896 36.7 L912 36.5 L928 35.9 L944 34.5 L960 32.7 L976 30.5 L992 28.5 L1008 27.2 L1024 26.7 L1040 27.1 L1056 28.2 L1072 29.5 L1088 30.5 L1104 31.0 L1120 30.6 L1136 29.6 L1152 28.2 L1168 26.8 L1184 25.8 L1200 25.2 L1216 25.0 L1232 24.9 L1248 24.7 L1264 24.3 L1280 23.7 L1296 23.1 L1312 22.9 L1328 23.4 L1344 24.7 L1360 26.8 L1376 29.4 L1392 32.0 L1408 34.1 L1424 35.3 L1440 35.5 L1456 35.0 L1472 34.0 L1488 33.0 L1504 32.4 L1520 32.2 L1536 32.5 L1552 33.0 L1568 33.5 L1584 33.6 L1600 33.4 L1616 33.0 L1632 32.7 L1648 32.7 L1664 33.2 L1680 34.1 L1696 35.2 L1712 36.0 L1728 36.0 L1744 35.2 L1760 33.4 L1776 30.9 L1792 28.2 L1808 25.8 L1824 24.2 L1840 23.4 L1856 23.3 L1872 23.8 L1888 24.4 L1904 24.9 L1920 25.1 L1936 25.1 L1952 25.1 L1968 25.5 L1984 26.2 L2000 27.4 L2016 28.7 L2032 29.8 L2048 30.4 L2064 30.2 L2080 29.3 L2096 28.0 L2112 26.8 L2128 26.1 L2144 26.3 L2160 27.4 L2176 29.3 L2192 31.5 L2208 33.6 L2224 35.2 L2240 36.2 L2256 36.5 L2272 36.5 L2288 36.4 L2304 36.4 L2320 36.5 L2336 36.7 L2352 36.5 L2368 35.9 L2384 34.5 L2400 32.7 L2416 30.5 L2432 28.5 L2448 27.2 L2464 26.7 L2480 27.1 L2496 28.2 L2512 29.5 L2528 30.5 L2544 31.0 L2560 30.6 L2576 29.6 L2592 28.2 L2608 26.8 L2624 25.8 L2640 25.2 L2656 25.0 L2672 24.9 L2688 24.7 L2704 24.3 L2720 23.7 L2736 23.1 L2752 22.9 L2768 23.4 L2784 24.7 L2800 26.8 L2816 29.4 L2832 32.0 L2848 34.1 L2864 35.3 L2880 35.5"/></svg>
+        <span class="glint" aria-hidden="true"></span><span class="glint g2" aria-hidden="true"></span>
+        <div class="floats">
+          <div class="buoy"><div class="tag"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3s6 6.6 6 11a6 6 0 0 1-12 0c0-4.4 6-11 6-11z"/></svg></i><span class="odo" data-odo="water" data-digits="7"></span><span class="u">لیتر آب</span></div><span class="cap">صرفه‌جویی آب</span><span class="eq" data-sub="tubs"></span></div>
+          <div class="buoy"><div class="tag"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></i><span class="odo" data-odo="hours" data-digits="6"></span><span class="u">ساعت</span></div><span class="cap">زمان کادر درمان</span><span class="eq" data-sub="shifts"></span></div>
+        </div>
+      </div>
+      <div class="fluid">
+        <div class="fb"></div><div class="fw" aria-hidden="true"></div>
+        <div class="flabel"><div class="tag"><span class="k">هزینه شست‌وشو و ضدعفونی</span><span class="v"><span class="odo" data-odo="cost" data-digits="13"></span><span class="u">تومان</span></span></div></div>
+      </div>
+      <div class="pile" aria-hidden="true"><span class="fig" data-x="0.5" data-y="0" data-r="-1" style="--w:493;--h:173"><i><img src="img/staff-a.webp" alt="" width="493" height="173" decoding="async"></i></span><span class="fig fl" data-x="1.48" data-y="0.02" data-r="2" style="--w:493;--h:172"><i><img src="img/staff-b.webp" alt="" width="493" height="172" decoding="async"></i></span><span class="fig" data-x="1.0" data-y="0.58" data-r="-3" style="--w:492;--h:315"><i><img src="img/staff-c.webp" alt="" width="492" height="315" decoding="async"></i></span><span class="fig" data-x="0.42" data-y="0.64" data-r="5" style="--w:493;--h:172"><i><img src="img/staff-b.webp" alt="" width="493" height="172" decoding="async"></i></span><span class="fig fl" data-x="1.6" data-y="0.66" data-r="-5" style="--w:493;--h:173"><i><img src="img/staff-a.webp" alt="" width="493" height="173" decoding="async"></i></span><span class="fig fl" data-x="0.98" data-y="1.18" data-r="3" style="--w:493;--h:173"><i><img src="img/staff-a.webp" alt="" width="493" height="173" decoding="async"></i></span><span class="fig fl" data-x="0.4" data-y="1.3" data-r="-6" style="--w:492;--h:315"><i><img src="img/staff-c.webp" alt="" width="492" height="315" decoding="async"></i></span><span class="fig" data-x="1.5" data-y="1.26" data-r="5" style="--w:493;--h:172"><i><img src="img/staff-b.webp" alt="" width="493" height="172" decoding="async"></i></span></div>
+      <div class="base">
+        <div class="legend"><span><i class="lw"></i>آب</span><span><i class="lf"></i>مایع شست‌وشو و ضدعفونی (نمایش تصویری)</span><span><img src="img/staff-icon.webp" alt="" width="10" height="24">هر آدمک = ۲۰۰ شیفت کاری ۸ ساعته</span></div>
+        <p class="fl-sum" data-sum></p><a class="hero-btn" href="tel:02192001017">مشاوره با کارشناس فروش</a><p class="note">* محاسبات بر اساس فرمول‌های محاسبه‌گر فعلی آبادیس</p>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="calc fl-sec" id="calc2" aria-labelledby="calc2-t" data-per="1500">
+    <div class="calc-track"><div class="calc-pin">
+      <div class="fl-top"><h2 id="calc2-t">بر مبنای تعداد تخت</h2><div class="fl-inrow"><span class="fl-in" data-ch="a">تخت اتاق عمل <span class="odo" data-odo="a" data-digits="3"></span><span class="hold">ثابت</span></span><span class="fl-in" data-ch="b">تخت ICU|CCU <span class="odo" data-odo="b" data-digits="3"></span></span></div>
+        <div class="fl-head"><span class="lb">صرفه‌جویی در هزینه شست‌وشو و ضدعفونی</span><span class="val"><span class="odo" data-odo="cost" data-digits="11"></span><span class="u">تومان</span></span></div>
+        <p class="fl-hint" data-hint>مرحله ۱: با اسکرول، تعداد تخت اتاق عمل را تنظیم کنید</p><div class="chips" role="group" aria-label="ترکیب‌های آماده (تخت اتاق عمل + ICU|CCU)">
+              <button class="chip" type="button" data-a="10" data-b="10">۱۰ + ۱۰</button>
+              <button class="chip" type="button" data-a="20" data-b="10">۲۰ + ۱۰</button>
+              <button class="chip" type="button" data-a="50" data-b="20">۵۰ + ۲۰</button>
+              <button class="chip" type="button" data-a="100" data-b="50">۱۰۰ + ۵۰</button>
+              <button class="chip" type="button" data-a="300" data-b="100">۳۰۰ + ۱۰۰</button>
+              <button class="chip" type="button" data-a="700" data-b="700">۷۰۰ + ۷۰۰</button>
+            </div><button class="confirm" type="button" data-confirm hidden></button></div>
+      <div class="sea">
+        <div class="body"></div>
+        <div class="caus" aria-hidden="true"><i></i><i></i></div>
+        <div class="bubbles" aria-hidden="true"><span style="width:10px;height:10px;left:9%;top:46%;animation-duration:9s;animation-delay:-1s"></span><span style="width:5px;height:5px;left:14%;top:38%;animation-duration:7s;animation-delay:-3s"></span><span style="width:7px;height:7px;left:31%;top:58%;animation-duration:11s;animation-delay:-6s"></span><span style="width:4px;height:4px;left:44%;top:34%;animation-duration:6s;animation-delay:-2s"></span><span style="width:12px;height:12px;left:57%;top:64%;animation-duration:10s;animation-delay:-4s"></span><span style="width:6px;height:6px;left:69%;top:42%;animation-duration:8s;animation-delay:-5s"></span><span style="width:4px;height:4px;left:81%;top:52%;animation-duration:7s;animation-delay:-1s"></span><span style="width:9px;height:9px;left:90%;top:36%;animation-duration:9s;animation-delay:-7s"></span></div>
+        <svg class="wv wv3" viewBox="0 0 2880 48" preserveAspectRatio="none" aria-hidden="true"><path d="M0 26.0 L16 26.1 L32 25.4 L48 23.9 L64 22.1 L80 20.6 L96 19.9 L112 20.2 L128 21.0 L144 21.9 L160 22.3 L176 21.9 L192 20.9 L208 19.7 L224 18.9 L240 18.9 L256 19.5 L272 20.5 L288 21.2 L304 21.6 L320 21.7 L336 22.0 L352 22.7 L368 24.2 L384 25.9 L400 27.5 L416 28.1 L432 27.5 L448 25.7 L464 23.2 L480 20.8 L496 19.0 L512 18.1 L528 17.8 L544 17.8 L560 17.7 L576 17.6 L592 17.7 L608 18.4 L624 20.0 L640 22.3 L656 24.7 L672 26.5 L688 27.2 L704 26.8 L720 25.4 L736 23.9 L752 22.8 L768 22.4 L784 22.5 L800 22.7 L816 22.5 L832 21.8 L848 20.9 L864 20.0 L880 19.7 L896 20.1 L912 20.8 L928 21.5 L944 21.5 L960 20.8 L976 19.8 L992 18.8 L1008 18.6 L1024 19.5 L1040 21.3 L1056 23.5 L1072 25.3 L1088 26.3 L1104 26.5 L1120 26.1 L1136 25.6 L1152 25.2 L1168 24.9 L1184 24.4 L1200 23.2 L1216 21.4 L1232 19.0 L1248 16.8 L1264 15.4 L1280 15.3 L1296 16.5 L1312 18.6 L1328 20.8 L1344 22.5 L1360 23.5 L1376 24.0 L1392 24.3 L1408 24.7 L1424 25.4 L1440 26.0 L1456 26.1 L1472 25.4 L1488 23.9 L1504 22.1 L1520 20.6 L1536 19.9 L1552 20.2 L1568 21.0 L1584 21.9 L1600 22.3 L1616 21.9 L1632 20.9 L1648 19.7 L1664 18.9 L1680 18.9 L1696 19.5 L1712 20.5 L1728 21.2 L1744 21.6 L1760 21.7 L1776 22.0 L1792 22.7 L1808 24.2 L1824 25.9 L1840 27.5 L1856 28.1 L1872 27.5 L1888 25.7 L1904 23.2 L1920 20.8 L1936 19.0 L1952 18.1 L1968 17.8 L1984 17.8 L2000 17.7 L2016 17.6 L2032 17.7 L2048 18.4 L2064 20.0 L2080 22.3 L2096 24.7 L2112 26.5 L2128 27.2 L2144 26.8 L2160 25.4 L2176 23.9 L2192 22.8 L2208 22.4 L2224 22.5 L2240 22.7 L2256 22.5 L2272 21.8 L2288 20.9 L2304 20.0 L2320 19.7 L2336 20.1 L2352 20.8 L2368 21.5 L2384 21.5 L2400 20.8 L2416 19.8 L2432 18.8 L2448 18.6 L2464 19.5 L2480 21.3 L2496 23.5 L2512 25.3 L2528 26.3 L2544 26.5 L2560 26.1 L2576 25.6 L2592 25.2 L2608 24.9 L2624 24.4 L2640 23.2 L2656 21.4 L2672 19.0 L2688 16.8 L2704 15.4 L2720 15.3 L2736 16.5 L2752 18.6 L2768 20.8 L2784 22.5 L2800 23.5 L2816 24.0 L2832 24.3 L2848 24.7 L2864 25.4 L2880 26.0 V48 H0 Z"/></svg>
+        <svg class="wv wv2" viewBox="0 0 2880 48" preserveAspectRatio="none" aria-hidden="true"><path d="M0 31.5 L16 32.1 L32 31.2 L48 29.3 L64 27.5 L80 26.0 L96 25.0 L112 23.8 L128 22.3 L144 20.6 L160 19.5 L176 19.7 L192 21.3 L208 23.6 L224 25.5 L240 26.1 L256 25.6 L272 24.5 L288 23.8 L304 23.9 L320 24.7 L336 25.6 L352 26.0 L368 26.3 L384 27.0 L400 28.4 L416 30.6 L432 32.8 L448 33.7 L464 33.1 L480 31.0 L496 28.4 L512 26.3 L528 25.3 L544 24.9 L560 24.6 L576 24.0 L592 23.3 L608 22.9 L624 23.4 L640 24.5 L656 25.5 L672 25.5 L688 24.2 L704 22.2 L720 20.5 L736 19.9 L752 20.8 L768 22.7 L784 24.5 L800 26.0 L816 27.0 L832 28.2 L848 29.7 L864 31.4 L880 32.5 L896 32.3 L912 30.7 L928 28.4 L944 26.5 L960 25.9 L976 26.4 L992 27.5 L1008 28.2 L1024 28.1 L1040 27.3 L1056 26.4 L1072 26.0 L1088 25.7 L1104 25.0 L1120 23.6 L1136 21.4 L1152 19.2 L1168 18.3 L1184 18.9 L1200 21.0 L1216 23.6 L1232 25.7 L1248 26.7 L1264 27.1 L1280 27.4 L1296 28.0 L1312 28.7 L1328 29.1 L1344 28.6 L1360 27.5 L1376 26.5 L1392 26.5 L1408 27.8 L1424 29.8 L1440 31.5 L1456 32.1 L1472 31.2 L1488 29.3 L1504 27.5 L1520 26.0 L1536 25.0 L1552 23.8 L1568 22.3 L1584 20.6 L1600 19.5 L1616 19.7 L1632 21.3 L1648 23.6 L1664 25.5 L1680 26.1 L1696 25.6 L1712 24.5 L1728 23.8 L1744 23.9 L1760 24.7 L1776 25.6 L1792 26.0 L1808 26.3 L1824 27.0 L1840 28.4 L1856 30.6 L1872 32.8 L1888 33.7 L1904 33.1 L1920 31.0 L1936 28.4 L1952 26.3 L1968 25.3 L1984 24.9 L2000 24.6 L2016 24.0 L2032 23.3 L2048 22.9 L2064 23.4 L2080 24.5 L2096 25.5 L2112 25.5 L2128 24.2 L2144 22.2 L2160 20.5 L2176 19.9 L2192 20.8 L2208 22.7 L2224 24.5 L2240 26.0 L2256 27.0 L2272 28.2 L2288 29.7 L2304 31.4 L2320 32.5 L2336 32.3 L2352 30.7 L2368 28.4 L2384 26.5 L2400 25.9 L2416 26.4 L2432 27.5 L2448 28.2 L2464 28.1 L2480 27.3 L2496 26.4 L2512 26.0 L2528 25.7 L2544 25.0 L2560 23.6 L2576 21.4 L2592 19.2 L2608 18.3 L2624 18.9 L2640 21.0 L2656 23.6 L2672 25.7 L2688 26.7 L2704 27.1 L2720 27.4 L2736 28.0 L2752 28.7 L2768 29.1 L2784 28.6 L2800 27.5 L2816 26.5 L2832 26.5 L2848 27.8 L2864 29.8 L2880 31.5 V48 H0 Z"/></svg>
+        <svg class="wv wv1" viewBox="0 0 2880 48" preserveAspectRatio="none" aria-hidden="true"><path class="fill" d="M0 35.5 L16 35.0 L32 34.0 L48 33.0 L64 32.4 L80 32.2 L96 32.5 L112 33.0 L128 33.5 L144 33.6 L160 33.4 L176 33.0 L192 32.7 L208 32.7 L224 33.2 L240 34.1 L256 35.2 L272 36.0 L288 36.0 L304 35.2 L320 33.4 L336 30.9 L352 28.2 L368 25.8 L384 24.2 L400 23.4 L416 23.3 L432 23.8 L448 24.4 L464 24.9 L480 25.1 L496 25.1 L512 25.1 L528 25.5 L544 26.2 L560 27.4 L576 28.7 L592 29.8 L608 30.4 L624 30.2 L640 29.3 L656 28.0 L672 26.8 L688 26.1 L704 26.3 L720 27.4 L736 29.3 L752 31.5 L768 33.6 L784 35.2 L800 36.2 L816 36.5 L832 36.5 L848 36.4 L864 36.4 L880 36.5 L896 36.7 L912 36.5 L928 35.9 L944 34.5 L960 32.7 L976 30.5 L992 28.5 L1008 27.2 L1024 26.7 L1040 27.1 L1056 28.2 L1072 29.5 L1088 30.5 L1104 31.0 L1120 30.6 L1136 29.6 L1152 28.2 L1168 26.8 L1184 25.8 L1200 25.2 L1216 25.0 L1232 24.9 L1248 24.7 L1264 24.3 L1280 23.7 L1296 23.1 L1312 22.9 L1328 23.4 L1344 24.7 L1360 26.8 L1376 29.4 L1392 32.0 L1408 34.1 L1424 35.3 L1440 35.5 L1456 35.0 L1472 34.0 L1488 33.0 L1504 32.4 L1520 32.2 L1536 32.5 L1552 33.0 L1568 33.5 L1584 33.6 L1600 33.4 L1616 33.0 L1632 32.7 L1648 32.7 L1664 33.2 L1680 34.1 L1696 35.2 L1712 36.0 L1728 36.0 L1744 35.2 L1760 33.4 L1776 30.9 L1792 28.2 L1808 25.8 L1824 24.2 L1840 23.4 L1856 23.3 L1872 23.8 L1888 24.4 L1904 24.9 L1920 25.1 L1936 25.1 L1952 25.1 L1968 25.5 L1984 26.2 L2000 27.4 L2016 28.7 L2032 29.8 L2048 30.4 L2064 30.2 L2080 29.3 L2096 28.0 L2112 26.8 L2128 26.1 L2144 26.3 L2160 27.4 L2176 29.3 L2192 31.5 L2208 33.6 L2224 35.2 L2240 36.2 L2256 36.5 L2272 36.5 L2288 36.4 L2304 36.4 L2320 36.5 L2336 36.7 L2352 36.5 L2368 35.9 L2384 34.5 L2400 32.7 L2416 30.5 L2432 28.5 L2448 27.2 L2464 26.7 L2480 27.1 L2496 28.2 L2512 29.5 L2528 30.5 L2544 31.0 L2560 30.6 L2576 29.6 L2592 28.2 L2608 26.8 L2624 25.8 L2640 25.2 L2656 25.0 L2672 24.9 L2688 24.7 L2704 24.3 L2720 23.7 L2736 23.1 L2752 22.9 L2768 23.4 L2784 24.7 L2800 26.8 L2816 29.4 L2832 32.0 L2848 34.1 L2864 35.3 L2880 35.5 V48 H0 Z"/><path class="hl" d="M0 35.5 L16 35.0 L32 34.0 L48 33.0 L64 32.4 L80 32.2 L96 32.5 L112 33.0 L128 33.5 L144 33.6 L160 33.4 L176 33.0 L192 32.7 L208 32.7 L224 33.2 L240 34.1 L256 35.2 L272 36.0 L288 36.0 L304 35.2 L320 33.4 L336 30.9 L352 28.2 L368 25.8 L384 24.2 L400 23.4 L416 23.3 L432 23.8 L448 24.4 L464 24.9 L480 25.1 L496 25.1 L512 25.1 L528 25.5 L544 26.2 L560 27.4 L576 28.7 L592 29.8 L608 30.4 L624 30.2 L640 29.3 L656 28.0 L672 26.8 L688 26.1 L704 26.3 L720 27.4 L736 29.3 L752 31.5 L768 33.6 L784 35.2 L800 36.2 L816 36.5 L832 36.5 L848 36.4 L864 36.4 L880 36.5 L896 36.7 L912 36.5 L928 35.9 L944 34.5 L960 32.7 L976 30.5 L992 28.5 L1008 27.2 L1024 26.7 L1040 27.1 L1056 28.2 L1072 29.5 L1088 30.5 L1104 31.0 L1120 30.6 L1136 29.6 L1152 28.2 L1168 26.8 L1184 25.8 L1200 25.2 L1216 25.0 L1232 24.9 L1248 24.7 L1264 24.3 L1280 23.7 L1296 23.1 L1312 22.9 L1328 23.4 L1344 24.7 L1360 26.8 L1376 29.4 L1392 32.0 L1408 34.1 L1424 35.3 L1440 35.5 L1456 35.0 L1472 34.0 L1488 33.0 L1504 32.4 L1520 32.2 L1536 32.5 L1552 33.0 L1568 33.5 L1584 33.6 L1600 33.4 L1616 33.0 L1632 32.7 L1648 32.7 L1664 33.2 L1680 34.1 L1696 35.2 L1712 36.0 L1728 36.0 L1744 35.2 L1760 33.4 L1776 30.9 L1792 28.2 L1808 25.8 L1824 24.2 L1840 23.4 L1856 23.3 L1872 23.8 L1888 24.4 L1904 24.9 L1920 25.1 L1936 25.1 L1952 25.1 L1968 25.5 L1984 26.2 L2000 27.4 L2016 28.7 L2032 29.8 L2048 30.4 L2064 30.2 L2080 29.3 L2096 28.0 L2112 26.8 L2128 26.1 L2144 26.3 L2160 27.4 L2176 29.3 L2192 31.5 L2208 33.6 L2224 35.2 L2240 36.2 L2256 36.5 L2272 36.5 L2288 36.4 L2304 36.4 L2320 36.5 L2336 36.7 L2352 36.5 L2368 35.9 L2384 34.5 L2400 32.7 L2416 30.5 L2432 28.5 L2448 27.2 L2464 26.7 L2480 27.1 L2496 28.2 L2512 29.5 L2528 30.5 L2544 31.0 L2560 30.6 L2576 29.6 L2592 28.2 L2608 26.8 L2624 25.8 L2640 25.2 L2656 25.0 L2672 24.9 L2688 24.7 L2704 24.3 L2720 23.7 L2736 23.1 L2752 22.9 L2768 23.4 L2784 24.7 L2800 26.8 L2816 29.4 L2832 32.0 L2848 34.1 L2864 35.3 L2880 35.5"/></svg>
+        <span class="glint" aria-hidden="true"></span><span class="glint g2" aria-hidden="true"></span>
+        <div class="floats">
+          <div class="buoy"><div class="tag"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3s6 6.6 6 11a6 6 0 0 1-12 0c0-4.4 6-11 6-11z"/></svg></i><span class="odo" data-odo="water" data-digits="7"></span><span class="u">لیتر آب</span></div><span class="cap">صرفه‌جویی آب</span><span class="eq" data-sub="tubs"></span></div>
+          <div class="buoy"><div class="tag"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></i><span class="odo" data-odo="hours" data-digits="6"></span><span class="u">ساعت</span></div><span class="cap">زمان کادر درمان</span><span class="eq" data-sub="shifts"></span></div>
+        </div>
+      </div>
+      <div class="fluid">
+        <div class="fb"></div><div class="fw" aria-hidden="true"></div>
+        <div class="flabel"><div class="tag"><span class="k">هزینه شست‌وشو و ضدعفونی</span><span class="v"><span class="odo" data-odo="cost" data-digits="11"></span><span class="u">تومان</span></span></div></div>
+      </div>
+      <div class="pile" aria-hidden="true"><span class="fig" data-x="0.5" data-y="0" data-r="-1" style="--w:493;--h:173"><i><img src="img/staff-a.webp" alt="" width="493" height="173" decoding="async"></i></span><span class="fig fl" data-x="1.48" data-y="0.02" data-r="2" style="--w:493;--h:172"><i><img src="img/staff-b.webp" alt="" width="493" height="172" decoding="async"></i></span><span class="fig" data-x="1.0" data-y="0.58" data-r="-3" style="--w:492;--h:315"><i><img src="img/staff-c.webp" alt="" width="492" height="315" decoding="async"></i></span><span class="fig" data-x="0.42" data-y="0.64" data-r="5" style="--w:493;--h:172"><i><img src="img/staff-b.webp" alt="" width="493" height="172" decoding="async"></i></span><span class="fig fl" data-x="1.6" data-y="0.66" data-r="-5" style="--w:493;--h:173"><i><img src="img/staff-a.webp" alt="" width="493" height="173" decoding="async"></i></span><span class="fig fl" data-x="0.98" data-y="1.18" data-r="3" style="--w:493;--h:173"><i><img src="img/staff-a.webp" alt="" width="493" height="173" decoding="async"></i></span><span class="fig fl" data-x="0.4" data-y="1.3" data-r="-6" style="--w:492;--h:315"><i><img src="img/staff-c.webp" alt="" width="492" height="315" decoding="async"></i></span><span class="fig" data-x="1.5" data-y="1.26" data-r="5" style="--w:493;--h:172"><i><img src="img/staff-b.webp" alt="" width="493" height="172" decoding="async"></i></span></div>
+      <div class="base">
+        <div class="legend"><span><i class="lw"></i>آب</span><span><i class="lf"></i>مایع شست‌وشو و ضدعفونی (نمایش تصویری)</span><span><img src="img/staff-icon.webp" alt="" width="10" height="24">هر آدمک = ۱٬۵۰۰ شیفت کاری ۸ ساعته</span></div>
+        <p class="fl-sum" data-sum></p><a class="hero-btn" href="tel:02192001017">مشاوره با کارشناس فروش</a><p class="note">* محاسبات بر اساس فرمول‌های محاسبه‌گر فعلی آبادیس</p>
+      </div>
+    </div></div>
+  </section>
+
+  <p class="foot-note"><b>*</b> محاسبات بر اساس فرمول‌های محاسبه‌گر فعلی آبادیس</p>
+
+  <section class="cta-band">
+    <h2>برای محاسبه دقیق مرکز درمانی خود با ما صحبت کنید</h2>
+    <p>کارشناسان فروش مخازن طبی آبادیس آماده پاسخ‌گویی به پرسش‌های شما هستند.</p>
+    <a class="hero-btn" href="tel:02192001017">مشاوره با کارشناس فروش</a>
+    <p class="cta-sub">مرکز تماس: <a href="tel:02192001017" dir="ltr">021-92001017</a> · <a href="https://abadis-med.com/ارتباط-با-ما/" target="_blank" rel="noopener">صفحه ارتباط با ما</a></p>
+  </section>
+
+  <footer class="site-footer" id="contact">
+    <div class="foot-inner">
+      <div class="foot-brand">
+        <strong>مخازن طبی آبادیس</strong>
+        <span>با ما در ارتباط باشید...</span>
+        <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px;align-items:flex-start">
+          <a href="https://abadis-med.com/ارتباط-با-ما/" target="_blank" rel="noopener">صفحه ارتباط با ما</a>
+          <a href="https://abadis-med.com/" target="_blank" rel="noopener">abadis-med.com</a>
+        </div>
+      </div>
+      <div>
+        <h3>تماس</h3>
+        <dl>
+          <dt>مرکز تماس:</dt><dd><a href="tel:+982192001017" dir="ltr">02192001017</a></dd>
+          <dt>تلفن تماس:</dt><dd><a href="tel:+982122671845" dir="ltr">02122671845</a> | <a href="tel:+982122205502" dir="ltr">02122205502</a><br><a href="tel:+982122215503" dir="ltr">02122215503</a> | <a href="tel:+982122218910" dir="ltr">02122218910</a></dd>
+          <dt>فکس:</dt><dd><span dir="ltr">02141425555</span> | داخلی 28544</dd>
+          <dt>پست الکترونیک:</dt><dd><a href="mailto:info@abadis-med.com">info@abadis-med.com</a></dd>
+          <dt>واتس‌اپ:</dt><dd><a href="https://wa.me/989100145809" target="_blank" rel="noopener" dir="ltr">+989100145809</a></dd>
+        </dl>
+      </div>
+      <div>
+        <h3>نشانی</h3>
+        <p><b>نشانی دفتر مرکزی:</b><br>ایران، تهران، قیطریه، خیابان اندرزگو، پلاک 104، واحد2</p>
+        <p><b>نشانی کارخانه:</b><br>ایران،تهران،شهرک صنعتی شمس آباد، بلوار گلستان، کوچه گلشن ۱۹،پلاک۱۷</p>
+      </div>
+    </div>
+    <div class="foot-copy">مخازن طبی آبادیس · محاسبه‌گر صرفه‌جویی · طرح سیلاب</div>
+  </footer>
+
+  <script src="../common/abadis-common.js"></script>
+  <script>
+
+    (() => {
+      const A = Abadis, fa = A.fa;
+      const SOFT = 78;   // px of soft boundary above the fluid's nominal surface
+      function setup(root, kind) {
+        const pin = root.querySelector('.calc-pin'), topEl = root.querySelector('.fl-top'), sea = root.querySelector('.sea');
+        const fluid = root.querySelector('.fluid'), base = root.querySelector('.base'), pile = root.querySelector('.pile');
+        const figs = [...root.querySelectorAll('.fig')], per = +root.dataset.per;
+        const sum = root.querySelector('[data-sum]'), hint = root.querySelector('[data-hint]');
+        const sub = {}; root.querySelectorAll('[data-sub]').forEach((e) => { sub[e.dataset.sub] = e; });
+        const chA = root.querySelector('[data-ch="a"]'), chB = root.querySelector('[data-ch="b"]');
+        return A.createCalc(root, kind, (s) => {
+          const f = Math.min(1, kind === 'surgery' ? s.fr.input : s.fr.water);
+          const mob = innerWidth <= 860;
+          const pinH = pin.clientHeight || innerHeight, baseH = base.offsetHeight, floorY = pinH - baseH;
+          const tb = topEl.offsetTop + topEl.offsetHeight;
+          const colMax = Math.max(140, floorY - tb - (mob ? 46 : 58));
+          const colMin = Math.min(colMax - 20, mob ? 200 : 180);
+          const col = colMin + (colMax - colMin) * f;            // water depth above the tank floor (px)
+          sea.style.transform = 'translateY(' + (floorY - col).toFixed(1) + 'px)';
+          // fluid: fixed visual share of the column, grows with the same scroll (no volume figure)
+          const fh = s.C > 0 ? col * (0.3 + 0.18 * f) : 0;
+          fluid.style.transform = 'translateY(' + (floorY - fh - SOFT).toFixed(1) + 'px)';
+          const mobL = mob;
+          fluid.style.opacity = s.C > 0 ? '1' : '0';
+          // staff pile on the floor: one figure per `per` shifts
+          pile.style.bottom = baseH + 'px';
+          const fs = figs[0].offsetWidth / +figs[0].querySelector('img').getAttribute('width');
+          const L = 460 * fs, T = 150 * fs;                       // body length / thickness of a lying figure (px)
+          const count = Math.min(figs.length, Math.floor(s.H / 8 / per));
+          let pileTop = 0, pileRight = 0;
+          figs.forEach((g, i) => {
+            const w = g.offsetWidth, h = g.offsetHeight;
+            const x = +g.dataset.x * L - w / 2 + L * .15, y = +g.dataset.y * T, r = +g.dataset.r;
+            g.style.left = x.toFixed(1) + 'px'; g.style.bottom = y.toFixed(1) + 'px';
+            const on = i < count;
+            g.classList.toggle('on', on);
+            if (on) { pileTop = Math.max(pileTop, y + h); pileRight = Math.max(pileRight, x + w); }
+            g.style.transform = on ? 'rotate(' + r + 'deg)' : 'translate(' + (r * 7) + 'px,' + (-(col - y)).toFixed(0) + 'px) rotate(' + (-r * 3) + 'deg)';
+          });
+          // cost label rides on the fluid but always stays above the pile when they share the same columns
+          const lab = root.querySelector('.flabel'), lw = lab.offsetWidth, lh = lab.offsetHeight;
+          const W = pin.clientWidth, labLeft = W - lw - W * (mob ? .03 : .05);
+          let ly = floorY - fh;
+          if (pile.offsetLeft + pileRight > labLeft - 8) ly = Math.min(ly, floorY - pileTop - lh / 2 - 10);
+          lab.style.top = (ly - (floorY - fh - SOFT)).toFixed(1) + 'px';
+          sub.tubs.textContent = s.W > 0 ? '≈ ' + fa(s.W / 200) + ' وان ۲۰۰ لیتری (تقریبی)' : '';
+          sub.shifts.textContent = s.H > 0 ? '≈ ' + fa(s.H / 8) + ' شیفت کاری ۸ ساعته' : '';
+          const tail = ': <b>' + fa(s.W) + '</b> لیتر آب، <b>' + fa(s.C) + '</b> تومان هزینه شست‌وشو و ضدعفونی و <b>' + fa(s.H) + '</b> ساعت از زمان کادر درمان.';
+          if (kind === 'surgery') {
+            sum.innerHTML = s.disp.n > 0 ? 'با <b>' + fa(s.disp.n) + '</b> عمل جراحی در سال' + tail : '';
+          } else {
+            chA.classList.toggle('idle', s.phase === 'b'); chB.classList.toggle('idle', s.phase === 'a');
+            chA.classList.toggle('held', s.phase === 'b' || s.lockedA != null);
+            hint.textContent = s.phase === 'a' ? (s.lockedA != null ? 'تخت اتاق عمل روی ' + fa(s.lockedA) + ' ثابت است' : 'مرحله ۱: با اسکرول، تعداد تخت اتاق عمل را تنظیم کنید') : 'مرحله ۲: با اسکرول، تعداد تخت ICU|CCU را تنظیم کنید';
+            sum.innerHTML = (s.disp.a + s.disp.b) > 0 ? 'با <b>' + fa(s.disp.a) + '</b> تخت اتاق عمل و <b>' + fa(s.disp.b) + '</b> تخت ICU|CCU' + tail : '';
+          }
+        });
+      }
+      setup(document.getElementById('calc1'), 'surgery');
+      setup(document.getElementById('calc2'), 'beds');
+      A.start();
+    })();
+
+  </script>
+</body>
+</html>
