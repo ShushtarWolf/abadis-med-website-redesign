@@ -4,7 +4,7 @@ This is the approved CSR page (`redesign/csr/`), copied verbatim: text, images, 
 `site.css`/`site.js` under `./assets/`. The only addition is a pinned, scroll-scrubbed Zagros scene that serves as the
 hero background behind the page's own `.csr-hero` section.
 
-Live: https://abadismedit.github.io/abadis-zagros-hero/
+Source: https://github.com/ShushtarWolf/abadis-med-website-redesign/tree/main/redesign/csr
 
 - Scene: dry land, then acorns fall (with contact shadows), sprout, sapling, young oak and grown oak at perspective-scaled
   spots. The background goes dry, mid, then green, and at the end the canister rises. Progress is smoothed with a rAF lerp and
