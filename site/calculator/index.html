@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>محاسبه گر — مخازن طبی آبادیس</title>
-<meta name="description" content="محاسبه‌گر صرفه جویی کیسه ساکشن یکبار مصرف آبادیس: مصرف آب، هزینه شست و شو و ضد عفونی و زمان کادر درمان.">
+<title>محاسبه‌گر صرفه‌جویی — مخازن طبی آبادیس</title>
+<meta name="description" content="محاسبه‌گر صرفه‌جویی آبادیس: صرفه‌جویی در مصرف آب، هزینه شست‌وشو و ضدعفونی و زمان کادر درمان.">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#e8f3f3">
 <script>(function(){var t;try{var q=new URLSearchParams(location.search).get('theme');if(q){localStorage.setItem('abadis-theme',q)}t=localStorage.getItem('abadis-theme')}catch(e){}var d=document.documentElement;d.dataset.theme=(t==='dark'||t==='noir')?t:'light';d.classList.add('js')})();</script>
@@ -12,7 +12,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
 <meta property="og:locale" content="fa_IR"><meta property="og:site_name" content="مخازن طبی آبادیس">
-<meta property="og:title" content="محاسبه گر — مخازن طبی آبادیس"><meta property="og:description" content="محاسبه‌گر صرفه جویی کیسه ساکشن یکبار مصرف آبادیس: مصرف آب، هزینه شست و شو و ضد عفونی و زمان کادر درمان.">
+<meta property="og:title" content="محاسبه‌گر صرفه‌جویی — مخازن طبی آبادیس"><meta property="og:description" content="محاسبه‌گر صرفه‌جویی آبادیس: صرفه‌جویی در مصرف آب، هزینه شست‌وشو و ضدعفونی و زمان کادر درمان.">
 <meta property="og:image" content="../assets/img/og-image.jpg">
 <link rel="preload" href="../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
@@ -37,35 +37,169 @@
   </button>
 </header>
 <main id="main">
-  <section class="hero hero--short" aria-label="محاسبه گر">
-    <div class="mosaic" data-tile="12" style="background-image:url('../assets/media/or-poster.jpg')" aria-hidden="true">
-      <video muted loop playsinline autoplay preload="auto" poster="../assets/media/or-poster.jpg" disablepictureinpicture disableremoteplayback tabindex="-1">
-        <source src="../assets/media/or-mosaic.mp4" type="video/mp4">
-      </video>
+<link rel="stylesheet" href="calc-page.css">
+<div class="gfc">
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-person" viewBox="0 0 24 34">
+      <circle cx="12" cy="8" r="5.2" fill="currentColor"/>
+      <path d="M6.6 3.6 Q12 0.4 17.4 3.6 L16.8 5.4 H7.2 Z" fill="currentColor"/>
+      <path d="M2 33 V25 a10 10 0 0 1 20 0 V33 Z" fill="currentColor"/>
+      <path style="fill: var(--xfill, #fff); opacity: var(--xop, 0); transition: opacity .4s" d="M11 20h2v2.4h2.4v2H13v2.4h-2v-2.4H8.6v-2H11z"/>
+    </symbol>
+  </svg>
+
+  <section class="gfc-hero" id="top" aria-label="محاسبه‌گر صرفه‌جویی آبادیس">
+    <div class="hero-art" aria-hidden="true"></div>
+    <div class="hero-waves" aria-hidden="true"><div class="w2"></div><div class="w1"></div></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-campaign">ابزار محاسبه · مخازن طبی آبادیس</div>
+      <h1>محاسبه‌گر صرفه‌جویی<br><em>آبادیس</em></h1>
+      <p>فقط اسکرول کنید؛ ببینید مرکز درمانی شما چقدر در مصرف آب، هزینه شست‌وشو و ضدعفونی و زمان کادر درمان صرفه‌جویی می‌کند.</p>
+      <div class="hero-actions">
+        <a href="#calc1" class="hero-btn">بر مبنای تعداد عمل جراحی</a>
+        <a href="#calc2" class="hero-btn hero-btn--ghost">بر مبنای تعداد تخت</a>
+      </div>
+      <div class="hero-pills" aria-hidden="true">
+        <span class="hero-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3c3.5 4.4 6 7.8 6 11a6 6 0 0 1-12 0c0-3.2 2.5-6.6 6-11z"/></svg>آب</span>
+        <span class="hero-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg>هزینه شست‌وشو و ضدعفونی</span>
+        <span class="hero-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>زمان کادر درمان</span>
+      </div>
     </div>
-    <div class="hero-inner">
-      <p class="crumbs"><a href="../">خانه</a> › محاسبه‌گر</p>
-      <span class="chip">کیسه ساکشن یکبار مصرف</span>
-      <h1>محاسبه <em>گر</em></h1>
-      <p class="lead">صرفه جویی در مصرف آب، هزینه شست و شو و ضد عفونی و زمان کادر درمان</p>
+    <div class="scroll-cue" aria-hidden="true"><i></i>اسکرول کنید</div>
+  </section>
+
+
+  <!-- ============ CALCULATOR 1 ============ -->
+  <section class="calc" id="calc1" aria-labelledby="c1-title">
+    <div class="calc-track">
+      <div class="calc-pin">
+        <div class="calc-inner">
+          <div class="calc-head">
+            <div class="calc-kicker"><b>۱</b>محاسبه‌گر اول</div>
+            <h2 id="c1-title">بر مبنای تعداد عمل جراحی در سال</h2>
+            <p class="calc-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 4v15M6 13l6 6 6-6"/></svg>اسکرول به پایین = عمل بیشتر · به بالا = کمتر</p>
+          </div>
+          <div class="calc-input">
+            <div class="in-label">تعداد عمل در سال</div>
+            <div class="in-row"><span class="odo in-big" data-odo="n" data-digits="5"></span><span class="in-unit">عمل جراحی</span></div>
+            <div class="prog"><span data-prog="n"></span></div>
+            <div class="chips" role="group" aria-label="مقادیر آماده">
+              <span class="chips-label">میان‌بُر:</span>
+              <button class="chip" type="button" data-n="1000">۱٬۰۰۰</button>
+              <button class="chip" type="button" data-n="5000">۵٬۰۰۰</button>
+              <button class="chip" type="button" data-n="10000">۱۰٬۰۰۰</button>
+              <button class="chip" type="button" data-n="15000">۱۵٬۰۰۰</button>
+              <button class="chip" type="button" data-n="30000">۳۰٬۰۰۰</button>
+            </div>
+          </div>
+          <div class="outs">
+            <div class="out out--water">
+              <div class="out-vis" data-vis="tank"></div>
+              <div class="out-label">صرفه‌جویی در مصرف آب</div>
+              <div class="out-val"><span class="odo" data-odo="water" data-digits="7"></span><span class="out-unit">لیتر</span></div>
+              <div class="out-sub" data-sub="tubs"></div>
+            </div>
+            <div class="out out--money">
+              <div class="out-vis" data-vis="money"></div>
+              <div class="out-label">هزینه مربوط به شست‌وشو و ضدعفونی</div>
+              <div class="out-val"><span class="odo" data-odo="cost" data-digits="13"></span><span class="out-unit">تومان</span></div>
+              <div class="out-sub money-read" data-sub="read"></div>
+            </div>
+            <div class="out out--staff">
+              <div class="out-vis" data-vis="people"></div>
+              <div class="out-label">صرفه‌جویی در زمان کادر درمان</div>
+              <div class="out-val"><span class="odo" data-odo="hours" data-digits="6"></span><span class="out-unit">ساعت</span></div>
+              <div class="out-sub" data-sub="shifts"></div>
+            </div>
+          </div>
+          <div class="calc-sum">
+            <p class="sum-text" data-sum aria-live="off"></p>
+            <a class="hero-btn" href="tel:02192001017">مشاوره با کارشناس فروش</a>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
-  <section class="section"><div class="wrap">
-    <div class="calc-grid">
-      <form class="calc reveal" id="calcSurg" onsubmit="return false">
-        <h2>بر مبنای تعداد عمل جراحی در سال</h2>
-        <div class="form"><label>تعداد عمل در سال *<input type="number" inputmode="numeric" min="0" step="1" name="s" placeholder="مثلاً ۵۰۰۰"></label></div>
-        <div class="calc-out"><div><span>صرفه جویی در مصرف آب (لیتر)</span><output id="cs0">۰</output></div><div><span>هزینه مربوط به شست و شو و ضد عفونی (تومان)</span><output id="cs1">۰</output></div><div><span>صرفه جویی در زمان کادر درمان (ساعت)</span><output id="cs2">۰</output></div></div>
-      </form>
-      <form class="calc reveal" id="calcBeds" onsubmit="return false">
-        <h2>بر مبنای تعداد تخت در مراکز درمانی</h2>
-        <div class="form grid g-2" style="gap:12px"><label>تعداد تخت اتاق عمل *<input type="number" inputmode="numeric" min="0" step="1" name="o"></label><label>تعداد تخت ICU|CCU *<input type="number" inputmode="numeric" min="0" step="1" name="i"></label></div>
-        <div class="calc-out"><div><span>صرفه جویی در مصرف آب (لیتر)</span><output id="cb0">۰</output></div><div><span>هزینه مربوط به شست و شو و ضد عفونی (تومان)</span><output id="cb1">۰</output></div><div><span>صرفه جویی در زمان کادر درمان (ساعت)</span><output id="cb2">۰</output></div></div>
-      </form>
+
+  <!-- ============ CALCULATOR 2 ============ -->
+  <section class="calc calc--dark" data-tone="dark" id="calc2" aria-labelledby="c2-title">
+    <div class="calc-track">
+      <div class="calc-pin">
+        <div class="calc-inner">
+          <div class="calc-head">
+            <div class="calc-kicker"><b>۲</b>محاسبه‌گر دوم</div>
+            <h2 id="c2-title">بر مبنای تعداد تخت</h2>
+            <p class="calc-hint" data-hint><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 4v15M6 13l6 6 6-6"/></svg><span>مرحله ۱: با اسکرول، تعداد تخت اتاق عمل را تنظیم کنید</span></p>
+          </div>
+          <div class="calc-input">
+            <div class="beds">
+              <div class="bed" data-bed="a">
+                <div class="in-label"><span>تعداد تخت اتاق عمل</span><span class="step">مرحله ۱</span></div>
+                <span class="odo in-big" data-odo="a" data-digits="3"></span>
+                <span class="bed-tag">ثابت</span>
+              </div>
+              <div class="bed" data-bed="b">
+                <div class="in-label"><span>تعداد تخت ICU|CCU</span><span class="step">مرحله ۲</span></div>
+                <span class="odo in-big" data-odo="b" data-digits="3"></span>
+              </div>
+            </div>
+            <div class="prog prog--two"><div><span class="prog-fill" data-prog="a" style="position:absolute;inset:0;transform-origin:right center;transform:scaleX(0);background:linear-gradient(270deg,#05686b,#2ec4c6);border-radius:6px"></span></div><div><span class="prog-fill" data-prog="b" style="position:absolute;inset:0;transform-origin:right center;transform:scaleX(0);background:linear-gradient(270deg,#05686b,#2ec4c6);border-radius:6px"></span></div></div>
+            <div class="chips" role="group" aria-label="ترکیب‌های آماده (تخت اتاق عمل + ICU|CCU)">
+              <span class="chips-label">عمل + ICU:</span>
+              <button class="chip" type="button" data-a="10" data-b="10">۱۰ + ۱۰</button>
+              <button class="chip" type="button" data-a="20" data-b="10">۲۰ + ۱۰</button>
+              <button class="chip" type="button" data-a="50" data-b="20">۵۰ + ۲۰</button>
+              <button class="chip" type="button" data-a="100" data-b="50">۱۰۰ + ۵۰</button>
+              <button class="chip" type="button" data-a="300" data-b="100">۳۰۰ + ۱۰۰</button>
+              <button class="chip" type="button" data-a="700" data-b="700">۷۰۰ + ۷۰۰</button>
+            </div>
+            <button class="confirm" type="button" data-confirm hidden>ثبت تخت اتاق عمل و رفتن به مرحله ۲ ←</button>
+          </div>
+          <div class="outs">
+            <div class="out out--water">
+              <div class="out-vis" data-vis="tank"></div>
+              <div class="out-label">صرفه‌جویی در مصرف آب</div>
+              <div class="out-val"><span class="odo" data-odo="water" data-digits="7"></span><span class="out-unit">لیتر</span></div>
+              <div class="out-sub" data-sub="tubs"></div>
+            </div>
+            <div class="out out--money">
+              <div class="out-vis" data-vis="money"></div>
+              <div class="out-label">هزینه مربوط به شست‌وشو و ضدعفونی</div>
+              <div class="out-val"><span class="odo" data-odo="cost" data-digits="11"></span><span class="out-unit">تومان</span></div>
+              <div class="out-sub money-read" data-sub="read"></div>
+            </div>
+            <div class="out out--staff">
+              <div class="out-vis" data-vis="people"></div>
+              <div class="out-label">صرفه‌جویی در زمان کادر درمان</div>
+              <div class="out-val"><span class="odo" data-odo="hours" data-digits="6"></span><span class="out-unit">ساعت</span></div>
+              <div class="out-sub" data-sub="shifts"></div>
+            </div>
+          </div>
+          <div class="calc-sum">
+            <p class="sum-text" data-sum aria-live="off"></p>
+            <a class="hero-btn" href="tel:02192001017">مشاوره با کارشناس فروش</a>
+          </div>
+        </div>
+      </div>
     </div>
-    <p class="note" style="margin-top:18px">ضرایب محاسبه همان ضرایب محاسبه‌گر سایت فعلی آبادیس است.</p>
-  </div></section>
-  <section class="section" style="padding-top:0"><div class="wrap"><div class="doc-links"><a href="../products/suction-bag/">کیسه ساکشن یکبار مصرف</a><a href="../csr/#sdg">توسعه پایدار</a><a href="../contact/">ارتباط با ما</a></div></div></section>
+  </section>
+
+  <p class="foot-note"><b>*</b> محاسبات بر اساس فرمول‌های محاسبه‌گر فعلی آبادیس</p>
+
+  <section class="cta-band">
+    <h2>برای محاسبه دقیق مرکز درمانی خود با ما صحبت کنید</h2>
+    <p>کارشناسان فروش مخازن طبی آبادیس آماده پاسخ‌گویی به پرسش‌های شما هستند.</p>
+    <div class="cta-actions">
+      <a class="hero-btn" href="tel:02192001017">مشاوره با کارشناس فروش</a>
+      <a class="hero-btn hero-btn--ghost" href="https://wa.me/989100145809" target="_blank" rel="noopener">پیام در واتس‌اپ</a>
+    </div>
+    <p class="cta-sub">مرکز تماس: <a href="tel:02192001017" dir="ltr">021-92001017</a> · <a href="../contact/">صفحه ارتباط با ما</a></p>
+  </section>
+
+<nav class="gfc-switch" aria-label="طرح‌های محاسبه‌گر"><span>طرح‌های محاسبه‌گر:</span><a href="../calculator/" aria-current="page">طرح اصلی</a><a href="../calculator/dial/">طرح دایال</a><a href="../calculator/receipt/">طرح رسید</a><a href="../calculator/hospital/">طرح بیمارستان</a><a href="../calculator/scale/">طرح ترازو</a><a href="../calculator/flood/">طرح سیلاب</a></nav>
+</div>
 </main>
 <footer class="site-footer">
   <div class="wrap foot-inner">
@@ -113,17 +247,6 @@
   <div class="wrap foot-copy">کلیه حقوق مادی و معنوی این وبسایت متعلق است به: مخازن طبی آبادیس · نسخهٔ پیش‌نمایش بازطراحی</div>
 </footer>
 <script src="../assets/js/site.js" defer></script>
-<script>
-(function(){
-  var nf = new Intl.NumberFormat('fa-IR', {maximumFractionDigits: 1});
-  function r(x, d){ var m = Math.pow(10, d); return Math.round(x * m) / m; }
-  function v(f, n){ var x = parseFloat(String(f.elements[n].value).replace(/[۰-۹]/g, function(c){return '۰۱۲۳۴۵۶۷۸۹'.indexOf(c)})); return isFinite(x) && x > 0 ? x : 0; }
-  function set(id, x){ document.getElementById(id).textContent = nf.format(x); }
-  var s = document.getElementById('calcSurg'), b = document.getElementById('calcBeds');
-  function surg(){ var S = v(s, 's'); set('cs0', r(S*1.6*9.3, 0)); set('cs1', r(S*2.5*85000, 1)); set('cs2', r(S*1.7/60*2.2*7.1, 1)); }
-  function beds(){ var O = v(b, 'o'), I = v(b, 'i'), u = O*254 + I*67; set('cb0', r(u*1.6*9.3, 0)); set('cb1', r((O*200 + I*50)*2.5*85000, 1)); set('cb2', r(u*1.7*2.2*7.1/60, 1)); }
-  s.addEventListener('input', surg); b.addEventListener('input', beds); surg(); beds();
-})();
-</script>
+<script src="calc.js" defer></script>
 </body>
 </html>
