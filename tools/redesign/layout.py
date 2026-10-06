@@ -18,6 +18,7 @@ SECONDARY = [  # footer-only pages
     ('install', 'install-guide/', 'راهنمای نصب'),
     ('faq', 'faq/', 'پرسش های متداول'),
     ('careers', 'careers/', 'فرصت های همکاری'),
+    ('zagros', 'csr/', 'نجات زاگرس'),
 ]
 THEME_ICON = '''<svg class="tt-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       <mask id="tt-mask"><rect width="24" height="24" fill="#fff"/><circle class="tt-bite" cx="16.6" cy="7.4" r="6.3" fill="#000"/></mask>
