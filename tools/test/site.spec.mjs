@@ -312,18 +312,18 @@ test('9 calculator formulas + UI preset', async ({ page }) => {
     return out;
   }, { expected, tol });
 
-  // UI: click preset chip data-n=1000 if present
+  // UI: click preset chip data-n=1000 if present; water odo should read ~14880
   let uiOk = null;
   const chip = page.locator('[data-n="1000"]').first();
   if (await chip.count()) {
     await chip.click();
     await page.waitForTimeout(2500);
     const shown = await page.evaluate(() => {
-      const el = document.querySelector('.odo[data-value], [data-value]');
-      return el ? el.getAttribute('data-value') : null;
+      const odos = [...document.querySelectorAll('.odo[data-value]')].map((el) => Number(el.getAttribute('data-value')));
+      // surgery page exposes n, water, cost, hours — water must be ~14880
+      return { odos, hasWater: odos.some((v) => Math.abs(v - 14880) < 2) };
     });
-    // water odometer should approach 14880
-    uiOk = shown != null && Math.abs(Number(shown) - 14880) < 2;
+    uiOk = !!shown.hasWater;
   } else {
     uiOk = null; // warn: no chip
   }

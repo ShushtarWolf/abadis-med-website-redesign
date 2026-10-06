@@ -47,40 +47,52 @@ trap cleanup EXIT
 # ---- 1. Linkinator (internal links only) ----
 echo "==> 1 linkinator"
 set +e
-npx linkinator "$BASE/" --recurse --skip '^https?://(?!127\\.0\\.0\\.1|localhost)' --format json >"$OUT/links.json" 2>"$OUT/links.err"
+# Skip external hosts / mailto / tel. Localhost must NOT be skipped (lookbehind dots unescaped).
+npx linkinator "$BASE/" --recurse \
+  --skip '^(https?://(?!127\.0\.0\.1|localhost)|mailto:|tel:|javascript:)' \
+  --format json >"$OUT/links.json" 2>"$OUT/links.err"
 LINK_EC=$?
 set -e
 node --input-type=module <<'NODE'
 import fs from 'node:fs';
+import { execSync } from 'node:child_process';
 import { record, addBug } from './lib/summary.mjs';
 const raw = fs.readFileSync('out/links.json', 'utf8');
 let data;
 try { data = JSON.parse(raw); } catch { data = { links: [] }; }
 const links = data.links || [];
-const broken = links.filter((l) => l.state === 'BROKEN' || (l.status != null && l.status >= 400));
-const externalAbadis = links.filter((l) => /abadis-med\.com/i.test(l.url || ''));
-const postExt = externalAbadis.filter((l) => !/wp-content/i.test(l.url || ''));
-const ok = broken.length === 0;
+const broken = links.filter((l) => l.state === 'BROKEN' || (l.status != null && l.status >= 400) || l.status === 0);
+let postExt = [];
+try {
+  const grepped = execSync(
+    `grep -rhoE 'href="https?://(www\\.)?abadis-med\\.com/[^"]*"' ../../site --include='*.html' | grep -v wp-content | sort -u || true`,
+    { encoding: 'utf8' },
+  );
+  postExt = grepped.trim() ? grepped.trim().split('\n') : [];
+} catch { postExt = []; }
+const ok = broken.length === 0 && links.length > 0;
 record(1, {
   name: 'Internal links (linkinator)',
   scope: 'full recurse',
-  result: ok ? (postExt.length ? 'warn' : 'pass') : 'fail',
+  result: !links.length ? 'fail' : (ok ? (postExt.length ? 'warn' : 'pass') : 'fail'),
   details: {
     total: links.length,
     broken: broken.length,
     brokenSample: broken.slice(0, 20),
-    externalAbadis: externalAbadis.length,
     nonWpContentExternal: postExt.length,
-    postExtSample: postExt.slice(0, 15).map((l) => l.url),
+    postExtSample: postExt.slice(0, 15),
   },
 });
 for (const b of broken.slice(0, 25)) {
   addBug({ severity: 'critical', test: 1, page: b.parent || '', detail: `${b.status} ${b.url}` });
 }
 if (postExt.length) {
-  addBug({ severity: 'minor', test: 1, page: '/', detail: `${postExt.length} external links to abadis-med.com (non wp-content)` });
+  addBug({ severity: 'minor', test: 1, page: '/', detail: `${postExt.length} unique hrefs to abadis-med.com (non wp-content) — missing posts / live fallbacks` });
 }
-console.log('linkinator broken=', broken.length, 'external posts=', postExt.length);
+if (!links.length) {
+  addBug({ severity: 'critical', test: 1, page: '/', detail: 'linkinator returned 0 links — check --skip pattern / server' });
+}
+console.log('linkinator total=', links.length, 'broken=', broken.length, 'external posts=', postExt.length);
 NODE
 
 # ---- 6. Lighthouse (mobile) on key pages ----

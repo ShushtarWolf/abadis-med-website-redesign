@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "playwright test site.spec.mjs --reporter=list",
+    "test:all": "bash ./run-all.sh",
+    "report": "node ./write-report.mjs"
   },
+  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
