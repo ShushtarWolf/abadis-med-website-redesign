@@ -11,7 +11,8 @@ FAMILIES = [  # slug, live path, hub title (verbatim from live hub), hub image, 
     ('suction-tube', '/محصولات/ساکشن-تیوب/', 'ساکشن تیوب', 'https://abadis-med.com/wp-content/uploads/2022/12/ساکشن-تیوب-7e83722522e8aeb7512b7075311316b7__m8ULku2SAG__1-1-300x300.jpg', 'assets/img/p/p1-g4-t.webp'),
     ('canister', '/محصولات/مخزن/', 'مخزن', 'https://abadis-med.com/wp-content/uploads/2022/12/AMR_4901.jpg', 'assets/img/p/p3-g1-t.webp'),
     ('connectors', '/محصولات/اتصالات/', 'اتصالات', 'https://abadis-med.com/wp-content/uploads/2022/12/اتصالات-845x684-1.jpg', 'assets/img/p/p2-g3-t.webp'),
-    ('other', '/محصولات/سایر-محصولات/', 'سایر محصولات', None, None),
+    ('other', '/محصولات/سایر-محصولات/', 'سایر محصولات',
+     'https://abadis-med.com/wp-content/uploads/2022/12/19-1024x880.jpg', None),
 ]
 # Fallback photos when the item's own image was never archived by the Wayback Machine.
 # Only images that verifiably show that exact product are used (family hub photo / phase-1 asset).
