@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>محاسبه‌گر دایال — آبادیس مد (نئومورفیک)</title>
+  <meta name="theme-color" content="#e8ecef" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png" />
+  <link rel="preload" href="../fonts/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="../fonts/KalamehWeb-FaNum-Bold.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="../fonts/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin />
+  <script>
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('abadis-dial1-theme'); } catch (e) {}
+      if (t !== 'dark' && t !== 'light') t = 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <style>
+    @font-face { font-family: "Kalameh"; src: url("../fonts/KalamehWeb-FaNum-Regular.woff2") format("woff2"); font-weight: 400 600; font-display: swap; }
+    @font-face { font-family: "Kalameh"; src: url("../fonts/KalamehWeb-FaNum-Bold.woff2") format("woff2"); font-weight: 700 800; font-display: swap; }
+    @font-face { font-family: "Kalameh"; src: url("../fonts/KalamehWeb-FaNum-Black.woff2") format("woff2"); font-weight: 900; font-display: swap; }
+
+    :root {
+      --bg: #e8ecef;
+      --ink: #1a2744;
+      --muted: #6b7a90;
+      --card: #e8ecef;
+      --shadow-out: 8px 8px 16px #c5c9ce, -8px -8px 16px #ffffff;
+      --shadow-in: inset 6px 6px 12px #c5c9ce, inset -6px -6px 12px #ffffff;
+      --shadow-btn: 4px 4px 10px #c5c9ce, -4px -4px 10px #ffffff;
+      --accent: #1a2744;
+      --nav-active: #1a2744;
+      --font: "Kalameh", Tahoma, system-ui, sans-serif;
+      color-scheme: light;
+    }
+    [data-theme="dark"] {
+      --bg: #1c2230;
+      --ink: #e8eef8;
+      --muted: #9aa8c0;
+      --card: #1c2230;
+      --shadow-out: 8px 8px 18px #12161f, -8px -8px 18px #262e40;
+      --shadow-in: inset 6px 6px 14px #12161f, inset -6px -6px 14px #262e40;
+      --shadow-btn: 4px 4px 10px #12161f, -4px -4px 10px #262e40;
+      --accent: #c5d0e8;
+      --nav-active: #3d4f78;
+      color-scheme: dark;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .phone {
+      width: 100%;
+      max-width: 420px;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      padding: 12px 18px 0;
+      position: relative;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 0 16px;
+      flex-shrink: 0;
+      direction: ltr;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--ink);
+      direction: rtl;
+    }
+    .header-actions { direction: ltr; }
+    .brand-mark {
+      width: 28px; height: 28px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 2px;
+      transform: rotate(45deg);
+    }
+    .brand-mark span {
+      background: var(--ink);
+      border-radius: 2px;
+    }
+    .brand-name { font-weight: 800; font-size: 1.05rem; letter-spacing: -0.02em; }
+    .header-actions { display: flex; align-items: center; gap: 8px; }
+    .sales-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(26,39,68,0.25);
+      background: transparent;
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    [data-theme="dark"] .sales-btn { border-color: rgba(200,210,230,0.35); }
+    .sales-btn svg { width: 14px; height: 14px; }
+    .theme-toggle {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: none;
+      background: var(--bg);
+      box-shadow: var(--shadow-btn);
+      color: var(--ink);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-family: inherit;
+      position: relative;
+    }
+    .theme-toggle svg { width: 18px; height: 18px; position: absolute; transition: opacity .3s, transform .35s; }
+    .theme-toggle .i-sun { opacity: 0; transform: rotate(-90deg) scale(.5); }
+    [data-theme="dark"] .theme-toggle .i-sun { opacity: 1; transform: none; }
+    [data-theme="dark"] .theme-toggle .i-moon { opacity: 0; transform: rotate(90deg) scale(.5); }
+
+    /* Dial area */
+    .dial-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      padding: 8px 0 12px;
+      min-height: 0;
+    }
+    .dial-wrap {
+      position: relative;
+      width: min(280px, 72vw);
+      aspect-ratio: 1;
+    }
+    .preset {
+      position: absolute;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--ink);
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 8px;
+      transition: background .2s, transform .15s;
+      z-index: 2;
+    }
+    .preset:hover, .preset:focus-visible { background: rgba(26,39,68,0.08); outline: none; }
+    [data-theme="dark"] .preset:hover { background: rgba(255,255,255,0.08); }
+    .preset.p-tl { top: 2%; left: 2%; }
+    .preset.p-tr { top: 2%; right: 2%; }
+    .preset.p-bl { bottom: 8%; left: 2%; }
+    .preset.p-br { bottom: 8%; right: 2%; }
+
+    .dial {
+      position: absolute;
+      inset: 18%;
+      border-radius: 50%;
+      background: var(--bg);
+      box-shadow: var(--shadow-out);
+      cursor: grab;
+      touch-action: none;
+    }
+    .dial:active { cursor: grabbing; }
+    .dial-ticks {
+      position: absolute;
+      inset: 8%;
+      width: 84%;
+      height: 84%;
+      pointer-events: none;
+    }
+    .dial-inner {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: var(--bg);
+      box-shadow: var(--shadow-out);
+    }
+    .dial-knob {
+      position: absolute;
+      left: 50%;
+      top: 14%;
+      width: 18%;
+      aspect-ratio: 1;
+      margin-left: -9%;
+      border-radius: 50%;
+      background: var(--bg);
+      box-shadow: var(--shadow-btn), inset 2px 2px 4px rgba(255,255,255,0.6);
+      pointer-events: none;
+    }
+    [data-theme="dark"] .dial-knob {
+      box-shadow: var(--shadow-btn), inset 1px 1px 3px rgba(255,255,255,0.08);
+    }
+    .dial-center-dot {
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 10px; height: 10px;
+      margin: -5px 0 0 -5px;
+      border-radius: 50%;
+      background: var(--ink);
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    .caption {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+      width: 100%;
+      max-width: 280px;
+      justify-content: center;
+    }
+    .caption::before, .caption::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--muted));
+      opacity: 0.35;
+    }
+    .caption::after { background: linear-gradient(270deg, transparent, var(--muted)); }
+
+    /* Result cards */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      width: 100%;
+      padding: 4px 0 16px;
+      flex-shrink: 0;
+    }
+    .card {
+      background: var(--bg);
+      box-shadow: var(--shadow-out);
+      border-radius: 16px;
+      padding: 14px 8px 12px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+    .card-title {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .card-value {
+      font-size: clamp(0.85rem, 3.6vw, 1.05rem);
+      font-weight: 900;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      direction: ltr;
+      unicode-bidi: plaintext;
+    }
+    .card-unit {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    /* Bottom nav */
+    .bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      padding: 10px 4px calc(12px + env(safe-area-inset-bottom));
+      border-top: 1px solid rgba(26,39,68,0.08);
+      flex-shrink: 0;
+      margin-top: auto;
+    }
+    [data-theme="dark"] .bottom-nav { border-top-color: rgba(255,255,255,0.08); }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 0.65rem;
+      font-weight: 700;
+      cursor: default;
+      padding: 4px 8px;
+      min-width: 64px;
+    }
+    .nav-item svg { width: 22px; height: 22px; opacity: 0.7; }
+    .nav-item.active { color: var(--ink); }
+    .nav-item.active .nav-icon {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--nav-active);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      margin-bottom: 2px;
+      box-shadow: 0 6px 16px rgba(26,39,68,0.25);
+    }
+    .nav-item.active .nav-icon svg { opacity: 1; color: #fff; width: 20px; height: 20px; }
+    [data-theme="dark"] .nav-item.active .nav-icon { color: #fff; }
+
+    @media (min-width: 480px) {
+      .phone { padding: 20px 24px 0; max-width: 440px; }
+      .dial-wrap { width: 300px; }
+      .card-value { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <header class="header">
+      <a class="brand" href="#" aria-label="آبادیس مد">
+        <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+        <span class="brand-name">آبادیس مد</span>
+      </a>
+      <div class="header-actions">
+        <a class="sales-btn" href="tel:+980000000000">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          تماس با فروش
+        </a>
+        <button type="button" class="theme-toggle" id="themeToggle" aria-label="تغییر پوسته">
+          <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="dial-section">
+      <div class="dial-wrap" id="dialWrap">
+        <button type="button" class="preset p-tl" data-value="1000">۱۰۰۰</button>
+        <button type="button" class="preset p-tr" data-value="15000">۱۵۰۰۰</button>
+        <button type="button" class="preset p-bl" data-value="5000">۵۰۰۰</button>
+        <button type="button" class="preset p-br" data-value="30000">۳۰۰۰۰</button>
+        <svg class="dial-ticks" viewBox="0 0 200 200" aria-hidden="true" id="tickSvg"></svg>
+        <div class="dial" id="dial" role="slider" aria-valuemin="1000" aria-valuemax="30000" aria-valuenow="10000" aria-label="تعداد تخت">
+          <div class="dial-inner">
+            <div class="dial-knob" id="knob"></div>
+            <div class="dial-center-dot"></div>
+          </div>
+        </div>
+      </div>
+      <p class="caption">تعداد تخت را بچرخانید</p>
+    </section>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-title">پس‌انداز ماهانه</div>
+        <div class="card-value" id="vMonth">۰</div>
+        <div class="card-unit">تومان</div>
+      </div>
+      <div class="card">
+        <div class="card-title">پس‌انداز سالانه</div>
+        <div class="card-value" id="vYear">۰</div>
+        <div class="card-unit">تومان</div>
+      </div>
+      <div class="card">
+        <div class="card-title">پس‌انداز ۳ ساله</div>
+        <div class="card-value" id="v3y">۰</div>
+        <div class="card-unit">تومان</div>
+      </div>
+    </div>
+
+    <nav class="bottom-nav" aria-label="منوی اصلی">
+      <button type="button" class="nav-item active">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h4"/></svg>
+        </span>
+        محاسبه‌گر
+      </button>
+      <button type="button" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        ذخیره‌ها
+      </button>
+      <button type="button" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+        گزارش‌ها
+      </button>
+      <button type="button" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+        پشتیبانی
+      </button>
+    </nav>
+  </div>
+
+  <script>
+(function () {
+  var MIN = 1000, MAX = 30000, STEP = 100;
+  var PER_BED_MONTH = 325; // at 10000 beds → 3,250,000 monthly
+  var beds = 10000;
+
+  var dial = document.getElementById('dial');
+  var knob = document.getElementById('knob');
+  var tickSvg = document.getElementById('tickSvg');
+  var themeToggle = document.getElementById('themeToggle');
+
+  // ticks
+  (function buildTicks() {
+    var ns = 'http://www.w3.org/2000/svg';
+    var cx = 100, cy = 100, rOut = 96, rIn = 88, rMajor = 84;
+    for (var i = 0; i < 60; i++) {
+      var a = (i / 60) * Math.PI * 2 - Math.PI / 2;
+      var major = i % 5 === 0;
+      var r1 = major ? rMajor : rIn;
+      var line = document.createElementNS(ns, 'line');
+      line.setAttribute('x1', cx + Math.cos(a) * r1);
+      line.setAttribute('y1', cy + Math.sin(a) * r1);
+      line.setAttribute('x2', cx + Math.cos(a) * rOut);
+      line.setAttribute('y2', cy + Math.sin(a) * rOut);
+      line.setAttribute('stroke', 'currentColor');
+      line.setAttribute('stroke-width', major ? '1.6' : '0.9');
+      line.setAttribute('opacity', major ? '0.45' : '0.28');
+      tickSvg.appendChild(line);
+    }
+  })();
+
+  function fa(n) {
+    return Math.round(n).toLocaleString('fa-IR');
+  }
+
+  function angleFromValue(v) {
+    var t = (v - MIN) / (MAX - MIN);
+    return t * 270 - 135; // -135deg .. +135deg
+  }
+
+  function valueFromAngle(deg) {
+    // normalize to -135..135
+    var d = deg;
+    while (d > 180) d -= 360;
+    while (d < -180) d += 360;
+    d = Math.max(-135, Math.min(135, d));
+    var t = (d + 135) / 270;
+    var v = MIN + t * (MAX - MIN);
+    return Math.round(v / STEP) * STEP;
+  }
+
+  function pointerAngle(clientX, clientY) {
+    var rect = dial.getBoundingClientRect();
+    var cx = rect.left + rect.width / 2;
+    var cy = rect.top + rect.height / 2;
+    var rad = Math.atan2(clientY - cy, clientX - cx);
+    return rad * 180 / Math.PI + 90; // 0 at top
+  }
+
+  function updateUI() {
+    var monthly = beds * PER_BED_MONTH;
+    var annual = monthly * 12;
+    var three = annual * 3;
+    document.getElementById('vMonth').textContent = fa(monthly);
+    document.getElementById('vYear').textContent = fa(annual);
+    document.getElementById('v3y').textContent = fa(three);
+    dial.setAttribute('aria-valuenow', beds);
+    var ang = angleFromValue(beds);
+    dial.style.transform = 'rotate(' + ang + 'deg)';
+  }
+
+  function setBeds(v) {
+    beds = Math.max(MIN, Math.min(MAX, v));
+    updateUI();
+  }
+
+  // drag
+  var dragging = false;
+  function onDown(e) {
+    dragging = true;
+    dial.setPointerCapture && e.pointerId != null && dial.setPointerCapture(e.pointerId);
+    var x = e.clientX != null ? e.clientX : e.touches[0].clientX;
+    var y = e.clientY != null ? e.clientY : e.touches[0].clientY;
+    setBeds(valueFromAngle(pointerAngle(x, y)));
+    e.preventDefault();
+  }
+  function onMove(e) {
+    if (!dragging) return;
+    var x = e.clientX != null ? e.clientX : (e.touches && e.touches[0].clientX);
+    var y = e.clientY != null ? e.clientY : (e.touches && e.touches[0].clientY);
+    if (x == null) return;
+    setBeds(valueFromAngle(pointerAngle(x, y)));
+    e.preventDefault();
+  }
+  function onUp() { dragging = false; }
+
+  dial.addEventListener('pointerdown', onDown);
+  window.addEventListener('pointermove', onMove);
+  window.addEventListener('pointerup', onUp);
+  dial.addEventListener('touchstart', onDown, { passive: false });
+  window.addEventListener('touchmove', onMove, { passive: false });
+  window.addEventListener('touchend', onUp);
+
+  document.querySelectorAll('.preset').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      setBeds(+btn.getAttribute('data-value'));
+    });
+  });
+
+  themeToggle.addEventListener('click', function () {
+    var cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    var next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('abadis-dial1-theme', next); } catch (e) {}
+  });
+
+  updateUI();
+})();
+  </script>
+</body>
+</html>
