@@ -54,7 +54,7 @@
      Transparent in every theme. `.scrolled` only fades in an untinted blur;
      `.on-light` (light theme only) switches the ink + logo to teal while the
      bar sits over light content, and back to white over dark bands. */
-  const DARK = '.hero, .deep, .site-footer, .cta-band, .media-frame, .product-visual, [data-tone="dark"]';
+  const DARK = '.hero, .page-hero, .deep, .site-footer, .cta-band, .media-frame, .product-visual, [data-tone="dark"]';
   const zones = header ? [...header.querySelectorAll('.logo, .nav, .menu-btn, .theme-toggle')] : [];
   const isLightAt = (x, y) => {
     const el = document.elementsFromPoint(x, y).find((n) => !header.contains(n));
@@ -251,5 +251,63 @@
     location.href = 'mailto:info@abadis-med.com?subject=' + encodeURIComponent('درخواست از وب‌سایت — ' + d.get('topic')) + '&body=' + encodeURIComponent(body);
     const s = document.getElementById('formStatus');
     if (s) s.textContent = 'برنامهٔ ایمیل شما باز شد؛ پیام بعد از ارسال از همان‌جا به دست ما می‌رسد.';
+  });
+  /* ---------- phase 2: generic mailto forms (careers) ---------- */
+  document.querySelectorAll('form[data-mailto-form]').forEach((f) => f.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const lines = [];
+    new FormData(f).forEach((v, k) => lines.push(k + ': ' + v));
+    location.href = 'mailto:' + f.dataset.mailtoForm + '?subject=' + encodeURIComponent(f.dataset.subject || 'درخواست از وب‌سایت') + '&body=' + encodeURIComponent(lines.join('\n'));
+    const s = f.querySelector('.form-status');
+    if (s) s.textContent = 'برنامهٔ ایمیل شما باز شد؛ پیام بعد از ارسال از همان‌جا به دست ما می‌رسد.';
+  }));
+
+  /* ---------- phase 2: paged lists + live search ---------- */
+  const faNum = (n) => new Intl.NumberFormat('fa-IR').format(n);
+  document.querySelectorAll('[data-paged]').forEach((grid) => {
+    const step = parseInt(grid.dataset.paged, 10) || 12;
+    let shown = step;
+    const items = Array.from(grid.children);
+    const input = document.querySelector('[data-filter="#' + grid.id + '"]');
+    const count = document.querySelector('[data-count-for="#' + grid.id + '"]');
+    const empty = grid.parentElement.querySelector('.empty-msg');
+    const unit = count ? count.textContent.replace(/^[\d۰-۹٬,]+\s*/, '') : '';
+    let btn = null;
+    if (items.length > step) {
+      const wrap = document.createElement('div'); wrap.className = 'more-wrap';
+      btn = document.createElement('button'); btn.type = 'button'; btn.className = 'btn btn-ghost'; btn.textContent = 'نمایش بیشتر';
+      wrap.appendChild(btn); grid.after(wrap);
+      btn.addEventListener('click', () => { shown += step; apply(); });
+    }
+    const norm = (t) => (t || '').replace(/[\u200c\s]+/g, ' ').replace(/ي/g, 'ی').replace(/ك/g, 'ک').trim();
+    function apply() {
+      const q = input ? norm(input.value) : '';
+      let n = 0, visible = 0;
+      items.forEach((el) => {
+        const hit = !q || norm(el.dataset.name || el.textContent).includes(q);
+        if (!hit) { el.setAttribute('data-filter-hidden', ''); el.classList.remove('is-hidden'); return; }
+        el.removeAttribute('data-filter-hidden'); n++;
+        const hide = !q && n > shown;
+        el.classList.toggle('is-hidden', hide);
+        if (!hide) visible++;
+      });
+      if (btn) btn.parentElement.hidden = !!q || shown >= items.length;
+      if (count) count.textContent = faNum(n) + ' ' + unit;
+      if (empty) empty.hidden = n > 0;
+    }
+    if (input) input.addEventListener('input', apply);
+    apply();
+  });
+
+  /* ---------- phase 2: dealers province filter ---------- */
+  const chips = document.getElementById('provChips');
+  if (chips) chips.addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-prov]');
+    if (!b) return;
+    const on = b.getAttribute('aria-pressed') !== 'true';
+    chips.querySelectorAll('button[data-prov]').forEach((x) => x.setAttribute('aria-pressed', 'false'));
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    document.querySelectorAll('.prov-group').forEach((g) => { g.hidden = on && g.dataset.prov !== b.dataset.prov; });
+    if (on) { const g = document.querySelector('.prov-group[data-prov="' + b.dataset.prov + '"]'); if (g) g.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   });
 })();
