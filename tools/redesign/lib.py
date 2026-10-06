@@ -138,6 +138,7 @@ def internal(url):
     if hit is None and p.startswith('/_joboffers/'):
         hit = JOB_MAP.get(p)
     if hit is None: return None
+    if hit == 'products/suction-bag/' and frag in ('one', 'two', 'three'): frag = {'one': 's1', 'two': 's2', 'three': 's3'}[frag]
     if frag and '#' not in hit: hit += '#' + frag
     return hit
 JOB_MAP = {}
@@ -147,6 +148,7 @@ def href(url, p):
     i = internal(url)
     if i is not None: return p + i if i else (p or './'), False
     if url and url.startswith('//'): url = 'https:' + url
+    if url and re.match(r'^[A-Za-z0-9.-]+\.(me|com|ir|org|net|io)/', url): url = 'https://' + url
     return url, bool(url and url.startswith('http'))
 
 def rewrite_html(h, p, imgw=1000, drop_missing_img=True):

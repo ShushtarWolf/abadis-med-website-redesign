@@ -597,3 +597,10 @@ details.letter[open] summary { margin-bottom: 12px; }
 .dealer + .dealer { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--line); }
 .dealer h3 { font-size: 1rem; margin-bottom: 8px; }
 .dealer dl { font-size: .88rem; }
+@media (max-width: 560px) {
+  .logo-grid, .team-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+  .logo-card { padding: 10px; } .logo-card strong { font-size: .84rem; }
+  .member { padding: 10px; }
+  .install-hub { grid-template-columns: 1fr !important; }
+  .page-hero { padding: 108px 0 40px; }
+}
