@@ -150,12 +150,15 @@
       transition: color .2s, transform .15s;
     }
     .preset:hover { color: var(--cyan); transform: scale(1.06); }
+    .preset.active { color: var(--cyan); }
+    .preset.active .unit { color: var(--cyan); opacity: 0.85; }
+    .preset.active .num { text-shadow: 0 0 12px rgba(46,230,232,0.55); }
     .preset .num { display: block; font-size: 0.78rem; font-weight: 800; line-height: 1.2; }
     .preset .unit { display: block; font-size: 0.62rem; color: var(--muted); font-weight: 600; }
     /* angles roughly matching mockup */
     .preset.p-1 { top: 8%; left: 4%; }      /* 30000 ~ 10 o'clock */
     .preset.p-2 { top: -2%; left: 50%; transform: translateX(-50%); } /* 15000 top */
-    .preset.p-2:hover { transform: translateX(-50%) scale(1.06); }
+    .preset.p-2:hover, .preset.p-2.active { transform: translateX(-50%) scale(1.06); }
     .preset.p-3 { top: 14%; right: 0%; }    /* 10000 ~ 2 o'clock */
     .preset.p-4 { bottom: 18%; right: 2%; } /* 5000 ~ 4 o'clock */
     .preset.p-5 { bottom: 22%; left: 2%; }  /* 1000 ~ 8 o'clock */
@@ -367,7 +370,7 @@
             <circle id="progressArc" cx="110" cy="110" r="100" fill="none" stroke="url(#arcGrad)" stroke-width="6"
               stroke-linecap="round" stroke-dasharray="628.3" stroke-dashoffset="628.3"
               transform="rotate(-90 110 110)"
-              style="filter: drop-shadow(0 0 6px rgba(46,230,232,0.7)); transition: stroke-dashoffset .25s ease;"/>
+              style="filter: drop-shadow(0 0 6px rgba(46,230,232,0.7)); transition: stroke-dashoffset .28s ease;"/>
           </svg>
           <div class="dial" id="dial" role="slider" aria-valuemin="1000" aria-valuemax="30000" aria-valuenow="0" aria-label="تعداد تخت">
             <span class="dial-logo">آبادیس+</span>
@@ -401,31 +404,77 @@
   <script>
 (function () {
   var MIN = 1000, MAX = 30000, STEP = 100;
-  var PER_BED_YEAR = 2600; // annual Toman per bed (demo)
+  var PRESETS = [1000, 5000, 10000, 15000, 30000];
+  var MAGNET_DIST = 1200;   // beds: soft pull while dragging near a preset
+  var PER_BED_YEAR = 2600;  // annual Toman per bed (demo)
   var beds = 0;
   var interacted = false;
   var CIRC = 2 * Math.PI * 100; // ~628.3
+  var ANGLE_MIN = -135;
+  var ANGLE_MAX = 135;
+  var ANGLE_SPAN = ANGLE_MAX - ANGLE_MIN; // 270
 
   var dial = document.getElementById('dial');
   var arc = document.getElementById('progressArc');
+  var logo = dial.querySelector('.dial-logo');
+  var presetBtns = Array.prototype.slice.call(document.querySelectorAll('.preset'));
 
   function fa(n) { return Math.round(n).toLocaleString('fa-IR'); }
 
+  function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
+
   function angleFromValue(v) {
     var t = (v - MIN) / (MAX - MIN);
-    return t * 360; // full circle for rotation feel; arc uses t
+    return t * ANGLE_SPAN + ANGLE_MIN; // -135 .. +135
   }
 
-  function valueFromPointer(clientX, clientY) {
+  function valueFromAngle(deg) {
+    var d = deg;
+    while (d > 180) d -= 360;
+    while (d < -180) d += 360;
+    d = clamp(d, ANGLE_MIN, ANGLE_MAX);
+    var t = (d - ANGLE_MIN) / ANGLE_SPAN;
+    var v = MIN + t * (MAX - MIN);
+    return Math.round(v / STEP) * STEP;
+  }
+
+  function pointerAngle(clientX, clientY) {
     var rect = dial.getBoundingClientRect();
     var cx = rect.left + rect.width / 2;
     var cy = rect.top + rect.height / 2;
     var rad = Math.atan2(clientY - cy, clientX - cx);
-    // 0 at top, clockwise positive mapped to value
-    var deg = (rad * 180 / Math.PI + 90 + 360) % 360;
-    var t = deg / 360;
-    var v = MIN + t * (MAX - MIN);
-    return Math.round(v / STEP) * STEP;
+    return rad * 180 / Math.PI + 90; // 0 at top
+  }
+
+  function nearestPreset(v) {
+    var best = PRESETS[0], bestDist = Math.abs(v - best);
+    for (var i = 1; i < PRESETS.length; i++) {
+      var d = Math.abs(v - PRESETS[i]);
+      if (d < bestDist) { best = PRESETS[i]; bestDist = d; }
+    }
+    return { value: best, dist: bestDist };
+  }
+
+  function applyMagnet(v) {
+    var n = nearestPreset(v);
+    if (n.dist >= MAGNET_DIST) return v;
+    // Soft pull: blend toward preset as you get closer
+    var strength = 1 - (n.dist / MAGNET_DIST);
+    strength = strength * strength; // ease-in
+    return Math.round((v + (n.value - v) * strength * 0.55) / STEP) * STEP;
+  }
+
+  function setArcTransition(on) {
+    arc.style.transition = on ? 'stroke-dashoffset .28s ease' : 'none';
+  }
+
+  function highlightPreset(v) {
+    for (var i = 0; i < presetBtns.length; i++) {
+      var btn = presetBtns[i];
+      var pv = +btn.getAttribute('data-value');
+      if (interacted && pv === v) btn.classList.add('active');
+      else btn.classList.remove('active');
+    }
   }
 
   function updateUI() {
@@ -447,48 +496,108 @@
     document.getElementById('barRoi').style.width = roi + '%';
 
     dial.setAttribute('aria-valuenow', beds);
-    // subtle rotate of dial body for feedback
-    dial.style.transform = interacted ? 'rotate(' + (t * 270 - 135) + 'deg)' : 'none';
-    // keep logo upright
-    dial.querySelector('.dial-logo').style.transform = interacted ? 'rotate(' + (-(t * 270 - 135)) + 'deg)' : 'none';
+    if (interacted) {
+      var ang = angleFromValue(beds);
+      dial.style.transform = 'rotate(' + ang + 'deg)';
+      logo.style.transform = 'rotate(' + (-ang) + 'deg)';
+    } else {
+      dial.style.transform = 'none';
+      logo.style.transform = 'none';
+    }
+    highlightPreset(beds);
   }
 
   function setBeds(v, fromUser) {
     if (fromUser) interacted = true;
-    beds = Math.max(MIN, Math.min(MAX, v));
+    beds = clamp(Math.round(v), MIN, MAX);
     updateUI();
   }
 
+  function snapIfNear() {
+    if (!interacted) return;
+    var n = nearestPreset(beds);
+    // Always snap to nearest preset on release (clean bed stops)
+    setArcTransition(true);
+    setBeds(n.value, true);
+  }
+
   var dragging = false;
+  var activePointerId = null;
+
+  function eventXY(e) {
+    if (e.clientX != null) return { x: e.clientX, y: e.clientY };
+    if (e.touches && e.touches[0]) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    if (e.changedTouches && e.changedTouches[0]) {
+      return { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+    }
+    return null;
+  }
+
   function onDown(e) {
+    // Prefer Pointer Events; ignore legacy touch when pointer already handled
+    if (e.type === 'touchstart' && e.pointerType == null && window.PointerEvent) return;
     dragging = true;
-    if (dial.setPointerCapture && e.pointerId != null) try { dial.setPointerCapture(e.pointerId); } catch (_) {}
-    var x = e.clientX != null ? e.clientX : e.touches[0].clientX;
-    var y = e.clientY != null ? e.clientY : e.touches[0].clientY;
-    setBeds(valueFromPointer(x, y), true);
+    activePointerId = e.pointerId != null ? e.pointerId : null;
+    setArcTransition(false);
+    if (dial.setPointerCapture && activePointerId != null) {
+      try { dial.setPointerCapture(activePointerId); } catch (_) {}
+    }
+    var pt = eventXY(e);
+    if (!pt) return;
+    var raw = valueFromAngle(pointerAngle(pt.x, pt.y));
+    setBeds(applyMagnet(raw), true);
     e.preventDefault();
   }
+
   function onMove(e) {
     if (!dragging) return;
-    var x = e.clientX != null ? e.clientX : (e.touches && e.touches[0] && e.touches[0].clientX);
-    var y = e.clientY != null ? e.clientY : (e.touches && e.touches[0] && e.touches[0].clientY);
-    if (x == null) return;
-    setBeds(valueFromPointer(x, y), true);
+    if (activePointerId != null && e.pointerId != null && e.pointerId !== activePointerId) return;
+    if (e.type === 'touchmove' && e.pointerType == null && window.PointerEvent) return;
+    var pt = eventXY(e);
+    if (!pt) return;
+    var raw = valueFromAngle(pointerAngle(pt.x, pt.y));
+    setBeds(applyMagnet(raw), true);
     e.preventDefault();
   }
-  function onUp() { dragging = false; }
+
+  function onUp(e) {
+    if (!dragging) return;
+    if (activePointerId != null && e && e.pointerId != null && e.pointerId !== activePointerId) return;
+    if (e && e.type === 'touchend' && e.pointerType == null && window.PointerEvent) return;
+    dragging = false;
+    activePointerId = null;
+    snapIfNear();
+  }
 
   dial.addEventListener('pointerdown', onDown);
+  dial.addEventListener('pointermove', onMove);
+  dial.addEventListener('pointerup', onUp);
+  dial.addEventListener('pointercancel', onUp);
   window.addEventListener('pointermove', onMove);
   window.addEventListener('pointerup', onUp);
+  window.addEventListener('pointercancel', onUp);
+  // Fallback for older mobile browsers without Pointer Events
   dial.addEventListener('touchstart', onDown, { passive: false });
   window.addEventListener('touchmove', onMove, { passive: false });
   window.addEventListener('touchend', onUp);
+  window.addEventListener('touchcancel', onUp);
 
-  document.querySelectorAll('.preset').forEach(function (btn) {
+  presetBtns.forEach(function (btn) {
     btn.addEventListener('click', function () {
+      setArcTransition(true);
       setBeds(+btn.getAttribute('data-value'), true);
     });
+  });
+
+  dial.tabIndex = 0;
+  dial.addEventListener('keydown', function (e) {
+    var delta = 0;
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') delta = STEP * 5;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') delta = -STEP * 5;
+    if (!delta) return;
+    setArcTransition(true);
+    setBeds((interacted ? beds : MIN) + delta, true);
+    e.preventDefault();
   });
 
   updateUI();
