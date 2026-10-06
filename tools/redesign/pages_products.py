@@ -20,6 +20,7 @@ FALLBACK = {
     'sdv': ['https://abadis-med.com/wp-content/uploads/2022/12/ساکشن-دیواری-بزرگسال-1030x1030-1.jpg'],
     'paye': ['https://abadis-med.com/wp-content/uploads/2022/12/پایه-ترولی.jpg'],
     'negahdarande': ['https://abadis-med.com/wp-content/uploads/2022/12/نگهدارنده-لوله-تراشه-1030x1030-1.jpg'],
+    'anti': ['local:assets/img/filters/anti-1.webp', 'local:assets/img/filters/anti-2.webp'],
     'ght': ['local:assets/img/filters/stop-1.webp', 'local:assets/img/filters/stop-2.webp'],
     'mot': ['local:assets/img/filters/porous-1.webp'],
 }
@@ -34,6 +35,11 @@ def local_link(p, path, gid, alt, cls=''):
     return (f'<a href="{p}{path}" data-gallery="{gid}" data-w="{w}" data-h="{h}" aria-label="نمایش بزرگ‌تر: {esc(alt)}">'
             f'<img src="{p}{t}" width="{tw}" height="{th}" loading="lazy" decoding="async" alt="{esc(alt)}"></a>')
 SUCTION_BAG_ITEMS = ['کیسه ساکشن ۱ لیتری', 'کیسه ساکشن ۲ لیتری', 'کیسه ساکشن ۳ لیتری']
+
+def pick(b):
+    h = b.get('href') or ''
+    if h.startswith('http') and re.search(r'\.(jpe?g|png|webp)$', h) and best_img(h): return h
+    return b['src']
 
 def norm(s): return re.sub(r'[\s\u200c\u200b():]+', '', strip_tags(s))
 
@@ -57,7 +63,7 @@ def family(path):
             if norm(lead) and (norm(lead) in norm(title) or norm(title) in norm(lead) or len(lead) < 60):
                 body = body[m.end():]
         out.append({'id': aid, 'title': title or '', 'html': body,
-                    'imgs': [(b.get('href') if (b.get('href') or '').startswith('http') and re.search(r'\.(jpe?g|png|webp)$', b.get('href') or '') else b['src'], b.get('alt', '')) for b in bs if b['t'] == 'img'],
+                    'imgs': [(pick(b), b.get('alt', '')) for b in bs if b['t'] == 'img'],
                     'tables': [b['rows'] for b in bs if b['t'] == 'table']})
     return h1, out
 
