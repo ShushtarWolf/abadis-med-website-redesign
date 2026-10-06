@@ -55,7 +55,7 @@
      `.on-light` (light theme only) switches the ink + logo to teal while the
      bar sits over light content, and back to white over dark bands. */
   const DARK = '.hero, .page-hero, .deep, .site-footer, .cta-band, .media-frame, .product-visual, [data-tone="dark"]';
-  const zones = header ? [...header.querySelectorAll('.logo, .nav, .menu-btn, .theme-toggle')] : [];
+  const zones = header ? [...header.querySelectorAll('.logo, .nav, .menu-btn, .theme-toggle, .lang-switch')] : [];
   const isLightAt = (x, y) => {
     const el = document.elementsFromPoint(x, y).find((n) => !header.contains(n));
     return !!el && !el.closest(DARK);

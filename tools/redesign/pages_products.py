@@ -131,7 +131,7 @@ def build(write):
                 + f'\n  <nav class="anchors" aria-label="بخش‌های صفحه"><div class="wrap">{anchors}</div></nav>\n'
                 + f'  <section class="section"><div class="wrap">\n{blocks}\n  </div></section>\n'
                 + related(p, slug) + '\n' + INQUIRY)
-        write(f'products/{slug}/index.html', page(p, 'products', h1, f'{h1} آبادیس: ' + lead, main, lightbox=True))
+        write(f'products/{slug}/index.html', page(p, 'products', h1, f'{h1} آبادیس: ' + lead, main, lightbox=True, fa_path=f'products/{slug}/'))
     # hub
     p = '../'
     cards = []
@@ -145,4 +145,4 @@ def build(write):
                         'کیسه ساکشن یکبار مصرف، فیلترها، مخزن، پایه و نگهدارنده ها، اتصالات، ساکشن تیوب و سایر محصولات.', label='محصولات آبادیس')
             + f'\n  <section class="section"><div class="wrap"><div class="grid g-3">{"".join(cards)}</div></div></section>\n'
             + f'  <section class="section" style="padding-top:0"><div class="wrap"><div class="doc-links"><a href="../downloads/">مرکز دانلود کاتالوگ‌ها</a><a href="../install-guide/">راهنمای نصب</a><a href="../calculator/">محاسبه‌گر صرفه‌جویی</a></div></div></section>')
-    write('products/index.html', page(p, 'products', 'محصولات', 'محصولات مخازن طبی آبادیس: کیسه ساکشن یکبار مصرف، فیلترها، مخزن، پایه و نگهدارنده ها، اتصالات، ساکشن تیوب و سایر محصولات.', main))
+    write('products/index.html', page(p, 'products', 'محصولات', 'محصولات مخازن طبی آبادیس: کیسه ساکشن یکبار مصرف، فیلترها، مخزن، پایه و نگهدارنده ها، اتصالات، ساکشن تیوب و سایر محصولات.', main, fa_path='products/'))

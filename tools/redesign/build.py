@@ -17,9 +17,23 @@ import pages_calculator; GROUPS['calculator'] = pages_calculator.build   # abadi
 try:
     import pages_posts; GROUPS['posts'] = pages_posts.build
 except ImportError: pass
+try:
+    import pages_i18n
+    GROUPS['i18n'] = pages_i18n.build
+    GROUPS['en'] = lambda w: pages_i18n.build_lang(w, 'en')
+    GROUPS['ar'] = lambda w: pages_i18n.build_lang(w, 'ar')
+except ImportError: pass
 
 if __name__ == '__main__':
-    want = sys.argv[1:] or list(GROUPS)
+    want = sys.argv[1:] or [g for g in GROUPS if g not in ('en', 'ar')]  # full build includes i18n once
     if 'posts' in GROUPS: pages_posts.prepare()   # fill POST_MAP first so every page links posts internally
-    for g in want: GROUPS[g](write)
+    # avoid double-running en/ar when both i18n and en/ar requested
+    seen = set()
+    for g in want:
+        if g in seen: continue
+        if g == 'i18n':
+            seen.update(('i18n', 'en', 'ar'))
+        else:
+            seen.add(g)
+        GROUPS[g](write)
     print(len(WRITTEN), 'pages written'); [print(' ', w) for w in WRITTEN]

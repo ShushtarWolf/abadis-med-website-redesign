@@ -1,0 +1,297 @@
+"""i18n helpers for FA / EN / AR static redesign pages.
+
+Post URL scheme (documented): `/en/<post-slug>/` and `/arabic/<post-slug>/`
+(matching live WP slugs; AR may include Unicode path segments).
+"""
+from __future__ import annotations
+import json, pathlib, re, urllib.parse as u
+from html import unescape
+from lib import SITE_ORIGIN
+
+DATA = pathlib.Path(__file__).resolve().parent / 'data'
+
+LANGS = {
+    'fa': {
+        'lang': 'fa-IR', 'dir': 'rtl', 'root': '', 'og_locale': 'fa_IR',
+        'brand': 'مخازن طبی آبادیس',
+        'home_label': 'خانه',
+        'skip': 'پرش به محتوا',
+        'nav_aria': 'منوی اصلی',
+        'menu_aria': 'منو',
+        'theme_aria': 'حالت نمایش',
+        'theme_title': 'تغییر حالت نمایش',
+        'lang_aria': 'زبان',
+        'footer_more': 'بیشتر',
+        'footer_contact': 'تماس',
+        'footer_address': 'نشانی',
+        'footer_blurb': 'با ما در ارتباط باشید...',
+        'footer_copy': 'کلیه حقوق مادی و معنوی این وبسایت متعلق است به: مخازن طبی آبادیس · نسخهٔ پیش‌نمایش بازطراحی',
+        'contact_center': 'مرکز تماس:',
+        'email': 'پست الکترونیک:',
+        'whatsapp': 'واتس‌اپ:',
+        'addr_hq': 'نشانی دفتر مرکزی:',
+        'addr_factory': 'نشانی کارخانه:',
+        'addr_hq_val': 'ایران، تهران، قیطریه، خیابان اندرزگو، پلاک 104، واحد2',
+        'addr_factory_val': 'ایران،تهران،شهرک صنعتی شمس آباد، بلوار گلستان، کوچه گلشن ۱۹،پلاک۱۷',
+        'read_more': 'ادامه مطلب',
+        'back': 'بازگشت',
+        'news_tag': 'خبر',
+        'article_tag': 'مقاله',
+        'search': 'جست و جو',
+        'count_unit': 'مطلب',
+        'empty': 'موردی یافت نشد.',
+        'lb_aria': 'گالری تصاویر',
+        'lb_close': 'بستن',
+        'lb_prev': 'تصویر قبلی',
+        'lb_next': 'تصویر بعدی',
+    },
+    'en': {
+        'lang': 'en', 'dir': 'ltr', 'root': 'en/', 'og_locale': 'en_US',
+        'brand': 'Abadis Medical Reservoirs',
+        'home_label': 'Home',
+        'skip': 'Skip to content',
+        'nav_aria': 'Main menu',
+        'menu_aria': 'Menu',
+        'theme_aria': 'Display mode',
+        'theme_title': 'Change theme',
+        'lang_aria': 'Language',
+        'footer_more': 'More',
+        'footer_contact': 'Contact',
+        'footer_address': 'Address',
+        'footer_blurb': 'Get in touch with us...',
+        'footer_copy': 'All rights reserved: Abadis Medical Reservoirs · redesign preview',
+        'contact_center': 'Call center:',
+        'email': 'Email:',
+        'whatsapp': 'WhatsApp:',
+        'addr_hq': 'Head office:',
+        'addr_factory': 'Factory:',
+        'addr_hq_val': 'Iran, Tehran, Qeytarieh, Andarzgoo St., No. 104, Unit 2',
+        'addr_factory_val': 'Iran, Tehran, Shamsabad Industrial Town, Golestan Blvd, Golshan 19, No. 17',
+        'read_more': 'Read more',
+        'back': 'Back',
+        'news_tag': 'News',
+        'article_tag': 'Article',
+        'search': 'Search',
+        'count_unit': 'items',
+        'empty': 'No results.',
+        'lb_aria': 'Image gallery',
+        'lb_close': 'Close',
+        'lb_prev': 'Previous image',
+        'lb_next': 'Next image',
+    },
+    'ar': {
+        'lang': 'ar', 'dir': 'rtl', 'root': 'arabic/', 'og_locale': 'ar_AR',
+        'brand': 'خزانات طبي آباديس',
+        'home_label': 'الرئيسية',
+        'skip': 'تخطي إلى المحتوى',
+        'nav_aria': 'القائمة الرئيسية',
+        'menu_aria': 'القائمة',
+        'theme_aria': 'وضع العرض',
+        'theme_title': 'تغيير السمة',
+        'lang_aria': 'اللغة',
+        'footer_more': 'المزيد',
+        'footer_contact': 'اتصل',
+        'footer_address': 'العنوان',
+        'footer_blurb': 'تواصل معنا...',
+        'footer_copy': 'جميع الحقوق محفوظة: خزانات طبي آباديس · معاينة إعادة التصميم',
+        'contact_center': 'مركز الاتصال:',
+        'email': 'البريد الإلكتروني:',
+        'whatsapp': 'واتساب:',
+        'addr_hq': 'عنوان المكتب الرئيسي:',
+        'addr_factory': 'عنوان المصنع:',
+        'addr_hq_val': 'إيران، طهران، قيطريه، شارع أندرزغو، رقم 104، وحدة 2',
+        'addr_factory_val': 'إيران، طهران، مدينة شمس آباد الصناعية، بوليفارد گلستان، گلشن ۱۹، رقم ۱۷',
+        'read_more': 'اقرأ المزيد',
+        'back': 'عودة',
+        'news_tag': 'خبر',
+        'article_tag': 'مقال',
+        'search': 'بحث',
+        'count_unit': 'مواد',
+        'empty': 'لا توجد نتائج.',
+        'lb_aria': 'معرض الصور',
+        'lb_close': 'إغلاق',
+        'lb_prev': 'الصورة السابقة',
+        'lb_next': 'الصورة التالية',
+    },
+}
+
+# Main nav: (key, href under lang root, label)
+NAV = {
+    'fa': [
+        ('about', 'about/', 'آشنایی با ما'),
+        ('products', 'products/', 'محصولات'),
+        ('news', 'news/', 'آخرین اخبار'),
+        ('dealers', 'dealers/', 'لیست نمایندگان'),
+        ('csr', 'csr/', 'توسعه پایدار'),
+        ('articles', 'articles/', 'مقالات'),
+        ('contact', 'contact/', 'ارتباط با ما'),
+        ('calculator', 'calculator/', 'محاسبه‌گر'),
+    ],
+    'en': [
+        ('about', 'about-us/', 'About us'),
+        ('products', 'products/', 'Products'),
+        ('news', 'latest-news/', 'News'),
+        ('dealers', 'representatives/', 'Representatives'),
+        ('csr', 'csr/', 'CSR'),
+        ('articles', 'blog/', 'Blog'),
+        ('contact', 'contact-us/', 'Contact Us'),
+        ('calculator', 'calculator/', 'Calculator'),
+    ],
+    'ar': [
+        ('about', 'من-نحن/', 'من نحن'),
+        ('products', 'منتجات/', 'منتجات'),
+        ('news', 'الاخبار/', 'الاخبار'),
+        ('dealers', 'قائمة-الممثلين/', 'قائمة الممثلين'),
+        ('contact', 'اتصل-بنا/', 'اتصل بنا'),
+        ('calculator', 'الحوسبة/', 'الحوسبة'),
+        ('faq', 'پرسش-های-متداول/', 'پرسش های متداول'),
+        ('install', 'دليل-التركيب/', 'دليل التركيب'),
+    ],
+}
+
+SECONDARY = {
+    'fa': [
+        ('customers', 'customers/', 'مشتریان ما'),
+        ('experiences', 'experiences/', 'تجارب ما'),
+        ('downloads', 'downloads/', 'مرکز دانلود'),
+        ('install', 'install-guide/', 'راهنمای نصب'),
+        ('faq', 'faq/', 'پرسش های متداول'),
+        ('careers', 'careers/', 'فرصت های همکاری'),
+        ('zagros', 'csr/', 'نجات زاگرس'),
+    ],
+    'en': [
+        ('customers', 'our-customers/', 'Our customers'),
+        ('downloads', 'center-download/', 'Download Center'),
+        ('install', 'installation-manual/', 'Installation Manual'),
+        ('faq', 'faqs/', 'FAQs'),
+        ('collab', 'collaboration-opportunities/', 'Collaboration'),
+        ('sdgs', 'sdgs/', 'SDGs'),
+    ],
+    'ar': [
+        ('downloads', 'مركز-التنزيل/', 'مركز التنزيل'),
+        ('products_other', 'منتجات-اخری/', 'منتجات اخری'),
+        ('suction', 'كيس-الشفط/', 'كيس الشفط'),
+    ],
+}
+
+# Pages that exist only in some languages (gaps vs FA redesign)
+GAPS = {
+    'en_missing': ['careers/jobs (موقعیت‌های شغلی)', 'experiences (تجارب ما)'],
+    'ar_missing': [
+        'csr', 'sdgs', 'customers (our-customers)', 'careers / collaboration-opportunities',
+        'experiences', 'articles/blog',
+    ],
+}
+
+
+def load_map():
+    return json.load(open(DATA / 'i18n-map.json', encoding='utf-8'))
+
+
+def strip_tags(h):
+    return re.sub(r'\s+', ' ', unescape(re.sub(r'<[^>]+>', ' ', h or ''))).strip()
+
+
+def clean_html(html: str) -> str:
+    if not html:
+        return ''
+    h = html
+    h = re.sub(r'<script\b[^>]*>.*?</script>', '', h, flags=re.S | re.I)
+    h = re.sub(r'<style\b[^>]*>.*?</style>', '', h, flags=re.S | re.I)
+    h = re.sub(r'<noscript\b[^>]*>.*?</noscript>', '', h, flags=re.S | re.I)
+    h = re.sub(r'<!--.*?-->', '', h, flags=re.S)
+    h = re.sub(r'\sstyle=(["\'])(.*?)\1', '', h, flags=re.I | re.S)
+    h = re.sub(r'\sdata-(?:elementor|settings|widget_type|id|model-cid)[^=]*=(["\'])(.*?)\1', '', h, flags=re.I)
+    h = re.sub(r'\sclass=(["\'])([^"\']*elementor[^"\']*)\1', '', h, flags=re.I)
+    h = re.sub(r'\sclass=(["\'])\s*\1', '', h)
+    return h.strip()
+
+
+def asset_prefix(lang: str, depth: int) -> str:
+    """Relative prefix from a page at `depth` folders under site/ to site root assets."""
+    # depth 0 = site/index.html → ''
+    # depth 1 = site/about/ → '../'
+    # For en/about-us/ depth=2 → '../../'
+    root = LANGS[lang]['root']
+    # pages live under root; depth includes root segments
+    return '../' * depth
+
+
+def depth_for(rel: str) -> int:
+    rel = rel.strip('/')
+    if not rel or rel.endswith('.html') and '/' not in rel:
+        return 0
+    # en/about-us/index.html → 2
+    parts = pathlib.PurePosixPath(rel).parts
+    # drop index.html
+    parts = [p for p in parts if p != 'index.html']
+    return len(parts)
+
+
+def switcher_html(lang: str, fa_path: str, p: str) -> str:
+    """Language switcher linking to equivalents (or lang home). No target=_blank."""
+    m = load_map()
+    key = fa_path if fa_path.endswith('/') or fa_path == '' else fa_path + '/'
+    if key == '/':
+        key = ''
+    entry = m.get(key) or {}
+    # sdgs/ synthetic key: use csr/ pair for FA switcher context
+    if not entry and key == 'sdgs/':
+        entry = m.get('csr/') or {}
+    defaults = {'fa': '', 'en': 'en/', 'ar': 'arabic/'}
+    labels = {'fa': 'FA', 'en': 'EN', 'ar': 'ع'}
+    parts = []
+    for code in ('fa', 'en', 'ar'):
+        rel = entry.get(code) if code in entry else None
+        if rel is None:
+            rel = defaults[code]
+        href = p + rel
+        cur = ' aria-current="true"' if code == lang else ''
+        parts.append(f'<a class="lang-link" href="{href}" hreflang="{LANGS[code]["lang"]}"{cur}>{labels[code]}</a>')
+    return f'<nav class="lang-switch" aria-label="{LANGS[lang]["lang_aria"]}">{"".join(parts)}</nav>'
+
+
+def hreflang_tags(fa_path: str, p: str) -> str:
+    m = load_map()
+    key = fa_path if fa_path == '' or fa_path.endswith('/') else fa_path + '/'
+    entry = m.get(key)
+    if not entry:
+        return ''
+    tags = []
+    for code, hreflang in (('fa', 'fa-IR'), ('en', 'en'), ('ar', 'ar')):
+        rel = entry.get(code)
+        if rel is None:
+            continue
+        abs_url = SITE_ORIGIN.rstrip('/') + '/' + rel
+        tags.append(f'<link rel="alternate" hreflang="{hreflang}" href="{abs_url}">')
+    # x-default → FA URL (entry["fa"] may differ from map key, e.g. sdgs/ → csr/)
+    fa_rel = entry.get('fa')
+    if fa_rel is not None:
+        tags.append(f'<link rel="alternate" hreflang="x-default" href="{SITE_ORIGIN.rstrip("/") + "/" + fa_rel}">')
+    return '\n'.join(tags)
+
+
+def fa_path_from_site_rel(rel: str) -> str:
+    """Best-effort FA path key for a generated page relative path."""
+    rel = rel.replace('\\', '/').lstrip('./')
+    if rel.endswith('index.html'):
+        rel = rel[:-10]
+    if not rel or rel == '/':
+        return ''
+    if not rel.endswith('/'):
+        rel += '/'
+    # strip en/ arabic/
+    if rel.startswith('en/'):
+        # reverse lookup
+        m = load_map()
+        for k, v in m.items():
+            if v.get('en') == rel:
+                return k
+        return ''
+    if rel.startswith('arabic/'):
+        m = load_map()
+        for k, v in m.items():
+            if v.get('ar') == rel:
+                return k
+        return ''
+    return rel

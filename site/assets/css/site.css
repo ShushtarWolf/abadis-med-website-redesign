@@ -6,6 +6,14 @@
 @font-face { font-family: "Kalameh"; src: url("../fonts/kalameh/KalamehWeb-FaNum-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
 @font-face { font-family: "Kalameh"; src: url("../fonts/kalameh/KalamehWeb-FaNum-ExtraBold.woff2") format("woff2"); font-weight: 800; font-display: swap; }
 @font-face { font-family: "Kalameh"; src: url("../fonts/kalameh/KalamehWeb-FaNum-Black.woff2") format("woff2"); font-weight: 900; font-display: swap; }
+/* EN Latin digits: Kalameh FaNum maps 0-9 to Persian digits; use system locals for U+0030–0039 only (no new font files). */
+@font-face {
+  font-family: "KalamehLatinDigits";
+  src: local("Segoe UI"), local("Helvetica Neue"), local("Arial"), local("Helvetica");
+  unicode-range: U+0030-0039;
+  font-weight: 100 900;
+  font-display: swap;
+}
 
 /* ---------- theme tokens ---------- */
 :root, [data-theme="light"] {
@@ -61,6 +69,7 @@ body {
   color: var(--ink); background: var(--bg); letter-spacing: 0;
   transition: background-color .35s ease, color .35s ease;
 }
+html[lang="en"] body { font-family: "KalamehLatinDigits", "Kalameh", Tahoma, sans-serif; }
 img, video, canvas { max-width: 100%; display: block; }
 a { color: var(--brand); }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
@@ -90,7 +99,19 @@ a { color: var(--brand); }
 }
 .header.scrolled::before { opacity: 1; }
 .header .on-light { color: var(--header-ink); }
-.logo, .nav, .theme-toggle, .menu-btn { transition: color .3s ease, background-color .3s ease, border-color .3s ease; }
+.logo, .nav, .theme-toggle, .menu-btn, .lang-switch, .lang-link { transition: color .3s ease, background-color .3s ease, border-color .3s ease; }
+.lang-switch { display: flex; align-items: center; gap: 2px; flex: none; }
+.lang-link {
+  color: inherit; text-decoration: none; font-weight: 800; font-size: .78rem; letter-spacing: .02em;
+  min-width: 34px; height: 34px; padding: 0 8px; border-radius: 999px; display: inline-grid; place-items: center;
+  background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.26);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.lang-link:hover { background: rgba(255,255,255,.18); }
+.lang-link[aria-current="true"] { background: rgba(255,255,255,.22); }
+.lang-switch.on-light .lang-link { background: rgba(6,97,99,.06); border-color: rgba(6,97,99,.22); color: var(--header-ink); }
+.lang-switch.on-light .lang-link:hover { background: rgba(6,97,99,.12); }
+.lang-switch.on-light .lang-link[aria-current="true"] { background: var(--chip-bg); color: var(--chip-ink); }
 .logo { position: relative; display: flex; align-items: center; flex: none; }
 .logo img { height: 54px; width: auto; transition: opacity .3s ease; }
 .logo .lg-dark { position: absolute; inset-inline-start: 0; top: 50%; transform: translateY(-50%); }
@@ -343,10 +364,10 @@ td img.lid { width: 44px; height: 18px; border-radius: 4px; box-shadow: inset 0 
 .lb img { max-height: 78vh; object-fit: contain; border-radius: 12px; background: #f3fafa; }
 .lb figcaption { color: #cfe6e6; font-size: .9rem; text-align: center; }
 .lb button { position: absolute; background: rgba(255,255,255,.12); color: #fff; border: 0; width: 48px; height: 48px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; font-family: inherit; }
-.lb .lb-close { top: 16px; left: 16px; }
-.lb .lb-prev { right: 16px; top: 50%; transform: translateY(-50%); }
-.lb .lb-next { left: 16px; top: 50%; transform: translateY(-50%); }
-.lb .lb-count { position: absolute; top: 26px; right: 24px; color: #9fbcbe; font-size: .85rem; }
+.lb .lb-close { top: 16px; inset-inline-start: 16px; }
+.lb .lb-prev { inset-inline-end: 16px; top: 50%; transform: translateY(-50%); }
+.lb .lb-next { inset-inline-start: 16px; top: 50%; transform: translateY(-50%); }
+.lb .lb-count { position: absolute; top: 26px; inset-inline-end: 24px; color: #9fbcbe; font-size: .85rem; }
 body.lb-lock { overflow: hidden; }
 
 /* ---------- CSR / Zagros page ---------- */
@@ -614,6 +635,14 @@ details.letter[open] summary { margin-bottom: 12px; }
 
 /* calculator design switcher (redesign/calculator drafts) */
 .gfc-switch { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; padding: 22px 16px 30px; background: var(--bg); font-size: .86rem; }
-.gfc-switch span { color: var(--muted, #5a7578); font-weight: 700; margin-left: 4px; }
+.gfc-switch span { color: var(--muted, #5a7578); font-weight: 700; margin-inline-start: 4px; }
 .gfc-switch a { text-decoration: none; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink); font-weight: 700; background: var(--surface); }
 .gfc-switch a[aria-current="page"] { background: var(--brand); border-color: var(--brand); color: #fff; }
+
+/* ---------- LTR (English) ---------- */
+html[dir="ltr"] .crumbs { direction: ltr; }
+html[dir="ltr"] .pcard .go,
+html[dir="ltr"] .post-card .go,
+html[dir="ltr"] .article-foot a { unicode-bidi: isolate; }
+html[dir="ltr"] .prose { text-align: start; }
+html[dir="ltr"] .prose ul, html[dir="ltr"] .prose ol { padding-inline-start: 1.3em; }

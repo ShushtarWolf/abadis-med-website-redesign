@@ -9,6 +9,7 @@ from PIL import Image, ImageSequence
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 SITE = ROOT / 'site'
 DATA = pathlib.Path(__file__).resolve().parent / 'data'
+SITE_ORIGIN = 'https://abadis-med.com'
 RAW = pathlib.Path(os.environ.get(
     'ABADIS_IMG_RAW',
     str(pathlib.Path(__file__).resolve().parent / '.img-raw'),

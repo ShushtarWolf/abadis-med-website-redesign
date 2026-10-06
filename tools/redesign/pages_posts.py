@@ -89,7 +89,7 @@ def build(write):
     <div class="post-grid" id="postGrid" data-paged="12">{cards}</div>
     <p class="empty-msg" hidden>موردی یافت نشد.</p>
   </div></section>'''
-        write(f'{cat}/index.html', page(p, cat, LABEL[cat], lead, main))
+        write(f'{cat}/index.html', page(p, cat, LABEL[cat], lead, main, fa_path=f'{cat}/'))
         # singles
         p = '../../'
         for i, x in enumerate(items):
@@ -119,7 +119,7 @@ def build(write):
             # Document title includes section so it never collides with same-named pages
             # (e.g. article 2615 «راهنمای نصب مخازن» vs /install-guide/tanks/).
             doc_title = f'{x["t"]} | {LABEL[cat]}'
-            write(f'{cat}/{x["id"]}/index.html', page(p, cat, doc_title, excerpt(x), main, og=og, lightbox='data-gallery' in body))
+            write(f'{cat}/{x["id"]}/index.html', page(p, cat, doc_title, excerpt(x), main, og=og, lightbox='data-gallery' in body, fa_path=f'{cat}/'))
     home_teasers()
 
 def home_teasers():
