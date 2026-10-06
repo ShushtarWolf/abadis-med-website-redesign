@@ -3,3 +3,5 @@ concept-preview/models/AMR_4894 (1).glb
 .DS_Store
 **/.DS_Store
 tools/redesign/.img-raw/
+tools/test/node_modules/
+tools/test/out/
