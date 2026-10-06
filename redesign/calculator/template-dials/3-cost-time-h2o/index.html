@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>محاسبه‌گر COST / TIME / H2O — مخازن طبی آبادیس</title>
+<meta name="description" content="دایال COST/TIME/H2O با چهار کارت موضوعی روی قالب رسمی وب‌سایت آبادیس.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#e8f3f3">
+<script>(function(){var t;try{var q=new URLSearchParams(location.search).get('theme');if(q){localStorage.setItem('abadis-theme',q)}t=localStorage.getItem('abadis-theme')}catch(e){}var d=document.documentElement;d.dataset.theme=(t==='dark'||t==='noir')?t:'light';d.classList.add('js')})();</script>
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="../../assets/img/apple-touch-icon.png">
+<meta property="og:locale" content="fa_IR"><meta property="og:site_name" content="مخازن طبی آبادیس">
+<meta property="og:title" content="محاسبه‌گر COST / TIME / H2O — مخازن طبی آبادیس"><meta property="og:description" content="دایال COST/TIME/H2O با چهار کارت موضوعی روی قالب رسمی وب‌سایت آبادیس.">
+<meta property="og:image" content="../../assets/img/og-image.jpg">
+<link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/css/site.css">
+
+<style>
+.dial-page { padding: 100px 0 64px; }
+.dial-page .wrap { width: min(1100px, 100%); }
+.cth {
+  --cyan: var(--accent);
+  --green: #3ddc84;
+  --orange: #ff9f43;
+  --blue: #4dabf7;
+  --teal: #2ec4c6;
+  --cth-ink: var(--ink);
+  --cth-muted: var(--muted);
+  --dial-face: radial-gradient(circle at 40% 30%, var(--surface-2), var(--deep) 70%);
+  user-select: none; -webkit-tap-highlight-color: transparent;
+}
+[data-theme="noir"] .cth {
+  --green: #86efac; --orange: #fdba74; --blue: #a5b4fc; --teal: #c4b5fd; --cyan: #c4b5fd;
+}
+[data-theme="light"] .cth {
+  --dial-face: radial-gradient(circle at 40% 30%, #d4ecec, #0b2e32 75%);
+}
+
+.stage {
+  display: grid;
+  grid-template-columns: 1fr minmax(240px, 360px) 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: "cost dial h2o" "time dial sum";
+  gap: 12px 16px; align-items: center; min-height: 0; padding: 6px 0;
+}
+.dial-col { grid-area: dial; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.dial-wrap { position: relative; width: min(300px, 72vw); aspect-ratio: 1; }
+.tick-ring {
+  position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--cyan) 50%, transparent));
+}
+.dial {
+  position: absolute; inset: 14%; border-radius: 50%; background: var(--dial-face);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--cyan) 18%, transparent), 0 16px 40px rgba(0,0,0,.35), inset 0 2px 24px rgba(0,0,0,.4);
+  cursor: grab; touch-action: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 12px;
+}
+.dial:active { cursor: grabbing; }
+.dial-brand { font-size: clamp(1.3rem, 5vw, 1.8rem); font-weight: 900; color: #fff; letter-spacing: .04em; pointer-events: none; }
+.lcd {
+  background: color-mix(in srgb, var(--deep) 92%, #000); border: 1px solid color-mix(in srgb, var(--cyan) 28%, transparent);
+  border-radius: 999px; padding: 6px 22px 5px; text-align: center;
+  box-shadow: inset 0 2px 10px rgba(0,0,0,.55), 0 0 12px color-mix(in srgb, var(--cyan) 12%, transparent);
+  min-width: 110px; pointer-events: none;
+}
+.lcd .lbl { font-size: .62rem; font-weight: 700; color: var(--cth-muted); }
+.lcd .val {
+  font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 900; color: var(--cyan);
+  text-shadow: 0 0 14px color-mix(in srgb, var(--cyan) 55%, transparent); line-height: 1.15;
+  direction: ltr; unicode-bidi: plaintext;
+}
+.lcd .unit { font-size: .62rem; font-weight: 700; color: var(--cth-muted); }
+.caption {
+  display: flex; align-items: center; gap: 8px; color: var(--cth-muted); font-size: .8rem; font-weight: 600;
+}
+.info-ico {
+  width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid color-mix(in srgb, var(--ink) 45%, transparent);
+  display: grid; place-items: center; font-size: .65rem; font-weight: 800; color: var(--ink); font-style: normal; flex-shrink: 0;
+}
+
+.mcard {
+  border-radius: 14px; padding: 14px 14px 12px; background: var(--surface);
+  border: 1px solid; position: relative; min-width: 0; display: flex; flex-direction: column; gap: 4px;
+  box-shadow: var(--shadow);
+}
+.mcard.cost { grid-area: cost; border-color: color-mix(in srgb, var(--green) 45%, transparent); --mc: var(--green); }
+.mcard.time { grid-area: time; border-color: color-mix(in srgb, var(--orange) 45%, transparent); --mc: var(--orange); }
+.mcard.h2o  { grid-area: h2o;  border-color: color-mix(in srgb, var(--blue) 45%, transparent); --mc: var(--blue); }
+.mcard.sum  { grid-area: sum;  border-color: color-mix(in srgb, var(--teal) 50%, transparent); --mc: var(--teal); }
+.mcard-head { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.ring-ico { width: 40px; height: 40px; flex-shrink: 0; position: relative; }
+.ring-ico svg { width: 100%; height: 100%; }
+.ring-ico .glyph { position: absolute; inset: 0; display: grid; place-items: center; color: var(--mc); font-size: .9rem; }
+.mcard-title { font-size: .78rem; font-weight: 800; color: var(--cth-ink); line-height: 1.35; }
+.mcard-pct {
+  font-size: clamp(1.6rem, 4vw, 2.1rem); font-weight: 900; color: var(--mc);
+  text-shadow: 0 0 16px color-mix(in srgb, var(--mc) 45%, transparent); line-height: 1.1;
+  direction: ltr; unicode-bidi: plaintext;
+}
+.mcard-sub { font-size: .7rem; color: var(--cth-muted); font-weight: 600; }
+.mcard-foot { display: flex; align-items: center; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.mcard-foot .tag {
+  font-size: .62rem; font-weight: 700; padding: 3px 8px; border-radius: 6px;
+  background: var(--chip-bg); color: var(--muted);
+}
+.mcard-foot .amt { font-size: .78rem; font-weight: 800; color: var(--mc); direction: ltr; unicode-bidi: plaintext; }
+.mcard.sum .mcard-foot {
+  flex-direction: column; align-items: flex-start; gap: 2px;
+  border-top: 1px solid color-mix(in srgb, var(--teal) 22%, transparent); padding-top: 8px; margin-top: 10px;
+}
+.mcard.sum .mcard-foot .tag { background: none; padding: 0; }
+.cth-note { margin-top: 18px; text-align: center; color: var(--muted); font-size: .85rem; }
+
+@media (max-width: 720px) {
+  .stage {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    grid-template-areas: "dial dial" "h2o cost" "sum time";
+    gap: 10px;
+  }
+  .dial-wrap { width: min(260px, 78vw); }
+  .mcard { padding: 12px 10px; }
+  .mcard-pct { font-size: 1.45rem; }
+}
+</style>
+
+</head>
+<body>
+<a class="skip" href="#main">پرش به محتوا</a>
+<header class="header solid" id="header">
+  <a class="logo" href="../../" aria-label="مخازن طبی آبادیس — خانه">
+    <img class="lg-light" src="../../assets/img/abadis-logo.png" width="658" height="309" alt="مخازن طبی آبادیس">
+    <img class="lg-dark" src="../../assets/img/abadis-logo-on-teal.png" width="670" height="309" alt="مخازن طبی آبادیس">
+  </a>
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mainNav">منو</button>
+  <nav class="nav" id="mainNav" aria-label="منوی اصلی"><a href="../../">خانه</a><a href="../../products/">محصولات</a><a href="../../csr/">مسئولیت اجتماعی</a><a href="../../contact/">ارتباط با ما</a></nav>
+  <div class="theme-switch" role="group" aria-label="حالت نمایش">
+    <button type="button" data-set="light" aria-pressed="true"><span class="dot"></span>روشن</button>
+    <button type="button" data-set="dark" aria-pressed="false"><span class="dot"></span>تیره</button>
+    <button type="button" data-set="noir" aria-pressed="false"><span class="dot"></span>نوآر</button>
+  </div>
+  <a class="header-cta" href="../../contact/">تماس با فروش</a>
+</header>
+
+<main id="main">
+  <section class="section dial-page" aria-label="محاسبه‌گر COST TIME H2O">
+    <div class="wrap">
+      <div class="section-head reveal" style="text-align:center;margin-inline:auto;max-width:40rem">
+        <p class="eyebrow">نمونه دایال ۳ · COST / TIME / H₂O</p>
+        <h2>چهار کارت موضوعی صرفه‌جویی</h2>
+        <p>دایال تخت (اتاق عمل + ICU|CCU) با فرمول beds آبادیس؛ درصدها نسبت به سقف بازه نمایش داده می‌شوند.</p>
+      </div>
+      <div class="cth reveal">
+        <div class="stage">
+          <article class="mcard cost">
+            <div class="mcard-head">
+              <div class="ring-ico">
+                <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="none" stroke="color-mix(in srgb, #3ddc84 20%, transparent)" stroke-width="3"/><circle id="ringCost" cx="20" cy="20" r="16" fill="none" stroke="#3ddc84" stroke-width="3" stroke-linecap="round" stroke-dasharray="100.5" stroke-dashoffset="100.5" transform="rotate(-90 20 20)" style="filter:drop-shadow(0 0 3px #3ddc84)"/></svg>
+                <span class="glyph">🍃</span>
+              </div>
+              <div class="mcard-title">صرفه‌جویی در COST</div>
+            </div>
+            <div class="mcard-pct" id="pctCost">۰٪</div>
+            <div class="mcard-sub">کاهش هزینه شست‌وشو</div>
+            <div class="mcard-foot"><span class="tag">سالانه</span><span class="amt" id="amtCost">۰ تومان</span></div>
+          </article>
+          <article class="mcard h2o">
+            <div class="mcard-head">
+              <div class="ring-ico">
+                <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="none" stroke="color-mix(in srgb, #4dabf7 20%, transparent)" stroke-width="3"/><circle id="ringH2o" cx="20" cy="20" r="16" fill="none" stroke="#4dabf7" stroke-width="3" stroke-linecap="round" stroke-dasharray="100.5" stroke-dashoffset="100.5" transform="rotate(-90 20 20)" style="filter:drop-shadow(0 0 3px #4dabf7)"/></svg>
+                <span class="glyph">💧</span>
+              </div>
+              <div class="mcard-title">صرفه‌جویی در H₂O</div>
+            </div>
+            <div class="mcard-pct" id="pctH2o">۰٪</div>
+            <div class="mcard-sub">کاهش مصرف آب</div>
+            <div class="mcard-foot"><span class="tag">سالانه</span><span class="amt" id="amtH2o">۰ لیتر</span></div>
+          </article>
+          <div class="dial-col">
+            <div class="dial-wrap">
+              <svg class="tick-ring" viewBox="0 0 200 200" id="tickSvg" aria-hidden="true"></svg>
+              <div class="dial" id="dial" role="slider" aria-valuemin="10" aria-valuemax="700" aria-valuenow="32" aria-label="تعداد تخت اتاق عمل">
+                <div class="dial-brand">آبادیس</div>
+                <div class="lcd">
+                  <div class="lbl">تخت اتاق عمل</div>
+                  <div class="val" id="lcdVal">۳۲</div>
+                  <div class="unit">+ ICU تقریبی</div>
+                </div>
+              </div>
+            </div>
+            <p class="caption"><i class="info-ico">i</i> تعداد تخت را بچرخانید</p>
+          </div>
+          <article class="mcard time">
+            <div class="mcard-head">
+              <div class="ring-ico">
+                <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="none" stroke="color-mix(in srgb, #ff9f43 20%, transparent)" stroke-width="3"/><circle id="ringTime" cx="20" cy="20" r="16" fill="none" stroke="#ff9f43" stroke-width="3" stroke-linecap="round" stroke-dasharray="100.5" stroke-dashoffset="100.5" transform="rotate(-90 20 20)" style="filter:drop-shadow(0 0 3px #ff9f43)"/></svg>
+                <span class="glyph">⏳</span>
+              </div>
+              <div class="mcard-title">صرفه‌جویی در TIME</div>
+            </div>
+            <div class="mcard-pct" id="pctTime">۰٪</div>
+            <div class="mcard-sub">کاهش زمان کادر درمان</div>
+            <div class="mcard-foot"><span class="tag">سالانه</span><span class="amt" id="amtTime">ساعت ۰</span></div>
+          </article>
+          <article class="mcard sum">
+            <div class="mcard-head">
+              <div class="ring-ico">
+                <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="none" stroke="color-mix(in srgb, #2ec4c6 20%, transparent)" stroke-width="3"/><circle id="ringSum" cx="20" cy="20" r="16" fill="none" stroke="#2ec4c6" stroke-width="3" stroke-linecap="round" stroke-dasharray="100.5" stroke-dashoffset="100.5" transform="rotate(-90 20 20)" style="filter:drop-shadow(0 0 3px #2ec4c6)"/></svg>
+                <span class="glyph">📈</span>
+              </div>
+              <div class="mcard-title">خلاصه کل صرفه‌جویی</div>
+            </div>
+            <div class="mcard-pct" id="pctSum">۰٪</div>
+            <div class="mcard-sub">میانگین سه شاخص</div>
+            <div class="mcard-foot">
+              <span class="tag">تأثیر سالانه تخمینی</span>
+              <span class="amt" id="amtSum">۰ تومان</span>
+            </div>
+          </article>
+        </div>
+      </div>
+      <p class="cth-note reveal">فرمول beds(a, b≈۰٫۳۵a) · پوسته روشن / تیره / نوآر</p>
+    </div>
+  </section>
+</main>
+<footer class="site-footer">
+  <div class="wrap foot-inner">
+    <div>
+      <img src="../../assets/img/abadis-logo-on-teal.png" width="670" height="309" alt="مخازن طبی آبادیس" loading="lazy">
+      <p>با ما در ارتباط باشید...</p>
+      <div class="foot-links">
+        <a href="../../products/">محصولات آبادیس</a>
+        <a href="../../csr/">نجات زاگرس، مسئولیت اجتماعی آبادیس</a>
+        <a href="../../contact/">ارتباط با ما</a>
+        <a href="https://abadis-med.com/" target="_blank" rel="noopener">abadis-med.com</a>
+      </div>
+    </div>
+    <div>
+      <h3>تماس</h3>
+      <dl>
+        <dt>مرکز تماس:</dt><dd><a href="tel:+982192001017" dir="ltr">02192001017</a></dd>
+        <dt>تلفن تماس:</dt><dd><a href="tel:+982122671845" dir="ltr">02122671845</a> | <a href="tel:+982122205502" dir="ltr">02122205502</a><br><a href="tel:+982122215503" dir="ltr">02122215503</a> | <a href="tel:+982122218910" dir="ltr">02122218910</a></dd>
+        <dt>فکس:</dt><dd><span dir="ltr">02141425555</span> | داخلی 28544</dd>
+        <dt>پست الکترونیک:</dt><dd><a href="mailto:info@abadis-med.com">info@abadis-med.com</a></dd>
+        <dt>واتس‌اپ:</dt><dd><a href="https://wa.me/989100145809" target="_blank" rel="noopener" dir="ltr">+989100145809</a></dd>
+      </dl>
+    </div>
+    <div>
+      <h3>نشانی</h3>
+      <p><b>نشانی دفتر مرکزی:</b><br>ایران، تهران، قیطریه، خیابان اندرزگو، پلاک 104، واحد2</p>
+      <p><b>نشانی کارخانه:</b><br>ایران،تهران،شهرک صنعتی شمس آباد، بلوار گلستان، کوچه گلشن ۱۹،پلاک۱۷</p>
+    </div>
+  </div>
+  <div class="wrap foot-copy">کلیه حقوق مادی و معنوی این وبسایت متعلق است به: مخازن طبی آبادیس · نسخهٔ پیش‌نمایش بازطراحی</div>
+</footer>
+<script src="../../assets/js/site.js" defer></script>
+
+<script>
+(function () {
+
+  // Abadis formulas (live abadis-med.com calculator)
+  function surgery(n) {
+    return { water: n * 1.6 * 9.3, cost: n * 2.5 * 85000, hours: n * 1.7 / 60 * 2.2 * 7.1 };
+  }
+  function beds(a, b) {
+    return {
+      water: ((a * 254) + (b * 67)) * 1.6 * 9.3,
+      cost: ((a * 200) + (b * 50)) * 2.5 * 85000,
+      hours: ((a * 254) + (b * 67)) * 1.7 * 2.2 * 7.1 / 60
+    };
+  }
+  function fa(n) { return Math.round(n).toLocaleString('fa-IR'); }
+  function fa1(x) { return x.toLocaleString('fa-IR', { maximumFractionDigits: 1 }); }
+  function readableToman(t) {
+    if (t >= 1e12) return fa1(t / 1e12) + ' هزار میلیارد تومان';
+    if (t >= 1e9) return fa1(t / 1e9) + ' میلیارد تومان';
+    if (t >= 1e6) return fa1(t / 1e6) + ' میلیون تومان';
+    return fa(t) + ' تومان';
+  }
+  function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
+
+  var MIN = 10, MAX = 700, STEP = 1;
+  var aBeds = 32;
+  var RING = 2 * Math.PI * 16;
+  var dial = document.getElementById('dial');
+  var tickSvg = document.getElementById('tickSvg');
+
+  (function buildTicks() {
+    var ns = 'http://www.w3.org/2000/svg';
+    var cx = 100, cy = 100, rOut = 98, rIn = 88;
+    for (var i = 0; i < 72; i++) {
+      var ang = (i / 72) * Math.PI * 2 - Math.PI / 2;
+      var major = i % 6 === 0;
+      var line = document.createElementNS(ns, 'line');
+      line.setAttribute('x1', cx + Math.cos(ang) * (major ? rIn - 2 : rIn));
+      line.setAttribute('y1', cy + Math.sin(ang) * (major ? rIn - 2 : rIn));
+      line.setAttribute('x2', cx + Math.cos(ang) * rOut);
+      line.setAttribute('y2', cy + Math.sin(ang) * rOut);
+      line.setAttribute('stroke', 'currentColor');
+      line.setAttribute('stroke-width', major ? '2' : '1');
+      line.setAttribute('opacity', major ? '0.85' : '0.4');
+      tickSvg.appendChild(line);
+    }
+    tickSvg.style.color = 'var(--accent)';
+  })();
+
+  function valueFromPointer(clientX, clientY) {
+    var rect = dial.getBoundingClientRect();
+    var cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 2;
+    var deg = Math.atan2(clientY - cy, clientX - cx) * 180 / Math.PI + 90;
+    while (deg > 180) deg -= 360;
+    while (deg < -180) deg += 360;
+    deg = clamp(deg, -135, 135);
+    var t = (deg + 135) / 270;
+    return Math.round((MIN + t * (MAX - MIN)) / STEP) * STEP;
+  }
+  function angleFromValue(v) {
+    return ((v - MIN) / (MAX - MIN)) * 270 - 135;
+  }
+  function setRing(id, pct) {
+    var el = document.getElementById(id);
+    var p = clamp(pct, 0, 100) / 100;
+    el.style.strokeDasharray = String(RING);
+    el.style.strokeDashoffset = String(RING * (1 - p));
+  }
+  function updateUI() {
+    var b = Math.round(aBeds * 0.35);
+    var out = beds(aBeds, b);
+    var maxOut = beds(MAX, Math.round(MAX * 0.35));
+    var costPct = Math.round((out.cost / maxOut.cost) * 100);
+    var timePct = Math.round((out.hours / maxOut.hours) * 100);
+    var h2oPct = Math.round((out.water / maxOut.water) * 100);
+    var sumPct = Math.round((costPct + timePct + h2oPct) / 3);
+
+    document.getElementById('lcdVal').textContent = fa(aBeds);
+    document.getElementById('pctCost').textContent = fa(costPct) + '٪';
+    document.getElementById('amtCost').textContent = readableToman(out.cost);
+    document.getElementById('pctTime').textContent = fa(timePct) + '٪';
+    document.getElementById('amtTime').textContent = 'ساعت ' + fa(out.hours);
+    document.getElementById('pctH2o').textContent = fa(h2oPct) + '٪';
+    document.getElementById('amtH2o').textContent = fa(out.water) + ' لیتر';
+    document.getElementById('pctSum').textContent = fa(sumPct) + '٪';
+    document.getElementById('amtSum').textContent = readableToman(out.cost);
+
+    setRing('ringCost', costPct);
+    setRing('ringTime', timePct);
+    setRing('ringH2o', h2oPct);
+    setRing('ringSum', sumPct);
+
+    dial.setAttribute('aria-valuenow', aBeds);
+    tickSvg.style.transform = 'rotate(' + angleFromValue(aBeds) + 'deg)';
+    tickSvg.style.transformOrigin = '50% 50%';
+  }
+  function setBeds(v) { aBeds = clamp(Math.round(v), MIN, MAX); updateUI(); }
+
+  var dragging = false;
+  function onDown(e) {
+    dragging = true;
+    if (dial.setPointerCapture && e.pointerId != null) try { dial.setPointerCapture(e.pointerId); } catch (_) {}
+    var x = e.clientX != null ? e.clientX : e.touches[0].clientX;
+    var y = e.clientY != null ? e.clientY : e.touches[0].clientY;
+    setBeds(valueFromPointer(x, y));
+    e.preventDefault();
+  }
+  function onMove(e) {
+    if (!dragging) return;
+    var x = e.clientX != null ? e.clientX : (e.touches && e.touches[0] && e.touches[0].clientX);
+    var y = e.clientY != null ? e.clientY : (e.touches && e.touches[0] && e.touches[0].clientY);
+    if (x == null) return;
+    setBeds(valueFromPointer(x, y));
+    e.preventDefault();
+  }
+  function onUp() { dragging = false; }
+
+  dial.addEventListener('pointerdown', onDown);
+  window.addEventListener('pointermove', onMove);
+  window.addEventListener('pointerup', onUp);
+  dial.addEventListener('touchstart', onDown, { passive: false });
+  window.addEventListener('touchmove', onMove, { passive: false });
+  window.addEventListener('touchend', onUp);
+  dial.tabIndex = 0;
+  dial.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { setBeds(aBeds + 10); e.preventDefault(); }
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { setBeds(aBeds - 10); e.preventDefault(); }
+  });
+  updateUI();
+})();
+</script>
+
+</body>
+</html>
