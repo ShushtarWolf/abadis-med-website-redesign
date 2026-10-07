@@ -415,7 +415,7 @@
     });
   });
 
-  /* ---------- home customers logo carousel (scroll-snap, no mouse-follow) ---------- */
+  /* ---------- home customers logo carousel (track-only scroll; never window) ---------- */
   document.querySelectorAll('[data-logo-carousel]').forEach((root) => {
     const track = root.querySelector('.logo-carousel-track');
     const slides = track ? [...track.querySelectorAll('.home-logo')] : [];
@@ -423,11 +423,16 @@
     const next = root.querySelector('.logo-carousel-next');
     if (!track || slides.length < 2) return;
 
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reduceMq = window.matchMedia('(prefers-reduced-motion: reduce)');
     let index = 0;
-    let paused = false;
+    let userPaused = false;   /* hover / touch */
+    let inView = false;       /* IntersectionObserver */
+    let timer = 0;
 
-    function slideCenter(el) {
+    function reduce() { return reduceMq.matches; }
+
+    /** Visual delta from track center to slide center (physical px). */
+    function slideCenterDelta(el) {
       const tr = track.getBoundingClientRect();
       const er = el.getBoundingClientRect();
       return (er.left + er.right) / 2 - (tr.left + tr.right) / 2;
@@ -435,7 +440,7 @@
     function nearestIndex() {
       let best = 0, bestAbs = Infinity;
       slides.forEach((el, i) => {
-        const a = Math.abs(slideCenter(el));
+        const a = Math.abs(slideCenterDelta(el));
         if (a < bestAbs) { bestAbs = a; best = i; }
       });
       return best;
@@ -444,17 +449,14 @@
       index = Math.max(0, Math.min(slides.length - 1, i));
       slides.forEach((el, n) => el.classList.toggle('is-center', n === index));
     }
+    /** Scroll ONLY the track — never scrollIntoView / window. */
     function goTo(i, smooth) {
       i = Math.max(0, Math.min(slides.length - 1, i));
       const el = slides[i];
       if (!el) return;
       markCenter(i);
-      try {
-        el.scrollIntoView({ inline: 'center', block: 'nearest', behavior: smooth && !reduce ? 'smooth' : 'auto' });
-      } catch (e) {
-        const delta = slideCenter(el);
-        track.scrollBy({ left: delta, behavior: smooth && !reduce ? 'smooth' : 'auto' });
-      }
+      const left = track.scrollLeft + slideCenterDelta(el);
+      track.scrollTo({ left, behavior: smooth && !reduce() ? 'smooth' : 'auto' });
     }
 
     let raf = 0;
@@ -463,24 +465,56 @@
       raf = requestAnimationFrame(() => { raf = 0; markCenter(nearestIndex()); });
     }, { passive: true });
 
-    if (prev) prev.addEventListener('click', () => { paused = true; goTo(index - 1, true); });
-    if (next) next.addEventListener('click', () => { paused = true; goTo(index + 1, true); });
+    if (prev) prev.addEventListener('click', () => { userPaused = true; goTo(index - 1, true); });
+    if (next) next.addEventListener('click', () => { userPaused = true; goTo(index + 1, true); });
 
-    const pause = () => { paused = true; };
-    const resume = () => { paused = false; };
-    root.addEventListener('mouseenter', pause);
-    root.addEventListener('mouseleave', resume);
-    track.addEventListener('touchstart', pause, { passive: true });
-    track.addEventListener('pointerdown', (e) => { if (e.pointerType === 'touch' || e.pointerType === 'pen') pause(); });
+    root.addEventListener('mouseenter', () => { userPaused = true; });
+    root.addEventListener('mouseleave', () => { userPaused = false; });
+    track.addEventListener('touchstart', () => { userPaused = true; }, { passive: true });
+    track.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'touch' || e.pointerType === 'pen') userPaused = true;
+    });
 
-    function tick() {
-      if (!paused && !reduce && !document.hidden) {
-        goTo(index + 1 >= slides.length ? 0 : index + 1, true);
-      }
+    function canAutoplay() {
+      return inView && !userPaused && !document.hidden && !reduce();
     }
-    if (!reduce) window.setInterval(tick, 3800);
-    document.addEventListener('visibilitychange', () => { if (document.hidden) paused = true; });
+    function tick() {
+      if (!canAutoplay()) return;
+      goTo(index + 1 >= slides.length ? 0 : index + 1, true);
+    }
+    function startTimer() {
+      if (timer || reduce()) return;
+      timer = window.setInterval(tick, 3800);
+    }
+    function stopTimer() {
+      if (!timer) return;
+      window.clearInterval(timer);
+      timer = 0;
+    }
 
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        const e = entries[0];
+        inView = !!(e && e.isIntersecting && e.intersectionRatio >= 0.25);
+        if (inView) startTimer();
+        else stopTimer();
+      }, { threshold: [0, 0.25, 0.5, 0.75] });
+      io.observe(root);
+    } else {
+      inView = true;
+      startTimer();
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stopTimer();
+      else if (canAutoplay()) startTimer();
+    });
+    if (reduceMq.addEventListener) reduceMq.addEventListener('change', () => {
+      if (reduce()) stopTimer();
+      else if (canAutoplay()) startTimer();
+    });
+
+    /* Center first logo on the track only (no page jump) */
     requestAnimationFrame(() => goTo(0, false));
     window.addEventListener('resize', () => goTo(index, false), { passive: true });
   });
