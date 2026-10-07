@@ -146,6 +146,9 @@ POST_ALIASES = {
     '/شرکتهای-دانشبنیان-در-صنعت-تجهیزات/': 'articles/17269/',
     '/انواع-عفونت‌های-بیمارستانی/': 'articles/713/',
     '/types-of-hospital-infections/': 'articles/713/',
+    # Live slug variants longer/shorter than archived path truncation
+    '/دستاوردهای-شرکت-مخازن-طبی-آبادیس-در-توسعه-کیسه-های-ساکشن-یکبار-مصرف/': 'articles/17431/',
+    '/دستاوردهای-شرکت-مخازن-طبی-آبادیس-در-توسعه-کیسه-ساکشن/': 'articles/17431/',
     # Until /en/ ships (prompt 3), point EN product URLs at the FA equivalent.
     '/en/products/suction-bag/': 'products/suction-bag/',
 }

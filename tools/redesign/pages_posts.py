@@ -45,6 +45,8 @@ def prepare():
         MISSING.append(dict(q, cat=c, t=t, slug_title=t not in titles.values()))
     MISSING.sort(key=lambda x: x['date'], reverse=True)
 
+FALLBACK_THUMB = 'assets/img/post-thumb-fallback.webp'
+
 def thumb(p, post, w=640):
     r = best_img(post.get('image'), w) if post.get('image') else None
     if not r:   # first inline image as fallback
@@ -56,20 +58,25 @@ def thumb(p, post, w=640):
 
 def excerpt(post):
     d = strip_tags(post.get('desc') or '')
-    if not d:
+    d = re.sub(r'[\xa0\s]+', ' ', d).strip(' \t\n\r\u200c·-|')
+    if len(d) < 12:
         d = strip_tags(' '.join(b.get('html', '') for b in post['blocks'] if b['t'] == 'html'))
+        d = re.sub(r'[\xa0\s]+', ' ', d).strip()
+    if len(d) < 12:
+        d = strip_tags(post.get('t') or post.get('title') or '')
     return d[:190] + ('…' if len(d) > 190 else '')
 
 def card(p, post, from_list=True):
     r = thumb(p, post)
-    ph = (f'<div class="ph"><img src="{p}{r["src"]}" width="{r["w"]}" height="{r["h"]}" alt="" loading="lazy" decoding="async"></div>' if r
-          else f'<div class="ph txt"><img src="{p}assets/img/abadis-logo-teal.png" width="658" height="309" alt="" loading="lazy"></div>')
+    alt = esc(post['t'])
+    ph = (f'<div class="ph"><img src="{p}{r["src"]}" width="{r["w"]}" height="{r["h"]}" alt="{alt}" loading="lazy" decoding="async"></div>' if r
+          else f'<div class="ph txt"><img src="{p}{FALLBACK_THUMB}" width="1280" height="720" alt="{alt}" loading="lazy"></div>')
     href = (post['rel'].split('/', 1)[1] if from_list else p + post['rel'])
     return (f'<a class="post-card reveal" href="{href}" data-name="{esc(post["t"])}">{ph}<div class="body"><time datetime="{post["date"][:10]}">{jdate(post["date"])}</time>'
             f'<h3>{esc(post["t"])}</h3><p>{esc(excerpt(post))}</p><span class="go">ادامه مطلب ←</span></div></a>')
 
 def missing_card(p, m):
-    return (f'<a class="post-card ext reveal" href="{esc(m["url"])}" target="_blank" rel="noopener" data-name="{esc(m["t"])}"><div class="ph txt"><img src="{p}assets/img/abadis-logo-teal.png" width="658" height="309" alt="" loading="lazy"></div>'
+    return (f'<a class="post-card ext reveal" href="{esc(m["url"])}" target="_blank" rel="noopener" data-name="{esc(m["t"])}"><div class="ph txt"><img src="{p}{FALLBACK_THUMB}" width="1280" height="720" alt="{esc(m["t"])}" loading="lazy"></div>'
             f'<div class="body"><span class="date">متن در نسخهٔ آرشیوشده موجود نیست</span><h3>{esc(m["t"])}</h3><span class="go">مطالعه در سایت فعلی</span></div></a>')
 
 def build(write):
@@ -96,7 +103,12 @@ def build(write):
             r = thumb(p, x, 1200)
             first_img = next((b for b in x['blocks'] if b['t'] in ('img', 'html')), None)
             dup = bool(first_img and first_img['t'] == 'img' and x.get('image') and re.sub(r'-\d+x\d+', '', first_img['src']).rsplit('.', 1)[0] == re.sub(r'-\d+x\d+', '', x['image']).rsplit('.', 1)[0])
-            lead_img = f'<div class="lead-img"><img src="{p}{r["src"]}" width="{r["w"]}" height="{r["h"]}" alt="{esc(x["t"])}" decoding="async"></div>' if r and not dup else ''
+            if r and not dup:
+                lead_img = f'<div class="lead-img"><img src="{p}{r["src"]}" width="{r["w"]}" height="{r["h"]}" alt="{esc(x["t"])}" decoding="async"></div>'
+            elif not r:
+                lead_img = f'<div class="lead-img"><img src="{p}{FALLBACK_THUMB}" width="1280" height="720" alt="{esc(x["t"])}" decoding="async"></div>'
+            else:
+                lead_img = ''
             body = blocks_to_prose(x['blocks'], p, skip_title=x['t'], gid=f'p{x["id"]}-')
             newer = items[i - 1] if i > 0 else None; older = items[i + 1] if i + 1 < len(items) else None
             nav = ''
@@ -115,7 +127,7 @@ def build(write):
     <div class="article-foot"><span>تاریخ انتشار: {jdate(x['date'])}</span><a href="../">بازگشت به {LABEL[cat]} ←</a></div>
     {nav}
   </div></section>'''
-            og = (p + r['src']) if r else None
+            og = (p + r['src']) if r else (p + FALLBACK_THUMB)
             # Document title includes section so it never collides with same-named pages
             # (e.g. article 2615 «راهنمای نصب مخازن» vs /install-guide/tanks/).
             doc_title = f'{x["t"]} | {LABEL[cat]}'

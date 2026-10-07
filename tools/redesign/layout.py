@@ -28,7 +28,8 @@ def head(p, title, desc, og=None, lang='fa', fa_path='', canonical_path=None):
         can_rel = None  # caller should pass canonical_path for en/ar
     can_tag = ''
     if canonical_path is not None:
-        can_tag = f'<link rel="canonical" href="{SITE_ORIGIN.rstrip("/")}/{canonical_path.lstrip("/")}">\n'
+        # Root-relative canonical keeps preview/link checks on-site until launch.
+        can_tag = f'<link rel="canonical" href="/{canonical_path.lstrip("/")}">\n'
     alts = hreflang_tags(fa_path, p)
     alts_block = (alts + '\n') if alts else ''
     return f'''<!DOCTYPE html>

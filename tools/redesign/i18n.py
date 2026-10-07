@@ -192,7 +192,182 @@ def strip_tags(h):
     return re.sub(r'\s+', ' ', unescape(re.sub(r'<[^>]+>', ' ', h or ''))).strip()
 
 
-def clean_html(html: str) -> str:
+# Live WP paths that ship under a different local folder (products hub, skipped slugs, FA↔EN).
+_I18N_HREF_ALIASES = {
+    '/en/suction-bag/': 'en/products/suction-bag/',
+    '/en/base-and-holder/': 'en/products/base-and-holder/',
+    '/en/filters/': 'en/products/filters/',
+    '/en/canisters/': 'en/products/canisters/',
+    '/en/canister-2/': 'en/products/canisters/',
+    '/en/connections/': 'en/products/connections/',
+    '/en/products/oral-hygiene/': 'en/products/other-products/',
+    '/en/canister-installation/': 'en/installation-manual/',
+    '/en/user-manuals/': 'en/installation-manual/',
+    '/en/catalogue/': 'en/center-download/',
+    '/arabic/كيسه-ساكشن/': 'arabic/كيس-الشفط/',
+    '/arabic/کیسه-ساکشن/': 'arabic/كيس-الشفط/',
+    '/arabic/فيلترها/': 'arabic/الفلتر/',
+    '/arabic/فیلترها/': 'arabic/الفلتر/',
+    '/arabic/الوصلة/': 'arabic/الوصلات/',
+    '/arabic/تماس-با-ما/': 'arabic/اتصل-بنا/',
+    '/about/': 'about/',
+    '/articles/': 'articles/',
+    '/calculator/': 'calculator/',
+    '/careers/': 'careers/',
+    '/contact/': 'contact/',
+    '/csr/': 'csr/',
+    '/customers/': 'customers/',
+    '/dealers/': 'dealers/',
+    '/downloads/': 'downloads/',
+    '/faq/': 'faq/',
+    '/install-guide/': 'install-guide/',
+    '/news/': 'news/',
+    '/products/': 'products/',
+}
+
+_local_paths_cache = None
+
+
+def _local_site_paths():
+    """Set of site-relative dirs that have index.html (e.g. 'en/about-us/', 'news/1124/')."""
+    global _local_paths_cache
+    if _local_paths_cache is not None:
+        return _local_paths_cache
+    from lib import SITE
+    found = {''}
+    if SITE.is_dir():
+        for idx in SITE.rglob('index.html'):
+            rel = idx.relative_to(SITE).parent.as_posix()
+            found.add('' if rel == '.' else rel.rstrip('/') + '/')
+    _local_paths_cache = found
+    return found
+
+
+def _norm_abadis_path(url: str):
+    """Return (path_with_slash, fragment) for abadis-med.com URLs, else None."""
+    if not url:
+        return None
+    url = url.strip()
+    if url.startswith('//'):
+        url = 'https:' + url
+    m = re.match(r'^(?:https?:)?//(?:www\.)?abadis-med\.com(/[^?#]*)?(?:\?[^#]*)?(#.*)?$', url, re.I)
+    if not m:
+        return None
+    path = u.unquote(m.group(1) or '/')
+    if not path.endswith('/') and '.' not in path.rsplit('/', 1)[-1]:
+        path += '/'
+    return path, (m.group(2) or '')
+
+
+def map_i18n_href(url: str, lang: str, prefix: str) -> str | None:
+    """Map an abadis-med.com href to a site-relative path, or None to keep as-is.
+
+    Keeps wp-content asset URLs (no local page). Rewrites pages/posts that exist
+    under /en/, /arabic/, or FA site paths.
+    """
+    parsed = _norm_abadis_path(url)
+    if not parsed:
+        return None
+    path, frag = parsed
+    if path.startswith('/wp-content/') or '/wp-content/' in path or path.startswith('/en/wp-content/') or path.startswith('/arabic/wp-content/'):
+        return None
+    # Drop Elementor junk hashes; keep real in-page anchors
+    if frag.startswith('#elementor') or frag in ('#reply-title',):
+        frag = ''
+
+    local = None
+    locals_ = _local_site_paths()
+    root = LANGS.get(lang, LANGS['fa'])['root']
+    # Site home on live → language home
+    if path == '/':
+        local = root
+    elif path in _I18N_HREF_ALIASES:
+        local = _I18N_HREF_ALIASES[path]
+    else:
+        cand = path.lstrip('/')  # e.g. en/about-us/
+        if cand in locals_:
+            local = cand
+        elif not path.startswith('/en/') and not path.startswith('/arabic/'):
+            # FA or bare path → lib.internal (PAGE_MAP / POST_MAP)
+            try:
+                from lib import internal
+                hit = internal('https://abadis-med.com' + path)
+            except Exception:
+                hit = None
+            if hit is not None:
+                local = hit
+            elif cand in locals_:
+                local = cand
+            elif root and (root + cand) in locals_:
+                # bare EN/AR slug without lang prefix
+                local = root + cand
+
+    if local is None and root:
+        trial = root + path.lstrip('/')
+        if trial in locals_:
+            local = trial
+    if local is None:
+        return None
+    if local == '':
+        href = prefix if prefix else './'
+    else:
+        href = prefix + local
+    if frag and '#' not in href:
+        href += frag
+    return href
+
+
+def _ensure_img_alt(tag: str, lang: str) -> str:
+    """Add a descriptive alt when the attribute is missing entirely."""
+    if re.search(r'\balt\s*=', tag, re.I):
+        return tag
+    title = re.search(r'\btitle=(["\'])(.*?)\1', tag, re.I)
+    aria = re.search(r'\baria-label=(["\'])(.*?)\1', tag, re.I)
+    alt = ''
+    if title and title.group(2).strip():
+        alt = title.group(2).strip()
+    elif aria and aria.group(2).strip():
+        alt = aria.group(2).strip()
+    else:
+        # Derive from filename when possible
+        src = re.search(r'\bsrc=(["\'])(.*?)\1', tag, re.I)
+        if src:
+            base = u.unquote(src.group(2).rstrip('/').rsplit('/', 1)[-1])
+            base = re.sub(r'\.[a-z0-9]+$', '', base, flags=re.I)
+            base = re.sub(r'[-_]+', ' ', base).strip()
+            if base and base.lower() not in ('dummy', 'placeholder', 'image', 'img'):
+                alt = base
+        if not alt:
+            alt = {
+                'en': 'Abadis Med',
+                'ar': 'آبادیس مد',
+                'fa': 'مخازن طبی آبادیس',
+            }.get(lang, 'Abadis Med')
+    alt_esc = alt.replace('&', '&amp;').replace('"', '&quot;')
+    if tag.endswith('/>'):
+        return tag[:-2] + f' alt="{alt_esc}" />'
+    if tag.endswith('>'):
+        return tag[:-1] + f' alt="{alt_esc}">'
+    return tag + f' alt="{alt_esc}"'
+
+
+def meta_description(title: str, excerpt_html: str, content_html: str = '', lang: str = 'fa') -> str:
+    """Non-empty meta description: excerpt → content lead → title."""
+    def scrub(s: str) -> str:
+        s = re.sub(r'\[[^\]]+\]', ' ', s or '')  # strip WP/Avia shortcodes
+        s = strip_tags(s)
+        s = re.sub(r'[\xa0\s]+', ' ', s).strip(' \t\n\r\u200c·-|')
+        return s
+    d = scrub(excerpt_html or '')
+    if len(d) < 12:
+        d = scrub(content_html or '')
+    if len(d) < 12:
+        brand = LANGS.get(lang, LANGS['fa'])['brand']
+        d = f'{strip_tags(title)} — {brand}'.strip(' —')
+    return d[:180]
+
+
+def clean_html(html: str, lang: str = 'en', prefix: str = '../') -> str:
     if not html:
         return ''
     h = html
@@ -219,6 +394,25 @@ def clean_html(html: str) -> str:
         flags=re.I,
     )
     h = re.sub(r'\sdata-wplink-url-error=(["\'])[^"\']*\1', '', h, flags=re.I)
+
+    def href_sub(m):
+        q, url = m.group(1), m.group(2)
+        new = map_i18n_href(unescape(url), lang, prefix)
+        if new is None:
+            return m.group(0)
+        return f'href={q}{new}{q}'
+
+    h = re.sub(
+        r'''\bhref=(["'])((?:https?:)?//(?:www\.)?abadis-med\.com[^"']*)\1''',
+        href_sub,
+        h,
+        flags=re.I,
+    )
+
+    def img_sub(m):
+        return _ensure_img_alt(m.group(0), lang)
+
+    h = re.sub(r'<img\b[^>]*>', img_sub, h, flags=re.I)
     return h.strip()
 
 
@@ -267,6 +461,7 @@ def switcher_html(lang: str, fa_path: str, p: str) -> str:
 
 
 def hreflang_tags(fa_path: str, p: str) -> str:
+    """Root-relative hreflang so static preview links stay on-site (not abadis-med.com)."""
     m = load_map()
     key = fa_path if fa_path == '' or fa_path.endswith('/') else fa_path + '/'
     entry = m.get(key)
@@ -277,12 +472,12 @@ def hreflang_tags(fa_path: str, p: str) -> str:
         rel = entry.get(code)
         if rel is None:
             continue
-        abs_url = SITE_ORIGIN.rstrip('/') + '/' + rel
-        tags.append(f'<link rel="alternate" hreflang="{hreflang}" href="{abs_url}">')
+        href = '/' + rel.lstrip('/')
+        tags.append(f'<link rel="alternate" hreflang="{hreflang}" href="{href}">')
     # x-default → FA URL (entry["fa"] may differ from map key, e.g. sdgs/ → csr/)
     fa_rel = entry.get('fa')
     if fa_rel is not None:
-        tags.append(f'<link rel="alternate" hreflang="x-default" href="{SITE_ORIGIN.rstrip("/") + "/" + fa_rel}">')
+        tags.append(f'<link rel="alternate" hreflang="x-default" href="/{fa_rel.lstrip("/")}">')
     return '\n'.join(tags)
 
 

@@ -3,8 +3,9 @@ from __future__ import annotations
 import json, pathlib, re, urllib.parse as u
 from lib import esc, best_img, SITE
 from layout import page, mosaic_hero, page_hero
+import i18n as i18n_mod
 from i18n import (
-    LANGS, NAV, clean_html, strip_tags, load_map, GAPS, DATA,
+    LANGS, NAV, clean_html, strip_tags, load_map, GAPS, DATA, meta_description,
 )
 
 # Skip utility / duplicate EN-AR pages
@@ -112,8 +113,9 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
     depth = _depth(rel)
     p = _prefix(depth)
     title = strip_tags(wp.get('title', {}).get('rendered', ''))
-    desc = strip_tags(wp.get('excerpt', {}).get('rendered', ''))[:180]
-    body = clean_html(wp.get('content', {}).get('rendered', ''))
+    raw_content = wp.get('content', {}).get('rendered', '')
+    desc = meta_description(title, wp.get('excerpt', {}).get('rendered', ''), raw_content, lang)
+    body = clean_html(raw_content, lang=lang, prefix=p)
     fa_path = _fa_for(site_path, lang)
     can = root + site_path
     # home
@@ -152,8 +154,9 @@ def build_posts(write, lang):
         depth = _depth(rel)
         p = _prefix(depth)
         title = strip_tags(wp.get('title', {}).get('rendered', ''))
-        desc = strip_tags(wp.get('excerpt', {}).get('rendered', ''))[:180]
-        body = clean_html(wp.get('content', {}).get('rendered', ''))
+        raw_content = wp.get('content', {}).get('rendered', '')
+        desc = meta_description(title, wp.get('excerpt', {}).get('rendered', ''), raw_content, lang)
+        body = clean_html(raw_content, lang=lang, prefix=p)
         index_href = '../latest-news/' if lang == 'en' else '../الاخبار/'
         index_label = 'News' if lang == 'en' else 'الاخبار'
         # prefer blog parent label for EN when title looks like article — keep News for simplicity
@@ -180,13 +183,13 @@ def _write_post_index(write, lang, site_path, cur, label, items):
     for wp in items:
         slug = _slug_decode(wp.get('slug') or str(wp['id']))
         title = strip_tags(wp.get('title', {}).get('rendered', ''))
-        desc = strip_tags(wp.get('excerpt', {}).get('rendered', ''))[:160]
+        desc = meta_description(title, wp.get('excerpt', {}).get('rendered', ''), wp.get('content', {}).get('rendered', ''), lang)[:160]
         href = f'../{slug}/' if site_path else f'{slug}/'
         # from latest-news/ to /en/slug/ → ../slug/
         href = f'{p}{root}{slug}/'
         cards.append(
             f'<a class="post-card reveal" href="{href}" data-name="{esc(title)}">'
-            f'<div class="ph txt"><img src="{p}assets/img/abadis-logo-teal.png" width="658" height="309" alt="" loading="lazy"></div>'
+            f'<div class="ph txt"><img src="{p}assets/img/post-thumb-fallback.webp" width="1280" height="720" alt="{esc(title)}" loading="lazy"></div>'
             f'<div class="body"><h3>{esc(title)}</h3><p>{esc(desc)}</p>'
             f'<span class="go">{esc(L["read_more"])}</span></div></a>'
         )
@@ -246,6 +249,7 @@ def build_lang(write, lang: str):
 
 
 def build(write):
+    i18n_mod._local_paths_cache = None  # rescan site/ after FA posts/pages exist
     report = {
         'post_url_scheme': {
             'en': '/en/<post-slug>/',
