@@ -109,25 +109,23 @@ body.home .zh-exit {
   will-change: transform, opacity, filter;
 }
 .home-logo img {
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 92%;
+  max-height: 92%;
   width: auto;
   height: auto;
   object-fit: contain;
   display: block;
-  /* subtle white plate so dark logos stay readable on deep themes — no card chrome */
-  filter: drop-shadow(0 1px 0 rgba(255,255,255,.35));
 }
 .home-logo.is-center {
   opacity: 1;
   filter: none;
-  transform: scale(1.22) translateY(-6px);
+  transform: scale(1.28) translateY(-8px);
   z-index: 1;
 }
 .home-logo.is-center img {
   filter:
-    drop-shadow(0 10px 22px color-mix(in srgb, var(--brand) 42%, transparent))
-    drop-shadow(0 2px 8px rgba(6, 97, 99, .22));
+    drop-shadow(0 12px 26px color-mix(in srgb, var(--brand) 48%, transparent))
+    drop-shadow(0 2px 10px rgba(6, 97, 99, .28));
 }
 
 .logo-carousel-btn {
