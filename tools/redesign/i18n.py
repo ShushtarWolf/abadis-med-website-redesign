@@ -204,6 +204,21 @@ def clean_html(html: str) -> str:
     h = re.sub(r'\sdata-(?:elementor|settings|widget_type|id|model-cid)[^=]*=(["\'])(.*?)\1', '', h, flags=re.I)
     h = re.sub(r'\sclass=(["\'])([^"\']*elementor[^"\']*)\1', '', h, flags=re.I)
     h = re.sub(r'\sclass=(["\'])\s*\1', '', h)
+    # WP sometimes wraps address fragments as http://no.105/ — unwrap to plain text
+    h = re.sub(
+        r'<a\b[^>]*\bhref=(["\'])https?://no\.\d+/?\1[^>]*>(.*?)</a>',
+        r'\2',
+        h,
+        flags=re.I | re.S,
+    )
+    # Phone numbers mis-linked as http://02192001017 → tel:02192001017
+    h = re.sub(
+        r'\bhref=(["\'])https?://(0\d{6,14})\1',
+        r'href=\1tel:\2\1',
+        h,
+        flags=re.I,
+    )
+    h = re.sub(r'\sdata-wplink-url-error=(["\'])[^"\']*\1', '', h, flags=re.I)
     return h.strip()
 
 

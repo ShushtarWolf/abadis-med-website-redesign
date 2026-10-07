@@ -18,7 +18,8 @@
 /* ---------- theme tokens ---------- */
 :root, [data-theme="light"] {
   --bg: #f3fafa; --bg-2: #e8f3f3; --surface: #ffffff; --surface-2: #f0f7f7;
-  --ink: #0a2e32; --ink-2: #2f4e51; --muted: #5a7578;
+  /* muted darkened vs prior #5a7578 so normal text clears 4.5:1 on mint #e8f3f3 */
+  --ink: #0a2e32; --ink-2: #2f4e51; --muted: #4e686b;
   --brand: #066163; --brand-2: #05686b; --brand-3: #0e7475; --accent: #087673;
   --chip-bg: #e8f3f3; --chip-ink: #05686b;
   --btn-bg: #066163; --btn-ink: #ffffff; --btn-bg-2: #015F61;
@@ -396,6 +397,12 @@ details.letter[open] summary { margin-bottom: 12px; }
 .contact-dl { display: grid; grid-template-columns: auto 1fr; gap: 10px 16px; }
 .contact-dl dt { color: var(--muted); font-weight: 700; white-space: nowrap; }
 .contact-dl dd a { color: var(--ink); text-decoration: none; border-bottom: 1px dotted var(--line); }
+/* Light: muted on mint/white was borderline for axe; use darker teal (ink-2), not lime. */
+[data-theme="light"] .contact-dl dt,
+[data-theme="light"] .form .hint,
+[data-theme="light"] .hours span {
+  color: var(--ink-2);
+}
 .form { display: grid; gap: 14px; }
 .form label { display: grid; gap: 6px; font-weight: 700; font-size: .92rem; }
 .form input, .form select, .form textarea { font: inherit; font-size: 16px; color: var(--ink); background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
