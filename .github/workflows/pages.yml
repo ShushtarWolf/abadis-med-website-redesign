@@ -1,7 +1,7 @@
 name: Deploy site preview to GitHub Pages
 on:
   push:
-    branches: [main]
+    branches: [main, siamak/redesign]
     paths: ["site/**", ".github/workflows/pages.yml"]
   workflow_dispatch:
 permissions:
