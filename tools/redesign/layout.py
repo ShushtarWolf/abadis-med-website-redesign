@@ -135,7 +135,8 @@ def lightbox_html(lang='fa'):
 LIGHTBOX = lightbox_html('fa')
 
 
-def page(p, cur, title, desc, main, og=None, lightbox=False, scripts='', lang='fa', fa_path='', canonical_path=None):
+def page(p, cur, title, desc, main, og=None, lightbox=False, scripts='', lang='fa', fa_path='',
+         canonical_path=None, extra_head='', main_class='', body_class=''):
     if lang == 'fa' and not fa_path and cur:
         guess = {
             'about': 'about/', 'products': 'products/', 'news': 'news/', 'articles': 'articles/',
@@ -147,8 +148,14 @@ def page(p, cur, title, desc, main, og=None, lightbox=False, scripts='', lang='f
     if lang == 'fa' and canonical_path is None:
         canonical_path = fa_path
     lb = (lightbox_html(lang) + '\n') if lightbox else ''
-    return (head(p, title, desc, og, lang=lang, fa_path=fa_path, canonical_path=canonical_path)
-            + header(p, cur, lang=lang, fa_path=fa_path) + '\n<main id="main">\n' + main + '\n</main>\n'
+    html = head(p, title, desc, og, lang=lang, fa_path=fa_path, canonical_path=canonical_path)
+    if extra_head:
+        html = html.replace('</head>', extra_head.rstrip() + '\n</head>', 1)
+    if body_class:
+        html = html.replace('<body>', f'<body class="{body_class}">', 1)
+    main_attrs = f' class="{main_class}"' if main_class else ''
+    return (html
+            + header(p, cur, lang=lang, fa_path=fa_path) + f'\n<main id="main"{main_attrs}>\n' + main + '\n</main>\n'
             + lb + footer(p, cur, lang=lang)
             + f'\n<script src="{p}assets/js/site.js" defer></script>\n{scripts}</body>\n</html>\n')
 

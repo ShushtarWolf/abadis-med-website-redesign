@@ -5,6 +5,7 @@
 
   var hero = document.getElementById('hero');
   var stage = document.getElementById('zhStage');
+  if (!hero || !stage) return;
   var spotsEl = document.getElementById('zhSpots');
   var canister = document.getElementById('zhCanister');
   var hint = document.getElementById('zhHint');
@@ -13,6 +14,8 @@
   var bgMid = stage.querySelector('.zh-bg-mid');
   var bgGreen = stage.querySelector('.zh-bg-green');
   var root = document.documentElement;
+  // Shared by /csr/ (./img/hero/) and home (csr/img/hero/)
+  var IMG_BASE = (hero.getAttribute('data-img-base') || './img/hero/').replace(/\/?$/, '/');
 
   var IMG_W = 1920, IMG_H = 1080, POS_Y = 0.6;   // must match .bg-layer object-position
   var HORIZON = 0.6;                              // image-space y where trees would be 0 tall
@@ -108,9 +111,9 @@
     var pic = document.createElement('picture');
     var src = document.createElement('source');
     src.type = 'image/webp';
-    src.srcset = './img/hero/' + name + '.webp';
+    src.srcset = IMG_BASE + name + '.webp';
     var img = document.createElement('img');
-    img.src = './img/hero/' + name + '.png';
+    img.src = IMG_BASE + name + '.png';
     img.alt = '';
     img.decoding = 'async';
     img.draggable = false;

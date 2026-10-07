@@ -1,0 +1,67 @@
+/* Home page — Zagros hero + section rhythm (generated page) */
+.home-page { overflow-x: clip; }
+
+/* Soften Zagros exit into the home page surface (not the CSR painted bg) */
+body.home .zh-exit {
+  background: linear-gradient(180deg, rgba(243,250,250,0), var(--bg, #f3fafa));
+}
+[data-theme="dark"] body.home .zh-exit {
+  background: linear-gradient(180deg, rgba(11,36,39,0), var(--bg, #0b2427));
+}
+[data-theme="noir"] body.home .zh-exit {
+  background: linear-gradient(180deg, rgba(19,18,31,0), var(--bg, #13121f));
+}
+
+.home-zagros-hero .btn-ghost {
+  color: var(--brand);
+  border-color: color-mix(in srgb, var(--brand) 35%, transparent);
+}
+
+.home-calc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 28px;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 28px 26px;
+}
+.home-calc h2 { font-size: clamp(1.4rem, 3vw, 1.85rem); font-weight: 900; margin: 6px 0 10px; }
+.home-calc p { color: var(--ink-2); max-width: 40rem; margin: 0; }
+
+.home-logo-strip {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  align-items: stretch;
+}
+.home-logo {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  padding: 10px;
+  overflow: hidden;
+}
+.home-logo img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.home-logo-cta { margin-top: 22px; text-align: center; }
+
+[data-theme="dark"] .home-logo,
+[data-theme="noir"] .home-logo { background: #fff; }
+
+@media (max-width: 900px) {
+  .home-logo-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .home-logo-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .home-logo { padding: 8px; border-radius: 12px; }
+  .home-calc { padding: 22px 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.home .zh-hint { display: none; }
+}
