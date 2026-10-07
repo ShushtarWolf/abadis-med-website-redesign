@@ -74,34 +74,37 @@ PROVINCES = ['آذربایجان شرقی', 'آذربایجان غربی', 'ار
              'خراسان جنوبی', 'خراسان رضوی', 'خراسان شمالی', 'خوزستان', 'زنجان', 'سمنان', 'سیستان و بلوچستان', 'فارس', 'قزوین', 'قم',
              'کردستان', 'کرمان', 'کرمانشاه', 'کهگیلویه و بویراحمد', 'گلستان', 'گیلان', 'لرستان', 'مازندران', 'مرکزی', 'هرمزگان', 'همدان', 'یزد']
 def dealers(write):
-    p = '../'; bl = B('/لیست-نمایندگان/')
-    intro = bl[0]['text']
-    groups = []; cur = None
-    for b in bl:
-        if b['t'] == 'h' and b['lvl'] == 3: cur = [b['text'].replace('نمایندگان استان', '').strip(), b['text'], []]; groups.append(cur)
-        elif b['t'] == 'listing' and cur:
-            for it in b['items']:
-                d = {'name': '', 'rows': []}
-                for x in it['blocks']:
-                    if x['t'] == 'h' and x['lvl'] == 4: d['name'] = x['text']
-                    else:
-                        t = x.get('text') or strip_tags(x.get('html', ''))
-                        if ':' in t: k, v = t.split(':', 1); d['rows'].append((k.strip(), v.strip()))
-                cur[2].append(d)
-    have = {g[0] for g in groups}
-    total = sum(len(g[2]) for g in groups)
-    chips = ''.join(f'<button type="button" data-prov="{esc(pv)}" aria-pressed="false">{esc(pv)}</button>' if pv in have
-                    else f'<button type="button" class="none" disabled title="بدون نماینده">{esc(pv)}</button>' for pv in PROVINCES)
+    """Build dealers page from data/dealers.json (live listing + CPT gaps)."""
+    p = '../'
+    data = load('dealers.json')
+    intro = data.get('intro') or 'لیست نمایندگان فروش محصولات مخازن طبی آبادیس در سراسر کشور'
+    groups = data['groups']
+    have = {g['province'] for g in groups if g.get('dealers')}
+    total = sum(len(g.get('dealers') or []) for g in groups)
+    chips = ''.join(
+        f'<button type="button" data-prov="{esc(pv)}" aria-pressed="false">{esc(pv)}</button>' if pv in have
+        else f'<button type="button" class="none" disabled title="بدون نماینده">{esc(pv)}</button>'
+        for pv in PROVINCES
+    )
     def row(k, v):
         if 'تلفن' in k:
             num = re.sub(r'[^\d۰-۹]', '', v).translate(str.maketrans('۰۱۲۳۴۵۶۷۸۹', '0123456789'))
             v = f'<a href="tel:{num}" dir="ltr">{esc(v)}</a>'
-        else: v = esc(v)
+        else:
+            v = esc(v)
         return f'<dt>{esc(k)}:</dt><dd>{v}</dd>'
     out = []
-    for pv, title, ds in groups:
-        ents = ''.join(f'<div class="dealer"><h3>{esc(d["name"])}</h3><dl>{"".join(row(k, v) for k, v in d["rows"])}</dl></div>' for d in ds)
-        out.append(f'<div class="card prov-group reveal" data-prov="{esc(pv)}" id="p-{esc(pv.replace(" ", "-"))}"><h2>{esc(title)}</h2>{ents}</div>')
+    for g in groups:
+        pv, title, ds = g['province'], g.get('title') or f'نمایندگان استان {g["province"]}', g.get('dealers') or []
+        ents = []
+        for d in ds:
+            rows = d.get('rows') or []
+            dl = f'<dl>{"".join(row(k, v) for k, v in rows)}</dl>' if rows else ''
+            ents.append(f'<div class="dealer"><h3>{esc(d["name"])}</h3>{dl}</div>')
+        out.append(
+            f'<div class="card prov-group reveal" data-prov="{esc(pv)}" id="p-{esc(pv.replace(" ", "-"))}">'
+            f'<h2>{esc(title)}</h2>{"".join(ents)}</div>'
+        )
     main = f'''{mosaic_hero(p, [('لیست نمایندگان', None)], 'شبکه توزیع فروش آبادیس', 'لیست <em>نمایندگان</em>', esc(intro), label='لیست نمایندگان')}
   <section class="section"><div class="wrap">
     <h2 class="reveal" style="margin-bottom:16px">لیست استان ها</h2>
