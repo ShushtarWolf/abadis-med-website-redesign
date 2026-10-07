@@ -9,6 +9,14 @@ from layout import page
 SRC = ROOT / 'redesign' / 'calculator'
 DESC = 'محاسبه‌گر صرفه‌جویی آبادیس: صرفه‌جویی در مصرف آب، هزینه شست‌وشو و ضدعفونی و زمان کادر درمان.'
 VARIANTS = [('dial', 'طرح دایال'), ('receipt', 'طرح رسید'), ('hospital', 'طرح بیمارستان'), ('scale', 'طرح ترازو'), ('flood', 'طرح سیلاب')]
+# Extra dial pages shipped on main (site/dial-*, site/template-dials/*) — link only, leave pages as-is.
+EXTRA_DIALS = [
+    ('dial-practical/', 'دایال عملی'),
+    ('dial-steppers/', 'دایال +/−'),
+    ('template-dials/1-neumorphic/', 'دایال نیومورفیک'),
+    ('template-dials/2-abadis-plus/', 'دایال آبادیس+'),
+    ('template-dials/3-cost-time-h2o/', 'دایال COST/TIME'),
+]
 THEME_DARK = '[data-theme="dark"]'
 THEME_ANY_DARK = ':is([data-theme="dark"],[data-theme="noir"])'
 DROP = re.compile(r'(^|[\s,>+~(])(\.header\b|\.nav\b|\.logo\b|\.theme-toggle|\.header-cta|\.header-actions|\.site-footer|\.foot-(inner|brand|links|copy)\b|footer\b|\.i-sun|\.i-moon)')
@@ -103,7 +111,8 @@ def adapt(html, p, here):
 def switcher(p, cur):
     items = [('', 'طرح اصلی')] + [(k + '/', v) for k, v in VARIANTS]
     a = ''.join(f'<a href="{p}calculator/{h}"' + (' aria-current="page"' if h == cur else '') + f'>{t}</a>' for h, t in items)
-    return f'<nav class="gfc-switch" aria-label="طرح‌های محاسبه‌گر"><span>طرح‌های محاسبه‌گر:</span>{a}</nav>'
+    extras = ''.join(f'<a href="{p}{h}">{t}</a>' for h, t in EXTRA_DIALS)
+    return f'<nav class="gfc-switch" aria-label="طرح‌های محاسبه‌گر"><span>طرح‌های محاسبه‌گر:</span>{a}{extras}</nav>'
 
 JS_CUTS = [  # their own header/theme handling: replaced by site.js (keeps noir + our header)
     (r"\n  /\* ---------- template header \+ anchors ---------- \*/.*?\n  \}\)\(\);\n(?=\}\)\(\);)", '\n'),
