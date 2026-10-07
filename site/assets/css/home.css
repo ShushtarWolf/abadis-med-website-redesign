@@ -46,21 +46,23 @@ body.home .zh-exit {
 #customers.section--alt { --lc-fade: var(--bg-2); }
 
 .logo-carousel-track {
+  overflow: hidden;
+  padding: 28px 0 32px;
+  touch-action: pan-y; /* horizontal drag handled in JS; allow vertical page scroll */
+  cursor: grab;
+  min-width: 0;
+}
+.logo-carousel-track:active { cursor: grabbing; }
+.logo-carousel-strip {
   display: flex;
   align-items: center;
   gap: 28px;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  padding: 28px 0 32px;
-  /* side peek so a slide can sit in the middle */
-  padding-inline: calc(50% - 64px);
-  touch-action: pan-x;
+  width: max-content;
+  will-change: transform;
+  user-select: none;
+  -webkit-user-select: none;
 }
-.logo-carousel-track::-webkit-scrollbar { display: none; }
+.logo-carousel-strip img { pointer-events: none; -webkit-user-drag: none; }
 
 /* Soft edge fades (RTL/LTR: left + right physical edges) */
 .logo-carousel::before,
@@ -89,7 +91,6 @@ body.home .zh-exit {
   flex: 0 0 110px;
   width: 110px;
   height: 110px;
-  scroll-snap-align: center;
   display: grid;
   place-items: center;
   padding: 0;
@@ -103,9 +104,9 @@ body.home .zh-exit {
   filter: grayscale(1) brightness(0.95);
   transform: scale(0.78) translateY(4px);
   transition:
-    opacity .55s cubic-bezier(.22, 1, .36, 1),
-    filter .55s cubic-bezier(.22, 1, .36, 1),
-    transform .55s cubic-bezier(.22, 1, .36, 1);
+    opacity .45s cubic-bezier(.22, 1, .36, 1),
+    filter .45s cubic-bezier(.22, 1, .36, 1),
+    transform .45s cubic-bezier(.22, 1, .36, 1);
   will-change: transform, opacity, filter;
 }
 .home-logo img {
@@ -172,7 +173,7 @@ body.home .zh-exit {
 @media (max-width: 900px) {
   .home-logo { flex-basis: 96px; width: 96px; height: 96px; }
   .home-logo.is-center { transform: scale(1.18) translateY(-4px); }
-  .logo-carousel-track { padding-inline: calc(50% - 52px); gap: 22px; }
+  .logo-carousel-strip { gap: 22px; }
 }
 @media (max-width: 560px) {
   .logo-carousel { grid-template-columns: 1fr; }
@@ -182,12 +183,13 @@ body.home .zh-exit {
   .logo-carousel::before { left: 0; }
   .logo-carousel::after { right: 0; }
   .home-logo { flex-basis: 88px; width: 88px; height: 88px; }
-  .logo-carousel-track { padding-inline: calc(50% - 48px); gap: 18px; padding-block: 22px 26px; }
+  .logo-carousel-strip { gap: 18px; }
+  .logo-carousel-track { padding-block: 22px 26px; }
   .home-calc { padding: 22px 18px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   body.home .zh-hint { display: none; }
-  .logo-carousel-track { scroll-behavior: auto; }
   .home-logo { transition: none; }
+  .logo-carousel-strip { transition: none; }
 }

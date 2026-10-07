@@ -415,107 +415,204 @@
     });
   });
 
-  /* ---------- home customers logo carousel (track-only scroll; never window) ---------- */
+  /* ---------- home customers logo carousel (infinite marquee; track-only) ---------- */
   document.querySelectorAll('[data-logo-carousel]').forEach((root) => {
     const track = root.querySelector('.logo-carousel-track');
-    const slides = track ? [...track.querySelectorAll('.home-logo')] : [];
     const prev = root.querySelector('.logo-carousel-prev');
     const next = root.querySelector('.logo-carousel-next');
-    if (!track || slides.length < 2) return;
+    if (!track) return;
 
+    const originals = [...track.querySelectorAll('.home-logo')];
+    if (originals.length < 2) return;
+
+    /* Build [clone][original][clone] inside a strip; move via transform (never window). */
+    const strip = document.createElement('div');
+    strip.className = 'logo-carousel-strip';
+    const mkClone = () => originals.map((el) => {
+      const c = el.cloneNode(true);
+      c.setAttribute('aria-hidden', 'true');
+      c.querySelectorAll('[id]').forEach((n) => n.removeAttribute('id'));
+      return c;
+    });
+    mkClone().forEach((c) => strip.appendChild(c));
+    originals.forEach((el) => strip.appendChild(el));
+    mkClone().forEach((c) => strip.appendChild(c));
+    track.replaceChildren(strip);
+
+    const slides = [...strip.querySelectorAll('.home-logo')];
+    const n = originals.length;
     const reduceMq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    let index = 0;
-    let userPaused = false;   /* hover / touch */
-    let inView = false;       /* IntersectionObserver */
-    let timer = 0;
+    const PX_PER_SEC = 28; /* slow linear marquee */
+
+    let x = 0;
+    let setW = 0;
+    let baseX = 0;
+    let inView = false;
+    let hoverPaused = false;
+    let interactPaused = false;
+    let dragging = false;
+    let raf = 0;
+    let lastTs = 0;
+    let resumeTimer = 0;
+    let stepAnim = 0;
 
     function reduce() { return reduceMq.matches; }
-
-    /** Visual delta from track center to slide center (physical px). */
-    function slideCenterDelta(el) {
-      const tr = track.getBoundingClientRect();
-      const er = el.getBoundingClientRect();
-      return (er.left + er.right) / 2 - (tr.left + tr.right) / 2;
-    }
-    function nearestIndex() {
-      let best = 0, bestAbs = Infinity;
-      slides.forEach((el, i) => {
-        const a = Math.abs(slideCenterDelta(el));
-        if (a < bestAbs) { bestAbs = a; best = i; }
-      });
-      return best;
-    }
-    function markCenter(i) {
-      index = Math.max(0, Math.min(slides.length - 1, i));
-      slides.forEach((el, n) => el.classList.toggle('is-center', n === index));
-    }
-    /** Scroll ONLY the track — never scrollIntoView / window. */
-    function goTo(i, smooth) {
-      i = Math.max(0, Math.min(slides.length - 1, i));
-      const el = slides[i];
-      if (!el) return;
-      markCenter(i);
-      const left = track.scrollLeft + slideCenterDelta(el);
-      track.scrollTo({ left, behavior: smooth && !reduce() ? 'smooth' : 'auto' });
-    }
-
-    let raf = 0;
-    track.addEventListener('scroll', () => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => { raf = 0; markCenter(nearestIndex()); });
-    }, { passive: true });
-
-    if (prev) prev.addEventListener('click', () => { userPaused = true; goTo(index - 1, true); });
-    if (next) next.addEventListener('click', () => { userPaused = true; goTo(index + 1, true); });
-
-    root.addEventListener('mouseenter', () => { userPaused = true; });
-    root.addEventListener('mouseleave', () => { userPaused = false; });
-    track.addEventListener('touchstart', () => { userPaused = true; }, { passive: true });
-    track.addEventListener('pointerdown', (e) => {
-      if (e.pointerType === 'touch' || e.pointerType === 'pen') userPaused = true;
-    });
-
     function canAutoplay() {
-      return inView && !userPaused && !document.hidden && !reduce();
+      return inView && !hoverPaused && !interactPaused && !dragging && !document.hidden && !reduce() && !stepAnim;
     }
-    function tick() {
-      if (!canAutoplay()) return;
-      goTo(index + 1 >= slides.length ? 0 : index + 1, true);
+
+    function apply() {
+      strip.style.transform = 'translate3d(' + x + 'px,0,0)';
     }
-    function startTimer() {
-      if (timer || reduce()) return;
-      timer = window.setInterval(tick, 3800);
+    function wrap() {
+      if (!setW) return;
+      while (x - baseX >= setW - 0.5) x -= setW;
+      while (x - baseX < -setW + 0.5) x += setW;
     }
-    function stopTimer() {
-      if (!timer) return;
-      window.clearInterval(timer);
-      timer = 0;
+    function trackCenterX() {
+      const r = track.getBoundingClientRect();
+      return (r.left + r.right) / 2;
     }
+    function markCenter() {
+      const mid = trackCenterX();
+      let best = null, bestAbs = Infinity;
+      for (let i = 0; i < slides.length; i++) {
+        const r = slides[i].getBoundingClientRect();
+        const a = Math.abs((r.left + r.right) / 2 - mid);
+        if (a < bestAbs) { bestAbs = a; best = slides[i]; }
+      }
+      for (let i = 0; i < slides.length; i++) {
+        slides[i].classList.toggle('is-center', slides[i] === best);
+      }
+    }
+    /** Measure one-set width and center the first logo of the middle set. */
+    function layout() {
+      strip.style.transform = 'translate3d(0,0,0)';
+      const a = slides[n].getBoundingClientRect();
+      const b = slides[n * 2].getBoundingClientRect();
+      setW = Math.abs(b.left - a.left);
+      if (setW < 1) setW = 1;
+      const mid = trackCenterX();
+      const logoMid = (a.left + a.right) / 2;
+      baseX = mid - logoMid;
+      x = baseX;
+      apply();
+      markCenter();
+    }
+
+    function scheduleResume(ms) {
+      if (resumeTimer) window.clearTimeout(resumeTimer);
+      interactPaused = true;
+      resumeTimer = window.setTimeout(() => {
+        resumeTimer = 0;
+        interactPaused = false;
+        lastTs = 0;
+      }, ms);
+    }
+
+    function stepBy(dir) {
+      /* dir +1 = marquee / reading direction (strip +X); -1 = opposite */
+      if (!setW || stepAnim) return;
+      scheduleResume(2200);
+      const from = x;
+      const gap = parseFloat(getComputedStyle(strip).gap) || 28;
+      const sample = slides[n];
+      const step = (sample ? sample.getBoundingClientRect().width : 110) + gap;
+      const to = from + dir * step;
+      if (reduce()) {
+        x = to; wrap(); apply(); markCenter();
+        return;
+      }
+      const t0 = performance.now();
+      const dur = 420;
+      stepAnim = 1;
+      function tickStep(now) {
+        const t = Math.min(1, (now - t0) / dur);
+        const e = 1 - Math.pow(1 - t, 3);
+        x = from + (to - from) * e;
+        wrap();
+        apply();
+        markCenter();
+        if (t < 1) requestAnimationFrame(tickStep);
+        else { stepAnim = 0; lastTs = 0; }
+      }
+      requestAnimationFrame(tickStep);
+    }
+
+    function loop(ts) {
+      raf = requestAnimationFrame(loop);
+      if (!canAutoplay()) { lastTs = 0; markCenter(); return; }
+      if (!lastTs) lastTs = ts;
+      const dt = Math.min(64, ts - lastTs);
+      lastTs = ts;
+      /* RTL reading: advance through DOM order → positive translateX */
+      x += (PX_PER_SEC * dt) / 1000;
+      wrap();
+      apply();
+      markCenter();
+    }
+
+    if (prev) prev.addEventListener('click', () => stepBy(-1));
+    if (next) next.addEventListener('click', () => stepBy(1));
+
+    root.addEventListener('mouseenter', () => { hoverPaused = true; lastTs = 0; });
+    root.addEventListener('mouseleave', () => { hoverPaused = false; lastTs = 0; });
+
+    /* Drag / swipe on the track (both directions); loop wraps both ways */
+    let dragStartX = 0, dragOrigin = 0, dragPid = 0;
+    track.addEventListener('pointerdown', (e) => {
+      if (e.button != null && e.button !== 0) return;
+      if (e.target.closest && e.target.closest('.logo-carousel-btn')) return;
+      dragging = true;
+      interactPaused = true;
+      if (resumeTimer) { window.clearTimeout(resumeTimer); resumeTimer = 0; }
+      dragStartX = e.clientX;
+      dragOrigin = x;
+      dragPid = e.pointerId;
+      try { track.setPointerCapture(e.pointerId); } catch (_) {}
+      lastTs = 0;
+    });
+    track.addEventListener('pointermove', (e) => {
+      if (!dragging || e.pointerId !== dragPid) return;
+      x = dragOrigin + (e.clientX - dragStartX);
+      wrap();
+      apply();
+      markCenter();
+    });
+    function endDrag(e) {
+      if (!dragging || (e && e.pointerId !== dragPid)) return;
+      dragging = false;
+      dragPid = 0;
+      scheduleResume(1800);
+    }
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointercancel', endDrag);
 
     if ('IntersectionObserver' in window) {
       const io = new IntersectionObserver((entries) => {
         const e = entries[0];
-        inView = !!(e && e.isIntersecting && e.intersectionRatio >= 0.25);
-        if (inView) startTimer();
-        else stopTimer();
-      }, { threshold: [0, 0.25, 0.5, 0.75] });
+        inView = !!(e && e.isIntersecting && e.intersectionRatio >= 0.2);
+        lastTs = 0;
+      }, { threshold: [0, 0.2, 0.5, 0.75] });
       io.observe(root);
     } else {
       inView = true;
-      startTimer();
     }
 
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) stopTimer();
-      else if (canAutoplay()) startTimer();
-    });
-    if (reduceMq.addEventListener) reduceMq.addEventListener('change', () => {
-      if (reduce()) stopTimer();
-      else if (canAutoplay()) startTimer();
-    });
+    document.addEventListener('visibilitychange', () => { lastTs = 0; });
+    if (reduceMq.addEventListener) {
+      reduceMq.addEventListener('change', () => { lastTs = 0; markCenter(); });
+    }
 
-    /* Center first logo on the track only (no page jump) */
-    requestAnimationFrame(() => goTo(0, false));
-    window.addEventListener('resize', () => goTo(index, false), { passive: true });
+    let resizeRaf = 0;
+    window.addEventListener('resize', () => {
+      if (resizeRaf) return;
+      resizeRaf = requestAnimationFrame(() => { resizeRaf = 0; layout(); lastTs = 0; });
+    }, { passive: true });
+
+    layout();
+    /* Second pass after fonts/images settle so the row stays filled both sides */
+    requestAnimationFrame(() => { layout(); raf = requestAnimationFrame(loop); });
+    window.addEventListener('load', () => { layout(); lastTs = 0; }, { once: true });
   });
 })();
