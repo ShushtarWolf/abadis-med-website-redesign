@@ -397,7 +397,7 @@ details.letter[open] summary { margin-bottom: 12px; }
 .contact-dl { display: grid; grid-template-columns: auto 1fr; gap: 10px 16px; }
 .contact-dl dt { color: var(--muted); font-weight: 700; white-space: nowrap; }
 .contact-dl dd a { color: var(--ink); text-decoration: none; border-bottom: 1px dotted var(--line); }
-/* Light: muted on mint/white was borderline for axe; use darker teal (ink-2), not lime. */
+/* Light: muted on mint/white was borderline for axe; use darker teal (ink-2). */
 [data-theme="light"] .contact-dl dt,
 [data-theme="light"] .form .hint,
 [data-theme="light"] .hours span {
