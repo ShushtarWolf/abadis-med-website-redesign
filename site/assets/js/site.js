@@ -444,7 +444,8 @@
     const reduceMq = window.matchMedia('(prefers-reduced-motion: reduce)');
     const PX_PER_SEC = 28; /* slow linear marquee */
 
-    let x = 0;
+    /* Logical travel distance (unbounded). Displayed x = baseX + mod(offset, setW). */
+    let offset = 0;
     let setW = 0;
     let baseX = 0;
     let inView = false;
@@ -461,13 +462,16 @@
       return inView && !hoverPaused && !interactPaused && !dragging && !document.hidden && !reduce() && !stepAnim;
     }
 
-    function apply() {
-      strip.style.transform = 'translate3d(' + x + 'px,0,0)';
+    function modOffset() {
+      if (!(setW > 0)) return 0;
+      let d = offset % setW;
+      if (d < 0) d += setW;
+      /* Float edge: treat 0 and setW as the same seam */
+      if (d < 0.05 || d > setW - 0.05) d = 0;
+      return d;
     }
-    function wrap() {
-      if (!setW) return;
-      while (x - baseX >= setW - 0.5) x -= setW;
-      while (x - baseX < -setW + 0.5) x += setW;
+    function apply() {
+      strip.style.transform = 'translate3d(' + (baseX + modOffset()) + 'px,0,0)';
     }
     function trackCenterX() {
       const r = track.getBoundingClientRect();
@@ -487,6 +491,7 @@
     }
     /** Measure one-set width and center the first logo of the middle set. */
     function layout() {
+      const kept = modOffset();
       strip.style.transform = 'translate3d(0,0,0)';
       const a = slides[n].getBoundingClientRect();
       const b = slides[n * 2].getBoundingClientRect();
@@ -495,7 +500,7 @@
       const mid = trackCenterX();
       const logoMid = (a.left + a.right) / 2;
       baseX = mid - logoMid;
-      x = baseX;
+      offset = kept; /* preserve phase across resize */
       apply();
       markCenter();
     }
@@ -514,13 +519,13 @@
       /* dir +1 = marquee / reading direction (strip +X); -1 = opposite */
       if (!setW || stepAnim) return;
       scheduleResume(2200);
-      const from = x;
+      const from = offset;
       const gap = parseFloat(getComputedStyle(strip).gap) || 28;
       const sample = slides[n];
       const step = (sample ? sample.getBoundingClientRect().width : 110) + gap;
       const to = from + dir * step;
       if (reduce()) {
-        x = to; wrap(); apply(); markCenter();
+        offset = to; apply(); markCenter();
         return;
       }
       const t0 = performance.now();
@@ -529,8 +534,7 @@
       function tickStep(now) {
         const t = Math.min(1, (now - t0) / dur);
         const e = 1 - Math.pow(1 - t, 3);
-        x = from + (to - from) * e;
-        wrap();
+        offset = from + (to - from) * e;
         apply();
         markCenter();
         if (t < 1) requestAnimationFrame(tickStep);
@@ -546,8 +550,7 @@
       const dt = Math.min(64, ts - lastTs);
       lastTs = ts;
       /* RTL reading: advance through DOM order → positive translateX */
-      x += (PX_PER_SEC * dt) / 1000;
-      wrap();
+      offset += (PX_PER_SEC * dt) / 1000;
       apply();
       markCenter();
     }
@@ -567,15 +570,14 @@
       interactPaused = true;
       if (resumeTimer) { window.clearTimeout(resumeTimer); resumeTimer = 0; }
       dragStartX = e.clientX;
-      dragOrigin = x;
+      dragOrigin = offset;
       dragPid = e.pointerId;
       try { track.setPointerCapture(e.pointerId); } catch (_) {}
       lastTs = 0;
     });
     track.addEventListener('pointermove', (e) => {
       if (!dragging || e.pointerId !== dragPid) return;
-      x = dragOrigin + (e.clientX - dragStartX);
-      wrap();
+      offset = dragOrigin + (e.clientX - dragStartX);
       apply();
       markCenter();
     });
@@ -583,6 +585,8 @@
       if (!dragging || (e && e.pointerId !== dragPid)) return;
       dragging = false;
       dragPid = 0;
+      apply();
+      markCenter();
       scheduleResume(1800);
     }
     track.addEventListener('pointerup', endDrag);
@@ -612,7 +616,11 @@
 
     layout();
     /* Second pass after fonts/images settle so the row stays filled both sides */
-    requestAnimationFrame(() => { layout(); raf = requestAnimationFrame(loop); });
-    window.addEventListener('load', () => { layout(); lastTs = 0; }, { once: true });
+    requestAnimationFrame(() => {
+      layout();
+      raf = requestAnimationFrame(loop);
+      /* One deferred remeasure; avoid fighting active drag/autoplay later */
+      window.setTimeout(() => { if (!dragging) { layout(); lastTs = 0; } }, 400);
+    });
   });
 })();
