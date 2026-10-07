@@ -89,33 +89,40 @@ def footer(p, cur=None, lang='fa'):
     secl = '\n        '.join(f'<a href="{p}{root}{h}"{CUR if k == cur else ""}>{l}</a>' for k, h, l in sec)
     return f'''<footer class="site-footer">
   <div class="wrap foot-inner">
-    <div>
-      <img src="{p}assets/img/abadis-logo-on-teal.png" width="670" height="309" alt="{esc(L['brand'])}" loading="lazy">
-      <p>{esc(L['footer_blurb'])}</p>
-      <div class="foot-links">
-        {main}
+    <div class="foot-col foot-col-brand">
+      <div class="foot-brand">
+        <img src="{p}assets/img/abadis-logo-on-teal.png" width="670" height="309" alt="{esc(L['brand'])}" loading="lazy">
+        <p>{esc(L['footer_blurb'])}</p>
       </div>
+      <details class="foot-acc foot-nav" open>
+        <summary>{esc(L['footer_menu'])}</summary>
+        <div class="foot-links">
+          {main}
+        </div>
+      </details>
     </div>
-    <div>
-      <h3>{esc(L['footer_more'])}</h3>
+    <details class="foot-acc foot-more" open>
+      <summary>{esc(L['footer_more'])}</summary>
       <div class="foot-links">
         {secl}
       </div>
-    </div>
-    <div>
+    </details>
+    <div class="foot-contact">
       <h3>{esc(L['footer_contact'])}</h3>
-      <dl>
-        <dt>{esc(L['contact_center'])}</dt><dd><a href="tel:+982192001017" dir="ltr">02192001017</a></dd>
-        <dt>{esc(L['email'])}</dt><dd><a href="mailto:info@abadis-med.com">info@abadis-med.com</a></dd>
-        <dt>{esc(L['whatsapp'])}</dt><dd><a href="https://wa.me/989100145809" target="_blank" rel="noopener" dir="ltr">+989100145809</a></dd>
+      <dl class="foot-contact-dl">
+        <div><dt>{esc(L['contact_center'])}</dt><dd><a href="tel:+982192001017" dir="ltr">02192001017</a></dd></div>
+        <div><dt>{esc(L['email'])}</dt><dd><a href="mailto:info@abadis-med.com">info@abadis-med.com</a></dd></div>
+        <div><dt>{esc(L['whatsapp'])}</dt><dd><a href="https://wa.me/989100145809" target="_blank" rel="noopener" dir="ltr">+989100145809</a></dd></div>
       </dl>
     </div>
-    <div>
-      <h3>{esc(L['footer_address'])}</h3>
+    <details class="foot-acc foot-address" open>
+      <summary>{esc(L['footer_address'])}</summary>
       <p><b>{esc(L['addr_hq'])}</b><br>{esc(L['addr_hq_val'])}</p>
       <p><b>{esc(L['addr_factory'])}</b><br>{esc(L['addr_factory_val'])}</p>
-      <div class="foot-certs"><img src="{p}assets/img/certs/abd-certs-768x119-1-copy.webp" width="768" height="119" alt="CE · ISO 13485:2016 · IMED" loading="lazy"></div>
-    </div>
+    </details>
+  </div>
+  <div class="wrap foot-certs-bar">
+    <div class="foot-certs"><img src="{p}assets/img/certs/abd-certs-768x119-1-copy.webp" width="768" height="119" alt="CE · ISO 13485:2016 · IMED" loading="lazy"></div>
   </div>
   <div class="wrap foot-copy">{esc(L['footer_copy'])}</div>
 </footer>'''

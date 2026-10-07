@@ -391,4 +391,97 @@
     document.querySelectorAll('.prov-group').forEach((g) => { g.hidden = on && g.dataset.prov !== b.dataset.prov; });
     if (on) { const g = document.querySelector('.prov-group[data-prov="' + b.dataset.prov + '"]'); if (g) g.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   });
+
+  /* ---------- footer: accordions closed on mobile; forced open on desktop ---------- */
+  const footMq = window.matchMedia('(max-width: 560px)');
+  function syncFootAcc() {
+    document.querySelectorAll('.site-footer .foot-acc').forEach((d) => {
+      if (footMq.matches) {
+        /* compact mobile: start collapsed (contact block stays outside details) */
+        if (d.classList.contains('foot-nav') || d.classList.contains('foot-more') || d.classList.contains('foot-address')) {
+          d.open = false;
+        }
+      } else {
+        d.open = true;
+      }
+    });
+  }
+  syncFootAcc();
+  if (footMq.addEventListener) footMq.addEventListener('change', syncFootAcc);
+  else if (footMq.addListener) footMq.addListener(syncFootAcc);
+  document.querySelectorAll('.site-footer .foot-acc').forEach((d) => {
+    d.addEventListener('toggle', () => {
+      if (!footMq.matches && !d.open) d.open = true;
+    });
+  });
+
+  /* ---------- home customers logo carousel (scroll-snap, no mouse-follow) ---------- */
+  document.querySelectorAll('[data-logo-carousel]').forEach((root) => {
+    const track = root.querySelector('.logo-carousel-track');
+    const slides = track ? [...track.querySelectorAll('.home-logo')] : [];
+    const prev = root.querySelector('.logo-carousel-prev');
+    const next = root.querySelector('.logo-carousel-next');
+    if (!track || slides.length < 2) return;
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let index = 0;
+    let paused = false;
+
+    function slideCenter(el) {
+      const tr = track.getBoundingClientRect();
+      const er = el.getBoundingClientRect();
+      return (er.left + er.right) / 2 - (tr.left + tr.right) / 2;
+    }
+    function nearestIndex() {
+      let best = 0, bestAbs = Infinity;
+      slides.forEach((el, i) => {
+        const a = Math.abs(slideCenter(el));
+        if (a < bestAbs) { bestAbs = a; best = i; }
+      });
+      return best;
+    }
+    function markCenter(i) {
+      index = Math.max(0, Math.min(slides.length - 1, i));
+      slides.forEach((el, n) => el.classList.toggle('is-center', n === index));
+    }
+    function goTo(i, smooth) {
+      i = Math.max(0, Math.min(slides.length - 1, i));
+      const el = slides[i];
+      if (!el) return;
+      markCenter(i);
+      try {
+        el.scrollIntoView({ inline: 'center', block: 'nearest', behavior: smooth && !reduce ? 'smooth' : 'auto' });
+      } catch (e) {
+        const delta = slideCenter(el);
+        track.scrollBy({ left: delta, behavior: smooth && !reduce ? 'smooth' : 'auto' });
+      }
+    }
+
+    let raf = 0;
+    track.addEventListener('scroll', () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => { raf = 0; markCenter(nearestIndex()); });
+    }, { passive: true });
+
+    if (prev) prev.addEventListener('click', () => { paused = true; goTo(index - 1, true); });
+    if (next) next.addEventListener('click', () => { paused = true; goTo(index + 1, true); });
+
+    const pause = () => { paused = true; };
+    const resume = () => { paused = false; };
+    root.addEventListener('mouseenter', pause);
+    root.addEventListener('mouseleave', resume);
+    track.addEventListener('touchstart', pause, { passive: true });
+    track.addEventListener('pointerdown', (e) => { if (e.pointerType === 'touch' || e.pointerType === 'pen') pause(); });
+
+    function tick() {
+      if (!paused && !reduce && !document.hidden) {
+        goTo(index + 1 >= slides.length ? 0 : index + 1, true);
+      }
+    }
+    if (!reduce) window.setInterval(tick, 3800);
+    document.addEventListener('visibilitychange', () => { if (document.hidden) paused = true; });
+
+    requestAnimationFrame(() => goTo(0, false));
+    window.addEventListener('resize', () => goTo(index, false), { passive: true });
+  });
 })();

@@ -30,7 +30,7 @@ HOME_DESC = ('شرکت دانش‌بنیان مخازن طبی آبادیس؛ ت
 # Ends with brand so layout.head does not double-suffix
 HOME_TITLE = 'کیسه ساکشن یکبار مصرف — مخازن طبی آبادیس'
 CALC_TEASER = 'جهت محاسبه آنلاین میزان صرفه‌جویی در مصرف آب و زباله‌های عفونی مرکز خود می‌توانید روی دکمه زیر کلیک نمایید.'
-LOGO_STRIP_N = 18
+LOGO_STRIP_N = 24
 
 
 def _B(path):
@@ -199,16 +199,24 @@ def customers_section():
         name = next((x['text'] for x in it['blocks'] if x['t'] == 'h'), '')
         if not im:
             continue
-        pic = picture(p, im['src'], im.get('alt') or name, 200)
+        pic = picture(p, im['src'], im.get('alt') or name, 300)
         if not pic:
             continue
-        logos.append(f'<div class="home-logo" title="{esc(name)}">{pic}</div>')
+        logos.append(
+            f'<div class="home-logo" role="group" aria-label="{esc(name)}" title="{esc(name)}">{pic}</div>'
+        )
     return f'''  <section class="section" id="customers">
     <div class="wrap">
       <div class="section-head reveal"><p class="eyebrow">مشتریان</p><h2>مشتریان</h2>
         <p>همراه با بیش از {fa(len(items))} مرکز درمانی در سطح کشور.</p>
         <p><a class="more-link" style="margin:0" href="customers/">همهٔ مشتریان ←</a></p></div>
-      <div class="home-logo-strip reveal" aria-label="نمونهٔ مشتریان">{''.join(logos)}</div>
+      <div class="logo-carousel reveal" data-logo-carousel>
+        <button type="button" class="logo-carousel-btn logo-carousel-prev" aria-label="قبلی">‹</button>
+        <div class="logo-carousel-track" tabindex="0" aria-label="نمونهٔ مشتریان">
+          {''.join(logos)}
+        </div>
+        <button type="button" class="logo-carousel-btn logo-carousel-next" aria-label="بعدی">›</button>
+      </div>
       <p class="home-logo-cta reveal"><a class="btn btn-ghost" href="customers/">مشاهدهٔ فهرست مشتریان</a></p>
     </div>
   </section>'''

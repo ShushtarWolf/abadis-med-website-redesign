@@ -1,4 +1,4 @@
-/* Home page — Zagros hero + section rhythm (generated page) */
+/* Home page — Zagros hero + logo carousel + section rhythm */
 .home-page { overflow-x: clip; }
 
 /* Soften Zagros exit into the home page surface (not the CSR painted bg) */
@@ -31,37 +31,94 @@ body.home .zh-exit {
 .home-calc h2 { font-size: clamp(1.4rem, 3vw, 1.85rem); font-weight: 900; margin: 6px 0 10px; }
 .home-calc p { color: var(--ink-2); max-width: 40rem; margin: 0; }
 
-.home-logo-strip {
+/* ---------- customers logo carousel (center-focus, scroll-snap) ---------- */
+.logo-carousel {
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 12px;
-  align-items: stretch;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
 }
+.logo-carousel-track {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 18px 0 10px;
+  /* side peek so the center slide can sit in the middle */
+  padding-inline: calc(50% - 70px);
+  touch-action: pan-x;
+}
+.logo-carousel-track::-webkit-scrollbar { display: none; }
+
 .home-logo {
+  flex: 0 0 128px;
+  width: 128px;
+  height: 128px;
+  scroll-snap-align: center;
   background: #fff;
   border: 1px solid var(--line);
-  border-radius: 14px;
-  aspect-ratio: 1;
+  border-radius: 16px;
   display: grid;
   place-items: center;
-  padding: 10px;
+  padding: 14px;
   overflow: hidden;
+  opacity: 0.55;
+  filter: grayscale(0.85);
+  transform: scale(0.88);
+  transition: opacity .35s ease, filter .35s ease, transform .35s ease, box-shadow .35s ease;
 }
-.home-logo img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.home-logo img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
+.home-logo.is-center {
+  opacity: 1;
+  filter: none;
+  transform: scale(1.12);
+  box-shadow: var(--shadow);
+  z-index: 1;
+}
+
+.logo-carousel-btn {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.logo-carousel-btn:hover { background: var(--surface-2); }
+.logo-carousel-btn:disabled { opacity: .35; cursor: default; }
+
 .home-logo-cta { margin-top: 22px; text-align: center; }
 
 [data-theme="dark"] .home-logo,
 [data-theme="noir"] .home-logo { background: #fff; }
 
 @media (max-width: 900px) {
-  .home-logo-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .home-logo { flex-basis: 104px; width: 104px; height: 104px; }
+  .logo-carousel-track { padding-inline: calc(50% - 60px); gap: 12px; }
 }
 @media (max-width: 560px) {
-  .home-logo-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-  .home-logo { padding: 8px; border-radius: 12px; }
+  .logo-carousel { grid-template-columns: 1fr; }
+  .logo-carousel-btn { display: none; } /* swipe on phones */
+  .home-logo { flex-basis: 96px; width: 96px; height: 96px; padding: 10px; border-radius: 14px; }
+  .logo-carousel-track { padding-inline: calc(50% - 52px); gap: 10px; }
   .home-calc { padding: 22px 18px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   body.home .zh-hint { display: none; }
+  .logo-carousel-track { scroll-behavior: auto; }
+  .home-logo { transition: none; }
 }
