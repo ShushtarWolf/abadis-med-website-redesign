@@ -5,7 +5,7 @@ Post URL scheme (documented): `/en/<post-slug>/` and `/arabic/<post-slug>/`
 """
 from __future__ import annotations
 import json, pathlib, re, urllib.parse as u
-from html import unescape
+from html import escape, unescape
 from lib import SITE_ORIGIN
 
 DATA = pathlib.Path(__file__).resolve().parent / 'data'
@@ -441,7 +441,7 @@ def depth_for(rel: str) -> int:
 
 
 def switcher_html(lang: str, fa_path: str, p: str) -> str:
-    """Language switcher linking to equivalents (or lang home). No target=_blank."""
+    """Language switcher: FA · EN · AR with full-name title/aria-label. No target=_blank."""
     m = load_map()
     key = fa_path if fa_path.endswith('/') or fa_path == '' else fa_path + '/'
     if key == '/':
@@ -451,16 +451,24 @@ def switcher_html(lang: str, fa_path: str, p: str) -> str:
     if not entry and key == 'sdgs/':
         entry = m.get('csr/') or {}
     defaults = {'fa': '', 'en': 'en/', 'ar': 'arabic/'}
-    labels = {'fa': 'FA', 'en': 'EN', 'ar': 'ع'}
+    labels = {'fa': 'FA', 'en': 'EN', 'ar': 'AR'}
+    names = {'fa': 'فارسی', 'en': 'English', 'ar': 'العربية'}
     parts = []
-    for code in ('fa', 'en', 'ar'):
+    for i, code in enumerate(('fa', 'en', 'ar')):
+        if i:
+            parts.append('<span class="lang-sep" aria-hidden="true">·</span>')
         rel = entry.get(code) if code in entry else None
         if rel is None:
             rel = defaults[code]
         href = p + rel
         cur = ' aria-current="true"' if code == lang else ''
-        parts.append(f'<a class="lang-link" href="{href}" hreflang="{LANGS[code]["lang"]}"{cur}>{labels[code]}</a>')
-    return f'<nav class="lang-switch" aria-label="{LANGS[lang]["lang_aria"]}">{"".join(parts)}</nav>'
+        hl = LANGS[code]['lang']
+        name = escape(names[code])
+        parts.append(
+            f'<a class="lang-link" href="{href}" hreflang="{hl}" lang="{hl}" '
+            f'title="{name}" aria-label="{name}"{cur}>{labels[code]}</a>'
+        )
+    return f'<nav class="lang-switch" aria-label="{escape(LANGS[lang]["lang_aria"])}">{"".join(parts)}</nav>'
 
 
 def hreflang_tags(fa_path: str, p: str) -> str:
