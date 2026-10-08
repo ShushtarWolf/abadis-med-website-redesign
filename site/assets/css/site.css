@@ -690,14 +690,90 @@ details.letter[open] summary { margin-bottom: 12px; }
 .dealer dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 10px; font-size: .92rem; }
 .dealer dt { color: var(--muted); white-space: nowrap; }
 .dealer dd { color: var(--ink-2); }
-/* customers / downloads */
-.logo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
-.logo-card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 10px; text-align: center; }
-.logo-card .lg { aspect-ratio: 1; border-radius: 12px; background: #fff; display: grid; place-items: center; overflow: hidden; padding: 8px; }
-.logo-card .lg img { max-width: 100%; max-height: 100%; object-fit: contain; }
-.logo-card .lg.txt { background: linear-gradient(135deg, #e8f3f3, #cfe6e6); color: #066163; font-weight: 900; font-size: 1.6rem; }
-.logo-card strong { font-size: .92rem; font-weight: 800; color: var(--ink); line-height: 1.6; }
-.logo-card a { font-size: .82rem; font-weight: 700; margin-top: auto; }
+/* customers logo grid — equal cards, centered logos/names */
+.logo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  align-items: stretch;
+}
+@media (min-width: 640px) {
+  .logo-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+}
+@media (min-width: 1024px) {
+  .logo-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 18px; }
+}
+@media (min-width: 1280px) {
+  .logo-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+.logo-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  min-width: 0;
+  height: 100%;
+  box-sizing: border-box;
+}
+.logo-card .lg {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 14px;
+  /* Soft well so transparent logos stay readable in every theme (not image gray plates) */
+  background: #fff;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 18px;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+}
+[data-theme="dark"] .logo-card .lg,
+[data-theme="noir"] .logo-card .lg {
+  background: #f3fafa;
+}
+.logo-card .lg img {
+  max-width: 86%;
+  max-height: 86%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  margin: 0 auto;
+}
+.logo-card .lg.txt {
+  background: linear-gradient(135deg, #e8f3f3, #cfe6e6);
+  color: #066163;
+  font-weight: 900;
+  font-size: 1.6rem;
+}
+.logo-card strong {
+  font-size: .9rem;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1.55;
+  text-align: center;
+  width: 100%;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: calc(1.55em * 2);
+}
+.logo-card a {
+  font-size: .82rem;
+  font-weight: 700;
+  margin-top: auto;
+  text-align: center;
+  width: 100%;
+}
 .dl-card .ph { aspect-ratio: 1; }
 /* install steps */
 .steps { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; counter-reset: st; }
@@ -742,8 +818,11 @@ details.letter[open] summary { margin-bottom: 12px; }
 .dealer h3 { font-size: 1rem; margin-bottom: 8px; }
 .dealer dl { font-size: .88rem; }
 @media (max-width: 560px) {
-  .logo-grid, .team-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
-  .logo-card { padding: 10px; } .logo-card strong { font-size: .84rem; }
+  .team-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+  .logo-grid { gap: 10px; }
+  .logo-card { padding: 12px 10px; }
+  .logo-card .lg { padding: 14px; }
+  .logo-card strong { font-size: .82rem; min-height: calc(1.55em * 3); }
   .member { padding: 10px; }
   .install-hub { grid-template-columns: 1fr !important; }
   .page-hero { padding: 108px 0 40px; }

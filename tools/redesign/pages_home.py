@@ -209,7 +209,7 @@ def customers_section():
     <div class="wrap">
       <div class="section-head reveal"><p class="eyebrow">مشتریان</p><h2>مشتریان</h2>
         <p>همراه با بیش از {fa(len(items))} مرکز درمانی در سطح کشور.</p>
-        <p><a class="more-link" style="margin:0" href="customers/">همهٔ مشتریان ←</a></p></div>
+        <p><a class="more-link" style="margin:0" href="customers/">همهٔ مشتریان</a></p></div>
       <div class="logo-carousel reveal" data-logo-carousel>
         <button type="button" class="logo-carousel-btn logo-carousel-prev" aria-label="قبلی">‹</button>
         <div class="logo-carousel-track" tabindex="0" aria-label="نمونهٔ مشتریان">

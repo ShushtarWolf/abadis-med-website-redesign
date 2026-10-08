@@ -230,7 +230,7 @@ def customers(write):
         pic = picture(p, im['src'], im.get('alt') or name, 300) if im else ''
         nimg += bool(pic)
         lg = f'<div class="lg">{pic}</div>' if pic else f'<div class="lg txt" aria-hidden="true">{esc(re.sub(r"^(بیمارستان|مرکز|درمانگاه|کلینیک)\s+", "", name)[:1])}</div>'
-        link = f'<a href="{esc(bt["href"])}" target="_blank" rel="noopener">{esc(bt["text"])} ↗</a>' if bt and bt.get('href') else ''
+        link = f'<a href="{esc(bt["href"])}" target="_blank" rel="noopener">{esc(bt["text"])}</a>' if bt and bt.get('href') else ''
         cards.append(f'<div class="logo-card" data-name="{esc(name)}">{lg}<strong>{esc(name)}</strong>{link}</div>')
     main = f'''{page_hero(p, [('مشتریان ما', None)], 'مشتریان ما', esc(head))}
   <section class="section"><div class="wrap">
