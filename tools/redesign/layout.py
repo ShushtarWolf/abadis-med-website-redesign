@@ -110,9 +110,9 @@ def footer(p, cur=None, lang='fa'):
     <div class="foot-contact">
       <h3>{esc(L['footer_contact'])}</h3>
       <dl class="foot-contact-dl">
-        <div><dt>{esc(L['contact_center'])}</dt><dd><a href="tel:+982192001017" dir="ltr">02192001017</a></dd></div>
-        <div><dt>{esc(L['email'])}</dt><dd><a href="mailto:info@abadis-med.com">info@abadis-med.com</a></dd></div>
-        <div><dt>{esc(L['whatsapp'])}</dt><dd><a href="https://wa.me/989100145809" target="_blank" rel="noopener" dir="ltr">+989100145809</a></dd></div>
+        <div class="foot-c-item"><dt>{esc(L['contact_center'])}</dt><dd><a href="tel:+982192001017" dir="ltr">02192001017</a></dd></div>
+        <div class="foot-c-item"><dt>{esc(L['email'])}</dt><dd><a href="mailto:info@abadis-med.com" dir="ltr">info@abadis-med.com</a></dd></div>
+        <div class="foot-c-item foot-c-wa"><dt>{esc(L['whatsapp'])}</dt><dd><a class="foot-wa-btn" href="https://wa.me/989100145809" target="_blank" rel="noopener" dir="ltr"><span class="foot-wa-label">{esc(L['whatsapp'].rstrip(':'))}</span> <span>+989100145809</span></a></dd></div>
       </dl>
     </div>
     <details class="foot-acc foot-address" open>
