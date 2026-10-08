@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>محاسبه‌گر صرفه‌جویی — طرح ترازو — مخازن طبی آبادیس</title>
+<meta name="description" content="محاسبه‌گر صرفه‌جویی آبادیس: صرفه‌جویی در مصرف آب، هزینه شست‌وشو و ضدعفونی و زمان کادر درمان.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#e8f3f3">
+<meta name="abadis-form-endpoint" content="">
+<meta name="abadis-form-mailto" content="info@abadis-med.com">
+<script>(function(){var t;try{var q=new URLSearchParams(location.search).get('theme');if(q){localStorage.setItem('abadis-theme',q)}t=localStorage.getItem('abadis-theme')}catch(e){}var d=document.documentElement;d.dataset.theme=(t==='dark'||t==='noir')?t:'light';d.classList.add('js')})();</script>
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="../../assets/img/apple-touch-icon.png">
+<link rel="canonical" href="/calculator/">
+<link rel="alternate" hreflang="fa-IR" href="/calculator/">
+<link rel="alternate" hreflang="en" href="/en/calculator/">
+<link rel="alternate" hreflang="ar" href="/arabic/الحوسبة/">
+<link rel="alternate" hreflang="x-default" href="/calculator/">
+<meta property="og:locale" content="fa_IR"><meta property="og:site_name" content="مخازن طبی آبادیس">
+<meta property="og:title" content="محاسبه‌گر صرفه‌جویی — طرح ترازو — مخازن طبی آبادیس"><meta property="og:description" content="محاسبه‌گر صرفه‌جویی آبادیس: صرفه‌جویی در مصرف آب، هزینه شست‌وشو و ضدعفونی و زمان کادر درمان.">
+<meta property="og:image" content="../../assets/img/og-image.jpg">
+<link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/css/site.css">
+</head>
+<body>
+<a class="skip" href="#main">پرش به محتوا</a>
+<header class="header" id="header">
+  <a class="logo" href="../../" aria-label="مخازن طبی آبادیس — خانه">
+    <img class="lg-light" src="../../assets/img/abadis-logo-teal.png" width="658" height="309" alt="مخازن طبی آبادیس">
+    <img class="lg-dark" src="../../assets/img/abadis-logo-on-teal.png" width="670" height="309" alt="" aria-hidden="true">
+  </a>
+  <nav class="nav" id="mainNav" aria-label="منوی اصلی"><a href="../../about/">آشنایی با ما</a><a href="../../products/">محصولات</a><a href="../../news/">آخرین اخبار</a><a href="../../dealers/">لیست نمایندگان</a><a href="../../csr/">توسعه پایدار</a><a href="../../articles/">مقالات</a><a href="../../contact/">ارتباط با ما</a><a href="../../calculator/" aria-current="page">محاسبه‌گر</a></nav>
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mainNav" aria-label="منو"><span class="mb-bars" aria-hidden="true"><i></i><i></i><i></i></span></button>
+  <nav class="lang-switch" aria-label="زبان"><a class="lang-link" href="../../calculator/" hreflang="fa-IR" lang="fa-IR" title="فارسی" aria-label="فارسی" aria-current="true">FA</a><span class="lang-sep" aria-hidden="true">·</span><a class="lang-link" href="../../en/calculator/" hreflang="en" lang="en" title="English" aria-label="English">EN</a><span class="lang-sep" aria-hidden="true">·</span><a class="lang-link" href="../../arabic/الحوسبة/" hreflang="ar" lang="ar" title="العربية" aria-label="العربية">AR</a></nav>
+  <button class="theme-toggle" type="button" aria-label="حالت نمایش" title="تغییر حالت نمایش">
+    <svg class="tt-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <mask id="tt-mask"><rect width="24" height="24" fill="#fff"/><circle class="tt-bite" cx="16.6" cy="7.4" r="6.3" fill="#000"/></mask>
+      <g class="tt-rays" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1.6v2.2M12 20.2v2.2M1.6 12h2.2M20.2 12h2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></g>
+      <circle class="tt-body" cx="12" cy="12" r="8" fill="currentColor" mask="url(#tt-mask)"/>
+      <g class="tt-stars" fill="currentColor"><path d="M18.3 6.1l.6 1.6 1.6.6-1.6.6-.6 1.6-.6-1.6-1.6-.6 1.6-.6z"/><path d="M21.4 1.9l.4 1 1 .4-1 .4-.4 1-.4-1-1-.4 1-.4z"/></g>
+    </svg>
+  </button>
+</header>
+<main id="main">
+<link rel="stylesheet" href="calc.css">
+<div class="gfc">
+
+
+  <section class="intro" id="top">
+    <div class="eyebrow">ابزار محاسبه · طرح ترازو</div>
+    <h1>ترازوی صرفه‌جویی <em>آبادیس</em></h1>
+    <p>اسکرول کنید؛ هرچه صرفه‌جویی بیشتر شود، کفهٔ کیسه ساکشن آبادیس سنگین‌تر می‌شود و ترازو بیشتر کج می‌شود.</p>
+  </section>
+
+  <section class="calc sc-sec" id="calc1" aria-labelledby="calc1-t">
+    <div class="calc-track"><div class="calc-pin"><div class="sc">
+      <div class="sc-head">
+        <div><h2 id="calc1-t">بر مبنای تعداد عمل جراحی در سال</h2><p class="sc-hint" data-hint>اسکرول کنید: صرفه‌جویی، کفهٔ آبادیس را سنگین‌تر می‌کند</p></div>
+        <div class="sc-ctl"><div class="sc-in"><span class="inp"><span class="odo" data-odo="n" data-digits="5"></span>عمل جراحی در سال</span></div><div class="chips" role="group" aria-label="مقادیر آماده">
+              <button class="chip" type="button" data-n="1000">۱٬۰۰۰</button>
+              <button class="chip" type="button" data-n="5000">۵٬۰۰۰</button>
+              <button class="chip" type="button" data-n="10000">۱۰٬۰۰۰</button>
+              <button class="chip" type="button" data-n="15000">۱۵٬۰۰۰</button>
+              <button class="chip" type="button" data-n="30000">۳۰٬۰۰۰</button>
+            </div></div>
+      </div>
+      <div class="sc-stage"><svg viewBox="0 0 1000 560" aria-hidden="true">
+          <defs>
+            <linearGradient id="metal-calc1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9f1f2"/><stop offset=".5" stop-color="#b7c8cb"/><stop offset="1" stop-color="#8aa2a6"/></linearGradient>
+            <linearGradient id="metalH-calc1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9db2b5"/><stop offset=".45" stop-color="#f4f8f8"/><stop offset="1" stop-color="#9db2b5"/></linearGradient>
+            <linearGradient id="teal-calc1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2ec4c6"/><stop offset="1" stop-color="#05686b"/></linearGradient>
+            <radialGradient id="sh-calc1" cx=".5" cy=".5" r=".5"><stop offset="0" class="s-shadow-stop" stop-opacity=".2"/><stop offset="1" class="s-shadow-stop" stop-opacity="0"/></radialGradient>
+          </defs>
+          <ellipse cx="500" cy="540" rx="230" ry="16" fill="url(#sh-calc1)"/>
+          <path d="M400 536 Q500 500 600 536 Z" fill="url(#metal-calc1)" class="s-metal-stroke"/>
+          <rect x="488" y="150" width="24" height="372" rx="8" fill="url(#metalH-calc1)" class="s-metal-stroke"/>
+          <rect x="470" y="508" width="60" height="18" rx="6" fill="url(#metal-calc1)"/>
+          <path class="s-arc" d="M420 92 A90 90 0 0 1 580 92"/>
+          <g class="beam">
+            <rect x="160" y="140" width="680" height="20" rx="10" fill="url(#metal-calc1)" class="s-metal-stroke"/>
+            <rect x="180" y="144" width="640" height="4" rx="2" fill="#fff" opacity=".7"/>
+            <circle cx="170" cy="150" r="13" fill="url(#metal-calc1)" class="s-metal-stroke"/><circle cx="830" cy="150" r="13" fill="url(#metal-calc1)" class="s-metal-stroke"/>
+            <path class="s-needle" d="M500 150 L493 70 L500 56 L507 70 Z"/>
+          </g>
+          <circle cx="500" cy="150" r="22" fill="url(#teal-calc1)" stroke="#fff" stroke-width="4"/>
+          <text x="500" y="157" text-anchor="middle" font-size="17" font-weight="900" fill="#fff">آ</text>
+          <g class="pan pan-a" transform="translate(170 150)">
+            <path class="s-string" d="M0 0 L-80 187 M0 0 L80 187"/><circle r="7" fill="#05686b"/>
+            <path d="M-100 187 L100 187 Q90 231 0 233 Q-90 231 -100 187 Z" fill="url(#teal-calc1)" stroke="#05686b"/>
+            <ellipse cy="187" rx="100" ry="11" fill="#7fe3f0" stroke="#05686b"/>
+            <g class="wt" data-wt="0"><g class="wt-s" data-bx="-42" data-by="185"><path class="s-wt-dark" d="M-72 185 L-62 129 L-22 129 L-12 185 Z"/><path class="s-wt-dark-s" d="M-54 129 Q-42 109 -30 129" fill="none" stroke="#0b2e32" stroke-width="7"/><path d="M-42 143 s-9 10 -9 16 a9 9 0 0 0 18 0 c0 -6 -9 -16 -9 -16z" fill="#62d9ff"/></g></g>
+            <g class="wt" data-wt="1"><g class="wt-s" data-bx="27" data-by="185"><path d="M-6 185 L4 117 L50 117 L60 185 Z" fill="#05686b"/><path d="M14 117 Q27 93 40 117" fill="none" stroke="#05686b" stroke-width="7"/><rect x="15" y="139" width="24" height="16" rx="3" fill="none" stroke="#8fe27c" stroke-width="3"/><circle cx="27" cy="147" r="3.5" fill="#8fe27c"/></g></g>
+            <g class="wt" data-wt="2"><g class="wt-s" data-bx="82" data-by="185"><path class="s-wt-dark" d="M64 185 L70 149 L94 149 L100 185 Z"/><path class="s-wt-dark-s" d="M75 149 Q82 135 89 149" fill="none" stroke="#0b2e32" stroke-width="5"/><circle cx="82" cy="168" r="8" fill="none" stroke="#ffc861" stroke-width="2.6"/><path d="M82 163v5l3 2" stroke="#ffc861" stroke-width="2.2" fill="none"/></g></g>
+            <rect class="s-lbl-a" x="-115" y="247" width="230" height="38" rx="19"/>
+            <text class="s-lbl-a-t" y="272" text-anchor="middle" font-size="19" font-weight="900">کیسه ساکشن آبادیس</text>
+            <text class="s-sub" y="309" text-anchor="middle" font-size="15" font-weight="700">سنگینیِ صرفه‌جویی</text>
+          </g>
+          <g class="pan pan-r" transform="translate(830 150)">
+            <path class="s-string" d="M0 0 L-80 187 M0 0 L80 187"/><circle r="7" fill="#7b9497"/>
+            <path d="M-90 187 L90 187 Q80 227 0 229 Q-80 227 -90 187 Z" fill="url(#metal-calc1)" class="s-metal-stroke"/>
+            <ellipse cy="187" rx="90" ry="10" fill="#eef4f5" class="s-metal-stroke"/>
+            <g><rect class="s-can" x="-22" y="135" width="44" height="50" rx="8" fill="none" stroke-width="3"/><rect x="-16" y="125" width="32" height="12" rx="3" fill="#7b9497"/><path class="s-can" d="M-22 157 h44" stroke-width="2" stroke-dasharray="4 4"/></g>
+            <rect class="s-lbl-r" x="-110" y="247" width="220" height="38" rx="19"/>
+            <text class="s-lbl-r-t" y="272" text-anchor="middle" font-size="19" font-weight="900">مخزن چندبار مصرف</text>
+          </g>
+        </svg></div>
+      <div>
+        <div class="reads">
+          <div class="rd"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3s6 6.6 6 11a6 6 0 0 1-12 0c0-4.4 6-11 6-11z"/></svg></i><span class="l">صرفه‌جویی در مصرف آب</span><span class="v"><span class="odo" data-odo="water" data-digits="7"></span><small>لیتر</small></span><span class="s" data-sub="tubs"></span></div>
+          <div class="rd"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9.5v5M18 9.5v5"/></svg></i><span class="l">هزینه شست‌وشو و ضدعفونی</span><span class="v"><span class="odo" data-odo="cost" data-digits="13"></span><small>تومان</small></span><span class="s" data-sub="read"></span></div>
+          <div class="rd"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></i><span class="l">زمان کادر درمان</span><span class="v"><span class="odo" data-odo="hours" data-digits="6"></span><small>ساعت</small></span><span class="s" data-sub="shifts"></span></div>
+        </div>
+        <div class="sc-foot"><p class="sc-sum" data-sum></p><a class="hero-btn" href="tel:02192001017">مشاوره با کارشناس فروش</a></div>
+      </div>
+    </div></div></div>
+  </section>
+
+  <section class="calc sc-sec" id="calc2" aria-labelledby="calc2-t">
+    <div class="calc-track"><div class="calc-pin"><div class="sc">
+      <div class="sc-head">
+        <div><h2 id="calc2-t">بر مبنای تعداد تخت</h2><p class="sc-hint" data-hint>مرحله ۱: با اسکرول، تعداد تخت اتاق عمل را تنظیم کنید</p></div>
+        <div class="sc-ctl"><div class="sc-in"><span class="inp" data-ch="a">تخت اتاق عمل <span class="odo" data-odo="a" data-digits="3"></span><span class="hold">ثابت</span></span><span class="inp" data-ch="b">تخت ICU|CCU <span class="odo" data-odo="b" data-digits="3"></span></span></div><div class="chips" role="group" aria-label="ترکیب‌های آماده (تخت اتاق عمل + ICU|CCU)">
+              <button class="chip" type="button" data-a="10" data-b="10">۱۰ + ۱۰</button>
+              <button class="chip" type="button" data-a="20" data-b="10">۲۰ + ۱۰</button>
+              <button class="chip" type="button" data-a="50" data-b="20">۵۰ + ۲۰</button>
+              <button class="chip" type="button" data-a="100" data-b="50">۱۰۰ + ۵۰</button>
+              <button class="chip" type="button" data-a="300" data-b="100">۳۰۰ + ۱۰۰</button>
+              <button class="chip" type="button" data-a="700" data-b="700">۷۰۰ + ۷۰۰</button>
+            </div><button class="confirm" type="button" data-confirm hidden></button></div>
+      </div>
+      <div class="sc-stage"><svg viewBox="0 0 1000 560" aria-hidden="true">
+          <defs>
+            <linearGradient id="metal-calc2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9f1f2"/><stop offset=".5" stop-color="#b7c8cb"/><stop offset="1" stop-color="#8aa2a6"/></linearGradient>
+            <linearGradient id="metalH-calc2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9db2b5"/><stop offset=".45" stop-color="#f4f8f8"/><stop offset="1" stop-color="#9db2b5"/></linearGradient>
+            <linearGradient id="teal-calc2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2ec4c6"/><stop offset="1" stop-color="#05686b"/></linearGradient>
+            <radialGradient id="sh-calc2" cx=".5" cy=".5" r=".5"><stop offset="0" class="s-shadow-stop" stop-opacity=".2"/><stop offset="1" class="s-shadow-stop" stop-opacity="0"/></radialGradient>
+          </defs>
+          <ellipse cx="500" cy="540" rx="230" ry="16" fill="url(#sh-calc2)"/>
+          <path d="M400 536 Q500 500 600 536 Z" fill="url(#metal-calc2)" class="s-metal-stroke"/>
+          <rect x="488" y="150" width="24" height="372" rx="8" fill="url(#metalH-calc2)" class="s-metal-stroke"/>
+          <rect x="470" y="508" width="60" height="18" rx="6" fill="url(#metal-calc2)"/>
+          <path class="s-arc" d="M420 92 A90 90 0 0 1 580 92"/>
+          <g class="beam">
+            <rect x="160" y="140" width="680" height="20" rx="10" fill="url(#metal-calc2)" class="s-metal-stroke"/>
+            <rect x="180" y="144" width="640" height="4" rx="2" fill="#fff" opacity=".7"/>
+            <circle cx="170" cy="150" r="13" fill="url(#metal-calc2)" class="s-metal-stroke"/><circle cx="830" cy="150" r="13" fill="url(#metal-calc2)" class="s-metal-stroke"/>
+            <path class="s-needle" d="M500 150 L493 70 L500 56 L507 70 Z"/>
+          </g>
+          <circle cx="500" cy="150" r="22" fill="url(#teal-calc2)" stroke="#fff" stroke-width="4"/>
+          <text x="500" y="157" text-anchor="middle" font-size="17" font-weight="900" fill="#fff">آ</text>
+          <g class="pan pan-a" transform="translate(170 150)">
+            <path class="s-string" d="M0 0 L-80 187 M0 0 L80 187"/><circle r="7" fill="#05686b"/>
+            <path d="M-100 187 L100 187 Q90 231 0 233 Q-90 231 -100 187 Z" fill="url(#teal-calc2)" stroke="#05686b"/>
+            <ellipse cy="187" rx="100" ry="11" fill="#7fe3f0" stroke="#05686b"/>
+            <g class="wt" data-wt="0"><g class="wt-s" data-bx="-42" data-by="185"><path class="s-wt-dark" d="M-72 185 L-62 129 L-22 129 L-12 185 Z"/><path class="s-wt-dark-s" d="M-54 129 Q-42 109 -30 129" fill="none" stroke="#0b2e32" stroke-width="7"/><path d="M-42 143 s-9 10 -9 16 a9 9 0 0 0 18 0 c0 -6 -9 -16 -9 -16z" fill="#62d9ff"/></g></g>
+            <g class="wt" data-wt="1"><g class="wt-s" data-bx="27" data-by="185"><path d="M-6 185 L4 117 L50 117 L60 185 Z" fill="#05686b"/><path d="M14 117 Q27 93 40 117" fill="none" stroke="#05686b" stroke-width="7"/><rect x="15" y="139" width="24" height="16" rx="3" fill="none" stroke="#8fe27c" stroke-width="3"/><circle cx="27" cy="147" r="3.5" fill="#8fe27c"/></g></g>
+            <g class="wt" data-wt="2"><g class="wt-s" data-bx="82" data-by="185"><path class="s-wt-dark" d="M64 185 L70 149 L94 149 L100 185 Z"/><path class="s-wt-dark-s" d="M75 149 Q82 135 89 149" fill="none" stroke="#0b2e32" stroke-width="5"/><circle cx="82" cy="168" r="8" fill="none" stroke="#ffc861" stroke-width="2.6"/><path d="M82 163v5l3 2" stroke="#ffc861" stroke-width="2.2" fill="none"/></g></g>
+            <rect class="s-lbl-a" x="-115" y="247" width="230" height="38" rx="19"/>
+            <text class="s-lbl-a-t" y="272" text-anchor="middle" font-size="19" font-weight="900">کیسه ساکشن آبادیس</text>
+            <text class="s-sub" y="309" text-anchor="middle" font-size="15" font-weight="700">سنگینیِ صرفه‌جویی</text>
+          </g>
+          <g class="pan pan-r" transform="translate(830 150)">
+            <path class="s-string" d="M0 0 L-80 187 M0 0 L80 187"/><circle r="7" fill="#7b9497"/>
+            <path d="M-90 187 L90 187 Q80 227 0 229 Q-80 227 -90 187 Z" fill="url(#metal-calc2)" class="s-metal-stroke"/>
+            <ellipse cy="187" rx="90" ry="10" fill="#eef4f5" class="s-metal-stroke"/>
+            <g><rect class="s-can" x="-22" y="135" width="44" height="50" rx="8" fill="none" stroke-width="3"/><rect x="-16" y="125" width="32" height="12" rx="3" fill="#7b9497"/><path class="s-can" d="M-22 157 h44" stroke-width="2" stroke-dasharray="4 4"/></g>
+            <rect class="s-lbl-r" x="-110" y="247" width="220" height="38" rx="19"/>
+            <text class="s-lbl-r-t" y="272" text-anchor="middle" font-size="19" font-weight="900">مخزن چندبار مصرف</text>
+          </g>
+        </svg></div>
+      <div>
+        <div class="reads">
+          <div class="rd"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3s6 6.6 6 11a6 6 0 0 1-12 0c0-4.4 6-11 6-11z"/></svg></i><span class="l">صرفه‌جویی در مصرف آب</span><span class="v"><span class="odo" data-odo="water" data-digits="7"></span><small>لیتر</small></span><span class="s" data-sub="tubs"></span></div>
+          <div class="rd"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9.5v5M18 9.5v5"/></svg></i><span class="l">هزینه شست‌وشو و ضدعفونی</span><span class="v"><span class="odo" data-odo="cost" data-digits="11"></span><small>تومان</small></span><span class="s" data-sub="read"></span></div>
+          <div class="rd"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></i><span class="l">زمان کادر درمان</span><span class="v"><span class="odo" data-odo="hours" data-digits="6"></span><small>ساعت</small></span><span class="s" data-sub="shifts"></span></div>
+        </div>
+        <div class="sc-foot"><p class="sc-sum" data-sum></p><a class="hero-btn" href="tel:02192001017">مشاوره با کارشناس فروش</a></div>
+      </div>
+    </div></div></div>
+  </section>
+
+  <p class="foot-note"><b>*</b> محاسبات بر اساس فرمول‌های محاسبه‌گر فعلی آبادیس</p>
+
+  <section class="cta-band">
+    <h2>برای محاسبه دقیق مرکز درمانی خود با ما صحبت کنید</h2>
+    <p>کارشناسان فروش مخازن طبی آبادیس آماده پاسخ‌گویی به پرسش‌های شما هستند.</p>
+    <a class="hero-btn" href="tel:02192001017">مشاوره با کارشناس فروش</a>
+    <p class="cta-sub">مرکز تماس: <a href="tel:02192001017" dir="ltr">021-92001017</a> · <a href="../../contact/">صفحه ارتباط با ما</a></p>
+  </section>
+  
+
+<nav class="gfc-switch" aria-label="طرح‌های محاسبه‌گر"><span>طرح‌های محاسبه‌گر:</span><a href="../../calculator/">طرح اصلی</a><a href="../../calculator/dial/">طرح دایال</a><a href="../../calculator/receipt/">طرح رسید</a><a href="../../calculator/hospital/">طرح بیمارستان</a><a href="../../calculator/scale/" aria-current="page">طرح ترازو</a><a href="../../calculator/flood/">طرح سیلاب</a><a href="../../dial-practical/">دایال عملی</a><a href="../../dial-steppers/">دایال +/−</a><a href="../../template-dials/1-neumorphic/">دایال نیومورفیک</a><a href="../../template-dials/2-abadis-plus/">دایال آبادیس+</a><a href="../../template-dials/3-cost-time-h2o/">دایال COST/TIME</a></nav>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="wrap foot-inner">
+    <div class="foot-col foot-col-brand">
+      <div class="foot-brand">
+        <img src="../../assets/img/abadis-logo-on-teal.png" width="670" height="309" alt="مخازن طبی آبادیس" loading="lazy">
+        <p>با ما در ارتباط باشید...</p>
+      </div>
+      <details class="foot-acc foot-nav" open>
+        <summary>منو</summary>
+        <div class="foot-links">
+          <a href="../../about/">آشنایی با ما</a>
+        <a href="../../products/">محصولات</a>
+        <a href="../../news/">آخرین اخبار</a>
+        <a href="../../dealers/">لیست نمایندگان</a>
+        <a href="../../csr/">توسعه پایدار</a>
+        <a href="../../articles/">مقالات</a>
+        <a href="../../contact/">ارتباط با ما</a>
+        <a href="../../calculator/">محاسبه‌گر</a>
+        </div>
+      </details>
+    </div>
+    <details class="foot-acc foot-more" open>
+      <summary>بیشتر</summary>
+      <div class="foot-links">
+        <a href="../../customers/">مشتریان ما</a>
+        <a href="../../experiences/">تجارب ما</a>
+        <a href="../../downloads/">مرکز دانلود</a>
+        <a href="../../install-guide/">راهنمای نصب</a>
+        <a href="../../faq/">پرسش های متداول</a>
+        <a href="../../careers/">فرصت های همکاری</a>
+        <a href="../../csr/">نجات زاگرس</a>
+      </div>
+    </details>
+    <div class="foot-contact">
+      <h3>تماس</h3>
+      <div class="foot-contact-pills">
+        <a class="foot-pill foot-pill--tel" href="tel:+982192001017" dir="ltr" aria-label="مرکز تماس 02192001017"><span class="foot-pill-ico" aria-hidden="true"></span><span class="foot-pill-label">مرکز تماس</span><span class="foot-pill-val">02192001017</span></a>
+        <a class="foot-pill foot-pill--mail" href="mailto:info@abadis-med.com" dir="ltr" aria-label="پست الکترونیک info@abadis-med.com"><span class="foot-pill-ico" aria-hidden="true"></span><span class="foot-pill-label">پست الکترونیک</span><span class="foot-pill-val">info@abadis-med.com</span></a>
+        <a class="foot-pill foot-pill--wa" href="https://wa.me/989100145809" target="_blank" rel="noopener" dir="ltr" aria-label="واتس‌اپ +989100145809"><span class="foot-pill-ico" aria-hidden="true"></span><span class="foot-pill-label">واتس‌اپ</span><span class="foot-pill-val">+989100145809</span></a>
+      </div>
+    </div>
+    <details class="foot-acc foot-address" open>
+      <summary>نشانی</summary>
+      <p><b>نشانی دفتر مرکزی:</b><br>ایران، تهران، قیطریه، خیابان اندرزگو، پلاک 104، واحد2</p>
+      <p><b>نشانی کارخانه:</b><br>ایران،تهران،شهرک صنعتی شمس آباد، بلوار گلستان، کوچه گلشن ۱۹،پلاک۱۷</p>
+    </details>
+  </div>
+  <div class="wrap foot-certs-bar">
+    <div class="foot-certs"><img src="../../assets/img/certs/abd-certs-768x119-1-copy.webp" width="768" height="119" alt="CE · ISO 13485:2016 · IMED" loading="lazy"></div>
+  </div>
+  <div class="wrap foot-copy">کلیه حقوق مادی و معنوی این وبسایت متعلق است به: مخازن طبی آبادیس · نسخهٔ پیش‌نمایش بازطراحی</div>
+</footer>
+<script src="../../assets/js/site.js" defer></script>
+<script src="../common/abadis-common.js"></script>
+<script>
+
+    (() => {
+      const A = Abadis, fa = A.fa;
+      const MAX_TILT = 14, TH = [0, 0.12, 0.3];
+      function setup(root, kind) {
+        const beam = root.querySelector('.beam'), panA = root.querySelector('.pan-a'), panR = root.querySelector('.pan-r');
+        const wts = [...root.querySelectorAll('.wt')], wss = [...root.querySelectorAll('.wt-s')];
+        const sub = {}; root.querySelectorAll('[data-sub]').forEach((e) => { sub[e.dataset.sub] = e; });
+        const sum = root.querySelector('[data-sum]'), hint = root.querySelector('[data-hint]');
+        const chA = root.querySelector('[data-ch="a"]'), chB = root.querySelector('[data-ch="b"]');
+        return A.createCalc(root, kind, (s) => {
+          const f = kind === 'surgery' ? s.fr.input : s.fr.water;
+          const ang = -MAX_TILT * A.visCurve(f), r = ang * Math.PI / 180;
+          beam.setAttribute('transform', 'rotate(' + ang.toFixed(2) + ' 500 150)');
+          const ax = 500 - 330 * Math.cos(r), ay = 150 - 330 * Math.sin(r), bx = 500 + 330 * Math.cos(r), by = 150 + 330 * Math.sin(r);
+          panA.setAttribute('transform', 'translate(' + ax.toFixed(1) + ' ' + ay.toFixed(1) + ')');
+          panR.setAttribute('transform', 'translate(' + bx.toFixed(1) + ' ' + by.toFixed(1) + ')');
+          const sc = 0.78 + 0.32 * Math.min(1, f);
+          wts.forEach((w, i) => w.classList.toggle('on', f > TH[i]));
+          wss.forEach((g) => { const x = +g.dataset.bx, y = +g.dataset.by; g.setAttribute('transform', 'translate(' + x + ' ' + y + ') scale(' + sc.toFixed(3) + ') translate(' + (-x) + ' ' + (-y) + ')'); });
+          sub.tubs.innerHTML = s.W > 0 ? '≈ ' + fa(s.W / 200) + ' وان حمام ۲۰۰ لیتری (تقریبی)' : '&nbsp;';
+          sub.read.innerHTML = s.C >= 1e6 ? '≈ ' + A.readableToman(s.C) : '&nbsp;';
+          sub.shifts.innerHTML = s.H > 0 ? '≈ ' + fa(s.H / 8) + ' شیفت کاری ۸ ساعته' : '&nbsp;';
+          const note = '<span class="note">* محاسبات بر اساس فرمول‌های محاسبه‌گر فعلی آبادیس</span>';
+          if (kind === 'surgery') {
+            sum.innerHTML = s.disp.n > 0 ? 'با <b>' + fa(s.disp.n) + '</b> عمل جراحی در سال، کفهٔ آبادیس <b>' + fa(s.W) + '</b> لیتر آب، <b>' + fa(s.C) + '</b> تومان و <b>' + fa(s.H) + '</b> ساعت سنگین‌تر است.' + note : 'با اسکرول، تعداد عمل جراحی در سال را بالا ببرید.' + note;
+          } else {
+            chA.classList.toggle('idle', s.phase === 'b'); chB.classList.toggle('idle', s.phase === 'a');
+            chA.classList.toggle('held', s.phase === 'b' || s.lockedA != null);
+            hint.textContent = s.phase === 'a' ? (s.lockedA != null ? 'تخت اتاق عمل روی ' + fa(s.lockedA) + ' ثابت است' : 'مرحله ۱: با اسکرول، تعداد تخت اتاق عمل را تنظیم کنید') : 'مرحله ۲: با اسکرول، تعداد تخت ICU|CCU را تنظیم کنید';
+            sum.innerHTML = (s.disp.a + s.disp.b) > 0 ? 'با <b>' + fa(s.disp.a) + '</b> تخت اتاق عمل و <b>' + fa(s.disp.b) + '</b> تخت ICU|CCU، کفهٔ آبادیس <b>' + fa(s.W) + '</b> لیتر آب، <b>' + fa(s.C) + '</b> تومان و <b>' + fa(s.H) + '</b> ساعت سنگین‌تر است.' + note : 'با اسکرول، تعداد تخت اتاق عمل را بالا ببرید.' + note;
+          }
+        });
+      }
+      setup(document.getElementById('calc1'), 'surgery');
+      setup(document.getElementById('calc2'), 'beds');
+      A.start();
+    })();
+
+  </script>
+</body>
+</html>
