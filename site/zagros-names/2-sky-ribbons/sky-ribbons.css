@@ -1,0 +1,22 @@
+/* Sample 2 — names in the sky: soft ribbons of names drifting right → left in the misty band between
+   the hero copy and the treeline. Trees stay clean. Transform/opacity only. */
+.sr-sky { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.sr-row {
+  position: absolute; left: 0; right: 0; top: 0; height: 30px; overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 16%, #000 84%, transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 16%, #000 84%, transparent 100%);
+  will-change: transform; contain: strict;
+}
+.sr-name {
+  position: absolute; left: 0; top: 0; white-space: nowrap; direction: rtl;
+  font-family: "Kalameh", Tahoma, sans-serif; line-height: 1.6;
+  color: #063f42;
+  text-shadow: 0 0 6px rgba(243,250,250,.95), 0 0 2px rgba(243,250,250,.9);
+}
+.sr-name::after {           /* small separator dot in the gap after each name (gap is on the visual left in RTL) */
+  content: ""; position: absolute; top: 50%; left: calc(var(--gap, 34px) / -2 - 2px);
+  width: 4px; height: 4px; margin-top: -2px; border-radius: 50%; background: currentColor; opacity: .45;
+}
+[data-theme="dark"] .sr-name { color: #dff3f3; text-shadow: 0 0 8px rgba(4,17,19,.9), 0 0 2px rgba(4,17,19,.8); }
+[data-theme="noir"] .sr-name { color: #ece8ff; text-shadow: 0 0 8px rgba(10,8,22,.92), 0 0 2px rgba(10,8,22,.85); }
+.zn-counter b { font-variant-numeric: tabular-nums; }
