@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>نجات زاگرس، مسئولیت اجتماعی آبادیس — نمونهٔ ۱: یک درخت، یک نام</title>
+<title>نجات زاگرس، مسئولیت اجتماعی آبادیس — نمونهٔ ۴: درخت‌ها و دیوار افتخار</title>
 <meta name="description" content="پویش نجات زاگرس؛ کاشت نهال بلوط در ارتفاعات زاگرس به نام آبادیس و به یاد صنعت سلامت کشور.">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#e8f3f3">
@@ -19,7 +19,8 @@
 <link rel="preconnect" href="https://siaamak-ghodsi.github.io" crossorigin>
 <link rel="stylesheet" href="../shared/assets/css/site.css">
 <link rel="stylesheet" href="../shared/zagros-hero.css">
-<link rel="stylesheet" href="./tree-tags.css">
+<link rel="stylesheet" href="./wall-of-honor.css">
+<link rel="stylesheet" href="./mix.css">
 <link rel="preload" as="image" href="../shared/img/hero/bg-dry.webp" type="image/webp">
 <link rel="preload" href="../shared/assets/img/zagros-koh.jpg" as="image">
 <script>if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('zh-reduced');</script>
@@ -81,9 +82,23 @@
         </div>
       </section>
       <div class="zh-hint" id="zhHint" aria-hidden="true"><i></i></div>
-      <div class="zn-counter" id="znCounter" aria-hidden="true"><b>۰</b> <span>مرکز درمانی</span></div>
+      <div class="mx-count" id="mxCount" aria-hidden="true"><b dir="ltr"><i class="wh-plus">+</i><span id="mxNum">۰</span></b> <span>مرکز درمانی</span></div>
     </div>
   </div>
+
+  <section class="wh-track" id="honor" aria-labelledby="whTitle">
+    <div class="wh-stage" id="whStage">
+      <div class="wh-head">
+        <h2 id="whTitle">مراکز درمانی همراه آبادیس</h2>
+        <p class="wh-count"><b dir="ltr"><i class="wh-plus">+</i><span id="whNum">۱٬۲۵۳</span></b> <span>مرکز درمانی</span></p>
+        <div class="wh-search" role="search">
+          <input type="search" id="whQ" placeholder="نام مرکز درمانی خود را جستجو کنید" aria-label="نام مرکز درمانی خود را جستجو کنید" autocomplete="off" enterkeyhint="search" spellcheck="false">
+          <span class="wh-res" id="whRes" aria-live="polite"></span>
+        </div>
+      </div>
+      <div class="wh-wall" id="whWall" role="list" aria-label="فهرست مراکز درمانی همراه آبادیس"></div>
+    </div>
+  </section>
 
   <section class="section" style="padding-top:0"><div class="wrap">
     <div class="glass csr-stats reveal">
@@ -190,7 +205,8 @@
 <script src="../shared/assets/js/site.js" defer></script>
 <script src="../shared/zagros-hero.js" defer></script>
 <script src="../shared/names-common.js" defer></script>
-<script src="./tree-tags.js" defer></script>
+<script src="./mix-tags.js" defer></script>
+<script src="./wall-of-honor.js" defer></script>
 
 </body>
 </html>

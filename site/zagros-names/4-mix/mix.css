@@ -1,0 +1,33 @@
+/* Sample 4 — tree tags (calm rotation) → tags drift down as the canister rises → wall of honor. */
+.zh-bg, .zh-spots { transform-origin: 50% 100%; will-change: transform; }
+.tt-tags { position: absolute; inset: 0; z-index: 1; pointer-events: none; contain: layout style; }
+.tt-tag { position: absolute; left: 0; top: 0; opacity: 0; will-change: transform, opacity; font-family: "Kalameh", Tahoma, sans-serif; }
+.tt-tag .zh-mark-stick { transform-origin: 50% 100%; }
+.tt-tag .zh-mark-plate {
+  box-sizing: border-box; white-space: normal; text-align: center;
+  line-height: 1.45; padding: 3px 6px 2px; font-size: 10.5px; font-weight: 700;
+}
+@media (min-width: 900px) { .tt-tag .zh-mark-plate { font-size: 12.5px; padding: 3px 10px 2px; } }
+
+/* scene counter: appears with the canister, same format as the wall's counter it hands off to */
+.mx-count {
+  position: absolute; z-index: 3; left: 50%; top: 0; opacity: 0; pointer-events: none;
+  display: inline-flex; align-items: baseline; gap: 8px; white-space: nowrap;
+  padding: 6px 20px 4px; border-radius: 999px;
+  background: rgba(243,250,250,.78); border: 1px solid var(--line); box-shadow: 0 8px 24px rgba(11,46,50,.12);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  color: var(--brand); line-height: 1.15; font-family: "Kalameh", Tahoma, sans-serif;
+  will-change: transform, opacity;
+}
+.mx-count b { font-size: clamp(2rem, 7.5vw, 3.2rem); font-weight: 900; font-variant-numeric: tabular-nums; unicode-bidi: isolate; direction: ltr; }
+.mx-count .wh-plus { font-style: normal; font-weight: 700; font-size: .62em; vertical-align: .12em; margin-right: .05em; }
+.mx-count > span { font-size: clamp(.95rem, 2.4vw, 1.2rem); font-weight: 800; color: var(--ink); }
+[data-theme="dark"] .mx-count { background: rgba(6,23,25,.74); }
+[data-theme="noir"] .mx-count { background: rgba(14,12,26,.76); }
+.zh-reduced .mx-count { display: none; }          /* static version: the wall's counter is the only one */
+
+/* the scene dissolves into the wall's own background (not the CSR photo) */
+.zh-exit { background: linear-gradient(180deg, rgba(243,250,250,0), var(--bg)); }
+[data-theme="dark"] .zh-exit { background: linear-gradient(180deg, rgba(6,23,25,0), var(--bg)); }
+[data-theme="noir"] .zh-exit { background: linear-gradient(180deg, rgba(10,10,18,0), var(--bg)); }
+.wh-count { will-change: opacity; }

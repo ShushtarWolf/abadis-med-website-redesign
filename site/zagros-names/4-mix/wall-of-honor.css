@@ -1,0 +1,62 @@
+/* Sample 3 — wall of honor: a calm pinned section after the Zagros hero, template colours in all three themes. */
+.wh-track { position: relative; height: 400vh; background: var(--bg); }
+.wh-stage {
+  position: sticky; top: 0; height: 100vh; height: 100lvh; overflow: hidden;
+  display: flex; flex-direction: column;
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 0%, var(--bg-2), transparent 70%),
+    var(--bg);
+  --wh-vis-bottom: 0px;
+}
+@supports (height: 100svh) { .wh-stage { --wh-vis-bottom: calc(100lvh - 100svh); } }
+.wh-head { flex: none; text-align: center; padding: 96px 20px 6px; position: relative; z-index: 2; }
+@media (min-width: 900px) { .wh-head { padding-top: 110px; } }
+.wh-head h2 { font-size: clamp(1.15rem, 3.2vw, 1.6rem); font-weight: 800; color: var(--ink-2); margin: 0; }
+.wh-count { margin: 2px 0 12px; color: var(--brand); line-height: 1.15; }
+.wh-count b { display: inline-block; font-size: clamp(2.6rem, 9vw, 4.6rem); font-weight: 900; font-variant-numeric: tabular-nums; unicode-bidi: isolate; direction: ltr; text-align: left; }
+.wh-count .wh-plus { font-style: normal; font-weight: 700; font-size: .62em; vertical-align: .12em; margin-right: .05em; }
+.wh-count > span { font-size: clamp(1rem, 2.6vw, 1.35rem); font-weight: 800; color: var(--ink); margin-inline-start: 4px; }
+.wh-search { position: relative; width: min(520px, 100%); margin: 0 auto; }
+.wh-search input {
+  width: 100%; box-sizing: border-box; font: inherit; font-size: 16px; font-weight: 600;   /* 16px: no iOS zoom on focus */
+  padding: 11px 18px 11px 92px; border-radius: 999px;
+  background: var(--surface); color: var(--ink); border: 1px solid var(--line);
+  box-shadow: var(--shadow); outline: none; -webkit-appearance: none; appearance: none;
+}
+.wh-search input::placeholder { color: var(--muted); opacity: 1; }
+.wh-search input:focus { border-color: var(--brand); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 22%, transparent), var(--shadow); }
+.wh-res { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: .8rem; font-weight: 700; color: var(--muted); pointer-events: none; white-space: nowrap; }
+
+.wh-wall {
+  position: relative; flex: 1 1 auto; min-height: 0; display: flex; gap: 10px;
+  width: min(1240px, 100%); margin: 2px auto 0; padding: 0 14px calc(var(--wh-vis-bottom) + 8px); box-sizing: border-box;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 16px, #000 calc(100% - var(--wh-vis-bottom) - 56px), transparent calc(100% - var(--wh-vis-bottom) - 8px));
+          mask-image: linear-gradient(180deg, transparent 0, #000 16px, #000 calc(100% - var(--wh-vis-bottom) - 56px), transparent calc(100% - var(--wh-vis-bottom) - 8px));
+}
+.wh-col { flex: 1 1 0; min-width: 0; position: relative; overflow: visible; }
+.wh-inner { will-change: transform; }
+.wh-name {
+  display: block; text-align: center; padding: 6px 6px; margin: 0 0 2px; border-radius: 10px;
+  font-size: 13px; line-height: 1.5; font-weight: 600; color: var(--ink-2);
+  transition: color .25s, background-color .25s, opacity .25s, box-shadow .25s;
+}
+.wh-col:nth-child(even) .wh-name { color: var(--muted); }
+@media (min-width: 900px) { .wh-name { font-size: 14.5px; padding: 7px 8px; } .wh-wall { gap: 18px; padding-inline: 28px; } }
+.wh-letter { display: block; text-align: center; font-size: 12px; font-weight: 900; color: var(--brand); opacity: .55; padding: 10px 0 4px; letter-spacing: .02em; }
+
+/* search: dim the rest, highlight matches, light up the current one */
+.wh-wall.searching .wh-name, .wh-wall.searching .wh-letter { opacity: .22; }
+.wh-wall.searching .wh-name.hit { opacity: 1; color: var(--brand); font-weight: 800; }
+.wh-wall .wh-name.focus {
+  opacity: 1; color: var(--btn-ink) !important; background: var(--btn-bg);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 25%, transparent), 0 8px 26px color-mix(in srgb, var(--brand) 45%, transparent);
+  animation: wh-glow 1.6s ease-in-out 2;
+}
+@keyframes wh-glow { 50% { box-shadow: 0 0 0 9px color-mix(in srgb, var(--brand) 10%, transparent), 0 8px 34px color-mix(in srgb, var(--brand) 60%, transparent); } }
+
+/* reduced motion / no pin: static wall in a scrollable box, search scrolls that box */
+.zh-reduced .wh-track { height: auto; }
+.zh-reduced .wh-stage { position: relative; height: auto; min-height: 0; }
+.zh-reduced .wh-wall { flex: none; height: 62vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.zh-reduced .wh-inner { transform: none !important; }
+.zh-reduced .wh-wall .wh-name.focus { animation: none; }
