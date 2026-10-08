@@ -9,12 +9,13 @@
   --wh-vis-bottom: 0px;
 }
 @supports (height: 100svh) { .wh-stage { --wh-vis-bottom: calc(100lvh - 100svh); } }
-.wh-head { flex: none; text-align: center; padding: 96px 20px 10px; position: relative; z-index: 2; }
+.wh-head { flex: none; text-align: center; padding: 96px 20px 6px; position: relative; z-index: 2; }
 @media (min-width: 900px) { .wh-head { padding-top: 110px; } }
 .wh-head h2 { font-size: clamp(1.15rem, 3.2vw, 1.6rem); font-weight: 800; color: var(--ink-2); margin: 0; }
 .wh-count { margin: 2px 0 12px; color: var(--brand); line-height: 1.15; }
-.wh-count b { display: inline-block; font-size: clamp(2.6rem, 9vw, 4.6rem); font-weight: 900; font-variant-numeric: tabular-nums; min-width: 3.2em; }
-.wh-count span { font-size: clamp(1rem, 2.6vw, 1.35rem); font-weight: 800; color: var(--ink); margin-inline-start: 4px; }
+.wh-count b { display: inline-block; font-size: clamp(2.6rem, 9vw, 4.6rem); font-weight: 900; font-variant-numeric: tabular-nums; unicode-bidi: isolate; direction: ltr; text-align: left; }
+.wh-count .wh-plus { font-style: normal; font-weight: 700; font-size: .62em; vertical-align: .12em; margin-right: .05em; }
+.wh-count > span { font-size: clamp(1rem, 2.6vw, 1.35rem); font-weight: 800; color: var(--ink); margin-inline-start: 4px; }
 .wh-search { position: relative; width: min(520px, 100%); margin: 0 auto; }
 .wh-search input {
   width: 100%; box-sizing: border-box; font: inherit; font-size: 16px; font-weight: 600;   /* 16px: no iOS zoom on focus */
@@ -28,9 +29,9 @@
 
 .wh-wall {
   position: relative; flex: 1 1 auto; min-height: 0; display: flex; gap: 10px;
-  width: min(1240px, 100%); margin: 6px auto 0; padding: 0 14px calc(var(--wh-vis-bottom) + 8px); box-sizing: border-box;
-  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 13%, #000 85%, transparent 100%);
-          mask-image: linear-gradient(180deg, transparent 0, #000 13%, #000 85%, transparent 100%);
+  width: min(1240px, 100%); margin: 2px auto 0; padding: 0 14px calc(var(--wh-vis-bottom) + 8px); box-sizing: border-box;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 16px, #000 calc(100% - var(--wh-vis-bottom) - 56px), transparent calc(100% - var(--wh-vis-bottom) - 8px));
+          mask-image: linear-gradient(180deg, transparent 0, #000 16px, #000 calc(100% - var(--wh-vis-bottom) - 56px), transparent calc(100% - var(--wh-vis-bottom) - 8px));
 }
 .wh-col { flex: 1 1 0; min-width: 0; position: relative; overflow: visible; }
 .wh-inner { will-change: transform; }

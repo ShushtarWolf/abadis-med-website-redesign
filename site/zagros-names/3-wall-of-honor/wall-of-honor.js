@@ -46,15 +46,19 @@
     }
   }
 
+  // every column starts filled at the top edge of the wall (y = TOP) and ends with its last name just above the
+  // bottom fade; in between each column follows its own easing (p + a·p·(1−p)), so speeds differ only mid-scroll
+  var TOP = 14, END_FADE = 52, EASE = [0.32, -0.26, 0.18, -0.34, 0.26];
   function measure() {
     vh = window.innerHeight;
-    wallH = wall.clientHeight;
+    var cs = getComputedStyle(wall);
+    wallH = wall.clientHeight - (parseFloat(cs.paddingBottom) || 0);     // visible window (Safari bottom bar excluded)
     var maxTravel = 0;
     cols.forEach(function (c, i) {
       c.h = c.inner.offsetHeight;
-      c.travel = Math.max(0, c.h - wallH * 0.82);
-      c.pad = wallH * (0.18 + 0.16 * ((i * 2) % 3));          // staggered start → slightly different speeds per column
-      maxTravel = Math.max(maxTravel, c.travel + c.pad);
+      c.travel = Math.max(0, c.h + TOP - (wallH - END_FADE));
+      c.a = EASE[i % EASE.length];
+      maxTravel = Math.max(maxTravel, c.travel);
     });
     if (!reduced) {
       // scroll length: names move ~2× (desktop) / ~3× (phone) the scroll distance, bounded to keep the page sane
@@ -65,7 +69,8 @@
     trackTop = trackEl.getBoundingClientRect().top + window.pageYOffset;
   }
 
-  function colY(c, p) { return c.pad - p * (c.travel + c.pad); }
+  function ease(c, p) { return p + c.a * p * (1 - p); }                  // monotonic (|a| < 1), 0→0 and 1→1
+  function colY(c, p) { return TOP - ease(c, p) * c.travel; }
   function render(p) {
     for (var i = 0; i < cols.length; i++) {
       var c = cols[i], y = colY(c, p).toFixed(1);
@@ -73,10 +78,10 @@
     }
   }
   function counter() {
-    // the big counter climbs while the section slides in, and reads ۱٬۲۵۳ once it is pinned
+    // the big counter climbs while the section slides in and settles exactly on the list length once (nearly) pinned
     var r = trackEl.getBoundingClientRect().top;
-    var e = reduced ? 1 : smooth(clamp(1 - r / (vh * 0.9), 0, 1));
-    var n = Math.round(N * e);
+    var e = reduced ? 1 : clamp((vh - r) / (vh * 0.88), 0, 1);
+    var n = e >= 1 ? N : Math.min(N - 1, Math.floor(N * smooth(e)));
     if (n !== lastNum) { numEl.textContent = ZN.fa(n); lastNum = n; }
   }
   function readTarget() { target = clamp((window.pageYOffset - trackTop) / scrollLen, 0, 1); }
@@ -118,7 +123,9 @@
     var c = cols[el._col], mid = el.offsetTop + el.offsetHeight / 2;
     if (reduced) { wall.scrollTo({ top: Math.max(0, mid - wall.clientHeight / 2), behavior: 'auto' }); return; }
     // progress at which this name sits in the middle of the wall window, then scroll the page there
-    var p = clamp((c.pad + mid - wallH / 2) / (c.travel + c.pad), 0, 1);
+    var want = c.travel ? clamp((TOP + mid - wallH / 2) / c.travel, 0, 1) : 0, lo = 0, hi = 1;
+    for (var k = 0; k < 30; k++) { var m = (lo + hi) / 2; if (ease(c, m) < want) lo = m; else hi = m; }   // invert the easing
+    var p = (lo + hi) / 2;
     window.scrollTo({ top: Math.round(trackTop + p * scrollLen), behavior: 'smooth' });
   }
   input.addEventListener('input', function () { clearTimeout(qT); qT = setTimeout(runSearch, 140); });
