@@ -109,11 +109,11 @@ def footer(p, cur=None, lang='fa'):
     </details>
     <div class="foot-contact">
       <h3>{esc(L['footer_contact'])}</h3>
-      <dl class="foot-contact-dl">
-        <div class="foot-c-item"><dt>{esc(L['contact_center'])}</dt><dd><a href="tel:+982192001017" dir="ltr">02192001017</a></dd></div>
-        <div class="foot-c-item"><dt>{esc(L['email'])}</dt><dd><a href="mailto:info@abadis-med.com" dir="ltr">info@abadis-med.com</a></dd></div>
-        <div class="foot-c-item foot-c-wa"><dt>{esc(L['whatsapp'])}</dt><dd><a class="foot-wa-btn" href="https://wa.me/989100145809" target="_blank" rel="noopener" dir="ltr"><span class="foot-wa-label">{esc(L['whatsapp'].rstrip(':'))}</span> <span>+989100145809</span></a></dd></div>
-      </dl>
+      <div class="foot-contact-pills">
+        <a class="foot-pill foot-pill--tel" href="tel:+982192001017" dir="ltr" aria-label="{esc(L['contact_center'].rstrip(':') + ' 02192001017')}"><span class="foot-pill-label">{esc(L['contact_center'].rstrip(':'))}</span> <span class="foot-pill-val">02192001017</span></a>
+        <a class="foot-pill foot-pill--mail" href="mailto:info@abadis-med.com" dir="ltr" aria-label="{esc(L['email'].rstrip(':') + ' info@abadis-med.com')}"><span class="foot-pill-label">{esc(L['email'].rstrip(':'))}</span> <span class="foot-pill-val">info@abadis-med.com</span></a>
+        <a class="foot-pill foot-pill--wa" href="https://wa.me/989100145809" target="_blank" rel="noopener" dir="ltr" aria-label="{esc(L['whatsapp'].rstrip(':') + ' +989100145809')}"><span class="foot-pill-label">{esc(L['whatsapp'].rstrip(':'))}</span> <span class="foot-pill-val">+989100145809</span></a>
+      </div>
     </div>
     <details class="foot-acc foot-address" open>
       <summary>{esc(L['footer_address'])}</summary>

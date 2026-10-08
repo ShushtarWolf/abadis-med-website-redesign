@@ -39,15 +39,23 @@ body.home .zh-exit {
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 6px;
-  margin-top: 12px;
+  margin-top: 4px;
+  /* Let center-logo glow breathe into the section; only clip horizontally */
+  overflow: visible;
   isolation: isolate;
 }
 #customers.section { --lc-fade: var(--bg); }
 #customers.section--alt { --lc-fade: var(--bg-2); }
+/* Extra vertical room so scaled center + teal glow never hard-clips */
+#customers.section { overflow: visible; }
+#customers .wrap { overflow: visible; }
 
 .logo-carousel-track {
-  overflow: hidden;
-  padding: 28px 0 32px;
+  overflow-x: hidden;
+  overflow-y: visible;
+  /* Tall band: room for scale(1.28) + drop-shadow blur (~26px) */
+  padding: 52px 0 56px;
+  margin-block: -12px;
   touch-action: pan-y; /* horizontal drag handled in JS; allow vertical page scroll */
   cursor: grab;
   min-width: 0;
@@ -61,6 +69,7 @@ body.home .zh-exit {
   will-change: transform;
   user-select: none;
   -webkit-user-select: none;
+  overflow: visible;
 }
 .logo-carousel-strip img { pointer-events: none; -webkit-user-drag: none; }
 
@@ -184,7 +193,7 @@ body.home .zh-exit {
   .logo-carousel::after { right: 0; }
   .home-logo { flex-basis: 88px; width: 88px; height: 88px; }
   .logo-carousel-strip { gap: 18px; }
-  .logo-carousel-track { padding-block: 22px 26px; }
+  .logo-carousel-track { padding-block: 44px 48px; margin-block: -8px; }
   .home-calc { padding: 22px 18px; }
 }
 
