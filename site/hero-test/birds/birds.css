@@ -1,33 +1,64 @@
-/* hero-test/birds — Zagros hero (light) where birds rise from the mountains and flock into the Abadis mark. */
-.bt-stage {
-  position: relative; overflow: hidden;
-  height: 100vh; height: 100svh; min-height: 560px;
+/* hero-test/birds v2 — painted sky above the Zagros scene (light). Birds rise from behind the ridge,
+   form the Abadis mark in the sky, and fly back behind the mountains as you scroll.
+   Layers (bottom -> top): sky + Zagros backdrop, mark, bird canvas, ridge occluder (+ haze), copy. */
+.bt-scene {
+  --H: max(560px, 100vh);
+  --sky-h: calc(var(--H) * .62);
+  --mark-size: clamp(110px, min(21vh, 40vw), 190px);
+  position: relative;
+  height: calc(var(--sky-h) + var(--H));
   background: #e8e4dc;
-  --mark-size: clamp(92px, min(15vh, 30vw), 140px);
-  --mark-top: clamp(82px, 10.5vh, 104px);
+  isolation: isolate;
+  container-type: inline-size;
 }
-.bt-bg, .bt-bg picture { position: absolute; inset: 0; }
-.bt-bg img {
+@supports (height: 100lvh) { .bt-scene { --H: max(560px, 100lvh); } }
+
+/* sky: same cover mapping as the backdrop, bottom row == backdrop top row (see make_birds_scene.py) */
+.bt-sky { position: absolute; z-index: 0; left: 0; right: 0; top: 0; height: var(--sky-h); overflow: hidden; }
+.bt-sky > img {
+  position: absolute; left: 50%; max-width: none; height: auto; display: block;
+  width: max(100cqw, calc(var(--H) * 1.77778));
+  bottom: calc(-0.6 * max(0px, 56.25cqw - var(--H)));
+  transform: translateX(-50%);
+}
+/* upward continuation of the Zagros .zh-veil haze (same ellipse, centre below the seam) */
+.bt-sky-veil {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 60%; pointer-events: none;
+  background: radial-gradient(ellipse 62% calc(var(--H) * .4176) at 50% calc(100% + var(--H) * .2448),
+    rgba(243,250,250,.70), rgba(243,250,250,.40) 50%, rgba(243,250,250,0) 78%);
+}
+@media (max-width: 560px) {
+  .bt-sky-veil {
+    background: radial-gradient(ellipse 95% calc(var(--H) * .3744) at 50% calc(100% + var(--H) * .216),
+      rgba(243,250,250,.74), rgba(243,250,250,.44) 55%, rgba(243,250,250,0) 82%);
+  }
+}
+
+.bt-stage, .bt-ridge { position: absolute; left: 0; right: 0; top: var(--sky-h); height: var(--H); overflow: hidden; }
+.bt-stage { z-index: 0; }
+.bt-stage picture { position: absolute; inset: 0; }
+.bt-stage img, .bt-ridge > img {
   position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; display: block;
   object-fit: cover; object-position: 50% 60%;   /* same mapping as the home .zh-bg-layer */
 }
+
 .bt-mark {
-  position: absolute; z-index: 2; left: 50%; top: var(--mark-top);
+  position: absolute; z-index: 1; left: 50%; top: calc(var(--sky-h) * .46);
   width: var(--mark-size); height: auto; max-width: none;
-  transform: translateX(-50%);
-  opacity: 0; transition: opacity .9s ease;
-  pointer-events: none;
+  transform: translate(-50%, -50%);
+  opacity: 0; pointer-events: none;
 }
-.bt-mark.is-shown { opacity: .8; }
-.bt-mark.no-anim { transition: none; }
-.bt-canvas { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; pointer-events: none; }
-.bt-stage .bt-copy {
-  position: absolute; z-index: 3; left: 0; right: 0; top: 0;
+.bt-mark.is-static { opacity: .8; }
+
+/* the canvas is viewport-sized and pinned while the scene scrolls past */
+.bt-canvas-wrap { position: sticky; top: 0; z-index: 1; height: 100vh; pointer-events: none; }
+.bt-canvas { display: block; width: 100%; height: 100%; }
+
+.bt-ridge { z-index: 2; pointer-events: none; }
+
+.bt-scene .bt-copy {
+  position: absolute; z-index: 3; left: 0; right: 0; top: var(--sky-h);
   min-height: 0; display: block;
-  padding: calc(var(--mark-top) + var(--mark-size) + 16px) 24px 0;
+  padding: 122px 24px 0;                          /* = home .zh-stage .csr-hero */
 }
-.bt-stage .bt-copy h1 { margin-top: 12px; }
-@media (max-width: 560px) {
-  .bt-stage .bt-copy { padding-inline: 16px; }
-}
-[data-theme="dark"] .bt-stage, [data-theme="noir"] .bt-stage { background: #e8e4dc; }
+@media (max-width: 560px) { .bt-scene .bt-copy { padding-top: 104px; padding-inline: 16px; } }
