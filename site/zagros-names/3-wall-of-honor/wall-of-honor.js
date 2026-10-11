@@ -1,5 +1,5 @@
 /* Sample 3 — «دیوار افتخار»
-   All 1,253 names sorted with the Persian collator in tall columns. While the section is pinned, scroll moves the
+   All 1,228 names sorted with the Persian collator in tall columns. While the section is pinned, scroll moves the
    columns vertically at slightly different speeds (they start staggered and all finish at the end of their list),
    so every name passes through the window. Search dims the rest, highlights matches, scrolls the page so the
    current match sits in the middle of the wall and lights it up (Enter = next match). Transform-only motion. */
