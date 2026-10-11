@@ -1,0 +1,101 @@
+/* Hero option 5: calm map of Iran with partner centres lighting up once, plus export countries (Iraq, Oman).
+   Only the hero differs from the approved home page. Colours come from the theme variables below. */
+.m5-hero {
+  --m5-top: var(--surface); --m5-accent: #0e8f8a;
+  --m5-irn-fill: #e3f4f2; --m5-irn-stroke: #8fcfcb;
+  --m5-exp-fill: #e9eff8; --m5-exp-stroke: #a9bcd9; --m5-tag-bg: rgba(233,239,248,.92); --m5-tag-ink: #3f5c84;
+  --m5-nb: #e8f0f0; --m5-dot: #14aea7; --m5-halo: rgba(20,174,167,.17); --m5-glow: rgba(33,192,185,.10);
+  position: relative; min-height: 100svh; display: grid; align-items: center;
+  background: linear-gradient(180deg, var(--m5-top) 0%, var(--m5-top) 55%, var(--bg) 100%);
+  color: var(--ink); overflow: hidden;
+}
+[data-theme="dark"] .m5-hero {
+  --m5-top: var(--bg); --m5-accent: #5fd0d1;
+  --m5-irn-fill: rgba(95,208,209,.09); --m5-irn-stroke: rgba(95,208,209,.42);
+  --m5-exp-fill: rgba(150,180,235,.12); --m5-exp-stroke: rgba(150,180,235,.5); --m5-tag-bg: rgba(20,40,60,.85); --m5-tag-ink: #c3d4f3;
+  --m5-nb: rgba(255,255,255,.035); --m5-dot: #5fd0d1; --m5-halo: rgba(95,208,209,.2); --m5-glow: rgba(95,208,209,.07);
+}
+[data-theme="noir"] .m5-hero {
+  --m5-top: var(--bg); --m5-accent: #c4b5fd;
+  --m5-irn-fill: rgba(167,139,250,.10); --m5-irn-stroke: rgba(196,181,253,.45);
+  --m5-exp-fill: rgba(245,200,150,.10); --m5-exp-stroke: rgba(245,200,150,.48); --m5-tag-bg: rgba(40,30,30,.85); --m5-tag-ink: #f3d6b4;
+  --m5-nb: rgba(255,255,255,.03); --m5-dot: #c4b5fd; --m5-halo: rgba(196,181,253,.2); --m5-glow: rgba(167,139,250,.08);
+}
+.m5-inner {
+  width: min(1240px, 100%); margin-inline: auto; padding: 104px 40px 48px;
+  display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: 32px 56px; align-items: center;
+}
+.m5-copy { max-width: 34rem; }
+.m5-chip { margin-bottom: 18px; }
+.m5-hero h1 { font-size: clamp(2.2rem, 3.7vw, 3.4rem); font-weight: 900; line-height: 1.28; margin: 0 0 16px; color: var(--ink); }
+.m5-hero h1 em { display: block; font-style: normal; color: var(--m5-accent); }
+.m5-lead { font-size: 1.08rem; line-height: 1.85; color: var(--muted); margin: 0 0 26px; max-width: 32rem; }
+.m5-proof { display: flex; align-items: center; gap: 16px; margin: 0 0 12px; }
+.m5-num { font-size: clamp(3.2rem, 5vw, 4.4rem); font-weight: 900; line-height: 1; color: var(--m5-accent); direction: ltr; unicode-bidi: isolate; letter-spacing: -.02em; font-variant-numeric: tabular-nums; min-width: 4.1ch; text-align: right; }
+.m5-lab { font-size: 1.02rem; font-weight: 700; color: var(--ink-2); max-width: 11ch; line-height: 1.45; }
+.m5-facts { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 0; margin: 0 0 26px; padding: 0; font-size: .84rem; font-weight: 600; color: var(--muted); }
+.m5-facts li:not(:last-child)::after { content: "·"; margin: 0 10px; opacity: .6; }
+.m5-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; margin-bottom: 26px; }
+.m5-btn { border-radius: 999px; padding-inline: 26px; }
+.m5-calc { font-weight: 700; font-size: .95rem; color: var(--m5-accent); text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 1px; }
+.m5-calc:hover { opacity: .8; }
+.m5-certs img { display: block; width: min(300px, 80%); height: auto; }
+[data-theme="dark"] .m5-certs img, [data-theme="noir"] .m5-certs img { background: #fff; border-radius: 10px; padding: 6px 10px; }
+
+/* map */
+.m5-map { margin: 0; display: grid; place-items: center; }
+.m5-box { position: relative; width: min(100%, 620px, calc((100svh - 150px) * .9376)); }
+.m5-box::before { content: ""; position: absolute; left: 12%; right: 0; top: 4%; height: 70%; background: radial-gradient(closest-side, var(--m5-glow), transparent); pointer-events: none; }
+.m5-svg { position: relative; display: block; width: 100%; height: auto; overflow: visible; }
+.m5-nb path { fill: var(--m5-nb); stroke: none; }
+.m5-irn { fill: var(--m5-irn-fill); stroke: var(--m5-irn-stroke); stroke-width: 1.4; stroke-linejoin: round; }
+.m5-exp path { fill: var(--m5-exp-fill); stroke: var(--m5-exp-stroke); stroke-width: 1.2; stroke-linejoin: round; stroke-dasharray: 5 4; }
+.m5-core { fill: var(--m5-dot); }
+.m5-halo { fill: var(--m5-halo); }
+.m5-dot--lg .m5-halo { fill: var(--m5-halo); }
+.m5-dot { transform-box: fill-box; transform-origin: center; }
+.m5-tag {
+  position: absolute; transform: translate(50%, -50%); white-space: nowrap;
+  font-size: .78rem; font-weight: 600; line-height: 1; color: var(--m5-tag-ink);
+  background: var(--m5-tag-bg); border: 1px solid var(--m5-exp-stroke); border-radius: 999px; padding: 6px 11px 5px;
+}
+.m5-tag b { font-weight: 800; }
+
+/* one-time entrance (armed only on desktop with motion allowed; otherwise the final state above is shown) */
+.m5-armed .m5-dot, .m5-armed .m5-tag { opacity: 0; }
+.m5-armed .m5-exp path { fill-opacity: 0; stroke-opacity: .25; }
+.m5-armed.m5-play .m5-dot { animation: m5-dot .8s cubic-bezier(.2,.7,.2,1) var(--d) both; }
+.m5-armed.m5-play .m5-exp path { animation: m5-tint 1s ease 2.35s both; }
+.m5-armed.m5-play .m5-tag { animation: m5-tag .7s ease 2.8s both; }
+@keyframes m5-dot { from { opacity: 0; transform: scale(.35); } to { opacity: 1; transform: scale(1); } }
+@keyframes m5-tint { from { fill-opacity: 0; stroke-opacity: .25; } to { fill-opacity: 1; stroke-opacity: 1; } }
+@keyframes m5-tag { from { opacity: 0; transform: translate(50%, -30%); } to { opacity: 1; transform: translate(50%, -50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .m5-armed .m5-dot, .m5-armed .m5-tag { opacity: 1; animation: none !important; }
+  .m5-armed .m5-exp path { fill-opacity: 1; stroke-opacity: 1; animation: none !important; }
+}
+
+@media (max-width: 860px) {
+  .m5-hero { min-height: 0; }
+  .m5-inner { grid-template-columns: 1fr; padding: 92px 20px 40px; gap: 20px; }
+  .m5-copy { display: contents; }
+  .m5-chip { order: 1; justify-self: start; margin-bottom: 0; }
+  .m5-hero h1 { order: 2; }
+  .m5-lead { order: 3; }
+  .m5-map { order: 4; }
+  .m5-proof { order: 5; }
+  .m5-facts { order: 6; }
+  .m5-actions { order: 7; }
+  .m5-certs { order: 8; }
+  .m5-inner { gap: 0; }
+  .m5-inner > * { margin-top: 0; }
+  .m5-hero h1 { margin-top: 14px; }
+  .m5-map { margin: 4px 0 18px; }
+  .m5-hero h1 { font-size: clamp(1.8rem, 7.6vw, 2.4rem); margin-bottom: 12px; }
+  .m5-lead { font-size: 1rem; margin-bottom: 20px; }
+  .m5-num { font-size: 3rem; }
+  .m5-facts { margin-bottom: 20px; font-size: .8rem; }
+  .m5-actions { margin-bottom: 20px; }
+  .m5-box { width: min(100%, 360px, calc(34svh * .9376)); }
+  .m5-tag { font-size: .7rem; padding: 5px 9px 4px; }
+}
