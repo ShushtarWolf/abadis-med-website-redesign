@@ -1,0 +1,87 @@
+/* Hero option 1: calm scroll-scrub product reveal. Only this hero differs from the approved home page.
+   Default CSS = the finished, still composition (used for reduced motion, data saver, slow phones, no JS).
+   product-hero.js adds .ph-live to pin the stage for ~one screen and scrub the reveal. */
+.ph-track { position: relative; background: var(--bg); }
+.ph-track.ph-live { height: calc(100vh + 110vh); height: calc(100svh + 110svh); }
+.ph-stage {
+  position: relative; height: 100vh; height: 100svh; min-height: 600px; overflow: hidden;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); align-items: center;
+  gap: clamp(20px, 4vw, 64px); width: min(1180px, 100%); margin-inline: auto;
+  padding: 96px clamp(18px, 4vw, 40px) 40px;
+  --sh: min(74svh, 620px);
+}
+.ph-live .ph-stage { position: sticky; top: 0; }
+.ph-track::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(60% 55% at 28% 58%, color-mix(in srgb, var(--brand) 11%, transparent), transparent 70%);
+}
+.ph-copy { position: relative; z-index: 2; }
+.ph-copy h1 { font-size: clamp(2rem, 4.6vw, 3.5rem); font-weight: 900; line-height: 1.25; margin: 16px 0 12px; color: var(--ink); max-width: 14ch; }
+.ph-copy h1 em { font-style: normal; color: var(--brand); }
+.ph-copy .lead { font-size: clamp(1rem, 1.6vw, 1.15rem); color: var(--ink-2); max-width: 32rem; margin: 0 0 24px; }
+.ph-stats { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 6px 28px; margin: 30px 0 0; padding: 18px 0 0; border-top: 1px solid var(--line); list-style: none; }
+.ph-stats li { display: flex; flex-direction: column; min-width: 0; }
+.ph-stats strong { font-size: clamp(1.35rem, 2.4vw, 1.8rem); font-weight: 900; color: var(--brand); line-height: 1.3; font-variant-numeric: tabular-nums; }
+.ph-stats span { font-size: .8rem; color: var(--muted); line-height: 1.6; }
+.ph-certs { display: block; margin-top: 18px; width: 230px; max-width: 70%; aspect-ratio: 768 / 119;
+  background: var(--brand); opacity: .78;
+  -webkit-mask: url("../../assets/img/certs/abd-certs-768x119-1-copy.webp") center / contain no-repeat;
+          mask: url("../../assets/img/certs/abd-certs-768x119-1-copy.webp") center / contain no-repeat; }
+
+/* ---------- product scene (all positions in % of the scene box) ---------- */
+.ph-visual { position: relative; z-index: 1; display: flex; justify-content: center; align-items: center; min-width: 0; }
+.ph-scene { position: relative; height: var(--sh); aspect-ratio: .95 / 1; max-width: 100%; }
+.ph-scene::after { /* soft floor */
+  content: ""; position: absolute; left: 6%; right: 6%; bottom: 7%; height: 7%; border-radius: 50%; z-index: 0;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--ink) 16%, transparent), transparent);
+}
+.ph-bag { position: absolute; bottom: 10%; margin: 0; z-index: 1; will-change: transform, opacity; }
+.ph-bag img { display: block; width: 100%; height: 100%; }
+.ph-bag figcaption, .ph-filter figcaption {
+  position: absolute; top: 100%; left: 50%; transform: translateX(-50%); white-space: nowrap;
+  font-size: .82rem; font-weight: 800; color: var(--ink-2); margin-top: 6px; will-change: opacity;
+}
+.ph-b1 { height: 44%; aspect-ratio: 358 / 487; right: 1%; }
+.ph-b3 { height: 78%; aspect-ratio: 254 / 828; left: 5%; }
+.ph-b2 { height: 58%; aspect-ratio: 362 / 647; left: 50%; transform: translateX(-50%); z-index: 2; transform-origin: 50% 100%; }
+.ph-b2 .ph-body { position: absolute; left: 0; top: 21.18%; width: 100%; height: 78.82%; }
+.ph-b2 .ph-lid { position: absolute; left: 0; top: 0; width: 100%; height: 21.18%; z-index: 2; transform-origin: 85% 90%;
+  transform: translateY(-34%) rotate(-4deg); will-change: transform; }
+.ph-open { /* the bag's mouth, seen when the lid lifts */
+  position: absolute; left: 18.5%; width: 63%; top: 21.18%; height: 5.2%; transform: translateY(-55%); border-radius: 50%; z-index: 1;
+  background: radial-gradient(70% 90% at 50% 60%, #8d9c9e, #c9d4d5 70%, #e9efef); box-shadow: inset 0 2px 4px rgba(0,0,0,.25);
+}
+.ph-b2 figcaption { top: 100%; }
+.ph-filter { position: absolute; top: 3%; width: 19%; aspect-ratio: 1; margin: 0; z-index: 3; will-change: transform, opacity; }
+.ph-filter img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 18px; background: #fff;
+  border: 1px solid var(--line); box-shadow: 0 12px 30px rgba(11,46,50,.12); }
+.ph-f1 { right: 29.5%; }
+.ph-f2 { left: 29.5%; }
+.ph-filter figcaption { font-size: .74rem; line-height: 1.35; text-align: center; margin-top: 5px; }
+[data-theme="dark"] .ph-filter img, [data-theme="noir"] .ph-filter img { box-shadow: 0 12px 30px rgba(0,0,0,.45); border-color: transparent; }
+.ph-hint { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); width: 2px; height: 34px; border-radius: 2px; z-index: 3; opacity: 0;
+  background: linear-gradient(180deg, transparent, var(--brand)); }
+.ph-live .ph-hint { opacity: .7; }
+
+@media (max-width: 860px) {
+  .ph-stage { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr) auto; align-items: stretch; gap: 10px;
+    padding: 78px 18px 20px; min-height: 560px; }
+  .ph-copy { display: contents; }
+  .ph-head { grid-row: 1; }
+  .ph-copy h1 { font-size: clamp(1.7rem, 7.4vw, 2.3rem); margin: 10px 0 8px; max-width: none; }
+  .ph-copy .lead { font-size: .95rem; margin-bottom: 14px; line-height: 1.7; }
+  .ph-visual { grid-row: 2; min-height: 0; }
+  .ph-visual { align-items: center; }
+  .ph-scene { height: auto; width: min(100%, 420px); max-height: 100%; }
+  .ph-foot { grid-row: 3; }
+  .ph-stats { margin-top: 0; padding-top: 12px; gap: 4px 18px; justify-content: space-between; }
+  .ph-stats strong { font-size: 1.3rem; }
+  .ph-stats span { font-size: .72rem; }
+  .ph-certs { margin: 10px auto 0; width: 190px; }
+  .ph-track::before { background: radial-gradient(70% 40% at 50% 58%, color-mix(in srgb, var(--brand) 11%, transparent), transparent 70%); }
+  .ph-bag figcaption { font-size: .74rem; margin-top: 3px; }
+  .ph-filter figcaption { font-size: .66rem; margin-top: 3px; }
+  .ph-filter img { border-radius: 12px; }
+  .ph-hint { display: none; }
+}
+@media (max-width: 860px) and (max-height: 760px) { .ph-copy .lead { display: none; } }
