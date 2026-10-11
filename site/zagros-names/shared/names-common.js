@@ -3,7 +3,7 @@
   'use strict';
   var BASE = (document.currentScript && document.currentScript.src) ? document.currentScript.src.replace(/[^\/]*$/, '') : './';
   var FA = '۰۱۲۳۴۵۶۷۸۹';
-  function fa(n) {                         // 1228 -> ۱٬۲۲۸ (Persian digits, Arabic thousands separator U+066C)
+  function fa(n) {                         // 1232 -> ۱٬۲۳۲ (Persian digits, Arabic thousands separator U+066C)
     var s = String(Math.max(0, Math.round(n))), out = '';
     for (var i = 0; i < s.length; i++) {
       if (i && (s.length - i) % 3 === 0) out += '\u066C';

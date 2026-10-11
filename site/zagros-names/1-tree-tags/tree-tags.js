@@ -1,5 +1,5 @@
 /* Sample 1 — «یک درخت، یک نام»
-   Each oak spot carries one wooden tag. Scroll progress rotates every spot through its share of the 1,228 names
+   Each oak spot carries one wooden tag. Scroll progress rotates every spot through its share of the 1,232 names
    (spot k shows names k, k+S, k+2S …), so the whole list passes while only one tag per tree is readable.
    A leaving tag drifts back toward the horizon and fades while the next one appears. The scene pans slowly.
    Tags are placed per frame with collision checks against the hero copy, the risen canister, the counter and
