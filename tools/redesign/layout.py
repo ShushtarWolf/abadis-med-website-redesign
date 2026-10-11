@@ -147,9 +147,10 @@ def page(p, cur, title, desc, main, og=None, lightbox=False, scripts='', lang='f
     if lang == 'fa' and not fa_path and cur:
         guess = {
             'about': 'about/', 'products': 'products/', 'news': 'news/', 'articles': 'articles/',
-            'dealers': 'dealers/', 'csr': 'csr/', 'contact': 'contact/', 'calculator': 'calculator/',
-            'customers': 'customers/', 'experiences': 'experiences/', 'downloads': 'downloads/',
-            'install': 'install-guide/', 'faq': 'faq/', 'careers': 'careers/',
+            'dealers': 'dealers/', 'csr': 'csr/', 'sdgs': 'sdgs/', 'contact': 'contact/',
+            'calculator': 'calculator/', 'customers': 'customers/', 'experiences': 'experiences/',
+            'downloads': 'downloads/', 'install': 'install-guide/', 'faq': 'faq/',
+            'careers': 'careers/', 'jobs': 'jobs/',
         }.get(cur, '')
         fa_path = fa_path or guess
     if lang == 'fa' and canonical_path is None:

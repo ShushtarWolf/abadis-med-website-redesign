@@ -135,7 +135,7 @@ def calculator(write):
     </div>
     <p class="note" style="margin-top:18px">ضرایب محاسبه همان ضرایب محاسبه‌گر سایت فعلی آبادیس است.</p>
   </div></section>
-  <section class="section" style="padding-top:0"><div class="wrap"><div class="doc-links"><a href="../products/suction-bag/">کیسه ساکشن یکبار مصرف</a><a href="../csr/#sdg">توسعه پایدار</a><a href="../contact/">ارتباط با ما</a></div></div></section>'''
+  <section class="section" style="padding-top:0"><div class="wrap"><div class="doc-links"><a href="../products/suction-bag/">کیسه ساکشن یکبار مصرف</a><a href="../sdgs/">توسعه پایدار</a><a href="../contact/">ارتباط با ما</a></div></div></section>'''
     js = '''<script>
 (function(){
   var nf = new Intl.NumberFormat('fa-IR', {maximumFractionDigits: 1});
@@ -151,21 +151,55 @@ def calculator(write):
 '''
     write('calculator/index.html', page(p, 'calculator', 'محاسبه گر', 'محاسبه‌گر صرفه جویی کیسه ساکشن یکبار مصرف آبادیس: مصرف آب، هزینه شست و شو و ضد عفونی و زمان کادر درمان.', main, scripts=js))
 
-# ------------------------------------------------------------------ CSR / SDG (inserted into the hand-built csr page)
-def csr(write):
-    p = '../'
-    sdg = B('/توسعه-پایدار/'); soc = B('/مسئولیت-اجتماعی/')
-    icons = ''.join(picture(p, b['src'], '', 240) for b in sdg if b['t'] == 'img')
-    def sec_html(sid, bl): return [b for b in bl if b.get('sec') == sid]
+# ------------------------------------------------------------------ SDGs / توسعه پایدار (full generated page)
+def _sdg_sections(p, bl):
+    """Build section HTML fragments from /توسعه-پایدار/ blocks (verbatim)."""
+    icons = ''.join(picture(p, b['src'], '', 240) for b in bl if b['t'] == 'img')
     parts = []
-    for sid, bs in secs(sdg):
+    first = True
+    for sid, bs in secs(bl):
         h = next((b['text'] for b in bs if b['t'] == 'h'), '')
         body = ''.join(rewrite_html(b['html'], p) for b in bs if b['t'] == 'html')
         extra = f'<div class="sdg-icons">{icons}</div>' if any(b['t'] == 'img' for b in bs) and icons else ''
-        parts.append(f'<div class="reveal" style="margin-top:34px"><h3 style="font-size:1.25rem;margin-bottom:12px">{esc(h)}</h3>{extra}<div class="prose">{body}</div></div>')
+        if first:
+            parts.append(
+                f'<div class="reveal" style="margin-top:34px">'
+                f'<h2 style="font-size:1.5rem;margin-bottom:12px">{esc(h)}</h2>'
+                f'{extra}<div class="prose">{body}</div></div>'
+            )
+            first = False
+        else:
+            parts.append(
+                f'<div class="reveal" style="margin-top:34px">'
+                f'<h3 style="font-size:1.25rem;margin-bottom:12px">{esc(h)}</h3>'
+                f'{extra}<div class="prose">{body}</div></div>'
+            )
+    return ''.join(parts)
+
+
+def sdgs(write):
+    """FA توسعه پایدار — UN SDG commitment page (old /توسعه-پایدار/)."""
+    p = '../'
+    bl = B('/توسعه-پایدار/')
+    body = _sdg_sections(p, bl)
+    lead = next((strip_tags(b['html']) for b in bl if b['t'] == 'html'), '')
+    main = f'''{page_hero(p, [('توسعه پایدار', None)], 'توسعه پایدار', lead[:180])}
+  <section class="section" id="sdg"><div class="wrap" style="max-width:980px">
+    {body}
+  </div></section>'''
+    write('sdgs/index.html', page(p, 'sdgs', 'توسعه پایدار',
+          'سند تعهد شرکت دانش‌بنیان مخازن طبی آبادیس به اهداف توسعه پایدار سازمان ملل (UN SDGs)',
+          main, fa_path='sdgs/'))
+
+
+# ------------------------------------------------------------------ CSR (Zagros hand-built + مسئولیت اجتماعی / SDG summary blocks)
+def csr(write):
+    p = '../'
+    sdg = B('/توسعه-پایدار/'); soc = B('/مسئولیت-اجتماعی/')
     sdg_html = f'''  <section class="section section--alt" id="sdg"><div class="wrap" style="max-width:980px">
     <span class="eyebrow">توسعه پایدار</span>
-    {''.join(parts).replace('<div class="reveal" style="margin-top:34px"><h3 style="font-size:1.25rem;margin-bottom:12px">', '<div class="reveal" style="margin-top:34px"><h2 style="font-size:1.5rem;margin-bottom:12px">', 1).replace('</h3>', '</h2>', 1)}
+    {_sdg_sections(p, sdg)}
+    <p class="reveal" style="margin-top:28px"><a class="more-link" href="../sdgs/">صفحهٔ توسعه پایدار ←</a></p>
   </div></section>'''
     acts = []
     videos = {'1290544': ('P1YTe', 'فعالیت های مخازن طبی آبادیس در بحران کرونا'), '875d853': ('sSfGv', 'جشن روز پرستار')}
@@ -355,10 +389,38 @@ def _list_field(title, prefix, cols, required=True, note=''):
         <button type="button" class="btn btn-ghost list-add" data-list-add>افزودن ردیف</button>
       </div>'''
 
+def _job_cards(p_jobs_prefix, jobs):
+    """Job listing cards (shared by فرصت‌های همکاری and موقعیت‌های شغلی)."""
+    return ''.join(
+        f'''<div class="card job reveal"><h3>{esc(j["title"])}</h3>'''
+        f'''<span class="dates">تاریخ انتشار: {fa(j["pub"])} · تاریخ انقضاء: {fa(j["exp"])}</span>'''
+        f'''<span class="badge-exp">منقضی شده</span>'''
+        f'''<a class="more-link" href="{p_jobs_prefix}{JOB_SLUGS[j["title"]]}/">مشاهده موقعیت ←</a></div>'''
+        for j in jobs
+    )
+
+
+def jobs_page(write):
+    """FA موقعیت‌های شغلی — standalone listings page (old /موقعیت-های-شغلی/)."""
+    jobs = load('jobs.json')
+    p = '../'
+    # Detail pages live under careers/jobs/<slug>/
+    cards = _job_cards('../careers/jobs/', jobs)
+    main = f'''{page_hero(p, [('موقعیت های شغلی', None)], 'موقعیت های شغلی', 'جای شما در آبادیس خالیست...')}
+  <section class="section" id="jobs"><div class="wrap">
+    <div class="grid g-3">{cards}</div>
+    <p class="reveal" style="margin-top:28px;text-align:center">
+      <a class="btn btn-primary" href="../careers/#apply">ثبت درخواست همکاری</a>
+    </p>
+  </div></section>'''
+    write('jobs/index.html', page(p, 'jobs', 'موقعیت های شغلی',
+          'موقعیت های شغلی شرکت دانش‌بنیان مخازن طبی آبادیس', main, fa_path='jobs/'))
+
+
 def careers(write):
     jobs = load('jobs.json')
     p = '../'
-    cards = ''.join(f'''<div class="card job reveal"><h3>{esc(j["title"])}</h3><span class="dates">تاریخ انتشار: {fa(j["pub"])} · تاریخ انقضاء: {fa(j["exp"])}</span><span class="badge-exp">منقضی شده</span><a class="more-link" href="jobs/{JOB_SLUGS[j["title"]]}/">مشاهده موقعیت ←</a></div>''' for j in jobs)
+    cards = _job_cards('jobs/', jobs)
     opts = ''.join(f'<option>{o}</option>' for o in FORM_OPTS)
     assert ' '.join(FORM_OPTS) == FORM_TITLES
     langs = ''.join(
@@ -445,5 +507,6 @@ from lib import JOB_MAP
 import urllib.parse as _u
 for _j in load('jobs.json'):
     JOB_MAP[_u.unquote(_u.urlsplit(_j['url']).path)] = f"careers/jobs/{JOB_SLUGS[_j['title']]}/"
-GROUPS = {'about': about, 'dealers': dealers, 'calculator': calculator, 'csr': csr, 'contact': contact,
-          'customers': customers, 'experiences': experiences, 'downloads': downloads, 'install': install, 'faq': faq, 'careers': careers}
+GROUPS = {'about': about, 'dealers': dealers, 'calculator': calculator, 'csr': csr, 'sdgs': sdgs,
+          'contact': contact, 'customers': customers, 'experiences': experiences, 'downloads': downloads,
+          'install': install, 'faq': faq, 'careers': careers, 'jobs': jobs_page}
