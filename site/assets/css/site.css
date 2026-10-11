@@ -1075,3 +1075,45 @@ html[dir="ltr"] .prose ul, html[dir="ltr"] .prose ol { padding-inline-start: 1.3
   .cta-band { padding: 28px 18px; }
   body { overflow-x: clip; }
 }
+
+/* Footer contact CTAs: no fill (footer background shows through), hairline border,
+   footer-ink text + teal icon, stacked one under another (full width on mobile). */
+.site-footer .foot-contact-pills {
+  display: flex; flex-direction: column; flex-wrap: nowrap;
+  align-items: stretch; justify-content: flex-start; gap: 8px;
+  max-width: 340px;
+}
+.site-footer .foot-pill,
+.site-footer .foot-pill--tel,
+.site-footer .foot-pill--mail,
+.site-footer .foot-pill--wa {
+  display: flex; width: 100%;
+  justify-content: flex-start; gap: 10px;
+  background: transparent;
+  border: 1px solid rgba(168,213,214,.18);
+  border-radius: 12px;
+  padding: 8px 12px; min-height: 42px;
+  font-size: .82rem;
+  color: var(--on-deep);
+  direction: inherit;
+  transition: border-color .2s ease;
+}
+.site-footer .foot-pill:hover,
+.site-footer .foot-pill:focus-visible { border-color: rgba(95,208,209,.55); }
+.site-footer .foot-pill .foot-pill-ico,
+.site-footer .foot-pill--wa .foot-pill-ico { width: 16px; height: 16px; background: #5fd0d1; }
+.site-footer .foot-pill .foot-pill-label {
+  position: static; width: auto; height: auto; margin: 0; padding: 0;
+  overflow: visible; clip: auto;
+  color: var(--on-deep-muted); opacity: 1; font-weight: 700;
+}
+.site-footer .foot-pill .foot-pill-val {
+  margin-inline-start: auto;
+  direction: ltr; unicode-bidi: isolate;
+  color: var(--on-deep);
+}
+.site-footer .foot-pill--mail { font-size: .82rem; }
+@media (max-width: 560px) {
+  .site-footer .foot-contact-pills { max-width: none; }
+  .site-footer .foot-pill { font-size: .8rem; }
+}
