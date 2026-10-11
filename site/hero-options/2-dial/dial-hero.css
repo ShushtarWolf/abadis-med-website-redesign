@@ -1,0 +1,226 @@
+/* Hero option 2: savings dial. Only this hero differs from the approved home page. */
+.dial-hero {
+  --dh-teal: #05686b;
+  --dh-accent: #2ec4c6;
+  align-items: center;
+  min-height: 100svh;
+}
+[data-theme="dark"] .dial-hero { --dh-teal: #2ec4c6; --dh-accent: #2ec4c6; }
+[data-theme="noir"] .dial-hero { --dh-teal: #a78bfa; --dh-accent: #c4b5fd; }
+
+.dial-hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.1fr);
+  gap: clamp(28px, 4vw, 56px);
+  align-items: center;
+  padding-top: 120px;
+  padding-bottom: 72px;
+  width: min(1120px, 100%);
+  margin-inline: auto;
+  padding-inline: 24px;
+  box-sizing: border-box;
+}
+.dial-hero h1 { max-width: 18ch; }
+.dial-hero .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.dial-hero .btn-ghost { color: #fff; }
+
+.dial-hero-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: clamp(16px, 2.5vw, 28px);
+  align-items: center;
+  min-width: 0;
+}
+.dh-knob-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+/* Knob — same look as dial-practical */
+.knob-wrap {
+  position: relative;
+  width: min(280px, 56vw, 42vh);
+  aspect-ratio: 1;
+}
+.knob-scale { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.knob-scale .tick { stroke: rgba(5,104,107,.35); stroke-width: 1.4; }
+.knob-scale .tick.major { stroke: var(--dh-teal); stroke-width: 2.2; }
+[data-theme="dark"] .knob-scale .tick { stroke: rgba(168,213,214,.35); }
+[data-theme="dark"] .knob-scale .tick.major { stroke: #2ec4c6; }
+[data-theme="noir"] .knob-scale .tick { stroke: rgba(196,181,253,.35); }
+[data-theme="noir"] .knob-scale .tick.major { stroke: #a78bfa; }
+.knob-track { fill: none; stroke: rgba(5,104,107,.12); stroke-width: 5; stroke-linecap: round; }
+[data-theme="dark"] .knob-track { stroke: rgba(168,213,214,.14); }
+[data-theme="noir"] .knob-track { stroke: rgba(196,181,253,.16); }
+.knob-arc {
+  fill: none;
+  stroke: url(#arcGrad);
+  stroke-width: 5;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 4px rgba(46,196,198,.55));
+}
+[data-theme="noir"] .knob-arc {
+  stroke: #c4b5fd;
+  filter: drop-shadow(0 0 4px rgba(167,139,250,.55));
+}
+.knob {
+  position: absolute; inset: 15%; border-radius: 50%;
+  background:
+    repeating-conic-gradient(from 0deg, rgba(0,0,0,.08) 0 1.5deg, rgba(255,255,255,.5) 1.5deg 3deg),
+    radial-gradient(circle at 35% 28%, #ffffff, #e2eaeb 45%, #b7c7c8 100%);
+  box-shadow:
+    0 22px 44px rgba(11,46,50,.28), 0 4px 10px rgba(11,46,50,.18),
+    inset 0 -8px 16px rgba(0,0,0,.14), inset 0 6px 12px rgba(255,255,255,.9);
+}
+[data-theme="dark"] .knob {
+  background:
+    repeating-conic-gradient(from 0deg, rgba(0,0,0,.25) 0 1.5deg, rgba(255,255,255,.07) 1.5deg 3deg),
+    radial-gradient(circle at 35% 28%, #3c5357, #1f3336 50%, #0d1c1e 100%);
+  box-shadow: 0 22px 44px rgba(0,0,0,.55), inset 0 -8px 16px rgba(0,0,0,.4), inset 0 4px 10px rgba(255,255,255,.08);
+}
+[data-theme="noir"] .knob {
+  background:
+    repeating-conic-gradient(from 0deg, rgba(0,0,0,.3) 0 1.5deg, rgba(255,255,255,.06) 1.5deg 3deg),
+    radial-gradient(circle at 35% 28%, #2a2640, #161328 50%, #0a0a12 100%);
+  box-shadow: 0 22px 44px rgba(0,0,0,.55), inset 0 -8px 16px rgba(0,0,0,.45), inset 0 4px 10px rgba(255,255,255,.06);
+}
+.knob::before {
+  content: "";
+  position: absolute; inset: 15%; border-radius: 50%;
+  background: radial-gradient(circle at 40% 32%, #fdfefe, #d4dfe0 75%);
+  box-shadow: inset 0 3px 8px rgba(0,0,0,.13), 0 1px 0 rgba(255,255,255,.9);
+}
+[data-theme="dark"] .knob::before {
+  background: radial-gradient(circle at 40% 32%, #2e4649, #142729 75%);
+  box-shadow: inset 0 3px 8px rgba(0,0,0,.45);
+}
+[data-theme="noir"] .knob::before {
+  background: radial-gradient(circle at 40% 32%, #2e2a45, #12101c 75%);
+  box-shadow: inset 0 3px 8px rgba(0,0,0,.5);
+}
+.knob-mark {
+  position: absolute; left: 50%; top: 5%; width: 6px; height: 17%; margin-left: -3px;
+  border-radius: 3px; background: var(--dh-teal);
+  box-shadow: 0 0 10px rgba(46,196,198,.7);
+}
+[data-theme="dark"] .knob-mark { background: #2ec4c6; }
+[data-theme="noir"] .knob-mark { background: #a78bfa; box-shadow: 0 0 10px rgba(167,139,250,.7); }
+.knob-wrap[role="slider"] {
+  touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent; outline: none; border-radius: 50%;
+}
+.knob-wrap.dragging { cursor: grabbing; }
+.knob-wrap:focus-visible .knob { outline: 2px solid var(--dh-accent); outline-offset: 4px; }
+.knob-logo {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font-weight: 900; font-size: clamp(.85rem, 2vw, 1.1rem);
+  color: rgba(5,104,107,.55); pointer-events: none;
+}
+[data-theme="dark"] .knob-logo { color: rgba(46,196,198,.6); }
+[data-theme="noir"] .knob-logo { color: rgba(196,181,253,.65); }
+
+.lcd { display: flex; gap: 10px; width: 100%; justify-content: center; }
+.lcd-cell {
+  background: #061719; color: #d9f2f2; border-radius: 12px;
+  padding: 6px 18px 4px; min-width: 150px; text-align: center;
+  box-shadow: inset 0 2px 10px rgba(0,0,0,.6);
+  border: 1px solid rgba(46,196,198,.18);
+}
+.lcd-cell.active { border-color: #2ec4c6; box-shadow: inset 0 2px 10px rgba(0,0,0,.6), 0 0 0 3px rgba(46,196,198,.18); }
+[data-theme="noir"] .lcd-cell.active { border-color: #a78bfa; box-shadow: inset 0 2px 10px rgba(0,0,0,.6), 0 0 0 3px rgba(167,139,250,.22); }
+.lcd-cell .lbl {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  font-size: .72rem; font-weight: 700; color: rgba(217,242,242,.72);
+}
+.lcd-cell .led {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #3ddc84; box-shadow: 0 0 8px #3ddc84;
+}
+.lcd-cell .odo {
+  display: block; direction: ltr; unicode-bidi: isolate;
+  font-size: clamp(1.6rem, 3.2vw, 2.3rem); font-weight: 900;
+  color: #7fe9ea; text-shadow: 0 0 12px rgba(46,196,198,.45);
+  line-height: 1.25;
+}
+[data-theme="noir"] .lcd-cell .odo { color: #c4b5fd; text-shadow: 0 0 12px rgba(167,139,250,.4); }
+
+.dh-results {
+  display: flex; flex-direction: column; gap: 10px; min-width: 0;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 20px;
+  padding: 16px 16px 14px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+[data-theme="light"] .dial-hero .dh-results {
+  background: rgba(255,255,255,.72);
+  border-color: rgba(5,104,107,.12);
+  box-shadow: 0 14px 36px rgba(11,46,50,.08);
+}
+[data-theme="dark"] .dh-results {
+  background: rgba(6,23,25,.55);
+  border-color: rgba(46,196,198,.18);
+}
+[data-theme="noir"] .dh-results {
+  background: rgba(14,12,26,.6);
+  border-color: rgba(167,139,250,.22);
+}
+.dh-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 6px 10px;
+  align-items: baseline;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(0,0,0,.04);
+}
+[data-theme="dark"] .dh-row, [data-theme="noir"] .dh-row { background: rgba(255,255,255,.04); }
+.dh-lab { font-size: .82rem; font-weight: 700; color: var(--ink-2, #2f4e51); }
+[data-theme="dark"] .dh-lab, [data-theme="noir"] .dh-lab { color: var(--ink-2, #c9dfe0); }
+.dh-val {
+  font-size: clamp(1.05rem, 2.2vw, 1.35rem); font-weight: 900;
+  color: var(--dh-teal); direction: ltr; unicode-bidi: isolate;
+}
+.dh-row small { font-size: .75rem; font-weight: 700; color: var(--muted); }
+.dh-note {
+  margin: 2px 2px 0;
+  font-size: .78rem; font-weight: 700;
+  color: var(--muted); text-align: center;
+}
+[data-theme="noir"] #arcGrad stop:first-child { stop-color: #6d28d9; }
+[data-theme="noir"] #arcGrad stop:last-child { stop-color: #c4b5fd; }
+
+@media (max-width: 860px) {
+  .dial-hero { min-height: auto; align-items: start; }
+  .dial-hero-inner {
+    grid-template-columns: 1fr;
+    padding-top: 96px;
+    padding-bottom: 36px;
+    padding-inline: 16px;
+    gap: 22px;
+  }
+  .dial-hero-copy { order: 2; }
+  .dial-hero-stage { order: 1; }
+  .dial-hero h1 { font-size: clamp(1.7rem, 7.2vw, 2.4rem); margin: 12px 0 10px; max-width: none; }
+  .dial-hero p.lead { font-size: .95rem; margin-bottom: 16px; }
+  .dial-hero-stage {
+    grid-template-columns: 1fr;
+    max-width: 420px;
+    margin-inline: auto;
+    width: 100%;
+    gap: 12px;
+  }
+  .knob-wrap { width: min(210px, 58vw); }
+  .lcd-cell { min-width: 0; width: min(200px, 100%); padding: 5px 14px 3px; }
+  .lcd-cell .odo { font-size: 1.55rem; }
+  .dh-results { padding: 12px 12px 10px; gap: 8px; }
+  .dh-row { padding: 7px 8px; }
+  .dh-lab { font-size: .78rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .knob, .knob-arc { transition: none !important; }
+}
