@@ -1,7 +1,7 @@
 """News + articles lists and one page per archived post."""
 import json, re, urllib.parse as u
 from lib import load, esc, strip_tags, best_img, jdate, fa, POST_MAP, ROOT, SITE
-from layout import page, mosaic_hero, page_hero
+from layout import page, page_hero
 from render import blocks_to_prose
 from cats import classify, strip_title
 
@@ -90,7 +90,7 @@ def build(write):
         lead = ('اخبار، گزارش‌ها، مصاحبه‌ها و رویدادهای شرکت دانش‌بنیان مخازن طبی آبادیس' if cat == 'news'
                 else 'اگر به دنبال مطلب خاصی می گردید، از موتور جستجوگر زیر استفاده نمایید.')
         h1 = 'آخرین <em>اخبار</em>' if cat == 'news' else '<em>مقالات</em>'
-        main = f'''{mosaic_hero(p, [(LABEL[cat], None)], 'مخازن طبی آبادیس', h1, lead, label=LABEL[cat])}
+        main = f'''{page_hero(p, [(LABEL[cat], None)], h1, lead)}
   <section class="section"><div class="wrap">
     <div class="list-tools"><input class="search" type="search" placeholder="جست و جو" aria-label="جست و جو در {LABEL[cat]}" data-filter="#postGrid"><span class="count" data-count-for="#postGrid">{fa(n)} مطلب</span></div>
     <div class="post-grid" id="postGrid" data-paged="12">{cards}</div>

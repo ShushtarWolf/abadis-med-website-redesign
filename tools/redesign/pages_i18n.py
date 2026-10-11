@@ -193,7 +193,7 @@ def _write_post_index(write, lang, site_path, cur, label, items):
             f'<div class="body"><h3>{esc(title)}</h3><p>{esc(desc)}</p>'
             f'<span class="go">{esc(L["read_more"])}</span></div></a>'
         )
-    main = f'''{mosaic_hero(p, [(label, None)], L['brand'], f'<em>{esc(label)}</em>', '', label=label, lang=lang)}
+    main = f'''{page_hero(p, [(label, None)], f'<em>{esc(label)}</em>', '', lang=lang)}
   <section class="section"><div class="wrap">
     <div class="list-tools"><input class="search" type="search" placeholder="{esc(L['search'])}" aria-label="{esc(L['search'])}" data-filter="#postGrid">
     <span class="count" data-count-for="#postGrid">{len(items)} {esc(L['count_unit'])}</span></div>

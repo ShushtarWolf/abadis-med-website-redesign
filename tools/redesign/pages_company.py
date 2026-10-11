@@ -1,7 +1,7 @@
 """About, dealers, contact extras, CSR/SDG extras, calculator, and footer pages."""
 import re, json
 from lib import PAGES, SITE, esc, strip_tags, best_img, rewrite_html, href, fa, load
-from layout import page, mosaic_hero, page_hero
+from layout import page, page_hero
 from render import picture, gallery_link, table, faq_list, aparat, secs, blocks_to_prose
 
 def B(path): return PAGES[path]['blocks']
@@ -37,7 +37,7 @@ def about(write):
                   f'<source src="{v}.webm" type="video/webm"><source src="{v}.mp4" type="video/mp4"></video>')
         av = f'<div class="av">{ph}</div>' if ph else f'<div class="av" aria-hidden="true">{esc(b["name"][:1])}</div>'
         members.append(f'<div class="member">{av}<strong>{esc(b["name"])}</strong><span>{esc(b["role"])}</span></div>')
-    main = f'''{mosaic_hero(p, [('آشنایی با ما', None)], 'شرکت دانش‌بنیان مخازن طبی آبادیس', 'آشنایی با <em>آبادیس</em>', strip_tags(first), label='آشنایی با ما')}
+    main = f'''{page_hero(p, [('آشنایی با ما', None)], 'آشنایی با <em>آبادیس</em>', strip_tags(first))}
   <nav class="anchors" aria-label="بخش‌های صفحه"><div class="wrap"><a href="#intro">درباره ما</a><a href="#history">تاریخچه</a><a href="#why">چرا آبادیس؟</a><a href="#iso">گواهینامه ISO</a><a href="#partners">شرکای تجاری</a><a href="#team">تیم اجرایی</a></div></nav>
   <section class="section" id="intro"><div class="wrap" style="max-width:920px">
     <h2 class="reveal" style="margin-bottom:18px">درباره ما بیشتر بدانید...</h2>
@@ -105,7 +105,7 @@ def dealers(write):
             f'<div class="card prov-group reveal" data-prov="{esc(pv)}" id="p-{esc(pv.replace(" ", "-"))}">'
             f'<h2>{esc(title)}</h2>{"".join(ents)}</div>'
         )
-    main = f'''{mosaic_hero(p, [('لیست نمایندگان', None)], 'شبکه توزیع فروش آبادیس', 'لیست <em>نمایندگان</em>', esc(intro), label='لیست نمایندگان')}
+    main = f'''{page_hero(p, [('لیست نمایندگان', None)], 'لیست <em>نمایندگان</em>', esc(intro))}
   <section class="section"><div class="wrap">
     <h2 class="reveal" style="margin-bottom:16px">لیست استان ها</h2>
     <div class="prov-chips reveal" id="provChips">{chips}</div>
@@ -119,7 +119,7 @@ def calculator(write):
     p = '../'
     labels = ['صرفه جویی در مصرف آب (لیتر)', 'هزینه مربوط به شست و شو و ضد عفونی (تومان)', 'صرفه جویی در زمان کادر درمان (ساعت)']
     def outs(prefix): return ''.join(f'<div><span>{l}</span><output id="{prefix}{i}">۰</output></div>' for i, l in enumerate(labels))
-    main = f'''{mosaic_hero(p, [('محاسبه‌گر', None)], 'کیسه ساکشن یکبار مصرف', 'محاسبه <em>گر</em>', 'صرفه جویی در مصرف آب، هزینه شست و شو و ضد عفونی و زمان کادر درمان', label='محاسبه گر')}
+    main = f'''{page_hero(p, [('محاسبه‌گر', None)], 'محاسبه <em>گر</em>', 'صرفه جویی در مصرف آب، هزینه شست و شو و ضد عفونی و زمان کادر درمان')}
   <section class="section"><div class="wrap">
     <div class="calc-grid">
       <form class="calc reveal" id="calcSurg" onsubmit="return false">
