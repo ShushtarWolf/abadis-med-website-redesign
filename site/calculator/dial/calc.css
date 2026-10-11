@@ -1,0 +1,181 @@
+.gfc {--teal: #05686b; --teal-dark: #0b2e32; --accent: #2ec4c6; --ink: #0a2e32; --muted: #5a7578; --bg: #f4f8f8;
+  --card: #fff; --card-b: rgba(5,104,107,0.10); --shadow: 0 10px 40px rgba(11,46,50,.07);
+  --font: "Kalameh", Tahoma, system-ui, sans-serif;
+  color-scheme: light;}
+:is([data-theme="dark"],[data-theme="noir"]) .gfc {color-scheme: dark; --ink: #e6f3f3; --muted: #9dbdbf; --bg: #071d20; --card: #0d2a2e; --card-b: rgba(46,196,198,0.16); --shadow: 0 10px 40px rgba(0,0,0,.3);}
+.gfc * {box-sizing: border-box; margin: 0; padding: 0;}
+.gfc {scroll-behavior: smooth;}
+.gfc {font-family: var(--font); color: var(--ink); line-height: 1.75; background: var(--bg);}
+.gfc :is(.sr-only) {position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;}
+.gfc :is(.chip:focus-visible), .gfc :is(.confirm:focus-visible) {outline: 2px solid var(--accent); outline-offset: 3px;}
+.gfc :is(.intro) {padding: 104px 20px 34px; text-align: center; background:
+  radial-gradient(60% 70% at 80% 0%, rgba(46,196,198,0.14), transparent 70%), radial-gradient(50% 60% at 10% 100%, rgba(5,104,107,0.08), transparent 70%), var(--bg);}
+.gfc :is(.intro .eyebrow) {display: inline-flex; align-items: center; gap: 8px; background: rgba(5,104,107,0.08); color: var(--teal); border: 1px solid rgba(5,104,107,0.16); padding: 6px 14px; border-radius: 999px; font-size: .76rem; font-weight: 700; margin-bottom: 12px;}
+.gfc :is(:is([data-theme="dark"],[data-theme="noir"]) .intro .eyebrow) {background: rgba(46,196,198,0.10); color: #2ec4c6; border-color: rgba(46,196,198,0.26);}
+.gfc :is(.intro h1) {font-size: clamp(1.7rem, 4.6vw, 2.9rem); font-weight: 900; line-height: 1.3; margin-bottom: 8px;}
+.gfc :is(.intro h1 em) {font-style: normal; color: var(--teal);}
+.gfc :is(:is([data-theme="dark"],[data-theme="noir"]) .intro h1 em) {color: #2ec4c6;}
+.gfc :is(.intro p) {color: var(--muted); max-width: 560px; margin: 0 auto 18px; font-size: 1rem;}
+.gfc :is(.hero-btn) {display: inline-flex; align-items: center; gap: 8px; text-decoration: none; background: #2ec4c6; color: #0b2e32; padding: 12px 24px; border-radius: 999px; font-weight: 800; font-size: .9rem; border: none; cursor: pointer; font-family: inherit; box-shadow: 0 8px 32px rgba(46,196,198,0.35); transition: transform .3s, box-shadow .3s; white-space: nowrap;}
+.gfc :is(.hero-btn:hover) {transform: translateY(-2px); box-shadow: 0 14px 40px rgba(46,196,198,0.5);}
+.gfc :is(.chips) {display: flex; gap: 6px; flex-wrap: wrap; align-items: center;}
+.gfc :is(.chip) {font-family: inherit; font-size: .78rem; font-weight: 700; padding: 4px 12px; border-radius: 999px; cursor: pointer; border: 1px solid var(--card-b); background: var(--card); color: var(--ink); transition: background .25s, color .25s, border-color .25s, transform .2s; white-space: nowrap;}
+.gfc :is(.chip:hover) {border-color: var(--accent); transform: translateY(-1px);}
+.gfc :is(.chip.on) {background: var(--teal); color: #fff; border-color: var(--teal);}
+.gfc :is(:is([data-theme="dark"],[data-theme="noir"]) .chip.on) {background: #2ec4c6; color: #072326; border-color: #2ec4c6;}
+.gfc :is(.confirm) {font-family: inherit; font-weight: 800; font-size: .76rem; border: 0; border-radius: 999px; padding: 5px 13px; cursor: pointer; background: var(--accent); color: #0b2e32;}
+.gfc :is(.confirm[hidden]) {display: none;}
+@media (max-width: 860px) {
+.gfc :is(.chips) {flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px;}
+.gfc :is(.chips)::-webkit-scrollbar {display: none;}
+.gfc :is(.chip) {font-size: .72rem; padding: 3px 10px;}
+}
+.gfc :is(.calc) {position: relative;}
+.gfc :is(.calc-track) {position: relative;}
+.gfc :is(.calc-pin) {position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden;}
+.gfc :is(.odo) {--cell: 1.2em; display: inline-flex; direction: ltr; unicode-bidi: isolate; line-height: var(--cell); height: var(--cell); font-weight: 900; vertical-align: bottom;}
+.gfc :is(.odo-col) {display: inline-block; position: relative; width: .62em; height: var(--cell); text-align: center; transition: width .55s cubic-bezier(.2,.75,.25,1), opacity .35s;}
+.gfc :is(.odo-col.off) {opacity: 0;}
+.gfc :is(.odo-win) {position: absolute; top: 0; bottom: 0; left: -.26em; right: -.26em; overflow: hidden;}
+.gfc :is(.odo-strip) {display: block; transition: transform .55s cubic-bezier(.2,.75,.25,1); will-change: transform;}
+.gfc :is(.odo-strip span) {display: block; height: var(--cell); line-height: var(--cell); white-space: nowrap;}
+.gfc :is(.odo-sep) {display: inline-block; width: .34em; height: var(--cell); line-height: var(--cell); text-align: center; overflow: hidden; transition: width .35s, opacity .35s;}
+.gfc :is(.odo-sep.off) {width: 0; opacity: 0;}
+.gfc :is(.no-anim *), .gfc :is(.no-anim *)::before, .gfc :is(.no-anim *)::after {transition: none !important;}
+.gfc :is(.foot-note) {text-align: center; color: var(--muted); font-size: .86rem; padding: 28px 24px; background: var(--bg);}
+.gfc :is(.foot-note b) {color: var(--teal);}
+.gfc :is(:is([data-theme="dark"],[data-theme="noir"]) .foot-note b) {color: #2ec4c6;}
+.gfc :is(.cta-band) {background: linear-gradient(135deg, #05686b, #0b2e32); padding: 56px 24px; text-align: center; color: #fff;}
+.gfc :is(.cta-band h2) {font-size: 1.5rem; font-weight: 900; margin-bottom: 10px;}
+.gfc :is(.cta-band p) {opacity: 0.85; margin-bottom: 20px;}
+.gfc :is(.cta-band .hero-btn) {background: #fff; color: #05686b;}
+.gfc :is(.cta-sub) {margin: 16px 0 0 !important; font-size: 0.9rem;}
+.gfc :is(.cta-sub a) {color: #fff; font-weight: 700;}
+.gfc :is(:is([data-theme="dark"],[data-theme="noir"]) .cta-band) {background: linear-gradient(135deg, #0a4a4d, #082427); border-top: 1px solid rgba(46,196,198,0.14);}
+.gfc :is(:is([data-theme="dark"],[data-theme="noir"]) .cta-band .hero-btn) {background: #2ec4c6; color: #072326;}
+.gfc :is(.theme-anim), .gfc :is(.theme-anim *), .gfc :is(.theme-anim *)::before, .gfc :is(.theme-anim *)::after {transition: background-color .45s ease, color .45s ease, border-color .45s ease, fill .45s ease, stroke .45s ease, box-shadow .45s ease, opacity .35s ease, transform .45s cubic-bezier(.3,1.4,.5,1) !important;}
+@media (prefers-reduced-motion: reduce) {
+.gfc {scroll-behavior: auto;}
+.gfc *, .gfc :is(*)::before, .gfc :is(*)::after {animation: none !important;}
+.gfc :is(.odo-strip), .gfc :is(.odo-col), .gfc :is(.odo-sep) {transition: none !important;}
+}
+.gfc :is(.dial-sec) {background: var(--bg);}
+.gfc :is(#calc1 .calc-track) {height: 440vh;}
+.gfc :is(#calc2 .calc-track) {height: 700vh;}
+.gfc :is(#calc2) {background: radial-gradient(70% 50% at 50% 0%, rgba(46,196,198,.08), transparent 70%), var(--bg);}
+.gfc :is(.calc-pin) {padding: 76px 24px 16px;}
+.gfc :is(.dev) {height: 100%; max-width: 1180px; margin: 0 auto; display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 12px;}
+.gfc :is(.dev-head) {display: flex; justify-content: space-between; align-items: flex-end; gap: 10px 20px; flex-wrap: wrap;}
+.gfc :is(.dev-tag) {display: inline-flex; gap: 8px; align-items: center; font-size: .7rem; font-weight: 800; letter-spacing: .12em; color: var(--teal);}
+.gfc :is(.dev-tag)::before {content: ""; width: 8px; height: 8px; border-radius: 50%; background: #3ddc84; box-shadow: 0 0 0 3px rgba(61,220,132,.2), 0 0 10px #3ddc84;}
+.gfc :is(:is([data-theme="dark"],[data-theme="noir"]) .dev-tag) {color: #2ec4c6;}
+.gfc :is(.dev-head h2) {font-size: clamp(1.1rem, 2.3vw, 1.65rem); font-weight: 900; line-height: 1.35;}
+.gfc :is(.dev-hint) {color: var(--muted); font-size: .8rem;}
+.gfc :is(.dev-ctl) {display: flex; flex-direction: column; gap: 6px; align-items: flex-end;}
+.gfc :is(.dev-body) {display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "w k c" "h k s"; gap: 14px 24px; min-height: 0;}
+.gfc :is(.dev-body > *) {min-width: 0; min-height: 0;}
+.gfc :is(.bezel) {border-radius: 20px; padding: 9px; background: linear-gradient(160deg, #f9fbfb, #dfe8e9); border: 1px solid rgba(5,104,107,.12); box-shadow: 0 14px 34px rgba(11,46,50,.10), inset 0 1px 0 #fff;}
+.gfc :is(:is([data-theme="dark"],[data-theme="noir"]) .bezel) {background: linear-gradient(160deg, #183a3e, #0c2427); border-color: rgba(46,196,198,.16); box-shadow: 0 14px 34px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06);}
+.gfc :is(.knob-area) {grid-area: k; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;}
+.gfc :is(.knob-wrap) {position: relative; width: min(330px, 40vh); aspect-ratio: 1;}
+.gfc :is(.knob-scale) {position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible;}
+.gfc :is(.knob-scale .tick) {stroke: rgba(5,104,107,.35); stroke-width: 1.4;}
+.gfc :is(.knob-scale .tick.major) {stroke: var(--teal); stroke-width: 2.2;}
+.gfc :is(:is([data-theme="dark"],[data-theme="noir"]) .knob-scale .tick) {stroke: rgba(168,213,214,.35);}
+.gfc :is(:is([data-theme="dark"],[data-theme="noir"]) .knob-scale .tick.major) {stroke: #2ec4c6;}
+.gfc :is(.knob-track) {fill: none; stroke: rgba(5,104,107,.12); stroke-width: 5; stroke-linecap: round;}
+.gfc :is(:is([data-theme="dark"],[data-theme="noir"]) .knob-track) {stroke: rgba(168,213,214,.14);}
+.gfc :is(.knob-arc) {fill: none; stroke: url(#arcGrad); stroke-width: 5; stroke-linecap: round; filter: drop-shadow(0 0 4px rgba(46,196,198,.55));}
+.gfc :is(.knob) {position: absolute; inset: 15%; border-radius: 50%;
+      background: repeating-conic-gradient(from 0deg, rgba(0,0,0,.08) 0 1.5deg, rgba(255,255,255,.5) 1.5deg 3deg), radial-gradient(circle at 35% 28%, #ffffff, #e2eaeb 45%, #b7c7c8 100%);
+      box-shadow: 0 22px 44px rgba(11,46,50,.28), 0 4px 10px rgba(11,46,50,.18), inset 0 -8px 16px rgba(0,0,0,.14), inset 0 6px 12px rgba(255,255,255,.9);}
+.gfc :is(:is([data-theme="dark"],[data-theme="noir"]) .knob) {background: repeating-conic-gradient(from 0deg, rgba(0,0,0,.25) 0 1.5deg, rgba(255,255,255,.07) 1.5deg 3deg), radial-gradient(circle at 35% 28%, #3c5357, #1f3336 50%, #0d1c1e 100%);
+      box-shadow: 0 22px 44px rgba(0,0,0,.55), inset 0 -8px 16px rgba(0,0,0,.4), inset 0 4px 10px rgba(255,255,255,.08);}
+.gfc :is(.knob)::before {content: ""; position: absolute; inset: 15%; border-radius: 50%; background: radial-gradient(circle at 40% 32%, #fdfefe, #d4dfe0 75%); box-shadow: inset 0 3px 8px rgba(0,0,0,.13), 0 1px 0 rgba(255,255,255,.9);}
+.gfc :is(:is([data-theme="dark"],[data-theme="noir"]) .knob)::before {background: radial-gradient(circle at 40% 32%, #2e4649, #142729 75%); box-shadow: inset 0 3px 8px rgba(0,0,0,.45);}
+.gfc :is(.knob-mark) {position: absolute; left: 50%; top: 5%; width: 6px; height: 17%; margin-left: -3px; border-radius: 3px; background: var(--teal); box-shadow: 0 0 10px rgba(46,196,198,.7);}
+.gfc :is(:is([data-theme="dark"],[data-theme="noir"]) .knob-mark) {background: #2ec4c6;}
+.gfc :is(.knob-logo) {position: absolute; inset: 0; display: grid; place-items: center; font-weight: 900; font-size: clamp(.9rem, 2vw, 1.15rem); color: rgba(5,104,107,.55); pointer-events: none;}
+.gfc :is(:is([data-theme="dark"],[data-theme="noir"]) .knob-logo) {color: rgba(46,196,198,.6);}
+.gfc :is(.lcd) {display: flex; gap: 10px;}
+.gfc :is(.lcd-cell) {background: #061719; color: #d9f2f2; border-radius: 12px; padding: 6px 16px 4px; min-width: 150px; text-align: center; box-shadow: inset 0 2px 10px rgba(0,0,0,.6); border: 1px solid rgba(46,196,198,.18); position: relative; transition: border-color .3s, box-shadow .3s, opacity .3s;}
+.gfc :is(.lcd-cell .lbl) {display: flex; align-items: center; justify-content: center; gap: 6px; font-size: .72rem; font-weight: 700; color: rgba(217,242,242,.72);}
+.gfc :is(.lcd-cell .led) {width: 7px; height: 7px; border-radius: 50%; background: #234; transition: background .3s, box-shadow .3s;}
+.gfc :is(.lcd-cell .odo) {font-size: clamp(1.8rem, 3.4vw, 2.6rem); color: #7fe9ea; text-shadow: 0 0 12px rgba(46,196,198,.45);}
+.gfc :is(.lcd-cell.active) {border-color: #2ec4c6; box-shadow: inset 0 2px 10px rgba(0,0,0,.6), 0 0 0 3px rgba(46,196,198,.18);}
+.gfc :is(.lcd-cell.active .led) {background: #3ddc84; box-shadow: 0 0 8px #3ddc84;}
+.gfc :is(.lcd-cell.idle) {opacity: .7;}
+.gfc :is(.lcd-cell .hold) {position: absolute; top: 4px; left: 6px; font-size: .6rem; font-weight: 800; color: #072326; background: #2ec4c6; border-radius: 999px; padding: 0 6px; opacity: 0; transition: opacity .3s;}
+.gfc :is(.lcd-cell.held .hold) {opacity: 1;}
+.gfc :is(.mon) {display: flex;}
+.gfc :is(.mon-w) {grid-area: w;}
+.gfc :is(.mon-c) {grid-area: c;}
+.gfc :is(.mon-h) {grid-area: h;}
+.gfc :is(.mon-screen) {flex: 1; border-radius: 13px; background-color: #061719;
+      background-image: linear-gradient(rgba(46,196,198,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(46,196,198,.07) 1px, transparent 1px);
+      background-size: 18px 18px; box-shadow: inset 0 2px 14px rgba(0,0,0,.65); color: #d9f2f2; position: relative; overflow: hidden;
+      display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 4px 14px; padding: 10px 16px;}
+.gfc :is(.mon-screen)::after {content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,.05) 48%, transparent 52%); transform: translateX(-100%); animation: gfc-sweep 5.5s linear infinite; pointer-events: none;}
+@keyframes gfc-sweep { to { transform: translateX(100%); } }
+.gfc :is(.mon-w .mon-screen) {--mc: #62d9ff;}
+.gfc :is(.mon-c .mon-screen) {--mc: #8fe27c;}
+.gfc :is(.mon-h .mon-screen) {--mc: #ffc861;}
+.gfc :is(.gauge) {width: 132px; height: 86px; overflow: visible;}
+.gfc :is(.g-track) {fill: none; stroke: rgba(217,242,242,.12); stroke-width: 7; stroke-linecap: round;}
+.gfc :is(.g-arc) {fill: none; stroke: var(--mc); stroke-width: 7; stroke-linecap: round; filter: drop-shadow(0 0 4px var(--mc));}
+.gfc :is(.g-tick) {stroke: rgba(217,242,242,.35); stroke-width: 1.2;}
+.gfc :is(.g-needle) {stroke: #f4fbfb; stroke-width: 2.4; stroke-linecap: round;}
+.gfc :is(.g-hub) {fill: #f4fbfb;}
+.gfc :is(.mon-txt) {display: flex; flex-direction: column; gap: 2px; min-width: 0;}
+.gfc :is(.mon-top) {display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: .72rem; font-weight: 800; color: rgba(217,242,242,.78);}
+.gfc :is(.mon-top i) {font-style: normal; font-size: .62rem; letter-spacing: .1em; color: var(--mc);}
+.gfc :is(.mon-val) {display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap;}
+.gfc :is(.mon-val .odo) {font-size: clamp(1.15rem, 1.75vw, 1.6rem); color: var(--mc); text-shadow: 0 0 10px color-mix(in srgb, var(--mc) 45%, transparent);}
+.gfc :is(.mon-val small) {font-size: .74rem; font-weight: 700; color: rgba(217,242,242,.72);}
+.gfc :is(.mon-sub) {font-size: .72rem; color: rgba(217,242,242,.74); line-height: 1.5;}
+.gfc :is(.mon-sub b) {color: #fff;}
+.gfc :is(.dev-sum) {grid-area: s; display: flex;}
+.gfc :is(.dev-sum .sum-in) {flex: 1; border-radius: 13px; background: var(--card); padding: 12px 16px; display: flex; flex-direction: column; justify-content: center; gap: 10px;}
+.gfc :is(.sum-text) {font-size: .86rem; line-height: 1.7; color: var(--ink);}
+.gfc :is(.sum-text b) {color: var(--teal); font-weight: 900;}
+.gfc :is(:is([data-theme="dark"],[data-theme="noir"]) .sum-text b) {color: #2ec4c6;}
+.gfc :is(.sum-note) {display: block; font-size: .7rem; color: var(--muted);}
+.gfc :is(.dev-sum .hero-btn) {align-self: flex-start; padding: 10px 20px; font-size: .84rem;}
+@media (min-width: 861px) {
+.gfc :is(.mon-screen) {grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; align-content: center; gap: 6px; padding: 12px 18px;}
+.gfc :is(.gauge) {width: min(200px, 100%); height: auto;}
+.gfc :is(.mon-txt) {align-items: center;}
+.gfc :is(.mon-top) {justify-content: center; gap: 10px; font-size: .8rem;}
+.gfc :is(.mon-val) {justify-content: center;}
+.gfc :is(.mon-val .odo) {font-size: clamp(1.3rem, 1.9vw, 1.85rem);}
+.gfc :is(.mon-sub) {font-size: .76rem;}
+}
+@media (max-width: 860px) {
+.gfc :is(.calc-pin) {padding: 60px 12px 10px;}
+.gfc :is(.dev) {gap: 8px;}
+.gfc :is(.dev-head) {align-items: stretch; flex-direction: column; gap: 4px;}
+.gfc :is(.dev-head h2) {font-size: 1.05rem;}
+.gfc :is(.dev-hint) {font-size: .7rem;}
+.gfc :is(.dev-ctl) {align-items: stretch;}
+.gfc :is(.dev-body) {grid-template-columns: minmax(0, 1fr); grid-template-rows: auto repeat(3, minmax(0, 1fr)) auto; grid-template-areas: "k" "w" "c" "h" "s"; gap: 7px;}
+.gfc :is(.knob-area) {flex-direction: row; gap: 12px; justify-content: space-between;}
+.gfc :is(.knob-wrap) {width: 128px; flex: none;}
+.gfc :is(.knob-logo) {font-size: .7rem;}
+.gfc :is(.lcd) {flex: 1; flex-direction: column; gap: 6px;}
+.gfc :is(.lcd-cell) {min-width: 0; padding: 3px 10px 2px;}
+.gfc :is(.lcd-cell .odo) {font-size: 1.75rem;}
+.gfc :is(#calc2 .lcd-cell .odo) {font-size: 1.35rem;}
+.gfc :is(.bezel) {padding: 5px; border-radius: 15px;}
+.gfc :is(.mon-screen) {padding: 4px 12px; gap: 0 10px; border-radius: 11px;}
+.gfc :is(.gauge) {width: 78px; height: 52px;}
+.gfc :is(.mon-val .odo) {font-size: 1.2rem;}
+.gfc :is(.mon-sub) {font-size: .66rem;}
+.gfc :is(.dev-sum .sum-in) {flex-direction: row; align-items: center; padding: 7px 10px; gap: 8px;}
+.gfc :is(.sum-text) {font-size: .7rem; line-height: 1.55;}
+.gfc :is(.sum-note) {display: none;}
+.gfc :is(.dev-sum .hero-btn) {padding: 8px 11px; font-size: .72rem; align-self: center;}
+}
+@media (min-width: 861px) and (max-height: 780px) {
+.gfc :is(.knob-wrap) {width: min(280px, 36vh);}
+.gfc :is(.gauge) {width: min(150px, 100%);}
+}

@@ -1,0 +1,68 @@
+{
+  "post_url_scheme": {
+    "en": "/en/<post-slug>/",
+    "ar": "/arabic/<post-slug>/",
+    "note": "Matches live WP post slugs (Unicode allowed on AR)."
+  },
+  "en_digits": "system local() fonts via @font-face KalamehLatinDigits unicode-range U+0030-0039",
+  "en_built": [
+    "en/index.html",
+    "en/about-us/index.html",
+    "en/products/index.html",
+    "en/products/suction-bag/index.html",
+    "en/products/base-and-holder/index.html",
+    "en/products/filters/index.html",
+    "en/products/canisters/index.html",
+    "en/products/connections/index.html",
+    "en/products/other-products/index.html",
+    "en/suction-tube/index.html",
+    "en/calculator/index.html",
+    "en/contact-us/index.html",
+    "en/faqs/index.html",
+    "en/installation-manual/index.html",
+    "en/representatives/index.html",
+    "en/center-download/index.html",
+    "en/latest-news/index.html",
+    "en/blog/index.html",
+    "en/csr/index.html",
+    "en/sdgs/index.html",
+    "en/our-customers/index.html",
+    "en/collaboration-opportunities/index.html"
+  ],
+  "ar_built": [
+    "arabic/index.html",
+    "arabic/من-نحن/index.html",
+    "arabic/منتجات/index.html",
+    "arabic/كيس-الشفط/index.html",
+    "arabic/تثبیت/index.html",
+    "arabic/الفلتر/index.html",
+    "arabic/خزانات/index.html",
+    "arabic/الوصلات/index.html",
+    "arabic/منتجات-اخری/index.html",
+    "arabic/أنبوب-الشفط/index.html",
+    "arabic/الحوسبة/index.html",
+    "arabic/اتصل-بنا/index.html",
+    "arabic/پرسش-های-متداول/index.html",
+    "arabic/دليل-التركيب/index.html",
+    "arabic/قائمة-الممثلين/index.html",
+    "arabic/مركز-التنزيل/index.html",
+    "arabic/الاخبار/index.html"
+  ],
+  "source_gaps": {
+    "en_missing_vs_fa": [
+      "careers/jobs (موقعیت‌های شغلی)",
+      "experiences (تجارب ما)"
+    ],
+    "ar_missing_vs_fa": [
+      "csr",
+      "sdgs",
+      "customers (our-customers)",
+      "careers / collaboration-opportunities",
+      "experiences",
+      "articles/blog"
+    ]
+  },
+  "build_gaps": [],
+  "en_posts": 84,
+  "ar_posts": 28
+}

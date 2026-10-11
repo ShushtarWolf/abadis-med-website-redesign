@@ -1,0 +1,5 @@
+name = "abadis-forms"
+main = "src/worker.js"
+compatibility_date = "2024-09-01"
+
+# Secrets (wrangler secret put): INBOX_TO, RESEND_API_KEY, optional INBOX_FROM
