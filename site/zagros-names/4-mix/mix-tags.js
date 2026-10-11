@@ -1,7 +1,7 @@
 /* Sample 4 — «درخت‌ها و دیوار افتخار»
    Scene part: one wooden tag per oak, rotating through a calm selection of names (not the whole list):
    each tree shows ~C names over the scroll, ≥ ~240px of scroll per name (≈170px fully readable), with a soft crossfade/drift.
-   The selection is spread evenly through names.json. When the canister rises, the counter «+۱٬۲۲۸ مرکز درمانی»
+   The selection is spread evenly through names.json. When the canister rises, the counter «+۱٬۲۳۲ مرکز درمانی»
    counts in and the visible tags drift down out of the scene (scroll-scrubbed, reversible) toward the wall below,
    where every name sits in the columns. The counter hands off to the wall's counter as the scene scrolls away.
    Same placement rules as sample 1 (hero copy, canister, counter, each other). Transform/opacity only. */
