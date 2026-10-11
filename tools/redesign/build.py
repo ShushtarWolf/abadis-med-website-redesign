@@ -21,6 +21,9 @@ try:
     import pages_home; GROUPS['home'] = pages_home.build
 except ImportError: pass
 try:
+    import pages_hero_test; GROUPS.update(pages_hero_test.GROUPS)
+except ImportError: pass
+try:
     import pages_i18n
     GROUPS['i18n'] = pages_i18n.build
     GROUPS['en'] = lambda w: pages_i18n.build_lang(w, 'en')
