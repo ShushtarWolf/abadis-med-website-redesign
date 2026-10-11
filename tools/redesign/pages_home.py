@@ -31,10 +31,34 @@ HOME_DESC = ('شرکت دانش‌بنیان مخازن طبی آبادیس؛ ت
 HOME_TITLE = 'کیسه ساکشن یکبار مصرف — مخازن طبی آبادیس'
 CALC_TEASER = 'جهت محاسبه آنلاین میزان صرفه‌جویی در مصرف آب و زباله‌های عفونی مرکز خود می‌توانید روی دکمه زیر کلیک نمایید.'
 LOGO_STRIP_N = 24
+# Painted-sky intro (light theme): one short verbatim line from the home "about" copy
+SKY_LINE = ABOUT_P[ABOUT_P.index('و فهمیدیم'):]
 
 
 def _B(path):
     return PAGES[path]['blocks']
+
+
+def sky_intro():
+    """Light-theme intro screen: the Zagros painting continued upward into a painted sky.
+    Assets from tools/redesign/make_sky.py; the bottom row of sky.webp equals the top row of the
+    Zagros backdrop, and .home-sky-paint uses the same cover mapping, so the hand-off is seamless."""
+    s = 'assets/img/sky/'
+    clouds = ''.join(
+        f'<img class="home-sky-cloud home-sky-cloud--{i}" src="{s}cloud-{c}.webp" alt="" width="{w}" height="{h}" decoding="async">'
+        for i, (c, w, h) in enumerate([('a', 720, 260), ('b', 560, 220), ('a', 720, 260), ('b', 560, 220)], 1))
+    return f'''  <section class="home-sky" id="sky" aria-label="مخازن طبی آبادیس">
+    <div class="home-sky-paint" aria-hidden="true">
+      <img src="{s}sky.webp" srcset="{s}sky-1280.webp 1280w, {s}sky.webp 1920w" sizes="(max-aspect-ratio: 16/9) 177.78vh, 100vw" alt="" width="1920" height="1080" decoding="async" fetchpriority="high">
+    </div>
+    <div class="home-sky-clouds" aria-hidden="true">{clouds}</div>
+    <div class="home-sky-veil" aria-hidden="true"></div>
+    <div class="home-sky-copy">
+      <img class="home-sky-logo" src="assets/img/abadis-logo-teal.png" alt="مخازن طبی آبادیس" width="658" height="309">
+      <p class="home-sky-line">{esc(SKY_LINE)}</p>
+    </div>
+    <div class="home-sky-hint" aria-hidden="true"><i></i></div>
+  </section>'''
 
 
 def zagros_hero(img_base):
@@ -121,7 +145,7 @@ def why_section():
     </div>
     <div class="wrap" style="margin-top:28px">
       <div class="grid g-3">
-        <div class="card stat reveal"><strong>+۶۰۰</strong><span>همراه با بیش از ۶۰۰ مرکز درمانی در سطح کشور</span></div>
+        <div class="card stat reveal"><strong>+۱٬۰۰۰</strong><span>همراه با بیش از ۱٬۰۰۰ مرکز درمانی در سطح کشور</span></div>
         <div class="card stat reveal"><strong>۵ میلیون</strong><span>ظرفیت تولید سالانه کیسه ساکشن یکبارمصرف</span></div>
         <div class="card stat reveal"><strong>۱۳۹۷</strong><span>راه‌اندازی کارخانه دانش‌بنیان آبادیس</span></div>
       </div>
@@ -225,6 +249,7 @@ def customers_section():
 def build(write):
     pages_posts.prepare()
     main = '\n'.join([
+        sky_intro(),
         zagros_hero('csr/img/hero'),
         about_section(),
         why_section(),
@@ -233,7 +258,8 @@ def build(write):
         articles_section(),
         customers_section(),
     ])
-    extra_head = '''<link rel="preload" as="image" href="csr/img/hero/bg-dry.webp" type="image/webp">
+    extra_head = '''<link rel="preload" as="image" href="assets/img/sky/sky.webp" imagesrcset="assets/img/sky/sky-1280.webp 1280w, assets/img/sky/sky.webp 1920w" imagesizes="(max-aspect-ratio: 16/9) 177.78vh, 100vw" type="image/webp">
+<link rel="preload" as="image" href="csr/img/hero/bg-dry.webp" type="image/webp">
 <link rel="stylesheet" href="csr/zagros-hero.css">
 <link rel="stylesheet" href="assets/css/home.css">'''
     scripts = '<script src="csr/zagros-hero.js" defer></script>\n'

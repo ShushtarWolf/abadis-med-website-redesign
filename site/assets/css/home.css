@@ -230,3 +230,107 @@ body.home .zh-exit {
   .home-logo { transition: none; }
   .logo-carousel-strip { transition: none; }
 }
+
+/* ---------- painted sky intro (light theme only) ----------
+   The Zagros painting continued upward; Zagros becomes the second screen.
+   --zh-h mirrors the Zagros stage height so the sky painting uses the exact same
+   object-fit: cover mapping (width, centring, 60% vertical crop) as .zh-bg-layer:
+   the sky's bottom row lands on the stage's top row with no seam. */
+.home-sky {
+  --zh-h: 100vh;
+  --sky-p: 0;
+  position: relative;
+  height: var(--zh-h);
+  overflow: hidden;
+  container-type: inline-size;
+  background: #ece4da;
+  isolation: isolate;
+}
+@supports (height: 100lvh) { .home-sky { --zh-h: 100lvh; } }
+.zh-reduced .home-sky { --zh-h: max(560px, 100vh); }
+@supports (height: 100svh) { .zh-reduced .home-sky { --zh-h: max(560px, 100svh); } }
+[data-theme="dark"] .home-sky, [data-theme="noir"] .home-sky { display: none; }
+
+.home-sky-paint { position: absolute; inset: 0; z-index: 0; }
+.home-sky-paint img {
+  position: absolute; left: 50%;
+  width: max(100cqw, calc(var(--zh-h) * 1.77778));
+  height: auto; max-width: none; display: block;
+  /* wide screens: Zagros crops 60% of its overflow off the top, so drop the sky by the same amount */
+  bottom: calc(-0.6 * max(0px, 56.25cqw - var(--zh-h)));
+  transform: translateX(-50%);
+}
+
+/* exact upward continuation of the Zagros .zh-veil field (same ellipse, centre below the seam) */
+.home-sky-veil {
+  position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; height: 50%;
+  pointer-events: none;
+  background: radial-gradient(ellipse 62% calc(var(--zh-h) * .4176) at 50% calc(100% + var(--zh-h) * .2448),
+    rgba(243,250,250,.70), rgba(243,250,250,.40) 50%, rgba(243,250,250,0) 78%);
+}
+@media (max-width: 560px) {
+  .home-sky-veil {
+    background: radial-gradient(ellipse 95% calc(var(--zh-h) * .3744) at 50% calc(100% + var(--zh-h) * .216),
+      rgba(243,250,250,.74), rgba(243,250,250,.44) 55%, rgba(243,250,250,0) 82%);
+  }
+}
+
+/* drifting painted clouds (upper sky only, never near the seam) */
+.home-sky-clouds {
+  position: absolute; left: 0; right: 0; top: 0; height: 66%; z-index: 1;
+  pointer-events: none;
+  transform: translate3d(0, calc(var(--sky-p) * -9vh), 0);
+}
+.home-sky-cloud {
+  position: absolute; display: block; max-width: none; height: auto;
+  opacity: .85;
+  animation: home-sky-drift 90s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.home-sky-cloud--1 { width: clamp(300px, 38vw, 720px); top: 6%;  right: -6%; animation-duration: 110s; }
+.home-sky-cloud--2 { width: clamp(220px, 26vw, 520px); top: 30%; left: -4%;  animation-duration: 85s; animation-delay: -30s; opacity: .7; }
+.home-sky-cloud--3 { width: clamp(240px, 28vw, 560px); top: 52%; right: 18%; animation-duration: 130s; animation-delay: -60s; opacity: .55; }
+.home-sky-cloud--4 { width: clamp(160px, 18vw, 360px); top: 2%;  left: 22%; animation-duration: 100s; animation-delay: -15s; opacity: .6; }
+@keyframes home-sky-drift {
+  from { transform: translate3d(-4vw, 0, 0); }
+  to   { transform: translate3d(4vw, 0, 0); }
+}
+
+.home-sky-copy {
+  position: absolute; z-index: 2; left: 0; right: 0; top: 38%;
+  display: flex; flex-direction: column; align-items: center; gap: 18px;
+  padding: 0 24px; text-align: center;
+  transform: translate3d(0, calc(-50% + var(--sky-p) * 22vh), 0);
+  opacity: calc(1 - var(--sky-p) * 1.2);
+}
+.home-sky-logo { width: clamp(150px, 20vw, 250px); height: auto; display: block; }
+.home-sky-line {
+  margin: 0; font-family: "Kalameh", Tahoma, sans-serif;
+  font-weight: 700; font-size: clamp(1.1rem, 2.2vw, 1.55rem); line-height: 1.7;
+  color: #066163; text-align: center;
+  text-shadow: 0 1px 14px rgba(250,247,241,.9);
+}
+
+.home-sky-hint {
+  position: absolute; z-index: 2; left: 0; right: 0; bottom: 22px;
+  display: flex; justify-content: center; pointer-events: none;
+}
+.home-sky-hint i {
+  display: block; width: 1px; height: 34px;
+  background: linear-gradient(to bottom, rgba(6,97,99,.75), rgba(6,97,99,0));
+  animation: zh-hint 2.4s ease-in-out infinite; transform-origin: top;
+}
+
+@media (max-width: 560px) {
+  .home-sky-copy { top: 40%; gap: 14px; }
+  .home-sky-cloud--1 { width: 72vw; top: 8%; right: -22%; }
+  .home-sky-cloud--2 { width: 58vw; top: 34%; left: -18%; }
+  .home-sky-cloud--3 { width: 60vw; top: 58%; right: 4%; }
+  .home-sky-cloud--4 { width: 40vw; top: 0; left: 6%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-sky-cloud, .home-sky-hint i { animation: none; }
+  .home-sky-clouds, .home-sky-copy { transform: none; opacity: 1; }
+  .home-sky-copy { transform: translate3d(0, -50%, 0); }
+}
