@@ -443,31 +443,6 @@
     });
   });
 
-  /* ---------- home painted sky intro (light theme) ----------
-     Scroll parallax only (transform/opacity via --sky-p); none with reduced motion.
-     The sky is hidden in dark/noir, which moves the Zagros scene, so re-measure it. */
-  const sky = document.querySelector('.home-sky');
-  if (sky) {
-    let skyTick = false;
-    const skyUpdate = () => {
-      skyTick = false;
-      const h = sky.offsetHeight;
-      if (!h) return;
-      const p = Math.min(1, Math.max(0, scrollY / h));
-      sky.style.setProperty('--sky-p', p.toFixed(3));
-    };
-    if (!reduce) {
-      addEventListener('scroll', () => { if (!skyTick) { skyTick = true; requestAnimationFrame(skyUpdate); } }, { passive: true });
-      skyUpdate();
-    }
-    document.addEventListener('themechange', () => {
-      requestAnimationFrame(() => {
-        if (window.__zagrosHero) window.__zagrosHero.layout();
-        dispatchEvent(new Event('scroll'));
-      });
-    });
-  }
-
   /* ---------- home customers logo carousel (infinite marquee; track-only) ---------- */
   document.querySelectorAll('[data-logo-carousel]').forEach((root) => {
     const track = root.querySelector('.logo-carousel-track');
