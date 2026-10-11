@@ -1,0 +1,106 @@
+/* Hero option 7: product + Zagros oak (Designer sample G). Only this hero differs from the approved home page. */
+.gh-hero {
+  --gh-accent: #0e8f8a; --gh-dot: #21c0b9; --gh-ink: #24363c; --gh-ink-2: #4a646a; --gh-mute: #6f878b; --gh-soft: #e8f7f6;
+  --gh-card: #ffffff; --gh-card-line: rgba(14,80,84,.10); --gh-card-ink: #1f3a3f;
+  --gh-top-a: #f4faf9; --gh-top-b: #d6e7e5; --gh-side-a: #bcd3d1; --gh-side-b: #e3efee;
+  --gh-shadow: rgba(20,60,64,.18); --gh-contact: rgba(20,60,64,.30); --gh-glow: rgba(33,192,185,.16);
+  position: relative; min-height: 100svh; display: grid; align-items: center; overflow: hidden; isolation: isolate; color: var(--gh-ink);
+}
+[data-theme="dark"] .gh-hero {
+  --gh-accent: #7fe9ea; --gh-dot: #2ec4c6; --gh-ink: #e8f4f4; --gh-ink-2: #a8c5c6; --gh-mute: rgba(200,225,225,.62); --gh-soft: rgba(46,196,198,.14);
+  --gh-card: rgba(255,255,255,.06); --gh-card-line: rgba(127,233,234,.16); --gh-card-ink: #e8f4f4;
+  --gh-top-a: #23474a; --gh-top-b: #143032; --gh-side-a: #0b1d1f; --gh-side-b: #1a3739;
+  --gh-shadow: rgba(0,0,0,.5); --gh-contact: rgba(0,0,0,.55); --gh-glow: rgba(46,196,198,.22);
+}
+[data-theme="noir"] .gh-hero {
+  --gh-accent: #c4b5fd; --gh-dot: #a78bfa; --gh-ink: #f0eaff; --gh-ink-2: #c9bfe6; --gh-mute: rgba(215,205,240,.62); --gh-soft: rgba(167,139,250,.16);
+  --gh-card: rgba(255,255,255,.05); --gh-card-line: rgba(196,181,253,.18); --gh-card-ink: #f0eaff;
+  --gh-top-a: #322c4f; --gh-top-b: #1d1934; --gh-side-a: #100d1d; --gh-side-b: #241f3c;
+  --gh-shadow: rgba(0,0,0,.55); --gh-contact: rgba(0,0,0,.6); --gh-glow: rgba(167,139,250,.22);
+}
+/* ---- shared stage: jar sitting ON a cylinder podium (no sinking, natural aspect, never stretched) ---- */
+.gh-stage { position: relative; display: grid; place-items: end center; min-height: min(640px, calc(100svh - 150px)); padding-bottom: 7%; box-sizing: border-box; }
+.gh-fig { --w: 300px; --p: calc(var(--w) * 1.5); position: relative; width: var(--w); }
+.gh-jar { position: relative; z-index: 3; display: block; width: 100%; height: auto; aspect-ratio: 404 / 553; filter: drop-shadow(0 18px 22px var(--gh-shadow)); }
+.gh-pod { position: absolute; z-index: 1; left: 50%; width: var(--p); height: calc(var(--p) * .30); transform: translateX(-50%);
+  /* top ellipse centre sits just above the jar's lowest point, so the jar stands on the top surface */
+  top: calc(100% - var(--p) * .135); pointer-events: none; }
+.gh-pod::before { /* side band */
+  content: ""; position: absolute; left: 0; right: 0; top: calc(var(--p) * .1); bottom: 0;
+  background: linear-gradient(90deg, var(--gh-side-a), var(--gh-side-b) 45%, var(--gh-side-a));
+  border-radius: 0 0 50% 50% / 0 0 calc(var(--p) * .1) calc(var(--p) * .1);
+  box-shadow: 0 26px 40px -12px var(--gh-shadow);
+}
+.gh-pod::after { /* top surface */
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: calc(var(--p) * .2); border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 40%, var(--gh-top-a), var(--gh-top-b));
+  box-shadow: inset 0 -2px 0 rgba(255,255,255,.35);
+}
+.gh-contact { position: absolute; z-index: 2; left: 50%; width: calc(var(--w) * 1.02); height: calc(var(--w) * .13); transform: translateX(-50%);
+  top: calc(100% - var(--w) * .09); border-radius: 50%; background: radial-gradient(ellipse, var(--gh-contact) 0%, rgba(0,0,0,0) 70%); pointer-events: none; }
+.gh-glow { position: absolute; left: 50%; top: 46%; width: 90%; height: 80%; transform: translate(-50%, -50%); pointer-events: none;
+  background: radial-gradient(ellipse at center, var(--gh-glow), rgba(0,0,0,0) 68%); }
+
+/* shared copy pieces */
+.gh-pill { display: inline-flex; align-items: center; gap: 8px; font-size: .82rem; font-weight: 700; color: var(--gh-accent); background: var(--gh-soft); border-radius: 999px; padding: 6px 14px; margin-bottom: 18px; }
+.gh-pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--gh-dot); }
+.gh-hero h1 { font-size: clamp(2.1rem, 3.6vw, 3.3rem); font-weight: 900; line-height: 1.28; margin: 0 0 18px; color: var(--gh-ink); letter-spacing: -.01em; }
+.gh-hero h1 em { font-style: normal; color: var(--gh-accent); }
+.gh-proof { display: flex; align-items: center; gap: 12px; }
+.gh-num { font-size: 2.2rem; font-weight: 900; line-height: 1; color: var(--gh-accent); direction: ltr; unicode-bidi: isolate; }
+.gh-plab { font-size: 1rem; font-weight: 700; color: var(--gh-ink-2); line-height: 1.4; }
+.gh-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
+.gh-btn { border-radius: 999px; padding-inline: 28px; }
+.gh-calc { font-weight: 700; font-size: .95rem; color: var(--gh-accent); text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+.gh-calc:hover { opacity: .8; }
+
+/* one-time product entrance: desktop + motion allowed only; phones and reduced-motion get the still image */
+@media (min-width: 861px) and (prefers-reduced-motion: no-preference) {
+  .gh-jar { animation: gh-rise .9s cubic-bezier(.2,.7,.2,1) .15s both; }
+  @keyframes gh-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+}
+.o7-hero { background: radial-gradient(ellipse at 30% 60%, #e3f3e4 0%, rgba(227,243,228,0) 52%), linear-gradient(165deg, #ffffff 0%, #f7fbf8 55%, #eef7f1 100%);
+  --gh-accent: #2f7d4f; --gh-dot: #5aa86b; --gh-soft: #e8f4ea; --gh-glow: rgba(90,168,107,.14);
+  --gh-top-a: #f5faf6; --gh-top-b: #d8e8dc; --gh-side-a: #c2d6c7; --gh-side-b: #e5f0e7; }
+[data-theme="dark"] .o7-hero { background: radial-gradient(ellipse at 30% 58%, rgba(30,110,70,.30) 0%, rgba(30,110,70,0) 55%), linear-gradient(165deg, #071618 0%, #0c2426 50%, #0a1c1e 100%);
+  --gh-accent: #8fdca6; --gh-dot: #5fc07c; --gh-soft: rgba(95,192,124,.15); --gh-glow: rgba(95,192,124,.18);
+  --gh-top-a: #23474a; --gh-top-b: #143032; --gh-side-a: #0b1d1f; --gh-side-b: #1a3739; }
+[data-theme="noir"] .o7-hero { background: radial-gradient(ellipse at 30% 58%, rgba(91,33,182,.34) 0%, rgba(91,33,182,0) 55%), linear-gradient(165deg, #0a0a12 0%, #161328 50%, #120a1c 100%);
+  --gh-accent: #b7e4c0; --gh-dot: #a78bfa; --gh-soft: rgba(167,139,250,.16); }
+.o7-inner { width: min(1240px, 100%); margin-inline: auto; padding: 104px 56px 56px; box-sizing: border-box;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px 56px; align-items: center; }
+.o7-copy { max-width: 34rem; min-width: 0; }
+.o7-hero h1 { max-width: 13ch; }
+.o7-lead { font-size: 1.06rem; line-height: 1.85; color: var(--gh-ink-2); margin: 0 0 24px; max-width: 32rem; }
+.o7-lead a { color: var(--gh-accent); font-weight: 800; text-decoration: none; border-bottom: 1px solid currentColor; white-space: nowrap; margin-inline-start: 4px; }
+.o7-hero .gh-proof { margin: 0 0 30px; }
+/* podium wide enough for the jar and the sapling planted on it */
+.o7-fig { --w: 290px; --p: calc(var(--w) * 1.95); transform: translateX(calc(var(--w) * -.30)); }
+.o7-soil { position: absolute; z-index: 1; width: calc(var(--w) * .42); height: calc(var(--w) * .085); border-radius: 50%;
+  /* rear-right part of the podium top: x = jar centre + 0.62w, y a little behind the jar base */
+  left: calc(50% + var(--w) * .62); top: calc(100% - var(--w) * .16); transform: translateX(-50%);
+  background: radial-gradient(ellipse at 50% 45%, #9a8466 0%, #b9a586 45%, rgba(185,165,134,0) 72%); opacity: .75; }
+[data-theme="dark"] .o7-soil, [data-theme="noir"] .o7-soil { background: radial-gradient(ellipse at 50% 45%, #5d4c38 0%, #6f5c45 45%, rgba(111,92,69,0) 72%); opacity: .9; }
+.o7-sap { position: absolute; z-index: 2; width: auto; height: calc(var(--w) * 1.62); aspect-ratio: 468 / 967;
+  left: calc(50% + var(--w) * .62); bottom: calc(var(--w) * .11); transform: translateX(-50%); transform-origin: 50% 100%;
+  filter: drop-shadow(0 10px 14px rgba(30,70,40,.12)); }
+[data-theme="dark"] .o7-sap, [data-theme="noir"] .o7-sap { filter: brightness(1.08) drop-shadow(0 10px 18px rgba(0,0,0,.35)); }
+/* gentle sway: desktop + motion allowed only, three slow cycles then it rests */
+@media (min-width: 861px) and (prefers-reduced-motion: no-preference) {
+  .o7-sap { animation: o7-sway 6s ease-in-out 1.2s 3; }
+  @keyframes o7-sway { 0%,100% { transform: translateX(-50%) rotate(0deg); } 30% { transform: translateX(-50%) rotate(1.4deg); } 70% { transform: translateX(-50%) rotate(-1deg); } }
+}
+@media (max-width: 860px) {
+  .o7-hero { min-height: 0; }
+  .o7-inner { grid-template-columns: 1fr; padding: 92px 20px 40px; gap: 0; }
+  .o7-copy { display: contents; }
+  .o7-hero .gh-pill { order: 1; justify-self: start; margin-bottom: 14px; }
+  .o7-hero h1 { order: 2; font-size: clamp(1.9rem, 8vw, 2.5rem); max-width: none; margin-bottom: 10px; }
+  .o7-lead { order: 3; font-size: .98rem; margin-bottom: 4px; }
+  .o7-stage { order: 4; min-height: 0; padding: 72px 0 64px; }
+  .o7-fig { --w: 150px; transform: translateX(calc(var(--w) * -.2)); }
+  .o7-sap, .o7-soil { left: calc(50% + var(--w) * .72); }
+  .o7-hero .gh-proof { order: 5; margin-bottom: 20px; }
+  .o7-hero .gh-num { font-size: 1.9rem; }
+  .o7-hero .gh-actions { order: 6; }
+}
