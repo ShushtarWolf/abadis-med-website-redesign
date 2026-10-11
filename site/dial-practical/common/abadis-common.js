@@ -108,7 +108,7 @@
   /* input definitions (same as the main design) */
   const PRE_BEDS = [10, 20, 50, 100, 200, 300, 500];
   const IN = {
-    n: { key: 'n', max: 30000, step: 100, r0: 0.04, r1: 0.94, presets: [1000, 5000, 10000, 15000, 20000, 25000], w: 900 },
+    n: { key: 'n', max: 15000, step: 100, r0: 0.04, r1: 0.94, presets: [1000, 5000, 10000, 15000], w: 900 },
     a: { key: 'a', max: 700, step: 1, r0: 0.03, r1: 0.47, presets: PRE_BEDS, w: 7 },
     b: { key: 'b', max: 700, step: 1, r0: 0.53, r1: 0.95, presets: PRE_BEDS, w: 7 },
   };
@@ -173,7 +173,7 @@
         const vals = { n: disp.n, a: disp.a, b: disp.b, water: W, cost: C, hours: H };
         odoList.forEach(([key, o]) => { if (vals[key] != null) o.set(vals[key]); });
         const fr = kind === 'surgery'
-          ? { water: disp.n / 30000, cost: disp.n / 30000, hours: disp.n / 30000, input: disp.n / 30000 }
+          ? { water: disp.n / 15000, cost: disp.n / 15000, hours: disp.n / 15000, input: disp.n / 15000 }
           : { water: (disp.a * 254 + disp.b * 67) / (321 * 700), cost: (disp.a * 200 + disp.b * 50) / (250 * 700), hours: (disp.a * 254 + disp.b * 67) / (321 * 700), a: disp.a / 700, b: disp.b / 700 };
         chips.forEach((c) => c.classList.toggle('on', c.dataset.n != null ? +c.dataset.n === disp.n : (+c.dataset.a === disp.a && +c.dataset.b === disp.b)));
         if (confirmBtn) {
