@@ -1,7 +1,7 @@
 """Products hub + six product family pages (suction bag page is hand-built and kept)."""
 import re
 from lib import PAGES, esc, strip_tags, best_img, rewrite_html
-from layout import page, mosaic_hero
+from layout import page, page_hero
 from render import table, gallery_link, secs
 
 FAMILIES = [  # slug, live path, hub title (verbatim from live hub), hub image, local fallback image
@@ -127,7 +127,7 @@ def build(write):
         anchors = ''.join(f'<a href="#{esc(i["id"])}">{esc(i["title"])}</a>' for i in items) + '<a href="#more">سایر محصولات</a><a href="#inquiry">استعلام</a>'
         blocks = '\n'.join(product_block(p, it, n) for n, it in enumerate(items))
         lead = '، '.join(i['title'] for i in items)
-        main = (mosaic_hero(p, [('محصولات', '../')], 'محصولات آبادیس', esc(h1), esc(lead), label=h1)
+        main = (page_hero(p, [('محصولات', '../'), (h1, None)], esc(h1), esc(lead))
                 + f'\n  <nav class="anchors" aria-label="بخش‌های صفحه"><div class="wrap">{anchors}</div></nav>\n'
                 + f'  <section class="section"><div class="wrap">\n{blocks}\n  </div></section>\n'
                 + related(p, slug) + '\n' + INQUIRY)
@@ -141,8 +141,8 @@ def build(write):
         ph = f'<div class="ph"><img src="{src}" alt="{esc(title)} آبادیس" loading="lazy" decoding="async"></div>' if src else '<div class="ph txt">آبادیس</div>'
         sub = '، '.join(summaries[slug])
         cards.append(f'<a class="pcard reveal" href="{slug}/">{ph}<strong>{esc(title)}</strong><span>{esc(sub)}</span><span class="go">مشاهده ←</span></a>')
-    main = (mosaic_hero(p, [('محصولات', None)], 'کنترل عفونت · مدیریت سیالات بیمارستانی', 'محصولات <em>آبادیس</em>',
-                        'کیسه ساکشن یکبار مصرف، فیلترها، مخزن، پایه و نگهدارنده ها، اتصالات، ساکشن تیوب و سایر محصولات.', label='محصولات آبادیس')
+    main = (page_hero(p, [('محصولات', None)], 'محصولات <em>آبادیس</em>',
+                      'کیسه ساکشن یکبار مصرف، فیلترها، مخزن، پایه و نگهدارنده ها، اتصالات، ساکشن تیوب و سایر محصولات.')
             + f'\n  <section class="section"><div class="wrap"><div class="grid g-3">{"".join(cards)}</div></div></section>\n'
             + f'  <section class="section" style="padding-top:0"><div class="wrap"><div class="doc-links"><a href="../downloads/">مرکز دانلود کاتالوگ‌ها</a><a href="../install-guide/">راهنمای نصب</a><a href="../calculator/">محاسبه‌گر صرفه‌جویی</a></div></div></section>')
     write('products/index.html', page(p, 'products', 'محصولات', 'محصولات مخازن طبی آبادیس: کیسه ساکشن یکبار مصرف، فیلترها، مخزن، پایه و نگهدارنده ها، اتصالات، ساکشن تیوب و سایر محصولات.', main, fa_path='products/'))

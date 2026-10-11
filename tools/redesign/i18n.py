@@ -125,7 +125,7 @@ NAV = {
         ('products', 'products/', 'محصولات'),
         ('news', 'news/', 'آخرین اخبار'),
         ('dealers', 'dealers/', 'لیست نمایندگان'),
-        ('csr', 'csr/', 'توسعه پایدار'),
+        ('sdgs', 'sdgs/', 'توسعه پایدار'),
         ('articles', 'articles/', 'مقالات'),
         ('contact', 'contact/', 'ارتباط با ما'),
         ('calculator', 'calculator/', 'محاسبه‌گر'),
@@ -160,6 +160,7 @@ SECONDARY = {
         ('install', 'install-guide/', 'راهنمای نصب'),
         ('faq', 'faq/', 'پرسش های متداول'),
         ('careers', 'careers/', 'فرصت های همکاری'),
+        ('jobs', 'jobs/', 'موقعیت های شغلی'),
         ('zagros', 'csr/', 'نجات زاگرس'),
     ],
     'en': [
@@ -219,6 +220,8 @@ _I18N_HREF_ALIASES = {
     '/careers/': 'careers/',
     '/contact/': 'contact/',
     '/csr/': 'csr/',
+    '/sdgs/': 'sdgs/',
+    '/jobs/': 'jobs/',
     '/customers/': 'customers/',
     '/dealers/': 'dealers/',
     '/downloads/': 'downloads/',
@@ -447,9 +450,9 @@ def switcher_html(lang: str, fa_path: str, p: str) -> str:
     if key == '/':
         key = ''
     entry = m.get(key) or {}
-    # sdgs/ synthetic key: use csr/ pair for FA switcher context
+    # legacy: older map pointed sdgs/ FA at csr/; keep fallback if map entry missing
     if not entry and key == 'sdgs/':
-        entry = m.get('csr/') or {}
+        entry = m.get('sdgs/') or m.get('csr/') or {}
     defaults = {'fa': '', 'en': 'en/', 'ar': 'arabic/'}
     labels = {'fa': 'FA', 'en': 'EN', 'ar': 'AR'}
     names = {'fa': 'فارسی', 'en': 'English', 'ar': 'العربية'}
@@ -485,7 +488,7 @@ def hreflang_tags(fa_path: str, p: str) -> str:
             continue
         href = '/' + rel.lstrip('/')
         tags.append(f'<link rel="alternate" hreflang="{hreflang}" href="{href}">')
-    # x-default → FA URL (entry["fa"] may differ from map key, e.g. sdgs/ → csr/)
+    # x-default → FA URL (entry["fa"] may differ from map key)
     fa_rel = entry.get('fa')
     if fa_rel is not None:
         tags.append(f'<link rel="alternate" hreflang="x-default" href="/{fa_rel.lstrip("/")}">')

@@ -18,8 +18,9 @@
   "news/": {"fa": "news/", "en": "en/latest-news/", "ar": "arabic/الاخبار/"},
   "articles/": {"fa": "articles/", "en": "en/blog/", "ar": null},
   "csr/": {"fa": "csr/", "en": "en/csr/", "ar": null},
-  "sdgs/": {"fa": "csr/", "en": "en/sdgs/", "ar": null},
+  "sdgs/": {"fa": "sdgs/", "en": "en/sdgs/", "ar": null},
   "customers/": {"fa": "customers/", "en": "en/our-customers/", "ar": null},
   "careers/": {"fa": "careers/", "en": "en/collaboration-opportunities/", "ar": null},
+  "jobs/": {"fa": "jobs/", "en": null, "ar": null},
   "experiences/": {"fa": "experiences/", "en": null, "ar": null}
 }
