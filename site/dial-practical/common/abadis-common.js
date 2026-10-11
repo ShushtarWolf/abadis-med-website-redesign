@@ -237,37 +237,11 @@
 
   /* header + anchors */
   const header = document.getElementById('header');
-  if (header) { const onS = () => header.classList.toggle('scrolled', window.scrollY > 50); window.addEventListener('scroll', onS, { passive: true }); onS(); }
   document.querySelectorAll('a[href^="#"]').forEach((a) => a.addEventListener('click', (e) => {
     const t = document.querySelector(a.getAttribute('href'));
     if (t) { e.preventDefault(); t.scrollIntoView({ behavior: A.reduced ? 'auto' : 'smooth', block: 'start' }); }
   }));
 
-  /* light / night mode (same key as the main design, so the choice carries across pages) */
-  (() => {
-    const KEY = 'abadis-theme', root = document.documentElement;
-    const btn = document.getElementById('themeToggle');
-    const meta = document.querySelector('meta[name="theme-color"]');
-    const sys = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
-    const saved = () => { try { const v = localStorage.getItem(KEY); return v === 'dark' || v === 'light' ? v : null; } catch (e) { return null; } };
-    let tmr = 0;
-    function apply(theme, animate) {
-      if (animate && !A.reduced) { root.classList.add('theme-anim'); clearTimeout(tmr); tmr = setTimeout(() => root.classList.remove('theme-anim'), 520); }
-      root.setAttribute('data-theme', theme);
-      const dark = theme === 'dark';
-      if (meta) meta.setAttribute('content', dark ? '#071d20' : '#e8f3f3');
-      if (btn) { const l = dark ? 'حالت روز' : 'حالت شب'; btn.setAttribute('aria-label', l); btn.title = l; btn.setAttribute('aria-pressed', String(dark)); }
-      document.dispatchEvent(new CustomEvent('abadis-theme', { detail: theme }));
-    }
-    apply(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light', false);
-    if (btn) btn.addEventListener('click', () => {
-      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      try { localStorage.setItem(KEY, next); } catch (e) {}
-      apply(next, true);
-    });
-    const onSys = (e) => { if (!saved()) apply(e.matches ? 'dark' : 'light', true); };
-    if (sys) { if (sys.addEventListener) sys.addEventListener('change', onSys); else if (sys.addListener) sys.addListener(onSys); }
-  })();
 
   window.Abadis = A;
 })();
