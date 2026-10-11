@@ -118,20 +118,30 @@ LANGS = {
     },
 }
 
-# Main nav: (key, href under lang root, label)
+# Main nav entry: (key, href under lang root, label) or
+# (key, href, label, children) where children is a list of (key, href, label).
+# About-group children match live abadis-med.com (آشنایی با ما mega / related pages).
 NAV = {
     'fa': [
-        ('about', 'about/', 'آشنایی با ما'),
+        ('about', 'about/', 'آشنایی با ما', [
+            ('about', 'about/', 'درباره ما'),
+            ('sdgs', 'sdgs/', 'توسعه پایدار'),
+            ('jobs', 'jobs/', 'موقعیت های شغلی'),
+            ('careers', 'careers/', 'فرصت های همکاری'),
+        ]),
         ('products', 'products/', 'محصولات'),
         ('news', 'news/', 'آخرین اخبار'),
         ('dealers', 'dealers/', 'لیست نمایندگان'),
-        ('sdgs', 'sdgs/', 'توسعه پایدار'),
         ('articles', 'articles/', 'مقالات'),
         ('contact', 'contact/', 'ارتباط با ما'),
         ('calculator', 'calculator/', 'محاسبه‌گر'),
     ],
     'en': [
-        ('about', 'about-us/', 'About us'),
+        ('about', 'about-us/', 'About us', [
+            ('about', 'about-us/', 'About us'),
+            ('sdgs', 'sdgs/', 'SDGs'),
+            ('collab', 'collaboration-opportunities/', 'Collaboration'),
+        ]),
         ('products', 'products/', 'Products'),
         ('news', 'latest-news/', 'News'),
         ('dealers', 'representatives/', 'Representatives'),
@@ -152,6 +162,25 @@ NAV = {
     ],
 }
 
+
+def nav_flat(nav):
+    """Flatten NAV entries to (key, href, label) for footer / cur matching."""
+    out = []
+    for item in nav:
+        k, h, l = item[0], item[1], item[2]
+        kids = item[3] if len(item) > 3 else None
+        out.append((k, h, l))
+        if kids:
+            for ck, ch, cl in kids:
+                if ch == h:  # skip duplicate of parent (e.g. درباره ما → same about/)
+                    continue
+                out.append((ck, ch, cl))
+    return out
+
+
+def nav_keys(nav):
+    return {k for k, _, _ in nav_flat(nav)}
+
 SECONDARY = {
     'fa': [
         ('customers', 'customers/', 'مشتریان ما'),
@@ -159,6 +188,7 @@ SECONDARY = {
         ('downloads', 'downloads/', 'مرکز دانلود'),
         ('install', 'install-guide/', 'راهنمای نصب'),
         ('faq', 'faq/', 'پرسش های متداول'),
+        ('sdgs', 'sdgs/', 'توسعه پایدار'),
         ('careers', 'careers/', 'فرصت های همکاری'),
         ('jobs', 'jobs/', 'موقعیت های شغلی'),
         ('zagros', 'csr/', 'نجات زاگرس'),

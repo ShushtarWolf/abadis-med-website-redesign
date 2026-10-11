@@ -97,11 +97,39 @@
   }
   const menuBtn = document.querySelector('.menu-btn');
   if (menuBtn && header) {
-    const setOpen = (open) => { header.classList.toggle('open', open); menuBtn.setAttribute('aria-expanded', String(open)); };
+    const setOpen = (open) => {
+      header.classList.toggle('open', open);
+      menuBtn.setAttribute('aria-expanded', String(open));
+      if (!open) header.querySelectorAll('.nav-item.open').forEach((el) => {
+        el.classList.remove('open');
+        const t = el.querySelector('.nav-parent');
+        if (t) t.setAttribute('aria-expanded', 'false');
+      });
+    };
     menuBtn.addEventListener('click', () => setOpen(!header.classList.contains('open')));
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
     document.addEventListener('click', (e) => { if (!header.contains(e.target)) setOpen(false); });
   }
+
+  /* About-group (and any .nav-item.has-sub): toggle on click for touch / mobile hamburger */
+  document.querySelectorAll('.nav-item.has-sub > .nav-parent').forEach((parent) => {
+    const item = parent.parentElement;
+    parent.addEventListener('click', (e) => {
+      const mobile = menuBtn && getComputedStyle(menuBtn).display !== 'none';
+      if (!mobile && matchMedia('(hover: hover) and (pointer: fine)').matches) return; /* desktop hover */
+      e.preventDefault();
+      const willOpen = !item.classList.contains('open');
+      item.parentElement.querySelectorAll('.nav-item.open').forEach((el) => {
+        if (el !== item) {
+          el.classList.remove('open');
+          const t = el.querySelector('.nav-parent');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        }
+      });
+      item.classList.toggle('open', willOpen);
+      parent.setAttribute('aria-expanded', String(willOpen));
+    });
+  });
 
   /* ---------- scroll reveal ---------- */
   const rev = document.querySelectorAll('.reveal');

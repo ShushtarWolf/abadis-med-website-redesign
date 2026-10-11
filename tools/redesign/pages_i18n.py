@@ -5,7 +5,7 @@ from lib import esc, best_img, SITE
 from layout import page, mosaic_hero, page_hero
 import i18n as i18n_mod
 from i18n import (
-    LANGS, NAV, clean_html, strip_tags, load_map, GAPS, DATA, meta_description,
+    LANGS, NAV, nav_flat, clean_html, strip_tags, load_map, GAPS, DATA, meta_description,
 )
 
 # Skip utility / duplicate EN-AR pages
@@ -225,7 +225,7 @@ def build_lang(write, lang: str):
             continue
         # cur key for nav highlight
         cur = 'about'
-        for k, h, _ in NAV[lang]:
+        for k, h, _ in nav_flat(NAV[lang]):
             if h == site_path or (site_path and site_path.startswith(h.rstrip('/') + '/')):
                 cur = k; break
         if site_path.startswith('products/') or site_path in ('suction-tube/', 'كيس-الشفط/', 'أنبوب-الشفط/'):

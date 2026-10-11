@@ -1,7 +1,7 @@
 """Shared <head>, header, footer and hero markup for all redesign pages."""
 from lib import esc
 from lib import SITE_ORIGIN, FORM_ENDPOINT, FORM_MAILTO
-from i18n import LANGS, NAV as I18N_NAV, SECONDARY as I18N_SECONDARY, switcher_html, hreflang_tags
+from i18n import LANGS, NAV as I18N_NAV, SECONDARY as I18N_SECONDARY, nav_flat, switcher_html, hreflang_tags
 
 # Back-compat aliases (FA)
 NAV = I18N_NAV['fa']
@@ -59,11 +59,31 @@ def head(p, title, desc, og=None, lang='fa', fa_path='', canonical_path=None):
 '''
 
 
+def _nav_item(p, root, cur, item):
+    k, h, l = item[0], item[1], item[2]
+    kids = item[3] if len(item) > 3 else None
+    if not kids:
+        return f'<a href="{p}{root}{h}"{CUR if k == cur else ""}>{l}</a>'
+    child_keys = {ck for ck, _, _ in kids}
+    open_cur = CUR if (k == cur or cur in child_keys) else ''
+    sub = ''.join(
+        f'<a href="{p}{root}{ch}" role="menuitem"{CUR if ck == cur else ""}>{cl}</a>'
+        for ck, ch, cl in kids
+    )
+    return (
+        f'<div class="nav-item has-sub">'
+        f'<a class="nav-parent" href="{p}{root}{h}"{open_cur} aria-haspopup="true" aria-expanded="false">{l}'
+        f'<span class="nav-caret" aria-hidden="true"></span></a>'
+        f'<div class="nav-sub" role="menu">{sub}</div>'
+        f'</div>'
+    )
+
+
 def header(p, cur, lang='fa', fa_path=''):
     L = LANGS[lang]
     root = L['root']
     nav = I18N_NAV[lang]
-    links = ''.join(f'<a href="{p}{root}{h}"{CUR if k == cur else ""}>{l}</a>' for k, h, l in nav)
+    links = ''.join(_nav_item(p, root, cur, item) for item in nav)
     home = (p or './') if lang == 'fa' else (p + root)
     sw = switcher_html(lang, fa_path, p)
     return f'''<header class="header" id="header">
@@ -83,7 +103,7 @@ def header(p, cur, lang='fa', fa_path=''):
 def footer(p, cur=None, lang='fa'):
     L = LANGS[lang]
     root = L['root']
-    nav = I18N_NAV[lang]
+    nav = nav_flat(I18N_NAV[lang])
     sec = I18N_SECONDARY[lang]
     main = '\n        '.join(f'<a href="{p}{root}{h}">{l}</a>' for _, h, l in nav)
     secl = '\n        '.join(f'<a href="{p}{root}{h}"{CUR if k == cur else ""}>{l}</a>' for k, h, l in sec)
