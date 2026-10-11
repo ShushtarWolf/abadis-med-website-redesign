@@ -25,7 +25,8 @@
 <link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../../assets/css/site.css">
 <link rel="stylesheet" href="../../assets/css/home.css">
-<link rel="stylesheet" href="team-hero.css">
+<link rel="preload" as="image" href="media/bag2-body.webp" type="image/webp">
+<link rel="stylesheet" href="product-hero.css">
 </head>
 <body class="home">
 <a class="skip" href="#main">پرش به محتوا</a>
@@ -47,35 +48,41 @@
   </button>
 </header>
 <main id="main" class="home-page">
-  <section class="hero team-hero" id="hero" aria-label="تیم آبادیس">
-    <div class="hero-inner team-hero-inner">
-      <div class="team-hero-copy">
-        <span class="chip">شرکت دانش‌بنیان مخازن طبی آبادیس</span>
-        <h1>چهره‌های <em>آبادیس</em>، همراه سلامت بیمارستان‌ها</h1>
-        <p class="lead">تولیدکننده کیسه ساکشن یکبار مصرف و راهکارهای مدیریت سیالات و زباله‌های عفونی بیمارستانی.</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="../../products/">مشاهده محصولات</a>
-          <a class="btn btn-ghost" href="../../about/">آشنایی با ما</a>
+  <div class="ph-track" id="hero">
+    <section class="ph-stage" aria-label="کیسه ساکشن یکبار مصرف آبادیس">
+      <div class="ph-copy">
+        <div class="ph-head">
+          <span class="chip">شرکت دانش‌بنیان مخازن طبی آبادیس</span>
+          <h1>کیسه ساکشن یکبار مصرف <em>آبادیس</em></h1>
+          <p class="lead">تولیدکننده کیسه ساکشن یکبار مصرف و راهکارهای مدیریت سیالات و زباله‌های عفونی بیمارستانی.</p>
+          <a class="btn btn-primary" href="../../products/suction-bag/">مشاهده محصولات</a>
+        </div>
+        <div class="ph-foot">
+          <ul class="ph-stats">
+            <li><strong data-count="600" data-pre="+">+۶۰۰</strong><span>مرکز درمانی در سطح کشور</span></li>
+            <li><strong data-count="5" data-post=" میلیون">۵ میلیون</strong><span>ظرفیت تولید سالانه</span></li>
+            <li><strong>۱۳۹۷</strong><span>راه‌اندازی کارخانه</span></li>
+          </ul>
+          <span class="ph-certs" role="img" aria-label="گواهی‌ها: CE · ISO 13485:2016 · IMED"></span>
         </div>
       </div>
-      <div class="team-hero-people">
-        <figure class="team-card">
-          <video class="team-vid" width="522" height="782" muted playsinline preload="metadata" poster="media/alireza.webp" aria-label="علیرضا حسنعلی">
-            <source src="media/alireza.webm" type="video/webm">
-            <source src="media/alireza.mp4" type="video/mp4">
-          </video>
-          <figcaption>علیرضا حسنعلی</figcaption>
-        </figure>
-        <figure class="team-card">
-          <video class="team-vid" width="522" height="782" muted playsinline preload="metadata" poster="media/abolfazl.webp" aria-label="ابوالفضل حسنعلی">
-            <source src="media/abolfazl.webm" type="video/webm">
-            <source src="media/abolfazl.mp4" type="video/mp4">
-          </video>
-          <figcaption>ابوالفضل حسنعلی</figcaption>
-        </figure>
+      <div class="ph-visual">
+        <div class="ph-scene" role="img" aria-label="کیسه‌های ساکشن ۱، ۲ و ۳ لیتری و فیلترهای آبادیس">
+          <figure class="ph-bag ph-b3"><img src="media/bag3.webp" width="254" height="828" alt="" decoding="async"><figcaption>۳ لیتر</figcaption></figure>
+          <figure class="ph-bag ph-b1"><img src="media/bag1.webp" width="358" height="487" alt="" decoding="async"><figcaption>۱ لیتر</figcaption></figure>
+          <figure class="ph-bag ph-b2">
+            <span class="ph-open" aria-hidden="true"></span>
+            <img class="ph-lid" src="media/bag2-lid.webp" width="362" height="137" alt="" decoding="async" fetchpriority="high">
+            <img class="ph-body" src="media/bag2-body.webp" width="362" height="510" alt="" decoding="async" fetchpriority="high">
+            <figcaption>۲ لیتر</figcaption>
+          </figure>
+          <figure class="ph-filter ph-f1"><img src="../../assets/img/filters/anti-1-t.webp" width="480" height="480" alt="" decoding="async"><figcaption>فیلتر<br>آنتی‌باکتریال</figcaption></figure>
+          <figure class="ph-filter ph-f2"><img src="../../assets/img/filters/stop-1-t.webp" width="480" height="480" alt="" decoding="async"><figcaption>فیلتر<br>قطع‌کننده جریان</figcaption></figure>
+        </div>
       </div>
-    </div>
-  </section>
+      <div class="ph-hint" aria-hidden="true"></div>
+    </section>
+  </div>
   <section class="section section--alt" id="about">
     <div class="wrap split">
       <div class="reveal">
@@ -210,6 +217,6 @@
   <div class="wrap foot-copy">کلیه حقوق مادی و معنوی این وبسایت متعلق است به: مخازن طبی آبادیس · نسخهٔ پیش‌نمایش بازطراحی</div>
 </footer>
 <script src="../../assets/js/site.js" defer></script>
-<script src="team-hero.js" defer></script>
+<script src="product-hero.js" defer></script>
 </body>
 </html>
