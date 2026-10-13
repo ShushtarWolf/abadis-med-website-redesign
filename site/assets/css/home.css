@@ -230,3 +230,38 @@ body.home .zh-exit {
   .home-logo { transition: none; }
   .logo-carousel-strip { transition: none; }
 }
+
+/* ---------- first-screen backdrop: graded operating-room clip (tools/redesign/make_hero_video.py) ----------
+   Painted INTO the Zagros painting rather than laid over it: the clip (already graded into bg-dry's
+   palette) is shown as a broad vignette with feathered edges, so the painting's haze, sides and
+   ground surround it. site.js fades it out as the scroll story starts,
+   handing over to the painting alone. Dark/noir: the existing .zh-dusk grade sits on top. */
+body.home .zh-video-wrap {
+  position: absolute; inset: 0; overflow: hidden;
+  will-change: opacity;
+}
+/* wide screens: a broad vignette of the clip framed by the painting (sides + ground show through) */
+body.home .zh-video {
+  position: absolute; left: 50%; top: 0;
+  width: min(100%, 76vw); height: 100%; max-width: none;
+  transform: translateX(-50%);
+  object-fit: cover; object-position: 50% 32%; display: block;
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0%, #000 22%, #000 78%, transparent 100%),
+    linear-gradient(180deg, #000 0%, #000 50%, rgba(0,0,0,.55) 72%, transparent 92%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(90deg, transparent 0%, #000 22%, #000 78%, transparent 100%),
+    linear-gradient(180deg, #000 0%, #000 50%, rgba(0,0,0,.55) 72%, transparent 92%);
+  mask-composite: intersect;
+  opacity: .92;
+}
+/* tall screens: full width, fading into the painted ground */
+@media (max-aspect-ratio: 4/5) {
+  body.home .zh-video {
+    width: 100%; object-position: 50% 30%;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 52%, rgba(0,0,0,.5) 74%, transparent 94%);
+    mask-image: linear-gradient(180deg, #000 0%, #000 52%, rgba(0,0,0,.5) 74%, transparent 94%);
+  }
+}
+[data-theme="dark"] body.home .zh-video, [data-theme="noir"] body.home .zh-video { filter: brightness(.68); }

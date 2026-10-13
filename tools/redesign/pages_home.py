@@ -37,9 +37,17 @@ def _B(path):
     return PAGES[path]['blocks']
 
 
-def zagros_hero(img_base):
-    """Full-viewport Zagros scroll scene (shared assets under site/csr/img/hero/)."""
+def zagros_hero(img_base, video=''):
+    """Full-viewport Zagros scroll scene (shared assets under site/csr/img/hero/).
+    video: base path of the graded operating-room clip (make_hero_video.py) shown as the first-screen
+    backdrop; it fades into the Zagros painting as the scroll story starts (site.js)."""
     b = img_base.rstrip('/') + '/'
+    vid = (f'''
+        <div class="zh-video-wrap" id="zhVideo">
+          <video class="zh-video" muted loop playsinline preload="auto" poster="{video}hero-or-zagros-poster.jpg" disablepictureinpicture disableremoteplayback tabindex="-1">
+            <source src="{video}hero-or-zagros.mp4" type="video/mp4">
+          </video>
+        </div>''' if video else '')
     return f'''  <div class="zh-track" id="hero" data-img-base="{esc(b)}">
     <div class="zh-stage" id="zhStage">
       <div class="zh-bg" aria-hidden="true">
@@ -54,7 +62,7 @@ def zagros_hero(img_base):
         <picture>
           <source type="image/webp" srcset="{b}bg-green-1280.webp 1280w, {b}bg-green.webp 1920w" sizes="(max-aspect-ratio: 16/9) 177.78vh, 100vw">
           <img class="zh-bg-layer zh-bg-green" src="{b}bg-green.jpg" srcset="{b}bg-green-1280.jpg 1280w, {b}bg-green.jpg 1920w" sizes="(max-aspect-ratio: 16/9) 177.78vh, 100vw" alt="" width="1920" height="1080" decoding="async">
-        </picture>
+        </picture>{vid}
       </div>
       <div class="zh-spots" id="zhSpots" aria-hidden="true"></div>
       <div class="zh-canister" id="zhCanister" aria-hidden="true">
@@ -225,7 +233,7 @@ def customers_section():
 def build(write):
     pages_posts.prepare()
     main = '\n'.join([
-        zagros_hero('csr/img/hero'),
+        zagros_hero('csr/img/hero', video='assets/media/'),
         about_section(),
         why_section(),
         calculator_section(),
