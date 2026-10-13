@@ -265,3 +265,5 @@ body.home .zh-video {
   }
 }
 [data-theme="dark"] body.home .zh-video, [data-theme="noir"] body.home .zh-video { filter: brightness(.68); }
+[data-theme="dark"] body.home .zh-video { filter: brightness(.66) saturate(.9); opacity: .85; }
+[data-theme="noir"] body.home .zh-video { filter: brightness(.6) saturate(.8) hue-rotate(-8deg); opacity: .85; }
