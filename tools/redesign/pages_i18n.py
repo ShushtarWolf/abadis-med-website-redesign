@@ -297,6 +297,9 @@ def build_lang(write, lang: str):
         if 'news' in site_path or 'blog' in site_path or 'اخبار' in site_path:
             cur = 'news' if 'blog' not in site_path else 'articles'
         chip = LANGS[lang]['brand']
+        if site_path == '':  # home: same Alireza layout as FA (pages_home_i18n)
+            import pages_home_i18n
+            built.append(pages_home_i18n.build_home(write, lang)); continue
         rel = render_content_page(write, lang, site_path, wp, cur, chip)
         built.append(rel)
 

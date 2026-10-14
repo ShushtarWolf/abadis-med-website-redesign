@@ -146,7 +146,7 @@ def _iran_map(have, counts, lang='fa'):
         if on: dots.append(f'<circle cx="{v["c"][0]}" cy="{v["c"][1]}" r="5.5"/>')
     return (f'<figure class="iran-map reveal"><svg viewBox="0 0 {m["w"]} {m["h"]}" role="img" aria-label="{esc(T["aria"])}">'
             f'<g class="provs">{"".join(paths)}</g><g class="dots" aria-hidden="true">{"".join(dots)}</g></svg>'
-            f'<figcaption>{esc(T["cap"])} <small>{esc(T["src"])}</small></figcaption></figure>'
+            f'<figcaption>{esc(T["cap"])} <small dir="ltr" lang="en" class="latin-digits">{esc(T["src"])}</small></figcaption></figure>'
             """<script>document.querySelectorAll('.iran-map path.has').forEach(function(p){function go(){var b=document.querySelector('#provChips button[data-prov="'+p.dataset.prov+'"]');if(b&&b.getAttribute('aria-pressed')!=='true'){b.click();}document.querySelectorAll('.iran-map path.on').forEach(function(x){x.classList.remove('on')});p.classList.add('on');var g=document.querySelector('.prov-group[data-prov="'+p.dataset.prov+'"]');if(g)g.scrollIntoView({behavior:'smooth',block:'start'});}p.addEventListener('click',go);p.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});});</script>""")
 
 def dealers_widget(lang):

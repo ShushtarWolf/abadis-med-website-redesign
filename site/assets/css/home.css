@@ -372,3 +372,4 @@ body.home .zh-exit {
 .member-logos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 14px; }
 .member-logos li { display: grid; place-items: center; padding: 12px; border-radius: 14px; background: #fff; border: 1px solid var(--line); aspect-ratio: 3/2; }
 .member-logos img { max-width: 100%; max-height: 70px; width: auto; height: auto; object-fit: contain; }
+.impact-note { text-align: start; }
