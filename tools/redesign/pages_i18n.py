@@ -205,6 +205,8 @@ def build_posts(write, lang):
         title = strip_tags(wp.get('title', {}).get('rendered', ''))
         raw_content = wp.get('content', {}).get('rendered', '')
         desc = meta_description(title, wp.get('excerpt', {}).get('rendered', ''), raw_content, lang)
+        if lang == 'en' and not re.search('[A-Za-z]', desc):
+            desc = 'Abadis Medical Reservoirs (EN): ' + desc   # Persian-only EN post: keep its meta unique vs the FA article
         body = clean_html(raw_content, lang=lang, prefix=p)
         index_href = '../latest-news/' if lang == 'en' else '../الاخبار/'
         index_label = 'News' if lang == 'en' else 'الاخبار'

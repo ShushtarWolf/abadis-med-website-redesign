@@ -104,6 +104,6 @@ def build(write):
         if lang == 'en':
             main = main.replace('←', '→')
         html = page(p, 'contact', L['title'], L['lead'], main, lang=lang,
-                    fa_path='export/' if lang == 'fa' else '', canonical_path=L['root'] + 'export/',
+                    fa_path='export/', canonical_path=L['root'] + 'export/',
                     scripts=f'<script src="{p}assets/js/quote-form.js" defer></script>\n')
         write(rel, html)

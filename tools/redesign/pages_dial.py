@@ -53,6 +53,8 @@ METHOD_FA = '''<aside class="calc-method" id="calc-method" aria-labelledby="calc
 def home_section():
     css, js, intro, c1, c2, cta = _parts()
     _assets(css, js)
+    fix = lambda h: h.replace('href="../contact/" target="_blank" rel="noopener"', 'href="contact/"').replace('href="../contact/"', 'href="contact/"')
+    intro, c1, c2 = fix(intro), fix(c1), fix(c2)
     return f'''  <section class="section section--alt home-dial" id="calculator">
     <div class="dp-embed">
       {intro.replace('<section class="intro" id="top">', '<section class="intro home-dial-intro">').replace('<h1>', '<h2>').replace('</h1>', '</h2>')}
