@@ -1321,3 +1321,9 @@ body.academy { background: #f3f8f8; }
 .ac-small { font-size: .8rem; opacity: .8; margin-top: 14px; }
 .ac-footer { padding: 26px 0; border-top: 1px solid #d5e6e6; font-size: .9rem; } .ac-footer .wrap { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: center; }
 .ac-footer svg { vertical-align: middle; width: 22px; height: 22px; } .ac-foot-note { opacity: .7; font-size: .8rem; }
+.pv-sizes { position: absolute; inset-inline: 0; bottom: 12px; display: flex; justify-content: center; gap: 6px; z-index: 3; }
+.pv-sizes button { border: 1px solid color-mix(in srgb, #0e7475 40%, transparent); background: color-mix(in srgb, #ffffff 85%, transparent); color: #015F61; font: inherit; font-weight: 700; font-size: .85rem; padding: 6px 14px; border-radius: 99px; cursor: pointer; backdrop-filter: blur(6px); }
+.pv-sizes button[aria-pressed="true"] { background: #066163; color: #fff; border-color: #066163; }
+#productViewer { position: relative; }
+.pv-sizes { pointer-events: none; z-index: 6; } .pv-sizes button { pointer-events: auto; }
+#productViewer .pv-hint { bottom: 58px !important; }

@@ -116,14 +116,15 @@
         <ul class="checks"><li>حجم ۲ لیتر تکی · تا ۸ لیتر سری یک‌ردیفه</li><li>قطر ۱۱ cm · ارتفاع ۲۴.۵ cm</li><li>فیلتر هیدروفوبیک / مکانیکی / CIF</li><li>۴۵ عدد در هر کارتن</li></ul>
         <a class="btn btn-light" href="#s2">جدول کدهای ۲ لیتری</a>
       </div>
-      <!-- 3D viewer temporarily disabled (ENABLE_PRODUCT_3D=false); photo shown until design is finished. Code + GLB kept. -->
-      <div class="product-visual pv-failed" id="productViewer" data-enable-3d="false">
+      <!-- 3D viewer (ENABLE_PRODUCT_3D=true) with 1/2/3 L switch; photo is the no-WebGL fallback -->
+      <div class="product-visual pv-failed" id="productViewer" data-enable-3d="true">
         <img class="pv-fallback" src="../../assets/img/product-still.webp" width="800" height="800" alt="کیسه ساکشن ۲ لیتری آبادیس" loading="lazy">
         <!-- 3D viewer parts kept for re-enabling (ENABLE_PRODUCT_3D); not rendered while disabled -->
         <template id="pv3dParts">
           <div class="product-visual-loading pv-loading" id="viewerLoading">بارگذاری مدل…</div>
           <canvas id="productCanvas" class="pv-canvas" aria-label="نمای چرخشی کیسه ساکشن ۲ لیتری؛ برای چرخاندن بکشید"></canvas>
           <div class="product-visual-hint pv-hint">بکشید تا بچرخد</div>
+          <div class="pv-sizes" role="group" aria-label="انتخاب حجم کیسه"><button type="button" data-l="1" aria-pressed="false">۱ لیتری</button><button type="button" data-l="2" aria-pressed="true">۲ لیتری</button><button type="button" data-l="3" aria-pressed="false">۳ لیتری</button></div>
         </template>
       </div>
     </div>
@@ -466,7 +467,7 @@
 <script type="module">
   /* 3D viewer: lazy; rotation ONLY by explicit drag (no hover tracking).
      Temporarily disabled until the design is finished — flip the flag to re-enable. */
-  const ENABLE_PRODUCT_3D = false;
+  const ENABLE_PRODUCT_3D = true;
   const host = document.getElementById('productViewer');
   const ok = (() => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch (_) { return false; } })();
   const fail = () => { host.classList.add('pv-failed'); const l = document.getElementById('viewerLoading'); if (l) l.classList.add('hide'); };
@@ -479,6 +480,12 @@
         if (en.some((x) => x.isIntersecting)) {
           io.disconnect();
           import('../../assets/js/product-viewer.js').then((m) => m.initProductViewer(host)).catch((e) => { console.warn(e); fail(); });
+          host.addEventListener('click', (e) => {
+            const b = e.target.closest('.pv-sizes button'); if (!b || !window.__abadisViewer || !window.__abadisViewer.setSize) return;
+            host.querySelectorAll('.pv-sizes button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+            window.__abadisViewer.setSize(+b.dataset.l);
+            const cv = document.getElementById('productCanvas'); if (cv) cv.setAttribute('aria-label', 'نمای چرخشی کیسه ساکشن ' + b.textContent + '؛ برای چرخاندن بکشید');
+          });
         }
       }, { rootMargin: '500px 0px' });
       io.observe(host);
