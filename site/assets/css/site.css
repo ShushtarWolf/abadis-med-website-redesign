@@ -1327,3 +1327,19 @@ body.academy { background: #f3f8f8; }
 #productViewer { position: relative; }
 .pv-sizes { pointer-events: none; z-index: 6; } .pv-sizes button { pointer-events: auto; }
 #productViewer .pv-hint { bottom: 58px !important; }
+/* never stretch post images (live WP content carries fixed width/height attributes and inline styles) */
+.prose img, .article img { max-width: 100% !important; height: auto !important; object-fit: contain; }
+.post-card .ph img, .post-hero img { object-fit: cover; }
+/* news / articles templates v2 */
+.article.post-v2 { max-width: 760px; margin-inline: auto; font-size: 1.05rem; line-height: 2.05; }
+.article-foot.post-v2 { max-width: 760px; margin-inline: auto; flex-wrap: wrap; gap: 12px; }
+.page-hero .meta span + span::before { content: "·"; margin-inline: 8px; opacity: .6; }
+.share { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: .88rem; }
+.share a, .share button { border: 1px solid color-mix(in srgb, #0e7475 35%, transparent); border-radius: 99px; padding: 4px 12px; text-decoration: none; color: #05686b; background: transparent; font: inherit; cursor: pointer; }
+[data-theme="dark"] .share a, [data-theme="dark"] .share button, [data-theme="noir"] .share a, [data-theme="noir"] .share button { color: #7cc9c7; }
+.related { margin-top: 48px; } .related h2 { font-size: 1.4rem; margin-bottom: 16px; }
+@media (min-width: 900px) {
+  #postGrid > .post-card:first-child:not([hidden]) { grid-column: 1 / -1; display: grid; grid-template-columns: 1.3fr 1fr; align-items: stretch; }
+  #postGrid > .post-card:first-child .ph { height: 100%; } #postGrid > .post-card:first-child .ph img { height: 100%; width: 100%; object-fit: cover; }
+  #postGrid > .post-card:first-child h3 { font-size: 1.5rem; }
+}

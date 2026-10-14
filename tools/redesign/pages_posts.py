@@ -118,16 +118,26 @@ def build(write):
                 nav = '<nav class="post-nav" aria-label="مطالب دیگر">' + \
                       (f'<a href="{p}{newer["rel"]}"><span>مطلب جدیدتر</span>{esc(newer["t"])}</a>' if newer else '<span></span>') + \
                       (f'<a href="{p}{older["rel"]}"><span>مطلب قدیمی‌تر</span>{esc(older["t"])}</a>' if older else '') + '</nav>'
-            related = [y for y in items if y is not x][:0]
-            meta = f'<div class="meta"><span>{TAG[cat]}</span><span>{jdate(x["date"])}</span></div>'
+            related = [y for y in items if y is not x][max(0, i - 1):max(0, i - 1) + 3]
+            words = len(re.sub(r'<[^>]+>', ' ', body).split()); mins = max(1, round(words / 200))
+            meta = f'<div class="meta"><span>{TAG[cat]}</span><span>{jdate(x["date"])}</span><span>زمان مطالعه: {fa(mins)} دقیقه</span></div>'
+            from urllib.parse import quote
+            url = quote(f'https://abadis-med.com/{cat}/{x["id"]}/', safe=':/'); tt = quote(x['t'])
+            share = (f'<div class="share" aria-label="اشتراک‌گذاری"><span>اشتراک‌گذاری:</span>'
+                     f'<a href="https://t.me/share/url?url={url}&amp;text={tt}" target="_blank" rel="noopener">تلگرام</a>'
+                     f'<a href="https://wa.me/?text={tt}%20{url}" target="_blank" rel="noopener">واتس‌اپ</a>'
+                     f'<a href="https://www.linkedin.com/sharing/share-offsite/?url={url}" target="_blank" rel="noopener">لینکدین</a>'
+                     f'<button type="button" onclick="navigator.clipboard&&navigator.clipboard.writeText(location.href);this.textContent=\'کپی شد ✓\'">کپی پیوند</button></div>')
+            rel_html = (f'<section class="related"><h2>مطالب مرتبط</h2><div class="post-grid">{"".join(card(p, y, False) for y in related)}</div></section>') if related else ''
             main = f'''{page_hero(p, [(LABEL[cat], '../'), (x['t'][:60] + ('…' if len(x['t']) > 60 else ''), None)], esc(x['t']), '', meta)}
   <section class="section"><div class="wrap">
-    <article class="article prose">
+    <article class="article prose post-v2">
       {lead_img}
       {body}
     </article>
-    <div class="article-foot"><span>تاریخ انتشار: {jdate(x['date'])}</span><a href="../">بازگشت به {LABEL[cat]} ←</a></div>
+    <div class="article-foot post-v2"><span>تاریخ انتشار: {jdate(x['date'])}</span>{share}<a href="../">بازگشت به {LABEL[cat]} ←</a></div>
     {nav}
+    {rel_html}
   </div></section>'''
             og = (p + r['src']) if r else (p + FALLBACK_THUMB)
             # Document title includes section so it never collides with same-named pages
