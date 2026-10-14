@@ -1,5 +1,6 @@
 """Generate site/index.html — Zagros hero + about / why / calculator / news / articles / customers."""
 from lib import PAGES, esc, fa
+import pages_dial
 from layout import page
 from render import picture
 import pages_posts
@@ -255,15 +256,16 @@ def build(write):
         zagros_hero('csr/img/hero'),
         about_section(),
         why_section(),
-        calculator_section(),
+        pages_dial.home_section(),
         news_section(),
         articles_section(),
         customers_section(),
     ])
     extra_head = '''<link rel="preload" as="image" href="csr/img/hero/bg-dry.webp" type="image/webp">
 <link rel="stylesheet" href="csr/zagros-hero.css">
-<link rel="stylesheet" href="assets/css/home.css">'''
-    scripts = '<script src="csr/zagros-hero.js" defer></script>\n'
+<link rel="stylesheet" href="assets/css/home.css">
+<link rel="stylesheet" href="assets/dial/dial.css">'''
+    scripts = '<script src="csr/zagros-hero.js" defer></script>\n' + pages_dial.scripts('')
     html = page(
         '', None, HOME_TITLE, HOME_DESC, main,
         fa_path='', canonical_path='',

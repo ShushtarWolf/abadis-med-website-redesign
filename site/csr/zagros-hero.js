@@ -16,6 +16,7 @@
   var root = document.documentElement;
   // Shared by /csr/ (./img/hero/) and home (csr/img/hero/)
   var IMG_BASE = (hero.getAttribute('data-img-base') || './img/hero/').replace(/\/?$/, '/');
+  var hooks = { layout: [], render: [] };
 
   var IMG_W = 1920, IMG_H = 1080, POS_Y = 0.6;   // must match .bg-layer object-position
   var HORIZON = 0.6;                              // image-space y where trees would be 0 tall
@@ -198,9 +199,11 @@
       sp.ashadow.style.bottom = (-ah * 0.45).toFixed(1) + 'px';
     });
     stageW = W;
-    layoutMarks(key, W);
+    if (marksEl) layoutMarks(key, W);
+    for (var hi = 0; hi < hooks.layout.length; hi++) hooks.layout[hi](api);
   }
 
+  var lastP = 0;
   function render(p) {
     // background: dry -> mid -> green
     bgMid.style.opacity = smooth(seg(p, 0.20, 0.48)).toFixed(3);
@@ -258,7 +261,9 @@
     canister.style.transform = 'translate3d(-50%,' + ((1 - c) * 26).toFixed(2) + '%,0)';
 
     hint.style.opacity = (1 - seg(p, 0, 0.04)).toFixed(3);
-    renderMarks();
+    if (marksEl) renderMarks();
+    lastP = p;
+    for (var hi = 0; hi < hooks.render.length; hi++) hooks.render[hi](p, api);
 
   }
 
@@ -324,6 +329,15 @@
   // plate widths depend on Kalameh; re-measure once it is in
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { layout(); render(reduced ? 1 : current); });
 
-  // test hook for screenshots: jump straight to a progress value without smoothing
-  window.__zagrosHero = { set: function (p) { target = current = clamp(p, 0, 1); render(current); }, layout: layout };
+  // public api: sample add-ons hook into layout/render (same rAF frame, transform/opacity only)
+  var api = window.__zagrosHero = {
+    set: function (p) { target = current = clamp(p, 0, 1); render(current); },   // test hook for screenshots
+    layout: layout,
+    onLayout: function (fn) { hooks.layout.push(fn); },
+    onRender: function (fn) { hooks.render.push(fn); },
+    refresh: function () { layout(); render(reduced ? 1 : current); },
+    get spots() { return spots; }, get stage() { return stage; }, get canister() { return canister; },
+    get W() { return stageW; }, get H() { return stageH; }, get reduced() { return reduced; },
+    get p() { return lastP; }, get track() { return track; }, get heroTop() { return heroTop; }
+  };
 })();

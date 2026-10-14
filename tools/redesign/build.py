@@ -13,7 +13,8 @@ GROUPS = {'products': pages_products.build}
 try:
     import pages_company; GROUPS.update(pages_company.GROUPS)
 except ImportError: pass
-import pages_calculator; GROUPS['calculator'] = pages_calculator.build   # abadismedit's redesign draft
+import pages_calculator; import pages_dial
+GROUPS['calculator'] = lambda w: (pages_calculator.build(w), pages_dial.build(w))   # abadismedit's redesign draft
 try:
     import pages_posts; GROUPS['posts'] = pages_posts.build
 except ImportError: pass

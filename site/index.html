@@ -27,6 +27,7 @@
 <link rel="preload" as="image" href="csr/img/hero/bg-dry.webp" type="image/webp">
 <link rel="stylesheet" href="csr/zagros-hero.css">
 <link rel="stylesheet" href="assets/css/home.css">
+<link rel="stylesheet" href="assets/dial/dial.css">
 </head>
 <body class="home">
 <a class="skip" href="#main">پرش به محتوا</a>
@@ -35,7 +36,7 @@
     <img class="lg-light" src="assets/img/abadis-logo-teal.png" width="658" height="309" alt="مخازن طبی آبادیس">
     <img class="lg-dark" src="assets/img/abadis-logo-on-teal.png" width="670" height="309" alt="" aria-hidden="true">
   </a>
-  <nav class="nav" id="mainNav" aria-label="منوی اصلی"><div class="nav-item has-sub"><a class="nav-parent" href="about/" aria-haspopup="true" aria-expanded="false">آشنایی با ما<span class="nav-caret" aria-hidden="true"></span></a><div class="nav-sub" role="menu"><a href="about/" role="menuitem">درباره ما</a><a href="sdgs/" role="menuitem">توسعه پایدار</a><a href="jobs/" role="menuitem">موقعیت های شغلی</a><a href="careers/" role="menuitem">فرصت های همکاری</a></div></div><a href="products/">محصولات</a><a href="news/">آخرین اخبار</a><a href="dealers/">لیست نمایندگان</a><a href="articles/">مقالات</a><a href="contact/">ارتباط با ما</a><a href="calculator/">محاسبه‌گر</a></nav>
+  <nav class="nav" id="mainNav" aria-label="منوی اصلی"><div class="nav-item has-sub"><a class="nav-parent" href="about/" aria-haspopup="true" aria-expanded="false">آشنایی با ما<span class="nav-caret" aria-hidden="true"></span></a><div class="nav-sub" role="menu"><a href="about/" role="menuitem">درباره ما</a><a href="sdgs/" role="menuitem">توسعه پایدار</a><a href="jobs/" role="menuitem">موقعیت های شغلی</a><a href="careers/" role="menuitem">فرصت های همکاری</a></div></div><a href="products/">محصولات</a><a href="news/">آخرین اخبار</a><a href="dealers/">لیست نمایندگان</a><a href="articles/">مقالات</a><a href="csr/">مسئولیت اجتماعی</a><a href="contact/">ارتباط با ما</a><a href="calculator/">محاسبه‌گر</a></nav>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mainNav" aria-label="منو"><span class="mb-bars" aria-hidden="true"><i></i><i></i><i></i></span></button>
   <nav class="lang-switch" aria-label="زبان"><a class="lang-link" href="" hreflang="fa-IR" lang="fa-IR" title="فارسی" aria-label="فارسی" aria-current="true">FA</a><span class="lang-sep" aria-hidden="true">·</span><a class="lang-link" href="en/" hreflang="en" lang="en" title="English" aria-label="English">EN</a><span class="lang-sep" aria-hidden="true">·</span><a class="lang-link" href="arabic/" hreflang="ar" lang="ar" title="العربية" aria-label="العربية">AR</a></nav>
   <button class="theme-toggle" type="button" aria-label="حالت نمایش" title="تغییر حالت نمایش">
@@ -141,16 +142,97 @@
       </div>
     </div>
   </section>
-  <section class="section section--alt" id="calculator">
-    <div class="wrap">
-      <div class="home-calc reveal">
-        <div>
-          <p class="eyebrow">محاسبه‌گر</p>
-          <h2>محاسبه‌گر صرفه‌جویی</h2>
-          <p>جهت محاسبه آنلاین میزان صرفه‌جویی در مصرف آب و زباله‌های عفونی مرکز خود می‌توانید روی دکمه زیر کلیک نمایید.</p>
-        </div>
-        <a class="btn btn-primary" href="calculator/">محاسبه‌گر</a>
+  <section class="section section--alt home-dial" id="calculator">
+    <div class="dp-embed">
+      <section class="intro home-dial-intro">
+    <div class="eyebrow">ابزار محاسبه · طرح دایال</div>
+    <h2>محاسبه‌گر صرفه‌جویی <em>آبادیس</em></h2>
+    <p>دایال را با لمس یا ماوس بچرخانید یا عدد را تایپ کنید؛ سه نمایشگر، صرفه‌جویی آب، هزینه شست‌وشو و ضدعفونی و زمان کادر درمان را همزمان نشان می‌دهند.</p>
+  </section>
+      <section class="calc dial-sec" id="calc1" aria-labelledby="calc1-t">
+    <div class="calc-track"><div class="calc-pin"><div class="dev">
+      <div class="dev-head">
+        <div><div class="dev-tag">CH-1 · ورودی: تعداد عمل</div><h2 id="calc1-t">بر مبنای تعداد عمل جراحی در سال</h2><p class="dev-hint" data-hint>دایال را با لمس یا ماوس بچرخانید یا عدد را تایپ کنید</p></div>
+        <div class="dev-ctl"><div class="chips" role="group" aria-label="مقادیر آماده">
+              <button class="chip" type="button" data-n="1000">۱٬۰۰۰</button>
+              <button class="chip" type="button" data-n="5000">۵٬۰۰۰</button>
+              <button class="chip" type="button" data-n="10000">۱۰٬۰۰۰</button>
+              <button class="chip" type="button" data-n="15000">۱۵٬۰۰۰</button>
+            </div></div>
       </div>
+      <div class="dev-body">
+        <div class="knob-area">
+            <div class="knob-wrap" tabindex="0" role="slider">
+              <svg class="knob-scale" viewBox="0 0 200 200" aria-hidden="true"><g class="ticks"></g><circle class="knob-track" cx="100" cy="100" r="93" pathLength="360" stroke-dasharray="300 360" transform="rotate(120 100 100)"/><circle class="knob-arc" cx="100" cy="100" r="93" pathLength="360" stroke-dasharray="0 360" transform="rotate(120 100 100)"/></svg>
+              <div class="knob" aria-hidden="true"><span class="knob-mark"></span></div>
+              <div class="knob-logo" aria-hidden="true">آبادیس</div>
+            </div>
+            <div class="lcd"><div class="lcd-cell active"><span class="lbl"><span class="led"></span>تعداد عمل در سال</span><span class="odo" data-odo="n" data-digits="5" aria-hidden="true"></span><input class="odo-in" data-in="n" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" autocorrect="off" spellcheck="false" dir="ltr" aria-label="تعداد عمل در سال (۰ تا ۱۵٬۰۰۰)" /></div></div>
+          </div>
+        <div class="mon mon-w bezel" data-gauge="water"><div class="mon-screen">
+              <svg class="gauge" viewBox="0 0 132 86" aria-hidden="true"><g class="g-ticks"></g><path class="g-track" d="M14 76 A52 52 0 0 1 118 76" pathLength="100"/><path class="g-arc" d="M14 76 A52 52 0 0 1 118 76" pathLength="100" stroke-dasharray="0 100"/><line class="g-needle" x1="66" y1="76" x2="66" y2="34" transform="rotate(-90 66 76)"/><circle class="g-hub" cx="66" cy="76" r="4.5"/></svg>
+              <div class="mon-txt"><div class="mon-top"><span>صرفه‌جویی در مصرف آب</span><i>H₂O</i></div><div class="mon-val"><span class="odo" data-odo="water" data-digits="7"></span><small>لیتر</small></div><div class="mon-sub" data-sub="tubs"></div></div>
+            </div></div>
+        <div class="mon mon-c bezel" data-gauge="cost"><div class="mon-screen">
+              <svg class="gauge" viewBox="0 0 132 86" aria-hidden="true"><g class="g-ticks"></g><path class="g-track" d="M14 76 A52 52 0 0 1 118 76" pathLength="100"/><path class="g-arc" d="M14 76 A52 52 0 0 1 118 76" pathLength="100" stroke-dasharray="0 100"/><line class="g-needle" x1="66" y1="76" x2="66" y2="34" transform="rotate(-90 66 76)"/><circle class="g-hub" cx="66" cy="76" r="4.5"/></svg>
+              <div class="mon-txt"><div class="mon-top"><span>هزینه شست‌وشو و ضدعفونی</span><i>COST</i></div><div class="mon-val"><span class="odo" data-odo="cost" data-digits="13"></span><small>تومان</small></div><div class="mon-sub" data-sub="read"></div></div>
+            </div></div>
+        <div class="mon mon-h bezel" data-gauge="hours"><div class="mon-screen">
+              <svg class="gauge" viewBox="0 0 132 86" aria-hidden="true"><g class="g-ticks"></g><path class="g-track" d="M14 76 A52 52 0 0 1 118 76" pathLength="100"/><path class="g-arc" d="M14 76 A52 52 0 0 1 118 76" pathLength="100" stroke-dasharray="0 100"/><line class="g-needle" x1="66" y1="76" x2="66" y2="34" transform="rotate(-90 66 76)"/><circle class="g-hub" cx="66" cy="76" r="4.5"/></svg>
+              <div class="mon-txt"><div class="mon-top"><span>زمان کادر درمان</span><i>TIME</i></div><div class="mon-val"><span class="odo" data-odo="hours" data-digits="6"></span><small>ساعت</small></div><div class="mon-sub" data-sub="shifts"></div></div>
+            </div></div>
+        <div class="dev-sum bezel"><div class="sum-in"><p class="sum-text" data-sum></p><a class="hero-btn" href="tel:02192001017">مشاوره با کارشناس فروش</a></div></div>
+      </div>
+    </div></div></div>
+  </section>
+      <section class="calc dial-sec" id="calc2" aria-labelledby="calc2-t">
+    <div class="calc-track"><div class="calc-pin"><div class="dev">
+      <div class="dev-head">
+        <div><div class="dev-tag">CH-2 · ورودی: تعداد تخت</div><h2 id="calc2-t">بر مبنای تعداد تخت</h2><p class="dev-hint" data-hint>مرحله ۱: تعداد تخت اتاق عمل را با چرخاندن دایال یا تایپ عدد تنظیم کنید</p></div>
+        <div class="dev-ctl"><div class="chips" role="group" aria-label="ترکیب‌های آماده (تخت اتاق عمل + ICU|CCU)">
+              <button class="chip" type="button" data-a="10" data-b="10">۱۰ + ۱۰</button>
+              <button class="chip" type="button" data-a="20" data-b="10">۲۰ + ۱۰</button>
+              <button class="chip" type="button" data-a="50" data-b="20">۵۰ + ۲۰</button>
+              <button class="chip" type="button" data-a="100" data-b="50">۱۰۰ + ۵۰</button>
+              <button class="chip" type="button" data-a="300" data-b="100">۳۰۰ + ۱۰۰</button>
+              <button class="chip" type="button" data-a="700" data-b="700">۷۰۰ + ۷۰۰</button>
+            </div><button class="confirm" type="button" data-confirm hidden></button></div>
+      </div>
+      <div class="dev-body">
+        <div class="knob-area">
+            <div class="knob-wrap" tabindex="0" role="slider">
+              <svg class="knob-scale" viewBox="0 0 200 200" aria-hidden="true"><g class="ticks"></g><circle class="knob-track" cx="100" cy="100" r="93" pathLength="360" stroke-dasharray="300 360" transform="rotate(120 100 100)"/><circle class="knob-arc" cx="100" cy="100" r="93" pathLength="360" stroke-dasharray="0 360" transform="rotate(120 100 100)"/></svg>
+              <div class="knob" aria-hidden="true"><span class="knob-mark"></span></div>
+              <div class="knob-logo" aria-hidden="true">آبادیس</div>
+            </div>
+            <div class="lcd"><div class="lcd-cell" data-ch="a"><span class="hold">ثابت</span><span class="lbl"><span class="led"></span>تخت اتاق عمل</span><span class="odo" data-odo="a" data-digits="3" aria-hidden="true"></span><input class="odo-in" data-in="a" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" autocorrect="off" spellcheck="false" dir="ltr" aria-label="تعداد تخت اتاق عمل (۰ تا ۷۰۰)" /></div><div class="lcd-cell" data-ch="b"><span class="lbl"><span class="led"></span>تخت ICU|CCU</span><span class="odo" data-odo="b" data-digits="3" aria-hidden="true"></span><input class="odo-in" data-in="b" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" autocorrect="off" spellcheck="false" dir="ltr" aria-label="تعداد تخت ICU|CCU (۰ تا ۷۰۰)" /></div></div>
+          </div>
+        <div class="mon mon-w bezel" data-gauge="water"><div class="mon-screen">
+              <svg class="gauge" viewBox="0 0 132 86" aria-hidden="true"><g class="g-ticks"></g><path class="g-track" d="M14 76 A52 52 0 0 1 118 76" pathLength="100"/><path class="g-arc" d="M14 76 A52 52 0 0 1 118 76" pathLength="100" stroke-dasharray="0 100"/><line class="g-needle" x1="66" y1="76" x2="66" y2="34" transform="rotate(-90 66 76)"/><circle class="g-hub" cx="66" cy="76" r="4.5"/></svg>
+              <div class="mon-txt"><div class="mon-top"><span>صرفه‌جویی در مصرف آب</span><i>H₂O</i></div><div class="mon-val"><span class="odo" data-odo="water" data-digits="7"></span><small>لیتر</small></div><div class="mon-sub" data-sub="tubs"></div></div>
+            </div></div>
+        <div class="mon mon-c bezel" data-gauge="cost"><div class="mon-screen">
+              <svg class="gauge" viewBox="0 0 132 86" aria-hidden="true"><g class="g-ticks"></g><path class="g-track" d="M14 76 A52 52 0 0 1 118 76" pathLength="100"/><path class="g-arc" d="M14 76 A52 52 0 0 1 118 76" pathLength="100" stroke-dasharray="0 100"/><line class="g-needle" x1="66" y1="76" x2="66" y2="34" transform="rotate(-90 66 76)"/><circle class="g-hub" cx="66" cy="76" r="4.5"/></svg>
+              <div class="mon-txt"><div class="mon-top"><span>هزینه شست‌وشو و ضدعفونی</span><i>COST</i></div><div class="mon-val"><span class="odo" data-odo="cost" data-digits="11"></span><small>تومان</small></div><div class="mon-sub" data-sub="read"></div></div>
+            </div></div>
+        <div class="mon mon-h bezel" data-gauge="hours"><div class="mon-screen">
+              <svg class="gauge" viewBox="0 0 132 86" aria-hidden="true"><g class="g-ticks"></g><path class="g-track" d="M14 76 A52 52 0 0 1 118 76" pathLength="100"/><path class="g-arc" d="M14 76 A52 52 0 0 1 118 76" pathLength="100" stroke-dasharray="0 100"/><line class="g-needle" x1="66" y1="76" x2="66" y2="34" transform="rotate(-90 66 76)"/><circle class="g-hub" cx="66" cy="76" r="4.5"/></svg>
+              <div class="mon-txt"><div class="mon-top"><span>زمان کادر درمان</span><i>TIME</i></div><div class="mon-val"><span class="odo" data-odo="hours" data-digits="6"></span><small>ساعت</small></div><div class="mon-sub" data-sub="shifts"></div></div>
+            </div></div>
+        <div class="dev-sum bezel"><div class="sum-in"><p class="sum-text" data-sum></p><a class="hero-btn" href="tel:02192001017">مشاوره با کارشناس فروش</a></div></div>
+      </div>
+    </div></div></div>
+  </section>
+
+  <p class="foot-note"><b>*</b> محاسبات بر اساس فرمول‌های محاسبه‌گر فعلی آبادیس</p>
+
+  <section class="cta-band">
+    <h2>برای محاسبه دقیق مرکز درمانی خود با ما صحبت کنید</h2>
+    <p>کارشناسان فروش مخازن طبی آبادیس آماده پاسخ‌گویی به پرسش‌های شما هستند.</p>
+    <a class="hero-btn" href="tel:02192001017">مشاوره با کارشناس فروش</a>
+    <p class="cta-sub">مرکز تماس: <a href="tel:02192001017" dir="ltr">021-92001017</a> · <a href="../contact/" target="_blank" rel="noopener">صفحه ارتباط با ما</a></p>
+  </section>
+      <p class="home-dial-more"><a class="more-link" href="calculator/">صفحهٔ محاسبه‌گر ←</a></p>
     </div>
   </section>
   <section class="section" id="news">
@@ -201,6 +283,7 @@
         <a href="news/">آخرین اخبار</a>
         <a href="dealers/">لیست نمایندگان</a>
         <a href="articles/">مقالات</a>
+        <a href="csr/">مسئولیت اجتماعی</a>
         <a href="contact/">ارتباط با ما</a>
         <a href="calculator/">محاسبه‌گر</a>
         </div>
@@ -241,5 +324,7 @@
 </footer>
 <script src="assets/js/site.js" defer></script>
 <script src="csr/zagros-hero.js" defer></script>
+<script src="assets/dial/abadis-common.js"></script>
+<script src="assets/dial/dial-practical.js" defer></script>
 </body>
 </html>
