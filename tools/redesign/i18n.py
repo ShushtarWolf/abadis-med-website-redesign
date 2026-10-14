@@ -122,46 +122,50 @@ LANGS = {
 # (key, href, label, children) where children is a list of (key, href, label).
 # About-group children match live abadis-med.com (آشنایی با ما mega / related pages).
 NAV = {
+    # Identical structure in fa/en/ar (Alireza review): about-group holds customers + dealers;
+    # jobs merged into careers; calculator only on home + footer.
     'fa': [
         ('about', 'about/', 'آشنایی با ما', [
             ('about', 'about/', 'درباره ما'),
+            ('customers', 'customers/', 'مشتریان ما'),
+            ('dealers', 'dealers/', 'لیست نمایندگان'),
             ('sdgs', 'sdgs/', 'توسعه پایدار'),
-            ('jobs', 'jobs/', 'موقعیت های شغلی'),
-            ('careers', 'careers/', 'فرصت های همکاری'),
+            ('careers', 'careers/', 'فرصت‌های همکاری'),
         ]),
         ('products', 'products/', 'محصولات'),
         ('news', 'news/', 'آخرین اخبار'),
-        ('dealers', 'dealers/', 'لیست نمایندگان'),
         ('articles', 'articles/', 'مقالات'),
         ('csr', 'csr/', 'مسئولیت اجتماعی'),
         ('contact', 'contact/', 'ارتباط با ما'),
-        ('calculator', 'calculator/', 'محاسبه‌گر'),
     ],
     'en': [
         ('about', 'about-us/', 'About us', [
             ('about', 'about-us/', 'About us'),
+            ('customers', 'our-customers/', 'Our customers'),
+            ('dealers', 'representatives/', 'Representatives'),
             ('sdgs', 'sdgs/', 'SDGs'),
-            ('collab', 'collaboration-opportunities/', 'Collaboration'),
+            ('careers', 'collaboration-opportunities/', 'Collaboration opportunities'),
         ]),
         ('products', 'products/', 'Products'),
         ('news', 'latest-news/', 'News'),
-        ('dealers', 'representatives/', 'Representatives'),
+        ('articles', 'blog/', 'Articles'),
         ('csr', 'csr/', 'Social Responsibility'),
-        ('articles', 'blog/', 'Blog'),
         ('contact', 'contact-us/', 'Contact Us'),
-        ('calculator', 'calculator/', 'Calculator'),
     ],
     'ar': [
-        ('about', 'من-نحن/', 'من نحن'),
+        # '~' = path from the site root (no Arabic URL on the live site; links to the FA page).
+        ('about', 'من-نحن/', 'من نحن', [
+            ('about', 'من-نحن/', 'من نحن'),
+            ('customers', 'customers/', 'عملاؤنا'),
+            ('dealers', 'قائمة-الممثلين/', 'قائمة الممثلين'),
+            ('sdgs', '~sdgs/', 'التنمية المستدامة'),
+            ('careers', '~careers/', 'فرص التعاون'),
+        ]),
         ('products', 'منتجات/', 'منتجات'),
         ('news', 'الاخبار/', 'الاخبار'),
-        ('dealers', 'قائمة-الممثلين/', 'قائمة الممثلين'),
-        # '~' = path from the site root (this page has no Arabic URL; link to the FA page).
+        ('articles', '~articles/', 'المقالات'),
         ('csr', '~csr/', 'المسؤولية الاجتماعية'),
         ('contact', 'اتصل-بنا/', 'اتصل بنا'),
-        ('calculator', 'الحوسبة/', 'الحوسبة'),
-        ('faq', 'پرسش-های-متداول/', 'پرسش های متداول'),
-        ('install', 'دليل-التركيب/', 'دليل التركيب'),
     ],
 }
 
@@ -192,8 +196,7 @@ SECONDARY = {
         ('install', 'install-guide/', 'راهنمای نصب'),
         ('faq', 'faq/', 'پرسش های متداول'),
         ('sdgs', 'sdgs/', 'توسعه پایدار'),
-        ('careers', 'careers/', 'فرصت های همکاری'),
-        ('jobs', 'jobs/', 'موقعیت های شغلی'),
+        ('calculator', 'calculator/', 'محاسبه‌گر صرفه‌جویی'),
         ('zagros', 'csr/', 'نجات زاگرس'),
     ],
     'en': [
@@ -201,11 +204,13 @@ SECONDARY = {
         ('downloads', 'center-download/', 'Download Center'),
         ('install', 'installation-manual/', 'Installation Manual'),
         ('faq', 'faqs/', 'FAQs'),
-        ('collab', 'collaboration-opportunities/', 'Collaboration'),
-        ('sdgs', 'sdgs/', 'SDGs'),
+        ('calculator', 'calculator/', 'Savings calculator'),
     ],
     'ar': [
         ('downloads', 'مركز-التنزيل/', 'مركز التنزيل'),
+        ('faq', 'پرسش-های-متداول/', 'پرسش های متداول'),
+        ('install', 'دليل-التركيب/', 'دليل التركيب'),
+        ('calculator', 'الحوسبة/', 'حاسبة التوفير'),
         ('products_other', 'منتجات-اخری/', 'منتجات اخری'),
         ('suction', 'كيس-الشفط/', 'كيس الشفط'),
     ],

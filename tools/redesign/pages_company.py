@@ -389,32 +389,58 @@ def _list_field(title, prefix, cols, required=True, note=''):
         <button type="button" class="btn btn-ghost list-add" data-list-add>افزودن ردیف</button>
       </div>'''
 
+TODAY_J = '1405/07/22'   # build date (Jalali) for active/expired badges
+
+def _active(j):
+    return j['exp'] >= TODAY_J
+
+CAREERS_ART = '''<svg class="careers-art" viewBox="0 0 320 220" role="img" aria-label="تیم آبادیس">
+  <defs><linearGradient id="cg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0e7475"/><stop offset="1" stop-color="#015F61"/></linearGradient></defs>
+  <rect x="18" y="26" width="284" height="170" rx="26" fill="url(#cg)" opacity=".12"/>
+  <g fill="none" stroke="#066163" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="112" y="92" width="96" height="70" rx="12" fill="#e8f3f3"/>
+    <path d="M140 92v-12a8 8 0 0 1 8-8h24a8 8 0 0 1 8 8v12"/><path d="M112 120h96"/><circle cx="160" cy="122" r="6" fill="#066163"/>
+  </g>
+  <g fill="#087673"><circle cx="66" cy="96" r="18"/><path d="M36 160c4-24 18-36 30-36s26 12 30 36z"/>
+    <circle cx="254" cy="96" r="18"/><path d="M224 160c4-24 18-36 30-36s26 12 30 36z"/></g>
+  <g stroke="#0e7475" stroke-width="3" stroke-dasharray="4 7" fill="none"><path d="M90 104q35-34 70-28"/><path d="M230 104q-35-34-70-28"/></g>
+</svg>'''
+
 def _job_cards(p_jobs_prefix, jobs):
-    """Job listing cards (shared by فرصت‌های همکاری and موقعیت‌های شغلی)."""
-    return ''.join(
-        f'''<div class="card job reveal"><h3>{esc(j["title"])}</h3>'''
-        f'''<span class="dates">تاریخ انتشار: {fa(j["pub"])} · تاریخ انقضاء: {fa(j["exp"])}</span>'''
-        f'''<span class="badge-exp">منقضی شده</span>'''
-        f'''<a class="more-link" href="{p_jobs_prefix}{JOB_SLUGS[j["title"]]}/">مشاهده موقعیت ←</a></div>'''
-        for j in jobs
-    )
+    """Fixed job-post card template: title, status badge, dates, link."""
+    out = []
+    for j in jobs:
+        act = _active(j)
+        badge = '<span class="badge-act">فعال</span>' if act else '<span class="badge-exp">منقضی شده</span>'
+        out.append(
+            f'''<article class="card job{' job--active' if act else ''} reveal"><div class="job-top"><h3>{esc(j["title"])}</h3>{badge}</div>'''
+            f'''<span class="dates">تاریخ انتشار: {fa(j["pub"])} · تاریخ انقضاء: {fa(j["exp"])}</span>'''
+            f'''<a class="more-link" href="{p_jobs_prefix}{JOB_SLUGS[j["title"]]}/">مشاهده موقعیت ←</a></article>''')
+    return ''.join(out)
+
+
+def _job_sections(h):
+    """Split a post into the fixed template sections (heading lines that end in ':')."""
+    parts = re.split(r'<p>\s*([^<]{2,40}?)\s*[:：]\s*</p>', h)
+    if len(parts) < 3:
+        return f'<div class="job-sec prose">{h}</div>'
+    out = [f'<div class="job-sec prose">{parts[0]}</div>'] if strip_tags(parts[0]).strip() else []
+    for i in range(1, len(parts), 2):
+        body = parts[i + 1]
+        if '<li' not in body:   # one requirement per <p> → list
+            items = re.findall(r'<p>(.*?)</p>', body, re.S)
+            body = '<ul>' + ''.join(f'<li>{x}</li>' for x in items) + '</ul>' if items else body
+        out.append(f'<section class="job-sec"><h2>{esc(parts[i])}</h2><div class="prose">{body}</div></section>')
+    return ''.join(out)
 
 
 def jobs_page(write):
-    """FA موقعیت‌های شغلی — standalone listings page (old /موقعیت-های-شغلی/)."""
-    jobs = load('jobs.json')
-    p = '../'
-    # Detail pages live under careers/jobs/<slug>/
-    cards = _job_cards('../careers/jobs/', jobs)
-    main = f'''{page_hero(p, [('موقعیت های شغلی', None)], 'موقعیت های شغلی', 'جای شما در آبادیس خالیست...')}
-  <section class="section" id="jobs"><div class="wrap">
-    <div class="grid g-3">{cards}</div>
-    <p class="reveal" style="margin-top:28px;text-align:center">
-      <a class="btn btn-primary" href="../careers/#apply">ثبت درخواست همکاری</a>
-    </p>
-  </div></section>'''
-    write('jobs/index.html', page(p, 'jobs', 'موقعیت های شغلی',
-          'موقعیت های شغلی شرکت دانش‌بنیان مخازن طبی آبادیس', main, fa_path='jobs/'))
+    """Old موقعیت‌های شغلی URL → merged into فرصت‌های همکاری (static redirect stub)."""
+    html = ('''<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8">
+<title>فرصت‌های همکاری — مخازن طبی آبادیس</title><meta name="robots" content="noindex">
+<link rel="canonical" href="https://abadis-med.com/careers/"><meta http-equiv="refresh" content="0; url=../careers/#jobs">
+</head><body><p><a href="../careers/#jobs">فرصت‌های همکاری</a></p><script>location.replace('../careers/#jobs')</script></body></html>''')
+    write('jobs/index.html', html)
 
 
 def careers(write):
@@ -438,9 +464,9 @@ def careers(write):
                           'چنانچه در حال حاضر مشاغل دیگری دارید نسبت به تکمیل این بخش اقدام نمایید.')
     computer = _list_field('آشنایی با کامپیوتر', 'آشنایی با کامپیوتر', COMPUTER_COLS, True,
                            'برای اضافه کردن ردیف روی «افزودن ردیف» کلیک کنید.')
-    main = f'''{page_hero(p, [('فرصت های همکاری', None)], 'فرصت های همکاری', 'جای شما در آبادیس خالیست...')}
+    main = f'''{page_hero(p, [('فرصت‌های همکاری', None)], 'فرصت‌های همکاری', 'جای شما در آبادیس خالیست...', CAREERS_ART)}
   <section class="section" id="jobs"><div class="wrap">
-    <h2 class="reveal" style="margin-bottom:18px">موقعیت های شغلی</h2>
+    <h2 class="reveal" style="margin-bottom:18px">موقعیت‌های شغلی</h2>
     <div class="grid g-3">{cards}</div>
   </div></section>
   <section class="section section--alt" id="apply"><div class="wrap" style="max-width:860px">
@@ -491,16 +517,22 @@ def careers(write):
       </form>
     </div>
   </div></section>'''
-    write('careers/index.html', page(p, 'careers', 'فرصت های همکاری', 'فرصت های همکاری و موقعیت های شغلی شرکت دانش‌بنیان مخازن طبی آبادیس', main, fa_path='careers/'))
+    write('careers/index.html', page(p, 'careers', 'فرصت‌های همکاری', 'فرصت های همکاری و موقعیت های شغلی شرکت دانش‌بنیان مخازن طبی آبادیس', main, fa_path='careers/'))
     p = '../../../'
     for j in jobs:
         slug = JOB_SLUGS[j['title']]
-        meta = f'<div class="meta"><span>تاریخ انتشار: {fa(j["pub"])}</span><span>تاریخ انقضاء آگهی: {fa(j["exp"])}</span><span>منقضی شده</span></div>'
-        main = f'''{page_hero(p, [('فرصت های همکاری', '../../'), (j['title'], None)], esc(j['title']), '', meta)}
-  <section class="section"><div class="wrap article">
-    <div class="card prose reveal">{rewrite_html(j['html'], p)}</div>
-    <div class="cta-actions" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:22px"><a class="btn btn-primary" href="../../#apply">ثبت درخواست</a><a class="btn btn-ghost" href="../../#jobs">مشاهده کلیه موقعیت های شغلی</a></div>
-  </div></section>'''
+        act = _active(j)
+        st = 'فعال' if act else 'منقضی شده'
+        meta = f'<div class="meta"><span>تاریخ انتشار: {fa(j["pub"])}</span><span>تاریخ انقضاء آگهی: {fa(j["exp"])}</span><span class="{"badge-act" if act else "badge-exp"}">{st}</span></div>'
+        facts = (f'<aside class="job-facts card"><dl><dt>عنوان شغلی</dt><dd>{esc(j["title"])}</dd><dt>محل کار</dt><dd>مخازن طبی آبادیس</dd>'
+                 f'<dt>وضعیت</dt><dd>{st}</dd><dt>مهلت</dt><dd>{fa(j["exp"])}</dd></dl>'
+                 f'<a class="btn btn-primary" href="../../#apply">ثبت درخواست</a></aside>')
+        main = f'''{page_hero(p, [('فرصت‌های همکاری', '../../'), (j['title'], None)], esc(j['title']), '', meta)}
+  <section class="section"><div class="wrap job-layout">
+    <div class="job-body card reveal">{_job_sections(rewrite_html(j['html'], p))}</div>
+    {facts}
+  </div>
+  <div class="wrap"><div class="cta-actions" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:22px"><a class="btn btn-primary" href="../../#apply">ثبت درخواست</a><a class="btn btn-ghost" href="../../#jobs">مشاهده کلیه موقعیت‌های شغلی</a></div></div></section>'''
         write(f'careers/jobs/{slug}/index.html', page(p, 'careers', j['title'], strip_tags(j['html'])[:150], main))
 
 from lib import JOB_MAP
