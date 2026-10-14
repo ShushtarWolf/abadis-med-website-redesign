@@ -139,11 +139,9 @@ def why_section():
         <p style="margin-top:12px">{esc(FACTORY_LEAD)}</p>
         <ul class="checks" style="margin-top:22px">{checks}</ul>
       </div>
-      <div class="media-frame reveal"><div class="mosaic" data-tile="10" style="background-image:url('assets/media/or-poster.jpg')" aria-hidden="true">
-      <video muted loop playsinline autoplay preload="auto" poster="assets/media/or-poster.jpg" disablepictureinpicture disableremoteplayback tabindex="-1">
+      <div class="media-frame reveal"><video class="media-video" aria-hidden="true" muted loop playsinline autoplay preload="auto" poster="assets/media/or-poster.jpg" disablepictureinpicture disableremoteplayback tabindex="-1">
         <source src="assets/media/or-mosaic.mp4" type="video/mp4">
-      </video>
-    </div></div>
+      </video></div>
     </div>
     <div class="wrap" style="margin-top:28px">
       <div class="grid g-3">

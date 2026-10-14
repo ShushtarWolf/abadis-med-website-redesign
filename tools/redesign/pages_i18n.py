@@ -2,7 +2,7 @@
 from __future__ import annotations
 import json, pathlib, re, urllib.parse as u
 from lib import esc, best_img, SITE
-from layout import page, mosaic_hero, page_hero
+from layout import page, page_hero
 import i18n as i18n_mod
 from i18n import (
     LANGS, NAV, nav_flat, clean_html, strip_tags, load_map, GAPS, DATA, meta_description,
@@ -120,7 +120,7 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
     can = root + site_path
     # home
     if site_path == '':
-        main = f'''{mosaic_hero(p, [], chip, esc(title), esc(desc), label=chip, lang=lang)}
+        main = f'''{page_hero(p, [], esc(title), esc(desc), lang=lang)}
   <section class="section"><div class="wrap prose reveal">{body}</div></section>'''
     else:
         trail = [(chip, None)]

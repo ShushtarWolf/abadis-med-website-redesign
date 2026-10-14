@@ -146,8 +146,16 @@
      grid (one pixel per tile) and redrawn as crisp square tiles with a
      thin gap. On load the tiles resolve from coarse to fine; while the
      hero scrolls away they grow coarse again. Scroll-driven only. */
+  /* Square-tile rendering is retired site-wide (Siamak, Oct 2026): any leftover .mosaic host just
+     plays its video plainly. Flip to true to bring the tiles back. */
+  const MOSAIC_TILES = false;
   function mosaic(host) {
     const video = host.querySelector('video');
+    if (!MOSAIC_TILES) {
+      host.classList.add('no-canvas');
+      if (video) { if (reduce) { video.removeAttribute('autoplay'); video.pause(); } else video.play().catch(() => {}); }
+      return;
+    }
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d', { alpha: false });
     if (!ctx || !video) { host.classList.add('no-canvas'); return; }
