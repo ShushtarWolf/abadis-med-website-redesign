@@ -332,29 +332,181 @@ def customers_section():
   </section>'''
 
 
+
+# ---------------------------------------------------------------- Alireza review (Oct 2026) home
+# Live abadis-med.com home, re-read 2026-10-14 (verbatim)
+LIVE_ABOUT = ('شرکت دانش‌بنیان مخازن طبی آبادیس با تکیه بر دانش روز و ارائه محصولات و راهکارهای نوآورانه در مدیریت '
+              'سیالات و زباله‌های عفونی بیمارستانی، گام‌های موثری در راستای کنترل عفونت‌های بیمارستانی و دستیابی به توسعه پایدار '
+              'برداشته است. هدف ما اثرگذاری واقعی در بهبود سلامت مراکز درمانی و حفاظت از محیط زیست است.')
+LIVE_VALUES = [('کاهش هزینه‌ها', 'کاهش هزینه‌های مربوط به مواد شست‌و‌شو، مصرف آب، برق و منابع انسانی'),
+               ('مدیریت زباله‌های بیمارستانی و عفونی', 'باعث جمع‌آوری بهتر زباله‌های مایع و عفونی می‌گردد.'),
+               ('بازیافت پذیر', 'باعث کاهش حجم زباله‌های بیمارستانی و حفظ محیط‌زیست می‌گردد.'),
+               ('استفاده آسان', 'حذف فعالیت‌های مربوط به شست‌و‌شوی مخازن و استفاده راحت برای جمع‌آوری ضایعات حین عمل')]
+SLOGAN = ['ما به اندازه یک سرانگشت اثر می‌گذاریم،', 'به شما', 'به طبیعت', 'به جهان']
+import hashlib as _hl
+_UP = 'https://abadis-med.com/wp-content/uploads/'
+MEMBERSHIP_URLS = [_UP + '2023/03/' + x for x in ('Template_0000_1-2-copy.webp', 'Template_0000_logo2-copy.webp', 'Template_0000_main-logo-copy.webp',
+                   'Template_0000s_0000_logo_1-1-1-copy.webp', 'Template_0001_ISCC1-copy.webp', 'Template_0004_2-copy.webp', 'Template_0006_download-copy.webp')] + \
+                  [_UP + '2023/12/-صنعت-و-معدن-جوانان-ایران-e1702381162586.png', _UP + '2023/12/مجمع-خیرین-صنف-تجهیزات-پزشکی.png']
+MEMBERSHIPS = [_hl.md5(x.encode()).hexdigest()[:10] for x in MEMBERSHIP_URLS]   # downloaded by /tmp/dl.py naming (md5[:10])
+
+
+def _live(name):
+    return f'assets/img/live/{name}.webp'
+
+
+def hero_v2():
+    chips = ['کیسه ساکشن ۱، ۲ و ۳ لیتری', 'فیلتر هیدروفوبیک، دوئال و مکانیکی', 'پودر ژل‌کننده', 'IMED · ISO · CE']
+    chips_h = ''.join(f'<li>{esc(c)}</li>' for c in chips)
+    return f'''  <section class="hx" data-tone="dark" id="intro" aria-label="کیسه ساکشن یکبار مصرف آبادیس">
+    <div class="hx-bg" aria-hidden="true"><span class="hx-grid"></span><span class="hx-ring hx-ring--a"></span><span class="hx-ring hx-ring--b"></span><span class="hx-scan"></span></div>
+    <div class="wrap hx-inner">
+      <div class="hx-copy">
+        <p class="hx-kicker">شرکت دانش‌بنیان مخازن طبی آبادیس</p>
+        <h1>{esc(HERO_H1)}</h1>
+        <p class="hx-sub">{esc(HERO_SUB)}</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="{esc(CATALOGUE)}" target="_blank" rel="noopener" data-track="catalogue_download" data-track-label="home_hero_catalogue">دریافت کاتالوگ</a>
+          <a class="btn btn-ghost" href="export/#quote" data-track="contact_click" data-track-label="home_hero_quote">درخواست قیمت / همکاری صادراتی</a>
+        </div>
+      </div>
+      <figure class="hx-product">
+        <span class="hx-glow" aria-hidden="true"></span>
+        <img src="assets/img/p/hero-bags.webp" alt="کیسه ساکشن یکبار مصرف ۱ و ۲ لیتری آبادیس" width="555" height="554" decoding="async" fetchpriority="high">
+        <ul class="hx-chips">{chips_h}</ul>
+      </figure>
+    </div>
+  </section>'''
+
+
+def about_v2():
+    goals = ''.join(f'<li>{esc(g)}</li>' for g in GOALS)
+    return f'''  <section class="section" id="about">
+    <div class="wrap split">
+      <div class="reveal">
+        <p class="eyebrow">آشنایی با ما</p>
+        <h2>درباره مجموعه دانش بنیان آبادیس</h2>
+        <p style="margin-top:12px;text-align:justify">{esc(LIVE_ABOUT)}</p>
+        <h3 style="font-weight:900;font-size:1.1rem;margin-top:18px">اهداف ما:</h3>
+        <ul class="goals">{goals}</ul>
+        <p style="margin-top:18px"><a class="more-link" href="about/">بیشتر بخوانید ←</a></p>
+      </div>
+      <figure class="video-slot reveal" data-video-slot="home-about">
+        <img src="{_live('86201b7b17')}" alt="کارخانه دانش‌بنیان تجهیزات پزشکی آبادیس" width="1024" height="576" loading="lazy" decoding="async">
+        <figcaption>جای ویدیوی معرفی آبادیس (فایل ویدیو در انتظار)</figcaption>
+      </figure>
+    </div>
+  </section>'''
+
+
+def impact_section():
+    lines = ''.join(f'<span class="slogan-line" style="--i:{i}">{esc(t)}</span>' for i, t in enumerate(SLOGAN))
+    return f'''  <section class="section deep impact" id="impact">
+    <div class="wrap impact-inner">
+      <div class="impact-slogan reveal">
+        <img class="impact-mark" src="{_live('312a8bc365')}" alt="" width="1024" height="202" aria-hidden="true" loading="lazy">
+        <p class="slogan" aria-label="{esc(' '.join(SLOGAN))}">{lines}</p>
+      </div>
+      <div class="impact-counter reveal" data-impact-counter data-start="2026-03-21T00:00:00+03:30" data-per-year="74400000">
+        <p class="eyebrow">اثر آبادیس، همین حالا</p>
+        <strong class="impact-num" aria-live="off">۰</strong>
+        <span class="impact-unit">لیتر آب صرفه‌جویی‌شده از ابتدای سال ۱۴۰۵ (تخمینی)</span>
+        <p class="impact-note">برآورد: ظرفیت تولید سالانه ۵ میلیون کیسه × ۱٫۶ × ۹٫۳ لیتر (ضرایب محاسبه‌گر سایت). <span class="ph-data">[مبنای شمارنده در انتظار تأیید شرکت]</span></p>
+      </div>
+    </div>
+  </section>'''
+
+
+def why_v2():
+    checks = ''.join(f'<li>{esc(c)}</li>' for c in WHY_CHECKS)
+    vals = ''.join(f'<div class="card value reveal"><h3>{esc(t)}</h3><p>{esc(d)}</p></div>' for t, d in LIVE_VALUES)
+    return f'''  <section class="section section--alt" id="why">
+    <div class="wrap">
+      <div class="section-head reveal"><p class="eyebrow">چرا آبادیس؟</p><h2>ارزش افزوده‌های کیسه ساکشن یکبار مصرف</h2></div>
+      <div class="grid g-4 values">{vals}</div>
+      <div class="split" style="margin-top:28px">
+        <div class="reveal"><p>{esc(FACTORY_LEAD)}</p></div>
+        <ul class="checks reveal">{checks}</ul>
+      </div>
+    </div>
+  </section>'''
+
+
+def products_v2():
+    import pages_products
+    from lib import best_img
+    cards = []
+    for slug, path, title, im, fb in pages_products.FAMILIES:
+        r = best_img(im, 480) if im else None
+        src = r['src'] if r else fb
+        ph = f'<div class="ph"><img src="{src}" alt="{esc(title)} آبادیس" loading="lazy" decoding="async"></div>' if src else '<div class="ph txt">آبادیس</div>'
+        cards.append(f'<a class="mini-card reveal" href="products/{slug}/">{ph}<strong>{esc(title)}</strong></a>')
+    return f'''  <section class="section" id="products">
+    <div class="wrap">
+      <div class="section-head reveal"><p class="eyebrow">محصولات</p><h2>محصولات آبادیس</h2>
+        <p><a class="more-link" style="margin:0" href="products/">همهٔ محصولات ←</a></p></div>
+      <div class="mini-grid">{''.join(cards)}</div>
+    </div>
+  </section>'''
+
+
+def quick_links():
+    return '''  <section class="section quick" id="quick" style="padding-block:28px">
+    <div class="wrap quick-row">
+      <a class="quick-btn" href="calculator/"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M8 7h8M8 11h2M12 11h2M16 11h0M8 15h2M12 15h2M8 18h2M12 18h4"/></svg>محاسبه‌گر صرفه‌جویی</a>
+      <a class="quick-btn" href="csr/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20l6-10 4 6 3-4 5 8z"/><path d="M15 6c0-2 2-3 3-3 0 2-1 3-3 3z"/></svg>نجات زاگرس</a>
+    </div>
+  </section>'''
+
+
+def posts_v2(cat):
+    pages_posts.prepare()
+    items = [x for x in pages_posts.POSTS if x['cat'] == cat][:3]
+    cards = ''.join(pages_posts.card('', x, from_list=False) for x in items)
+    label = 'آخرین اخبار آبادیس' if cat == 'news' else 'مقالات آبادیس'
+    more = 'news/' if cat == 'news' else 'articles/'
+    alt = ' section--alt' if cat == 'articles' else ''
+    return f'''  <section class="section{alt}" id="{cat}">
+    <div class="wrap">
+      <div class="section-head reveal"><p class="eyebrow">{'اخبار' if cat == 'news' else 'مقالات'}</p><h2>{label}</h2>
+        <p><a class="more-link" style="margin:0" href="{more}">مشاهده همه ←</a></p></div>
+      <div class="post-grid">{cards}</div>
+    </div>
+  </section>'''
+
+
+def memberships_section():
+    import pathlib
+    from lib import SITE
+    logos = ''.join(f'<li><img src="{_live(n)}" alt="عضویت آبادیس" loading="lazy" decoding="async"></li>'
+                    for n in MEMBERSHIPS if (SITE / _live(n)).exists())
+    return f'''  <section class="section" id="memberships">
+    <div class="wrap">
+      <div class="section-head reveal"><p class="eyebrow">عضویت‌ها</p><h2>عضویت ها</h2></div>
+      <ul class="member-logos reveal">{logos}</ul>
+    </div>
+  </section>'''
+
+
 def build(write):
     pages_posts.prepare()
-    # Brief order: hero → trust → uses & specs → calculator → customers & experiences
-    #              → technical documents → CSR (Zagros) & news
+    # Alireza review order (Oct 2026): hero → about (+video slot) → impact (slogan + live counter) → why →
+    # products → small calculator / Zagros buttons → news → articles → memberships → customers (UNDECIDED, kept)
     main = '\n'.join([
-        or_hero('assets/media/'),
-        trust_section(),
-        why_section(),
-        uses_specs_section(),
-        pages_dial.home_section(),
+        hero_v2(),
+        about_v2(),
+        impact_section(),
+        why_v2(),
+        products_v2(),
+        quick_links(),
+        posts_v2('news'),
+        posts_v2('articles'),
+        memberships_section(),
         customers_section(),
-        experiences_teaser(),
-        docs_section(),
-        about_section(),
-        zagros_hero('csr/img/hero'),
-        news_section(),
-        articles_section(),
     ])
     extra_head = '''<link rel="preload" as="image" href="assets/img/p/hero-bags.webp" type="image/webp">
-<link rel="stylesheet" href="csr/zagros-hero.css">
-<link rel="stylesheet" href="assets/css/home.css">
-<link rel="stylesheet" href="assets/dial/dial.css">'''
-    scripts = '<script src="csr/zagros-hero.js" defer></script>\n' + pages_dial.scripts('')
+<link rel="stylesheet" href="assets/css/home.css">'''
+    scripts = '<script src="assets/js/home-impact.js" defer></script>\n'
     html = page(
         '', None, HOME_TITLE, HOME_DESC, main,
         fa_path='', canonical_path='',
