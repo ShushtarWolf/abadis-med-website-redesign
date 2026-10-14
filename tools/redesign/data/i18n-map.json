@@ -102,7 +102,7 @@
   "customers/": {
     "fa": "customers/",
     "en": "en/our-customers/",
-    "ar": null
+    "ar": "arabic/customers/"
   },
   "careers/": {
     "fa": "careers/",

@@ -329,6 +329,34 @@ def contact(write):
     else: s = s.replace('</main>', block + '</main>', 1)
     write('contact/index.html', s)
 
+CUST_T = {
+ 'fa': dict(h='همه مراکز درمانی همراه آبادیس', s='جستجوی نام مرکز درمانی...', c='مرکز درمانی', e='موردی یافت نشد.', note=''),
+ 'en': dict(h='All healthcare centres working with Abadis', s='Search a centre name (Persian)...', c='healthcare centres', e='No match found.', note='Centre names are listed in Persian, as recorded by Abadis.'),
+ 'ar': dict(h='جميع المراكز الصحية المتعاونة مع آباديس', s='ابحث عن اسم المركز...', c='مركزاً صحياً', e='لا توجد نتائج.', note='تُعرض أسماء المراكز بالفارسية كما سجّلتها آباديس.'),
+}
+def customers_all(lang='fa'):
+    """Searchable A–Z list of every centre in site/zagros-names/names.json (same list on fa/en/ar)."""
+    import json
+    T = CUST_T[lang]
+    names = json.loads((SITE / 'zagros-names/names.json').read_text(encoding='utf-8'))
+    names = sorted(dict.fromkeys(n.strip() for n in names if n.strip()), key=lambda n: n.replace('آ', 'ا'))
+    groups = {}
+    for n in names: groups.setdefault(n[0].replace('آ', 'ا'), []).append(n)
+    body = ''.join(f'<div class="cust-letter"><h3 aria-hidden="true">{esc(k)}</h3><ul>{"".join(f"<li>{esc(n)}</li>" for n in v)}</ul></div>' for k, v in groups.items())
+    num = _num(lang, len(names))
+    note = f'<p class="prov-note">{esc(T["note"])}</p>' if T['note'] else ''
+    return f'''<section class="section" id="all-customers"><div class="wrap">
+    <h2 class="reveal">{esc(T["h"])}</h2>{note}
+    <div class="list-tools"><input class="search" id="custAllQ" type="search" placeholder="{esc(T["s"])}" aria-label="{esc(T["s"])}"><span class="count" id="custAllN" data-total="{len(names)}" aria-live="polite">{num} {esc(T["c"])}</span></div>
+    <div class="cust-all" id="custAll" lang="fa" dir="rtl">{body}</div>
+    <p class="empty-msg" id="custAllE" hidden>{esc(T["e"])}</p>
+  </div></section>
+  <script>(function(){{var q=document.getElementById('custAllQ'),n=document.getElementById('custAllN'),e=document.getElementById('custAllE'),L=document.querySelectorAll('#custAll li'),G=document.querySelectorAll('#custAll .cust-letter'),lab=n.textContent.replace(/^[^ ]+ /,''),lang=document.documentElement.lang;
+  function norm(s){{return s.replace(/[يى]/g,'ی').replace(/ك/g,'ک').replace(/[أإآ]/g,'ا').replace(/[\u200c\s]+/g,' ').trim().toLowerCase();}}
+  L.forEach(function(li){{li.dataset.n=norm(li.textContent);}});
+  function fmt(x){{return lang==='en'?String(x):x.toLocaleString(lang==='ar'?'ar-EG':'fa-IR',{{useGrouping:false}});}}
+  q.addEventListener('input',function(){{var v=norm(q.value),c=0;L.forEach(function(li){{var h=v&&li.dataset.n.indexOf(v)<0;li.hidden=h;if(!h)c++;}});G.forEach(function(g){{g.hidden=!g.querySelector('li:not([hidden])');}});n.textContent=fmt(c)+' '+lab;e.hidden=c>0;}});}})();</script>'''
+
 # ------------------------------------------------------------------ customers
 def customers(write):
     p = '../'; bl = B('/مشتریان-ما/')
@@ -348,7 +376,8 @@ def customers(write):
     <div class="list-tools"><input class="search" type="search" placeholder="جستجوی نام مرکز درمانی..." aria-label="جستجوی مشتریان" data-filter="#custGrid"><span class="count" data-count-for="#custGrid">{fa(len(items))} مرکز درمانی</span></div>
     <div class="logo-grid" id="custGrid" data-paged="30">{''.join(cards)}</div>
     <p class="empty-msg" hidden>موردی یافت نشد.</p>
-  </div></section>'''
+  </div></section>
+  {customers_all('fa')}'''
     write('customers/index.html', page(p, 'customers', 'مشتریان ما', head, main))
     return len(items), nimg
 

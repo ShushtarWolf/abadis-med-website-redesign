@@ -1274,3 +1274,9 @@ html[lang="en"] input, html[lang="en"] select, html[lang="en"] textarea, html[la
 .nd-timeline p { margin: 0 0 6px; text-align: justify; }
 .nd-tail { margin-top: 10px; }
 @media (max-width: 520px) { .nd-timeline li { grid-template-columns: 1fr; gap: 4px; } }
+.cust-all { columns: 3 220px; column-gap: 28px; margin-top: 16px; }
+.cust-letter { break-inside: avoid; margin-bottom: 14px; }
+.cust-letter h3 { font-size: 1.1rem; color: #0e7475; margin: 0 0 6px; border-bottom: 1px solid color-mix(in srgb, #0e7475 30%, transparent); }
+.cust-letter ul { list-style: none; margin: 0; padding: 0; }
+.cust-letter li { padding: 3px 0; font-size: .95rem; }
+@media (max-width: 520px) { .cust-all { columns: 2 140px; column-gap: 16px; } .cust-letter li { font-size: .88rem; } }

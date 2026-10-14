@@ -171,6 +171,12 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
         title = {'en': 'Representatives', 'ar': 'قائمة الممثلين'}[lang]
         desc = {'en': 'Abadis Med sales representatives across the provinces of Iran: map, contacts and addresses.',
                 'ar': 'ممثلو مبيعات آباديس في محافظات إيران: الخريطة وأرقام الاتصال والعناوين.'}[lang]
+    after = ''
+    if site_path in ('our-customers/', 'customers/'):
+        from pages_company import customers_all
+        after = customers_all(lang)
+        if lang == 'ar':
+            title = 'عملاؤنا'; desc = 'المراكز الصحية التي تستخدم منتجات آباديس الطبية في أنحاء إيران.'
     fa_path = _fa_for(site_path, lang)
     can = root + site_path
     # home
@@ -180,7 +186,7 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
     else:
         trail = [(chip, None)]
         main = f'''{page_hero(p, trail, esc(title), esc(desc), lang=lang)}
-  <section class="section"><div class="wrap{'' if 'id="dealerList"' in body else ' prose reveal'}">{body}</div></section>'''
+  <section class="section"><div class="wrap{'' if 'id="dealerList"' in body else ' prose reveal'}">{body}</div></section>{after}'''
     html = page(p, cur_key, title, desc, main, lang=lang, fa_path=fa_path, canonical_path=can, scripts=extra_js)
     write(rel if rel.endswith('.html') else rel + 'index.html', html)
     return rel
@@ -301,6 +307,8 @@ def build_lang(write, lang: str):
         # skip if already covered
         gaps.append(f'{lang}:unmapped:{slug}')
 
+    if lang == 'ar':  # no live AR customers page: same full list as fa/en
+        built.append(render_content_page(write, 'ar', 'customers/', {'title': {'rendered': 'عملاؤنا'}, 'content': {'rendered': ''}, 'excerpt': {'rendered': ''}}, 'customers', LANGS['ar']['brand']))
     build_posts(write, lang)
     return built, gaps
 
