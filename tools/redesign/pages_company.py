@@ -8,56 +8,101 @@ def B(path): return PAGES[path]['blocks']
 def ext_attr(ext): return ' target="_blank" rel="noopener"' if ext else ''
 
 # ------------------------------------------------------------------ about
+BAG_ICON = '''<svg class="bag-icon" viewBox="0 0 120 160" role="img" aria-label="کیسه ساکشن آبادیس">
+  <defs><linearGradient id="bgi" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8f3f3"/><stop offset="1" stop-color="#c9e6e6"/></linearGradient></defs>
+  <rect x="22" y="38" width="76" height="110" rx="14" fill="url(#bgi)" stroke="#066163" stroke-width="4"/>
+  <path class="bag-fluid" d="M26 112q17-8 34 0t34 0V134a10 10 0 0 1-10 10H36a10 10 0 0 1-10-10z" fill="#0e7475" opacity=".55"/>
+  <rect x="14" y="22" width="92" height="20" rx="8" fill="#066163"/>
+  <rect x="30" y="8" width="16" height="16" rx="4" fill="#087673"/><rect x="74" y="8" width="16" height="16" rx="4" fill="#087673"/>
+  <path d="M38 60v34M82 60v34" stroke="#05686b" stroke-width="3" stroke-dasharray="3 6" stroke-linecap="round"/>
+  <circle cx="60" cy="78" r="13" fill="none" stroke="#015F61" stroke-width="3"/><path d="M60 70v16M52 78h16" stroke="#015F61" stroke-width="3" stroke-linecap="round"/>
+</svg>'''
+SLOGAN_ABOUT = ['ما به اندازه یک سرانگشت اثر می‌گذاریم،', 'به شما', 'به طبیعت', 'به جهان']   # Abadis-Sign (live)
+TEAM_VIDEOS = {'علیرضا حسنعلی': ('alireza', 'team-member'), 'نوید حسنعلی': ('navid', 'team-member-navid')}
+
+
+def _team_html(p, members, cls):
+    out = []
+    for m in members:
+        img = f'{p}assets/img/live/{m["file"]}.webp'
+        ph = f'<img src="{img}" alt="{esc(m["name"])} — {esc(m["role"])}" loading="lazy" decoding="async">'
+        if m['name'] in TEAM_VIDEOS:   # subtle clip: muted loop autoplay, no controls / play button
+            d, n = TEAM_VIDEOS[m['name']]; v = f'{p}assets/team-videos/{d}/{n}'
+            ph = (f'<video class="team-clip" muted loop playsinline autoplay preload="metadata" disablepictureinpicture disableremoteplayback '
+                  f'poster="{v}-poster.webp" aria-label="{esc(m["name"])}" tabindex="-1"><source src="{v}.webm" type="video/webm"><source src="{v}.mp4" type="video/mp4"></video>')
+        out.append(f'<div class="member"><div class="av">{ph}</div><strong>{esc(m["name"])}</strong><span>{esc(m["role"])}</span></div>')
+    return f'<div class="team-grid {cls}">{"".join(out)}</div>'
+
+
 def about(write):
-    p = '../'; bl = B('/درباره-ما/')
-    intro = bl[2]['html']
-    first, rest = re.match(r'(<p>.*?</p>)(.*)', intro, re.S).groups()
-    hist, commit, goals = [b['html'] for b in bl if b['t'] == 'html'][1:4]
-    liner = picture(p, 'https://abadis-med.com/wp-content/uploads/2022/12/ANIMATED-LINER-BAG-01.png', 'کیسه ساکشن آبادیس', 600, 'liner')
-    whys = ''.join(f'<div class="why">{picture(p, b["img"], "", 160)}<span>{esc(b["title"])}</span></div>' for b in bl if b['t'] == 'box')
-    iso = gallery_link(p, 'https://abadis-med.com/wp-content/uploads/2025/04/ISO.jpg', 'iso', 'گواهینامه ISO', 700, 1600) \
-        or gallery_link(p, 'https://abadis-med.com/wp-content/uploads/2025/01/گواهینامه-ایزو-scaled.jpg', 'iso', 'گواهینامه ISO', 700, 1600)
-    iso_html = f'<div class="cert-single">{iso}</div>' if iso else '<a class="btn btn-ghost" href="https://abadis-med.com/wp-content/uploads/2025/01/گواهینامه-ایزو-scaled.jpg" target="_blank" rel="noopener">مشاهده مجوز ISO</a>'
-    # partners: img, html, btn triplets in section 70f87b0
+    """About page from the LIVE abadis-med.com/درباره-ما/ (data/about_live.json, fetched 2026-10-14).
+    Team order is exactly live: desktop list on desktop, mobile list on mobile (the live site has two)."""
+    p = '../'; d = load('about_live.json'); bl = B('/درباره-ما/')
+    it = d['intro']
+    lead = it[1]
+    blocks = []
+    i = 2
+    while i < len(it):
+        if i + 2 < len(it) and it[i + 1] == ':':
+            blocks.append((it[i], it[i + 2])); i += 3
+        else:
+            i += 1
+    cards = ''.join(f'<div class="card prose reveal"><h3>{esc(t)}</h3><p>{esc(x)}</p></div>' for t, x in blocks)
+    hist_h, hist_p = d['history'][0], d['history'][1]
+    commit = d['commit']; goals = d['goals']
+    commit_h = f'<h3>{esc(commit[0])}</h3><p>{esc(commit[1])}</p><ul>' + ''.join(f'<li>{esc(x)}</li>' for x in commit[2:]) + '</ul>'
+    goals_h = f'<h3>{esc(goals[0])}</h3><p>{esc(goals[1])}</p><ul>' + ''.join(f'<li>{esc(x)}</li>' for x in goals[2:]) + '</ul>'
+    whys = ''.join(f'<li>{esc(x)}</li>' for x in d['why'][1:])
+    from PIL import Image
+    certs = []
+    for n, c in enumerate(d['certs']):
+        f = SITE / f'assets/img/live/{c["file"]}.webp'
+        if not f.exists(): continue
+        w, h = Image.open(f).size
+        src = f'{p}assets/img/live/{c["file"]}.webp'
+        certs.append(f'<a class="cert-tile" href="{src}" data-gallery="certs" data-w="{w}" data-h="{h}" aria-label="نمایش بزرگ‌تر: مجوز و گواهی {n + 1}">'
+                     f'<img src="{src}" width="{w}" height="{h}" alt="مجوز / گواهی‌نامه آبادیس {n + 1}" loading="lazy" decoding="async"></a>')
     pb = [b for b in bl if b.get('sec') == '70f87b0' and b['t'] in ('img', 'html', 'btn')]
     partners = []
-    for i in range(0, len(pb) - 2, 3):
-        im, tx, bt = pb[i:i + 3]
+    for k in range(0, len(pb) - 2, 3):
+        im, tx, bt = pb[k:k + 3]
         logo = picture(p, im['src'], im.get('alt', ''), 600)
         link = f'<a class="more-link" href="{esc(bt["href"])}" target="_blank" rel="noopener">{esc(bt["text"])} ↗</a>' if bt.get('href') else ''
         partners.append(f'<div class="card partner reveal"><div class="logo-box">{logo}</div>{tx["html"]}{link}</div>')
-    members = []
-    # team member videos from abadismedit (assets/team-videos, merged from team-assets-2026-10-06)
-    VIDEOS = {'علیرضا حسنعلی': ('alireza', 'team-member'), 'نوید حسنعلی': ('navid', 'team-member-navid')}
-    for b in [b for b in bl if b['t'] == 'member']:
-        ph = '' if 'abadis-lg-01' in (b['img'] or '') else picture(p, b['img'], b['name'], 400)
-        if b['name'] in VIDEOS:
-            d, n = VIDEOS[b['name']]; v = f'{p}assets/team-videos/{d}/{n}'
-            ph = (f'<video width="522" height="782" autoplay muted playsinline preload="metadata" poster="{v}-poster.webp" aria-label="{esc(b["name"])}">'
-                  f'<source src="{v}.webm" type="video/webm"><source src="{v}.mp4" type="video/mp4"></video>')
-        av = f'<div class="av">{ph}</div>' if ph else f'<div class="av" aria-hidden="true">{esc(b["name"][:1])}</div>'
-        members.append(f'<div class="member">{av}<strong>{esc(b["name"])}</strong><span>{esc(b["role"])}</span></div>')
-    main = f'''{page_hero(p, [('آشنایی با ما', None)], 'آشنایی با <em>آبادیس</em>', strip_tags(first))}
-  <nav class="anchors" aria-label="بخش‌های صفحه"><div class="wrap"><a href="#intro">درباره ما</a><a href="#history">تاریخچه</a><a href="#why">چرا آبادیس؟</a><a href="#iso">گواهینامه ISO</a><a href="#partners">شرکای تجاری</a><a href="#team">تیم اجرایی</a></div></nav>
-  <section class="section" id="intro"><div class="wrap" style="max-width:920px">
-    <h2 class="reveal" style="margin-bottom:18px">درباره ما بیشتر بدانید...</h2>
-    <div class="prose reveal">{rest}</div>
+    slogan = ''.join(f'<span class="slogan-line" style="--i:{n}">{esc(x)}</span>' for n, x in enumerate(SLOGAN_ABOUT))
+    hero = f'''  <section class="page-hero about-hero">
+    <video class="about-hero-video" muted loop playsinline autoplay preload="metadata" poster="{p}assets/media/hero-or-zagros-poster.jpg" aria-hidden="true" tabindex="-1" disablepictureinpicture disableremoteplayback><source src="{p}assets/media/hero-or-zagros.mp4" type="video/mp4"></video>
+    <div class="wrap about-hero-grid">
+      <div>{crumbs_html(p)}
+        <h1>آشنایی با <em>آبادیس</em></h1>
+        <p class="slogan reveal" aria-label="{esc(' '.join(SLOGAN_ABOUT))}">{slogan}</p>
+      </div>
+      <div class="about-hero-icon">{BAG_ICON}</div>
+    </div>
+  </section>'''
+    main = f'''{hero}
+  <nav class="anchors" aria-label="بخش‌های صفحه"><div class="wrap"><a href="#intro">درباره ما</a><a href="#history">تاریخچه</a><a href="#why">چرا آبادیس؟</a><a href="#certs">مجوزها و گواهینامه‌ها</a><a href="#partners">شرکای تجاری</a><a href="#team">تیم اجرایی</a></div></nav>
+  <section class="section" id="intro"><div class="wrap" style="max-width:1000px">
+    <h2 class="reveal" style="margin-bottom:14px">درباره ما بیشتر بدانید...</h2>
+    <p class="reveal" style="text-align:justify">{esc(lead)}</p>
+    <div class="grid g-3" style="margin-top:18px;gap:16px">{cards}</div>
   </div></section>
   <section class="section section--alt" id="history"><div class="wrap split">
-    <div class="prose reveal">{hist}</div>
-    <div class="liner-box reveal">{liner}</div>
+    <div class="prose reveal"><h2>{esc(hist_h)}</h2><p>{esc(hist_p)}</p></div>
+    <div class="liner-box reveal">{BAG_ICON}</div>
   </div></section>
   <section class="section"><div class="wrap grid g-2" style="gap:18px">
-    <div class="card prose reveal">{commit}</div>
-    <div class="card prose reveal">{goals}</div>
+    <div class="card prose reveal">{commit_h}</div>
+    <div class="card prose reveal">{goals_h}</div>
   </div></section>
   <section class="section section--alt" id="why"><div class="wrap">
     <h2 class="reveal" style="margin-bottom:20px">چرا آبادیس؟</h2>
-    <div class="why-grid reveal">{whys}</div>
+    <ul class="checks why-list reveal">{whys}</ul>
   </div></section>
-  <section class="section" id="iso"><div class="wrap" style="text-align:center">
-    <h2 class="reveal" style="margin-bottom:20px">گواهینامه ISO</h2>
-    <div class="reveal">{iso_html}</div>
+  <section class="section" id="certs"><div class="wrap">
+    <h2 class="reveal" style="margin-bottom:8px">مجوزها و گواهینامه‌ها</h2>
+    <p class="reveal" style="margin-bottom:18px">همهٔ {fa(len(certs))} مجوز، گواهینامه و تقدیرنامهٔ منتشرشده در سایت آبادیس.</p>
+    <div class="cert-wall">{''.join(certs)}</div>
   </div></section>
   <section class="section section--alt" id="partners"><div class="wrap">
     <h2 class="reveal" style="margin-bottom:20px">شرکای تجاری</h2>
@@ -65,9 +110,16 @@ def about(write):
   </div></section>
   <section class="section" id="team"><div class="wrap">
     <h2 class="reveal" style="margin-bottom:20px">آشنایی با تیم اجرایی</h2>
-    <div class="team-grid">{''.join(members)}</div>
+    {_team_html(p, d['team']['desktop'], 'team--desktop')}
+    {_team_html(p, d['team']['mobile'], 'team--mobile')}
   </div></section>'''
-    write('about/index.html', page(p, 'about', 'آشنایی با ما', strip_tags(first)[:160], main, lightbox=True))
+    write('about/index.html', page(p, 'about', 'آشنایی با ما', lead[:160], main, lightbox=True,
+          scripts=f'<script src="{p}assets/js/motion.js" defer></script>\n'))
+
+
+def crumbs_html(p):
+    from layout import crumbs
+    return crumbs(p, [('آشنایی با ما', None)])
 
 # ------------------------------------------------------------------ dealers
 PROVINCES = ['آذربایجان شرقی', 'آذربایجان غربی', 'اردبیل', 'اصفهان', 'البرز', 'ایلام', 'بوشهر', 'تهران', 'چهارمحال و بختیاری',
