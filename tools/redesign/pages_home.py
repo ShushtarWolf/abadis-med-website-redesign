@@ -268,8 +268,10 @@ def _teasers(cat, n=3):
                 f'<span class="tag">{esc(tag)}</span><h3>{esc(x["t"])}</h3></a>'
             )
         else:
+            r = pages_posts.thumb('', x)
+            ph = (f'<span class="teaser-ph"><img src="{r["src"]}" width="{r["w"]}" height="{r["h"]}" alt="{esc(x["t"])}" loading="lazy" decoding="async"></span>' if r else '')
             out.append(
-                f'<a class="card teaser reveal" href="{esc(x["rel"])}">'
+                f'<a class="card teaser reveal{" has-ph" if r else ""}" href="{esc(x["rel"])}">{ph}'
                 f'<span class="tag">{esc(tag)}</span><h3>{esc(x["t"])}</h3></a>'
             )
     return ''.join(out)

@@ -1,5 +1,5 @@
 """News + articles lists and one page per archived post."""
-import json, re, urllib.parse as u
+import html, json, re, urllib.parse as u
 from lib import load, esc, strip_tags, best_img, jdate, fa, POST_MAP, ROOT, SITE
 from layout import page, page_hero
 from render import blocks_to_prose
@@ -51,9 +51,11 @@ def thumb(p, post, w=640):
     r = best_img(post.get('image'), w) if post.get('image') else None
     if not r:   # first inline image as fallback
         for b in post['blocks']:
-            if b['t'] == 'img':
-                r = best_img(b['src'], w)
+            srcs = [b['src']] if b['t'] == 'img' else [html.unescape(m) for m in re.findall(r'<img [^>]*src="([^"]+)"', b.get('html') or '')]
+            for s in srcs:
+                r = best_img(s, w)
                 if r: break
+            if r: break
     return r
 
 def excerpt(post):
