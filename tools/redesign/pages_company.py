@@ -297,6 +297,10 @@ def contact(write):
       <h2 style="font-size:1.4rem;margin:26px 0 14px">روزهای تعطیل</h2><div class="hours">{boxes('روزهای تعطیل')}</div></div>
     <div class="card prose reveal"><h3>دفتر مرکزی</h3>{ext}<h3>کارخانه</h3><p><strong>کدپستی: </strong>۱۸۳۴۱۶۵۷۷۶</p><p><strong>شبکه های اجتماعی: </strong><a href="https://yek.link/abadis.med" target="_blank" rel="noopener">https://yek.link/abadis.med</a></p></div>
   </div></section>
+  <section class="section" id="map"><div class="wrap"><h2 style="font-size:1.4rem;margin-bottom:14px">موقعیت دفتر مرکزی روی نقشه</h2>
+    <div class="map-embed reveal"><iframe title="نقشه دفتر مرکزی آبادیس (نشان)" src="https://neshan.org/maps/iframe/places/9399a4513b6974a287127c06bd9269b9#c35.799-51.448-20z-0p/35.79866645611763/51.44826324948928" loading="lazy" allowfullscreen></iframe></div>
+    <p class="map-links"><a href="https://neshan.org/maps/places/9399a4513b6974a287127c06bd9269b9" target="_blank" rel="noopener">مسیریابی با نشان</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=35.79866,51.44826" target="_blank" rel="noopener">Google Maps</a> · <a href="https://waze.com/ul?ll=35.79866,51.44826&amp;navigate=yes" target="_blank" rel="noopener">Waze</a></p>
+  </div></section>
 <!-- /phase2:contact -->
 '''
     f = SITE / 'contact/index.html'; s = f.read_text(encoding='utf-8')
