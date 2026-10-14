@@ -58,3 +58,6 @@ if __name__ == '__main__':
             seen.add(g)
         GROUPS[g](write)
     print(len(WRITTEN), 'pages written'); [print(' ', w) for w in WRITTEN]
+    if not sys.argv[1:]:
+        from discovery import write_sitemap_and_robots
+        write_sitemap_and_robots()

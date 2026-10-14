@@ -156,7 +156,8 @@ NAV = {
         ('products', 'منتجات/', 'منتجات'),
         ('news', 'الاخبار/', 'الاخبار'),
         ('dealers', 'قائمة-الممثلين/', 'قائمة الممثلين'),
-        ('csr', '../csr/', 'المسؤولية الاجتماعية'),
+        # '~' = path from the site root (this page has no Arabic URL; link to the FA page).
+        ('csr', '~csr/', 'المسؤولية الاجتماعية'),
         ('contact', 'اتصل-بنا/', 'اتصل بنا'),
         ('calculator', 'الحوسبة/', 'الحوسبة'),
         ('faq', 'پرسش-های-متداول/', 'پرسش های متداول'),
@@ -496,6 +497,8 @@ def switcher_html(lang: str, fa_path: str, p: str) -> str:
         if rel is None:
             rel = defaults[code]
         href = p + rel
+        if not href:
+            href = './'
         cur = ' aria-current="true"' if code == lang else ''
         hl = LANGS[code]['lang']
         name = escape(names[code])
@@ -506,25 +509,82 @@ def switcher_html(lang: str, fa_path: str, p: str) -> str:
     return f'<nav class="lang-switch" aria-label="{escape(LANGS[lang]["lang_aria"])}">{"".join(parts)}</nav>'
 
 
-def hreflang_tags(fa_path: str, p: str) -> str:
-    """Root-relative hreflang so static preview links stay on-site (not abadis-med.com)."""
-    m = load_map()
-    key = fa_path if fa_path == '' or fa_path.endswith('/') else fa_path + '/'
-    entry = m.get(key)
+def canonical_href(site_path: str) -> str:
+    """Final production URL. FA lives at the domain root; EN is /en/; AR is /arabic/."""
+    path = (site_path or '').split('#', 1)[0].split('?', 1)[0].strip()
+    path = path.lstrip('/')
+    if path.endswith('index.html'):
+        path = path[:-len('index.html')]
+    if path and not path.endswith('/'):
+        path += '/'
+    return SITE_ORIGIN + '/' + path
+
+
+# Preview stays out of Google until launch. Remove this meta in the launch task.
+ROBOTS_META = (
+    '<!-- TODO(launch): remove this robots meta when the site is published on '
+    'https://abadis-med.com/ -->\n'
+    '<meta name="robots" content="noindex, nofollow">'
+)
+
+
+def _norm_site_path(site_path: str) -> str:
+    path = (site_path or '').split('#', 1)[0].split('?', 1)[0].strip().lstrip('/')
+    if path.endswith('index.html'):
+        path = path[:-len('index.html')]
+    if path and not path.endswith('/'):
+        path += '/'
+    return path
+
+
+def translation_entry(site_path: str):
+    """i18n-map entry whose fa/en/ar path is this page, or None."""
+    path = _norm_site_path(site_path)
+    for entry in load_map().values():
+        for code in ('fa', 'en', 'ar'):
+            rel = entry.get(code)
+            if rel is not None and _norm_site_path(rel) == path:
+                return entry
+    return None
+
+
+def hreflang_links(site_path: str) -> list:
+    """Reciprocal absolute alternates for a page that has another language.
+
+    Returns [] when the page is not in the translation map, or only one language
+    exists (nothing to reciprocate). Every language version of the same entry
+    gets the same list, including x-default = the FA URL.
+    """
+    entry = translation_entry(site_path)
     if not entry:
-        return ''
+        return []
     tags = []
     for code, hreflang in (('fa', 'fa-IR'), ('en', 'en'), ('ar', 'ar')):
         rel = entry.get(code)
         if rel is None:
             continue
-        href = '/' + rel.lstrip('/')
-        tags.append(f'<link rel="alternate" hreflang="{hreflang}" href="{href}">')
-    # x-default → FA URL (entry["fa"] may differ from map key)
+        tags.append((hreflang, canonical_href(rel)))
+    if len(tags) < 2:
+        return []
     fa_rel = entry.get('fa')
     if fa_rel is not None:
-        tags.append(f'<link rel="alternate" hreflang="x-default" href="/{fa_rel.lstrip("/")}">')
-    return '\n'.join(tags)
+        tags.append(('x-default', canonical_href(fa_rel)))
+    return tags
+
+
+def hreflang_tags(fa_path: str, p: str = '', canonical_path=None) -> str:
+    """Absolute hreflang on https://abadis-med.com/, matching canonicals.
+
+    Uses the page's own canonical path so a news post does not inherit the
+    news-index alternates. `p` is unused (kept for callers).
+    """
+    path = canonical_path if canonical_path is not None else fa_path
+    if path is None:
+        return ''
+    return '\n'.join(
+        f'<link rel="alternate" hreflang="{hl}" href="{href}">'
+        for hl, href in hreflang_links(path)
+    )
 
 
 def fa_path_from_site_rel(rel: str) -> str:
