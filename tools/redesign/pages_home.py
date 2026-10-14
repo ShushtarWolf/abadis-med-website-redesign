@@ -77,7 +77,7 @@ def zagros_hero(img_base):
 LIVE_HERO_H1 = 'شرکت دانش بنیان مخازن طبی آبادیس'
 
 
-def or_hero(media, zagros='csr/img/hero/'):
+def or_hero(media, zagros='csr/img/hero/', cert='assets/img/'):
     """First screen: the graded operating-room clip (make_hero_video.py) as its own full-bleed
     section, separate from the Zagros scene below. Wide screens: blurred graded fill + a centred
     band of the portrait clip feathered into it, so faces stay at a sane size."""
@@ -95,9 +95,9 @@ def or_hero(media, zagros='csr/img/hero/'):
       <div>
         <h1>{esc(LIVE_HERO_H1)}</h1>
         <div class="hero-actions home-or-certs">
-          <a class="btn btn-primary" href="{m}../img/certs/cert-imed.webp" data-gallery="hero-certs" data-w="1131" data-h="1600">گواهی IMED</a>
-          <a class="btn btn-ghost" href="{m}../img/c/19ffe783abd3-1600.webp" data-gallery="hero-certs" data-w="1108" data-h="1523">گواهی ISO</a>
-          <a class="btn btn-ghost" href="{m}../img/certs/cert-ce.webp" data-gallery="hero-certs" data-w="1163" data-h="1600">گواهی CE</a>
+          <a class="btn btn-primary" href="{cert}certs/cert-imed.webp" data-gallery="hero-certs" data-w="1131" data-h="1600">گواهی IMED</a>
+          <a class="btn btn-ghost" href="{cert}c/19ffe783abd3-1600.webp" data-gallery="hero-certs" data-w="1108" data-h="1523">گواهی ISO</a>
+          <a class="btn btn-ghost" href="{cert}certs/cert-ce.webp" data-gallery="hero-certs" data-w="1163" data-h="1600">گواهی CE</a>
         </div>
       </div>
     </div>

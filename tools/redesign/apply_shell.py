@@ -3,7 +3,7 @@ import re, sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from lib import SITE
 from layout import header, footer
-from i18n import hreflang_tags
+from i18n import hreflang_tags, canonical_href, ROBOTS_META
 from lib import internal
 import pages_posts; pages_posts.prepare()
 def relink(s, p):
@@ -14,13 +14,18 @@ def relink(s, p):
     return re.sub(r'href="(https://(?:www\.)?abadis-med\.com/[^"]*)"(?: target="_blank")?(?: rel="noopener")?', sub, s)
 
 def inject_hreflang(s, p, fa_path):
+    s = re.sub(r'\s*<!-- TODO\(launch\):.*?-->\n?', '\n', s)
+    s = re.sub(r'\s*<meta name="robots" content="[^"]*">\n?', '\n', s)
     s = re.sub(r'\s*<link rel="alternate" hreflang="[^"]*" href="[^"]*">\n?', '\n', s)
-    tags = hreflang_tags(fa_path, p)
-    if not tags:
-        return s
-    block = tags + '\n'
+    can = f'<link rel="canonical" href="{canonical_href(fa_path)}">'
     if re.search(r'<link rel="canonical"', s):
-        return re.sub(r'(<link rel="canonical"[^>]*>\n?)', r'\1' + block, s, count=1)
+        s = re.sub(r'<link rel="canonical" href="[^"]*">', can, s, count=1)
+    else:
+        s = s.replace('</head>', can + '\n</head>', 1)
+    tags = hreflang_tags(fa_path, p, canonical_path=fa_path)
+    block = ROBOTS_META + '\n' + (tags + '\n' if tags else '')
+    if re.search(r'<link rel="canonical"', s):
+        return re.sub(r'(<link rel="canonical"[^>]*>\n?)', block + r'\1', s, count=1)
     return s.replace('</head>', block + '</head>', 1)
 
 def inject_form_meta(s):
