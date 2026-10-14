@@ -125,44 +125,65 @@ def crumbs_html(p):
 PROVINCES = ['آذربایجان شرقی', 'آذربایجان غربی', 'اردبیل', 'اصفهان', 'البرز', 'ایلام', 'بوشهر', 'تهران', 'چهارمحال و بختیاری',
              'خراسان جنوبی', 'خراسان رضوی', 'خراسان شمالی', 'خوزستان', 'زنجان', 'سمنان', 'سیستان و بلوچستان', 'فارس', 'قزوین', 'قم',
              'کردستان', 'کرمان', 'کرمانشاه', 'کهگیلویه و بویراحمد', 'گلستان', 'گیلان', 'لرستان', 'مازندران', 'مرکزی', 'هرمزگان', 'همدان', 'یزد']
-def dealers(write):
-    """Build dealers page from data/dealers.json (live listing + CPT gaps)."""
-    p = '../'
-    data = load('dealers.json')
-    intro = data.get('intro') or 'لیست نمایندگان فروش محصولات مخازن طبی آبادیس در سراسر کشور'
-    groups = data['groups']
+PROV_T = {
+ 'en': dict(zip(PROVINCES, ['East Azerbaijan','West Azerbaijan','Ardabil','Isfahan','Alborz','Ilam','Bushehr','Tehran','Chaharmahal and Bakhtiari','South Khorasan','Razavi Khorasan','North Khorasan','Khuzestan','Zanjan','Semnan','Sistan and Baluchestan','Fars','Qazvin','Qom','Kurdistan','Kerman','Kermanshah','Kohgiluyeh and Boyer-Ahmad','Golestan','Gilan','Lorestan','Mazandaran','Markazi','Hormozgan','Hamadan','Yazd'])),
+ 'ar': dict(zip(PROVINCES, ['أذربيجان الشرقية','أذربيجان الغربية','أردبيل','أصفهان','البرز','إيلام','بوشهر','طهران','جهارمحال وبختياري','خراسان الجنوبية','خراسان رضوي','خراسان الشمالية','خوزستان','زنجان','سمنان','سيستان وبلوشستان','فارس','قزوين','قم','كردستان','كرمان','كرمانشاه','كهكيلويه وبوير أحمد','كلستان','كيلان','لرستان','مازندران','المركزية','هرمزكان','همدان','يزد'])),
+}
+DEALER_T = {
+ 'fa': dict(n='نماینده', none='بدون نماینده', aria='نقشه نمایندگان آبادیس در استان‌های ایران', cap='برای دیدن نماینده، روی استان کلیک کنید.', src='مرز استان‌ها: geoBoundaries (CC BY 4.0)', list='لیست استان ها', has='دارای نماینده', prov='استان', title='نمایندگان استان {}', note=''),
+ 'en': dict(n='representative(s)', none='no representative', aria='Map of Abadis representatives across the provinces of Iran', cap='Tap a province to see its representative.', src='Province borders: geoBoundaries (CC BY 4.0)', list='Provinces', has='Has a representative', prov='provinces', title='Representatives in {}', note='Representative names, phone numbers and addresses are shown as published on the Persian site.'),
+ 'ar': dict(n='ممثل', none='لا يوجد ممثل', aria='خريطة ممثلي آباديس في محافظات إيران', cap='اضغط على المحافظة لعرض ممثلها.', src='حدود المحافظات: geoBoundaries (CC BY 4.0)', list='المحافظات', has='يوجد ممثل', prov='محافظة', title='ممثلو محافظة {}', note='تُعرض أسماء الممثلين وأرقامهم وعناوينهم كما نُشرت في الموقع الفارسي.'),
+}
+def _num(lang, n): return fa(n) if lang == 'fa' else (str(n) if lang == 'en' else str(n).translate(str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')))
+def _pname(lang, n): return n if lang == 'fa' else PROV_T[lang].get(n, n)
+
+def _iran_map(have, counts, lang='fa'):
+    m = load('iran_provinces.json'); T = DEALER_T[lang]
+    paths = []; dots = []
+    for n, v in m['p'].items():
+        on = n in have; lab = esc(_pname(lang, n)) + (f' – {_num(lang, counts[n])} {T["n"]}' if on else f' – {T["none"]}')
+        paths.append(f'<path d="{v["d"]}" class="{"has" if on else "none"}" data-prov="{esc(n)}"' + (' tabindex="0" role="button"' if on else '') + f' aria-label="{lab}"><title>{lab}</title></path>')
+        if on: dots.append(f'<circle cx="{v["c"][0]}" cy="{v["c"][1]}" r="5.5"/>')
+    return (f'<figure class="iran-map reveal"><svg viewBox="0 0 {m["w"]} {m["h"]}" role="img" aria-label="{esc(T["aria"])}">'
+            f'<g class="provs">{"".join(paths)}</g><g class="dots" aria-hidden="true">{"".join(dots)}</g></svg>'
+            f'<figcaption>{esc(T["cap"])} <small>{esc(T["src"])}</small></figcaption></figure>'
+            """<script>document.querySelectorAll('.iran-map path.has').forEach(function(p){function go(){var b=document.querySelector('#provChips button[data-prov="'+p.dataset.prov+'"]');if(b&&b.getAttribute('aria-pressed')!=='true'){b.click();}document.querySelectorAll('.iran-map path.on').forEach(function(x){x.classList.remove('on')});p.classList.add('on');var g=document.querySelector('.prov-group[data-prov="'+p.dataset.prov+'"]');if(g)g.scrollIntoView({behavior:'smooth',block:'start'});}p.addEventListener('click',go);p.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});});</script>""")
+
+def dealers_widget(lang):
+    """Map + province chips + dealer cards (same data on fa/en/ar)."""
+    T = DEALER_T[lang]; data = load('dealers.json'); groups = data['groups']
     have = {g['province'] for g in groups if g.get('dealers')}
-    total = sum(len(g.get('dealers') or []) for g in groups)
+    counts = {g['province']: len(g.get('dealers') or []) for g in groups}
+    total = sum(counts.values())
     chips = ''.join(
-        f'<button type="button" data-prov="{esc(pv)}" aria-pressed="false">{esc(pv)}</button>' if pv in have
-        else f'<button type="button" class="none" disabled title="بدون نماینده">{esc(pv)}</button>'
-        for pv in PROVINCES
-    )
+        f'<button type="button" data-prov="{esc(pv)}" aria-pressed="false">{esc(_pname(lang, pv))}</button>' if pv in have
+        else f'<button type="button" class="none" disabled title="{esc(T["none"])}">{esc(_pname(lang, pv))}</button>'
+        for pv in PROVINCES)
     def row(k, v):
         if 'تلفن' in k:
             num = re.sub(r'[^\d۰-۹]', '', v).translate(str.maketrans('۰۱۲۳۴۵۶۷۸۹', '0123456789'))
             v = f'<a href="tel:{num}" dir="ltr">{esc(v)}</a>'
-        else:
-            v = esc(v)
+        else: v = esc(v)
         return f'<dt>{esc(k)}:</dt><dd>{v}</dd>'
     out = []
     for g in groups:
-        pv, title, ds = g['province'], g.get('title') or f'نمایندگان استان {g["province"]}', g.get('dealers') or []
-        ents = []
-        for d in ds:
-            rows = d.get('rows') or []
-            dl = f'<dl>{"".join(row(k, v) for k, v in rows)}</dl>' if rows else ''
-            ents.append(f'<div class="dealer"><h3>{esc(d["name"])}</h3>{dl}</div>')
-        out.append(
-            f'<div class="card prov-group reveal" data-prov="{esc(pv)}" id="p-{esc(pv.replace(" ", "-"))}">'
-            f'<h2>{esc(title)}</h2>{"".join(ents)}</div>'
-        )
+        pv, ds = g['province'], g.get('dealers') or []
+        title = (g.get('title') or T['title'].format(pv)) if lang == 'fa' else T['title'].format(_pname(lang, pv))
+        ents = ''.join(f'<div class="dealer"{"" if lang == "fa" else " lang=\"fa\" dir=\"rtl\""}><h3>{esc(d["name"])}</h3>' + (f'<dl>{"".join(row(k, v) for k, v in d.get("rows") or [])}</dl>' if d.get('rows') else '') + '</div>' for d in ds)
+        out.append(f'<div class="card prov-group reveal" data-prov="{esc(pv)}" id="p-{esc(pv.replace(" ", "-"))}"><h2>{esc(title)}</h2>{ents}</div>')
+    note = f'<p class="prov-note">{esc(T["note"])}</p>' if T['note'] else ''
+    return f'''<h2 class="reveal" style="margin-bottom:16px">{esc(T["list"])}</h2>
+    {_iran_map(have, counts, lang)}
+    <div class="prov-chips reveal" id="provChips">{chips}</div>
+    <p class="prov-legend"><span><i></i>{esc(T["has"])} ({_num(lang, len(have))} {esc(T["prov"])})</span><span><i class="none"></i>{esc(T["none"])}</span><span>{_num(lang, total)} {esc(T["n"])}</span></p>{note}
+    <div class="prov-grid" id="dealerList">{"".join(out)}</div>'''
+
+def dealers(write):
+    p = '../'
+    intro = load('dealers.json').get('intro') or 'لیست نمایندگان فروش محصولات مخازن طبی آبادیس در سراسر کشور'
     main = f'''{page_hero(p, [('لیست نمایندگان', None)], 'لیست <em>نمایندگان</em>', esc(intro))}
   <section class="section"><div class="wrap">
-    <h2 class="reveal" style="margin-bottom:16px">لیست استان ها</h2>
-    <div class="prov-chips reveal" id="provChips">{chips}</div>
-    <p class="prov-legend"><span><i></i>دارای نماینده ({fa(len(have))} استان)</span><span><i class="none"></i>بدون نماینده</span><span>{fa(total)} نماینده</span></p>
-    <div class="prov-grid" id="dealerList">{''.join(out)}</div>
+    {dealers_widget('fa')}
   </div></section>'''
     write('dealers/index.html', page(p, 'dealers', 'لیست نمایندگان', intro, main))
 

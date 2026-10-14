@@ -165,6 +165,12 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
                 'ar': 'احسب تقديرياً توفير الماء وتكلفة الغسيل والتعقيم ووقت الكادر عند استخدام أكياس الشفط آباديس ذات الاستخدام الواحد.'}[lang]
         title = {'en': 'Savings Calculator', 'ar': 'حاسبة التوفير'}[lang]
         extra_js = f'<script src="{p}assets/js/calc-i18n.js" defer></script>\n'
+    if site_path in ('representatives/', 'قائمة-الممثلين/'):
+        from pages_company import dealers_widget
+        body = dealers_widget(lang)
+        title = {'en': 'Representatives', 'ar': 'قائمة الممثلين'}[lang]
+        desc = {'en': 'Abadis Med sales representatives across the provinces of Iran: map, contacts and addresses.',
+                'ar': 'ممثلو مبيعات آباديس في محافظات إيران: الخريطة وأرقام الاتصال والعناوين.'}[lang]
     fa_path = _fa_for(site_path, lang)
     can = root + site_path
     # home
@@ -174,7 +180,7 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
     else:
         trail = [(chip, None)]
         main = f'''{page_hero(p, trail, esc(title), esc(desc), lang=lang)}
-  <section class="section"><div class="wrap prose reveal">{body}</div></section>'''
+  <section class="section"><div class="wrap{'' if 'id="dealerList"' in body else ' prose reveal'}">{body}</div></section>'''
     html = page(p, cur_key, title, desc, main, lang=lang, fa_path=fa_path, canonical_path=can, scripts=extra_js)
     write(rel if rel.endswith('.html') else rel + 'index.html', html)
     return rel

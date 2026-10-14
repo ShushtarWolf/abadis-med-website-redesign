@@ -1256,3 +1256,14 @@ html[lang="en"] input, html[lang="en"] select, html[lang="en"] textarea, html[la
 .map-embed iframe, iframe[src*="google.com/maps"], iframe[src*="neshan.org/maps"] { display: block; width: 100% !important; max-width: 100%; height: 360px; border: 0; border-radius: 18px; }
 @media (max-width: 767px) { .map-embed iframe, iframe[src*="google.com/maps"], iframe[src*="neshan.org/maps"] { height: 280px; } }
 .map-links { margin-top: 10px; font-size: .95rem; text-align: start; }
+.iran-map { margin: 0 0 22px; max-width: 760px; margin-inline: auto; }
+.iran-map svg { width: 100%; height: auto; display: block; }
+.iran-map path { stroke: var(--bg, #fff); stroke-width: 1.2; transition: fill .2s; }
+.iran-map path.none { fill: color-mix(in srgb, #066163 12%, transparent); }
+.iran-map path.has { fill: #0e7475; cursor: pointer; }
+.iran-map path.has:hover, .iran-map path.has:focus, .iran-map path.on { fill: #015F61; outline: none; }
+.iran-map path.on { fill: #05686b; stroke-width: 2.4; }
+.iran-map .dots circle { fill: #fff; stroke: #015F61; stroke-width: 2; pointer-events: none; }
+.iran-map figcaption { text-align: center; font-size: .9rem; opacity: .8; margin-top: 8px; }
+.iran-map figcaption small { display: block; font-size: .75rem; opacity: .7; }
+.prov-note{font-size:.9rem;opacity:.8;margin:0 0 14px}
