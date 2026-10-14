@@ -101,6 +101,48 @@ def page_by_slug(pages, slug):
     return None
 
 
+CALC_T = {
+  'en': dict(by_s='By surgeries per year', by_b='By number of beds', n='Operations per year', a='Operating room beds', b='ICU|CCU beds',
+    cur='Cost currency', none='Hide cost', irt='IRT (toman, Iranian calculator unit cost)', custom='Custom unit cost (your currency)',
+    unit='Cost per cleaning cycle', code='Currency code (e.g. USD)', water='Water saved (litres/year)', cost='Washing & disinfection cost saved', hours='Staff time saved (hours/year)',
+    mh='Method, data source and limits',
+    m=[('Formula (surgeries n)', 'water = n × 1.6 × 9.3 L · cost = n × 2.5 × unit cost · staff time = n × 1.7 × 2.2 × 7.1 ÷ 60 h'),
+       ('Formula (beds: OR a, ICU|CCU b)', 'water = (254a + 67b) × 1.6 × 9.3 · cost = (200a + 50b) × 2.5 × unit cost · time = (254a + 67b) × 1.7 × 2.2 × 7.1 ÷ 60'),
+       ('Data source', 'Coefficients are taken unchanged from the calculator on abadis-med.com; the Iranian unit cost is 85,000 IRT. [Scientific basis of the coefficients: pending from the company]'),
+       ('Assumptions & limits', 'An estimate of savings versus washing and disinfecting reusable canisters. Exchange rates are not applied: choose IRT or enter your own local unit cost. Local water tariffs, wages and cleaning protocols change the result.')]),
+  'ar': dict(by_s='بحسب عدد العمليات سنوياً', by_b='بحسب عدد الأسِرّة', n='عدد العمليات الجراحية سنوياً', a='أسِرّة غرفة العمليات', b='أسِرّة ICU|CCU',
+    cur='عملة التكلفة', none='إخفاء التكلفة', irt='IRT (تومان، تكلفة الوحدة في الحاسبة الإيرانية)', custom='تكلفة وحدة مخصّصة (بعملتك)',
+    unit='تكلفة دورة التنظيف الواحدة', code='رمز العملة (مثل USD)', water='توفير الماء (لتر/سنة)', cost='توفير تكلفة الغسيل والتعقيم', hours='توفير وقت الكادر (ساعة/سنة)',
+    mh='طريقة الحساب ومصدر البيانات والقيود',
+    m=[('المعادلة (العمليات n)', 'الماء = n × 1.6 × 9.3 لتر · التكلفة = n × 2.5 × تكلفة الوحدة · الوقت = n × 1.7 × 2.2 × 7.1 ÷ 60 ساعة'),
+       ('المعادلة (الأسرّة: العمليات a، ICU|CCU b)', 'الماء = (254a + 67b) × 1.6 × 9.3 · التكلفة = (200a + 50b) × 2.5 × تكلفة الوحدة · الوقت = (254a + 67b) × 1.7 × 2.2 × 7.1 ÷ 60'),
+       ('مصدر البيانات', 'المعاملات مأخوذة دون تغيير من حاسبة موقع abadis-med.com؛ تكلفة الوحدة في إيران ٨٥٬٠٠٠ تومان. [الأساس العلمي للمعاملات: بانتظار البيانات من الشركة]'),
+       ('الافتراضات والقيود', 'تقدير للتوفير مقارنةً بغسل وتعقيم الخزانات القابلة لإعادة الاستخدام. لا تُطبَّق أسعار صرف: اختر IRT أو أدخل تكلفة الوحدة المحلية. تعرفة الماء والأجور وبروتوكولات التنظيف تغيّر النتيجة.')]),
+}
+
+def calc_widget(lang):
+    T = CALC_T[lang]
+    m = ''.join(f'<div><dt>{esc(k)}</dt><dd>{esc(v)}</dd></div>' for k, v in T['m'])
+    return f'''<div class="calc-i18n card" data-calc-i18n style="padding:22px">
+  <fieldset class="qf-field" style="border:0;padding:0;margin:0 0 14px"><legend class="sr-only">{esc(T['by_s'])}</legend>
+    <label><input type="radio" name="ci-mode" value="surgery" checked> {esc(T['by_s'])}</label>
+    <label><input type="radio" name="ci-mode" value="beds"> {esc(T['by_b'])}</label></fieldset>
+  <div class="qf-grid">
+    <div class="qf-field" data-mode="surgery"><label for="ci-n">{esc(T['n'])}</label><input id="ci-n" type="number" min="0" max="15000" step="100" value="1000" inputmode="numeric"></div>
+    <div class="qf-field" data-mode="beds" hidden><label for="ci-a">{esc(T['a'])}</label><input id="ci-a" type="number" min="0" max="700" value="10" inputmode="numeric"></div>
+    <div class="qf-field" data-mode="beds" hidden><label for="ci-b">{esc(T['b'])}</label><input id="ci-b" type="number" min="0" max="700" value="10" inputmode="numeric"></div>
+    <div class="qf-field"><label for="ci-cur">{esc(T['cur'])}</label><select id="ci-cur"><option value="none">{esc(T['none'])}</option><option value="IRT">{esc(T['irt'])}</option><option value="custom">{esc(T['custom'])}</option></select></div>
+    <div class="qf-field" id="ci-unit-row" hidden><label for="ci-unit">{esc(T['unit'])}</label><input id="ci-unit" type="number" min="0" step="any" inputmode="decimal"><label for="ci-code">{esc(T['code'])}</label><input id="ci-code" type="text" maxlength="3" autocomplete="off"></div>
+  </div>
+  <table class="spec-table" style="margin-top:16px" aria-live="polite"><tbody>
+    <tr><th scope="row">{esc(T['water'])}</th><td id="ci-water">0</td></tr>
+    <tr id="ci-cost-row" hidden><th scope="row">{esc(T['cost'])}</th><td id="ci-cost">0</td></tr>
+    <tr><th scope="row">{esc(T['hours'])}</th><td id="ci-hours">0</td></tr>
+  </tbody></table>
+  <aside class="calc-method"><h3>{esc(T['mh'])}</h3><dl>{m}</dl></aside>
+</div>'''
+
+
 def render_content_page(write, lang, site_path, wp, cur_key, chip):
     """Generic prose page from a WP page payload."""
     L = LANGS[lang]
@@ -116,6 +158,13 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
     raw_content = wp.get('content', {}).get('rendered', '')
     desc = meta_description(title, wp.get('excerpt', {}).get('rendered', ''), raw_content, lang)
     body = clean_html(raw_content, lang=lang, prefix=p)
+    extra_js = ''
+    if site_path in ('calculator/', 'الحوسبة/'):
+        body = calc_widget(lang)
+        desc = {'en': 'Estimate the water, washing and disinfection cost and staff time a facility saves with Abadis disposable suction bags.',
+                'ar': 'احسب تقديرياً توفير الماء وتكلفة الغسيل والتعقيم ووقت الكادر عند استخدام أكياس الشفط آباديس ذات الاستخدام الواحد.'}[lang]
+        title = {'en': 'Savings Calculator', 'ar': 'حاسبة التوفير'}[lang]
+        extra_js = f'<script src="{p}assets/js/calc-i18n.js" defer></script>\n'
     fa_path = _fa_for(site_path, lang)
     can = root + site_path
     # home
@@ -126,7 +175,7 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
         trail = [(chip, None)]
         main = f'''{page_hero(p, trail, esc(title), esc(desc), lang=lang)}
   <section class="section"><div class="wrap prose reveal">{body}</div></section>'''
-    html = page(p, cur_key, title, desc, main, lang=lang, fa_path=fa_path, canonical_path=can)
+    html = page(p, cur_key, title, desc, main, lang=lang, fa_path=fa_path, canonical_path=can, scripts=extra_js)
     write(rel if rel.endswith('.html') else rel + 'index.html', html)
     return rel
 
