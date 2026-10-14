@@ -671,3 +671,33 @@
     });
   });
 })();
+
+/* Analytics hooks (brief §6): no third-party key. Pushes to window.dataLayer and fires a
+   CustomEvent "abadis:track" so any tag manager added later can listen.
+   Events: catalogue_download, contact_click, form_submit, language_switch. */
+(function () {
+  window.dataLayer = window.dataLayer || [];
+  function track(name, data) {
+    var ev = Object.assign({ event: name, page: location.pathname }, data || {});
+    window.dataLayer.push(ev);
+    try { document.dispatchEvent(new CustomEvent('abadis:track', { detail: ev })); } catch (e) {}
+  }
+  window.abadisTrack = track;
+  function kind(a) {
+    if (a.dataset.track) return a.dataset.track;
+    var h = (a.getAttribute('href') || '').toLowerCase();
+    if (/\.pdf($|\?)/.test(h)) return 'catalogue_download';
+    if (/^(tel:|mailto:|https?:\/\/(wa\.me|api\.whatsapp\.com|t\.me))/.test(h)) return 'contact_click';
+    if (a.classList.contains('lang-link')) return 'language_switch';
+    return '';
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var k = kind(a);
+    if (!k) return;
+    var d = { href: a.getAttribute('href'), label: (a.dataset.trackLabel || a.textContent || '').trim().slice(0, 80) };
+    if (k === 'language_switch') d.lang = a.getAttribute('hreflang');
+    track(k, d);
+  }, true);
+})();

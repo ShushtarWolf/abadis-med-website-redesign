@@ -29,7 +29,7 @@ ZAGROS_LEAD = 'کاشت نهال بلوط در ارتفاعات زاگرس؛ ت�
 HOME_DESC = ('شرکت دانش‌بنیان مخازن طبی آبادیس؛ تولیدکننده کیسه ساکشن یکبار مصرف و '
              'راهکارهای مدیریت سیالات و زباله‌های عفونی بیمارستانی.')
 # Ends with brand so layout.head does not double-suffix
-HOME_TITLE = 'کیسه ساکشن یکبار مصرف — مخازن طبی آبادیس'
+HOME_TITLE = 'تولیدکنندهٔ کیسه ساکشن یک‌بارمصرف و راهکارهای مدیریت مایعات بیمارستانی — مخازن طبی آبادیس'
 CALC_TEASER = 'جهت محاسبه آنلاین میزان صرفه‌جویی در مصرف آب و زباله‌های عفونی مرکز خود می‌توانید روی دکمه زیر کلیک نمایید.'
 LOGO_STRIP_N = 24
 
@@ -77,36 +77,118 @@ def zagros_hero(img_base):
 LIVE_HERO_H1 = 'شرکت دانش بنیان مخازن طبی آبادیس'
 
 
+HERO_H1 = 'تولیدکنندهٔ کیسه ساکشن یک‌بارمصرف و راهکارهای مدیریت مایعات بیمارستانی'
+# Provable from abadis-med.com: certificates (hero slider) + sizes/filters (product page)
+HERO_SUB = 'دارای گواهی‌های IMED، ISO و CE؛ کیسه ساکشن در حجم‌های ۱، ۲ و ۳ لیتری با فیلتر هیدروفوبیک، دوئال و مکانیکی.'
+CATALOGUE = 'https://abadis-med.com/wp-content/uploads/2024/12/کاتالوگ-جامع-آبادیس.pdf'
+
+
 def or_hero(media, zagros='csr/img/hero/'):
-    """First screen: the graded operating-room clip (make_hero_video.py) as its own full-bleed
-    section, separate from the Zagros scene below. Wide screens: blurred graded fill + a centred
-    band of the portrait clip feathered into it, so faces stay at a sane size."""
+    """Above the fold (brief §2): product first. Real Abadis product photo over the graded
+    operating-room clip; headline, one provable sub-line, two CTAs, certificate chips."""
     m = media.rstrip('/') + '/'
-    z = zagros.rstrip('/') + '/'
-    return f'''  <section class="home-or" id="intro" aria-label="معرفی آبادیس">
+    return f'''  <section class="home-or home-or--product" id="intro" aria-label="معرفی محصول آبادیس">
     <div class="home-or-media" aria-hidden="true">
       <img class="home-or-fill" src="{m}hero-or-zagros-poster.jpg" alt="" width="640" height="1214" decoding="async" fetchpriority="high">
-      <video class="home-or-video" id="homeOrVideo" muted loop playsinline autoplay preload="auto" poster="{m}hero-or-zagros-poster.jpg" disablepictureinpicture disableremoteplayback tabindex="-1">
+      <video class="home-or-video" id="homeOrVideo" muted loop playsinline autoplay preload="metadata" poster="{m}hero-or-zagros-poster.jpg" disablepictureinpicture disableremoteplayback tabindex="-1">
         <source src="{m}hero-or-zagros.mp4" type="video/mp4">
       </video>
       <div class="home-or-veil"></div>
     </div>
-    <div class="csr-hero home-or-copy">
-      <div>
-        <h1>{esc(LIVE_HERO_H1)}</h1>
-        <div class="hero-actions home-or-certs">
-          <a class="btn btn-primary" href="{m}../img/certs/cert-imed.webp" data-gallery="hero-certs" data-w="1131" data-h="1600">گواهی IMED</a>
-          <a class="btn btn-ghost" href="{m}../img/c/19ffe783abd3-1600.webp" data-gallery="hero-certs" data-w="1108" data-h="1523">گواهی ISO</a>
-          <a class="btn btn-ghost" href="{m}../img/certs/cert-ce.webp" data-gallery="hero-certs" data-w="1163" data-h="1600">گواهی CE</a>
+    <div class="wrap home-hero-grid">
+      <div class="home-hero-copy">
+        <h1>{esc(HERO_H1)}</h1>
+        <p class="home-hero-sub">{esc(HERO_SUB)}</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="{esc(CATALOGUE)}" target="_blank" rel="noopener" data-track="catalogue_download" data-track-label="home_hero_catalogue">دریافت کاتالوگ</a>
+          <a class="btn btn-ghost" href="export/#quote" data-track="contact_click" data-track-label="home_hero_quote">درخواست قیمت / همکاری صادراتی</a>
         </div>
       </div>
+      <figure class="home-hero-product">
+        <img src="assets/img/p/hero-bags.webp" alt="کیسه ساکشن یکبار مصرف ۱ و ۲ لیتری آبادیس" width="555" height="554" decoding="async" fetchpriority="high">
+      </figure>
     </div>
-    <div class="home-or-seam" aria-hidden="true">
-      <div class="home-or-mirror">
-        <img class="zh-bg-layer" src="{z}bg-dry-bridge.webp" srcset="{z}bg-dry-bridge-1280.webp 1280w, {z}bg-dry-bridge.webp 1920w" sizes="(max-aspect-ratio: 16/9) 177.78vh, 100vw" alt="" width="1920" height="1080" decoding="async">
-        <div class="zh-dusk"></div>
-        <div class="zh-veil"></div>
+  </section>'''
+
+
+def trust_section():
+    """Trust evidence right after the hero: the three certificates (opens the lightbox)."""
+    certs = [('گواهی IMED', 'assets/img/certs/cert-imed.webp', 1131, 1600),
+             ('گواهی ISO', 'assets/img/c/19ffe783abd3-1600.webp', 1108, 1523),
+             ('گواهی CE', 'assets/img/certs/cert-ce.webp', 1163, 1600)]
+    cards = ''.join(
+        f'<a class="card cert-card reveal" href="{h}" data-gallery="home-certs" data-w="{w}" data-h="{hh}">'
+        f'<img src="{h}" alt="{esc(t)} مخازن طبی آبادیس" width="{w}" height="{hh}" loading="lazy" decoding="async"><strong>{esc(t)}</strong></a>'
+        for t, h, w, hh in certs)
+    return f'''  <section class="section" id="trust">
+    <div class="wrap">
+      <div class="section-head reveal"><p class="eyebrow">اعتماد</p><h2>گواهی‌ها و استانداردها</h2></div>
+      <div class="grid g-3 cert-grid">{cards}</div>
+    </div>
+  </section>'''
+
+
+USES = ['اتاق عمل', 'CCU/ICU', 'اورژانس', 'NICU/PICU', 'ریه و آندوسکوپی', 'گوارش', 'عفونی', 'بخش زنان', 'بخش مردان', 'ECT']
+
+
+def uses_specs_section():
+    uses = ''.join(f'<li>{esc(u)}</li>' for u in USES)
+    rows = [('ظرفیت', '۱، ۲ و ۳ لیتر'), ('فیلتراسیون', 'هیدروفوبیک، دوئال و مکانیکی'),
+            ('ویژگی‌ها', 'پودر ژل‌کننده، جلوگیری از سرریز مایعات، سیستم حفاظت از ساکشن مرکزی'),
+            ('سازگاری', 'کلیه دستگاه‌های ساکشن پرتابل و سانترال'),
+            ('نصب', 'تکی و سری روی پایه ثابت (دیواری) و پرتابل — نصب و خدمات پس از فروش رایگان')]
+    body = ''.join(f'<tr><th scope="row">{esc(k)}</th><td>{esc(v)}</td></tr>' for k, v in rows)
+    return f'''  <section class="section section--alt" id="uses">
+    <div class="wrap split">
+      <div class="reveal">
+        <p class="eyebrow">کاربردها</p>
+        <h2>کاربرد در بخش‌های بیمارستان</h2>
+        <ul class="checks use-list" style="margin-top:16px">{uses}</ul>
+        <p style="margin-top:18px"><a class="more-link" href="products/">همهٔ محصولات ←</a></p>
       </div>
+      <div class="reveal">
+        <p class="eyebrow">مشخصات</p>
+        <h2>کیسه ساکشن یکبار مصرف</h2>
+        <table class="spec-table" style="margin-top:14px"><tbody>{body}</tbody></table>
+        <p style="margin-top:14px"><a class="more-link" href="products/suction-bag/#specs">مشخصات کامل و کد محصولات ←</a></p>
+      </div>
+    </div>
+  </section>'''
+
+
+def experiences_teaser():
+    out = []
+    cur = None
+    for b in _B('/تجارب-ما/'):
+        if b['t'] == 'h':
+            cur = [b['text'], '']; out.append(cur)
+        elif b['t'] == 'html' and cur:
+            cur[1] += b['html']
+    from lib import strip_tags
+    cards = ''.join(
+        f'<a class="card teaser reveal" href="experiences/"><span class="tag">تجربهٔ مشتری</span><h3>{esc(t)}</h3>'
+        f'<p>{esc(strip_tags(h)[:150])}…</p></a>' for t, h in out[:3])
+    return f'''  <section class="section section--alt" id="experiences">
+    <div class="wrap">
+      <div class="section-head reveal"><p class="eyebrow">تجربه‌ها</p><h2>تجارب ما</h2>
+        <p><a class="more-link" style="margin:0" href="experiences/">همهٔ تجربه‌ها ←</a></p></div>
+      <div class="grid g-3">{cards}</div>
+    </div>
+  </section>'''
+
+
+DOCS = [('https://abadis-med.com/wp-content/uploads/2024/12/کاتالوگ-جامع-آبادیس.pdf', 'کاتالوگ جامع آبادیس'),
+        ('https://abadis-med.com/wp-content/uploads/2022/12/suction-bag-catalog-Fa.pdf', 'کاتالوگ کیسه ساکشن'),
+        ('https://abadis-med.com/wp-content/uploads/2022/12/Filter-catalog-Fa.pdf', 'کاتالوگ فیلترها'),
+        ('https://abadis-med.com/wp-content/uploads/2026/01/کاتالوگ-ساکشن-تیوب-1.pdf', 'کاتالوگ ساکشن تیوب')]
+
+
+def docs_section():
+    links = ''.join(f'<a href="{esc(h)}" target="_blank" rel="noopener" data-track="catalogue_download">{esc(t)} (PDF)</a>' for h, t in DOCS)
+    return f'''  <section class="section" id="docs">
+    <div class="wrap">
+      <div class="section-head reveal"><p class="eyebrow">اسناد فنی</p><h2>کاتالوگ‌ها و راهنماها</h2></div>
+      <div class="doc-links reveal">{links}<a href="install-guide/">راهنمای نصب</a><a href="faq/">پرسش‌های متداول</a><a href="downloads/">مرکز دانلود</a></div>
     </div>
   </section>'''
 
@@ -252,17 +334,23 @@ def customers_section():
 
 def build(write):
     pages_posts.prepare()
+    # Brief order: hero → trust → uses & specs → calculator → customers & experiences
+    #              → technical documents → CSR (Zagros) & news
     main = '\n'.join([
         or_hero('assets/media/'),
-        zagros_hero('csr/img/hero'),
-        about_section(),
+        trust_section(),
         why_section(),
+        uses_specs_section(),
         pages_dial.home_section(),
+        customers_section(),
+        experiences_teaser(),
+        docs_section(),
+        about_section(),
+        zagros_hero('csr/img/hero'),
         news_section(),
         articles_section(),
-        customers_section(),
     ])
-    extra_head = '''<link rel="preload" as="image" href="csr/img/hero/bg-dry.webp" type="image/webp">
+    extra_head = '''<link rel="preload" as="image" href="assets/img/p/hero-bags.webp" type="image/webp">
 <link rel="stylesheet" href="csr/zagros-hero.css">
 <link rel="stylesheet" href="assets/css/home.css">
 <link rel="stylesheet" href="assets/dial/dial.css">'''
@@ -271,6 +359,6 @@ def build(write):
         '', None, HOME_TITLE, HOME_DESC, main,
         fa_path='', canonical_path='',
         extra_head=extra_head, scripts=scripts,
-        main_class='home-page', body_class='home',
+        main_class='home-page', body_class='home', lightbox=True,
     )
     write('index.html', html)
