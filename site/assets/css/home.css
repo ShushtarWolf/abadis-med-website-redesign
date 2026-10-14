@@ -318,3 +318,4 @@ body.home .zh-exit {
 .cert-card img { width: 100%; max-height: 300px; object-fit: contain; border-radius: 8px; background: #fff; }
 .use-list { columns: 2; column-gap: 24px; }
 .use-list li { break-inside: avoid; }
+@media (max-width: 760px) { .home-or--product { align-items: start; } .home-hero-product img { aspect-ratio: 555 / 554; } }
