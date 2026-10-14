@@ -231,39 +231,42 @@ body.home .zh-exit {
   .logo-carousel-strip { transition: none; }
 }
 
-/* ---------- first-screen backdrop: graded operating-room clip (tools/redesign/make_hero_video.py) ----------
-   Painted INTO the Zagros painting rather than laid over it: the clip (already graded into bg-dry's
-   palette) is shown as a broad vignette with feathered edges, so the painting's haze, sides and
-   ground surround it. site.js fades it out as the scroll story starts,
-   handing over to the painting alone. Dark/noir: the existing .zh-dusk grade sits on top. */
-body.home .zh-video-wrap {
-  position: absolute; inset: 0; overflow: hidden;
-  will-change: opacity;
+/* ---------- first screen: graded operating-room clip, its own section (make_hero_video.py) ----------
+   Separate from the Zagros scene below. Wide: blurred graded fill + centred band of the portrait
+   clip feathered into it. Tall: plain full-bleed cover. Dark/noir: darker grade + tinted veil. */
+.home-or { position: relative; min-height: 100svh; overflow: hidden; isolation: isolate; }
+.home-or-media { position: absolute; inset: 0; z-index: -1; background: #d9cfc1; }
+.home-or-fill {
+  position: absolute; inset: -40px; width: calc(100% + 80px); height: calc(100% + 80px); max-width: none;
+  object-fit: cover; object-position: 50% 30%; filter: blur(28px) saturate(.9); opacity: .9;
 }
-/* wide screens: a broad vignette of the clip framed by the painting (sides + ground show through) */
-body.home .zh-video {
-  position: absolute; left: 50%; top: 0;
-  width: min(100%, 76vw); height: 100%; max-width: none;
-  transform: translateX(-50%);
-  object-fit: cover; object-position: 50% 32%; display: block;
-  -webkit-mask-image:
-    linear-gradient(90deg, transparent 0%, #000 22%, #000 78%, transparent 100%),
-    linear-gradient(180deg, #000 0%, #000 50%, rgba(0,0,0,.55) 72%, transparent 92%);
-  -webkit-mask-composite: source-in;
-  mask-image:
-    linear-gradient(90deg, transparent 0%, #000 22%, #000 78%, transparent 100%),
-    linear-gradient(180deg, #000 0%, #000 50%, rgba(0,0,0,.55) 72%, transparent 92%);
-  mask-composite: intersect;
-  opacity: .92;
+.home-or-video {
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: min(100%, 64vw); height: 100%; max-width: none; display: block;
+  object-fit: cover; object-position: 50% 34%;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
 }
-/* tall screens: full width, fading into the painted ground */
+.home-or-veil {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 26%, rgba(243,240,233,.78) 0%, rgba(243,240,233,.42) 55%, rgba(243,240,233,0) 100%),
+    linear-gradient(180deg, rgba(232,228,220,.25) 0%, rgba(232,228,220,0) 40%, rgba(168,134,100,.16) 100%);
+}
+.home-or-copy { position: relative; min-height: 100svh; align-content: start; }
 @media (max-aspect-ratio: 4/5) {
-  body.home .zh-video {
-    width: 100%; object-position: 50% 30%;
-    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 52%, rgba(0,0,0,.5) 74%, transparent 94%);
-    mask-image: linear-gradient(180deg, #000 0%, #000 52%, rgba(0,0,0,.5) 74%, transparent 94%);
-  }
+  .home-or-video { width: 100%; object-position: 50% 32%; -webkit-mask-image: none; mask-image: none; }
+  .home-or-fill { display: none; }
 }
-[data-theme="dark"] body.home .zh-video, [data-theme="noir"] body.home .zh-video { filter: brightness(.68); }
-[data-theme="dark"] body.home .zh-video { filter: brightness(.66) saturate(.9); opacity: .85; }
-[data-theme="noir"] body.home .zh-video { filter: brightness(.6) saturate(.8) hue-rotate(-8deg); opacity: .85; }
+[data-theme="dark"] .home-or-media { background: #0b2427; }
+[data-theme="noir"] .home-or-media { background: #13121f; }
+[data-theme="dark"] .home-or-video, [data-theme="dark"] .home-or-fill { filter: brightness(.5) saturate(.85); }
+[data-theme="dark"] .home-or-fill { filter: blur(28px) brightness(.45); }
+[data-theme="noir"] .home-or-video { filter: brightness(.45) saturate(.7) hue-rotate(-10deg); }
+[data-theme="noir"] .home-or-fill { filter: blur(28px) brightness(.4) saturate(.7); }
+[data-theme="dark"] .home-or-veil {
+  background: radial-gradient(ellipse 70% 55% at 50% 26%, rgba(8,30,34,.72) 0%, rgba(8,30,34,.35) 60%, rgba(8,30,34,.1) 100%);
+}
+[data-theme="noir"] .home-or-veil {
+  background: radial-gradient(ellipse 70% 55% at 50% 26%, rgba(14,10,32,.74) 0%, rgba(14,10,32,.36) 60%, rgba(14,10,32,.1) 100%);
+}

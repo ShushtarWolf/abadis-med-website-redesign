@@ -443,31 +443,15 @@
     });
   });
 
-  /* ---------- home: first-screen video backdrop ----------
-     Plays muted/looped while the Zagros scene is at its start, fades into the painting as the
-     scroll story begins (and back on scroll up). Paused when hidden. Reduced motion: poster only. */
-  const zv = document.getElementById('zhVideo');
-  const zTrack = document.getElementById('hero');
-  if (zv && zTrack) {
-    const vid = zv.querySelector('video');
-    let zvTick = false, zvOp = -1;
-    const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
-    const zvUpdate = () => {
-      zvTick = false;
-      const r = zTrack.getBoundingClientRect();
-      const range = Math.max(1, zTrack.offsetHeight - innerHeight);
-      const op = reduce ? 1 : 1 - smooth(0.03, 0.15, -r.top / range);
-      const rounded = Math.round(op * 100) / 100;
-      if (rounded === zvOp) return;
-      zvOp = rounded;
-      zv.style.opacity = String(rounded);
-      if (!vid || reduce) return;
-      if (rounded > 0 && vid.paused) { const pr = vid.play(); if (pr && pr.catch) pr.catch(() => {}); }
-      else if (rounded === 0 && !vid.paused) vid.pause();
-    };
-    addEventListener('scroll', () => { if (!zvTick) { zvTick = true; requestAnimationFrame(zvUpdate); } }, { passive: true });
-    addEventListener('resize', zvUpdate);
-    zvUpdate();
+  /* ---------- home: first-screen OR video — reduced motion keeps the poster; pause off-screen ---------- */
+  const orVid = document.getElementById('homeOrVideo');
+  if (orVid) {
+    if (reduce) { orVid.removeAttribute('autoplay'); orVid.pause(); }
+    else if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([e]) => {
+        if (e.isIntersecting) { const pr = orVid.play(); if (pr && pr.catch) pr.catch(() => {}); } else orVid.pause();
+      }).observe(orVid);
+    }
   }
 
   /* ---------- home customers logo carousel (infinite marquee; track-only) ---------- */
