@@ -68,26 +68,21 @@ def zagros_hero(img_base):
       <div class="zh-dusk" aria-hidden="true"></div>
       <div class="zh-veil" aria-hidden="true"></div>
       <div class="zh-exit" id="zhExit" aria-hidden="true"></div>
-      <section class="csr-hero home-zagros-hero" aria-label="نجات زاگرس">
-        <div>
-          <span class="chip">پویش نجات زاگرس · کاشت نهال بلوط</span>
-          <h1>نجات زاگرس،‌مسئولیت اجتماعی آبادیس</h1>
-          <p class="lead">{esc(ZAGROS_LEAD)}</p>
-          <div class="hero-actions" style="justify-content:center">
-            <a class="btn btn-primary" href="csr/">ادامه در توسعه پایدار</a>
-          </div>
-        </div>
-      </section>
       <div class="zh-hint" id="zhHint" aria-hidden="true"><i></i></div>
     </div>
   </div>'''
 
 
-def or_hero(media):
+# Verbatim from the live abadis-med.com home hero (Revolution Slider slide 1: title image + 3 cert buttons).
+LIVE_HERO_H1 = 'شرکت دانش بنیان مخازن طبی آبادیس'
+
+
+def or_hero(media, zagros='csr/img/hero/'):
     """First screen: the graded operating-room clip (make_hero_video.py) as its own full-bleed
     section, separate from the Zagros scene below. Wide screens: blurred graded fill + a centred
     band of the portrait clip feathered into it, so faces stay at a sane size."""
     m = media.rstrip('/') + '/'
+    z = zagros.rstrip('/') + '/'
     return f'''  <section class="home-or" id="intro" aria-label="معرفی آبادیس">
     <div class="home-or-media" aria-hidden="true">
       <img class="home-or-fill" src="{m}hero-or-zagros-poster.jpg" alt="" width="640" height="1214" decoding="async" fetchpriority="high">
@@ -96,14 +91,21 @@ def or_hero(media):
       </video>
       <div class="home-or-veil"></div>
     </div>
-    <div class="csr-hero home-or-copy home-zagros-hero">
+    <div class="csr-hero home-or-copy">
       <div>
-        <span class="chip">پویش نجات زاگرس · کاشت نهال بلوط</span>
-        <h1>نجات زاگرس،‌مسئولیت اجتماعی آبادیس</h1>
-        <p class="lead">{esc(ZAGROS_LEAD)}</p>
-        <div class="hero-actions" style="justify-content:center">
-          <a class="btn btn-primary" href="csr/">ادامه در توسعه پایدار</a>
+        <h1>{esc(LIVE_HERO_H1)}</h1>
+        <div class="hero-actions home-or-certs">
+          <a class="btn btn-primary" href="{m}../img/certs/cert-imed.webp" data-gallery="hero-certs" data-w="1131" data-h="1600">گواهی IMED</a>
+          <a class="btn btn-ghost" href="{m}../img/c/19ffe783abd3-1600.webp" data-gallery="hero-certs" data-w="1108" data-h="1523">گواهی ISO</a>
+          <a class="btn btn-ghost" href="{m}../img/certs/cert-ce.webp" data-gallery="hero-certs" data-w="1163" data-h="1600">گواهی CE</a>
         </div>
+      </div>
+    </div>
+    <div class="home-or-seam" aria-hidden="true">
+      <div class="home-or-mirror">
+        <img class="zh-bg-layer" src="{z}bg-dry-bridge.webp" srcset="{z}bg-dry-bridge-1280.webp 1280w, {z}bg-dry-bridge.webp 1920w" sizes="(max-aspect-ratio: 16/9) 177.78vh, 100vw" alt="" width="1920" height="1080" decoding="async">
+        <div class="zh-dusk"></div>
+        <div class="zh-veil"></div>
       </div>
     </div>
   </section>'''

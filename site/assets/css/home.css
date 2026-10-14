@@ -270,3 +270,20 @@ body.home .zh-exit {
 [data-theme="noir"] .home-or-veil {
   background: radial-gradient(ellipse 70% 55% at 50% 26%, rgba(14,10,32,.74) 0%, rgba(14,10,32,.36) 60%, rgba(14,10,32,.1) 100%);
 }
+
+/* live-site hero copy (verbatim) + cert buttons */
+.home-or-copy h1 { max-width: 22ch; margin-inline: auto; }
+.home-or-certs { justify-content: center; flex-wrap: wrap; }
+/* Seam into the Zagros scene: a vertically mirrored replica of the scene's first frame (same bg-dry
+   cover mapping + the same dusk/veil layers per theme), faded in toward the bottom. Its bottom row is
+   pixel-identical to the Zagros stage's top row, so scrolling across shows no edge in any theme. */
+.home-or-seam {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 100vh; height: 100lvh; z-index: 0;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, transparent 45%, rgba(0,0,0,.5) 72%, #000 92%);
+  mask-image: linear-gradient(180deg, transparent 0%, transparent 45%, rgba(0,0,0,.5) 72%, #000 92%);
+}
+.home-or-mirror { position: absolute; inset: 0; transform: scaleY(-1); background: #e8e4dc; overflow: hidden; }
+[data-theme="dark"] .home-or-mirror { background: #0b2427; }
+[data-theme="noir"] .home-or-mirror { background: #13121f; }
+.home-or-copy { z-index: 1; }
