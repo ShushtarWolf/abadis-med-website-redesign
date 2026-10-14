@@ -3,7 +3,17 @@ import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from lib import SITE
 WRITTEN = []
+import re as _re
+def _one_h1(html):
+    """SEO: exactly one H1 per page — demote any H1 that comes from pasted WP content to H2."""
+    first = html.find('<h1')
+    if first < 0: return html
+    head, tail = html[:first + 3], html[first + 3:]
+    tail = _re.sub(r'<h1(\s[^>]*)?>', lambda m: '<h2' + (m.group(1) or '') + '>', tail)
+    tail = tail.replace('</h1>', '</h2>')
+    return head + tail.replace('</h2>', '</h1>', 1)
 def write(rel, html):
+    html = _one_h1(html)
     f = SITE / rel
     f.parent.mkdir(parents=True, exist_ok=True)
     f.write_text(html, encoding='utf-8'); WRITTEN.append(rel)
@@ -29,6 +39,10 @@ try:
     GROUPS['i18n'] = pages_i18n.build
     GROUPS['en'] = lambda w: pages_i18n.build_lang(w, 'en')
     GROUPS['ar'] = lambda w: pages_i18n.build_lang(w, 'ar')
+except ImportError: pass
+
+try:
+    import pages_export; GROUPS['export'] = pages_export.build
 except ImportError: pass
 
 if __name__ == '__main__':
