@@ -191,7 +191,7 @@ def nav_keys(nav):
 SECONDARY = {
     'fa': [
         ('customers', 'customers/', 'مشتریان ما'),
-        ('experiences', 'experiences/', 'تجارب ما'),
+        ('experiences', 'academy/', 'آکادمی آبادیس'),
         ('downloads', 'downloads/', 'مرکز دانلود'),
         ('install', 'install-guide/', 'راهنمای نصب'),
         ('faq', 'faq/', 'پرسش های متداول'),

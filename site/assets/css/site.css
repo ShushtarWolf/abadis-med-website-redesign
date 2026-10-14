@@ -1280,3 +1280,44 @@ html[lang="en"] input, html[lang="en"] select, html[lang="en"] textarea, html[la
 .cust-letter ul { list-style: none; margin: 0; padding: 0; }
 .cust-letter li { padding: 3px 0; font-size: .95rem; }
 @media (max-width: 520px) { .cust-all { columns: 2 140px; column-gap: 16px; } .cust-letter li { font-size: .88rem; } }
+/* ---------- Abadis Academy (own look: light, editorial, deep-teal accents) ---------- */
+body.academy { background: #f3f8f8; }
+[data-theme="dark"] body.academy, [data-theme="noir"] body.academy { background: #071a1b; }
+.ac-header { position: sticky; top: 0; z-index: 50; background: color-mix(in srgb, #ffffff 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid #d5e6e6; }
+[data-theme="dark"] .ac-header, [data-theme="noir"] .ac-header { background: color-mix(in srgb, #071a1b 88%, transparent); border-color: #12393a; }
+.ac-bar { display: flex; align-items: center; gap: 18px; min-height: 64px; flex-wrap: wrap; }
+.ac-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+.ac-brand b { display: block; font-size: 1.05rem; color: #066163; } .ac-brand small { display: block; font-size: .7rem; opacity: .7; letter-spacing: .08em; }
+[data-theme="dark"] .ac-brand b, [data-theme="noir"] .ac-brand b { color: #7cc9c7; }
+.ac-nav { display: flex; gap: 4px; margin-inline-start: auto; }
+.ac-nav a { padding: 8px 12px; border-radius: 10px; text-decoration: none; color: inherit; font-weight: 600; font-size: .95rem; }
+.ac-nav a:hover, .ac-nav a[aria-current] { background: color-mix(in srgb, #0e7475 12%, transparent); color: #05686b; }
+.ac-cta { display: flex; gap: 10px; align-items: center; } .ac-back { font-size: .85rem; opacity: .8; }
+.ac-login { padding: 8px 16px; }
+@media (max-width: 767px) { .ac-nav { order: 3; width: 100%; overflow-x: auto; margin: 0 0 8px; } .ac-back { display: none; } .ac-bar { gap: 8px; padding-top: 8px; } }
+.ac-mock { background: #fff7e0; color: #5a4300; border: 1px dashed #c9a640; border-radius: 12px; padding: 10px 14px; font-size: .88rem; margin-bottom: 18px; text-align: start; }
+.ac-hero { padding: 56px 0 40px; background: radial-gradient(900px 300px at 80% 0%, color-mix(in srgb, #0e7475 18%, transparent), transparent), linear-gradient(180deg, #e6f2f2, transparent); }
+[data-theme="dark"] .ac-hero, [data-theme="noir"] .ac-hero { background: radial-gradient(900px 300px at 80% 0%, #0e747555, transparent); }
+.ac-hero h1 { font-size: clamp(2rem, 6vw, 3.4rem); margin: 0 0 10px; } .ac-hero h1 em { font-style: normal; color: #0e7475; }
+.ac-lead { font-size: 1.1rem; max-width: 640px; } .ac-hero-cta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+.ac-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 18px; margin-top: 18px; }
+.ac-grid--2 { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); align-items: start; }
+.ac-card { background: var(--card, #fff); border: 1px solid #d5e6e6; border-radius: 18px; padding: 20px; box-shadow: 0 6px 20px -14px #066163; margin-bottom: 12px; }
+[data-theme="dark"] .ac-card, [data-theme="noir"] .ac-card { background: #0b2627; border-color: #12393a; }
+.ac-card h3 { margin: 8px 0; font-size: 1.15rem; }
+.ac-tag { display: inline-block; font-size: .75rem; font-weight: 700; padding: 3px 10px; border-radius: 99px; background: color-mix(in srgb, #0e7475 14%, transparent); color: #05686b; }
+.ac-tag--soon { background: #fff2cc; color: #6b5200; } .ac-meta { font-size: .85rem; opacity: .7; }
+.ac-ph { font-size: .8rem; font-weight: 400; color: #8a6d00; }
+.ac-card summary { cursor: pointer; font-weight: 700; }
+.ac-auth { min-height: 70vh; display: grid; place-items: center; padding: 40px 0; }
+.ac-auth-card { max-width: 420px; margin: 0 auto; background: var(--card, #fff); border-radius: 24px; padding: 28px; border: 1px solid #d5e6e6; box-shadow: 0 20px 50px -30px #066163; }
+[data-theme="dark"] .ac-auth-card, [data-theme="noir"] .ac-auth-card { background: #0b2627; border-color: #12393a; }
+.ac-brand--lg { justify-content: center; margin-bottom: 18px; }
+.ac-tabs { display: grid; grid-template-columns: 1fr 1fr; background: color-mix(in srgb, #0e7475 10%, transparent); border-radius: 12px; padding: 4px; margin-bottom: 16px; }
+.ac-tabs button { border: 0; background: transparent; padding: 8px; border-radius: 9px; font: inherit; font-weight: 700; color: inherit; }
+.ac-tabs [aria-selected="true"] { background: #066163; color: #fff; }
+.ac-form { display: grid; gap: 8px; } .ac-form input[type=text], .ac-form input[type=password] { padding: 12px 14px; border-radius: 12px; border: 1px solid #c4dbdb; font: inherit; background: transparent; color: inherit; }
+.ac-row { display: flex; justify-content: space-between; font-size: .85rem; margin: 4px 0 8px; } .ac-out { color: #05686b; font-weight: 700; }
+.ac-small { font-size: .8rem; opacity: .8; margin-top: 14px; }
+.ac-footer { padding: 26px 0; border-top: 1px solid #d5e6e6; font-size: .9rem; } .ac-footer .wrap { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: center; }
+.ac-footer svg { vertical-align: middle; width: 22px; height: 22px; } .ac-foot-note { opacity: .7; font-size: .8rem; }

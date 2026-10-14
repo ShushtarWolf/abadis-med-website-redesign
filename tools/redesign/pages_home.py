@@ -166,12 +166,12 @@ def experiences_teaser():
             cur[1] += b['html']
     from lib import strip_tags
     cards = ''.join(
-        f'<a class="card teaser reveal" href="experiences/"><span class="tag">تجربهٔ مشتری</span><h3>{esc(t)}</h3>'
+        f'<a class="card teaser reveal" href="academy/#experiences"><span class="tag">تجربهٔ مشتری</span><h3>{esc(t)}</h3>'
         f'<p>{esc(strip_tags(h)[:150])}…</p></a>' for t, h in out[:3])
     return f'''  <section class="section section--alt" id="experiences">
     <div class="wrap">
       <div class="section-head reveal"><p class="eyebrow">تجربه‌ها</p><h2>تجارب ما</h2>
-        <p><a class="more-link" style="margin:0" href="experiences/">همهٔ تجربه‌ها ←</a></p></div>
+        <p><a class="more-link" style="margin:0" href="academy/#experiences">همهٔ تجربه‌ها ←</a></p></div>
       <div class="grid g-3">{cards}</div>
     </div>
   </section>'''

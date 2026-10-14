@@ -381,17 +381,71 @@ def customers(write):
     write('customers/index.html', page(p, 'customers', 'مشتریان ما', head, main))
     return len(items), nimg
 
-# ------------------------------------------------------------------ experiences
+# ------------------------------------------------------------------ academy (was «تجارب ما»)
+ACADEMY_MARK = '<svg viewBox="0 0 40 40" aria-hidden="true" width="34" height="34"><rect x="2" y="2" width="36" height="36" rx="11" fill="#066163"/><path d="M8 17l12-6 12 6-12 6z" fill="#fff"/><path d="M13 20v6c0 2 3.5 4 7 4s7-2 7-4v-6" fill="none" stroke="#fff" stroke-width="2.2"/><path d="M32 17v7" stroke="#bfe3e2" stroke-width="2.2" stroke-linecap="round"/></svg>'
+MOCK_NOTE = '<div class="ac-mock" role="note"><b>نمونهٔ رابط کاربری (Mockup)</b> — آکادمی آبادیس هنوز راه‌اندازی نشده است؛ ورود، ثبت‌نام و دوره‌ها نمایشی‌اند و هیچ داده‌ای ارسال یا ذخیره نمی‌شود.</div>'
+
+def _academy_shell(html, p, cur):
+    nav = [('', 'خانه آکادمی', 'home'), ('#courses', 'دوره‌ها', 'courses'), ('#experiences', 'تجارب ما', 'exp'), ('#faq', 'پرسش‌ها', 'faq')]
+    links = ''.join(f'<a href="{p}academy/{h}"{" aria-current=\"page\"" if k == cur else ""}>{t}</a>' for h, t, k in nav)
+    head = f'''<header class="ac-header" data-tone="light"><div class="wrap ac-bar">
+    <a class="ac-brand" href="{p}academy/">{ACADEMY_MARK}<span><b>آکادمی آبادیس</b><small>Abadis Academy</small></span></a>
+    <nav class="ac-nav" aria-label="منوی آکادمی">{links}</nav>
+    <div class="ac-cta"><a class="ac-back" href="{p}">سایت آبادیس ↗</a><a class="btn btn-primary ac-login" href="{p}academy/login/">ورود / ثبت‌نام</a></div>
+  </div></header>'''
+    foot = f'''<footer class="ac-footer"><div class="wrap"><span>{ACADEMY_MARK} آکادمی آبادیس — بخشی از <a href="{p}">مخازن طبی آبادیس</a></span><span class="ac-foot-note">نسخهٔ نمایشی؛ نام نهایی بخش در انتظار تأیید است.</span></div></footer>'''
+    html = re.sub(r'<header class="header" id="header">.*?</header>', lambda m: head, html, count=1, flags=re.S)
+    html = re.sub(r'<footer.*?</footer>', lambda m: foot, html, count=1, flags=re.S)
+    return html.replace('<body>', '<body class="academy">', 1)
+
 def experiences(write):
     p = '../'; bl = B('/تجارب-ما/')
     cards = []; cur = None
     for b in bl:
         if b['t'] == 'h': cur = [b['text'], '']; cards.append(cur)
         elif b['t'] == 'html' and cur: cur[1] += rewrite_html(b['html'], p)
-    body = ''.join(f'<article class="card prose reveal"><h2 style="font-size:1.3rem;margin-top:0">{esc(t)}</h2>{h}</article>' for t, h in cards)
-    main = f'''{page_hero(p, [('تجارب ما', None)], 'تجارب ما')}
-  <section class="section"><div class="wrap grid g-2" style="gap:18px;align-items:start">{body}</div></section>'''
-    write('experiences/index.html', page(p, 'experiences', 'تجارب ما', strip_tags(cards[0][1])[:160] if cards else '', main))
+    exp = ''.join(f'<article class="ac-card ac-exp reveal"><span class="ac-tag">تجربهٔ مشتری</span><h3>{esc(t)}</h3><div class="prose">{h}</div></article>' for t, h in cards)
+    courses = [('کنترل عفونت در اتاق عمل', 'مبانی پیشگیری از عفونت‌های بیمارستانی و نقش سیستم‌های ساکشن یک‌بارمصرف', '۶ درس'),
+               ('نصب و راه‌اندازی مخازن آبادیس', 'آموزش گام‌به‌گام نصب کیسه، مخزن و اتصالات', '۴ درس'),
+               ('مدیریت پسماند بیمارستانی', 'دفع ایمن پسماند عفونی و سازگاری با استانداردها', '۵ درس')]
+    cc = ''.join(f'<article class="ac-card ac-course reveal"><span class="ac-tag ac-tag--soon">به‌زودی · نمونه</span><h3>{t}</h3><p>{d}</p><span class="ac-meta">{n}</span></article>' for t, d, n in courses)
+    main = f'''<main id="main">
+  <section class="ac-hero"><div class="wrap">{MOCK_NOTE}
+    <h1>آکادمی <em>آبادیس</em></h1>
+    <p class="ac-lead">محل آموزش، تجربه و دانش کادر درمان درباره کنترل عفونت و سیستم‌های ساکشن.</p>
+    <div class="ac-hero-cta"><a class="btn btn-primary" href="{p}academy/login/">ورود به آکادمی</a><a class="btn btn-ghost" href="#experiences">تجارب مشتریان</a></div>
+  </div></section>
+  <section class="section" id="courses"><div class="wrap"><h2>دوره‌ها <small class="ac-ph">[محتوای نمونه — در انتظار برنامهٔ آموزشی]</small></h2><div class="ac-grid">{cc}</div></div></section>
+  <section class="section section--alt" id="experiences"><div class="wrap"><h2>تجارب ما</h2><div class="ac-grid ac-grid--2">{exp}</div></div></section>
+  <section class="section" id="faq"><div class="wrap" style="max-width:820px"><h2>پرسش‌ها</h2>
+    <details class="ac-card"><summary>آکادمی آبادیس چه زمانی راه‌اندازی می‌شود؟</summary><p class="ac-ph">[در انتظار تصمیم شرکت]</p></details>
+    <details class="ac-card"><summary>آیا شرکت در دوره‌ها گواهی دارد؟</summary><p class="ac-ph">[در انتظار تصمیم شرکت]</p></details>
+  </div></section>
+</main>'''
+    html = page(p, 'experiences', 'آکادمی آبادیس', 'آکادمی آبادیس: آموزش و تجربه کادر درمان درباره کنترل عفونت و سیستم‌های ساکشن (نسخهٔ نمایشی).', main)
+    html = re.sub(r'<main id="main">\s*<main id="main">', '<main id="main">', html).replace('</main>\n</main>', '</main>')
+    write('academy/index.html', _academy_shell(html, p, 'home'))
+    pl = '../../'
+    login = f'''<main id="main"><section class="ac-auth"><div class="wrap">
+  <div class="ac-auth-card">{MOCK_NOTE}
+    <a class="ac-brand ac-brand--lg" href="{pl}academy/">{ACADEMY_MARK}<span><b>آکادمی آبادیس</b><small>Abadis Academy</small></span></a>
+    <div class="ac-tabs" role="tablist"><button type="button" role="tab" aria-selected="true">ورود</button><button type="button" role="tab" aria-selected="false">ثبت‌نام</button></div>
+    <form class="ac-form" onsubmit="event.preventDefault();this.querySelector('.ac-out').hidden=false;" novalidate>
+      <label for="acU">شماره موبایل یا ایمیل</label><input id="acU" type="text" autocomplete="username" inputmode="email" placeholder="۰۹۱۲۰۰۰۰۰۰۰">
+      <label for="acP">رمز عبور</label><input id="acP" type="password" autocomplete="current-password">
+      <div class="ac-row"><label><input type="checkbox"> مرا به خاطر بسپار</label><a href="#" onclick="return false">فراموشی رمز</a></div>
+      <button class="btn btn-primary" type="submit">ورود</button>
+      <button class="btn btn-ghost" type="button" onclick="this.form.querySelector('.ac-out').hidden=false">ورود با کد یک‌بارمصرف (OTP)</button>
+      <p class="ac-out" hidden role="status">این صفحه نمایشی است و ورود هنوز فعال نشده است.</p>
+    </form>
+    <p class="ac-small">با ورود، <a href="#" onclick="return false">قوانین آکادمی</a> را می‌پذیرید. <span class="ac-ph">[متن قوانین: در انتظار]</span></p>
+  </div></div></section></main>'''
+    html = page(pl, 'experiences', 'ورود به آکادمی آبادیس', 'ورود به آکادمی آبادیس (نسخهٔ نمایشی)', login)
+    html = re.sub(r'<main id="main">\s*<main id="main">', '<main id="main">', html).replace('</main>\n</main>', '</main>')
+    html = html.replace('<meta name="robots" content="index', '<meta name="robots" content="noindex')
+    write('academy/login/index.html', _academy_shell(html, pl, 'login'))
+    stub = '<!doctype html><html lang="fa-IR" dir="rtl"><head><meta charset="utf-8"><meta name="robots" content="noindex"><link rel="canonical" href="../academy/"><meta http-equiv="refresh" content="0; url=../academy/#experiences"><title>آکادمی آبادیس</title></head><body><p><a href="../academy/#experiences">«تجارب ما» به آکادمی آبادیس منتقل شد</a></p><script>location.replace("../academy/#experiences")</script></body></html>'
+    write('experiences/index.html', stub)
 
 # ------------------------------------------------------------------ downloads
 def downloads(write):

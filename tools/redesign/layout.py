@@ -175,7 +175,7 @@ def page(p, cur, title, desc, main, og=None, lightbox=False, scripts='', lang='f
         guess = {
             'about': 'about/', 'products': 'products/', 'news': 'news/', 'articles': 'articles/',
             'dealers': 'dealers/', 'csr': 'csr/', 'sdgs': 'sdgs/', 'contact': 'contact/',
-            'calculator': 'calculator/', 'customers': 'customers/', 'experiences': 'experiences/',
+            'calculator': 'calculator/', 'customers': 'customers/', 'experiences': 'academy/',
             'downloads': 'downloads/', 'install': 'install-guide/', 'faq': 'faq/',
             'careers': 'careers/', 'jobs': 'jobs/',
         }.get(cur, '')

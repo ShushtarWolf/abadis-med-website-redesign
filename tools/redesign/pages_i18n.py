@@ -185,8 +185,9 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
   <section class="section"><div class="wrap prose reveal">{body}</div></section>'''
     else:
         trail = [(chip, None)]
-        main = f'''{page_hero(p, trail, esc(title), esc(desc), lang=lang)}
-  <section class="section"><div class="wrap{'' if 'id="dealerList"' in body else ' prose reveal'}">{body}</div></section>{after}'''
+        sec = f'''
+  <section class="section"><div class="wrap{'' if 'id="dealerList"' in body else ' prose reveal'}">{body}</div></section>''' if body.strip() else ''
+        main = f'''{page_hero(p, trail, esc(title), esc(desc), lang=lang)}{sec}{after}'''
     html = page(p, cur_key, title, desc, main, lang=lang, fa_path=fa_path, canonical_path=can, scripts=extra_js)
     write(rel if rel.endswith('.html') else rel + 'index.html', html)
     return rel
