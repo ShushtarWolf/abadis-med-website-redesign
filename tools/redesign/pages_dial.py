@@ -37,7 +37,7 @@ def head(p):
     return f'<link rel="stylesheet" href="{p}assets/dial/dial.css">'
 
 METHOD_FA = '''<aside class="calc-method" id="calc-method" aria-labelledby="calc-method-h">
-      <h3 id="calc-method-h">روش محاسبه، منبع و محدودیت‌ها</h3>
+      <h3 id="calc-method-h">روش محاسبه و منبع داده</h3>
       <dl>
         <div><dt>فرمول (بر اساس تعداد عمل در سال، n)</dt>
           <dd>آب = <code>n × 1.6 × 9.3</code> لیتر · هزینه = <code>n × 2.5 × 85,000</code> تومان · زمان کادر = <code>n × 1.7 × 2.2 × 7.1 ÷ 60</code> ساعت</dd></div>
@@ -45,8 +45,6 @@ METHOD_FA = '''<aside class="calc-method" id="calc-method" aria-labelledby="calc
           <dd>آب = <code>(254a + 67b) × 1.6 × 9.3</code> · هزینه = <code>(200a + 50b) × 2.5 × 85,000</code> · زمان = <code>(254a + 67b) × 1.7 × 2.2 × 7.1 ÷ 60</code></dd></div>
         <div><dt>منبع داده</dt>
           <dd>ضرایب عیناً از محاسبه‌گر فعلی سایت abadis-med.com برداشته شده‌اند. <span class="ph-data">[شرح علمی ضرایب و منبع مطالعه: در انتظار اطلاعات از شرکت]</span></dd></div>
-        <div><dt>فرض‌ها و محدودیت‌ها</dt>
-          <dd>نتیجه برآوردی است و صرفه‌جویی نسبت به شست‌وشو و ضدعفونی مخازن چندبارمصرف را نشان می‌دهد. هزینهٔ واحد ۸۵٬۰۰۰ تومان ثابت است و با تورم به‌روز نمی‌شود. بازهٔ ورودی: تا ۱۵٬۰۰۰ عمل در سال و تا ۷۰۰ تخت. شرایط هر مرکز (تعرفهٔ آب، دستمزد، پروتکل شست‌وشو) می‌تواند نتیجه را تغییر دهد.</dd></div>
       </dl>
     </aside>'''
 
@@ -66,11 +64,10 @@ def home_section():
   </section>'''
 
 def build(write):
-    import pages_calculator
     css, js, intro, c1, c2, cta = _parts()
     _assets(css, js)
     p = '../'
     cta = cta.replace('href="../contact/" target="_blank" rel="noopener"', 'href="../contact/"')
-    main = f'<div class="dp-embed dp-page">\n{intro}\n{c1}\n{c2}\n{METHOD_FA}\n{cta}\n{pages_calculator.switcher(p, "")}\n</div>'
+    main = f'<div class="dp-embed dp-page">\n{intro}\n{c1}\n{c2}\n{METHOD_FA}\n{cta}\n</div>'
     write('calculator/index.html', page(p, 'calculator', 'محاسبه‌گر صرفه‌جویی', DESC, main,
           extra_head=head(p) + f'\n<link rel="stylesheet" href="calc-page.css">', scripts=scripts(p)))

@@ -12,7 +12,6 @@ T = {
   desc='Abadis Med, a knowledge-based company: disposable suction liner bags and solutions for managing hospital fluid and infectious waste.',
   kicker='Abadis Med · a knowledge-based group', h1='The first and largest manufacturer of disposable suction liner bags',
   sub='IMED · ISO · CE certified. Suction bags in 1, 2 and 3 L with hydrophobic, dual and mechanical filters.',
-  chips=['1, 2 & 3 L suction bags', 'Hydrophobic, dual & mechanical filters', 'Solidifying gel powder', 'IMED · ISO · CE'],
   cat='Download catalogue', quote='Request a quote / export cooperation', quote_href='export/#quote',
   bag_alt='Abadis 1 L and 2 L disposable suction liner bags',
   about_eb='About us', about_h='Find out more on Abadis Med; a knowledge-based group',
@@ -21,7 +20,6 @@ T = {
   more='Read more →', about_href='about-us/', video_alt='Abadis Med knowledge-based factory', video_cap='Placeholder for the Abadis introduction video (video file pending)',
   slogan=['We affect as much as a fingertip', 'To You', 'To Nature', 'To World'],
   imp_eb='Abadis impact, right now', imp_unit='litres of water saved since 21 March 2026 (estimate)',
-  imp_note='Estimate: annual capacity of 5 million bags × 1.6 × 9.3 L (calculator coefficients).', imp_ph='[Counter basis pending company approval]',
   why_eb='Why Abadis?', why_h='The added value obtained from the production of disposable suction liner bags',
   values=[('Cost Reduction', 'Reduce costs related to cleanser, water consumption, electricity and manpower'), ('Hospital and Infectious Waste Management', 'Better collection of liquid and infectious waste'), ('Recycling', 'Reduces medical waste and preserves the environment'), ('Easy To Use', 'Eliminating activities related to tank cleaning and convenient use for collecting waste during surgery')],
   factory='Established in 2018, the Abadis Medical Equipment Knowledge-Based Factory operates with state-of-the-art machinery and highly skilled experts. With an annual production capacity of 5 million disposable suction bags, Abadis is recognized as the largest manufacturer of these products in the Middle East.',
@@ -38,7 +36,6 @@ T = {
   desc='شركة مخازن طبية آباديس المعرفية: أكياس الشفط ذات الاستعمال الواحد وحلول إدارة السوائل والنفايات المعدية في المستشفيات.',
   kicker='شركة مخازن طبية آباديس المعرفية', h1='أكياس الشفط ذات الاستعمال الواحد وحلول إدارة السوائل في المستشفيات',
   sub='حاصلة على شهادات IMED وISO وCE؛ أكياس شفط بسعة ١ و٢ و٣ لتر مع فلاتر كارهة للماء ومزدوجة وميكانيكية.',
-  chips=['أكياس شفط ١ و٢ و٣ لتر', 'فلاتر كارهة للماء ومزدوجة وميكانيكية', 'مسحوق التجلّط', 'IMED · ISO · CE'],
   cat='تحميل الكتالوج', quote='طلب سعر / تعاون تصديري', quote_href='export/#quote',
   bag_alt='أكياس الشفط آباديس ذات الاستعمال الواحد ١ و٢ لتر',
   about_eb='من نحن', about_h='اعرف أكثر عن مجموعة آباديس المعرفية',
@@ -47,7 +44,6 @@ T = {
   more='اقرأ أكثر ←', about_href='من-نحن/', video_alt='مصنع آباديس المعرفي', video_cap='مكان فيديو التعريف بآباديس (ملف الفيديو قيد الانتظار)',
   slogan=['نحن نؤثر بقدر طرف إصبع', 'عليك', 'على الطبيعة', 'على العالم'],
   imp_eb='أثر آباديس، الآن', imp_unit='لتر من الماء تم توفيره منذ ٢١ مارس ٢٠٢٦ (تقديري)',
-  imp_note='تقدير: الطاقة الإنتاجية السنوية ٥ ملايين كيس × ١٫٦ × ٩٫٣ لتر (معاملات الحاسبة).', imp_ph='[أساس العدّاد بانتظار موافقة الشركة]',
   why_eb='لماذا آباديس؟', why_h='القيم المضافة لأكياس الشفط ذات الاستعمال الواحد',
   values=[('تقليص التكاليف', 'تقليص التكاليف المتعلقة بالمنظّفات واستهلاك المياه والكهرباء واستخدام الموارد البشرية'), ('إدارة مخلفات المستشفيات والنفايات المعدية', 'تؤدي إلى تجميع النفايات السائلة والمعدية بشكل أفضل'), ('قابلة لإعادة التدوير', 'تؤدي إلى تقليل كميّة مخلفات المستشفيات والحفاظ على البيئة'), ('الاستخدام البسيط', 'التخلص من عملية غسيل الخزانات والاستخدام المريح لتجميع النفايات أثناء العمل')],
   factory='تأسست شركة مخازن طبية آباديس المعرفية في عام 2018 باستخدام أحدث المعدات والآلات وبالتعاون مع القوى المتخصصة. تُعدّ هذه الشركة أكبر منتج للحقائب السائلة ذات الاستخدام الواحد في منطقة الشرق الأوسط، بطاقة إنتاجية سنوية تصل إلى 5 مليون حقيبة سحب.',
@@ -71,7 +67,6 @@ def build_home(write, lang):
     t = T[lang]; p = '../'
     live = load('home_live_i18n.json')[lang]
     img = lambda n: f'{p}assets/img/live/{n}.webp'
-    chips = ''.join(f'<li>{esc(c)}</li>' for c in t['chips'])
     hero = f'''  <section class="hx" data-tone="dark" id="intro" aria-label="{esc(t['bag_alt'])}">
     <div class="hx-bg" aria-hidden="true"><span class="hx-grid"></span><span class="hx-ring hx-ring--a"></span><span class="hx-ring hx-ring--b"></span><span class="hx-scan"></span></div>
     <div class="wrap hx-inner">
@@ -85,8 +80,7 @@ def build_home(write, lang):
         </div>
       </div>
       <figure class="hx-product"><span class="hx-glow" aria-hidden="true"></span>
-        <img src="{p}assets/img/p/hero-bags.webp" alt="{esc(t['bag_alt'])}" width="555" height="554" decoding="async" fetchpriority="high">
-        <ul class="hx-chips">{chips}</ul></figure>
+        <img src="{p}assets/img/p/hero-bags.webp" alt="{esc(t['bag_alt'])}" width="555" height="554" decoding="async" fetchpriority="high"></figure>
     </div>
   </section>'''
     goals = ''.join(f'<li>{esc(g)}</li>' for g in t['goals'])
@@ -104,8 +98,7 @@ def build_home(write, lang):
         <p class="slogan" aria-label="{esc(' '.join(t['slogan']))}">{lines}</p></div>
       <div class="impact-counter reveal" data-impact-counter data-start="2026-03-21T00:00:00+03:30" data-per-year="74400000" data-locale="{'en-US' if lang == 'en' else 'ar-EG'}">
         <p class="eyebrow">{esc(t['imp_eb'])}</p><strong class="impact-num" aria-live="off">{zero}</strong>
-        <span class="impact-unit">{esc(t['imp_unit'])}</span>
-        <p class="impact-note">{esc(t['imp_note'])} <span class="ph-data">{esc(t['imp_ph'])}</span></p></div>
+        <span class="impact-unit">{esc(t['imp_unit'])}</span></div>
     </div></section>'''
     vals = ''.join(f'<div class="card value reveal"><h3>{esc(a)}</h3><p>{esc(b)}</p></div>' for a, b in t['values'])
     checks = ''.join(f'<li>{esc(c)}</li>' for c in t['checks'])
