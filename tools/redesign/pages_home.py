@@ -356,8 +356,6 @@ def _live(name):
 
 
 def hero_v2():
-    chips = ['کیسه ساکشن ۱، ۲ و ۳ لیتری', 'فیلتر هیدروفوبیک، دوئال و مکانیکی', 'پودر ژل‌کننده', 'IMED · ISO · CE']
-    chips_h = ''.join(f'<li>{esc(c)}</li>' for c in chips)
     return f'''  <section class="hx" data-tone="dark" id="intro" aria-label="کیسه ساکشن یکبار مصرف آبادیس">
     <div class="hx-bg" aria-hidden="true"><span class="hx-grid"></span><span class="hx-ring hx-ring--a"></span><span class="hx-ring hx-ring--b"></span><span class="hx-scan"></span></div>
     <div class="wrap hx-inner">
@@ -373,7 +371,6 @@ def hero_v2():
       <figure class="hx-product">
         <span class="hx-glow" aria-hidden="true"></span>
         <img src="assets/img/p/hero-bags.webp" alt="کیسه ساکشن یکبار مصرف ۱ و ۲ لیتری آبادیس" width="555" height="554" decoding="async" fetchpriority="high">
-        <ul class="hx-chips">{chips_h}</ul>
       </figure>
     </div>
   </section>'''
@@ -411,7 +408,6 @@ def impact_section():
         <p class="eyebrow">اثر آبادیس، همین حالا</p>
         <strong class="impact-num" aria-live="off">۰</strong>
         <span class="impact-unit">لیتر آب صرفه‌جویی‌شده از ابتدای سال ۱۴۰۵ (تخمینی)</span>
-        <p class="impact-note">برآورد: ظرفیت تولید سالانه ۵ میلیون کیسه × ۱٫۶ × ۹٫۳ لیتر (ضرایب محاسبه‌گر سایت). <span class="ph-data">[مبنای شمارنده در انتظار تأیید شرکت]</span></p>
       </div>
     </div>
   </section>'''

@@ -1017,12 +1017,6 @@ details.letter[open] summary { margin-bottom: 12px; }
 .foot-certs { width: 262px; max-width: 100%; }
 .site-footer .foot-certs img { display: block; width: 100%; height: auto; margin: 0; }
 
-/* calculator design switcher (redesign/calculator drafts) */
-.gfc-switch { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; padding: 22px 16px 30px; background: var(--bg); font-size: .86rem; }
-.gfc-switch span { color: var(--muted, #5a7578); font-weight: 700; margin-inline-start: 4px; }
-.gfc-switch a { text-decoration: none; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink); font-weight: 700; background: var(--surface); }
-.gfc-switch a[aria-current="page"] { background: var(--brand); border-color: var(--brand); color: #fff; }
-
 /* ---------- LTR (English) ---------- */
 html[dir="ltr"] .crumbs { direction: ltr; }
 html[dir="ltr"] .pcard .go,
