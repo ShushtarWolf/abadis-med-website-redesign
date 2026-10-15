@@ -46,7 +46,8 @@
     "arabic/دليل-التركيب/index.html",
     "arabic/قائمة-الممثلين/index.html",
     "arabic/مركز-التنزيل/index.html",
-    "arabic/الاخبار/index.html"
+    "arabic/الاخبار/index.html",
+    "arabic/customers/index.html"
   ],
   "source_gaps": {
     "en_missing_vs_fa": [

@@ -97,11 +97,39 @@
   }
   const menuBtn = document.querySelector('.menu-btn');
   if (menuBtn && header) {
-    const setOpen = (open) => { header.classList.toggle('open', open); menuBtn.setAttribute('aria-expanded', String(open)); };
+    const setOpen = (open) => {
+      header.classList.toggle('open', open);
+      menuBtn.setAttribute('aria-expanded', String(open));
+      if (!open) header.querySelectorAll('.nav-item.open').forEach((el) => {
+        el.classList.remove('open');
+        const t = el.querySelector('.nav-parent');
+        if (t) t.setAttribute('aria-expanded', 'false');
+      });
+    };
     menuBtn.addEventListener('click', () => setOpen(!header.classList.contains('open')));
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
     document.addEventListener('click', (e) => { if (!header.contains(e.target)) setOpen(false); });
   }
+
+  /* About-group (and any .nav-item.has-sub): toggle on click for touch / mobile hamburger */
+  document.querySelectorAll('.nav-item.has-sub > .nav-parent').forEach((parent) => {
+    const item = parent.parentElement;
+    parent.addEventListener('click', (e) => {
+      const mobile = menuBtn && getComputedStyle(menuBtn).display !== 'none';
+      if (!mobile && matchMedia('(hover: hover) and (pointer: fine)').matches) return; /* desktop hover */
+      e.preventDefault();
+      const willOpen = !item.classList.contains('open');
+      item.parentElement.querySelectorAll('.nav-item.open').forEach((el) => {
+        if (el !== item) {
+          el.classList.remove('open');
+          const t = el.querySelector('.nav-parent');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        }
+      });
+      item.classList.toggle('open', willOpen);
+      parent.setAttribute('aria-expanded', String(willOpen));
+    });
+  });
 
   /* ---------- scroll reveal ---------- */
   const rev = document.querySelectorAll('.reveal');
@@ -118,8 +146,16 @@
      grid (one pixel per tile) and redrawn as crisp square tiles with a
      thin gap. On load the tiles resolve from coarse to fine; while the
      hero scrolls away they grow coarse again. Scroll-driven only. */
+  /* Square-tile rendering is retired site-wide (Siamak, Oct 2026): any leftover .mosaic host just
+     plays its video plainly. Flip to true to bring the tiles back. */
+  const MOSAIC_TILES = false;
   function mosaic(host) {
     const video = host.querySelector('video');
+    if (!MOSAIC_TILES) {
+      host.classList.add('no-canvas');
+      if (video) { if (reduce) { video.removeAttribute('autoplay'); video.pause(); } else video.play().catch(() => {}); }
+      return;
+    }
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d', { alpha: false });
     if (!ctx || !video) { host.classList.add('no-canvas'); return; }
@@ -415,6 +451,17 @@
     });
   });
 
+  /* ---------- home: first-screen OR video — reduced motion keeps the poster; pause off-screen ---------- */
+  const orVid = document.getElementById('homeOrVideo');
+  if (orVid) {
+    if (reduce) { orVid.removeAttribute('autoplay'); orVid.pause(); }
+    else if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([e]) => {
+        if (e.isIntersecting) { const pr = orVid.play(); if (pr && pr.catch) pr.catch(() => {}); } else orVid.pause();
+      }).observe(orVid);
+    }
+  }
+
   /* ---------- home customers logo carousel (infinite marquee; track-only) ---------- */
   document.querySelectorAll('[data-logo-carousel]').forEach((root) => {
     const track = root.querySelector('.logo-carousel-track');
@@ -623,4 +670,34 @@
       window.setTimeout(() => { if (!dragging) { layout(); lastTs = 0; } }, 400);
     });
   });
+})();
+
+/* Analytics hooks (brief §6): no third-party key. Pushes to window.dataLayer and fires a
+   CustomEvent "abadis:track" so any tag manager added later can listen.
+   Events: catalogue_download, contact_click, form_submit, language_switch. */
+(function () {
+  window.dataLayer = window.dataLayer || [];
+  function track(name, data) {
+    var ev = Object.assign({ event: name, page: location.pathname }, data || {});
+    window.dataLayer.push(ev);
+    try { document.dispatchEvent(new CustomEvent('abadis:track', { detail: ev })); } catch (e) {}
+  }
+  window.abadisTrack = track;
+  function kind(a) {
+    if (a.dataset.track) return a.dataset.track;
+    var h = (a.getAttribute('href') || '').toLowerCase();
+    if (/\.pdf($|\?)/.test(h)) return 'catalogue_download';
+    if (/^(tel:|mailto:|https?:\/\/(wa\.me|api\.whatsapp\.com|t\.me))/.test(h)) return 'contact_click';
+    if (a.classList.contains('lang-link')) return 'language_switch';
+    return '';
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var k = kind(a);
+    if (!k) return;
+    var d = { href: a.getAttribute('href'), label: (a.dataset.trackLabel || a.textContent || '').trim().slice(0, 80) };
+    if (k === 'language_switch') d.lang = a.getAttribute('hreflang');
+    track(k, d);
+  }, true);
 })();

@@ -5,10 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>نجات زاگرس، مسئولیت اجتماعی آبادیس</title>
 <meta name="description" content="پویش نجات زاگرس؛ کاشت نهال بلوط در ارتفاعات زاگرس به نام آبادیس و به یاد صنعت سلامت کشور.">
-<meta name="robots" content="noindex,nofollow">
+
+
+<!-- TODO(launch): remove this robots meta when the site is published on https://abadis-med.com/ -->
+<meta name="robots" content="noindex, nofollow">
+<link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/csr/">
+<link rel="alternate" hreflang="en" href="https://abadis-med.com/en/csr/">
+<link rel="alternate" hreflang="x-default" href="https://abadis-med.com/csr/">
+<link rel="canonical" href="https://abadis-med.com/csr/">
+
+
 <meta name="theme-color" content="#e8f3f3">
 <meta name="abadis-form-endpoint" content="">
 <meta name="abadis-form-mailto" content="info@abadis-med.com">
+
+
+
+
+
+
+
+
 
 
 
@@ -35,14 +52,13 @@
 <link rel="stylesheet" href="../assets/css/site.css">
 <link rel="preload" href="../assets/img/zagros-koh.jpg" as="image">
 <link rel="stylesheet" href="./zagros-hero.css">
+<link rel="stylesheet" href="./names/wall-of-honor.css">
+<link rel="stylesheet" href="./names/mix.css">
 <link rel="preload" as="image" href="./img/hero/bg-dry.webp" type="image/webp">
 <script>if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('zh-reduced');</script>
 <noscript><style>.zh-track{height:auto}.zh-stage{position:relative}.zh-bg-green{opacity:1}.zh-canister{opacity:1;transform:translate3d(-50%,0,0)}.zh-hint{display:none}</style></noscript>
 
 
-<link rel="alternate" hreflang="fa-IR" href="/csr/">
-<link rel="alternate" hreflang="en" href="/en/csr/">
-<link rel="alternate" hreflang="x-default" href="/csr/">
 </head>
 <body>
 <a class="skip" href="#main">پرش به محتوا</a>
@@ -51,7 +67,7 @@
     <img class="lg-light" src="../assets/img/abadis-logo-teal.png" width="658" height="309" alt="مخازن طبی آبادیس">
     <img class="lg-dark" src="../assets/img/abadis-logo-on-teal.png" width="670" height="309" alt="" aria-hidden="true">
   </a>
-  <nav class="nav" id="mainNav" aria-label="منوی اصلی"><a href="../about/">آشنایی با ما</a><a href="../products/">محصولات</a><a href="../news/">آخرین اخبار</a><a href="../dealers/">لیست نمایندگان</a><a href="../sdgs/">توسعه پایدار</a><a href="../articles/">مقالات</a><a href="../contact/">ارتباط با ما</a><a href="../calculator/">محاسبه‌گر</a></nav>
+  <nav class="nav" id="mainNav" aria-label="منوی اصلی"><div class="nav-item has-sub"><a class="nav-parent" href="../about/" aria-haspopup="true" aria-expanded="false">آشنایی با ما<span class="nav-caret" aria-hidden="true"></span></a><div class="nav-sub" role="menu"><a href="../about/" role="menuitem">درباره ما</a><a href="../customers/" role="menuitem">مشتریان ما</a><a href="../dealers/" role="menuitem">لیست نمایندگان</a><a href="../sdgs/" role="menuitem">توسعه پایدار</a><a href="../careers/" role="menuitem">فرصت‌های همکاری</a></div></div><a href="../products/">محصولات</a><a href="../news/">آخرین اخبار</a><a href="../articles/">مقالات</a><a href="../csr/" aria-current="page">مسئولیت اجتماعی</a><a href="../contact/">ارتباط با ما</a></nav>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mainNav" aria-label="منو"><span class="mb-bars" aria-hidden="true"><i></i><i></i><i></i></span></button>
   <nav class="lang-switch" aria-label="زبان"><a class="lang-link" href="../csr/" hreflang="fa-IR" lang="fa-IR" title="فارسی" aria-label="فارسی" aria-current="true">FA</a><span class="lang-sep" aria-hidden="true">·</span><a class="lang-link" href="../en/csr/" hreflang="en" lang="en" title="English" aria-label="English">EN</a><span class="lang-sep" aria-hidden="true">·</span><a class="lang-link" href="../arabic/" hreflang="ar" lang="ar" title="العربية" aria-label="العربية">AR</a></nav>
   <button class="theme-toggle" type="button" aria-label="حالت نمایش" title="تغییر حالت نمایش">
@@ -90,7 +106,7 @@
           <img src="./img/hero/canister.png" alt="" width="399" height="900" decoding="async">
         </picture>
       </div>
-      <div class="zh-marks" id="zhMarks" aria-hidden="true"></div>
+      <div class="tt-tags" id="ttTags" aria-hidden="true"></div>
       <div class="zh-dusk" aria-hidden="true"></div>
       <div class="zh-veil" aria-hidden="true"></div>
       <div class="zh-exit" id="zhExit" aria-hidden="true"></div>
@@ -99,17 +115,33 @@
           <span class="chip">پویش نجات زاگرس · کاشت نهال بلوط</span>
           <h1>نجات زاگرس،‌مسئولیت اجتماعی آبادیس</h1>
           <p class="lead">کاشت نهال بلوط در ارتفاعات زاگرس؛ تا مکانی به نام آبادیس و به یاد صنعت سلامت کشور ثبت شود.</p>
-          <div class="hero-actions" style="justify-content:center"><a class="btn btn-primary" href="#story">داستان پویش</a><a class="btn btn-ghost" href="../news/16094/" style="color:var(--brand)">صفحهٔ فعلی پویش ↗</a></div>
+          <div class="hero-actions" style="justify-content:center"><a class="btn btn-primary" href="#story">داستان پویش</a>
+<a class="btn btn-ghost" href="../news/16094/" style="color:var(--brand)">صفحهٔ فعلی پویش ↗</a></div>
         </div>
       </section>
       <div class="zh-hint" id="zhHint" aria-hidden="true"><i></i></div>
+      <div class="mx-count" id="mxCount" aria-hidden="true"><b dir="ltr"><i class="wh-plus">+</i><span id="mxNum">۰</span></b> <span>مرکز درمانی</span></div>
     </div>
   </div>
 
+  <section class="wh-track" id="honor" aria-labelledby="whTitle">
+    <div class="wh-stage" id="whStage">
+      <div class="wh-head">
+        <h2 id="whTitle">مراکز درمانی همراه آبادیس</h2>
+        <p class="wh-count"><b dir="ltr"><i class="wh-plus">+</i><span id="whNum">۱٬۲۳۲</span></b> <span>مرکز درمانی</span></p>
+        <div class="wh-search" role="search">
+          <input type="search" id="whQ" placeholder="نام مرکز درمانی خود را جستجو کنید" aria-label="نام مرکز درمانی خود را جستجو کنید" autocomplete="off" enterkeyhint="search" spellcheck="false">
+          <span class="wh-res" id="whRes" aria-live="polite"></span>
+        </div>
+      </div>
+      <div class="wh-wall" id="whWall" role="list" aria-label="فهرست مراکز درمانی همراه آبادیس"></div>
+    </div>
+  </section>
+
   <section class="section" style="padding-top:0"><div class="wrap">
     <div class="glass csr-stats reveal">
-      <div class="stat"><strong>۱۰۰۰</strong><span>نهال بلوط تا اردیبهشت ۱۴۰۳</span></div>
-      <div class="stat"><strong>+۴۰۰</strong><span>مرکز درمانی؛ اعضای خانواده آبادیس</span></div>
+      <div class="stat"><strong>+۱۰۰۰</strong><span>نهال بلوط تا اردیبهشت ۱۴۰۳</span></div>
+      <div class="stat"><strong>+۱۰۰۰</strong><span>مرکز درمانی؛ اعضای خانواده آبادیس</span></div>
       <div class="stat"><strong>۸۰۰</strong><span>نفر شرکت‌کننده در همایش نجات زاگرس</span></div>
     </div>
   </div></section>
@@ -119,7 +151,7 @@
       <h2 style="margin-bottom:14px">زاگرس</h2>
       <p>جنگل‌های زاگرس به‌عنوان یکی از مهم‌ترین ذخایر اکولوژیکی کشور، طی سال‌های گذشته به دلایل متعددی از جمله آتش‌سوزی‌های گسترده، کشاورزی غیر اصولی و فعالیت‌های انسانی، دچار خسارت‌های جبران‌ناپذیری شده‌اند. طبق آمار، تنها در سال ۱۳۹۵ بیش از ۷۵ مورد آتش‌سوزی منجر به نابودی حدود ۹۵۰ هکتار از جنگل‌های زاگرس شد.</p>
       <p>همایش نجات زاگرس فرصتی است برای طرح یک راهکار عملیاتی، ویژه ی جنگل‌های زاگرس در راستای حفظ و نگهداری و احیاء جنگل های سوخته و جوان سازی جنگل های کهنسال. این راهکار از طریق کاشت هزارن نهال بلوط شروع می شود.</p>
-      <p>بدین جهت آبادیس قدم بزرگی در راستای مسئولیت اجتماعی خود برداشت و با همکاری شرکت ایده‌پردازان نواندیش فردا با نام تجاری (<span class="latin">Dpaper</span>) برای نجات زاگرس به تعداد اعضای خانواده خود که بیش از 400 مرکز درمانی می باشد؛ با کاشت بلوط در روز درختکاری اثرگذاری خود را به طبیعت اثبات کرد و تا اردیبهشت سال 1403 به تعداد 1000 عدد می‌رساند تا در ارتفاعات زاگرس مکانی به نام آبادیس و به یاد صنعت سلامت کشور ثبت شود.</p>
+      <p>بدین جهت آبادیس قدم بزرگی در راستای مسئولیت اجتماعی خود برداشت و با همکاری شرکت ایده‌پردازان نواندیش فردا با نام تجاری (<span class="latin">Dpaper</span>) برای نجات زاگرس به تعداد اعضای خانواده خود که بیش از ۱۰۰۰ مرکز درمانی می باشد؛ با کاشت بلوط در روز درختکاری اثرگذاری خود را به طبیعت اثبات کرد و تا اردیبهشت سال 1403 به تعداد 1000 عدد می‌رساند تا در ارتفاعات زاگرس مکانی به نام آبادیس و به یاد صنعت سلامت کشور ثبت شود.</p>
     </div>
   </div></section>
 
@@ -137,7 +169,7 @@
   <section class="section" style="padding-top:0"><div class="wrap" style="max-width:920px">
     <h2 class="reveal" style="margin-bottom:16px">مسیر پویش</h2>
     <div class="timeline">
-      <div class="tl reveal"><time>روز درختکاری</time><p>آغاز کاشت بلوط به تعداد اعضای خانواده آبادیس؛ بیش از 400 مرکز درمانی.</p></div>
+      <div class="tl reveal"><time>روز درختکاری</time><p>آغاز کاشت بلوط به تعداد اعضای خانواده آبادیس؛ بیش از ۱۰۰۰ مرکز درمانی.</p></div>
       <div class="tl reveal"><time>۱۵ اسفند ۱۴۰۲</time><p>همایش نجات زاگرس در مرکز همایش‌های بین‌المللی دانشگاه علم و فرهنگ، با مشارکت حدود ۸۰۰ نفر.</p></div>
       <div class="tl reveal"><time>اردیبهشت ۱۴۰۳</time><p>رساندن شمار نهال‌ها به 1000 عدد در ارتفاعات زاگرس.</p></div>
       <div class="tl reveal"><time>۳۰ تیر ۱۴۰۳</time><p>حمایت آبادیس از کارزار درخواست نجات زاگرس؛ مدیران و پرسنل آبادیس این کارزار را امضا نمودند.</p></div>
@@ -207,13 +239,15 @@
         <summary>منو</summary>
         <div class="foot-links">
           <a href="../about/">آشنایی با ما</a>
-        <a href="../products/">محصولات</a>
-        <a href="../news/">آخرین اخبار</a>
+        <a href="../customers/">مشتریان ما</a>
         <a href="../dealers/">لیست نمایندگان</a>
         <a href="../sdgs/">توسعه پایدار</a>
+        <a href="../careers/">فرصت‌های همکاری</a>
+        <a href="../products/">محصولات</a>
+        <a href="../news/">آخرین اخبار</a>
         <a href="../articles/">مقالات</a>
+        <a href="../csr/">مسئولیت اجتماعی</a>
         <a href="../contact/">ارتباط با ما</a>
-        <a href="../calculator/">محاسبه‌گر</a>
         </div>
       </details>
     </div>
@@ -221,12 +255,12 @@
       <summary>بیشتر</summary>
       <div class="foot-links">
         <a href="../customers/">مشتریان ما</a>
-        <a href="../experiences/">تجارب ما</a>
+        <a href="../academy/">آکادمی آبادیس</a>
         <a href="../downloads/">مرکز دانلود</a>
         <a href="../install-guide/">راهنمای نصب</a>
         <a href="../faq/">پرسش های متداول</a>
-        <a href="../careers/">فرصت های همکاری</a>
-        <a href="../jobs/">موقعیت های شغلی</a>
+        <a href="../sdgs/">توسعه پایدار</a>
+        <a href="../calculator/">محاسبه‌گر صرفه‌جویی</a>
         <a href="../csr/">نجات زاگرس</a>
       </div>
     </details>
@@ -251,6 +285,9 @@
 </footer>
 <script src="../assets/js/site.js" defer></script>
 <script src="./zagros-hero.js" defer></script>
+<script src="./names/names-common.js" defer></script>
+<script src="./names/mix-tags.js" defer></script>
+<script src="./names/wall-of-honor.js" defer></script>
 
 </body>
 </html>

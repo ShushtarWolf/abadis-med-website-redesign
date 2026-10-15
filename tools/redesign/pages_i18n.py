@@ -2,10 +2,10 @@
 from __future__ import annotations
 import json, pathlib, re, urllib.parse as u
 from lib import esc, best_img, SITE
-from layout import page, mosaic_hero, page_hero
+from layout import page, page_hero
 import i18n as i18n_mod
 from i18n import (
-    LANGS, NAV, clean_html, strip_tags, load_map, GAPS, DATA, meta_description,
+    LANGS, NAV, nav_flat, clean_html, strip_tags, load_map, GAPS, DATA, meta_description,
 )
 
 # Skip utility / duplicate EN-AR pages
@@ -101,6 +101,46 @@ def page_by_slug(pages, slug):
     return None
 
 
+CALC_T = {
+  'en': dict(by_s='By surgeries per year', by_b='By number of beds', n='Operations per year', a='Operating room beds', b='ICU|CCU beds',
+    cur='Cost currency', none='Hide cost', irt='IRT (toman, Iranian calculator unit cost)', custom='Custom unit cost (your currency)',
+    unit='Cost per cleaning cycle', code='Currency code (e.g. USD)', water='Water saved (litres/year)', cost='Washing & disinfection cost saved', hours='Staff time saved (hours/year)',
+    mh='Method and data source',
+    m=[('Formula (surgeries n)', 'water = n × 1.6 × 9.3 L · cost = n × 2.5 × unit cost · staff time = n × 1.7 × 2.2 × 7.1 ÷ 60 h'),
+       ('Formula (beds: OR a, ICU|CCU b)', 'water = (254a + 67b) × 1.6 × 9.3 · cost = (200a + 50b) × 2.5 × unit cost · time = (254a + 67b) × 1.7 × 2.2 × 7.1 ÷ 60'),
+       ('Data source', 'Coefficients are taken unchanged from the calculator on abadis-med.com; the Iranian unit cost is 85,000 IRT. [Scientific basis of the coefficients: pending from the company]')]),
+  'ar': dict(by_s='بحسب عدد العمليات سنوياً', by_b='بحسب عدد الأسِرّة', n='عدد العمليات الجراحية سنوياً', a='أسِرّة غرفة العمليات', b='أسِرّة ICU|CCU',
+    cur='عملة التكلفة', none='إخفاء التكلفة', irt='IRT (تومان، تكلفة الوحدة في الحاسبة الإيرانية)', custom='تكلفة وحدة مخصّصة (بعملتك)',
+    unit='تكلفة دورة التنظيف الواحدة', code='رمز العملة (مثل USD)', water='توفير الماء (لتر/سنة)', cost='توفير تكلفة الغسيل والتعقيم', hours='توفير وقت الكادر (ساعة/سنة)',
+    mh='طريقة الحساب ومصدر البيانات',
+    m=[('المعادلة (العمليات n)', 'الماء = n × 1.6 × 9.3 لتر · التكلفة = n × 2.5 × تكلفة الوحدة · الوقت = n × 1.7 × 2.2 × 7.1 ÷ 60 ساعة'),
+       ('المعادلة (الأسرّة: العمليات a، ICU|CCU b)', 'الماء = (254a + 67b) × 1.6 × 9.3 · التكلفة = (200a + 50b) × 2.5 × تكلفة الوحدة · الوقت = (254a + 67b) × 1.7 × 2.2 × 7.1 ÷ 60'),
+       ('مصدر البيانات', 'المعاملات مأخوذة دون تغيير من حاسبة موقع abadis-med.com؛ تكلفة الوحدة في إيران ٨٥٬٠٠٠ تومان. [الأساس العلمي للمعاملات: بانتظار البيانات من الشركة]')]),
+}
+
+def calc_widget(lang):
+    T = CALC_T[lang]
+    m = ''.join(f'<div><dt>{esc(k)}</dt><dd>{esc(v)}</dd></div>' for k, v in T['m'])
+    return f'''<div class="calc-i18n card" data-calc-i18n style="padding:22px">
+  <fieldset class="qf-field" style="border:0;padding:0;margin:0 0 14px"><legend class="sr-only">{esc(T['by_s'])}</legend>
+    <label><input type="radio" name="ci-mode" value="surgery" checked> {esc(T['by_s'])}</label>
+    <label><input type="radio" name="ci-mode" value="beds"> {esc(T['by_b'])}</label></fieldset>
+  <div class="qf-grid">
+    <div class="qf-field" data-mode="surgery"><label for="ci-n">{esc(T['n'])}</label><input id="ci-n" type="number" min="0" max="15000" step="100" value="1000" inputmode="numeric"></div>
+    <div class="qf-field" data-mode="beds" hidden><label for="ci-a">{esc(T['a'])}</label><input id="ci-a" type="number" min="0" max="700" value="10" inputmode="numeric"></div>
+    <div class="qf-field" data-mode="beds" hidden><label for="ci-b">{esc(T['b'])}</label><input id="ci-b" type="number" min="0" max="700" value="10" inputmode="numeric"></div>
+    <div class="qf-field"><label for="ci-cur">{esc(T['cur'])}</label><select id="ci-cur"><option value="none">{esc(T['none'])}</option><option value="IRT">{esc(T['irt'])}</option><option value="custom">{esc(T['custom'])}</option></select></div>
+    <div class="qf-field" id="ci-unit-row" hidden><label for="ci-unit">{esc(T['unit'])}</label><input id="ci-unit" type="number" min="0" step="any" inputmode="decimal"><label for="ci-code">{esc(T['code'])}</label><input id="ci-code" type="text" maxlength="3" autocomplete="off"></div>
+  </div>
+  <table class="spec-table" style="margin-top:16px" aria-live="polite"><tbody>
+    <tr><th scope="row">{esc(T['water'])}</th><td id="ci-water">0</td></tr>
+    <tr id="ci-cost-row" hidden><th scope="row">{esc(T['cost'])}</th><td id="ci-cost">0</td></tr>
+    <tr><th scope="row">{esc(T['hours'])}</th><td id="ci-hours">0</td></tr>
+  </tbody></table>
+  <aside class="calc-method"><h3>{esc(T['mh'])}</h3><dl>{m}</dl></aside>
+</div>'''
+
+
 def render_content_page(write, lang, site_path, wp, cur_key, chip):
     """Generic prose page from a WP page payload."""
     L = LANGS[lang]
@@ -116,17 +156,37 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
     raw_content = wp.get('content', {}).get('rendered', '')
     desc = meta_description(title, wp.get('excerpt', {}).get('rendered', ''), raw_content, lang)
     body = clean_html(raw_content, lang=lang, prefix=p)
+    extra_js = ''
+    if site_path in ('calculator/', 'الحوسبة/'):
+        body = calc_widget(lang)
+        desc = {'en': 'Estimate the water, washing and disinfection cost and staff time a facility saves with Abadis disposable suction bags.',
+                'ar': 'احسب تقديرياً توفير الماء وتكلفة الغسيل والتعقيم ووقت الكادر عند استخدام أكياس الشفط آباديس ذات الاستخدام الواحد.'}[lang]
+        title = {'en': 'Savings Calculator', 'ar': 'حاسبة التوفير'}[lang]
+        extra_js = f'<script src="{p}assets/js/calc-i18n.js" defer></script>\n'
+    if site_path in ('representatives/', 'قائمة-الممثلين/'):
+        from pages_company import dealers_widget
+        body = dealers_widget(lang)
+        title = {'en': 'Representatives', 'ar': 'قائمة الممثلين'}[lang]
+        desc = {'en': 'Abadis Med sales representatives across the provinces of Iran: map, contacts and addresses.',
+                'ar': 'ممثلو مبيعات آباديس في محافظات إيران: الخريطة وأرقام الاتصال والعناوين.'}[lang]
+    after = ''
+    if site_path in ('our-customers/', 'customers/'):
+        from pages_company import customers_all
+        after = customers_all(lang)
+        if lang == 'ar':
+            title = 'عملاؤنا'; desc = 'المراكز الصحية التي تستخدم منتجات آباديس الطبية في أنحاء إيران.'
     fa_path = _fa_for(site_path, lang)
     can = root + site_path
     # home
     if site_path == '':
-        main = f'''{mosaic_hero(p, [], chip, esc(title), esc(desc), label=chip, lang=lang)}
+        main = f'''{page_hero(p, [], esc(title), esc(desc), lang=lang)}
   <section class="section"><div class="wrap prose reveal">{body}</div></section>'''
     else:
         trail = [(chip, None)]
-        main = f'''{page_hero(p, trail, esc(title), esc(desc), lang=lang)}
-  <section class="section"><div class="wrap prose reveal">{body}</div></section>'''
-    html = page(p, cur_key, title, desc, main, lang=lang, fa_path=fa_path, canonical_path=can)
+        sec = f'''
+  <section class="section"><div class="wrap{'' if 'id="dealerList"' in body else ' prose reveal'}">{body}</div></section>''' if body.strip() else ''
+        main = f'''{page_hero(p, trail, esc(title), esc(desc), lang=lang)}{sec}{after}'''
+    html = page(p, cur_key, title, desc, main, lang=lang, fa_path=fa_path, canonical_path=can, scripts=extra_js)
     write(rel if rel.endswith('.html') else rel + 'index.html', html)
     return rel
 
@@ -156,6 +216,8 @@ def build_posts(write, lang):
         title = strip_tags(wp.get('title', {}).get('rendered', ''))
         raw_content = wp.get('content', {}).get('rendered', '')
         desc = meta_description(title, wp.get('excerpt', {}).get('rendered', ''), raw_content, lang)
+        if lang == 'en' and not re.search('[A-Za-z]', desc):
+            desc = 'Abadis Medical Reservoirs (EN): ' + desc   # Persian-only EN post: keep its meta unique vs the FA article
         body = clean_html(raw_content, lang=lang, prefix=p)
         index_href = '../latest-news/' if lang == 'en' else '../الاخبار/'
         index_label = 'News' if lang == 'en' else 'الاخبار'
@@ -225,7 +287,7 @@ def build_lang(write, lang: str):
             continue
         # cur key for nav highlight
         cur = 'about'
-        for k, h, _ in NAV[lang]:
+        for k, h, _ in nav_flat(NAV[lang]):
             if h == site_path or (site_path and site_path.startswith(h.rstrip('/') + '/')):
                 cur = k; break
         if site_path.startswith('products/') or site_path in ('suction-tube/', 'كيس-الشفط/', 'أنبوب-الشفط/'):
@@ -233,6 +295,9 @@ def build_lang(write, lang: str):
         if 'news' in site_path or 'blog' in site_path or 'اخبار' in site_path:
             cur = 'news' if 'blog' not in site_path else 'articles'
         chip = LANGS[lang]['brand']
+        if site_path == '':  # home: same Alireza layout as FA (pages_home_i18n)
+            import pages_home_i18n
+            built.append(pages_home_i18n.build_home(write, lang)); continue
         rel = render_content_page(write, lang, site_path, wp, cur, chip)
         built.append(rel)
 
@@ -244,6 +309,8 @@ def build_lang(write, lang: str):
         # skip if already covered
         gaps.append(f'{lang}:unmapped:{slug}')
 
+    if lang == 'ar':  # no live AR customers page: same full list as fa/en
+        built.append(render_content_page(write, 'ar', 'customers/', {'title': {'rendered': 'عملاؤنا'}, 'content': {'rendered': ''}, 'excerpt': {'rendered': ''}}, 'customers', LANGS['ar']['brand']))
     build_posts(write, lang)
     return built, gaps
 

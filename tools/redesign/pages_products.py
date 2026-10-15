@@ -112,8 +112,35 @@ INQUIRY = '''  <section class="section" id="inquiry"><div class="wrap">
     <div class="cta-band reveal">
       <h2>آماده سفارش برای مرکز درمانی شما</h2>
       <p>برای لیست قیمت، نمونه و هماهنگی نصب با تیم فروش مخازن طبی آبادیس در تماس باشید.</p>
-      <div class="cta-actions"><a class="btn btn-light" href="tel:+982192001017">تماس با فروش</a><a class="btn btn-ghost" href="https://wa.me/989100145809" target="_blank" rel="noopener">درخواست نمونه در واتس‌اپ</a></div>
+      <div class="cta-actions"><a class="btn btn-light" href="tel:+982192001017">تماس با فروش</a><a class="btn btn-ghost" href="https://wa.me/989100145809" target="_blank" rel="noopener">درخواست نمونه در واتس‌اپ</a><a class="btn btn-ghost" href="../../export/#quote">درخواست قیمت / همکاری صادراتی</a></div>
     </div>
+  </div></section>'''
+
+UP = 'https://abadis-med.com/wp-content/uploads/'
+CAT_ALL = (UP + '2024/12/کاتالوگ-جامع-آبادیس.pdf', 'کاتالوگ جامع آبادیس (PDF)')
+DOCS = {  # real files linked from the live download centre
+    'filters': [(UP + '2022/12/Filter-catalog-Fa.pdf', 'کاتالوگ فیلترها (PDF)'), CAT_ALL],
+    'suction-tube': [(UP + '2026/01/کاتالوگ-ساکشن-تیوب-1.pdf', 'کاتالوگ ساکشن تیوب (PDF)'), CAT_ALL],
+    'stand': [(UP + '2024/02/راهنمای-نصب-مخازن-بر-روی-پایه-ترولی.pdf', 'راهنمای نصب روی پایه ترولی (PDF)'),
+              (UP + '2024/02/راهنمای-نصب-مخازن-بر-روی-پایه-پرتابل.pdf', 'راهنمای نصب روی پایه پرتابل (PDF)'),
+              (UP + '2024/02/راهنمای-نصب-مخازن-بر-روی-کنسول.pdf', 'راهنمای نصب روی کنسول (PDF)'), CAT_ALL],
+    'canister': [CAT_ALL], 'connectors': [CAT_ALL],
+    'other': [(UP + '2022/12/endotracheal-tube-holder-catalog-Fa.pdf', 'کاتالوگ نگهدارنده لوله تراشه (PDF)'),
+              (UP + '2022/12/wall-suction-catalog-Fa.pdf', 'کاتالوگ ساکشن دیواری (PDF)'), CAT_ALL],
+}
+PH = '<span class="ph-data">[در انتظار اطلاعات از شرکت]</span>'
+
+def spec_summary(p, slug, items):
+    docs = '، '.join(f'<a href="{esc(h)}" target="_blank" rel="noopener" data-track="catalogue_download">{esc(t)}</a>' for h, t in DOCS.get(slug, [CAT_ALL]))
+    models = '، '.join(f'<a href="#{esc(i["id"])}">{esc(i["title"])}</a>' for i in items)
+    rows = [('مدل‌ها', models), ('ظرفیت', PH), ('ابعاد', PH + ' (جدول‌های هر مدل در پایین صفحه)'), ('سازگاری', PH),
+            ('جنس / مواد', PH), ('لوازم جانبی', PH),
+            ('گواهی‌ها', 'گواهی‌های شرکت: IMED، ISO، CE <span class="ph-data">[پوشش این محصول در انتظار تأیید شرکت]</span>'),
+            ('کاتالوگ و راهنما', docs + ' · IFU: ' + PH)]
+    body = ''.join(f'<tr><th scope="row">{k}</th><td>{v}</td></tr>' for k, v in rows)
+    return f'''  <section class="section spec-summary" id="specs"><div class="wrap reveal">
+    <h2 style="margin-bottom:14px">مشخصات در یک نگاه</h2>
+    <table class="spec-table"><tbody>{body}</tbody></table>
   </div></section>'''
 
 def build(write):
@@ -124,11 +151,12 @@ def build(write):
             summaries[slug] = SUCTION_BAG_ITEMS; continue
         h1, items = family(path)
         summaries[slug] = [i['title'] for i in items]
-        anchors = ''.join(f'<a href="#{esc(i["id"])}">{esc(i["title"])}</a>' for i in items) + '<a href="#more">سایر محصولات</a><a href="#inquiry">استعلام</a>'
+        anchors = ''.join(f'<a href="#{esc(i["id"])}">{esc(i["title"])}</a>' for i in items) + '<a href="#specs">مشخصات</a><a href="#more">سایر محصولات</a><a href="#inquiry">استعلام</a>'
         blocks = '\n'.join(product_block(p, it, n) for n, it in enumerate(items))
         lead = '، '.join(i['title'] for i in items)
         main = (page_hero(p, [('محصولات', '../'), (h1, None)], esc(h1), esc(lead))
                 + f'\n  <nav class="anchors" aria-label="بخش‌های صفحه"><div class="wrap">{anchors}</div></nav>\n'
+                + spec_summary(p, slug, items) + '\n'
                 + f'  <section class="section"><div class="wrap">\n{blocks}\n  </div></section>\n'
                 + related(p, slug) + '\n' + INQUIRY)
         write(f'products/{slug}/index.html', page(p, 'products', h1, f'{h1} آبادیس: ' + lead, main, lightbox=True, fa_path=f'products/{slug}/'))
