@@ -15,6 +15,7 @@
 <link rel="preload" href="../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" as="image" href="../zagros-names/shared/img/hero/bg-dry-1280.webp" type="image/webp">
+<link rel="preload" as="image" href="assets/abadis-bag.webp" type="image/webp">
 <link rel="stylesheet" href="game.css">
 <script>
 (function () {
@@ -36,8 +37,9 @@
 </script>
 </head>
 <body>
-<a class="skip" href="#dock">پرش به بازی</a>
+<a class="skip" href="#stage">پرش به بازی</a>
 <div id="app" class="app" data-phase="title">
+  <canvas id="view" aria-hidden="true"></canvas>
   <header class="top" id="header">
     <a class="logo" href="../" id="logoLink">
       <img class="lg-light" src="../assets/img/abadis-logo-teal.png" width="658" height="309" alt="">
@@ -45,8 +47,14 @@
     </a>
     <p class="wordmark" id="wordmark"></p>
     <span class="spacer"></span>
-    <button class="icon-btn" id="shareBtn" type="button"></button>
-    <button class="icon-btn" id="soundBtn" type="button" aria-pressed="false"></button>
+    <button class="icon-btn" id="shareBtn" type="button" aria-label="share">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 16V5m0 0 3.5 3.5M12 5 8.5 8.5M5 13.5V19h14v-5.5"/></svg>
+    </button>
+    <button class="icon-btn" id="soundBtn" type="button" aria-pressed="false" aria-label="sound">
+      <svg class="ic-on" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 9.2h3.1L11 5.8v12.4l-3.9-3.4H4a1 1 0 0 1-1-1V10.2a1 1 0 0 1 1-1z"/><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" d="M14.2 9.3a3 3 0 0 1 0 5.4M16.5 7.2a5.6 5.6 0 0 1 0 9.6"/></svg>
+      <svg class="ic-off" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 9.2h3.1L11 5.8v12.4l-3.9-3.4H4a1 1 0 0 1-1-1V10.2a1 1 0 0 1 1-1z"/><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" d="M15 9.5l5 5M20 9.5l-5 5"/></svg>
+    </button>
+    <button class="icon-btn" id="helpBtn" type="button" aria-label="help">?</button>
     <nav class="lang-switch" aria-label="language">
       <button class="lang-link" type="button" data-lang="fa" id="lang-fa">FA</button>
       <button class="lang-link" type="button" data-lang="en" id="lang-en">EN</button>
@@ -62,11 +70,22 @@
     </button>
   </header>
 
-  <div class="stage" id="stage">
-    <canvas id="view" aria-hidden="true"></canvas>
-    <div class="hold" id="hold0" data-i="0"><img class="can" alt="" draggable="false" width="399" height="900" src="../zagros-names/shared/img/hero/canister.webp"></div>
-    <div class="hold" id="hold1" data-i="1" hidden><img class="can" alt="" draggable="false" width="399" height="900" src="../zagros-names/shared/img/hero/canister.webp"></div>
-    <p class="season" id="season"></p>
+  <p class="season" id="season"></p>
+  <p class="hint" id="hint" hidden></p>
+  <div class="case-chip" id="caseChip" hidden><img alt="" width="644" height="860" src="assets/abadis-bag.webp"><span id="caseText"></span></div>
+  <div class="hand" id="hand" hidden aria-hidden="true"><div class="hand-bob">
+    <svg viewBox="0 0 64 64"><path fill="#f4fbfb" stroke="#043e42" stroke-width="2.2" stroke-linejoin="round" d="M14 30h14V16c0-2.4 3.2-3.6 5.2-1.6l.6 1.2 7.2 14.2 3.6 3.4c2.6 3.2.6 8.2-3.4 8.8l-16 3.2c-5.2.8-10.2-2.2-11.6-7.2l-3.4-9.2c-.8-2.6 1-5.2 3.8-5.2z"/></svg>
+  </div></div>
+
+  <div class="hud" id="hud">
+    <div class="pill" id="pillWater"><span class="tank" aria-hidden="true"><i id="tankFill"></i></span><span class="txt"><span class="k" id="labWater"></span><b id="numWater">0</b></span></div>
+    <div class="pill" id="pillStaff"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.8"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M12 7.5V12l3 2"/></svg></span><span class="txt"><span class="k" id="labStaff"></span><b id="numStaff">0</b></span></div>
+    <div class="pill" id="pillChem" hidden><span class="txt"><span class="k" id="labChem"></span><b id="numChem">—</b></span></div>
+    <div class="pill" id="pillMoney"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="2.3" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span><span class="txt"><span class="k" id="labMoney"></span><b id="numMoney">0</b></span></div>
+    <button class="pill seed-pill" id="shopBtn" type="button"></button>
+  </div>
+
+  <div id="stage" class="stage">
     <div class="panel" id="titleCard">
       <img class="panel-logo" src="../assets/img/abadis-logo-teal.png" width="658" height="309" alt="">
       <p class="eyebrow" id="tagline"></p>
@@ -76,40 +95,7 @@
       <p class="have" id="haveTrees" hidden></p>
       <button class="btn" id="start" type="button"></button>
     </div>
-    <div class="panel tutor" id="tutorial" hidden>
-      <div class="dots" id="dots" aria-hidden="true"><i></i><i></i><i></i></div>
-      <h2 id="tutTitle"></h2>
-      <p id="tutBody"></p>
-      <div class="row">
-        <button class="btn btn-ghost" id="tutSkip" type="button"></button>
-        <button class="btn" id="tutNext" type="button"></button>
-      </div>
-    </div>
   </div>
-
-  <aside class="dock" id="dock">
-    <p class="hint" id="hint"></p>
-    <div class="chip" id="caseChip"></div>
-    <div class="bags" id="bags">
-      <button class="bag" type="button" data-size="1" id="bag1"><img alt="" draggable="false" src="../zagros-names/shared/img/hero/canister.webp" width="399" height="900"><span></span></button>
-      <button class="bag" type="button" data-size="2" id="bag2"><img alt="" draggable="false" src="../zagros-names/shared/img/hero/canister.webp" width="399" height="900"><span></span></button>
-      <button class="bag" type="button" data-size="3" id="bag3"><img alt="" draggable="false" src="../zagros-names/shared/img/hero/canister.webp" width="399" height="900"><span></span></button>
-    </div>
-    <div class="bins">
-      <button class="bin bin-inf" type="button" data-bin="infectious" id="binInf"></button>
-      <button class="bin" type="button" data-bin="general" id="binGen"></button>
-    </div>
-    <div class="pills">
-      <div class="pill" id="pillWater"><span class="tank" aria-hidden="true"><i id="tankFill"></i></span><span><span class="k" id="labWater"></span><b id="numWater">0</b></span></div>
-      <div class="pill" id="pillStaff"><span><span class="k" id="labStaff"></span><b id="numStaff">0</b><span class="sub" id="unitStaff"></span></span></div>
-      <div class="pill" id="pillChem" data-placeholder="true"><span><span class="k" id="labChem"></span><b>—</b></span><span class="ph-badge" id="chemBadge"></span></div>
-      <div class="pill" id="pillMoney"><span class="coin" id="coin" aria-hidden="true"></span><span><span class="k" id="labMoney"></span><b id="numMoney">0</b><span class="sub" id="subMoney"></span></span></div>
-    </div>
-    <div class="dock-row">
-      <button class="chip" id="shopBtn" type="button"></button>
-      <button class="icon-btn" id="helpBtn" type="button">?</button>
-    </div>
-  </aside>
 </div>
 
 <div class="modal" id="shop" hidden>
@@ -128,20 +114,19 @@
 </div>
 
 <div class="modal" id="milestone" hidden>
-  <div class="card" role="dialog" aria-modal="true" aria-labelledby="msKicker">
+  <div class="card ms-card" role="dialog" aria-modal="true" aria-labelledby="msKicker">
     <div class="tags" id="msTags"></div>
     <p class="eyebrow" id="msKicker"></p>
     <p class="big" id="msLitres"></p>
     <p class="unit" id="msLitreLabel"></p>
-    <p class="also" id="msAlso"></p>
-    <p class="ph-line" id="msChem"></p>
+    <p class="ms-row"><span id="msStaffK"></span><b id="msStaff"></b></p>
+    <p class="ms-row"><span id="msMoneyK"></span><b id="msMoney"></b></p>
+    <p class="ph-line" id="msChem" hidden></p>
     <div class="row">
       <a class="btn" id="msCalc" target="_blank" rel="noopener noreferrer"></a>
       <a class="btn btn-ghost" id="msZagros" target="_blank" rel="noopener noreferrer"></a>
     </div>
-    <div class="row" style="margin-top:8px">
-      <button class="btn btn-ghost" id="msClose" type="button"></button>
-    </div>
+    <button class="btn btn-ghost" id="msClose" type="button"></button>
     <p class="note" id="msNote"></p>
   </div>
 </div>

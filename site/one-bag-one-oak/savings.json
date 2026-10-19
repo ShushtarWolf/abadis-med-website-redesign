@@ -9,7 +9,8 @@
   "chemicals": {
     "placeholder": true,
     "amount": null,
-    "why": "dial-practical has no separate chemical quantity. Wash and disinfectant cost is already inside costToman (calculator label: هزینه شست‌وشو و ضدعفونی). Do not show a bottle count or a chemical volume."
+    "showCounter": false,
+    "why": "dial-practical has no separate chemical quantity. Wash and disinfectant cost is already inside costToman (calculator label: هزینه شست‌وشو و ضدعفونی). Do not show a bottle count or a chemical volume. showCounter stays false until a real figure exists."
   },
   "display": {
     "roundTotalsLikeCalculator": true,
@@ -34,8 +35,8 @@
     "sealMsSavedPerLevel": 220,
     "seedFlightMs": 820,
     "milestones": [3, 8, 15, 40],
-    "wildlifeAtTrees": { "birds": 2, "squirrel": 5, "goat": 8, "leopard": 15 },
-    "green": { "midFrom": 0, "midTo": 2, "greenFrom": 0, "greenTo": 3 },
+    "wildlifeAtTrees": { "birds": 2, "squirrel": 5, "goat": 8, "leopard": 10 },
+    "green": { "midFrom": 0, "midTo": 4, "greenFrom": 2, "greenTo": 9 },
     "streamSwaps": 4,
     "tankSwaps": 8,
     "washRetireTrees": 16,

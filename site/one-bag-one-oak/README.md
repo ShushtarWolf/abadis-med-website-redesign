@@ -21,7 +21,7 @@ Open http://localhost:8080/one-bag-one-oak/
 `savings.json` is the only place savings live.
 
 - `formula` is copied from `site/dial-practical/common/abadis-common.js` (`F.surgery`): water `1.6 * 9.3` litres, cost `2.5 * 85000` toman, staff hours `1.7 / 60 * 2.2 * 7.1`. The game multiplies those factors per completed swap and rounds totals the way the calculator does (`Math.round`).
-- `chemicals.amount` is `null` on purpose. The calculator folds wash and disinfectant into the toman figure and does not publish a bottle count or a chemical volume. The chemicals pill stays labelled as a placeholder.
+- `chemicals.amount` is `null` and `chemicals.showCounter` is `false`. The calculator folds wash and disinfectant into the toman figure and does not publish a bottle count. The chemicals pill stays hidden until `showCounter` is true and `amount` is a real figure. Unlabeled bottles in the old-way vignette are a picture only.
 - `gameRules` (bag-size cycle, bins, seed prices, night shift, when the view greens) is pacing, not a hospital statistic. One night-shift oak uses the same per-surgery formula. The night shift plants at most one oak per `msPerTree` and never counts more than `capHours` (8) away.
 
 ## Edit links
