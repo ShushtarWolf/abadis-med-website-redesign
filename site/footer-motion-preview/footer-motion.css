@@ -4,6 +4,9 @@
    and straightens as it scrolls into view; scrolling up reverses it.
    - Modern browsers: pure CSS scroll-driven animation (animation-timeline: view()).
    - Others (e.g. older Safari): footer-motion.js sets the same transform on scroll.
+   - Phones (<=760px): footer-motion.js always drives it (same range in every browser,
+     incl. iOS Safari, plus light smoothing so a fast flick still shows the motion).
+     The CSS rule below is only the no-JS backup for phones.
    - prefers-reduced-motion: no motion at all.
    Drop-in: link this file after site.css and include footer-motion.js (defer). */
 
@@ -14,7 +17,7 @@
   backface-visibility: hidden;
 }
 @media (max-width: 760px) {
-  .site-footer { --fm-tilt: -9deg; --fm-scale: .975; } /* phones: softer */
+  .site-footer { --fm-tilt: -20deg; --fm-scale: .94; } /* phones: clearly visible */
 }
 
 @keyframes fm-footer-in {
@@ -29,6 +32,10 @@
       animation-timeline: view();
       /* flat just before the footer has fully entered (or fills the screen) */
       animation-range: entry 0% entry 92%;
+    }
+    @media (max-width: 760px) {
+      /* phones: from the footer's top edge at the screen bottom until it is ~30% from the top */
+      html:not(.fm-js) .site-footer { animation-range: cover 0% cover 70svh; }
     }
   }
   html.fm-js .site-footer { will-change: transform; }
