@@ -396,12 +396,71 @@ def about_v2():
   </section>'''
 
 
+# Approved scroll-growth emblem (animator/logo-scroll, animation B). The SVG is the complete
+# static mark: logo-scroll.js hides and draws it only when GSAP loaded and motion is allowed.
+IMPACT_MARK = (
+    '<svg class="impact-mark logo-grow" aria-hidden="true" focusable="false" viewBox="60 -10 760 820" xmlns="http://www.w3.org/2000/svg">'
+    '<g fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round">'
+    '<path class="leaf l0" pathLength="1" d="M400 625 C380 520 300 440 185 470"/>'
+    '<path class="leaf l1" pathLength="1" d="M405 625 C420 480 500 390 612 378"/>'
+    '<path class="leaf l2" pathLength="1" d="M395 615 Q350 560 262 522"/>'
+    '<path class="leaf l3" pathLength="1" d="M410 612 Q450 530 528 500"/>'
+    '<path class="stem" pathLength="1" d="M405 625 L405 75"/>'
+    '<path class="br b0" style="--i:0" pathLength="1" d="M405 140 L447 93"/>'
+    '<path class="br b1" style="--i:1" pathLength="1" d="M405 205 L350 150"/>'
+    '<path class="br b2" style="--i:2" pathLength="1" d="M405 285 L465 230"/>'
+    '<path class="br b3" style="--i:3" pathLength="1" d="M405 330 L322 248"/>'
+    '<path class="br b4" style="--i:4" pathLength="1" d="M405 395 L485 325"/>'
+    '<path class="br b5" style="--i:5" pathLength="1" d="M405 455 L318 378"/>'
+    '<path class="arc a0 inner" style="--i:0" pathLength="1" d="M225 248 A228 228 0 1 0 555 245"/>'
+    '<path class="arc a1 mid" style="--i:1" pathLength="1" d="M210 160 A307 307 0 0 0 112 525"/>'
+    '<path class="arc a2 mid" style="--i:2" pathLength="1" d="M603 183 A304 304 0 0 1 390 708"/>'
+    '<path class="arc a3 outer" style="--i:3" pathLength="1" d="M392 18 A386 386 0 0 0 185 728"/>'
+    '<path class="arc a4 outer" style="--i:4" pathLength="1" d="M535 45 A386 386 0 0 1 725 212"/>'
+    '<path class="arc a5 outer" style="--i:5" pathLength="1" d="M775 402 A383 383 0 0 1 390 782"/>'
+    '</g><g fill="currentColor">'
+    '<circle class="dot bd" style="--i:0;transform-origin:447px 93px" cx="447" cy="93" r="20"/>'
+    '<circle class="dot bd" style="--i:1;transform-origin:350px 150px" cx="350" cy="150" r="20"/>'
+    '<circle class="dot bd" style="--i:2;transform-origin:465px 230px" cx="465" cy="230" r="20"/>'
+    '<circle class="dot bd" style="--i:3;transform-origin:322px 248px" cx="322" cy="248" r="20"/>'
+    '<circle class="dot bd" style="--i:4;transform-origin:485px 325px" cx="485" cy="325" r="20"/>'
+    '<circle class="dot bd" style="--i:5;transform-origin:318px 378px" cx="318" cy="378" r="20"/>'
+    '<circle class="dot ad inner" style="--i:0;transform-origin:225px 248px" cx="225" cy="248" r="20"/>'
+    '<circle class="dot ad inner" style="--i:1;transform-origin:555px 245px" cx="555" cy="245" r="20"/>'
+    '<circle class="dot ad mid" style="--i:2;transform-origin:210px 160px" cx="210" cy="160" r="20"/>'
+    '<circle class="dot ad mid" style="--i:3;transform-origin:112px 525px" cx="112" cy="525" r="20"/>'
+    '<circle class="dot ad mid" style="--i:4;transform-origin:603px 183px" cx="603" cy="183" r="20"/>'
+    '<circle class="dot ad mid" style="--i:5;transform-origin:390px 708px" cx="390" cy="708" r="20"/>'
+    '<circle class="dot ad outer" style="--i:6;transform-origin:392px 18px" cx="392" cy="18" r="20"/>'
+    '<circle class="dot ad outer" style="--i:7;transform-origin:185px 728px" cx="185" cy="728" r="20"/>'
+    '<circle class="dot ad outer" style="--i:8;transform-origin:535px 45px" cx="535" cy="45" r="20"/>'
+    '<circle class="dot ad outer" style="--i:9;transform-origin:725px 212px" cx="725" cy="212" r="20"/>'
+    '<circle class="dot ad outer" style="--i:10;transform-origin:775px 402px" cx="775" cy="402" r="20"/>'
+    '<circle class="dot ad outer" style="--i:11;transform-origin:390px 782px" cx="390" cy="782" r="20"/>'
+    '</g></svg>'
+)
+GSAP_SRC = 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js'
+SCROLL_SRC = 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js'
+
+
+def logo_scroll_scripts(prefix='', existing=''):
+    """GSAP 3.12.5 + ScrollTrigger + logo-scroll.js. Skip GSAP when the page already loads it."""
+    tags = []
+    low = existing.lower()
+    if 'gsap' not in low:
+        tags.append(f'<script src="{GSAP_SRC}" defer></script>')
+        tags.append(f'<script src="{SCROLL_SRC}" defer></script>')
+    if 'logo-scroll.js' not in existing:
+        tags.append(f'<script src="{prefix}assets/js/logo-scroll.js" defer></script>')
+    return ('\n'.join(tags) + '\n') if tags else ''
+
+
 def impact_section():
     lines = ''.join(f'<span class="slogan-line" style="--i:{i}">{esc(t)}</span>' for i, t in enumerate(SLOGAN))
     return f'''  <section class="section deep impact" id="impact">
     <div class="wrap impact-inner">
       <div class="impact-slogan reveal">
-        <img class="impact-mark" src="{_live('312a8bc365')}" alt="" width="1024" height="202" aria-hidden="true" loading="lazy">
+        {IMPACT_MARK}
         <p class="slogan" aria-label="{esc(' '.join(SLOGAN))}">{lines}</p>
       </div>
       <div class="impact-counter reveal" data-impact-counter data-start="2026-03-21T00:00:00+03:30" data-per-year="74400000">
@@ -502,7 +561,7 @@ def build(write):
     ])
     extra_head = '''<link rel="preload" as="image" href="assets/img/p/hero-bags.webp" type="image/webp">
 <link rel="stylesheet" href="assets/css/home.css">'''
-    scripts = '<script src="assets/js/home-impact.js" defer></script>\n'
+    scripts = logo_scroll_scripts('') + '<script src="assets/js/home-impact.js" defer></script>\n'
     html = page(
         '', None, HOME_TITLE, HOME_DESC, main,
         fa_path='', canonical_path='',

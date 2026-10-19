@@ -94,7 +94,7 @@ def build_home(write, lang):
     lines = ''.join(f'<span class="slogan-line" style="--i:{i}">{esc(s)}</span>' for i, s in enumerate(t['slogan']))
     zero = '0' if lang == 'en' else '٠'
     impact = f'''  <section class="section deep impact" id="impact"><div class="wrap impact-inner">
-      <div class="impact-slogan reveal"><img class="impact-mark" src="{img('312a8bc365')}" alt="" width="1024" height="202" aria-hidden="true" loading="lazy">
+      <div class="impact-slogan reveal">{H.IMPACT_MARK}
         <p class="slogan" aria-label="{esc(' '.join(t['slogan']))}">{lines}</p></div>
       <div class="impact-counter reveal" data-impact-counter data-start="2026-03-21T00:00:00+03:30" data-per-year="74400000" data-locale="{'en-US' if lang == 'en' else 'ar-EG'}">
         <p class="eyebrow">{esc(t['imp_eb'])}</p><strong class="impact-num" aria-live="off">{zero}</strong>
@@ -148,6 +148,6 @@ def build_home(write, lang):
     if lang == 'en': main = main.replace('←', '→')
     extra_head = f'<link rel="preload" as="image" href="{p}assets/img/p/hero-bags.webp" type="image/webp">\n<link rel="stylesheet" href="{p}assets/css/home.css">'
     html = page(p, None, t['title'], t['desc'], main, lang=lang, fa_path='', canonical_path=t['root'],
-                extra_head=extra_head, scripts=f'<script src="{p}assets/js/home-impact.js" defer></script>\n', main_class='home-page', body_class='home', lightbox=True)
+                extra_head=extra_head, scripts=H.logo_scroll_scripts(p) + f'<script src="{p}assets/js/home-impact.js" defer></script>\n', main_class='home-page', body_class='home', lightbox=True)
     write(t['root'] + 'index.html', html)
     return t['root'] + 'index.html'

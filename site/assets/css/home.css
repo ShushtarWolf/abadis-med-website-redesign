@@ -355,6 +355,9 @@ body.home .zh-exit {
 .video-slot figcaption { position: absolute; inset-inline: 12px; bottom: 12px; padding: 6px 12px; border-radius: 10px; background: rgba(1,41,43,.72); color: #e8f3f3; font-size: .88rem; text-align: center; }
 .impact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
 .impact-mark { width: 120px; height: auto; object-fit: cover; object-position: left; aspect-ratio: 1; filter: brightness(0) invert(1); opacity: .9; }
+/* Scroll-growth emblem (approved animation B). currentColor follows --on-deep in light, dark and noir. */
+.impact-mark.logo-grow { display: block; width: 120px; height: 120px; aspect-ratio: 1; filter: none; opacity: .92; color: var(--on-deep); overflow: visible; }
+.logo-grow path, .logo-grow circle { will-change: stroke-dashoffset, transform; }
 .slogan { margin: 14px 0 0; font-size: clamp(1.4rem, 3vw, 2.2rem); font-weight: 900; line-height: 1.7; }
 .slogan-line { display: block; opacity: 0; transform: translateY(14px); transition: opacity .7s ease, transform .7s ease; transition-delay: calc(var(--i) * .25s); }
 .reveal.in .slogan-line, .reveal.is-in .slogan-line, .reveal.visible .slogan-line { opacity: 1; transform: none; }
