@@ -10,7 +10,7 @@
     { u: 0.72, v: 0.78, s: 0.94 }, { u: 0.84, v: 0.67, s: 0.78 },
     { u: 0.27, v: 0.88, s: 1.12 }, { u: 0.66, v: 0.88, s: 1.06 }
   ];
-  var STAGE_H = [0.20, 0.32, 0.44, 0.56];
+  var STAGE_H = [0.30, 0.40, 0.50, 0.62];
   var SRC = {
     dry: '../zagros-names/shared/img/hero/bg-dry-1280.webp',
     mid: '../zagros-names/shared/img/hero/bg-mid-1280.webp',
@@ -930,12 +930,12 @@
     var two = !!(state && state.upgrades && state.upgrades.second);
     var win, table, wash, holds;
     if (!wide) {
-      win = { x: w * 0.045, y: h * 0.018, w: w * 0.91, h: h * 0.50 };
-      table = { x: w * 0.2, y: win.y + win.h - h * 0.012, w: w * 0.6, h: h * 0.055 };
-      wash = { x: w * 0.03, y: h * 0.66, w: w * 0.22, h: h * 0.28 };
-      var hw = two ? w * 0.3 : w * 0.36;
-      var hh = h * 0.34;
-      var hy = h * 0.56;
+      win = { x: w * 0.035, y: h * 0.01, w: w * 0.93, h: h * 0.58 };
+      table = { x: w * 0.22, y: win.y + win.h - 4, w: w * 0.56, h: Math.max(10, h * 0.045) };
+      wash = { x: w * 0.02, y: h * 0.68, w: w * 0.2, h: h * 0.28 };
+      var hw = two ? w * 0.26 : w * 0.3;
+      var hh = h * 0.3;
+      var hy = h * 0.60;
       holds = two
         ? [{ x: w * 0.24, y: hy, w: hw, h: hh }, { x: w * 0.56, y: hy, w: hw, h: hh }]
         : [{ x: w * 0.4, y: hy, w: hw, h: hh }, { x: 0, y: 0, w: 0, h: 0 }];
@@ -1149,7 +1149,7 @@
     ghostK += (wantGhost - ghostK) * (reduced() ? 1 : 0.08);
     if (ghostK > 0.03) {
       ctx.save();
-      ctx.globalAlpha = ghostK * 0.4;
+      ctx.globalAlpha = ghostK * 0.55;
       var gx0 = wash.x + wash.w + 8;
       var gy0 = wash.y + 6;
       drawPerson(ctx, gx0, gy0 + 36, Math.min(w, h) / 640, pal.person, 0.05);
@@ -1426,7 +1426,8 @@
     get fps() { return fps; },
     get state() { return state; },
     get events() { return events; },
-    get per() { return per; }
+    get per() { return per; },
+    applyNight: function () { return applyNight(); }
   };
 
   function boot() {

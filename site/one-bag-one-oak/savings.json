@@ -35,7 +35,7 @@
     "seedFlightMs": 820,
     "milestones": [3, 8, 15, 40],
     "wildlifeAtTrees": { "birds": 2, "squirrel": 5, "goat": 8, "leopard": 15 },
-    "green": { "midFrom": 0, "midTo": 3, "greenFrom": 2, "greenTo": 6 },
+    "green": { "midFrom": 0, "midTo": 2, "greenFrom": 0, "greenTo": 3 },
     "streamSwaps": 4,
     "tankSwaps": 8,
     "washRetireTrees": 16,
