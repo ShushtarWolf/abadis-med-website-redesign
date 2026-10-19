@@ -37,6 +37,8 @@
   var drag = null;
   var lastCoin = -1;
   var seedsFly = [];
+  var round = null;
+  var oldT = null;
   var reduceMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   var app = document.getElementById('app');
@@ -51,6 +53,7 @@
   var handEl = document.getElementById('hand');
   var live = document.getElementById('live');
   var toastEl = document.getElementById('toast');
+  var compareEl = document.getElementById('compare');
 
   var mist = [];
   for (var mi = 0; mi < 16; mi++) {
@@ -96,7 +99,7 @@
     return {
       v: 1, trees: 0, seeds: 0, water: 0, cost: 0, hours: 0, swaps: 0, cursor: 0,
       upgrades: { second: false, sealer: 0, lamp: 0, wildlife: 0 },
-      seen: [], tutorialDone: false, started: false, lastSeen: 0, retired: false
+      seen: [], tutorialDone: false, started: false, lastSeen: 0, retired: false, rounds: 0, switched: false
     };
   }
   function loadState() {
@@ -107,7 +110,7 @@
       var s = Object.assign(base, raw);
       s.upgrades = Object.assign(fresh().upgrades, raw.upgrades || {});
       s.seen = Array.isArray(raw.seen) ? raw.seen : [];
-      ['trees', 'seeds', 'water', 'cost', 'hours', 'swaps', 'cursor'].forEach(function (k) {
+      ['trees', 'seeds', 'water', 'cost', 'hours', 'swaps', 'cursor', 'rounds'].forEach(function (k) {
         if (!isFinite(s[k]) || s[k] < 0) s[k] = 0;
       });
       return s;
@@ -151,6 +154,7 @@
     return p;
   }
   function noteRetired() {
+    return;
     if (state.trees >= cfg.gameRules.washRetireTrees && !state.retired) {
       state.retired = true;
       save();
@@ -197,34 +201,97 @@
     noteRetired();
   }
 
-  function slots() { return state.upgrades.second ? 2 : 1; }
-  function makeCase() {
-    var types = cfg.gameRules.surgeryTypes;
-    var type = types[state.cursor % types.length];
-    state.cursor += 1;
-    save();
-    return {
-      id: ++caseSeq, type: type.id, size: type.sizeL, phase: 'lift',
-      clean: true, bonus: false, t0: 0, reward: null, flying: false,
-      used: state.swaps === 0 ? 'jar' : 'bag', usedSize: lastSize
-    };
+  function slots() { return 1; }
+  function roomMode(i) { return i === 0 && !state.switched ? 'old' : 'abadis'; }
+  function makeCase(size, type) {
+    return { id: ++caseSeq, type: type, size: size, phase: 'lift', clean: true, bonus: false, t0: 0, reward: null, flying: false, used: 'bag', usedSize: lastSize };
   }
-  function ensureCases() {
-    if (!state.upgrades.second) cases[1] = null;
-    var n = slots();
-    for (var i = 0; i < n; i++) if (!cases[i]) cases[i] = makeCase();
+  function startRound() {
+    if (!titleCard.hidden || round) return;
+    var types = cfg.gameRules.surgeryTypes, type = types[state.cursor % types.length];
+    state.cursor += 1; save();
+    var wasOld = roomMode(0) === 'old';
+    round = { stage: 0, size: type.sizeL, type: type.id, t0: performance.now(), tA: 0, tB: 0, t1: 0, wasOld: wasOld };
+    cases[0] = null; cases[1] = null;
+    if (wasOld) oldT = { old: true, phase: 'carry', prog: 0, rev: 0, t0: performance.now(), type: type.id, size: type.sizeL, fill: 0, rinse: 0, pour: 0, holding: false };
+    else { oldT = null; cases[0] = makeCase(type.sizeL, type.id); }
+    renderChrome();
   }
-  function primary() {
-    var order = ['lift', 'bin', 'place', 'seal', 'sprout'];
-    for (var p = 0; p < order.length; p++) {
-      for (var i = 0; i < cases.length; i++) {
-        if (cases[i] && cases[i].phase === order[p]) return cases[i];
-      }
+  function ensureCases() { if (titleCard.hidden && !round) startRound(); }
+  function roomTask(i) {
+    if (!round) return null;
+    if (i === 0) return round.wasOld ? oldT : cases[0];
+    return cases[1];
+  }
+  function primary() { return round ? roomTask(round.stage) : null; }
+  var OLD_NEXT = { carry: 'fill', fill: 'chem', chem: 'scrub', scrub: 'rinse', rinse: 'dry', dry: 'hang', hang: 'done' };
+  function oldAdvance() {
+    if (!oldT || oldT.phase === 'done') return;
+    oldT.phase = OLD_NEXT[oldT.phase]; oldT.prog = 0; oldT.rev = 0; oldT.holding = false; oldT.t0 = performance.now();
+    audio.click();
+    if (oldT.phase === 'done') finishRoom(0);
+    renderChrome();
+  }
+  function rubCount() {
+    if (!oldT || (oldT.phase !== 'scrub' && oldT.phase !== 'dry')) return;
+    var need = oldT.phase === 'scrub' ? 8 : 4;
+    oldT.rev += 1; oldT.prog = oldT.rev / need;
+    audio.rub();
+    if (oldT.rev >= need) oldAdvance();
+  }
+  function finishRoom(i) {
+    if (!round) return;
+    var now = performance.now();
+    if (i === 0) {
+      round.tA = now - round.t0; round.stage = 1; round.t1 = now;
+      cases[1] = makeCase(round.size, round.type);
+      renderChrome();
+      return;
     }
-    return null;
+    round.tB = now - round.t1;
+    state.rounds = (state.rounds || 0) + 1; save();
+    var r = round;
+    if (r.wasOld) openCompare(r);
+    else { round = null; setTimeout(function () { if (!round) startRound(); }, 650); }
+  }
+  function openCompare(r) {
+    clearDrag();
+    var secs = function (ms) { return formatNum(Math.max(1, Math.round(ms / 1000)), 0) + ' ' + t('sec'); };
+    var bottle = function (full) {
+      return '<svg viewBox="0 0 24 32" class="cmp-bottle" aria-hidden="true"><rect x="9" y="1" width="6" height="5" rx="1" fill="' + (full ? '#d0453d' : '#c9cfd0') + '"/><rect x="5" y="6" width="14" height="24" rx="4" fill="#fff" stroke="#9fb3b4"/>' +
+        (full ? '<rect x="6.5" y="9" width="11" height="19.5" rx="3" fill="#7fc8d6"/><rect x="5" y="15" width="14" height="5" fill="#d0453d"/>' : '<rect x="6.5" y="25" width="11" height="3.5" rx="1.5" fill="#7fc8d6" opacity=".6"/>') + '</svg>';
+    };
+    var rows = [
+      [t('cmpTime'), secs(r.tA), secs(r.tB)],
+      [t('cmpWater'), formatNum(per.water, 1) + ' ' + t('litre'), t('cmpNone')],
+      [t('cmpStaff'), staffText(per.hours), t('cmpNone')],
+      [t('cmpChem'), bottle(false) + '<span>' + t('cmpUsed') + '</span>', bottle(true) + '<span>' + t('cmpNotUsed') + '</span>'],
+      [t('cmpMoney'), moneyText(per.cost), t('cmpNone')]
+    ];
+    var grid = document.getElementById('cmpGrid');
+    grid.innerHTML = '<span></span><b class="h old">' + t('cmpOld') + '</b><b class="h new">' + t('cmpNew') + '</b>' +
+      rows.map(function (rw) { return '<span class="k">' + rw[0] + '</span><span class="v old">' + rw[1] + '</span><span class="v new">' + rw[2] + '</span>'; }).join('');
+    var sw = document.getElementById('cmpSwitch');
+    sw.hidden = !!state.switched || (state.rounds || 0) < (cfg.gameRules.switchAfterRounds || 3);
+    compareEl.hidden = false;
+    document.getElementById('cmpNext').focus();
+    track('compare', { tA: Math.round(r.tA), tB: Math.round(r.tB), rounds: state.rounds });
+    renderChrome();
+  }
+  function closeCompare(doSwitch) {
+    compareEl.hidden = true;
+    if (doSwitch && !state.switched) {
+      state.switched = true; R.switchT = performance.now(); save();
+      track('switch_room', { rounds: state.rounds });
+      toast(t('switched'));
+    }
+    round = null;
+    renderChrome();
+    pumpMilestone();
+    startRound();
   }
   function busy() {
-    return !titleCard.hidden || !milestone.hidden || !shop.hidden;
+    return !titleCard.hidden || !milestone.hidden || !shop.hidden || !compareEl.hidden;
   }
   function setHint(key, vars) {
     hint = { key: key, vars: vars || {} };
@@ -236,6 +303,7 @@
     if (!titleCard.hidden) { hintEl.hidden = true; return; }
     var p = primary();
     if (!p) setHint('hintIdle');
+    else if (p.old) setHint({ carry: 'hCarry', fill: 'hFill', chem: 'hChem', scrub: 'hScrub', rinse: 'hRinse', dry: 'hDry', hang: 'hHang', done: 'hHang' }[p.phase]);
     else if (p.phase === 'lift') setHint('hintLift');
     else if (p.phase === 'bin') setHint('hintBin');
     else if (p.phase === 'place') setHint('hintPlace', { n: formatNum(p.size, 0) });
@@ -247,7 +315,7 @@
   }
 
   var audio = (function () {
-    var actx, master, started = false;
+    var actx, master, started = false, wsrc = null, wg = null;
     function ensure() {
       if (actx) return;
       var AC = window.AudioContext || window.webkitAudioContext;
@@ -313,6 +381,19 @@
         g.gain.exponentialRampToValueAtTime(0.06, actx.currentTime + 0.03);
         g.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime + 0.34);
         o.connect(g); g.connect(master); o.start(); o.stop(actx.currentTime + 0.38);
+      },
+      rub: function () { blip(240 + Math.random() * 80, 0.05, 'triangle', 0.03); },
+      pour: function () { [0, 180, 360, 540].forEach(function (d) { setTimeout(function () { blip(200 + Math.random() * 60, 0.09, 'sine', 0.04); }, d); }); },
+      water: function (on) {
+        if (!actx || !master) return;
+        if (on && !wsrc) {
+          var len = actx.sampleRate, buf = actx.createBuffer(1, len, actx.sampleRate), d = buf.getChannelData(0);
+          for (var i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+          wsrc = actx.createBufferSource(); wsrc.buffer = buf; wsrc.loop = true;
+          var f = actx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 1400; f.Q.value = 0.7;
+          wg = actx.createGain(); wg.gain.value = 0.05;
+          wsrc.connect(f); f.connect(wg); wg.connect(master); wsrc.start();
+        } else if (!on && wsrc) { try { wsrc.stop(); } catch (e) {} wsrc = null; }
       },
       softNo: function () { blip(170, 0.12, 'triangle', 0.05); },
       milestone: function () { [523.25, 659.25, 783.99, 1046.5].forEach(function (f, i) { setTimeout(function () { blip(f, 0.5, 'sine', 0.05); }, i * 120); }); }
@@ -398,6 +479,8 @@
     document.getElementById('msZagros').textContent = t('msZagros');
     document.getElementById('msClose').textContent = t('msClose');
     document.getElementById('msNote').textContent = t('msNote');
+    ['cmpKicker', 'cmpTitle', 'cmpNote', 'cmpNext', 'cmpSwitch', 'cmpCalc'].forEach(function (id) { document.getElementById(id).textContent = t(id); });
+    if (cfg && cfg.links) document.getElementById('cmpCalc').href = cfg.links.calculator;
     if (cfg && cfg.links) {
       document.getElementById('msCalc').href = cfg.links.calculator;
       document.getElementById('msZagros').href = cfg.links.zagros;
@@ -424,9 +507,10 @@
   function renderChrome() {
     var p = primary();
     app.dataset.phase = titleCard.hidden ? (p ? p.phase : 'idle') : 'title';
+    app.dataset.room = round ? String(round.stage) : '';
     if (p && titleCard.hidden) {
       caseChip.hidden = false;
-      caseText.textContent = t('caseChip', { name: t(typeKey(p.type)), n: formatNum(p.size, 0) });
+      caseText.textContent = (round ? (roomMode(round.stage) === 'old' ? t('roomOld') : (round.stage === 0 ? t('roomNewA') : t('roomNew'))) + ' · ' : '') + t('caseChip', { name: t(typeKey(p.type)), n: formatNum(p.size, 0) });
     } else caseChip.hidden = true;
     syncHint();
     paintShop();
@@ -479,7 +563,7 @@
   }
   function pumpMilestone() {
     if (!msQueue.length) return;
-    if (!titleCard.hidden || !milestone.hidden) return;
+    if (!titleCard.hidden || !milestone.hidden || !compareEl.hidden) return;
     openMilestone(msQueue.shift());
   }
   function clearDrag() { drag = null; }
@@ -578,43 +662,27 @@
     renderChrome();
   }
   function flyMotes() {
-    if (reduced() || !currentLayout) return;
-    var targets = [
-      document.getElementById('pillWater'),
-      document.getElementById('pillStaff'),
-      document.getElementById('pillMoney')
-    ];
+    if (reduced() || !round) return;
+    var G = roomGeom(round.stage); if (!G) return;
+    var targets = [document.getElementById('pillWater'), document.getElementById('pillStaff'), document.getElementById('pillMoney')];
     var rect = canvas.getBoundingClientRect();
-    var u = currentLayout.units[0];
-    var sx = rect.left + u.footX;
-    var sy = rect.top + u.footY - u.itemH * 0.5;
+    var u = G.L.units[0];
+    var sx = rect.left + G.ox + u.footX, sy = rect.top + u.footY - u.itemH * 0.5;
     targets.forEach(function (el, i) {
       if (!el || el.hidden) return;
       var dot = document.createElement('i');
-      dot.className = 'mote';
-      dot.style.left = sx + 'px';
-      dot.style.top = sy + 'px';
+      dot.className = 'mote'; dot.style.left = sx + 'px'; dot.style.top = sy + 'px';
       document.body.appendChild(dot);
       var b = el.getBoundingClientRect();
-      setTimeout(function () {
-        dot.style.transform = 'translate(' + (b.left + b.width / 2 - sx) + 'px,' + (b.top + b.height / 2 - sy) + 'px) scale(.4)';
-        dot.style.opacity = '0.1';
-      }, 40 + i * 70);
+      setTimeout(function () { dot.style.transform = 'translate(' + (b.left + b.width / 2 - sx) + 'px,' + (b.top + b.height / 2 - sy) + 'px) scale(.4)'; dot.style.opacity = '0.1'; }, 40 + i * 70);
       setTimeout(function () { dot.remove(); }, 980);
     });
   }
-  function launchSeed(from, spotIndex, done) {
-    if (reduced() || !currentLayout) { done(); return; }
-    var sp = SPOTS[spotIndex];
-    var win = currentLayout.win;
-    seedsFly.push({
-      x: from.x, y: from.y,
-      tx: win.x + win.w * sp.u,
-      ty: win.y + win.h * sp.v,
-      t0: performance.now(),
-      done: done,
-      fired: false
-    });
+  function launchSeed(from, spotIndex, room, done) {
+    var G = roomGeom(room);
+    if (reduced() || !G) { done(); return; }
+    var sp = SPOTS[spotIndex], win = G.L.win;
+    seedsFly.push({ x: from.x, y: from.y, tx: G.ox + win.x + win.w * sp.u, ty: win.y + win.h * sp.v, t0: performance.now(), done: done, fired: false });
   }
   function toast(msg) {
     toastEl.textContent = msg;
@@ -647,52 +715,54 @@
     var r = canvas.getBoundingClientRect();
     return { x: e.clientX - r.left, y: e.clientY - r.top };
   }
+  function roomGeom(i) { return R.geom && R.geom[i]; }
+  function roomAt(x) {
+    if (!R.desk) return round ? round.stage : 0;
+    var left = x < canvas.clientWidth / 2;
+    return rtl() ? (left ? 1 : 0) : (left ? 0 : 1);
+  }
   function hitTest(x, y) {
-    var L = currentLayout;
-    if (!L || busy()) return null;
-    for (var i = 0; i < L.used.length; i++) {
-      var u = L.used[i];
-      if (u && cases[i] && (cases[i].phase === 'lift' || cases[i].phase === 'bin') && rectHit(u, x, y, 48)) {
-        return { kind: 'used', index: i };
-      }
+    if (busy() || !round) return null;
+    var i = roomAt(x), G = roomGeom(i);
+    if (!G || i !== round.stage) return null;
+    if (!R.desk && Math.abs(R.cam - round.stage) > 0.08) return null;
+    var lx = x - G.ox, L = G.L, tk = roomTask(i);
+    if (!tk) return null;
+    if (tk.old) {
+      var ph = tk.phase;
+      if (ph === 'carry' && rectHit(L.used[0], lx, y, 60)) return { kind: 'jar', from: 'unit', room: i };
+      if ((ph === 'fill' || ph === 'rinse') && rectHit(L.tapHit, lx, y, 64)) return { kind: 'hold', room: i };
+      if (ph === 'chem' && !tk.pour && rectHit(L.bottle, lx, y, 64)) return { kind: 'bottle', room: i };
+      if ((ph === 'scrub' || ph === 'dry') && rectHit(L.sinkJar, lx, y, 110)) return { kind: 'rub', room: i };
+      if (ph === 'hang' && rectHit(L.sinkJar, lx, y, 64)) return { kind: 'jar', from: 'sink', room: i };
+      return null;
     }
-    var placing = cases.some(function (c) { return c && c.phase === 'place'; });
-    if (placing) {
-      var sizes = [1, 2, 3];
-      for (var s = 0; s < sizes.length; s++) {
-        if (rectHit(L.bags[sizes[s]], x, y, 48)) return { kind: 'bag', size: sizes[s] };
-      }
+    if ((tk.phase === 'lift' || tk.phase === 'bin') && rectHit(L.used[0], lx, y, 48)) return { kind: 'used', index: i, room: i };
+    if (tk.phase === 'place') {
+      for (var s = 1; s <= 3; s++) if (rectHit(L.bags[s], lx, y, 48)) return { kind: 'bag', size: s, room: i };
     }
-    var binning = cases.some(function (c) { return c && c.phase === 'bin'; });
-    if (binning) {
-      if (rectHit(L.bins.infectious, x, y, 52)) return { kind: 'bin', bin: 'infectious' };
-      if (rectHit(L.bins.general, x, y, 52)) return { kind: 'bin', bin: 'general' };
+    if (tk.phase === 'bin' && L.bins) {
+      if (rectHit(L.bins.infectious, lx, y, 52)) return { kind: 'bin', bin: 'infectious', room: i };
+      if (rectHit(L.bins.general, lx, y, 52)) return { kind: 'bin', bin: 'general', room: i };
     }
     return null;
   }
-  function binAt(x, y) {
-    var L = currentLayout;
-    if (!L) return null;
-    if (rectHit(L.bins.infectious, x, y, 56)) return 'infectious';
-    if (rectHit(L.bins.general, x, y, 56)) return 'general';
+  function binAt(x, y, i) {
+    var G = roomGeom(i); if (!G || !G.L.bins) return null;
+    var lx = x - G.ox;
+    if (rectHit(G.L.bins.infectious, lx, y, 56)) return 'infectious';
+    if (rectHit(G.L.bins.general, lx, y, 56)) return 'general';
     return null;
   }
-  function unitAt(x, y) {
-    var L = currentLayout;
-    if (!L) return -1;
-    for (var i = 0; i < L.units.length; i++) {
-      var u = L.units[i];
-      var r = { x: u.footX - u.itemW / 2, y: u.footY - u.itemH, w: u.itemW, h: u.itemH };
-      if (rectHit(r, x, y, 64) && cases[i] && cases[i].phase === 'place') return i;
-    }
-    for (var j = 0; j < L.units.length; j++) {
-      if (cases[j] && cases[j].phase === 'place') {
-        var u2 = L.units[j];
-        var r2 = { x: u2.footX - u2.itemW / 2, y: u2.footY - u2.itemH, w: u2.itemW, h: u2.itemH };
-        if (rectHit(r2, x, y, 80)) return j;
-      }
-    }
-    return -1;
+  function nearUnit(x, y, i) {
+    var G = roomGeom(i); if (!G) return false;
+    var u = G.L.units[0];
+    return rectHit({ x: u.footX - u.itemW / 2, y: u.footY - u.itemH, w: u.itemW, h: u.itemH }, x - G.ox, y, 110);
+  }
+  function nearSink(x, y, i) {
+    var G = roomGeom(i); if (!G || !G.L.wash) return false;
+    var s = G.L.wash;
+    return rectHit({ x: s.x, y: s.top - 120, w: s.w, h: 200 }, x - G.ox, y, 60);
   }
   function onDown(e) {
     if (e.button != null && e.button !== 0) return;
@@ -700,11 +770,8 @@
     var p = localPoint(e);
     var hit = hitTest(p.x, p.y);
     if (!hit) return;
-    drag = {
-      kind: hit.kind, index: hit.index, size: hit.size, bin: hit.bin,
-      sx: e.clientX, sy: e.clientY, px: p.x, py: p.y,
-      pid: e.pointerId, moved: false
-    };
+    drag = { kind: hit.kind, index: hit.index, size: hit.size, bin: hit.bin, room: hit.room, from: hit.from, sx: e.clientX, sy: e.clientY, px: p.x, py: p.y, pid: e.pointerId, moved: false, lastX: p.x, dir: 0, acc: 0 };
+    if (hit.kind === 'hold' && oldT) { oldT.holding = true; audio.water(true); }
     try { canvas.setPointerCapture(e.pointerId); } catch (err) {}
   }
   function onMove(e) {
@@ -712,12 +779,29 @@
     var p = localPoint(e);
     drag.px = p.x; drag.py = p.y;
     if (Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy) > 8) drag.moved = true;
+    if (drag.kind === 'rub') {
+      var dx = p.x - drag.lastX; drag.lastX = p.x;
+      if (Math.abs(dx) < 0.5) return;
+      var d = dx > 0 ? 1 : -1;
+      if (drag.dir === 0) { drag.dir = d; drag.acc = Math.abs(dx); }
+      else if (d === drag.dir) drag.acc += Math.abs(dx);
+      else { if (drag.acc >= 14) rubCount(); drag.dir = d; drag.acc = Math.abs(dx); }
+    }
   }
   function onUp(e) {
     if (!drag || (e.pointerId != null && e.pointerId !== drag.pid)) return;
     var d = drag;
     drag = null;
+    if (d.kind === 'hold' && oldT) { oldT.holding = false; audio.water(false); return; }
     if (busy()) return;
+    if (d.kind === 'bottle') { if (oldT && oldT.phase === 'chem' && !oldT.pour) { oldT.pour = performance.now(); audio.pour(); } return; }
+    if (d.kind === 'rub') { if (!d.moved) rubCount(); return; }
+    if (d.kind === 'jar') {
+      if (!oldT) return;
+      if (d.from === 'unit' && oldT.phase === 'carry' && (!d.moved || nearSink(d.px, d.py, d.room))) oldAdvance();
+      else if (d.from === 'sink' && oldT.phase === 'hang' && (!d.moved || nearUnit(d.px, d.py, d.room))) oldAdvance();
+      return;
+    }
     if (d.kind === 'used') {
       var c = cases[d.index];
       if (!c) return;
@@ -727,17 +811,13 @@
         return;
       }
       if (c.phase === 'lift') c.phase = 'bin';
-      var b = binAt(d.px, d.py);
-      if (b) tryBin(d.index, b);
-      else renderChrome();
+      var b = binAt(d.px, d.py, d.room);
+      if (b) tryBin(d.index, b); else renderChrome();
     } else if (d.kind === 'bag') {
-      if (!d.moved) { tryPlace(d.size, null); return; }
-      var ui = unitAt(d.px, d.py);
-      if (ui >= 0) tryPlace(d.size, ui);
+      if (!d.moved) { tryPlace(d.size, d.room); return; }
+      if (nearUnit(d.px, d.py, d.room)) tryPlace(d.size, d.room);
     } else if (d.kind === 'bin' && !d.moved) {
-      var idx = -1;
-      for (var i = 0; i < cases.length; i++) if (cases[i] && cases[i].phase === 'bin') { idx = i; break; }
-      if (idx >= 0) tryBin(idx, d.bin);
+      if (cases[d.room] && cases[d.room].phase === 'bin') tryBin(d.room, d.bin);
     }
   }
 
@@ -803,92 +883,84 @@
     };
   }
   /* ---------- layout ---------- */
-  function computeLayout(w, h) {
-    var wide = w >= 820 && w > h;
-    var L = { w: w, h: h, wide: wide };
+  /* ---------- layout (one room, portrait-style composition) ---------- */
+  function computeLayout(w, h, mode, task, ri) {
+    var L = { w: w, h: h, wide: false, mode: mode, ri: ri };
     var flip = rtl();
-    var top = 56;
-    if (wide) {
-      var ww = Math.min(w * 0.5, (h * 0.5) * 1.75);
-      L.win = { x: (w - ww) / 2, y: top + 10, w: ww, h: h * 0.5 };
-      L.floorY = h * 0.67;
-      L.table = { cx: w * 0.57, top: L.floorY - 20, w: Math.min(460, w * 0.32) };
-      L.lamp = { x: L.win.x + L.win.w * 0.1, y: L.win.y + L.win.h * 0.16, r: Math.min(92, h * 0.11) };
-      L.monitor = { x: w * 0.87 - Math.min(150, w * 0.11) / 2, y: top + 14, w: Math.min(150, w * 0.11), h: Math.min(96, w * 0.07) };
-      L.cabinet = { x: w * 0.035, y: top + 22, w: w * 0.17, h: h * 0.3 };
-      L.sink = { x: w * 0.035, top: L.floorY - h * 0.15, w: w * 0.17, bottom: L.floorY + 12 };
-      L.unitBase = { x: w * 0.87, regY: top + 14 + Math.min(96, w * 0.07) + 130, footY: L.floorY + 10, itemH: 0 };
-      L.trayBox = { x: w * 0.15, foot: h - 130, w: Math.min(380, w * 0.27) };
-      L.binBox = { x: w * 0.6, foot: h - 64, bw: Math.min(112, w * 0.08), bh: Math.min(146, w * 0.105), gap: 26 };
-      L.washerHome = { x: L.sink.x + L.sink.w * 0.62, y: L.floorY + 26, s: h * 0.3 };
-      L.nurse = { x: L.table.cx - L.table.w * 0.6, y: L.floorY + 44, s: h * 0.28 };
-    } else {
-      L.win = { x: w * 0.06, y: top + 6, w: w * 0.88, h: Math.min(h * 0.37, w * 0.95) };
-      L.floorY = L.win.y + L.win.h + h * 0.24;
-      L.table = { cx: w * 0.44, top: L.win.y + L.win.h + h * 0.12, w: w * 0.5 };
-      L.lamp = { x: w * 0.36, y: L.win.y + L.win.h + 10, r: Math.min(46, w * 0.12) };
-      L.monitor = { x: w * 0.2, y: L.win.y + L.win.h + 22, w: w * 0.21, h: w * 0.14, stand: true };
-      L.cabinet = null;
-      L.sink = { x: -4, top: L.floorY - h * 0.105, w: w * 0.24, bottom: L.floorY + 8 };
-      L.unitBase = { x: w * 0.83, regY: L.win.y + L.win.h + 40, footY: L.floorY + 6, itemH: 0 };
-      L.trayBox = { x: w * 0.03, foot: h - 120, w: w * 0.5 };
-      L.binBox = { x: w * 0.6, foot: h - 66, bw: w * 0.165, bh: w * 0.215, gap: w * 0.04 };
-      L.washerHome = { x: L.sink.x + L.sink.w * 0.6, y: L.floorY + 14, s: h * 0.2 };
-      L.nurse = { x: L.table.cx + L.table.w * 0.42, y: L.floorY + 26, s: h * 0.21 };
-    }
-    var n = titleCard.hidden ? slots() : 1;
-    var maxBag0 = wide ? Math.min(176, h * 0.21) : Math.min(98, h * 0.112);
+    var top = 56, sc = Math.min(1, h / 844 * 1.05);
+    L.win = { x: w * 0.06, y: top + 6, w: w * 0.88, h: Math.min(h * 0.37, w * 0.95) };
+    L.floorY = L.win.y + L.win.h + h * 0.24;
+    L.table = { cx: w * 0.44, top: L.win.y + L.win.h + h * 0.12, w: w * 0.5 };
+    L.lamp = { x: w * 0.36, y: L.win.y + L.win.h + 10, r: Math.min(46, w * 0.12) };
+    L.monitor = { x: w * 0.2, y: L.win.y + L.win.h + 22, w: Math.min(w * 0.21, 120), h: Math.min(w * 0.14, 80), stand: true };
+    L.cabinet = null;
+    L.unitBase = { x: w * 0.83, regY: L.win.y + L.win.h + 40, footY: L.floorY + 6 };
+    L.nurse = { x: L.table.cx + L.table.w * 0.42, y: L.floorY + 26, s: h * 0.21 };
+    var maxBag0 = Math.min(98, h * 0.112);
     var itemH = maxBag0 * 1.06, itemW = itemH * 0.72;
-    var units = [];
-    for (var i = 0; i < n; i++) {
-      var fx = L.unitBase.x - (n - 1 - i) * (itemW + 22) * 1.12;
-      units.push({ footX: fx, footY: L.unitBase.footY, itemW: itemW, itemH: itemH, regY: L.unitBase.regY, i: i });
+    var units = [{ footX: L.unitBase.x, footY: L.unitBase.footY, itemW: itemW, itemH: itemH, regY: L.unitBase.regY, i: 0 }];
+    var bags = {}, bins = null;
+    if (mode === 'old') {
+      L.sink = null; L.trayBox = null;
+      var s = { x: w * 0.04, top: h - 200 * sc, w: w * 0.6, bottom: h - 70 };
+      L.wash = s;
+      L.basin = { x: s.x + s.w * 0.08, y: s.top - 6, w: s.w * 0.5, h: 12 };
+      var jh = itemH * 0.95, jw = jh * 0.72;
+      L.sinkJar = { x: L.basin.x + L.basin.w / 2 - jw / 2, y: s.top + 10 - jh, w: jw, h: jh };
+      L.tapX = L.basin.x + L.basin.w * 0.92; L.spoutY = L.sinkJar.y - 26 * sc;
+      L.tapHit = { x: L.tapX - 34, y: L.spoutY - 14, w: 60, h: s.top - L.spoutY + 14 };
+      L.bottle = { x: s.x + s.w * 0.63, y: s.top - 52 * sc, w: 22 * sc + 4, h: 50 * sc };
+      L.towel = { x: s.x + s.w * 0.06, y: s.top + 14, w: s.w * 0.2, h: 46 * sc };
+      L.tank = { x: w * 0.035, y: L.win.y + L.win.h + 34, w: Math.max(30, w * 0.09), h: Math.min(130, s.top - (L.win.y + L.win.h) - 150 * sc) };
+      L.clock = { x: s.x + s.w * 0.1, y: s.top - 42, r: 15 };
+      L.pile = { x: w * 0.64, foot: h - 70, w: w * 0.34, jh: itemH * 0.68 };
+      L.washer = { x: s.x + s.w * 0.84, y: s.top + h * 0.21 * 0.42, s: h * 0.21 };
+      L.helper = null;
+    } else {
+      L.sink = { x: -4, top: L.floorY - h * 0.105, w: w * 0.24, bottom: L.floorY + 8 };
+      L.trayBox = { x: w * 0.03, foot: h - 120, w: w * 0.5 };
+      L.binBox = { x: w * 0.6, foot: h - 66, bw: Math.min(w * 0.165, 110), bh: Math.min(w * 0.215, 146), gap: w * 0.04 };
+      var tb = L.trayBox, totalW = 0, gap = 10, bx;
+      [1, 2, 3].forEach(function (z) { totalW += maxBag0 * BAG_H[z] * BAG_AR[z]; });
+      totalW += gap * 2;
+      bx = tb.x + (tb.w - totalW) / 2;
+      [1, 2, 3].forEach(function (z) {
+        var bh = maxBag0 * BAG_H[z], bw = bh * BAG_AR[z];
+        bags[z] = { x: bx, y: tb.foot - bh, w: bw, h: bh }; bx += bw + gap;
+      });
+      var bb = L.binBox;
+      bins = { infectious: { x: bb.x, y: bb.foot - bb.bh, w: bb.bw, h: bb.bh }, general: { x: bb.x + bb.bw + bb.gap, y: bb.foot - bb.bh, w: bb.bw, h: bb.bh } };
+      L.helper = { x: L.table.cx - L.table.w * 0.32, y: L.floorY + 4, s: h * 0.2 };
     }
-    var tb = L.trayBox, maxBag = maxBag0;
-    var bags = {}, totalW = 0, gap = wide ? 18 : 10;
-    [1, 2, 3].forEach(function (s) { totalW += maxBag * BAG_H[s] * BAG_AR[s]; });
-    totalW += gap * 2;
-    var bx = tb.x + (tb.w - totalW) / 2;
-    [1, 2, 3].forEach(function (s) {
-      var bh = maxBag * BAG_H[s], bw = bh * BAG_AR[s];
-      bags[s] = { x: bx, y: tb.foot - bh, w: bw, h: bh };
-      bx += bw + gap;
-    });
-    var bb = L.binBox;
-    var bins = {
-      infectious: { x: bb.x, y: bb.foot - bb.bh, w: bb.bw, h: bb.bh },
-      general: { x: bb.x + bb.bw + bb.gap, y: bb.foot - bb.bh, w: bb.bw, h: bb.bh }
-    };
-    var used = [null, null];
-    units.forEach(function (u, i) {
-      var c = titleCard.hidden ? cases[i] : null;
-      var kind = 'empty', size = 2, lift = false;
-      if (!titleCard.hidden) { kind = state.trees > 0 ? 'sealed' : 'jar'; size = lastSize || 2; }
-      else if (c && (c.phase === 'lift' || c.phase === 'bin')) { kind = c.used === 'jar' ? 'jar' : 'sealed'; size = c.usedSize || 2; lift = c.phase === 'bin'; }
-      else if (c && (c.phase === 'seal' || c.phase === 'sprout')) { kind = 'fresh'; size = c.size; }
-      var bh = kind === 'jar' ? u.itemH : maxBag0 * BAG_H[size];
-      var bw = kind === 'jar' ? bh * 0.72 : bh * BAG_AR[size];
-      var footY = u.footY - (lift ? Math.min(30, bh * 0.2) : 0);
-      var dragging = drag && drag.moved && drag.kind === 'used' && drag.index === i;
-      used[i] = { x: u.footX - bw / 2, y: footY - bh, w: bw, h: bh, kind: kind, size: size, lift: lift, hide: dragging };
-    });
-    L.units = units; L.used = used; L.bags = bags; L.bins = bins; L.foot = tb.foot;
+    var u = units[0], kind = 'empty', size = 2, lift = false;
+    if (!task) kind = mode === 'old' ? 'jar' : 'sealed';
+    else if (task.old) kind = task.phase === 'carry' ? 'jar' : (task.phase === 'done' ? 'cleanjar' : 'empty');
+    else if (task.phase === 'lift' || task.phase === 'bin') { kind = 'sealed'; size = task.usedSize || 2; lift = task.phase === 'bin'; }
+    else if (task.phase === 'seal' || task.phase === 'sprout') { kind = 'fresh'; size = task.size; }
+    var bh2 = (kind === 'jar' || kind === 'cleanjar') ? u.itemH : maxBag0 * BAG_H[size];
+    var bw2 = (kind === 'jar' || kind === 'cleanjar') ? bh2 * 0.72 : bh2 * BAG_AR[size];
+    var fy = u.footY - (lift ? Math.min(30, bh2 * 0.2) : 0);
+    var hide = !!(drag && drag.moved && drag.room === ri && (drag.kind === 'used' || (drag.kind === 'jar' && drag.from === 'unit')));
+    var used = [{ x: u.footX - bw2 / 2, y: fy - bh2, w: bw2, h: bh2, kind: kind, size: size, lift: lift, hide: hide }];
+    L.units = units; L.used = used; L.bags = bags; L.bins = bins; L.foot = L.trayBox ? L.trayBox.foot : h - 74;
     if (flip) {
-      var fx2 = function (r) { if (r) r.x = w - r.x - (r.w || 0); };
-      [L.win, L.monitor, L.cabinet, L.trayBox].forEach(fx2);
-      L.sink.x = w - L.sink.x - L.sink.w;
-      L.table.cx = w - L.table.cx; L.lamp.x = w - L.lamp.x;
-      L.washerHome.x = w - L.washerHome.x; L.nurse.x = w - L.nurse.x;
-      units.forEach(function (u) { u.footX = w - u.footX; });
-      used.forEach(fx2);
-      [1, 2, 3].forEach(function (s) { fx2(bags[s]); });
-      fx2(bins.infectious); fx2(bins.general);
+      var f = function (r) { if (r) r.x = w - r.x - (r.w || 0); };
+      [L.win, L.monitor, L.trayBox, L.sink, L.wash, L.basin, L.sinkJar, L.tapHit, L.bottle, L.towel, L.tank, L.pile].forEach(f);
+      if (L.sink) L.sink.x = L.sink.x; // already mirrored by f
+      L.table.cx = w - L.table.cx; L.lamp.x = w - L.lamp.x; L.nurse.x = w - L.nurse.x;
+      if (L.clock) L.clock.x = w - L.clock.x;
+      if (L.tapX != null) L.tapX = w - L.tapX;
+      if (L.washer) L.washer.x = w - L.washer.x;
+      if (L.helper) L.helper.x = w - L.helper.x;
+      units.forEach(function (q) { q.footX = w - q.footX; });
+      used.forEach(f);
+      [1, 2, 3].forEach(function (z) { f(bags[z]); });
+      if (bins) { f(bins.infectious); f(bins.general); }
     }
     L.flip = flip;
     return L;
   }
 
-  /* ---------- landscape (window view) ---------- */
   function ridgeY(x, w, h) {
     var u = x / w;
     var peak = Math.exp(-Math.pow((u - 0.52) / 0.2, 2)) * 0.2 + Math.exp(-Math.pow((u - 0.3) / 0.16, 2)) * 0.1 + Math.exp(-Math.pow((u - 0.78) / 0.14, 2)) * 0.11;
@@ -1225,10 +1297,12 @@
     c.fillStyle = 'rgba(0,0,0,.10)'; c.beginPath(); c.moveTo(win.x - rv, win.y - rv); c.lineTo(win.x + win.w + rv, win.y - rv); c.lineTo(win.x + win.w, win.y); c.lineTo(win.x, win.y); c.closePath(); c.fill();
     c.fillStyle = 'rgba(0,0,0,.05)'; c.beginPath(); c.moveTo(win.x - rv, win.y - rv); c.lineTo(win.x, win.y); c.lineTo(win.x, win.y + win.h); c.lineTo(win.x - rv, win.y + win.h + rv); c.closePath(); c.fill();
     if (L.cabinet) drawCabinet(c, L.cabinet, pal);
-    drawSinkStatic(c, L, pal);
+    if (L.mode === 'old') { c.fillStyle = 'rgba(160,120,60,.08)'; c.fillRect(0, 0, w, L.floorY); }
+    if (L.sink) drawSinkStatic(c, L, pal);
     L.units.forEach(function (u) { drawUnitStatic(c, u, pal); });
     drawTable(c, L, pal);
-    drawTrolley(c, L, pal);
+    if (L.wash) drawWashStatic(c, L, pal);
+    if (L.trayBox) drawTrolley(c, L, pal);
     addGrain(c, w, h);
   }
   function drawCabinet(c, r, pal) {
@@ -1427,8 +1501,8 @@
     c.drawImage(spr.c, rect.x - spr.ox, rect.y - spr.oy, spr.w, spr.h);
     if (alpha != null) c.restore();
   }
-  function jarSprite(H, dpr) {
-    var key = 'jar_' + H + '_' + dpr;
+  function jarSprite(H, dpr, clean) {
+    var key = 'jar_' + H + '_' + dpr + (clean ? 'c' : '');
     if (R.sprites[key]) return R.sprites[key];
     var W = H * 0.72, pad = Math.ceil(H * 0.3), s = mk(W + pad * 2, H + pad, dpr), c = s.x, i;
     c.translate(pad, pad);
@@ -1442,13 +1516,15 @@
     c.fillStyle = lg(c, 0, 0, W, 0, [[0, 'rgba(176,168,136,.97)'], [0.3, 'rgba(226,220,190,.97)'], [1, 'rgba(146,138,108,.97)']]); c.fill();
     c.save(); body(); c.clip();
     var fy = lt + (H - lt) * 0.28;
-    c.fillStyle = lg(c, 0, fy, 0, H, [[0, 'rgba(128,80,46,.88)'], [0.5, 'rgba(96,54,30,.94)'], [1, 'rgba(52,30,18,.98)']]); c.fillRect(0, fy, W, H);
+    if (clean) { fy = H * 2; }
+    if (!clean) { c.fillStyle = lg(c, 0, fy, 0, H, [[0, 'rgba(128,80,46,.88)'], [0.5, 'rgba(96,54,30,.94)'], [1, 'rgba(52,30,18,.98)']]); c.fillRect(0, fy, W, H); }
     var r = rng(91);
-    for (i = 0; i < 9; i++) { c.fillStyle = 'rgba(190,150,110,' + (0.08 + r() * 0.14) + ')'; c.beginPath(); c.ellipse(r() * W, fy + r() * (H - fy) * 0.7, W * (0.15 + r() * 0.2), H * 0.03, 0, 0, 7); c.fill(); }
-    c.fillStyle = 'rgba(30,16,8,.6)'; for (i = 0; i < 40; i++) { c.beginPath(); c.arc(r() * W, H - r() * H * 0.08, 0.6 + r() * 1.6, 0, 7); c.fill(); }
-    c.fillStyle = 'rgba(230,210,170,.6)'; for (i = 0; i < 14; i++) { c.beginPath(); c.arc(W * 0.1 + r() * W * 0.8, fy + r() * 3, 1 + r() * 2.2, 0, 7); c.fill(); }
-    for (i = 0; i < 7; i++) { c.fillStyle = 'rgba(110,70,40,' + (0.18 + r() * 0.22) + ')'; c.beginPath(); c.ellipse(r() * W, lt + 4 + r() * (fy - lt - 4), W * 0.06 + r() * W * 0.08, 2 + r() * 4, r(), 0, 7); c.fill(); }
+    if (!clean) for (i = 0; i < 9; i++) { c.fillStyle = 'rgba(190,150,110,' + (0.08 + r() * 0.14) + ')'; c.beginPath(); c.ellipse(r() * W, fy + r() * (H - fy) * 0.7, W * (0.15 + r() * 0.2), H * 0.03, 0, 0, 7); c.fill(); }
+    if (!clean) { c.fillStyle = 'rgba(30,16,8,.6)'; for (i = 0; i < 40; i++) { c.beginPath(); c.arc(r() * W, H - r() * H * 0.08, 0.6 + r() * 1.6, 0, 7); c.fill(); } }
+    if (!clean) { c.fillStyle = 'rgba(230,210,170,.6)'; for (i = 0; i < 14; i++) { c.beginPath(); c.arc(W * 0.1 + r() * W * 0.8, fy + r() * 3, 1 + r() * 2.2, 0, 7); c.fill(); } }
+    if (!clean) for (i = 0; i < 7; i++) { c.fillStyle = 'rgba(110,70,40,' + (0.18 + r() * 0.22) + ')'; c.beginPath(); c.ellipse(r() * W, lt + 4 + r() * (fy - lt - 4), W * 0.06 + r() * W * 0.08, 2 + r() * 4, r(), 0, 7); c.fill(); }
     c.strokeStyle = 'rgba(255,255,245,.55)'; c.lineWidth = 0.7;
+    if (clean) { c.fillStyle = 'rgba(220,240,240,.35)'; c.fillRect(0, lt, W, H); }
     for (i = 0; i < 28; i++) { var sx = r() * W, sy = lt + r() * (H - lt), a = r() * Math.PI, l = 4 + r() * W * 0.25; c.beginPath(); c.moveTo(sx, sy); c.lineTo(sx + Math.cos(a) * l, sy + Math.sin(a) * l * 0.4); c.stroke(); }
     c.strokeStyle = 'rgba(40,40,30,.6)'; c.lineWidth = 1;
     for (i = 1; i < 8; i++) { var gy = H - (H - lt) * i / 8.5; c.beginPath(); c.moveTo(W * 0.1, gy); c.lineTo(W * (i % 2 ? 0.18 : 0.26), gy); c.stroke(); }
@@ -1463,11 +1539,13 @@
     s.ox = pad; s.oy = pad;
     R.sprites[key] = s; return s;
   }
-  function drawJar(c, rect, dpr, tilt) {
-    var spr = jarSprite(Math.round(rect.h), dpr);
+  function drawJar(c, rect, dpr, tilt, clean) {
+    var k = clamp(clean || 0, 0, 1), H = Math.round(rect.h);
     softShadow(c, rect.x + rect.w / 2, rect.y + rect.h, rect.w * 0.62, rect.w * 0.12, 0.34);
     c.save(); c.translate(rect.x + rect.w / 2, rect.y + rect.h); c.rotate(tilt || 0);
-    c.drawImage(spr.c, -rect.w / 2 - spr.ox, -rect.h - spr.oy, spr.w, spr.h); c.restore();
+    if (k < 1) { var spr = jarSprite(H, dpr, false); c.drawImage(spr.c, -rect.w / 2 - spr.ox, -rect.h - spr.oy, spr.w, spr.h); }
+    if (k > 0) { var sc = jarSprite(H, dpr, true); c.globalAlpha = k; c.drawImage(sc.c, -rect.w / 2 - sc.ox, -rect.h - sc.oy, sc.w, sc.h); }
+    c.restore();
   }
   function bioIcon(sz, dpr, col) {
     var key = 'bio' + Math.round(sz) + '_' + dpr;
@@ -1633,57 +1711,58 @@
     c.fillStyle = '#5fe08f'; c.beginPath(); c.arc(m.x + m.w - 9, m.y + m.h - 5, 1.6, 0, 7); c.fill();
   }
   function drawSinkLive(c, L, now, dpr) {
-    var s = L.sink, fx = s.x + s.w * 0.5 + 16, top = s.top, fh = L.wide ? 56 : 34;
-    if (!state.retired) {
-      c.strokeStyle = 'rgba(170,215,230,.8)'; c.lineWidth = 2.2;
-      c.beginPath(); c.moveTo(fx, top - fh + 8); c.lineTo(fx + Math.sin(now / 80) * 0.6, top + 2); c.stroke();
-      for (var i = 0; i < 3; i++) {
-        var u = reduced() ? 0.4 : ((now / 2400) + i / 3) % 1;
-        c.fillStyle = rg(c, fx - 10 + Math.sin(u * 6 + i) * 8, top - u * fh * 1.3, 0, 8 + u * 12, [[0, 'rgba(255,255,255,' + (0.35 * (1 - u)) + ')'], [1, 'rgba(255,255,255,0)']]);
-        c.beginPath(); c.arc(fx - 10 + Math.sin(u * 6 + i) * 8, top - u * fh * 1.3, 8 + u * 12, 0, 7); c.fill();
-      }
-    } else {
-      var px = s.x + s.w * 0.22, ps = L.wide ? 1 : 0.7;
-      c.fillStyle = '#c9805b'; c.beginPath(); c.moveTo(px - 9 * ps, top); c.lineTo(px + 9 * ps, top); c.lineTo(px + 11 * ps, top - 14 * ps); c.lineTo(px - 11 * ps, top - 14 * ps); c.closePath(); c.fill();
-      c.fillStyle = '#5e8a46';
-      [[-6, -24, 7], [5, -28, 8], [0, -34, 7], [-9, -19, 6], [9, -20, 6]].forEach(function (b) { c.beginPath(); c.arc(px + b[0] * ps, top + b[1] * ps, b[2] * ps, 0, 7); c.fill(); });
-      c.fillStyle = '#86b062'; c.beginPath(); c.arc(px + 3 * ps, top - 31 * ps, 3.5 * ps, 0, 7); c.fill();
-    }
-    var ga = state.retired ? 0 : ghostAlpha();
-    if (ga > 0.02) {
-      c.save(); c.globalAlpha = 0.25 + ga * 0.5;
-      var jh = L.wide ? 50 : 30;
-      var jx = s.x + s.w * 0.12;
-      drawJar(c, { x: jx, y: top - jh, w: jh * 0.72, h: jh }, dpr, -0.06);
-      drawJar(c, { x: jx + jh * 0.62, y: top - jh * 0.88, w: jh * 0.63, h: jh * 0.88 }, dpr, 0.1);
-      c.restore();
-    }
+    if (!L.sink) return;
+    var s = L.sink, top = s.top, px = s.x + s.w * 0.3, ps = 0.7;
+    c.fillStyle = '#c9805b'; c.beginPath(); c.moveTo(px - 9 * ps, top); c.lineTo(px + 9 * ps, top); c.lineTo(px + 11 * ps, top - 14 * ps); c.lineTo(px - 11 * ps, top - 14 * ps); c.closePath(); c.fill();
+    c.fillStyle = '#5e8a46';
+    [[-6, -24, 7], [5, -28, 8], [0, -34, 7], [-9, -19, 6], [9, -20, 6]].forEach(function (b) { c.beginPath(); c.arc(px + b[0] * ps, top + b[1] * ps, b[2] * ps, 0, 7); c.fill(); });
+    c.fillStyle = '#86b062'; c.beginPath(); c.arc(px + 3 * ps, top - 31 * ps, 3.5 * ps, 0, 7); c.fill();
   }
-  function staffPositions(L, now) {
-    var home = L.washerHome;
-    var dest = L.wide
-      ? { x: L.table.cx + (L.flip ? -1 : 1) * L.table.w * 0.6, y: L.floorY + 44 }
-      : { x: L.table.cx - (L.flip ? -1 : 1) * L.table.w * 0.32, y: L.floorY + 4 };
-    if (R.wasRetired === null) R.wasRetired = !!state.retired;
-    if (state.retired && !R.wasRetired) { R.wasRetired = true; R.retireT = now; }
-    var k = state.retired ? (R.retireT ? clamp((now - R.retireT) / 4200, 0, 1) : 1) : 0;
-    var e = k * k * (3 - 2 * k);
-    return { x: lerp(home.x, dest.x, e), y: lerp(home.y, dest.y, e), walking: k > 0 && k < 1, arrived: k >= 1 };
+  /* big freestanding wash sink of the old room (static part) */
+  function drawWashStatic(c, L, pal) {
+    var s = L.wash, x = s.x, w2 = s.w, top = s.top, bot = s.bottom, i;
+    var splashH = 70;
+    c.fillStyle = pal.dark ? '#1b4245' : '#e9efe9'; c.fillRect(x, top - splashH, w2, splashH);
+    c.strokeStyle = 'rgba(6,97,99,.10)'; c.lineWidth = 1;
+    for (var ty = top - splashH; ty < top; ty += 14) { c.beginPath(); c.moveTo(x, ty); c.lineTo(x + w2, ty); c.stroke(); }
+    for (var tx = x; tx < x + w2; tx += 14) { c.beginPath(); c.moveTo(tx, top - splashH); c.lineTo(tx, top); c.stroke(); }
+    var r = rng(17);
+    for (i = 0; i < 9; i++) { c.fillStyle = 'rgba(150,120,70,' + (0.06 + r() * 0.1) + ')'; c.beginPath(); c.ellipse(x + r() * w2, top - r() * splashH, 4 + r() * 10, 2 + r() * 4, 0, 0, 7); c.fill(); }
+    softShadow(c, x + w2 / 2, bot + 4, w2 * 0.6, 10, 0.3);
+    c.strokeStyle = pal.steelD; c.lineWidth = 4;
+    [x + 10, x + w2 - 10].forEach(function (lx) { c.beginPath(); c.moveTo(lx, top + 30); c.lineTo(lx, bot); c.stroke(); });
+    c.fillStyle = lg(c, 0, top + 6, 0, top + 34, [[0, pal.steelL], [1, pal.steelD]]); c.fillRect(x, top + 6, w2, 28);
+    c.fillStyle = 'rgba(0,0,0,.12)'; c.fillRect(x + w2 * 0.1, bot - 26, w2 * 0.8, 4);
+    c.fillStyle = lg(c, 0, top - 4, 0, top + 8, [[0, '#ffffff'], [1, pal.steel]]); roundRect(c, x - 4, top - 2, w2 + 8, 10, 3); c.fill();
+    var b = L.basin;
+    c.fillStyle = 'rgba(30,60,62,.5)'; roundRect(c, b.x, b.y + 4, b.w, 6, 3); c.fill();
+    var tx2 = L.tapX, sy = L.spoutY, dir = L.flip ? 1 : -1;
+    c.strokeStyle = pal.steelD; c.lineWidth = 5; c.lineCap = 'round';
+    c.beginPath(); c.moveTo(tx2, top); c.lineTo(tx2, sy - 18); c.quadraticCurveTo(tx2, sy - 30, tx2 + dir * 14, sy - 26); c.lineTo(tx2 + dir * 22, sy - 10); c.stroke();
+    c.strokeStyle = pal.steelL; c.lineWidth = 1.5; c.beginPath(); c.moveTo(tx2 - 1.5, top); c.lineTo(tx2 - 1.5, sy - 18); c.stroke();
+    var tw = L.towel;
+    c.strokeStyle = pal.steelD; c.lineWidth = 2.5; c.beginPath(); c.moveTo(tw.x - 6, tw.y); c.lineTo(tw.x + tw.w + 6, tw.y); c.stroke();
   }
   function ensureLand(win, dpr, g) {
     var q = Math.round(g * 20) / 20;
     var key = [Math.round(win.w), Math.round(win.h), dpr, q].join('|');
-    if (key === R.landKey && R.land) return;
-    R.landKey = key;
-    R.land = mk(win.w, win.h, dpr);
-    paintLandscape(R.land.x, win.w, win.h, q);
+    R.lands = R.lands || {};
+    if (!R.lands[key]) {
+      var ks = Object.keys(R.lands); if (ks.length > 6) delete R.lands[ks[0]];
+      var cv = mk(win.w, win.h, dpr); paintLandscape(cv.x, win.w, win.h, q); R.lands[key] = cv;
+    }
+    return R.lands[key];
   }
   function ensureRoom(L, dpr, pal) {
-    var key = [L.w, L.h, dpr, pal.dark, L.flip, L.units.length].join('|');
-    if (key === R.roomKey && R.room) return;
-    R.roomKey = key;
-    R.room = mk(L.w, L.h, dpr); drawRoom(R.room.x, L, pal);
-    R.frame = mk(L.w, L.h, dpr); drawWindowFrame(R.frame.x, L, pal);
+    var key = [L.w, L.h, dpr, pal.dark, L.flip, L.mode, R.roomKey].join('|');
+    R.rooms = R.rooms || {};
+    if (R.roomKey === '') { R.rooms = {}; R.roomKey = 'v' + Math.random(); key = [L.w, L.h, dpr, pal.dark, L.flip, L.mode, R.roomKey].join('|'); }
+    if (!R.rooms[key]) {
+      var room = mk(L.w, L.h, dpr); drawRoom(room.x, L, pal);
+      var frame = mk(L.w, L.h, dpr); drawWindowFrame(frame.x, L, pal);
+      R.rooms[key] = { room: room, frame: frame };
+    }
+    return R.rooms[key];
   }
   function drawDropGlow(c, rect, now, color) {
     if (!rect) return;
@@ -1703,6 +1782,269 @@
     drawDropGlow(c, { x: cx - u.itemW / 2, y: cy - u.itemH / 2, w: u.itemW, h: u.itemH }, now);
   }
 
+  var OLD_ORDER = ['carry', 'fill', 'chem', 'scrub', 'rinse', 'dry', 'hang', 'done'];
+  function oldDone(ph) { return oldT ? OLD_ORDER.indexOf(oldT.phase) > OLD_ORDER.indexOf(ph) : false; }
+  function oldK(ph) { if (!oldT) return 0; if (oldDone(ph)) return 1; return oldT.phase === ph ? clamp(oldT.prog, 0, 1) : 0; }
+  function drawWindowScene(c, L, now, dpr, g, trees) {
+    var win = L.win, land = ensureLand(win, dpr, g);
+    c.save(); c.beginPath(); c.rect(win.x, win.y, win.w, win.h); c.clip();
+    c.drawImage(land.c, win.x, win.y, win.w, win.h);
+    if (trees) {
+      if (wildOn('birds')) drawBirds(c, win, now);
+      drawStream(c, win, smooth(cfg.gameRules.streamSwaps - 1, cfg.gameRules.streamSwaps + 3, state.trees), now);
+      if (wildOn('goat')) { rock(c, win.x + win.w * 0.2, win.y + win.h * 0.75, win.h * 0.13, win.h * 0.05); drawGoat(c, win.x + win.w * 0.2, win.y + win.h * 0.712, Math.min(win.h * 0.15, win.w * 0.12), now); }
+      drawOaks(c, win, now, dpr);
+      if (wildOn('squirrel')) drawSquirrel(c, win.x + win.w * (SPOTS[1].u - 0.06), win.y + win.h * SPOTS[1].v + 1, win.h * 0.05, now);
+      if (wildOn('leopard')) { var ls = Math.min(win.w * 0.19, win.h * 0.32), lx0 = win.x + win.w * 0.44; rock(c, lx0, win.y + win.h * 1.01, ls * 1.45, win.h * 0.12); drawLeopard(c, lx0, win.y + win.h * 0.895, ls, now); }
+    }
+    var mistA = (1 - g) * 0.9;
+    if (mistA > 0.02) {
+      mist.forEach(function (m) {
+        var mx = win.x + ((m.u + (reduced() ? 0 : now / 1000 / m.sp / 6)) % 1.2 - 0.1) * win.w;
+        var my = win.y + m.v * win.h, rr = m.r * 2.2 * (win.w / 400);
+        c.fillStyle = rg(c, mx, my, 0, rr, [[0, 'rgba(246,242,234,' + (m.a * 2.4 * mistA) + ')'], [1, 'rgba(246,242,234,0)']]);
+        c.fillRect(mx - rr, my - rr, rr * 2, rr * 2);
+      });
+    }
+    c.restore();
+  }
+  function drawTank(c, L, now) {
+    var tk = L.tank; if (!tk || tk.h < 40) return;
+    var used = oldT ? oldK('fill') * 0.5 + oldK('rinse') * 0.38 : (round && round.wasOld ? 0.88 : 0);
+    var lvl = clamp(1 - used, 0.04, 1);
+    softShadow(c, tk.x + tk.w / 2, tk.y + tk.h + 4, tk.w * 0.6, 5, 0.18);
+    c.fillStyle = 'rgba(255,255,255,.75)'; roundRect(c, tk.x, tk.y, tk.w, tk.h, 6); c.fill();
+    c.save(); roundRect(c, tk.x + 3, tk.y + 3, tk.w - 6, tk.h - 6, 4); c.clip();
+    var fy = tk.y + 3 + (tk.h - 6) * (1 - lvl);
+    c.fillStyle = lg(c, 0, fy, 0, tk.y + tk.h, [[0, '#7fc8d6'], [1, '#2c8fa6']]); c.fillRect(tk.x, fy, tk.w, tk.h);
+    c.fillStyle = 'rgba(255,255,255,.5)'; c.fillRect(tk.x, fy, tk.w, 1.5);
+    c.restore();
+    c.strokeStyle = 'rgba(30,80,90,.55)'; c.lineWidth = 1.5; roundRect(c, tk.x, tk.y, tk.w, tk.h, 6); c.stroke();
+    for (var k = 1; k < 5; k++) { c.fillStyle = 'rgba(30,80,90,.45)'; c.fillRect(tk.x + 3, tk.y + tk.h * k / 5, 6, 1); }
+    var dx = tk.x + tk.w / 2, dy = tk.y - 12;
+    c.fillStyle = '#2c8fa6'; c.beginPath(); c.moveTo(dx, dy - 7); c.quadraticCurveTo(dx + 6, dy + 1, dx, dy + 5); c.quadraticCurveTo(dx - 6, dy + 1, dx, dy - 7); c.fill();
+    c.strokeStyle = 'rgba(80,110,112,.7)'; c.lineWidth = 2;
+    c.beginPath(); c.moveTo(tk.x + tk.w / 2, tk.y + tk.h); c.lineTo(tk.x + tk.w / 2, tk.y + tk.h + 12); c.stroke();
+  }
+  function drawClock(c, L, now) {
+    var k = L.clock; if (!k) return;
+    var ms = round && round.stage === 0 && round.wasOld ? now - round.t0 : (round && round.tA ? round.tA : 0);
+    var sec = ms / 1000;
+    c.fillStyle = '#ffffff'; c.beginPath(); c.arc(k.x, k.y, k.r, 0, 7); c.fill();
+    c.strokeStyle = '#0d5962'; c.lineWidth = 2.5; c.stroke();
+    for (var q = 0; q < 12; q++) { var a = q / 12 * Math.PI * 2; c.fillStyle = '#5a7476'; c.fillRect(k.x + Math.cos(a) * k.r * 0.78 - 0.75, k.y + Math.sin(a) * k.r * 0.78 - 0.75, 1.5, 1.5); }
+    var a1 = -Math.PI / 2 + sec / 60 * Math.PI * 2;
+    c.strokeStyle = '#d0453d'; c.lineWidth = 1.6; c.beginPath(); c.moveTo(k.x, k.y); c.lineTo(k.x + Math.cos(a1) * k.r * 0.8, k.y + Math.sin(a1) * k.r * 0.8); c.stroke();
+    var a2 = -Math.PI / 2 + sec / 600 * Math.PI * 2;
+    c.strokeStyle = '#0a2e32'; c.lineWidth = 2.2; c.beginPath(); c.moveTo(k.x, k.y); c.lineTo(k.x + Math.cos(a2) * k.r * 0.55, k.y + Math.sin(a2) * k.r * 0.55); c.stroke();
+    var lab = formatNum(Math.floor(sec), 0) + ' ' + t('sec');
+    c.font = '800 11px ' + FF(); c.textAlign = 'center'; c.textBaseline = 'middle';
+    var tw = c.measureText(lab).width + 12;
+    c.fillStyle = 'rgba(208,69,61,.92)'; roundRect(c, k.x - tw / 2, k.y + k.r + 5, tw, 17, 8); c.fill();
+    c.fillStyle = '#fff'; c.fillText(lab, k.x, k.y + k.r + 14);
+  }
+  function drawBottle(c, x, y, w, h, level, tilt) {
+    c.save(); c.translate(x + w / 2, y + h); c.rotate(tilt || 0);
+    softShadow(c, 0, 0, w * 0.7, 3, tilt ? 0 : 0.2);
+    c.fillStyle = '#d0453d'; roundRect(c, -w * 0.22, -h, w * 0.44, h * 0.16, 2); c.fill();
+    c.fillStyle = 'rgba(255,255,255,.95)'; roundRect(c, -w / 2, -h * 0.86, w, h * 0.86, w * 0.25); c.fill();
+    c.save(); roundRect(c, -w / 2 + 2, -h * 0.84, w - 4, h * 0.82, w * 0.2); c.clip();
+    var fy = -h * 0.02 - h * 0.8 * clamp(level, 0, 1);
+    c.fillStyle = 'rgba(110,190,210,.9)'; c.fillRect(-w / 2, fy, w, h);
+    c.restore();
+    c.fillStyle = '#d0453d'; c.fillRect(-w / 2, -h * 0.55, w, h * 0.16);
+    c.fillStyle = '#fff'; c.font = '900 ' + Math.max(7, Math.round(w * 0.42)) + 'px ' + FF(); c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('!', 0, -h * 0.47);
+    c.strokeStyle = 'rgba(80,110,115,.55)'; c.lineWidth = 1; roundRect(c, -w / 2, -h * 0.86, w, h * 0.86, w * 0.25); c.stroke();
+    c.restore();
+  }
+  function drawPile(c, L, now, dpr, alpha) {
+    var p = L.pile; if (!p || alpha <= 0.01) return;
+    var n = Math.min(12, (state.rounds || 0) + 1), jh = p.jh, jw = jh * 0.72, r = rng(7);
+    c.save(); c.globalAlpha = alpha;
+    var perRow = Math.max(3, Math.floor(p.w / (jw * 0.82))), row = 0, col = 0;
+    for (var i = 0; i < n; i++) {
+      var rowN = perRow - row, ox2 = (p.w - rowN * jw * 0.82) / 2;
+      var x = p.x + ox2 + col * jw * 0.82 + (r() - 0.5) * 4, y = p.foot - row * jh * 0.8;
+      drawJar(c, { x: x, y: y - jh, w: jw, h: jh }, dpr, (r() - 0.5) * 0.25);
+      col++; if (col >= rowN) { col = 0; row++; }
+    }
+    var nb = Math.min(5, Math.floor((state.rounds || 0) / 2) + 1);
+    for (var b = 0; b < nb; b++) {
+      var bx = (L.flip ? p.x + p.w + 4 + b * 13 : p.x - 16 - b * 13), by = p.foot + 2;
+      drawBottle(c, bx, by - 26, 12, 26, 0, b % 2 ? 1.45 : 0.12);
+    }
+    c.restore();
+  }
+  function drawRoomTag(c, L, label, isNew, active) {
+    var win = L.win;
+    c.font = '800 12px ' + FF(); c.textBaseline = 'middle'; c.textAlign = 'center';
+    var tw = c.measureText(label).width + 30, x = L.flip ? win.x + win.w - tw - 10 : win.x + 10, y = win.y + win.h - 30;
+    c.fillStyle = isNew ? 'rgba(13,89,98,.94)' : 'rgba(120,72,40,.92)';
+    roundRect(c, x, y, tw, 22, 11); c.fill();
+    c.fillStyle = isNew ? '#7fe0d6' : '#f2c27a'; c.beginPath(); c.arc(x + 12, y + 11, 4, 0, 7); c.fill();
+    c.fillStyle = '#fff'; c.fillText(label, x + tw / 2 + 6, y + 11.5);
+  }
+  function drawUnitItem(c, L, u, item, i, now, dpr, pal, p) {
+    if (p && !p.old && p.phase === 'place' && round && round.stage === i) drawSlotHalo(c, u, now);
+    var hasItem = item && item.kind !== 'empty' && !item.hide;
+    var isJar = item && (item.kind === 'jar' || item.kind === 'cleanjar');
+    var topY = hasItem ? item.y + 2 : u.footY - u.itemH * 0.75;
+    var tipX = u.footX + (hasItem ? (isJar ? item.w * 0.12 : -item.w * 0.16) : 0);
+    c.strokeStyle = 'rgba(205,228,230,.95)'; c.lineWidth = 3.5; c.lineCap = 'round';
+    c.beginPath(); c.moveTo(u.footX + u.itemW * 0.1, u.regY + u.itemW * 0.38);
+    c.bezierCurveTo(u.footX + u.itemW * 0.75, u.regY + u.itemW * 0.7, u.footX + u.itemW * 0.6, topY - 30, tipX, topY); c.stroke();
+    c.strokeStyle = 'rgba(255,255,255,.7)'; c.lineWidth = 1; c.stroke();
+    if (hasItem) {
+      if (isJar) drawJar(c, item, dpr, 0, item.kind === 'cleanjar' ? 1 : 0);
+      else if (item.kind === 'fresh') {
+        var cz = cases[i], k = 1;
+        if (cz && cz.phase === 'seal') k = clamp((now - cz.t0) / sealMs(), 0, 1);
+        var dk = Math.min(1, k * 2.2), drop = 1 - (1 - dk) * (1 - dk);
+        drawBag(c, { x: item.x, y: item.y - (1 - drop) * 26, w: item.w, h: item.h }, item.size, false, dpr);
+        if (cz && cz.phase === 'seal' && k > 0.45) {
+          var kk = (k - 0.45) / 0.55;
+          c.strokeStyle = 'rgba(120,240,215,' + (1 - kk) + ')'; c.lineWidth = 3;
+          c.beginPath(); c.ellipse(item.x + item.w / 2, item.y + item.h * 0.1, item.w * (0.5 + kk * 0.5), item.h * 0.06 * (1 + kk * 2), 0, 0, 7); c.stroke();
+        }
+      } else drawBag(c, item, item.size, true, dpr);
+    }
+    drawUnitFront(c, u, pal);
+    var teach = state.swaps < 3 || state.rounds < 2 || now < coachUntil;
+    if (p && round && round.stage === i && hasItem && teach && ((p.old && p.phase === 'carry') || (!p.old && p.phase === 'lift'))) drawDropGlow(c, item, now, 'rgba(255,230,150,.2)');
+  }
+  function drawOldRoom(c, L, now, dpr, pal, i) {
+    var T = oldT, act = round && round.stage === i && T && !busy();
+    drawTank(c, L, now);
+    drawClock(c, L, now);
+    var pileA = state.switched ? clamp(1 - (now - (R.switchT || 0)) / 1200, 0, 1) : 1;
+    var ws = L.washer;
+    drawPerson(c, ws.x, ws.y, ws.s, { face: L.flip ? 1 : -1, pose: T && (T.phase === 'scrub' || T.phase === 'dry') ? 'scrub' : 'reach', seed: 2, color: '#62afa8', dark: '#438c86', cap: '#9fd0cf' }, now);
+    drawPerson(c, L.nurse.x, L.nurse.y, L.nurse.s, { face: L.nurse.x < L.table.cx ? 1 : -1, pose: 'reach', seed: 1, cap: '#0d5962' }, now);
+    drawLamp(c, L, pal);
+    drawUnitItem(c, L, L.units[0], L.used[0], i, now, dpr, pal, act ? T : null);
+    // wash sink front + basin contents
+    var s = L.wash, sj = L.sinkJar, ph = T ? T.phase : '';
+    var inSink = T && OLD_ORDER.indexOf(ph) >= 1 && ph !== 'done' && !(drag && drag.moved && drag.kind === 'jar' && drag.from === 'sink');
+    var hold = T && T.holding && (ph === 'fill' || ph === 'rinse');
+    if (hold) {
+      var sx = L.tapX + (L.flip ? 22 : -22);
+      c.strokeStyle = 'rgba(150,210,230,.9)'; c.lineWidth = 4;
+      c.beginPath(); c.moveTo(sx, L.spoutY - 8); c.lineTo(sx + Math.sin(now / 60) * 0.8, sj.y + sj.h * 0.3); c.stroke();
+      c.strokeStyle = 'rgba(255,255,255,.7)'; c.lineWidth = 1.2; c.stroke();
+    }
+    if (inSink) {
+      var clean = ph === 'scrub' ? T.prog * 0.55 : ph === 'rinse' ? 0.55 + T.prog * 0.45 : (oldDone('rinse') ? 1 : 0);
+      var shake = ph === 'scrub' && drag && drag.kind === 'rub' ? Math.sin(now / 30) * 0.03 : 0;
+      drawJar(c, sj, dpr, shake, clean);
+      var water = ph === 'fill' ? T.prog : (ph === 'chem' || ph === 'scrub') ? 1 : ph === 'rinse' ? 1 - T.prog * 0.3 : 0;
+      if (water > 0.02) {
+        var lt = sj.y + sj.h * 0.15, wy = sj.y + sj.h - (sj.h * 0.82) * water;
+        c.save(); roundRect(c, sj.x + sj.w * 0.06, lt, sj.w * 0.88, sj.h - sj.h * 0.15 - 2, sj.w * 0.1); c.clip();
+        c.fillStyle = ph === 'rinse' || ph === 'fill' ? 'rgba(120,200,225,.38)' : 'rgba(180,220,200,.42)'; c.fillRect(sj.x, wy, sj.w, sj.h);
+        c.fillStyle = 'rgba(255,255,255,.55)'; c.fillRect(sj.x, wy, sj.w, 1.5);
+        c.restore();
+      }
+      if (ph === 'scrub' || (ph === 'chem' && T.pour)) {
+        var r = rng(5 + Math.floor(now / 400));
+        for (var f = 0; f < 10; f++) { c.fillStyle = 'rgba(255,255,255,.85)'; c.beginPath(); c.arc(sj.x + sj.w * (0.1 + r() * 0.8), sj.y + sj.h * 0.14 - r() * 10, 3 + r() * 4, 0, 7); c.fill(); }
+      }
+      if (ph === 'dry' || ph === 'hang') {
+        var r2 = rng(3);
+        for (var d = 0; d < 7 * (1 - (ph === 'dry' ? T.prog : 1)); d++) { c.fillStyle = 'rgba(140,200,225,.8)'; c.beginPath(); c.ellipse(sj.x + sj.w * r2(), sj.y + sj.h * (0.3 + r2() * 0.6), 1.6, 2.6, 0, 0, 7); c.fill(); }
+      }
+    }
+    c.fillStyle = lg(c, 0, s.top - 2, 0, s.top + 30, [[0, pal.steelL], [1, pal.steel]]); roundRect(c, s.x - 4, s.top + 4, s.w + 8, 26, 4); c.fill();
+    c.fillStyle = 'rgba(255,255,255,.55)'; c.fillRect(s.x, s.top + 6, s.w, 1.5);
+    // towel hanging (unless in hand)
+    var tw = L.towel;
+    if (!(drag && drag.kind === 'rub' && ph === 'dry')) { c.fillStyle = '#9fd0cf'; roundRect(c, tw.x, tw.y, tw.w, tw.h, 3); c.fill(); c.fillStyle = '#7bb8b6'; c.fillRect(tw.x, tw.y + tw.h - 8, tw.w, 3); }
+    // bottle on the counter (or pouring)
+    var b = L.bottle, lvl = 1 - (((state.rounds || 0) % 4) / 4) - (oldDone('chem') ? 0.22 : (T && T.pour ? clamp((now - T.pour) / 1100, 0, 1) * 0.22 : 0));
+    if (T && ph === 'chem' && T.pour) {
+      var k2 = clamp((now - T.pour) / 1100, 0, 1), tilt = Math.sin(Math.min(1, k2 * 1.4) * Math.PI / 2) * (L.flip ? 1.9 : -1.9) * (k2 > 0.85 ? (1 - k2) / 0.15 : 1);
+      var bx = lerp(b.x, sj.x + sj.w * 0.6, Math.min(1, k2 * 3)), by = lerp(b.y, sj.y - b.h * 0.4, Math.min(1, k2 * 3));
+      drawBottle(c, bx, by, b.w, b.h, lvl, tilt);
+    } else drawBottle(c, b.x, b.y, b.w, b.h, lvl, 0);
+    if (act && ph === 'chem' && !T.pour) drawDropGlow(c, b, now, 'rgba(255,200,180,.4)');
+    if (act && (ph === 'fill' || ph === 'rinse') && !T.holding) drawDropGlow(c, L.tapHit, now, 'rgba(150,220,255,.45)');
+    // progress ring over the jar for long steps
+    if (act && (ph === 'fill' || ph === 'rinse' || ph === 'scrub' || ph === 'dry')) {
+      var cx = sj.x + sj.w / 2, cy = sj.y - 24;
+      c.strokeStyle = 'rgba(255,255,255,.85)'; c.lineWidth = 5; c.beginPath(); c.arc(cx, cy, 12, 0, 7); c.stroke();
+      c.strokeStyle = '#d0453d'; c.beginPath(); c.arc(cx, cy, 12, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * clamp(T.prog, 0, 1)); c.stroke();
+    }
+    drawPile(c, L, now, dpr, pileA);
+  }
+  function drawNewRoom(c, L, now, dpr, pal, i) {
+    var p = round && round.stage === i && !busy() ? cases[i] : null;
+    drawSinkLive(c, L, now, dpr);
+    var hp = L.helper;
+    drawPerson(c, hp.x, hp.y, hp.s, { face: hp.x < L.table.cx ? 1 : -1, pose: 'reach', seed: 2, color: '#62afa8', dark: '#438c86', cap: '#9fd0cf' }, now);
+    drawPerson(c, L.nurse.x, L.nurse.y, L.nurse.s, { face: L.nurse.x < L.table.cx ? 1 : -1, pose: 'reach', seed: 1, cap: '#0d5962' }, now);
+    drawLamp(c, L, pal);
+    drawUnitItem(c, L, L.units[0], L.used[0], i, now, dpr, pal, p);
+    var teach = state.swaps < 3 || now < coachUntil;
+    [1, 2, 3].forEach(function (sz) {
+      var r = Object.assign({}, L.bags[sz]);
+      var sh = shakes[sz];
+      if (sh && now - sh < 420 && round && round.stage === i) r.x += Math.sin((now - sh) / 40) * 5;
+      var lifted = drag && drag.moved && drag.kind === 'bag' && drag.size === sz && drag.room === i;
+      if (p && p.phase === 'place' && p.size === sz && teach) drawDropGlow(c, r, now, 'rgba(255,236,170,.4)');
+      drawBag(c, r, sz, false, dpr, lifted ? 0.28 : 1);
+      var lab = formatNum(sz, 0) + ' ' + (lang === 'en' ? 'L' : lang === 'ar' ? 'لتر' : 'لیتر');
+      c.font = '800 11px ' + FF(); c.textAlign = 'center'; c.textBaseline = 'middle';
+      var tw = c.measureText(lab).width + 14, lx = r.x + r.w / 2, ly = r.y + r.h * 0.62;
+      roundRect(c, lx - tw / 2, ly - 10, tw, 20, 10); c.fillStyle = 'rgba(13,89,98,.92)'; c.fill();
+      c.fillStyle = '#f3fafa'; c.fillText(lab, lx, ly + 1);
+    });
+    var binning = p && p.phase === 'bin';
+    var dragUsed = drag && drag.moved && drag.kind === 'used' && drag.room === i;
+    var over = dragUsed ? binAt(drag.px, drag.py, i) : null;
+    ['infectious', 'general'].forEach(function (k2) {
+      var key = 'lid_' + i + k2, target = over === k2 ? 1 : (dragUsed ? 0.3 : (binning ? 0.15 : 0));
+      R[key] = (R[key] || 0) + (target - (R[key] || 0)) * 0.22;
+      if (binning && k2 === 'infectious' && teach) drawDropGlow(c, L.bins[k2], now, 'rgba(255,190,170,.38)');
+      drawBin(c, L.bins[k2], k2, R[key], over === k2, dpr, L.flip);
+    });
+  }
+  function drawScene(i, ox, rw, h, now, dpr, pal) {
+    var mode = roomMode(i), task = roomTask(i);
+    var L = computeLayout(rw, h, mode, task, i);
+    R.geom[i] = { L: L, ox: ox };
+    var cache = ensureRoom(L, dpr, pal);
+    ctx.save(); ctx.translate(ox, 0); ctx.beginPath(); ctx.rect(0, 0, rw, h); ctx.clip();
+    ctx.drawImage(cache.room.c, 0, 0, rw, h);
+    var mix = greenMix(state.trees), gGreen = clamp(mix.mid * 0.35 + mix.green * 0.65, 0, 1);
+    if (i === 0 && !state.switched) drawWindowScene(ctx, L, now, dpr, 0, false);
+    else if (i === 0 && R.switchT && now - R.switchT < 2400) {
+      var k = clamp((now - R.switchT) / 2400, 0, 1);
+      drawWindowScene(ctx, L, now, dpr, gGreen * k, true);
+    } else drawWindowScene(ctx, L, now, dpr, gGreen, true);
+    var win = L.win;
+    ctx.save(); ctx.beginPath(); ctx.rect(win.x, win.y, win.w, win.h); ctx.clip();
+    R.ripples.forEach(function (rp) {
+      if (rp.room !== i) return;
+      var u = (now - rp.t0) / 1500;
+      ctx.strokeStyle = 'rgba(190,250,160,' + (0.85 * (1 - u)) + ')'; ctx.lineWidth = 3 * (1 - u) + 0.5;
+      ctx.beginPath(); ctx.ellipse(win.x + win.w * rp.u, win.y + win.h * rp.v, win.w * 0.2 * u + 2, win.h * 0.045 * u + 1, 0, 0, 7); ctx.stroke();
+    });
+    if (R.msGlow && now - R.msGlow < 2600 && mode === 'abadis') {
+      var mu = (now - R.msGlow) / 2600;
+      ctx.fillStyle = 'rgba(255,240,190,' + (0.35 * Math.sin(mu * Math.PI)) + ')'; ctx.fillRect(win.x, win.y, win.w, win.h);
+    }
+    ctx.restore();
+    ctx.drawImage(cache.frame.c, 0, 0, rw, h);
+    drawMonitor(ctx, L, now, pal);
+    if (mode === 'old') drawOldRoom(ctx, L, now, dpr, pal, i); else drawNewRoom(ctx, L, now, dpr, pal, i);
+    drawRoomTag(ctx, L, mode === 'old' ? t('roomOld') : (i === 0 ? t('roomNewA') : t('roomNew')), mode !== 'old', round && round.stage === i);
+    var active = round && round.stage === i;
+    if (R.desk) {
+      if (!active) { ctx.fillStyle = pal.dark ? 'rgba(0,10,12,.42)' : 'rgba(20,50,54,.26)'; ctx.fillRect(0, 0, rw, h); }
+      else { ctx.strokeStyle = 'rgba(95,224,210,.9)'; ctx.lineWidth = 4; ctx.strokeRect(2, 2, rw - 4, h - 4); }
+    }
+    ctx.restore();
+    return L;
+  }
   function draw(now) {
     var dpr = Math.min(2, window.devicePixelRatio || 1);
     var w = canvas.clientWidth, h = canvas.clientHeight;
@@ -1711,135 +2053,51 @@
     if (canvas.width !== bw || canvas.height !== bh) { canvas.width = bw; canvas.height = bh; R.roomKey = ''; }
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     var pal = palette();
-    var L = computeLayout(w, h);
-    currentLayout = L;
-    var win = L.win, mix = greenMix(state.trees), g = clamp(mix.mid * 0.35 + mix.green * 0.65, 0, 1);
-    ensureRoom(L, dpr, pal);
-    ensureLand(win, dpr, g);
-    ctx.drawImage(R.room.c, 0, 0, w, h);
-    ctx.save(); ctx.beginPath(); ctx.rect(win.x, win.y, win.w, win.h); ctx.clip();
-    ctx.drawImage(R.land.c, win.x, win.y, win.w, win.h);
-    if (wildOn('birds')) drawBirds(ctx, win, now);
-    drawStream(ctx, win, smooth(cfg.gameRules.streamSwaps - 1, cfg.gameRules.streamSwaps + 3, state.trees), now);
-    if (wildOn('goat')) { rock(ctx, win.x + win.w * 0.2, win.y + win.h * 0.75, win.h * 0.13, win.h * 0.05); drawGoat(ctx, win.x + win.w * 0.2, win.y + win.h * 0.712, Math.min(win.h * 0.15, win.w * 0.12), now); }
-    drawOaks(ctx, win, now, dpr);
-    if (wildOn('squirrel')) drawSquirrel(ctx, win.x + win.w * (SPOTS[1].u - 0.06), win.y + win.h * SPOTS[1].v + 1, win.h * 0.05, now);
-    if (wildOn('leopard')) { var ls = Math.min(win.w * 0.19, win.h * 0.32), lx0 = win.x + win.w * 0.44; rock(ctx, lx0, win.y + win.h * 1.01, ls * 1.45, win.h * 0.12); drawLeopard(ctx, lx0, win.y + win.h * 0.895, ls, now); }
-    var mistA = (1 - g) * 0.9;
-    if (mistA > 0.02) {
-      mist.forEach(function (m) {
-        var mx = win.x + ((m.u + (reduced() ? 0 : now / 1000 / m.sp / 6)) % 1.2 - 0.1) * win.w;
-        var my = win.y + m.v * win.h, rr = m.r * 2.2 * (win.w / 400);
-        ctx.fillStyle = rg(ctx, mx, my, 0, rr, [[0, 'rgba(246,242,234,' + (m.a * 2.4 * mistA) + ')'], [1, 'rgba(246,242,234,0)']]);
-        ctx.fillRect(mx - rr, my - rr, rr * 2, rr * 2);
-      });
+    R.desk = w >= 820 && w > h;
+    R.geom = R.geom || [];
+    var rw = R.desk ? Math.floor(w / 2) : w, flip = rtl();
+    var stage = round ? round.stage : (R.lastStage || 0);
+    if (round) R.lastStage = round.stage;
+    if (R.cam == null) R.cam = stage;
+    R.cam += (stage - R.cam) * (reduced() ? 1 : 0.09);
+    if (Math.abs(stage - R.cam) < 0.002) R.cam = stage;
+    var drawn = null;
+    for (var i = 0; i < 2; i++) {
+      var ox = R.desk ? ((flip ? 1 - i : i) * rw) : ((flip ? -1 : 1) * (i - R.cam) * w);
+      if (!R.desk && Math.abs(ox) >= w) { R.geom[i] = { L: computeLayout(rw, h, roomMode(i), roomTask(i), i), ox: ox }; continue; }
+      var L = drawScene(i, ox, rw, h, now, dpr, pal);
+      if (i === stage) drawn = L;
     }
-    R.ripples = R.ripples.filter(function (rp) { return now - rp.t0 < 1500; });
-    R.ripples.forEach(function (rp) {
-      var u = (now - rp.t0) / 1500;
-      ctx.strokeStyle = 'rgba(190,250,160,' + (0.85 * (1 - u)) + ')'; ctx.lineWidth = 3 * (1 - u) + 0.5;
-      ctx.beginPath(); ctx.ellipse(rp.x, rp.y, win.w * 0.2 * u + 2, win.h * 0.045 * u + 1, 0, 0, 7); ctx.stroke();
-      ctx.fillStyle = 'rgba(150,220,110,' + (0.28 * (1 - u)) + ')';
-      ctx.beginPath(); ctx.ellipse(rp.x, rp.y, win.w * 0.14 * u + 1, win.h * 0.03 * u + 1, 0, 0, 7); ctx.fill();
-      ctx.fillStyle = rg(ctx, rp.x, rp.y - 10, 0, 40, [[0, 'rgba(255,255,220,' + (0.6 * (1 - u)) + ')'], [1, 'rgba(255,255,220,0)']]);
-      ctx.beginPath(); ctx.arc(rp.x, rp.y - 10, 40, 0, 7); ctx.fill();
-    });
-    if (R.msGlow && now - R.msGlow < 2600) {
-      var mu = (now - R.msGlow) / 2600;
-      ctx.fillStyle = 'rgba(255,240,190,' + (0.35 * Math.sin(mu * Math.PI)) + ')'; ctx.fillRect(win.x, win.y, win.w, win.h);
-    }
-    ctx.restore();
-    ctx.drawImage(R.frame.c, 0, 0, w, h);
-
-    drawMonitor(ctx, L, now, pal);
-    drawSinkLive(ctx, L, now, dpr);
-    var ws = staffPositions(L, now);
-    var toTable = L.flip ? -1 : 1;
-    var wFace = state.retired ? (ws.walking ? (ws.x < L.table.cx ? 1 : -1) : (ws.x < L.table.cx ? 1 : -1)) : (L.flip ? 1 : -1);
-    var wPose = state.retired ? (ws.arrived ? 'reach' : '') : 'scrub';
-    var nurseFace = L.nurse.x < L.table.cx ? 1 : -1;
-    drawPerson(ctx, ws.x, ws.y, L.nurse.s * 0.97, { face: wFace, pose: wPose, walk: ws.walking ? 1 : 0, seed: 2, color: '#62afa8', dark: '#438c86', cap: '#9fd0cf' }, now);
-    drawPerson(ctx, L.nurse.x, L.nurse.y, L.nurse.s, { face: nurseFace, pose: 'reach', seed: 1, cap: '#0d5962' }, now);
-    void toTable;
-    drawLamp(ctx, L, pal);
-
-    var p = (!busy() && titleCard.hidden) ? primary() : null;
-    L.units.forEach(function (u, i) {
-      var item = L.used[i];
-      if (p && p.phase === 'place' && cases[i] && cases[i].phase === 'place') drawSlotHalo(ctx, u, now);
-      var hasItem = item && item.kind !== 'empty' && !item.hide;
-      var topY = hasItem ? item.y + 2 : u.footY - u.itemH * 0.75;
-      var tipX = u.footX + (hasItem ? (item.kind === 'jar' ? item.w * 0.12 : -item.w * 0.16) : 0);
-      ctx.strokeStyle = 'rgba(205,228,230,.95)'; ctx.lineWidth = 3.5; ctx.lineCap = 'round';
-      ctx.beginPath(); ctx.moveTo(u.footX + u.itemW * 0.1, u.regY + u.itemW * 0.38);
-      ctx.bezierCurveTo(u.footX + u.itemW * 0.75, u.regY + u.itemW * 0.7, u.footX + u.itemW * 0.6, topY - 30, tipX, topY); ctx.stroke();
-      ctx.strokeStyle = 'rgba(255,255,255,.7)'; ctx.lineWidth = 1; ctx.stroke();
-      if (hasItem) {
-        if (item.kind === 'jar') drawJar(ctx, item, dpr, item.lift ? 0.1 : 0);
-        else if (item.kind === 'fresh') {
-          var cz = cases[i], k = 1;
-          if (cz && cz.phase === 'seal') k = clamp((now - cz.t0) / sealMs(), 0, 1);
-          var dk = Math.min(1, k * 2.2), drop = 1 - (1 - dk) * (1 - dk);
-          drawBag(ctx, { x: item.x, y: item.y - (1 - drop) * 26, w: item.w, h: item.h }, item.size, false, dpr);
-          if (cz && cz.phase === 'seal' && k > 0.45) {
-            var kk = (k - 0.45) / 0.55;
-            ctx.strokeStyle = 'rgba(120,240,215,' + (1 - kk) + ')'; ctx.lineWidth = 3;
-            ctx.beginPath(); ctx.ellipse(item.x + item.w / 2, item.y + item.h * 0.1, item.w * (0.5 + kk * 0.5), item.h * 0.06 * (1 + kk * 2), 0, 0, 7); ctx.stroke();
-          }
-        } else drawBag(ctx, item, item.size, true, dpr);
-      }
-      drawUnitFront(ctx, u, pal);
-      if (p && p.phase === 'lift' && cases[i] === p && hasItem && (state.swaps < 3 || now < coachUntil)) {
-        drawDropGlow(ctx, item, now, 'rgba(255,230,150,.16)');
-      }
-    });
-
-    var placing = p && p.phase === 'place';
-    [1, 2, 3].forEach(function (sz) {
-      var r = Object.assign({}, L.bags[sz]);
-      var sh = shakes[sz];
-      if (sh && now - sh < 420) r.x += Math.sin((now - sh) / 40) * 5;
-      var lifted = drag && drag.moved && drag.kind === 'bag' && drag.size === sz;
-      if (placing && p.size === sz && (state.swaps < 3 || now < coachUntil)) drawDropGlow(ctx, r, now, 'rgba(255,236,170,.4)');
-      drawBag(ctx, r, sz, false, dpr, lifted ? 0.28 : 1);
-      var lab = formatNum(sz, 0) + ' ' + (lang === 'en' ? 'L' : lang === 'ar' ? 'لتر' : 'لیتر');
-      ctx.font = '800 ' + (L.wide ? 13 : 11) + 'px ' + FF(); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      var tw = ctx.measureText(lab).width + 14, lx = r.x + r.w / 2, ly = r.y + r.h * 0.62;
-      roundRect(ctx, lx - tw / 2, ly - 10, tw, 20, 10); ctx.fillStyle = 'rgba(13,89,98,.92)'; ctx.fill();
-      ctx.fillStyle = '#f3fafa'; ctx.fillText(lab, lx, ly + 1);
-    });
-
-    var binning = p && p.phase === 'bin';
-    var dragUsed = drag && drag.moved && drag.kind === 'used';
-    var over = dragUsed ? binAt(drag.px, drag.py) : null;
-    ['infectious', 'general'].forEach(function (k2) {
-      var key = 'lid_' + k2, target = over === k2 ? 1 : (dragUsed ? 0.3 : (binning ? 0.15 : 0));
-      R[key] = (R[key] || 0) + (target - (R[key] || 0)) * 0.22;
-      if (binning && k2 === 'infectious' && (state.swaps < 3 || now < coachUntil)) drawDropGlow(ctx, L.bins[k2], now, 'rgba(255,190,170,.38)');
-      drawBin(ctx, L.bins[k2], k2, R[key], over === k2, dpr, L.flip);
-    });
-
+    if (R.desk) { ctx.fillStyle = pal.dark ? '#031012' : '#0d5962'; ctx.fillRect(rw - 2, 0, 4, h); }
+    currentLayout = drawn || (R.geom[stage] && R.geom[stage].L);
+    // dragged things in global coords
     if (drag && drag.moved && !busy()) {
-      if (drag.kind === 'bag') {
-        var src = L.bags[drag.size], sc = 1.1;
-        drawBag(ctx, { x: drag.px - src.w * sc / 2, y: drag.py - src.h * sc * 0.7, w: src.w * sc, h: src.h * sc }, drag.size, false, dpr);
-      } else if (drag.kind === 'used' && L.used[drag.index]) {
-        var su = L.used[drag.index];
-        var rr2 = { x: drag.px - su.w / 2, y: drag.py - su.h * 0.7, w: su.w, h: su.h };
-        if (su.kind === 'jar') drawJar(ctx, rr2, dpr, 0.08); else drawBag(ctx, rr2, su.size, true, dpr);
+      var G = R.geom[drag.room]; var Lg = G && G.L;
+      if (Lg) {
+        if (drag.kind === 'bag') {
+          var src = Lg.bags[drag.size], sc = 1.1;
+          drawBag(ctx, { x: drag.px - src.w * sc / 2, y: drag.py - src.h * sc * 0.7, w: src.w * sc, h: src.h * sc }, drag.size, false, dpr);
+        } else if (drag.kind === 'used') {
+          var su = Lg.used[0];
+          drawBag(ctx, { x: drag.px - su.w / 2, y: drag.py - su.h * 0.7, w: su.w, h: su.h }, su.size, true, dpr);
+        } else if (drag.kind === 'jar') {
+          var jr = drag.from === 'unit' ? Lg.used[0] : Lg.sinkJar;
+          drawJar(ctx, { x: drag.px - jr.w / 2, y: drag.py - jr.h * 0.6, w: jr.w, h: jr.h }, dpr, 0.08, drag.from === 'sink' ? 1 : 0);
+        } else if (drag.kind === 'rub' && oldT) {
+          ctx.save(); ctx.translate(drag.px, drag.py);
+          if (oldT.phase === 'dry') { ctx.rotate(-0.3); ctx.fillStyle = '#9fd0cf'; roundRect(ctx, -22, -14, 44, 28, 5); ctx.fill(); ctx.fillStyle = '#7bb8b6'; ctx.fillRect(-22, 6, 44, 3); }
+          else { ctx.rotate(-0.5); ctx.fillStyle = '#e0a526'; roundRect(ctx, -22, -7, 44, 14, 4); ctx.fill(); ctx.fillStyle = '#f5f0e0'; for (var q = 0; q < 8; q++) ctx.fillRect(-19 + q * 5, 7, 2.5, 9); ctx.fillStyle = '#8a5a20'; roundRect(ctx, 20, -4, 26, 8, 3); ctx.fill(); }
+          ctx.restore();
+        }
       }
     }
-
     R.bursts = R.bursts.filter(function (b) { return now - b.t0 < 900; });
     R.bursts.forEach(function (b) {
       var u = (now - b.t0) / 900, rad = 90 * (0.4 + u);
       ctx.fillStyle = rg(ctx, b.x, b.y, 0, rad, [[0, 'rgba(210,255,240,' + (0.6 * (1 - u)) + ')'], [1, 'rgba(210,255,240,0)']]);
       ctx.beginPath(); ctx.arc(b.x, b.y, rad, 0, 7); ctx.fill();
-      for (var q = 0; q < 12; q++) {
-        var a = q / 12 * Math.PI * 2 + b.t0, d = 18 + u * 64;
-        ctx.fillStyle = 'rgba(235,255,245,' + (1 - u) + ')'; ctx.beginPath(); ctx.arc(b.x + Math.cos(a) * d, b.y + Math.sin(a) * d * 0.7 - u * 20, 2.4 * (1 - u) + 0.5, 0, 7); ctx.fill();
-      }
     });
+    R.ripples = R.ripples.filter(function (rp) { return now - rp.t0 < 1500; });
     seedsFly.forEach(function (s) {
       var u = clamp((now - s.t0) / cfg.gameRules.seedFlightMs, 0, 1);
       for (var tr = 7; tr >= 0; tr--) {
@@ -1861,10 +2119,9 @@
       var x = lf.x + Math.sin(u * 6 + lf.ph) * 30, y = lf.y + u * h * 1.15;
       ctx.save(); ctx.translate(x, y); ctx.rotate(u * 8 + lf.ph); ctx.globalAlpha = Math.min(1, (1 - u) * 3);
       ctx.fillStyle = lf.col; ctx.beginPath(); ctx.ellipse(0, 0, lf.s, lf.s * 0.45, 0, 0, 7); ctx.fill();
-      ctx.strokeStyle = 'rgba(0,0,0,.18)'; ctx.lineWidth = 0.8; ctx.beginPath(); ctx.moveTo(-lf.s, 0); ctx.lineTo(lf.s, 0); ctx.stroke();
       ctx.restore();
     });
-    placeChrome(L, now);
+    placeChrome(now);
   }
   function celebrate(now) {
     if (reduced()) return;
@@ -1878,53 +2135,74 @@
       setTimeout(function () { el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }, i * 90);
     });
   }
-  function placeChrome(L, now) {
-    var show = titleCard.hidden && !busy();
-    var p = primary();
-    var teach = state.swaps < 2 || now < coachUntil;
-    var target = null;
-    if (show && p) {
-      var idx = cases.indexOf(p);
-      if (p.phase === 'lift' && L.used[idx]) { var r = L.used[idx]; target = { x: r.x + r.w / 2, y: r.y + r.h * 0.45 }; }
-      else if (p.phase === 'bin') { var b2 = L.bins.infectious; target = { x: b2.x + b2.w / 2, y: b2.y + b2.h * 0.35 }; }
-      else if (p.phase === 'place' && L.bags[p.size]) { var b = L.bags[p.size]; target = { x: b.x + b.w / 2, y: b.y + b.h * 0.35 }; }
+  function placeChrome(now) {
+    var show = titleCard.hidden && !busy() && round;
+    var G = round && R.geom[round.stage];
+    var p = primary(), target = null;
+    var teach = state.swaps < 2 || (state.rounds || 0) < 2 || now < coachUntil;
+    if (show && G && p && (R.desk || Math.abs(R.cam - round.stage) < 0.05)) {
+      var L = G.L, ox = G.ox, c = function (r, fy) { return r ? { x: ox + r.x + r.w / 2, y: r.y + r.h * (fy == null ? 0.45 : fy) } : null; };
+      if (p.old) {
+        var ph = p.phase;
+        if (ph === 'carry') target = c(L.used[0]);
+        else if (ph === 'fill' || ph === 'rinse') target = p.holding ? null : c(L.tapHit, 0.2);
+        else if (ph === 'chem') target = p.pour ? null : c(L.bottle);
+        else if (ph === 'scrub' || ph === 'dry') { target = c(L.sinkJar, 0.5); if (target) target.x += Math.sin(now / 260) * L.sinkJar.w * 0.4; }
+        else if (ph === 'hang') target = c(L.sinkJar);
+      } else {
+        if (p.phase === 'lift') target = c(L.used[0]);
+        else if (p.phase === 'bin') target = c(L.bins.infectious, 0.35);
+        else if (p.phase === 'place') target = c(L.bags[p.size], 0.35);
+      }
+      if (p.old && (p.phase === 'scrub' || p.phase === 'dry' || p.phase === 'fill' || p.phase === 'rinse')) teach = teach || (state.rounds || 0) < 3;
     }
     if (target && teach && !drag) { handEl.hidden = false; handEl.style.left = target.x + 'px'; handEl.style.top = target.y + 'px'; }
     else handEl.hidden = true;
     var guide = document.getElementById('guide');
-    if (guide) {
-      var gt = Math.round(L.win.y + 12) + "px";
+    if (guide && G) {
+      var gt = Math.round(G.L.win.y + 12) + 'px';
       if (guide.style.top !== gt) guide.style.top = gt;
+      var gl = Math.round(R.desk ? G.ox + G.L.w / 2 : canvas.clientWidth / 2) + 'px';
+      if (guide.style.left !== gl) guide.style.left = gl;
+      var mw = R.desk ? Math.round(G.L.w * 0.9) + 'px' : '';
+      if (guide.style.maxWidth !== mw) guide.style.maxWidth = mw;
     }
   }
 
   function tickCases(now) {
     var changed = false;
+    var dt = Math.min(50, now - (R.lastTick || now)); R.lastTick = now;
+    if (oldT && !busy() && round && round.stage === 0) {
+      if (oldT.holding && (oldT.phase === 'fill' || oldT.phase === 'rinse')) {
+        oldT.prog += dt / (oldT.phase === 'fill' ? 2400 : 1900);
+        if (oldT.prog >= 1) { audio.water(false); oldAdvance(); if (drag && drag.kind === 'hold') drag = null; }
+      }
+      if (oldT.phase === 'chem' && oldT.pour && now - oldT.pour >= 1100) { oldT.pour = 0; oldAdvance(); }
+    }
     cases.forEach(function (c, i) {
       if (c && c.phase === 'seal' && !c.flying && now - c.t0 >= sealMs()) {
         c.flying = true;
         c.phase = 'sprout';
         c.t0 = now;
         audio.seal();
-        ghostBurst = 1;
-        if (currentLayout && currentLayout.units[i]) R.bursts.push({ x: currentLayout.units[i].footX, y: currentLayout.units[i].footY - currentLayout.units[i].itemH * 0.5, t0: now });
+        var G = R.geom[i], u = G && G.L.units[0];
+        if (u) R.bursts.push({ x: G.ox + u.footX, y: u.footY - u.itemH * 0.5, t0: now });
         var spotIndex = (state.trees + inFlight) % SPOTS.length;
         inFlight += 1;
-        var from = currentLayout && currentLayout.units[i]
-          ? { x: currentLayout.units[i].footX, y: currentLayout.units[i].footY - 40 }
-          : { x: 0, y: 0 };
-        launchSeed(from, spotIndex, function () {
+        var from = u ? { x: G.ox + u.footX, y: u.footY - 40 } : { x: 0, y: 0 };
+        launchSeed(from, spotIndex, i, function () {
           inFlight -= 1;
           commitCase(c);
           pops[spotIndex] = performance.now();
-          if (currentLayout) { var sp0 = SPOTS[spotIndex], w0 = currentLayout.win; R.ripples.push({ x: w0.x + w0.w * sp0.u, y: w0.y + w0.h * sp0.v, t0: performance.now() }); }
+          var sp0 = SPOTS[spotIndex];
+          R.ripples.push({ room: i, u: sp0.u, v: sp0.v, t0: performance.now() });
           popCounters();
           audio.sprout();
-          var idx = cases.indexOf(c);
-          if (idx >= 0) cases[idx] = null;
-          ensureCases();
-          renderChrome();
+          if (cases[i] === c) cases[i] = null;
           checkMilestones();
+          if (state.switched && i === 0 && round && round.stage === 0) finishRoom(0);
+          else if (i === 1 || (state.switched && i === 1)) finishRoom(1);
+          renderChrome();
         });
         changed = true;
       }
@@ -1988,10 +2266,13 @@
       save();
       titleCard.hidden = true;
       track('game_start', { trees: state.trees });
-      ensureCases();
+      startRound();
       renderChrome();
       pumpMilestone();
     });
+    document.getElementById('cmpNext').addEventListener('click', function () { closeCompare(false); });
+    document.getElementById('cmpSwitch').addEventListener('click', function () { closeCompare(true); });
+    document.getElementById('cmpCalc').addEventListener('click', function () { track('cta_calculator_click', { from: 'compare' }); });
     var menuBtn = document.getElementById('menuBtn'), menuEl = document.getElementById('menu');
     var setMenu = function (on) { menuEl.hidden = !on; menuBtn.setAttribute('aria-expanded', on ? 'true' : 'false'); };
     menuBtn.addEventListener('click', function (e) { e.stopPropagation(); setMenu(menuEl.hidden); });
@@ -2056,23 +2337,33 @@
       if (drag && e.pointerId === drag.pid) drag = null;
     });
     window.addEventListener('blur', clearDrag);
+    window.addEventListener('keyup', function (e) {
+      if ((e.code === 'Space' || e.code === 'Enter') && oldT && oldT.holding) { oldT.holding = false; audio.water(false); }
+    });
     window.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') {
         if (!shop.hidden) { shop.hidden = true; renderChrome(); }
         else if (!milestone.hidden) closeMilestone();
+        else if (!compareEl.hidden) closeCompare(false);
         clearDrag();
         return;
       }
       if (busy()) return;
       if (e.code === 'Digit1' || e.code === 'Digit2' || e.code === 'Digit3') {
-        tryPlace(+e.code.slice(-1), null);
+        tryPlace(+e.code.slice(-1), round ? round.stage : null);
       } else if (e.code === 'KeyI' || e.code === 'KeyG') {
         var idx = -1;
         for (var i = 0; i < cases.length; i++) if (cases[i] && cases[i].phase === 'bin') { idx = i; break; }
         if (idx >= 0) tryBin(idx, e.code === 'KeyI' ? 'infectious' : 'general');
       } else if (e.code === 'Enter' || e.code === 'Space') {
         var p = primary();
-        if (p && p.phase === 'lift') {
+        if (p && p.old) {
+          e.preventDefault();
+          if (p.phase === 'carry' || p.phase === 'hang') oldAdvance();
+          else if (p.phase === 'chem') { if (!p.pour) { p.pour = performance.now(); audio.pour(); } }
+          else if (p.phase === 'scrub' || p.phase === 'dry') rubCount();
+          else if ((p.phase === 'fill' || p.phase === 'rinse') && !e.repeat) { p.holding = true; audio.water(true); }
+        } else if (p && p.phase === 'lift') {
           e.preventDefault();
           tryLift(cases.indexOf(p));
         }
@@ -2159,7 +2450,12 @@
     applyNight: function () { return applyNight(); },
     layout: function () { return currentLayout; },
     phase: function () { var p = primary(); return p ? p.phase : ''; },
-    wanted: function () { var p = primary(); return p ? p.size : 0; }
+    wanted: function () { var p = primary(); return p ? p.size : 0; },
+    round: function () { return round; },
+    old: function () { return oldT; },
+    geom: function () { return R.geom; },
+    desk: function () { return R.desk; },
+    cam: function () { return R.cam; }
   };
 
   function boot() {

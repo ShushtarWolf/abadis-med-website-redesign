@@ -2,9 +2,26 @@
   "version": 1,
   "source": "site/dial-practical/common/abadis-common.js — F.surgery. The file comment says these are the formulas on the live abadis-med.com calculator: water = n * 1.6 * 9.3, cost = n * 2.5 * 85000, hours = n * 1.7 / 60 * 2.2 * 7.1. Factors below are copied unchanged. Do not replace them with rounded marketing figures.",
   "formula": {
-    "waterLitres": { "factors": [1.6, 9.3], "expression": "1.6 * 9.3" },
-    "costToman": { "factors": [2.5, 85000], "expression": "2.5 * 85000" },
-    "staffHours": { "expression": "1.7 / 60 * 2.2 * 7.1", "minutes": 1.7, "k1": 2.2, "k2": 7.1 }
+    "waterLitres": {
+      "factors": [
+        1.6,
+        9.3
+      ],
+      "expression": "1.6 * 9.3"
+    },
+    "costToman": {
+      "factors": [
+        2.5,
+        85000
+      ],
+      "expression": "2.5 * 85000"
+    },
+    "staffHours": {
+      "expression": "1.7 / 60 * 2.2 * 7.1",
+      "minutes": 1.7,
+      "k1": 2.2,
+      "k2": 7.1
+    }
   },
   "chemicals": {
     "placeholder": true,
@@ -23,9 +40,18 @@
   "gameRules": {
     "note": "Everything in gameRules is pacing for the toy, not a hospital statistic. Savings per completed swap still come only from formula.",
     "surgeryTypes": [
-      { "id": "standard", "sizeL": 2 },
-      { "id": "short", "sizeL": 1 },
-      { "id": "long", "sizeL": 3 }
+      {
+        "id": "standard",
+        "sizeL": 2
+      },
+      {
+        "id": "short",
+        "sizeL": 1
+      },
+      {
+        "id": "long",
+        "sizeL": 3
+      }
     ],
     "correctBin": "infectious",
     "seedsPerCleanSwap": 1,
@@ -34,18 +60,50 @@
     "sealMs": 880,
     "sealMsSavedPerLevel": 220,
     "seedFlightMs": 1150,
-    "milestones": [3, 8, 15, 40],
-    "wildlifeAtTrees": { "birds": 2, "squirrel": 5, "goat": 8, "leopard": 10 },
-    "green": { "midFrom": 0, "midTo": 4, "greenFrom": 2, "greenTo": 9 },
+    "milestones": [
+      3,
+      8,
+      15,
+      40
+    ],
+    "wildlifeAtTrees": {
+      "birds": 2,
+      "squirrel": 5,
+      "goat": 8,
+      "leopard": 10
+    },
+    "green": {
+      "midFrom": 0,
+      "midTo": 4,
+      "greenFrom": 2,
+      "greenTo": 9
+    },
     "streamSwaps": 4,
     "tankSwaps": 8,
     "washRetireTrees": 16,
     "upgrades": {
-      "second": { "seeds": 8 },
-      "sealer": { "seeds": 4, "max": 2 },
-      "lamp": { "seeds": 3, "max": 2 },
-      "wildlife": { "seeds": 5, "max": 3, "treesEarlier": 4 }
+      "second": {
+        "seeds": 8
+      },
+      "sealer": {
+        "seeds": 4,
+        "max": 2
+      },
+      "lamp": {
+        "seeds": 3,
+        "max": 2
+      },
+      "wildlife": {
+        "seeds": 5,
+        "max": 3,
+        "treesEarlier": 4
+      }
     },
-    "nightShift": { "capHours": 8, "msPerTree": 3600000, "minAwayMs": 90000 }
+    "nightShift": {
+      "capHours": 8,
+      "msPerTree": 3600000,
+      "minAwayMs": 90000
+    },
+    "switchAfterRounds": 3
   }
 }
