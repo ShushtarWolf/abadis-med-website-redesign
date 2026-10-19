@@ -50,6 +50,35 @@
     }
   });
 
+  /* ---------- game button (Seed Slingshot) ----------
+     Injected once here so every page sharing this header gets it. The link is
+     resolved relative to this script's own URL (…/assets/js/site.js → site root),
+     so it works on GitHub Pages, githack and any sub-folder. */
+  (() => {
+    const hdr = document.getElementById('header');
+    if (!hdr || hdr.querySelector('.play-btn')) return;
+    const me = document.querySelector('script[src*="assets/js/site.js"]');
+    const base = me ? new URL('../../', me.src).href : new URL('./', location.href).href;
+    const l = (root.lang || 'fa').slice(0, 2);
+    const code = l === 'en' ? 'en' : l === 'ar' ? 'ar' : 'fa';
+    const label = { fa: 'بازی', en: 'Play', ar: 'العب' }[code];
+    const title = { fa: 'بازی بذرافکن زاگرس', en: 'Play Seed Slingshot', ar: 'العب مقلاع البذور' }[code];
+    const href = base + 'seed-slingshot/?lang=' + code;
+    const icon = '<svg class="pb-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3v7a5 5 0 0 0 10 0V3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M12 15v6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><ellipse cx="12" cy="8.6" rx="2.6" ry="3" fill="currentColor"/><path d="M9.6 6.6h4.8" stroke="var(--pb-bg,#066163)" stroke-width="1.2"/></svg>';
+    const a = document.createElement('a');
+    a.className = 'play-btn'; a.href = href; a.title = title; a.setAttribute('aria-label', title);
+    a.dataset.track = 'game_open';
+    a.innerHTML = icon + '<span class="pb-label">' + label + '</span>';
+    const anchor = hdr.querySelector('.lang-switch') || hdr.querySelector('.theme-toggle');
+    hdr.insertBefore(a, anchor);
+    const nav = hdr.querySelector('.nav');
+    if (nav) {
+      const m = document.createElement('a');
+      m.className = 'nav-play'; m.href = href; m.innerHTML = icon + '<span>' + title + '</span>';
+      nav.appendChild(m);
+    }
+  })();
+
   /* ---------- header ----------
      Transparent in every theme. `.scrolled` only fades in an untinted blur;
      `.on-light` (light theme only) switches the ink + logo to teal while the

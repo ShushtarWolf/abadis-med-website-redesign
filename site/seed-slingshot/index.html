@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#0d5962">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>بذرافکن زاگرس · آبادیس طب</title>
+<link rel="preload" href="img/bg1.webp" as="image">
+<link rel="stylesheet" href="game.css">
+</head>
+<body>
+<div id="app">
+  <canvas id="view" aria-label="game"></canvas>
+
+  <div id="hud" class="hud" hidden>
+    <div class="hud-l">
+      <a class="pill icon home" id="homeBtn" href="../" aria-label="home"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7M6 10v10h12V10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <button class="pill icon" id="menuBtn" type="button" aria-label="menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
+      <span class="pill lvl" id="lvlName"></span>
+      <span class="pill bags" id="bagsPill"></span>
+      <span class="pill wind" id="windPill" hidden></span>
+    </div>
+    <div class="pill counters">
+      <span class="ctr"><i class="ic drop"></i><b id="cWater">0</b></span>
+      <span class="ctr"><i class="ic clock"></i><b id="cStaff">0</b></span>
+      <span class="ctr"><i class="ic coin"></i><b id="cMoney">0</b></span>
+    </div>
+  </div>
+  <div id="hint" class="hint" hidden></div>
+
+  <section id="title" class="screen title">
+    <div class="tcard">
+      <img class="logo" src="img/logo.webp" alt="" width="128" height="60">
+      <h1 id="tTitle"></h1>
+      <p id="tTag"></p>
+      <div class="row">
+        <button class="btn" id="playBtn" type="button"></button>
+        <button class="btn ghost" id="levelsBtn" type="button"></button>
+      </div>
+      <div class="langs">
+        <button class="lang" data-lang="fa" type="button">فا</button>
+        <button class="lang" data-lang="en" type="button">EN</button>
+        <button class="lang" data-lang="ar" type="button">ع</button>
+        <a class="lang home-link" id="tHome" href="../"></a>
+        <button class="lang" id="soundBtn" type="button" aria-pressed="false">🔇</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="select" class="screen" hidden>
+    <div class="scard">
+      <h2 id="sTitle"></h2>
+      <div class="lgrid" id="lgrid"></div>
+      <button class="btn ghost" id="selBack" type="button"></button>
+    </div>
+  </section>
+
+  <section id="end" class="screen" hidden>
+    <div class="ecard">
+      <div class="stars" id="eStars"></div>
+      <h2 id="eTitle"></h2>
+      <div class="stats">
+        <div><i class="ic oak"></i><span id="eOaksK"></span><b id="eOaks"></b></div>
+        <div><i class="ic drop"></i><span id="eWaterK"></span><b id="eWater"></b></div>
+        <div><i class="ic clock"></i><span id="eStaffK"></span><b id="eStaff"></b></div>
+        <div><i class="ic coin"></i><span id="eMoneyK"></span><b id="eMoney"></b></div>
+      </div>
+      <p class="note" id="eNote"></p>
+      <div class="row">
+        <button class="btn" id="eNext" type="button"></button>
+        <button class="btn ghost" id="eRetry" type="button"></button>
+      </div>
+      <div class="row small">
+        <a class="btn ghost" id="eReal" target="_blank" rel="noopener"></a>
+        <a class="btn ghost" id="eZag" target="_blank" rel="noopener"></a>
+        <button class="btn ghost" id="eShare" type="button"></button>
+      </div>
+      <button class="link" id="eLevels" type="button"></button>
+      <a class="link" id="eHome" href="../"></a>
+    </div>
+  </section>
+
+  <div id="rotate" class="rotate" hidden><span></span></div>
+  <div id="toast" class="toast"></div>
+</div>
+<script src="vendor/matter.min.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
