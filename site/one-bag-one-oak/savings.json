@@ -33,7 +33,7 @@
     "mistakeDelayMs": 1100,
     "sealMs": 880,
     "sealMsSavedPerLevel": 220,
-    "seedFlightMs": 820,
+    "seedFlightMs": 1150,
     "milestones": [3, 8, 15, 40],
     "wildlifeAtTrees": { "birds": 2, "squirrel": 5, "goat": 8, "leopard": 10 },
     "green": { "midFrom": 0, "midTo": 4, "greenFrom": 2, "greenTo": 9 },
