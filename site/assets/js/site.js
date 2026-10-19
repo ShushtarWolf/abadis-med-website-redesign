@@ -677,7 +677,12 @@
    Events: catalogue_download, contact_click, form_submit, language_switch. */
 (function () {
   window.dataLayer = window.dataLayer || [];
+  function consentGranted() {
+    try { return localStorage.getItem('abadis-consent') === 'accepted'; } catch (e) { return false; }
+  }
   function track(name, data) {
+    /* Cookie banner (consent.js) must be accepted before any analytics event. */
+    if (!consentGranted()) return;
     var ev = Object.assign({ event: name, page: location.pathname }, data || {});
     window.dataLayer.push(ev);
     try { document.dispatchEvent(new CustomEvent('abadis:track', { detail: ev })); } catch (e) {}
