@@ -96,8 +96,8 @@ def header(p, cur, lang='fa', fa_path=''):
     sw = switcher_html(lang, fa_path, p)
     return f'''<header class="header" id="header">
   <a class="logo" href="{home}" aria-label="{esc(L['brand'])} — {esc(L['home_label'])}">
-    <img class="lg-light" src="{p}assets/img/abadis-logo-teal.png" width="658" height="309" alt="{esc(L['brand'])}">
-    <img class="lg-dark" src="{p}assets/img/abadis-logo-on-teal.png" width="670" height="309" alt="" aria-hidden="true">
+    <img class="lg-light" src="{p}assets/img/abadis-logo-teal.svg" width="646" height="309" alt="{esc(L['brand'])}">
+    <img class="lg-dark" src="{p}assets/img/abadis-logo-white.svg" width="646" height="309" alt="" aria-hidden="true">
   </a>
   <nav class="nav" id="mainNav" aria-label="{esc(L['nav_aria'])}">{links}</nav>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mainNav" aria-label="{esc(L['menu_aria'])}"><span class="mb-bars" aria-hidden="true"><i></i><i></i><i></i></span></button>
@@ -119,7 +119,7 @@ def footer(p, cur=None, lang='fa'):
   <div class="wrap foot-inner">
     <div class="foot-col foot-col-brand">
       <div class="foot-brand">
-        <img src="{p}assets/img/abadis-logo-on-teal.png" width="670" height="309" alt="{esc(L['brand'])}" loading="lazy">
+        <img src="{p}assets/img/abadis-logo-white.svg" width="646" height="309" alt="{esc(L['brand'])}" loading="lazy">
         <p>{esc(L['footer_blurb'])}</p>
       </div>
       <details class="foot-acc foot-nav" open>
