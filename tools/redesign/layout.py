@@ -53,6 +53,7 @@ def head(p, title, desc, og=None, lang='fa', fa_path='', canonical_path=None):
 <link rel="preload" href="{p}assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{p}assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{p}assets/css/site.css">
+<link rel="stylesheet" href="{p}assets/css/footer-motion.css">
 </head>
 <body>
 <a class="skip" href="#main">{esc(L['skip'])}</a>
@@ -192,7 +193,7 @@ def page(p, cur, title, desc, main, og=None, lightbox=False, scripts='', lang='f
     return (html
             + header(p, cur, lang=lang, fa_path=fa_path) + f'\n<main id="main"{main_attrs}>\n' + main + '\n</main>\n'
             + lb + footer(p, cur, lang=lang)
-            + f'\n<script src="{p}assets/js/site.js" defer></script>\n{scripts}</body>\n</html>\n')
+            + f'\n<script src="{p}assets/js/site.js" defer></script>\n<script src="{p}assets/js/footer-motion.js" defer></script>\n{scripts}</body>\n</html>\n')
 
 
 def crumbs(p, trail, lang='fa'):
