@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>یک کیسه، یک بلوط — مخازن طبی آبادیس</title>
+<meta name="description" content="بازی آرام تعویض کیسه ساکشن: هر تعویض تمیز یک بلوط روی زاگرس.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#e8f3f3">
+<meta property="og:title" content="یک کیسه، یک بلوط">
+<meta property="og:description" content="هر تعویض تمیز، یک بلوط روی زاگرس.">
+<meta property="og:image" content="../zagros-names/shared/img/hero/bg-dry-1280.webp">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<link rel="preload" href="../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="image" href="../zagros-names/shared/img/hero/bg-dry-1280.webp" type="image/webp">
+<link rel="stylesheet" href="game.css">
+<script>
+(function () {
+  var t, lang;
+  try {
+    var q = new URLSearchParams(location.search);
+    if (q.get('theme')) localStorage.setItem('abadis-theme', q.get('theme'));
+    if (q.get('lang')) localStorage.setItem('abadis-oak-lang', q.get('lang'));
+    t = localStorage.getItem('abadis-theme');
+    lang = localStorage.getItem('abadis-oak-lang');
+  } catch (e) {}
+  var d = document.documentElement;
+  d.dataset.theme = (t === 'dark' || t === 'noir') ? t : 'light';
+  var map = { fa: ['fa-IR', 'rtl'], en: ['en', 'ltr'], ar: ['ar', 'rtl'] };
+  var pair = map[lang] || map.fa;
+  d.lang = pair[0];
+  d.dir = pair[1];
+})();
+</script>
+</head>
+<body>
+<a class="skip" href="#dock">پرش به بازی</a>
+<div id="app" class="app" data-phase="title">
+  <header class="top" id="header">
+    <a class="logo" href="../" id="logoLink">
+      <img class="lg-light" src="../assets/img/abadis-logo-teal.png" width="658" height="309" alt="">
+      <img class="lg-dark" src="../assets/img/abadis-logo-on-teal.png" width="670" height="309" alt="">
+    </a>
+    <p class="wordmark" id="wordmark"></p>
+    <span class="spacer"></span>
+    <button class="icon-btn" id="shareBtn" type="button"></button>
+    <button class="icon-btn" id="soundBtn" type="button" aria-pressed="false"></button>
+    <nav class="lang-switch" aria-label="language">
+      <button class="lang-link" type="button" data-lang="fa" id="lang-fa">FA</button>
+      <button class="lang-link" type="button" data-lang="en" id="lang-en">EN</button>
+      <button class="lang-link" type="button" data-lang="ar" id="lang-ar">AR</button>
+    </nav>
+    <button class="theme-toggle" id="themeBtn" type="button">
+      <svg class="tt-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <mask id="oak-tt-mask"><rect width="24" height="24" fill="#fff"/><circle class="tt-bite" cx="16.6" cy="7.4" r="6.3" fill="#000"/></mask>
+        <g class="tt-rays" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1.6v2.2M12 20.2v2.2M1.6 12h2.2M20.2 12h2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></g>
+        <circle class="tt-body" cx="12" cy="12" r="8" fill="currentColor" mask="url(#oak-tt-mask)"/>
+        <g class="tt-stars" fill="currentColor"><path d="M18.3 6.1l.6 1.6 1.6.6-1.6.6-.6 1.6-.6-1.6-1.6-.6 1.6-.6z"/><path d="M21.4 1.9l.4 1 1 .4-1 .4-.4 1-.4-1-1-.4 1-.4z"/></g>
+      </svg>
+    </button>
+  </header>
+
+  <div class="stage" id="stage">
+    <canvas id="view" aria-hidden="true"></canvas>
+    <div class="hold" id="hold0" data-i="0"><img class="can" alt="" draggable="false" width="399" height="900" src="../zagros-names/shared/img/hero/canister.webp"></div>
+    <div class="hold" id="hold1" data-i="1" hidden><img class="can" alt="" draggable="false" width="399" height="900" src="../zagros-names/shared/img/hero/canister.webp"></div>
+    <p class="season" id="season"></p>
+    <div class="panel" id="titleCard">
+      <img class="panel-logo" src="../assets/img/abadis-logo-teal.png" width="658" height="309" alt="">
+      <p class="eyebrow" id="tagline"></p>
+      <h1 id="heroTitle"></h1>
+      <p class="lead" id="lead"></p>
+      <p class="night-line" id="nightLine" hidden></p>
+      <p class="have" id="haveTrees" hidden></p>
+      <button class="btn" id="start" type="button"></button>
+    </div>
+    <div class="panel tutor" id="tutorial" hidden>
+      <div class="dots" id="dots" aria-hidden="true"><i></i><i></i><i></i></div>
+      <h2 id="tutTitle"></h2>
+      <p id="tutBody"></p>
+      <div class="row">
+        <button class="btn btn-ghost" id="tutSkip" type="button"></button>
+        <button class="btn" id="tutNext" type="button"></button>
+      </div>
+    </div>
+  </div>
+
+  <aside class="dock" id="dock">
+    <p class="hint" id="hint"></p>
+    <div class="chip" id="caseChip"></div>
+    <div class="bags" id="bags">
+      <button class="bag" type="button" data-size="1" id="bag1"><img alt="" draggable="false" src="../zagros-names/shared/img/hero/canister.webp" width="399" height="900"><span></span></button>
+      <button class="bag" type="button" data-size="2" id="bag2"><img alt="" draggable="false" src="../zagros-names/shared/img/hero/canister.webp" width="399" height="900"><span></span></button>
+      <button class="bag" type="button" data-size="3" id="bag3"><img alt="" draggable="false" src="../zagros-names/shared/img/hero/canister.webp" width="399" height="900"><span></span></button>
+    </div>
+    <div class="bins">
+      <button class="bin bin-inf" type="button" data-bin="infectious" id="binInf"></button>
+      <button class="bin" type="button" data-bin="general" id="binGen"></button>
+    </div>
+    <div class="pills">
+      <div class="pill" id="pillWater"><span class="tank" aria-hidden="true"><i id="tankFill"></i></span><span><span class="k" id="labWater"></span><b id="numWater">0</b></span></div>
+      <div class="pill" id="pillStaff"><span><span class="k" id="labStaff"></span><b id="numStaff">0</b><span class="sub" id="unitStaff"></span></span></div>
+      <div class="pill" id="pillChem" data-placeholder="true"><span><span class="k" id="labChem"></span><b>—</b></span><span class="ph-badge" id="chemBadge"></span></div>
+      <div class="pill" id="pillMoney"><span class="coin" id="coin" aria-hidden="true"></span><span><span class="k" id="labMoney"></span><b id="numMoney">0</b><span class="sub" id="subMoney"></span></span></div>
+    </div>
+    <div class="dock-row">
+      <button class="chip" id="shopBtn" type="button"></button>
+      <button class="icon-btn" id="helpBtn" type="button">?</button>
+    </div>
+  </aside>
+</div>
+
+<div class="modal" id="shop" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="shopTitle">
+    <h2 id="shopTitle"></h2>
+    <p id="shopSeeds"></p>
+    <button class="btn up" type="button" data-up="second"><span id="upSecond"></span><b id="costSecond"></b></button>
+    <button class="btn up" type="button" data-up="sealer"><span id="upSealer"></span><b id="costSealer"></b></button>
+    <button class="btn up" type="button" data-up="lamp"><span id="upLamp"></span><b id="costLamp"></b></button>
+    <button class="btn up" type="button" data-up="wildlife"><span id="upWild"></span><b id="costWild"></b></button>
+    <div class="row">
+      <button class="btn btn-ghost" id="shopClose" type="button"></button>
+      <button class="btn btn-ghost" id="resetBtn" type="button"></button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="milestone" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="msKicker">
+    <div class="tags" id="msTags"></div>
+    <p class="eyebrow" id="msKicker"></p>
+    <p class="big" id="msLitres"></p>
+    <p class="unit" id="msLitreLabel"></p>
+    <p class="also" id="msAlso"></p>
+    <p class="ph-line" id="msChem"></p>
+    <div class="row">
+      <a class="btn" id="msCalc" target="_blank" rel="noopener noreferrer"></a>
+      <a class="btn btn-ghost" id="msZagros" target="_blank" rel="noopener noreferrer"></a>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button class="btn btn-ghost" id="msClose" type="button"></button>
+    </div>
+    <p class="note" id="msNote"></p>
+  </div>
+</div>
+
+<div id="toast" role="status"></div>
+<div id="live" class="sr-only" aria-live="polite"></div>
+<noscript><p>یک کیسه، یک بلوط</p></noscript>
+<script src="game.js"></script>
+</body>
+</html>
