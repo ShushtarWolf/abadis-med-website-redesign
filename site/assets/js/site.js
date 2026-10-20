@@ -50,7 +50,7 @@
     }
   });
 
-  /* ---------- game button (Seed Slingshot) ----------
+  /* ---------- game button (Angry Bags) ----------
      Injected once here so every page sharing this header gets it. The link is
      resolved relative to this script's own URL (…/assets/js/site.js → site root),
      so it works on GitHub Pages, githack and any sub-folder. */
@@ -62,7 +62,7 @@
     const l = (root.lang || 'fa').slice(0, 2);
     const code = l === 'en' ? 'en' : l === 'ar' ? 'ar' : 'fa';
     const label = { fa: 'بازی', en: 'Play', ar: 'العب' }[code];
-    const title = { fa: 'بازی بذرافکن زاگرس', en: 'Play Seed Slingshot', ar: 'العب مقلاع البذور' }[code];
+    const title = { fa: 'بازی کیسه‌های خشمگین', en: 'Play Angry Bags', ar: 'العب الأكياس الغاضبة' }[code];
     const href = base + 'seed-slingshot/?lang=' + code;
     const icon = '<svg class="pb-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3v7a5 5 0 0 0 10 0V3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M12 15v6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><ellipse cx="12" cy="8.6" rx="2.6" ry="3" fill="currentColor"/><path d="M9.6 6.6h4.8" stroke="var(--pb-bg,#066163)" stroke-width="1.2"/></svg>';
     const a = document.createElement('a');

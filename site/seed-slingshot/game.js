@@ -1,4 +1,4 @@
-/* Seed Slingshot (Abadis Med). Savings use only config.json (dial-practical surgery formula, n = 1 per jar). */
+/* Angry Bags (Abadis Med). Savings use only config.json (dial-practical surgery formula, n = 1 per jar). */
 (function () {
   'use strict';
   var M = Matter, Eng = M.Engine, Bodies = M.Bodies, Body = M.Body, Comp = M.Composite, Events = M.Events;

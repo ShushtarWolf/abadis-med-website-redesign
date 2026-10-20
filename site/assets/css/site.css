@@ -1340,7 +1340,7 @@ body.academy { background: #f3f8f8; }
 }
 .latin-digits, .latin-digits * { font-family: "KalamehLatinDigits", "Kalameh", Tahoma, sans-serif !important; }
 
-/* ---------- header game button (Seed Slingshot) ---------- */
+/* ---------- header game button (Angry Bags) ---------- */
 .play-btn {
   --pb-bg: #0d5962;
   flex: none; display: inline-flex; align-items: center; gap: 6px; height: 38px; padding: 0 14px 0 12px;
