@@ -1,0 +1,393 @@
+{
+  "source": "Per-surgery savings formula of the Abadis savings calculator (site/dial-practical/common/abadis-common.js, mode 'surgery', n = 1): water = 1.6 × 9.3 L, cost = 2.5 × 85,000 toman, staff hours = 1.7 / 60 × 2.2 × 7.1.",
+  "unitDefinition": "One dirty reusable suction jar knocked out = the washing and disinfection of one reusable jar after one surgery, replaced by one Abadis bag = the calculator's savings for n = 1 surgery. Buckets, disinfectant cans and stone sinks are part of the washing station; they release water visually but add nothing to the counters. Freeing a nurse is shown visually; staff hours come only from jars.",
+  "formula": {
+    "waterLitres": [
+      1.6,
+      9.3
+    ],
+    "costToman": [
+      2.5,
+      85000
+    ],
+    "staffHours": {
+      "minutes": 1.7,
+      "k1": 2.2,
+      "k2": 7.1
+    }
+  },
+  "links": {
+    "calculator": "https://shushtarwolf.github.io/abadis-med-website-redesign/dial-practical/",
+    "zagros": "https://shushtarwolf.github.io/abadis-med-website-redesign/zagros-names/4-mix/"
+  },
+  "world": {
+    "w": 1600,
+    "h": 900,
+    "ground": 832,
+    "slingX": 250,
+    "slingY": 610,
+    "maxPull": 150,
+    "power": 0.15
+  },
+  "levels": [
+    {
+      "id": 1,
+      "bg": 1,
+      "bags": 5,
+      "par": 2,
+      "wind": 0,
+      "items": [
+        [
+          "crate",
+          990,
+          "g"
+        ],
+        [
+          "crate",
+          1170,
+          "g"
+        ],
+        [
+          "plank",
+          1080,
+          0
+        ],
+        [
+          "jar1",
+          1010,
+          2
+        ],
+        [
+          "bucket",
+          1080,
+          2
+        ],
+        [
+          "jar3",
+          1150,
+          2
+        ],
+        [
+          "jar2",
+          1280,
+          "g"
+        ],
+        [
+          "nurse",
+          1390,
+          "g"
+        ]
+      ]
+    },
+    {
+      "id": 2,
+      "bg": 2,
+      "bags": 5,
+      "par": 3,
+      "wind": 0,
+      "items": [
+        [
+          "stone",
+          860,
+          "g"
+        ],
+        [
+          "jar1",
+          860,
+          0
+        ],
+        [
+          "can",
+          960,
+          "g"
+        ],
+        [
+          "crate",
+          1110,
+          "g"
+        ],
+        [
+          "crate",
+          1290,
+          "g"
+        ],
+        [
+          "plank",
+          1200,
+          3
+        ],
+        [
+          "crate",
+          1200,
+          5
+        ],
+        [
+          "jar2",
+          1120,
+          5
+        ],
+        [
+          "jar3",
+          1280,
+          5
+        ],
+        [
+          "jar1",
+          1200,
+          6
+        ],
+        [
+          "nurse",
+          1440,
+          "g"
+        ],
+        [
+          "bucket",
+          1560,
+          "g"
+        ]
+      ]
+    },
+    {
+      "id": 3,
+      "bg": 3,
+      "bags": 5,
+      "par": 3,
+      "wind": -0.6,
+      "items": [
+        [
+          "rock",
+          690,
+          "g",
+          70
+        ],
+        [
+          "stone",
+          1000,
+          "g"
+        ],
+        [
+          "stone",
+          1180,
+          "g"
+        ],
+        [
+          "plank",
+          1090,
+          1
+        ],
+        [
+          "stone",
+          1000,
+          3
+        ],
+        [
+          "stone",
+          1180,
+          3
+        ],
+        [
+          "plank",
+          1090,
+          4
+        ],
+        [
+          "jar1",
+          1030,
+          6
+        ],
+        [
+          "jar2",
+          1150,
+          6
+        ],
+        [
+          "jar3",
+          1090,
+          3
+        ],
+        [
+          "can",
+          1290,
+          "g"
+        ],
+        [
+          "nurse",
+          1390,
+          "g"
+        ],
+        [
+          "sink",
+          1530,
+          "g"
+        ]
+      ],
+      "tint": "rgba(255,140,60,.12)"
+    },
+    {
+      "id": 4,
+      "bg": 4,
+      "bags": 5,
+      "par": 3,
+      "wind": 0.5,
+      "items": [
+        [
+          "ledge",
+          1180,
+          "g",
+          380,
+          150
+        ],
+        [
+          "crate",
+          1050,
+          0
+        ],
+        [
+          "crate",
+          1310,
+          0
+        ],
+        [
+          "plank",
+          1180,
+          1
+        ],
+        [
+          "crate",
+          1180,
+          3
+        ],
+        [
+          "jar1",
+          1080,
+          3
+        ],
+        [
+          "jar3",
+          1280,
+          3
+        ],
+        [
+          "jar2",
+          1180,
+          4
+        ],
+        [
+          "bucket",
+          880,
+          "g"
+        ],
+        [
+          "jar1",
+          970,
+          "g"
+        ],
+        [
+          "nurse",
+          1470,
+          "g"
+        ]
+      ],
+      "tint": "rgba(140,160,220,.16)"
+    },
+    {
+      "id": 5,
+      "bg": 5,
+      "bags": 6,
+      "par": 4,
+      "wind": -0.9,
+      "items": [
+        [
+          "rock",
+          740,
+          "g",
+          60
+        ],
+        [
+          "mover",
+          960,
+          500,
+          220,
+          110
+        ],
+        [
+          "jar1",
+          930,
+          1
+        ],
+        [
+          "jar2",
+          1000,
+          1
+        ],
+        [
+          "stone",
+          1220,
+          "g"
+        ],
+        [
+          "stone",
+          1400,
+          "g"
+        ],
+        [
+          "plank",
+          1310,
+          4
+        ],
+        [
+          "crate",
+          1220,
+          6
+        ],
+        [
+          "crate",
+          1400,
+          6
+        ],
+        [
+          "plank",
+          1310,
+          7
+        ],
+        [
+          "stone",
+          1310,
+          9
+        ],
+        [
+          "jar3",
+          1215,
+          9
+        ],
+        [
+          "jar1",
+          1405,
+          9
+        ],
+        [
+          "jar2",
+          1310,
+          10
+        ],
+        [
+          "can",
+          1110,
+          "g"
+        ],
+        [
+          "nurse",
+          1530,
+          "g"
+        ],
+        [
+          "nurse",
+          870,
+          "g"
+        ]
+      ],
+      "tint": "rgba(40,60,130,.38)"
+    }
+  ]
+}
