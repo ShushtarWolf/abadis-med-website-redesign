@@ -19,7 +19,7 @@ THEME_ICON = '''<svg class="tt-icon" viewBox="0 0 24 24" aria-hidden="true" focu
 CUR = ' aria-current="page"'
 
 
-def head(p, title, desc, og=None, lang='fa', fa_path='', canonical_path=None):
+def head(p, title, desc, og=None, lang='fa', fa_path='', canonical_path=None, html_attrs=''):
     L = LANGS[lang]
     brand = L['brand']
     # Avoid double brand suffix
@@ -32,8 +32,9 @@ def head(p, title, desc, og=None, lang='fa', fa_path='', canonical_path=None):
         can_tag = f'<link rel="canonical" href="{canonical_href(canonical_path)}">\n'
     alts = hreflang_tags(fa_path, p, canonical_path=canonical_path)
     alts_block = (alts + '\n') if alts else ''
+    extra = (' ' + html_attrs.strip()) if html_attrs and html_attrs.strip() else ''
     return f'''<!DOCTYPE html>
-<html lang="{L['lang']}" dir="{L['dir']}" data-theme="light">
+<html lang="{L['lang']}" dir="{L['dir']}" data-theme="light"{extra}>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -172,7 +173,7 @@ LIGHTBOX = lightbox_html('fa')
 
 
 def page(p, cur, title, desc, main, og=None, lightbox=False, scripts='', lang='fa', fa_path='',
-         canonical_path=None, extra_head='', main_class='', body_class=''):
+         canonical_path=None, extra_head='', main_class='', body_class='', html_attrs=''):
     if lang == 'fa' and not fa_path and cur:
         guess = {
             'about': 'about/', 'products': 'products/', 'news': 'news/', 'articles': 'articles/',
@@ -185,7 +186,7 @@ def page(p, cur, title, desc, main, og=None, lightbox=False, scripts='', lang='f
     if lang == 'fa' and canonical_path is None:
         canonical_path = fa_path
     lb = (lightbox_html(lang) + '\n') if lightbox else ''
-    html = head(p, title, desc, og, lang=lang, fa_path=fa_path, canonical_path=canonical_path)
+    html = head(p, title, desc, og, lang=lang, fa_path=fa_path, canonical_path=canonical_path, html_attrs=html_attrs)
     if extra_head:
         html = html.replace('</head>', extra_head.rstrip() + '\n</head>', 1)
     if body_class:

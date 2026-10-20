@@ -146,8 +146,9 @@ def build_home(write, lang):
     </div></section>'''
     main = '\n'.join([hero, about, impact, why, products, quick, news, arts, mem, cust])
     if lang == 'en': main = main.replace('←', '→')
-    extra_head = f'<link rel="preload" as="image" href="{p}assets/img/p/hero-bags.webp" type="image/webp">\n<link rel="stylesheet" href="{p}assets/css/home.css">'
+    extra_head = f'<link rel="preload" as="image" href="{p}assets/img/p/hero-bags.webp" type="image/webp">\n<link rel="stylesheet" href="{p}assets/css/home.css">\n{H.logo_scroll_css(p)}'
     html = page(p, None, t['title'], t['desc'], main, lang=lang, fa_path='', canonical_path=t['root'],
-                extra_head=extra_head, scripts=H.logo_scroll_scripts(p) + f'<script src="{p}assets/js/home-impact.js" defer></script>\n', main_class='home-page', body_class='home', lightbox=True)
+                extra_head=extra_head, scripts=H.logo_scroll_scripts(p) + f'<script src="{p}assets/js/home-impact.js" defer></script>\n', main_class='home-page', body_class='home', lightbox=True,
+                html_attrs='data-slogan="t1"')
     write(t['root'] + 'index.html', html)
     return t['root'] + 'index.html'

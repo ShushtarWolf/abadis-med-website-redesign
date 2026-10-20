@@ -396,8 +396,9 @@ def about_v2():
   </section>'''
 
 
-# Approved scroll-growth emblem (animator/logo-scroll, animation B). The SVG is the complete
-# static mark: logo-scroll.js hides and draws it only when GSAP loaded and motion is allowed.
+# Approved scroll-growth emblem (animator/logo-scroll, animation B) plus the living loop
+# and T1 slogan wipe. The SVG is the complete static mark: logo-scroll.js hides and draws
+# it only when GSAP loaded and motion is allowed.
 IMPACT_MARK = (
     '<svg class="impact-mark logo-grow" aria-hidden="true" focusable="false" viewBox="60 -10 760 820" xmlns="http://www.w3.org/2000/svg">'
     '<g fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round">'
@@ -443,15 +444,24 @@ GSAP_SRC = 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js'
 SCROLL_SRC = 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js'
 
 
+def logo_scroll_css(prefix=''):
+    """Slogan T1 overrides. Load after home.css."""
+    return f'<link rel="stylesheet" href="{prefix}assets/css/slogan-options.css">'
+
+
 def logo_scroll_scripts(prefix='', existing=''):
-    """GSAP 3.12.5 + ScrollTrigger + logo-scroll.js. Skip GSAP when the page already loads it."""
+    """GSAP 3.12.5 + ScrollTrigger + logo-scroll.js + slogan-options.js.
+    Skip GSAP when the page already loads it. Never emit a second GSAP tag."""
     tags = []
     low = existing.lower()
-    if 'gsap' not in low:
+    if 'gsap.min.js' not in low and 'gsap@' not in low:
         tags.append(f'<script src="{GSAP_SRC}" defer></script>')
+    if 'scrolltrigger' not in low:
         tags.append(f'<script src="{SCROLL_SRC}" defer></script>')
     if 'logo-scroll.js' not in existing:
         tags.append(f'<script src="{prefix}assets/js/logo-scroll.js" defer></script>')
+    if 'slogan-options.js' not in existing:
+        tags.append(f'<script src="{prefix}assets/js/slogan-options.js" defer></script>')
     return ('\n'.join(tags) + '\n') if tags else ''
 
 
@@ -560,12 +570,14 @@ def build(write):
         customers_section(),
     ])
     extra_head = '''<link rel="preload" as="image" href="assets/img/p/hero-bags.webp" type="image/webp">
-<link rel="stylesheet" href="assets/css/home.css">'''
+<link rel="stylesheet" href="assets/css/home.css">
+''' + logo_scroll_css('')
     scripts = logo_scroll_scripts('') + '<script src="assets/js/home-impact.js" defer></script>\n'
     html = page(
         '', None, HOME_TITLE, HOME_DESC, main,
         fa_path='', canonical_path='',
         extra_head=extra_head, scripts=scripts,
         main_class='home-page', body_class='home', lightbox=True,
+        html_attrs='data-slogan="t1"',
     )
     write('index.html', html)
