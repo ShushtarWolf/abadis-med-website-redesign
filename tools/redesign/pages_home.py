@@ -449,6 +449,16 @@ def logo_scroll_css(prefix=''):
     return f'<link rel="stylesheet" href="{prefix}assets/css/slogan-options.css">'
 
 
+def counter_options_css(prefix=''):
+    """M2 water counter. Load after home.css."""
+    return f'<link rel="stylesheet" href="{prefix}logo-scroll/counter-options.css">'
+
+
+def counter_options_script(prefix=''):
+    """Replaces home-impact.js. The formula lives in the script; the card only sets data-counter."""
+    return f'<script src="{prefix}logo-scroll/counter-options.js" defer></script>\n'
+
+
 def logo_scroll_scripts(prefix='', existing=''):
     """GSAP 3.12.5 + ScrollTrigger + logo-scroll.js + slogan-options.js.
     Skip GSAP when the page already loads it. Never emit a second GSAP tag."""
@@ -473,7 +483,7 @@ def impact_section():
         {IMPACT_MARK}
         <p class="slogan" aria-label="{esc(' '.join(SLOGAN))}">{lines}</p>
       </div>
-      <div class="impact-counter reveal" data-impact-counter data-start="2026-03-21T00:00:00+03:30" data-per-year="74400000">
+      <div class="impact-counter reveal" data-impact-counter data-counter="m2">
         <p class="eyebrow">اثر آبادیس، همین حالا</p>
         <strong class="impact-num" aria-live="off">۰</strong>
         <span class="impact-unit">لیتر آب صرفه‌جویی‌شده از ابتدای سال ۱۴۰۵ (تخمینی)</span>
@@ -571,8 +581,8 @@ def build(write):
     ])
     extra_head = '''<link rel="preload" as="image" href="assets/img/p/hero-bags.webp" type="image/webp">
 <link rel="stylesheet" href="assets/css/home.css">
-''' + logo_scroll_css('')
-    scripts = logo_scroll_scripts('') + '<script src="assets/js/home-impact.js" defer></script>\n'
+''' + logo_scroll_css('') + '\n' + counter_options_css('')
+    scripts = logo_scroll_scripts('') + counter_options_script('')
     html = page(
         '', None, HOME_TITLE, HOME_DESC, main,
         fa_path='', canonical_path='',

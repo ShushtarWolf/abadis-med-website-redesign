@@ -96,7 +96,7 @@ def build_home(write, lang):
     impact = f'''  <section class="section deep impact" id="impact"><div class="wrap impact-inner">
       <div class="impact-slogan reveal">{H.IMPACT_MARK}
         <p class="slogan" aria-label="{esc(' '.join(t['slogan']))}">{lines}</p></div>
-      <div class="impact-counter reveal" data-impact-counter data-start="2026-03-21T00:00:00+03:30" data-per-year="74400000" data-locale="{'en-US' if lang == 'en' else 'ar-EG'}">
+      <div class="impact-counter reveal" data-impact-counter data-counter="m2" data-locale="{'en-US' if lang == 'en' else 'ar-EG'}">
         <p class="eyebrow">{esc(t['imp_eb'])}</p><strong class="impact-num" aria-live="off">{zero}</strong>
         <span class="impact-unit">{esc(t['imp_unit'])}</span></div>
     </div></section>'''
@@ -146,9 +146,9 @@ def build_home(write, lang):
     </div></section>'''
     main = '\n'.join([hero, about, impact, why, products, quick, news, arts, mem, cust])
     if lang == 'en': main = main.replace('←', '→')
-    extra_head = f'<link rel="preload" as="image" href="{p}assets/img/p/hero-bags.webp" type="image/webp">\n<link rel="stylesheet" href="{p}assets/css/home.css">\n{H.logo_scroll_css(p)}'
+    extra_head = f'<link rel="preload" as="image" href="{p}assets/img/p/hero-bags.webp" type="image/webp">\n<link rel="stylesheet" href="{p}assets/css/home.css">\n{H.logo_scroll_css(p)}\n{H.counter_options_css(p)}'
     html = page(p, None, t['title'], t['desc'], main, lang=lang, fa_path='', canonical_path=t['root'],
-                extra_head=extra_head, scripts=H.logo_scroll_scripts(p) + f'<script src="{p}assets/js/home-impact.js" defer></script>\n', main_class='home-page', body_class='home', lightbox=True,
+                extra_head=extra_head, scripts=H.logo_scroll_scripts(p) + H.counter_options_script(p), main_class='home-page', body_class='home', lightbox=True,
                 html_attrs='data-slogan="t1"')
     write(t['root'] + 'index.html', html)
     return t['root'] + 'index.html'
