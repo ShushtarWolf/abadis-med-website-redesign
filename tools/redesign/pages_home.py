@@ -524,6 +524,19 @@ def quick_links():
   </section>'''
 
 
+def latest_posts():
+    """One box with the latest three posts across news + articles (auto-updates on rebuild)."""
+    pages_posts.prepare()
+    cards = ''.join(pages_posts.home_card('', x, i) for i, x in enumerate(pages_posts.POSTS[:3]))
+    return f'''  <section class="section latest-posts" id="posts">
+    <div class="wrap">
+      <div class="lp-head reveal"><div><p class="eyebrow">تازه‌ترین‌ها</p><h2>اخبار و مقالات</h2></div>
+        <p class="lp-links"><a class="more-link" href="news/">همهٔ اخبار ←</a><a class="more-link" href="articles/">همهٔ مقالات ←</a></p></div>
+      <div class="lp-grid">{cards}</div>
+    </div>
+  </section>'''
+
+
 def posts_v2(cat):
     pages_posts.prepare()
     items = [x for x in pages_posts.POSTS if x['cat'] == cat][:3]
@@ -564,8 +577,7 @@ def build(write):
         why_v2(),
         products_v2(),
         quick_links(),
-        posts_v2('news'),
-        posts_v2('articles'),
+        latest_posts(),
         memberships_section(),
         customers_section(),
     ])

@@ -119,16 +119,31 @@ def build_home(write, lang):
         href = x['href'].split('abadis-med.com/', 1)[1]
         return (f'<a class="post-card reveal" href="{p}{esc(href)}"><div class="ph"><img src="{img(x["local"])}" alt="{esc(x["t"])}" loading="lazy" decoding="async"></div>'
                 f'<div class="body"><h3>{esc(x["t"])}</h3><span class="go">{esc(label)}</span></div></a>')
-    news_items = live[:6] if lang == 'ar' else live[:6]
-    def posts(cid, eb, h, href, items, label, alt=''):
-        return f'''  <section class="section{alt}" id="{cid}"><div class="wrap">
-      <div class="section-head reveal"><p class="eyebrow">{esc(eb)}</p><h2>{esc(h)}</h2><p><a class="more-link" style="margin:0" href="{_h(t, p, href)}">{esc(t['view'])}</a></p></div>
-      <div class="post-grid">{''.join(pc(x, label) for x in items[:3])}</div></div></section>'''
-    news = posts('news', t['news_eb'], t['news_h'], t['news_href'], news_items, t['read'])
-    if lang == 'en':
-        arts = posts('articles', t['art_eb'], t['art_h'], t['art_href'], live[6:], t['art_read'], ' section--alt')
-    else:  # no Arabic articles on the live site: show the next live news and point to the Persian articles
-        arts = posts('articles', t['art_eb'], t['art_h'], t['art_href'], live[3:6], t['read'], ' section--alt')
+    # one box with the latest three live posts (EN: first 6 are news, the rest articles; AR: news only).
+    # The live feed has no dates, so order + month come from the upload folder in the image URL.
+    import re as _re, pages_posts as PP
+    MON = {'en': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+           'ar': ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']}[lang]
+    L = {'en': dict(eb='Latest', h='News & Articles', news='All news →', arts='All articles →', tn='News', ta='Article', read='Read more →'),
+         'ar': dict(eb='الأحدث', h='الأخبار والمقالات', news='كل الأخبار ←', arts='كل المقالات ←', tn='خبر', ta='مقالة', read='اقرأ المزيد ←')}[lang]
+    items = []
+    for i, x in enumerate(live):
+        m = _re.search(r'/uploads/(\d{4})/(\d{2})/', x.get('img') or '')
+        ym = (int(m.group(1)), int(m.group(2))) if m else (0, 0)
+        items.append((ym, -i, x, 'news' if (lang == 'ar' or i < 6) else 'articles'))
+    items.sort(key=lambda z: (z[0], z[1]), reverse=True)
+    lcards = []
+    for k, (ym, _, x, cat) in enumerate(items[:3]):
+        href = p + esc(x['href'].split('abadis-med.com/', 1)[1])
+        dt = f'<time datetime="{ym[0]}-{ym[1]:02d}">{MON[ym[1]-1]} {ym[0]}</time>' if ym[0] else ''
+        post = dict(t=x['t'], cat=cat, _ex='')
+        lcards.append(PP.home_card(p, post, k, tag=L['tn'] if cat == 'news' else L['ta'], date_html=dt, href=href,
+                                   src=f'assets/img/live/{x["local"]}.webp', read=L['read']))
+    news = f'''  <section class="section latest-posts" id="posts"><div class="wrap">
+      <div class="lp-head reveal"><div><p class="eyebrow">{esc(L['eb'])}</p><h2>{esc(L['h'])}</h2></div>
+        <p class="lp-links"><a class="more-link" href="{_h(t, p, t['news_href'])}">{esc(L['news'])}</a><a class="more-link" href="{_h(t, p, t['art_href'])}">{esc(L['arts'])}</a></p></div>
+      <div class="lp-grid">{''.join(lcards)}</div></div></section>'''
+    arts = None
     logos = ''.join(f'<li><img src="{img(n)}" alt="{esc(t["mem_alt"])}" loading="lazy" decoding="async"></li>' for n in H.MEMBERSHIPS if (SITE / H._live(n)).exists())
     mem = f'''  <section class="section" id="memberships"><div class="wrap"><div class="section-head reveal"><p class="eyebrow">{esc(t['mem_eb'])}</p><h2>{esc(t['mem_h'])}</h2></div><ul class="member-logos reveal">{logos}</ul></div></section>'''
     bl = H._B('/مشتریان-ما/'); lg = []
@@ -144,7 +159,7 @@ def build_home(write, lang):
         <button type="button" class="logo-carousel-btn logo-carousel-next" aria-label="{esc(t['next'])}">›</button></div>
       <p class="home-logo-cta reveal"><a class="btn btn-ghost" href="{_h(t, p, t['cust_href'])}">{esc(t['cust_btn'])}</a></p>
     </div></section>'''
-    main = '\n'.join([hero, about, impact, why, products, quick, news, arts, mem, cust])
+    main = '\n'.join([hero, about, impact, why, products, quick, news, mem, cust])
     if lang == 'en': main = main.replace('←', '→')
     extra_head = f'<link rel="preload" as="image" href="{p}assets/img/p/hero-bags.webp" type="image/webp">\n<link rel="stylesheet" href="{p}assets/css/home.css">\n{H.logo_scroll_css(p)}'
     html = page(p, None, t['title'], t['desc'], main, lang=lang, fa_path='', canonical_path=t['root'],

@@ -1363,3 +1363,67 @@ body.academy { background: #f3f8f8; }
   .nav-play { display: flex !important; align-items: center; gap: 8px; font-weight: 800; }
   .nav-play .pb-icon { width: 20px; height: 20px; }
 }
+
+/* ── Theme-aware post frame (all post cards; light / dark / noir swap instantly via [data-theme]) ── */
+.ph.pf { --pf-bg: #ffffff; --pf-ac: #297873; --pf-ac-2: #e3f1f0; --pf-mark: .7; --pf-mat: #ffffff;
+  position: relative; isolation: isolate; aspect-ratio: auto !important; display: block !important;
+  padding: 10px 10px 0; background: var(--pf-bg); overflow: hidden; transition: background-color .35s ease; }
+[data-theme="dark"] .ph.pf { --pf-bg: #0f3034; --pf-ac: #5fd0d1; --pf-ac-2: #164247; --pf-mark: .75; --pf-mat: #e8f3f3; }
+[data-theme="noir"] .ph.pf { --pf-bg: #1c1a2e; --pf-ac: #a78bfa; --pf-ac-2: #2a2645; --pf-mark: .8; --pf-mat: #f1f0ff; }
+.ph.pf::before { content: ""; position: absolute; z-index: -1; inset-block-start: -38px; inset-inline-start: -38px;
+  width: 120px; height: 120px; border-radius: 50%; background: var(--pf-ac); transition: background-color .35s ease; }
+.ph.pf::after { content: ""; position: absolute; z-index: -1; inset-block-end: -60px; inset-inline-end: -30px;
+  width: 190px; height: 110px; border-radius: 50%; background: var(--pf-ac-2); transition: background-color .35s ease; }
+.ph.pf .pf-img { display: block; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: var(--pf-mat);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--pf-ac) 22%, transparent); }
+.ph.pf .pf-img img { width: 100% !important; height: 100% !important; object-fit: cover; opacity: 1 !important; transition: transform .5s ease; }
+.ph.pf.pf-fit .pf-img img, .ph.pf.txt .pf-img img { object-fit: contain; }
+.ph.pf .pf-bar { display: flex; align-items: center; justify-content: flex-end; gap: 10px; height: 30px; }
+.ph.pf .pf-bar::before { content: ""; flex: 1; height: 2px; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--pf-ac)); opacity: .5; }
+html[dir="rtl"] .ph.pf .pf-bar::before { background: linear-gradient(270deg, transparent, var(--pf-ac)); }
+.ph.pf .pf-mark { width: 58px; height: 24px; background: var(--pf-ac); opacity: var(--pf-mark);
+  -webkit-mask: url(../img/abadis-logo-white.svg) center / contain no-repeat; mask: url(../img/abadis-logo-white.svg) center / contain no-repeat; }
+
+/* ── Home: latest three posts box ── */
+.latest-posts .lp-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px 28px; flex-wrap: wrap; margin-bottom: 26px; }
+.latest-posts .lp-head h2 { margin: 0; }
+.latest-posts .lp-head .eyebrow { margin-bottom: 6px; }
+.latest-posts .lp-links { display: flex; gap: 10px; flex-wrap: wrap; margin: 0; }
+.latest-posts .lp-links .more-link { margin: 0; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); font-size: .88rem; text-decoration: none; }
+.latest-posts .lp-links .more-link:hover { border-color: var(--brand); }
+.lp-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; align-items: stretch; }
+.lp-card { position: relative; display: flex; flex-direction: column; text-decoration: none; color: inherit; background: var(--surface);
+  border: 1px solid var(--line); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+.lp-card:hover, .lp-card:focus-visible { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(0,0,0,.14); border-color: color-mix(in srgb, var(--brand) 40%, transparent); }
+.lp-card:hover .pf-img img { transform: scale(1.04); }
+.lp-tag { position: absolute; z-index: 2; inset-block-start: 18px; inset-inline-end: 18px; padding: 3px 12px; border-radius: 999px;
+  font-size: .76rem; font-weight: 800; line-height: 1.7; color: #fff; background: var(--btn-bg); box-shadow: 0 4px 12px rgba(0,0,0,.18); }
+.lp-articles .lp-tag { background: var(--surface); color: var(--brand); box-shadow: 0 0 0 1px var(--line), 0 4px 12px rgba(0,0,0,.14); }
+.lp-card .body { display: flex; flex-direction: column; gap: 8px; padding: 6px 20px 20px; flex: 1; }
+.lp-meta { color: var(--muted); font-size: .8rem; font-weight: 700; line-height: 1.6; }
+.lp-card h3 { font-size: 1.02rem; line-height: 1.7; font-weight: 800; color: var(--ink); margin: 0;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: calc(2 * 1.7em); }
+.lp-card p { color: var(--muted); font-size: .88rem; line-height: 1.85; margin: 0;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: calc(2 * 1.85em); }
+.lp-card .go { margin-top: auto; padding-top: 6px; color: var(--brand); font-weight: 800; font-size: .86rem; }
+/* tablet: 2 + 1 (third card goes wide, image beside text) */
+@media (max-width: 960px) and (min-width: 601px) {
+  .lp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lp-card:nth-child(3) { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; }
+  .lp-card:nth-child(3) .body { padding: 18px 20px; justify-content: center; }
+}
+/* phone: one featured card, then two compact rows (square thumb + title + date) */
+@media (max-width: 600px) {
+  .latest-posts .lp-head { margin-bottom: 18px; }
+  .lp-grid { grid-template-columns: 1fr; gap: 12px; }
+  .lp-card:not(.lp-first) { display: grid; grid-template-columns: 96px 1fr; align-items: center; gap: 12px; padding: 10px; border-radius: 16px; }
+  .lp-card:not(.lp-first) .ph.pf { padding: 5px; border-radius: 12px; }
+  .lp-card:not(.lp-first) .ph.pf .pf-img { aspect-ratio: 1; border-radius: 9px; }
+  .lp-card:not(.lp-first) .ph.pf .pf-bar, .lp-card:not(.lp-first) p, .lp-card:not(.lp-first) .go { display: none; }
+  .lp-card:not(.lp-first) .ph.pf::before { width: 46px; height: 46px; inset-block-start: -16px; inset-inline-start: -16px; }
+  .lp-card:not(.lp-first) .ph.pf::after { display: none; }
+  .lp-card:not(.lp-first) .body { padding: 0; gap: 4px; flex-direction: column-reverse; justify-content: center; }
+  .lp-card:not(.lp-first) h3 { font-size: .94rem; min-height: 0; }
+  .lp-card:not(.lp-first) .lp-tag { position: static; grid-column: 2; grid-row: 1; justify-self: start; align-self: start; display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .lp-card, .lp-card .pf-img img { transition: none; } .lp-card:hover { transform: none; } .lp-card:hover .pf-img img { transform: none; } }

@@ -4,6 +4,7 @@ from lib import load, esc, strip_tags, best_img, jdate, fa, POST_MAP, ROOT, SITE
 from layout import page, page_hero
 from render import blocks_to_prose
 from cats import classify, strip_title
+import postframe
 
 LABEL = {'news': 'آخرین اخبار', 'articles': 'مقالات'}
 TAG = {'news': 'خبر', 'articles': 'مقاله'}
@@ -66,12 +67,27 @@ def excerpt(post):
         d = re.sub(r'[\xa0\s]+', ' ', d).strip()
     if len(d) < 12:
         d = strip_tags(post.get('t') or post.get('title') or '')
+    d = re.sub(r'^\s*چکیده\s*[:：]?\s*', '', d)
     return d[:190] + ('…' if len(d) > 190 else '')
+
+def framed(p, src, alt, w=None, h=None):
+    """Theme-aware post frame (light/dark/noir via [data-theme] CSS vars). Old social graphics are cropped
+    to their inner photo, or shown whole when they can't be cropped cleanly."""
+    src2, mode = postframe.frame(src)
+    if mode == 'crop':
+        try:
+            from PIL import Image
+            w, h = Image.open(SITE / src2).size
+        except Exception: w = h = None
+    wh = f' width="{w}" height="{h}"' if w and h else ''
+    cls = 'ph pf' + (f' pf-{mode}' if mode else '')
+    return (f'<div class="{cls}"><span class="pf-img"><img src="{p}{src2}"{wh} alt="{alt}" loading="lazy" decoding="async"></span>'
+            f'<span class="pf-bar" aria-hidden="true"><span class="pf-mark"></span></span></div>')
 
 def card(p, post, from_list=True):
     r = thumb(p, post)
     alt = esc(post['t'])
-    ph = (f'<div class="ph"><img src="{p}{r["src"]}" width="{r["w"]}" height="{r["h"]}" alt="{alt}" loading="lazy" decoding="async"></div>' if r
+    ph = (framed(p, r['src'], alt, r['w'], r['h']) if r
           else f'<div class="ph txt"><img src="{p}{FALLBACK_THUMB}" width="1280" height="720" alt="{alt}" loading="lazy"></div>')
     href = (post['rel'].split('/', 1)[1] if from_list else p + post['rel'])
     return (f'<a class="post-card reveal" href="{href}" data-name="{esc(post["t"])}">{ph}<div class="body"><time datetime="{post["date"][:10]}">{jdate(post["date"])}</time>'
@@ -150,3 +166,34 @@ def build(write):
         pages_home.build(write)
     except ImportError:
         pass
+
+
+def _norm(s):
+    return re.sub(r'[\s\u200c،:؟?!.()\-–—«»"]+', '', s or '')
+
+def home_excerpt(post):
+    d = excerpt(post)
+    t = _norm(post['t'])
+    nd = _norm(d)
+    if t and (nd.startswith(t) or len(nd) < len(t) + 12):
+        return ''          # excerpt only repeats the title
+    return d
+
+def home_card(p, post, i=0, tag=None, date_html=None, href=None, src=None, read='ادامه مطلب ←'):
+    """Card for the home-page latest-posts box (shared by FA/EN/AR)."""
+    alt = esc(post['t'])
+    if src is None:
+        r = thumb(p, post)
+        ph = framed(p, r['src'], alt, r['w'], r['h']) if r else f'<div class="ph pf txt"><span class="pf-img"><img src="{p}{FALLBACK_THUMB}" alt="{alt}" loading="lazy"></span><span class="pf-bar" aria-hidden="true"><span class="pf-mark"></span></span></div>'
+    else:
+        ph = framed(p, src, alt)
+    tag = tag or TAG[post['cat']]
+    kind = post.get('cat', 'news')
+    href = href or (p + post['rel'])
+    if date_html is None:
+        date_html = f'<time datetime="{post["date"][:10]}">{jdate(post["date"])}</time>'
+    ex = post.get('_ex') if '_ex' in post else home_excerpt(post)
+    exh = f'<p>{esc(ex)}</p>' if ex else ''
+    return (f'<a class="lp-card lp-{kind}{" lp-first" if i == 0 else ""} reveal" href="{href}">{ph}'
+            f'<span class="lp-tag">{esc(tag)}</span><div class="body"><div class="lp-meta">{date_html}</div>'
+            f'<h3>{alt}</h3>{exh}<span class="go">{esc(read)}</span></div></a>')
