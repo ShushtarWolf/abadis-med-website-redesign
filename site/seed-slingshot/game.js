@@ -2,7 +2,7 @@
 (function () {
   'use strict';
   var M = Matter, Eng = M.Engine, Bodies = M.Bodies, Body = M.Body, Comp = M.Composite, Events = M.Events;
-  var STORE = 'abadis-slingshot-v1';
+  var STORE = 'abadis-slingshot-v1', AB = window.AngryBagsApi;
   var canvas = document.getElementById('view'), ctx = canvas.getContext('2d');
   var $ = function (id) { return document.getElementById(id); };
   var cfg, i18n, per, lang = 'fa', W, H, dpr = 1, view = { s: 1, ox: 0, oy: 0 };
@@ -489,9 +489,42 @@
     $('cWater').textContent = litres(level.water);
     $('cStaff').textContent = hours(level.hours);
     $('cMoney').textContent = money(level.cost);
+    $('sbTot').textContent = fmt(level.jars) + ' ' + t('jarsWord') + ' · ' + fmt(level.water, 2) + ' ' + t('litre') + ' · ' + mins(level.hours) + ' · ' + money(level.cost);
   }
-  function show(id) { ['title', 'select', 'end'].forEach(function (s) { $(s).hidden = s !== id; }); $('hud').hidden = !!id; }
+  function mins(h) { return fmt(h * 60, 1) + ' ' + t('minute'); }
+  function paintPer() {
+    if (!per) return;
+    $('sbPerK').textContent = t('perBag'); $('sbTotK').textContent = t('runTotal');
+    $('sbW').textContent = fmt(per.water, 2) + ' ' + t('litre');
+    $('sbS').textContent = mins(per.hours);
+    $('sbM').textContent = fmt(Math.round(per.cost)) + ' ' + t('toman');
+  }
+  function show(id) { ['title', 'select', 'end', 'gate'].forEach(function (s) { $(s).hidden = s !== id; }); $('hud').hidden = !!id; $('savebar').hidden = !!id; $('rotate').classList.toggle('off', !!id); if (id !== 'gate') clearInterval(gateTimer); }
+  /* ---------- replay gate ---------- */
+  var gateTimer = 0, gateReturn = 'title';
+  function gate() { return AB.gateStatus(cfg.gate); }
+  function clock(ms) { var s = Math.ceil(ms / 1000), m = Math.floor(s / 60), r = s % 60, h = Math.floor(m / 60); m = m % 60; return (h ? fmt(h) + ':' + (m < 10 ? fmt(0) : '') : '') + fmt(m) + ':' + (r < 10 ? fmt(0) : '') + fmt(r); }
+  function siteLinks() {
+    var L = { fa: [['../about/', 'gAbout'], ['../products/', 'gProducts'], ['../csr/', 'gCsr'], ['../news/', 'gNews']],
+      en: [['../en/about-us/', 'gAbout'], ['../en/products/', 'gProducts'], ['../en/csr/', 'gCsr'], ['../en/latest-news/', 'gNews']],
+      ar: [['../arabic/%D9%85%D9%86-%D9%86%D8%AD%D9%86/', 'gAbout'], ['../arabic/%D9%85%D9%86%D8%AA%D8%AC%D8%A7%D8%AA/', 'gProducts'], ['../csr/', 'gCsr'], ['../arabic/%D8%A7%D9%84%D8%A7%D8%AE%D8%A8%D8%A7%D8%B1/', 'gNews']] }[lang];
+    var box = $('gLinks'); box.innerHTML = '';
+    L.forEach(function (x) { var a = document.createElement('a'); a.className = 'btn ghost'; a.href = x[0]; a.textContent = t(x[1]); box.appendChild(a); });
+  }
+  function paintGate() {
+    var g = gate();
+    if (!g.locked) { clearInterval(gateTimer); toast(t('unlocked')); show(gateReturn); return; }
+    $('gHour').textContent = clock(g.leftWait);
+    $('gBrowse').textContent = clock(g.browsed) + ' / ' + clock(g.browseNeed);
+    $('gBar').style.width = Math.min(100, g.browsed / g.browseNeed * 100) + '%';
+  }
+  function openGate(from) {
+    gateReturn = from || 'title'; siteLinks(); show('gate'); paintGate();
+    clearInterval(gateTimer); gateTimer = setInterval(paintGate, 1000);
+    track('gate_shown', {});
+  }
   function startLevel(idx) {
+    if (gate().locked) { openGate($('end').hidden ? 'title' : 'end'); return; }
     show(null); buildLevel(idx);
     var h = $('hint'); h.textContent = t('hintDrag'); h.hidden = level.idx > 0 && prog.stars[1] != null;
   }
@@ -513,9 +546,48 @@
     $('eStaffK').textContent = t('staffFreed'); $('eStaff').textContent = hours(L.hours);
     $('eMoneyK').textContent = t('moneySaved'); $('eMoney').textContent = money(L.cost);
     $('eNote').textContent = t('unitNote');
+    var S = cfg.score;
+    L.score = L.jars * S.perJar + L.freed * S.perNurse + L.oaks * S.perOak + stars * S.perStar + (win ? Math.max(0, L.bagsLeft) * S.perBagLeftOnWin : 0);
+    L.stars = stars; L.win = win; L.ms = Math.round(performance.now() - L.start);
+    $('eScore').textContent = fmt(L.score);
+    AB.lockGate(); $('eGate').hidden = false; $('eGate').textContent = t('gEnd');
+    paintEntry(); loadBoard();
     var nx = $('eNext'); nx.hidden = !win || L.idx >= cfg.levels.length - 1;
     setTimeout(function () { show('end'); $('hud').hidden = false; (nx.hidden ? $('eRetry') : nx).focus(); }, win ? 200 : 0);
     track(win ? 'level_win' : 'level_lose', { level: L.def.id, stars: stars, bags: L.used });
+  }
+  /* ---------- score entry + leaderboard ---------- */
+  var api, submitted = false;
+  function paintEntry() {
+    submitted = false;
+    var on = api.enabled() && level && level.used > 0;
+    $('fSoon').hidden = on; $('fFields').hidden = !on; $('fSoon').textContent = t('fSoon');
+    $('fMsg').textContent = ''; $('fMsg').className = 'ferr'; $('fSend').disabled = false;
+  }
+  function loadBoard() {
+    var list = $('bList'); list.innerHTML = ''; $('bEmpty').textContent = '';
+    if (!api.enabled()) { $('bEmpty').textContent = t('bSoon'); return; }
+    api.board().then(function (r) {
+      var rows = (r && r.ok && r.rows) || [];
+      if (!rows.length) { $('bEmpty').textContent = t('bEmpty'); return; }
+      rows.slice(0, 10).forEach(function (x) { var li = document.createElement('li'); var n = document.createElement('span'); n.textContent = String(x.name || '').slice(0, 24); var b = document.createElement('b'); b.textContent = fmt(+x.score || 0); li.appendChild(n); li.appendChild(b); list.appendChild(li); });
+    }).catch(function () { $('bEmpty').textContent = t('errNet'); });
+  }
+  function onSubmit(e) {
+    e.preventDefault();
+    if (!api.enabled() || submitted || !level || !level.over) return;
+    var msg = $('fMsg'), name = AB.cleanName($('fName').value), phone = AB.normPhone($('fPhone').value);
+    msg.className = 'ferr';
+    if (!name) { msg.textContent = t('errName'); $('fName').focus(); return; }
+    if (!phone) { msg.textContent = t('errPhone'); $('fPhone').focus(); return; }
+    if (!$('fConsent').checked) { msg.textContent = t('errConsent'); return; }
+    var L = level; $('fSend').disabled = true; msg.textContent = t('sending');
+    api.submit({ name: name, phone: phone, consent: true, lang: lang, level: L.def.id, win: !!L.win, jars: L.jars, nurses: L.freed, oaks: L.oaks, stars: L.stars, bagsLeft: Math.max(0, L.bagsLeft), bagsUsed: L.used, ms: L.ms, score: L.score })
+      .then(function (r) {
+        if (r && r.ok) { submitted = true; msg.className = 'fok'; msg.textContent = t('sent', { s: fmt(r.best || L.score) }); $('fPhone').value = ''; loadBoard(); track('score_submit', { level: L.def.id }); }
+        else { $('fSend').disabled = false; msg.textContent = t(r && r.error === 'rate' ? 'errRate' : 'errServer'); }
+      }).catch(function () { $('fSend').disabled = false; msg.textContent = t('errNet'); });
+    $('fPhone').value = '';
   }
   function track(name, d) { try { window.dispatchEvent(new CustomEvent('abadis-slingshot', { detail: Object.assign({ event: name }, d) })); } catch (e) {} }
   function paintSelect() {
@@ -543,7 +615,11 @@
     ['homeBtn', 'tHome', 'eHome'].forEach(function (id) { var a = $(id); if (a) { a.href = hu; a.setAttribute('aria-label', t('home')); } });
     $('tHome').textContent = '⌂ ' + t('home'); $('eHome').textContent = t('home');
     document.querySelectorAll('.lang[data-lang]').forEach(function (b) { b.setAttribute('aria-current', b.dataset.lang === lang ? 'true' : 'false'); });
-    paintHud(); paintSelect();
+    paintHud(); paintSelect(); paintPer();
+    $('eScoreK').textContent = t('score'); $('fTitle').textContent = t('fTitle'); $('fName').placeholder = t('fName'); $('fPhone').placeholder = t('fPhone');
+    $('fConsentT').textContent = t('fConsent'); $('fSend').textContent = t('fSend'); $('bTitle').textContent = t('bTitle'); $('fSoon').textContent = t('fSoon');
+    $('gTitle').textContent = t('gTitle'); $('gBody').textContent = t('gBody'); $('gHourK').textContent = t('gHour'); $('gBrowseK').textContent = t('gBrowse'); $('gNote').textContent = t('gNote'); $('gBack').textContent = t('gBack'); $('eGate').textContent = t('gEnd');
+    if (!$('gate').hidden) siteLinks();
   }
   function setLang(c) {
     lang = ['fa', 'en', 'ar'].indexOf(c) >= 0 ? c : 'fa';
@@ -573,6 +649,9 @@
     $('eRetry').addEventListener('click', function () { startLevel(level.idx); });
     $('eLevels').addEventListener('click', function () { paintSelect(); show('select'); });
     $('eShare').addEventListener('click', share);
+    $('entry').addEventListener('submit', onSubmit);
+    $('gBack').addEventListener('click', function () { show(gateReturn); });
+    $('fPhone').addEventListener('input', function () { var v = AB.toLatinDigits(this.value); if (v !== this.value) this.value = v; });
     $('eReal').addEventListener('click', function () { track('cta_calculator', {}); });
     $('eZag').addEventListener('click', function () { track('cta_zagros', {}); });
     $('menuBtn').addEventListener('click', function () { aim = null; paintSelect(); show('select'); });
@@ -599,14 +678,14 @@
     get fps() { return fps; }, get level() { return level; }, get prog() { return prog; }, get per() { return per; },
     view: function () { return view; }, sling: function () { return slingPt(); }, hasBag: function () { return !!bag; }, flying: function () { return !!flying; },
     bodies: function () { return Comp.allBodies(engine.world).filter(function (b) { return b.kind; }).map(function (b) { return { kind: b.kind, x: b.position.x, y: b.position.y }; }); },
-    start: function (i) { startLevel(i); }
+    start: function (i) { startLevel(i); }, end: function (w) { endLevel(!!w); }, gate: function () { return gate(); }
   };
   function boot() {
     Promise.all([fetch('config.json').then(function (r) { return r.json(); }), fetch('i18n.json').then(function (r) { return r.json(); })]).then(function (r) {
       cfg = r[0]; i18n = r[1];
       var f = cfg.formula;
       per = { water: f.waterLitres[0] * f.waterLitres[1], cost: f.costToman[0] * f.costToman[1], hours: f.staffHours.minutes / 60 * f.staffHours.k1 * f.staffHours.k2 };
-      prog = loadProg();
+      prog = loadProg(); api = new AB.Api(cfg.leaderboard);
       var q = new URLSearchParams(location.search).get('lang'), st = null; try { st = localStorage.getItem('abadis-slingshot-lang'); } catch (e) {}
       resize(); bind(); setLang(q || st || 'fa');
       level = null;

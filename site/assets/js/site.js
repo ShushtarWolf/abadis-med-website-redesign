@@ -79,6 +79,29 @@
     }
   })();
 
+  /* ---------- Angry Bags replay gate: count visible time on site pages ----------
+     The game (seed-slingshot/) locks replay after each run and stores
+     {lockedAt, browseMs} under this key. Here, on ordinary site pages, we add
+     time only while the tab is visible; the game unlocks at 3 minutes (or
+     after 1 hour). Client-side only — clearing site storage bypasses it. */
+  (() => {
+    const K = 'abadis-angrybags-gate';
+    const read = () => { try { return JSON.parse(localStorage.getItem(K) || 'null'); } catch (e) { return null; } };
+    if (!read()) return;
+    let last = Date.now();
+    const tick = () => {
+      if (document.visibilityState !== 'visible') return;
+      const g = read(); if (!g || !g.lockedAt) { clearInterval(iv); return; }
+      /* shared tick stamp: several open tabs can never count the same second twice */
+      const now = Date.now(), d = Math.max(0, Math.min(now - Math.max(last, g.tick || 0), 1500)); last = now;
+      g.tick = now; g.browseMs = (g.browseMs || 0) + d;
+      try { localStorage.setItem(K, JSON.stringify(g)); } catch (e) { clearInterval(iv); }
+    };
+    const iv = setInterval(tick, 1000);
+    document.addEventListener('visibilitychange', () => { last = Date.now(); });
+    addEventListener('pageshow', () => { last = Date.now(); });
+  })();
+
   /* ---------- header ----------
      Transparent in every theme. `.scrolled` only fades in an untinted blur;
      `.on-light` (light theme only) switches the ink + logo to teal while the

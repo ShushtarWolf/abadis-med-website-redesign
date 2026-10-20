@@ -389,5 +389,23 @@
       ],
       "tint": "rgba(40,60,130,.38)"
     }
-  ]
+  ],
+  "leaderboard": {
+    "endpoint": "",
+    "timeoutMs": 9000,
+    "note": "Paste the deployed backend URL (Google Apps Script web app /exec URL) here. Empty = form shows 'coming soon' and nothing is sent or stored."
+  },
+  "gate": {
+    "waitMinutes": 60,
+    "browseSeconds": 180,
+    "note": "After each level ends (win or lose) replay is locked until waitMinutes pass OR browseSeconds of visible-tab time are spent on other site pages (tracked by site/assets/js/site.js). Client-side only: clearing site storage bypasses it."
+  },
+  "score": {
+    "perJar": 1000,
+    "perNurse": 1500,
+    "perOak": 50,
+    "perBagLeftOnWin": 500,
+    "perStar": 1000,
+    "note": "Score per run (= one level attempt). Must match backend/Code.gs SCORE."
+  }
 }

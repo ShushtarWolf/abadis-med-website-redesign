@@ -30,6 +30,10 @@
       <span class="ctr"><i class="ic coin"></i><b id="cMoney">0</b></span>
     </div>
   </div>
+  <div id="savebar" class="savebar" hidden>
+    <span class="sb-per"><b id="sbPerK"></b> <span class="sbv"><i class="ic drop"></i><span id="sbW"></span></span><span class="sbv"><i class="ic clock"></i><span id="sbS"></span></span><span class="sbv"><i class="ic coin"></i><span id="sbM"></span></span></span>
+    <span class="sb-tot"><b id="sbTotK"></b> <span id="sbTot"></span></span>
+  </div>
   <div id="hint" class="hint" hidden></div>
 
   <section id="title" class="screen title">
@@ -59,6 +63,21 @@
     </div>
   </section>
 
+  <section id="gate" class="screen" hidden>
+    <div class="gcard">
+      <div class="gicon">⏳</div>
+      <h2 id="gTitle"></h2>
+      <p id="gBody"></p>
+      <div class="gtimers">
+        <div><span id="gHourK"></span><b id="gHour"></b></div>
+        <div><span id="gBrowseK"></span><b id="gBrowse"></b><i class="gbar"><i id="gBar"></i></i></div>
+      </div>
+      <div class="row small" id="gLinks"></div>
+      <p class="note" id="gNote"></p>
+      <button class="link" id="gBack" type="button"></button>
+    </div>
+  </section>
+
   <section id="end" class="screen" hidden>
     <div class="ecard">
       <div class="stars" id="eStars"></div>
@@ -70,6 +89,20 @@
         <div><i class="ic coin"></i><span id="eMoneyK"></span><b id="eMoney"></b></div>
       </div>
       <p class="note" id="eNote"></p>
+      <div class="score" id="eScoreBox"><span id="eScoreK"></span> <b id="eScore"></b></div>
+      <form class="entry" id="entry" novalidate>
+        <h3 id="fTitle"></h3>
+        <p class="soon" id="fSoon" hidden></p>
+        <div class="fields" id="fFields">
+          <input id="fName" name="name" maxlength="24" autocomplete="nickname" required>
+          <input id="fPhone" name="phone" inputmode="tel" maxlength="16" autocomplete="tel" dir="ltr" required>
+          <label class="consent"><input type="checkbox" id="fConsent"> <span id="fConsentT"></span></label>
+          <button class="btn" id="fSend" type="submit"></button>
+          <p class="ferr" id="fMsg" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+      <div class="board" id="board"><h3 id="bTitle"></h3><ol id="bList"></ol><p class="soon" id="bEmpty"></p></div>
+      <p class="gnote" id="eGate" hidden></p>
       <div class="row">
         <button class="btn" id="eNext" type="button"></button>
         <button class="btn ghost" id="eRetry" type="button"></button>
@@ -88,6 +121,7 @@
   <div id="toast" class="toast"></div>
 </div>
 <script src="vendor/matter.min.js"></script>
+<script src="api.js"></script>
 <script src="game.js"></script>
 </body>
 </html>
