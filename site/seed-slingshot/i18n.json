@@ -1,6 +1,6 @@
 {
   "fa": {
-    "title": "بذرافکن زاگرس",
+    "title": "کیسه‌های خشمگین",
     "brand": "آبادیس طب",
     "tagline": "به‌جای شستن ظرف‌های کثیف، کیسهٔ آبادیس پرتاب کن — هر ظرف که بیفتد، بلوطی می‌روید.",
     "play": "بازی",
@@ -38,7 +38,7 @@
     "rotate": "برای تجربهٔ بهتر گوشی را افقی کن",
     "locked": "قفل",
     "copied": "پیوند کپی شد",
-    "shareText": "در بذرافکن زاگرس {l} لیتر آب ذخیره کردم و {o} بلوط کاشتم!",
+    "shareText": "در کیسه‌های خشمگین {l} لیتر آب ذخیره کردم و {o} بلوط کاشتم!",
     "nursesLeft": "پرستار گرفتار",
     "wasteLeft": "ظرف کثیف",
     "allDone": "همهٔ مرحله‌ها پاک شد — ممنون!",
@@ -47,7 +47,7 @@
     "hintNurse": "ظرف‌ها تمام شد! حالا پرستار را آزاد کن"
   },
   "en": {
-    "title": "Seed Slingshot",
+    "title": "Angry Bags",
     "brand": "Abadis Med",
     "tagline": "Stop washing dirty jars — fling Abadis bags instead. Every jar that falls grows an oak.",
     "play": "Play",
@@ -85,7 +85,7 @@
     "rotate": "Turn your phone sideways for the best view",
     "locked": "Locked",
     "copied": "Link copied",
-    "shareText": "In Seed Slingshot I saved {l} L of water and planted {o} oaks!",
+    "shareText": "In Angry Bags I saved {l} L of water and planted {o} oaks!",
     "nursesLeft": "nurses stuck",
     "wasteLeft": "dirty jars",
     "allDone": "All slopes cleared — thank you!",
@@ -94,7 +94,7 @@
     "hintNurse": "Jars cleared! Now knock the nurse's station free"
   },
   "ar": {
-    "title": "مقلاع بذور زاغروس",
+    "title": "الأكياس الغاضبة",
     "brand": "أباديس طب",
     "tagline": "بدل غسل الأوعية المتسخة، اقذف أكياس أباديس — كل وعاء يسقط تنبت مكانه بلوطة.",
     "play": "العب",
@@ -132,7 +132,7 @@
     "rotate": "أدر هاتفك أفقيًا لأفضل عرض",
     "locked": "مقفل",
     "copied": "تم نسخ الرابط",
-    "shareText": "في مقلاع بذور زاغروس وفّرت {l} لتر ماء وزرعت {o} بلوطة!",
+    "shareText": "في الأكياس الغاضبة وفّرت {l} لتر ماء وزرعت {o} بلوطة!",
     "nursesLeft": "ممرضات عالقات",
     "wasteLeft": "أوعية متسخة",
     "allDone": "تم تنظيف كل المنحدرات — شكرًا!",
