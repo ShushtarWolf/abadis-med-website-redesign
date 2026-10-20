@@ -550,7 +550,7 @@
     L.score = L.jars * S.perJar + L.freed * S.perNurse + L.oaks * S.perOak + stars * S.perStar + (win ? Math.max(0, L.bagsLeft) * S.perBagLeftOnWin : 0);
     L.stars = stars; L.win = win; L.ms = Math.round(performance.now() - L.start);
     $('eScore').textContent = fmt(L.score);
-    AB.lockGate(); $('eGate').hidden = false; $('eGate').textContent = t('gEnd');
+    var gated = !win || L.idx >= cfg.levels.length - 1; if (gated) AB.lockGate(); $('eGate').hidden = !gated; $('eGate').textContent = t('gEnd');
     paintEntry(); loadBoard();
     var nx = $('eNext'); nx.hidden = !win || L.idx >= cfg.levels.length - 1;
     setTimeout(function () { show('end'); $('hud').hidden = false; (nx.hidden ? $('eRetry') : nx).focus(); }, win ? 200 : 0);

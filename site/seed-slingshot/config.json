@@ -398,7 +398,7 @@
   "gate": {
     "waitMinutes": 60,
     "browseSeconds": 180,
-    "note": "After each level ends (win or lose) replay is locked until waitMinutes pass OR browseSeconds of visible-tab time are spent on other site pages (tracked by site/assets/js/site.js). Client-side only: clearing site storage bypasses it."
+    "note": "Replay is locked only after LOSING a level or after completing all levels (winning levels 1-4 continues freely); then locked until waitMinutes pass OR browseSeconds of visible-tab time are spent on other site pages (tracked by site/assets/js/site.js). Client-side only: clearing site storage bypasses it."
   },
   "score": {
     "perJar": 1000,
