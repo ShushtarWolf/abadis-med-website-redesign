@@ -492,13 +492,31 @@ def impact_section():
   </section>'''
 
 
+def product_benefits_section():
+    """Full suction-bag value cards for the hand-built product page.
+    Copy is LIVE_VALUES (verbatim from the live home). Card chrome matches
+    the product page intro (numbered .card), not the home .value style."""
+    nums = ['۰۱', '۰۲', '۰۳', '۰۴']
+    cards = ''.join(
+        f'<article class="card reveal"><span class="num">{n}</span><h3>{esc(title)}</h3><p>{esc(desc)}</p></article>'
+        for n, (title, desc) in zip(nums, LIVE_VALUES))
+    return f'''  <section class="section section--alt" id="benefits">
+    <div class="wrap">
+      <div class="section-head reveal"><p class="eyebrow">مزایای کیسه ساکشن</p><h2>ارزش افزوده‌های کیسه ساکشن یکبار مصرف</h2></div>
+      <div class="grid g-2">{cards}</div>
+    </div>
+  </section>'''
+
+
 def why_v2():
+    """Home keeps a short title teaser. The four explanations live on the product page."""
     checks = ''.join(f'<li>{esc(c)}</li>' for c in WHY_CHECKS)
-    vals = ''.join(f'<div class="card value reveal"><h3>{esc(t)}</h3><p>{esc(d)}</p></div>' for t, d in LIVE_VALUES)
+    tease = ''.join(f'<li>{esc(title)}</li>' for title, _desc in LIVE_VALUES)
     return f'''  <section class="section section--alt" id="why">
     <div class="wrap">
       <div class="section-head reveal"><p class="eyebrow">چرا آبادیس؟</p><h2>ارزش افزوده‌های کیسه ساکشن یکبار مصرف</h2></div>
-      <div class="grid g-4 values">{vals}</div>
+      <ul class="why-tease reveal">{tease}</ul>
+      <p class="reveal" style="margin-top:16px"><a class="more-link" style="margin:0" href="products/suction-bag/#benefits">مزایای کامل کیسه ساکشن ←</a></p>
       <div class="split" style="margin-top:28px">
         <div class="reveal"><p>{esc(FACTORY_LEAD)}</p></div>
         <ul class="checks reveal">{checks}</ul>

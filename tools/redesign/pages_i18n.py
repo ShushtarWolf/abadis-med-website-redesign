@@ -185,7 +185,11 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
         trail = [(chip, None)]
         sec = f'''
   <section class="section"><div class="wrap{'' if 'id="dealerList"' in body else ' prose reveal'}">{body}</div></section>''' if body.strip() else ''
-        main = f'''{page_hero(p, trail, esc(title), esc(desc), lang=lang)}{sec}{after}'''
+        benefits = ''
+        if site_path in ('products/suction-bag/', 'كيس-الشفط/'):
+            import pages_home_i18n
+            benefits = '\n' + pages_home_i18n.product_benefits(lang)
+        main = f'''{page_hero(p, trail, esc(title), esc(desc), lang=lang)}{benefits}{sec}{after}'''
     html = page(p, cur_key, title, desc, main, lang=lang, fa_path=fa_path, canonical_path=can, scripts=extra_js)
     write(rel if rel.endswith('.html') else rel + 'index.html', html)
     return rel

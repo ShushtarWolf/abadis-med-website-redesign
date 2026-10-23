@@ -21,6 +21,7 @@ T = {
   slogan=['We affect as much as a fingertip', 'To You', 'To Nature', 'To World'],
   imp_eb='Abadis impact, right now', imp_unit='litres of water saved since 21 March 2026 (estimate)',
   why_eb='Why Abadis?', why_h='The added value obtained from the production of disposable suction liner bags',
+  benefits_eb='Suction bag benefits', benefits_more='Full suction bag benefits ←', benefits_href='products/suction-bag/#benefits',
   values=[('Cost Reduction', 'Reduce costs related to cleanser, water consumption, electricity and manpower'), ('Hospital and Infectious Waste Management', 'Better collection of liquid and infectious waste'), ('Recycling', 'Reduces medical waste and preserves the environment'), ('Easy To Use', 'Eliminating activities related to tank cleaning and convenient use for collecting waste during surgery')],
   factory='Established in 2018, the Abadis Medical Equipment Knowledge-Based Factory operates with state-of-the-art machinery and highly skilled experts. With an annual production capacity of 5 million disposable suction bags, Abadis is recognized as the largest manufacturer of these products in the Middle East.',
   checks=['Product Warranty and Guarantee', 'Quality Assurance', 'Provide high quality products', 'Communication of Sales and Technical Team with Medical Centers and Hospital', 'Delivery Products in the Shortest Time'],
@@ -45,6 +46,7 @@ T = {
   slogan=['نحن نؤثر بقدر طرف إصبع', 'عليك', 'على الطبيعة', 'على العالم'],
   imp_eb='أثر آباديس، الآن', imp_unit='لتر من الماء تم توفيره منذ ٢١ مارس ٢٠٢٦ (تقديري)',
   why_eb='لماذا آباديس؟', why_h='القيم المضافة لأكياس الشفط ذات الاستعمال الواحد',
+  benefits_eb='مزايا كيس الشفط', benefits_more='مزايا كيس الشفط كاملة ←', benefits_href='كيس-الشفط/#benefits',
   values=[('تقليص التكاليف', 'تقليص التكاليف المتعلقة بالمنظّفات واستهلاك المياه والكهرباء واستخدام الموارد البشرية'), ('إدارة مخلفات المستشفيات والنفايات المعدية', 'تؤدي إلى تجميع النفايات السائلة والمعدية بشكل أفضل'), ('قابلة لإعادة التدوير', 'تؤدي إلى تقليل كميّة مخلفات المستشفيات والحفاظ على البيئة'), ('الاستخدام البسيط', 'التخلص من عملية غسيل الخزانات والاستخدام المريح لتجميع النفايات أثناء العمل')],
   factory='تأسست شركة مخازن طبية آباديس المعرفية في عام 2018 باستخدام أحدث المعدات والآلات وبالتعاون مع القوى المتخصصة. تُعدّ هذه الشركة أكبر منتج للحقائب السائلة ذات الاستخدام الواحد في منطقة الشرق الأوسط، بطاقة إنتاجية سنوية تصل إلى 5 مليون حقيبة سحب.',
   checks=['الضمان والكفالة', 'ضمان الجودة', 'التواصل المستمر بين قسم المبيعات والفريق الفني مع المراكز الطبية', 'التوصيل السريع للمنتج'],
@@ -61,6 +63,23 @@ T = {
 def _h(t, p, href):
     """Link relative to the language root, or to the site root with '~'."""
     return p + href[1:] if href.startswith('~') else p + t['root'] + href
+
+
+def product_benefits(lang):
+    """Full suction-bag value cards for the EN/AR product pages.
+    Copy is the live home `values` list. Card chrome matches the FA product page."""
+    t = T[lang]
+    # EN keeps Latin digits (KalamehLatinDigits). FA/AR use Persian digits, which Kalameh FaNum draws.
+    nums = ['01', '02', '03', '04'] if lang == 'en' else ['۰۱', '۰۲', '۰۳', '۰۴']
+    cards = ''.join(
+        f'<article class="card reveal"><span class="num">{n}</span><h3>{esc(title)}</h3><p>{esc(desc)}</p></article>'
+        for n, (title, desc) in zip(nums, t['values']))
+    return f'''  <section class="section section--alt" id="benefits">
+    <div class="wrap">
+      <div class="section-head reveal"><p class="eyebrow">{esc(t['benefits_eb'])}</p><h2>{esc(t['why_h'])}</h2></div>
+      <div class="grid g-2">{cards}</div>
+    </div>
+  </section>'''
 
 
 def build_home(write, lang):
@@ -100,11 +119,12 @@ def build_home(write, lang):
         <p class="eyebrow">{esc(t['imp_eb'])}</p><strong class="impact-num" aria-live="off">{zero}</strong>
         <span class="impact-unit">{esc(t['imp_unit'])}</span></div>
     </div></section>'''
-    vals = ''.join(f'<div class="card value reveal"><h3>{esc(a)}</h3><p>{esc(b)}</p></div>' for a, b in t['values'])
+    tease = ''.join(f'<li>{esc(a)}</li>' for a, _b in t['values'])
     checks = ''.join(f'<li>{esc(c)}</li>' for c in t['checks'])
     why = f'''  <section class="section section--alt" id="why"><div class="wrap">
       <div class="section-head reveal"><p class="eyebrow">{esc(t['why_eb'])}</p><h2>{esc(t['why_h'])}</h2></div>
-      <div class="grid g-4 values">{vals}</div>
+      <ul class="why-tease reveal">{tease}</ul>
+      <p class="reveal" style="margin-top:16px"><a class="more-link" style="margin:0" href="{_h(t, p, t['benefits_href'])}">{esc(t['benefits_more'])}</a></p>
       <div class="split" style="margin-top:28px"><div class="reveal"><p>{esc(t['factory'])}</p></div><ul class="checks reveal">{checks}</ul></div>
     </div></section>'''
     cards = ''.join(f'<a class="mini-card reveal" href="{_h(t, p, h)}">' + (f'<div class="ph"><img src="{p}{im}" alt="{esc(n)}" loading="lazy" decoding="async"></div>' if im else '<div class="ph txt">Abadis</div>') + f'<strong>{esc(n)}</strong></a>' for n, h, im in t['products'])
