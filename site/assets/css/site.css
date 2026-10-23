@@ -409,6 +409,7 @@ h2 { font-size: clamp(1.55rem, 3.2vw, 2.25rem); font-weight: 900; line-height: 1
 .anchors .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: none; }
 .anchors a { white-space: nowrap; text-decoration: none; color: var(--ink); font-weight: 700; font-size: .88rem; padding: 6px 12px; border-radius: 999px; background: var(--surface-2); }
 .size-block { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 30px 24px; box-shadow: var(--shadow); margin-bottom: 26px; scroll-margin-top: 130px; }
+#benefits { scroll-margin-top: 130px; }
 .size-block h3 { font-size: 1.4rem; font-weight: 900; color: var(--brand); display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
 .badge { background: var(--btn-bg); color: var(--btn-ink); font-size: .74rem; padding: 3px 10px; border-radius: 999px; font-weight: 800; }
 .meta { color: var(--muted); margin-bottom: 18px; }
