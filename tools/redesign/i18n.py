@@ -190,7 +190,8 @@ def nav_keys(nav):
 
 SECONDARY = {
     'fa': [
-        ('customers', 'customers/', 'مشتریان ما'),
+        # Footer column only. The header submenu keeps «مشتریان ما» (NAV above).
+        ('customers', 'customers/', 'خانواده سبز آبادیس'),
         ('experiences', 'academy/', 'آکادمی آبادیس'),
         ('downloads', 'downloads/', 'مرکز دانلود'),
         ('install', 'install-guide/', 'راهنمای نصب'),

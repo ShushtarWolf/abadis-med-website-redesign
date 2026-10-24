@@ -110,13 +110,23 @@ def header(p, cur, lang='fa', fa_path=''):
 </header>'''
 
 
+def _footer_label(lang, key, label):
+    """Link text inside the footer. Header nav is unchanged."""
+    if lang == 'fa' and key == 'customers':
+        return 'خانواده سبز آبادیس'
+    return label
+
+
 def footer(p, cur=None, lang='fa'):
     L = LANGS[lang]
     root = L['root']
     nav = nav_flat(I18N_NAV[lang])
     sec = I18N_SECONDARY[lang]
-    main = '\n        '.join(f'<a href="{_href(p, root, h)}">{l}</a>' for _, h, l in nav)
-    secl = '\n        '.join(f'<a href="{_href(p, root, h)}"{CUR if k == cur else ""}>{l}</a>' for k, h, l in sec)
+    main = '\n        '.join(
+        f'<a href="{_href(p, root, h)}">{_footer_label(lang, k, l)}</a>' for k, h, l in nav)
+    secl = '\n        '.join(
+        f'<a href="{_href(p, root, h)}"{CUR if k == cur else ""}>{_footer_label(lang, k, l)}</a>'
+        for k, h, l in sec)
     return f'''<footer class="site-footer">
   <div class="wrap foot-inner">
     <div class="foot-col foot-col-brand">
