@@ -1375,3 +1375,81 @@ body.academy { background: #f3f8f8; }
   .nav-play { display: flex !important; align-items: center; gap: 8px; font-weight: 800; }
   .nav-play .pb-icon { width: 20px; height: 20px; }
 }
+
+/* Approved section logos (site/brand/section-logos). Impact art is the original sign. */
+.sec-mark { display: inline-flex; flex: none; width: 72px; height: 72px; vertical-align: middle; }
+.sec-mark img {
+  width: 100% !important; height: 100% !important; max-width: none !important;
+  margin: 0 !important; padding: 0 !important; object-fit: contain; display: block;
+  border-radius: 0; background: none !important; filter: none;
+}
+.sec-mark-dark { display: none; }
+[data-theme="dark"] .sec-mark-light,
+[data-theme="noir"] .sec-mark-light { display: none; }
+[data-theme="dark"] .sec-mark-dark,
+[data-theme="noir"] .sec-mark-dark { display: block; }
+.sec-mark--sm { width: 40px; height: 40px; }
+.sec-mark--lg { width: 104px; height: 104px; }
+.section-head.has-mark { display: flex; align-items: center; gap: 16px; max-width: 52rem; }
+.section-head.has-mark > div { min-width: 0; }
+.sec-title { display: flex; align-items: center; gap: 14px; }
+.page-hero-with-mark { display: flex; align-items: center; justify-content: space-between; gap: 28px; }
+.page-hero-copy { min-width: 0; flex: 1; }
+.page-hero .sec-mark { width: 112px; height: 112px; }
+.page-hero .sec-mark-light { display: none; }
+.page-hero .sec-mark-dark { display: block; }
+.csr-hero .sec-mark, .intro .sec-mark { display: flex; margin: 0 auto 10px; }
+.impact-counter .sec-mark { display: flex; margin-bottom: 10px; }
+.quick-btn .sec-mark { width: 40px; height: 40px; }
+@media (max-width: 700px) {
+  .page-hero-with-mark { flex-direction: column; align-items: flex-start; }
+  .page-hero .sec-mark { width: 80px; height: 80px; }
+  .sec-mark--lg { width: 80px; height: 80px; }
+  .section-head.has-mark { gap: 12px; }
+}
+
+.nav > a[href$="csr/"],
+.nav > a[href$="calculator/"],
+.nav > a[href$="الحوسبة/"] { display: inline-flex; align-items: center; gap: 6px; }
+.nav > a[href$="csr/"]::before,
+.nav > a[href$="calculator/"]::before,
+.nav > a[href$="الحوسبة/"]::before {
+  content: ""; width: 22px; height: 22px; flex: none; background: center / contain no-repeat;
+}
+.nav > a[href$="csr/"]::before { background-image: url("../../brand/section-logos/zagros-icon-dark.svg"); }
+.nav > a[href$="calculator/"]::before,
+.nav > a[href$="الحوسبة/"]::before { background-image: url("../../brand/section-logos/calculator-icon-dark.svg"); }
+[data-theme="light"] .nav.on-light > a[href$="csr/"]::before { background-image: url("../../brand/section-logos/zagros-icon.svg"); }
+[data-theme="light"] .nav.on-light > a[href$="calculator/"]::before,
+[data-theme="light"] .nav.on-light > a[href$="الحوسبة/"]::before { background-image: url("../../brand/section-logos/calculator-icon.svg"); }
+@media (max-width: 1180px) {
+  .nav > a[href$="csr/"],
+  .nav > a[href$="calculator/"],
+  .nav > a[href$="الحوسبة/"] { display: flex; }
+  [data-theme="light"] .nav > a[href$="csr/"]::before { background-image: url("../../brand/section-logos/zagros-icon.svg"); }
+  [data-theme="light"] .nav > a[href$="calculator/"]::before,
+  [data-theme="light"] .nav > a[href$="الحوسبة/"]::before { background-image: url("../../brand/section-logos/calculator-icon.svg"); }
+}
+.nav-sub a[href$="sdgs/"] { display: flex; align-items: center; gap: 8px; }
+.nav-sub a[href$="sdgs/"]::before {
+  position: static; width: 22px; height: 22px; margin: 0; border-radius: 0; opacity: 1; flex: none;
+  background: url("../../brand/section-logos/sustainable-icon.svg") center / contain no-repeat;
+}
+[data-theme="dark"] .nav-sub a[href$="sdgs/"]::before,
+[data-theme="noir"] .nav-sub a[href$="sdgs/"]::before {
+  opacity: 1; background-image: url("../../brand/section-logos/sustainable-icon-dark.svg");
+}
+.site-footer .foot-links a[href$="sdgs/"],
+.site-footer .foot-links a[href$="calculator/"],
+.site-footer .foot-links a[href$="csr/"],
+.site-footer .foot-links a[href$="الحوسبة/"] { display: inline-flex; align-items: center; gap: 8px; }
+.site-footer .foot-links a[href$="sdgs/"]::before,
+.site-footer .foot-links a[href$="calculator/"]::before,
+.site-footer .foot-links a[href$="csr/"]::before,
+.site-footer .foot-links a[href$="الحوسبة/"]::before {
+  content: ""; width: 22px; height: 22px; flex: none; background: center / contain no-repeat;
+}
+.site-footer .foot-links a[href$="sdgs/"]::before { background-image: url("../../brand/section-logos/sustainable-icon-dark.svg"); }
+.site-footer .foot-links a[href$="calculator/"]::before,
+.site-footer .foot-links a[href$="الحوسبة/"]::before { background-image: url("../../brand/section-logos/calculator-icon-dark.svg"); }
+.site-footer .foot-links a[href$="csr/"]::before { background-image: url("../../brand/section-logos/zagros-icon-dark.svg"); }

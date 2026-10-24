@@ -237,12 +237,43 @@ def mosaic_hero(p, trail, chip, h1, lead='', label=None, lang='fa'):
   </section>'''
 
 
-def page_hero(p, trail, h1, lead='', meta='', lang='fa'):
-    return f'''  <section class="page-hero">
-    <div class="wrap">
-      {crumbs(p, trail, lang=lang)}
+def section_mark(p, key, extra=''):
+    """Approved section icon, light and dark. Impact is the original sign, unmodified."""
+    slug = {
+        'why': 'why',
+        'calculator': 'calculator',
+        'sustainable': 'sustainable',
+        'sdgs': 'sustainable',
+        'zagros': 'zagros',
+        'csr': 'zagros',
+        'impact': 'impact',
+    }[key]
+    base = f'{p}brand/section-logos/{slug}'
+    cls = 'sec-mark' + (f' {extra}' if extra else '')
+    return (
+        f'<span class="{cls}" aria-hidden="true">'
+        f'<img class="sec-mark-light" src="{base}-icon.svg" alt="" width="120" height="120" decoding="async">'
+        f'<img class="sec-mark-dark" src="{base}-icon-dark.svg" alt="" width="120" height="120" decoding="async">'
+        f'</span>'
+    )
+
+
+def page_hero(p, trail, h1, lead='', meta='', lang='fa', mark=None):
+    inner = f'''{crumbs(p, trail, lang=lang)}
       <h1>{h1}</h1>
       {f'<p class="lead">{lead}</p>' if lead else ''}
-      {meta}
+      {meta}'''
+    if not mark:
+        return f'''  <section class="page-hero">
+    <div class="wrap">
+      {inner}
+    </div>
+  </section>'''
+    return f'''  <section class="page-hero">
+    <div class="wrap page-hero-with-mark">
+      <div class="page-hero-copy">
+      {inner}
+      </div>
+      {section_mark(p, mark, 'sec-mark--lg')}
     </div>
   </section>'''

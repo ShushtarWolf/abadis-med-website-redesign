@@ -599,3 +599,12 @@ details.letter[open] summary { margin-bottom: 12px; }
 .more-link { display: inline-block; margin-top: 18px; }
 .size-info .meta-line { color: var(--muted); font-size: .95rem; margin-bottom: 8px; }
 .sub { color: var(--muted); font-size: 1.02rem; margin: 8px 0 24px; max-width: 46rem; }
+
+/* Approved Save Zagros section mark */
+.sec-mark { display: inline-flex; flex: none; width: 72px; height: 72px; vertical-align: middle; }
+.sec-mark img { width: 100%; height: 100%; margin: 0; object-fit: contain; display: block; background: none; }
+.sec-mark-dark { display: none; }
+[data-theme="dark"] .sec-mark-light, [data-theme="noir"] .sec-mark-light { display: none; }
+[data-theme="dark"] .sec-mark-dark, [data-theme="noir"] .sec-mark-dark { display: block; }
+.sec-mark--lg { width: 104px; height: 104px; }
+.csr-hero .sec-mark, .zn-index .sec-mark { display: flex; margin: 0 auto 10px; }
