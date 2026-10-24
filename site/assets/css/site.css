@@ -1459,3 +1459,23 @@ body.academy { background: #f3f8f8; }
 .site-footer .foot-links a[href$="calculator/"]::before,
 .site-footer .foot-links a[href$="الحوسبة/"]::before { background-image: url("../../brand/section-logos/calculator-icon-dark.svg"); }
 .site-footer .foot-links a[href$="csr/"]::before { background-image: url("../../brand/section-logos/zagros-icon-dark.svg"); }
+
+/* Sub-product tabs. No-JS uses :target; print shows every panel. */
+.ptab-nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+.ptab-nav a {
+  text-decoration: none; color: var(--ink); font-weight: 700; font-size: .9rem;
+  padding: 8px 14px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line);
+}
+.ptab-nav a.is-on, .ptab-nav a[aria-current="true"] { background: var(--brand-3); color: #fff; border-color: transparent; }
+.ptabs:not(.js-tabs):not(:has(.ptab:target)) .ptab-nav a:first-child { background: var(--brand-3); color: #fff; border-color: transparent; }
+.ptabs:not(.js-tabs) .ptab { display: none; }
+.ptabs:not(.js-tabs):not(:has(.ptab:target)) .ptab:first-of-type,
+.ptabs:not(.js-tabs) .ptab:target { display: block; }
+.js-tabs .ptab { display: none; }
+.js-tabs .ptab.is-on { display: block; }
+.ptab { scroll-margin-top: 132px; }
+.ptab > h2 { font-size: 1.4rem; font-weight: 900; color: var(--brand); margin: 0 0 12px; }
+@media print {
+  .ptab-nav { display: none !important; }
+  .ptabs .ptab { display: block !important; break-inside: avoid; }
+}
