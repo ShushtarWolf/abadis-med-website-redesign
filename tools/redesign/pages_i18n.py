@@ -156,6 +156,12 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
     if site_path in ('about-us/', 'من-نحن/'):
         from pages_company import regroup_i18n_certs
         body = regroup_i18n_certs(body, lang)
+    if site_path == 'sdgs/' and lang == 'en':
+        from pages_company import sdg_stats
+        body = f'<div class="sdg-page">{sdg_stats("en")}<div class="prose">{body}</div></div>'
+        desc = ('Abadis Medical Technologies Co., as a pioneering knowledge-based company and the leading manufacturer of disposable suction bags in Iran, '
+                'is committed to aligning its operations with the United Nations Sustainable Development Goals (UN SDGs). '
+                'We believe that industrial development holds true value only when it promotes public health, contributes to the conservation of natural resources, reduces environmental impacts, and encourages a culture of responsible consumption.')
     extra_js = ''
     if site_path in ('calculator/', 'الحوسبة/'):
         body = calc_widget(lang)
@@ -183,8 +189,9 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
   <section class="section"><div class="wrap prose reveal">{body}</div></section>'''
     else:
         trail = [(chip, None)]
+        wrap = '' if ('id="dealerList"' in body or 'class="sdg-stats"' in body) else ' prose reveal'
         sec = f'''
-  <section class="section"><div class="wrap{'' if 'id="dealerList"' in body else ' prose reveal'}">{body}</div></section>''' if body.strip() else ''
+  <section class="section"><div class="wrap{wrap}">{body}</div></section>''' if body.strip() else ''
         main = f'''{page_hero(p, trail, esc(title), esc(desc), lang=lang)}{sec}{after}'''
     html = page(p, cur_key, title, desc, main, lang=lang, fa_path=fa_path, canonical_path=can, scripts=extra_js)
     write(rel if rel.endswith('.html') else rel + 'index.html', html)

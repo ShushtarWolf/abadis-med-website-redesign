@@ -359,25 +359,56 @@ def _sdg_sections(p, bl):
     icons = ''.join(picture(p, b['src'], '', 240) for b in bl if b['t'] == 'img')
     parts = []
     first = True
+    i = 0
     for sid, bs in secs(bl):
         h = next((b['text'] for b in bs if b['t'] == 'h'), '')
         body = ''.join(rewrite_html(b['html'], p) for b in bs if b['t'] == 'html')
         extra = f'<div class="sdg-icons">{icons}</div>' if any(b['t'] == 'img' for b in bs) and icons else ''
-        if first:
-            parts.append(
-                f'<div class="reveal" style="margin-top:34px">'
-                f'<h2 style="font-size:1.5rem;margin-bottom:12px">{esc(h)}</h2>'
-                f'{extra}<div class="prose">{body}</div></div>'
-            )
-            first = False
-        else:
-            parts.append(
-                f'<div class="reveal" style="margin-top:34px">'
-                f'<h3 style="font-size:1.25rem;margin-bottom:12px">{esc(h)}</h3>'
-                f'{extra}<div class="prose">{body}</div></div>'
-            )
+        tag = 'h2' if first else 'h3'
+        size = '1.5rem' if first else '1.25rem'
+        parts.append(
+            f'<div class="reveal" style="margin-top:34px;--i:{i}">'
+            f'<{tag} style="font-size:{size};line-height:1.35;margin-bottom:12px">{esc(h)}</{tag}>'
+            f'{extra}<div class="prose">{body}</div></div>'
+        )
+        first = False
+        i += 1
     return ''.join(parts)
 
+
+# Figures are the live /توسعه-پایدار/ page (and the EN SDGs page). ۲2 on the
+# live FA page is the broken digit for ۲۲, which the EN page states as 22 million.
+SDG_STATS = {
+    'fa': [
+        (25, 'لیتر', 'آب ذخیره به ازای هر کیسه'),
+        (28, 'میلیون لیتر', 'تا پایان سال ۱۴۰۲'),
+        (10, 'میلیون لیتر', 'میانگین صرفه‌جویی سالانه'),
+        (22, 'میلیون لیتر', 'صرفه‌جویی کل تا پایان ۱۴۰۲'),
+        (2, 'میلیون', 'کیسه ساکشن در سال ۱۴۰۲'),
+        (1000, 'اصله', 'درخت تا سال ۱۴۰۶'),
+        (50, 'شغل', 'شغل مستقیم تخصصی'),
+    ],
+    'en': [
+        (25, 'litres', 'of water saved per bag'),
+        (28, 'million litres', 'saved by the end of 2023'),
+        (10, 'million litres', 'average saved each year'),
+        (22, 'million litres', 'total saved by the end of 2023'),
+        (2, 'million', 'suction bags in 2023'),
+        (1000, 'trees', 'a year through 2027'),
+        (50, 'jobs', 'specialised direct jobs'),
+    ],
+}
+
+def sdg_stats(lang):
+    bits = []
+    for i, (n, unit, label) in enumerate(SDG_STATS[lang]):
+        shown = fa(n) if lang == 'fa' else str(n)
+        bits.append(
+            f'<div class="sdg-stat reveal" style="--i:{i}">'
+            f'<strong><span data-sdg-count="{n}">{shown}</span> {esc(unit)}</strong>'
+            f'<span>{esc(label)}</span></div>'
+        )
+    return f'<div class="sdg-stats">{"".join(bits)}</div>'
 
 def sdgs(write):
     """FA توسعه پایدار — UN SDG commitment page (old /توسعه-پایدار/)."""
@@ -385,8 +416,9 @@ def sdgs(write):
     bl = B('/توسعه-پایدار/')
     body = _sdg_sections(p, bl)
     lead = next((strip_tags(b['html']) for b in bl if b['t'] == 'html'), '')
-    main = f'''{page_hero(p, [('توسعه پایدار', None)], 'توسعه پایدار', lead[:180])}
-  <section class="section" id="sdg"><div class="wrap" style="max-width:980px">
+    main = f'''{page_hero(p, [('توسعه پایدار', None)], 'توسعه پایدار', esc(lead))}
+  <section class="section sdg-page" id="sdg"><div class="wrap" style="max-width:980px">
+    {sdg_stats('fa')}
     {body}
   </div></section>'''
     write('sdgs/index.html', page(p, 'sdgs', 'توسعه پایدار',

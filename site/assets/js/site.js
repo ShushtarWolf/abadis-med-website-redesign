@@ -170,6 +170,32 @@
     rev.forEach((e) => io.observe(e));
   }
 
+  /* sustainability counters — final value is already in the element */
+  document.querySelectorAll('[data-sdg-count]').forEach((el) => {
+    const to = parseFloat(el.getAttribute('data-sdg-count'));
+    if (!isFinite(to)) return;
+    const lang = document.documentElement.lang || '';
+    const loc = lang.startsWith('en') ? 'en' : (lang.startsWith('ar') ? 'ar-EG' : 'fa-IR');
+    const fmt = (n) => n.toLocaleString(loc, { maximumFractionDigits: 0, useGrouping: false });
+    if (reduce) { el.textContent = fmt(to); return; }
+    el.textContent = fmt(0);
+    const dur = 1100;
+    const tick = (t0) => (now) => {
+      const p = Math.min(1, (now - t0) / dur);
+      const e = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(Math.round(to * e));
+      if (p < 1) requestAnimationFrame(tick(t0));
+    };
+    const start = () => requestAnimationFrame((now) => requestAnimationFrame(tick(now)));
+    if (!('IntersectionObserver' in window)) { start(); return; }
+    const cio = new IntersectionObserver((ents) => {
+      if (!ents.some((x) => x.isIntersecting)) return;
+      cio.disconnect();
+      start();
+    }, { threshold: 0.35 });
+    cio.observe(el.closest('.sdg-stat') || el);
+  });
+
   /* ---------- mosaic video (مربع مربعی) ----------
      The <video> is decoded off-screen; every frame is sampled down to a
      grid (one pixel per tile) and redrawn as crisp square tiles with a
