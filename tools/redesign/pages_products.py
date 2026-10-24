@@ -1,7 +1,7 @@
 """Products hub + six product family pages (suction bag page is hand-built and kept)."""
 import re
 from lib import PAGES, esc, strip_tags, best_img, rewrite_html
-from layout import page, page_hero
+from layout import page, page_hero, section_mark
 from render import table, gallery_link, secs
 
 FAMILIES = [  # slug, live path, hub title (verbatim from live hub), hub image, local fallback image
@@ -297,6 +297,51 @@ def write_products_hub(write, lang, summaries=None):
     write(ui['rel'], html)
     return ui['rel']
 
+def bag_benefits(lang, p):
+    """Home «مزایای کیسه ساکشن» (#why), same copy, on the suction-bag page."""
+    if lang == 'fa':
+        import pages_home as H
+        eyebrow, heading = 'چرا آبادیس؟', 'ارزش افزوده‌های کیسه ساکشن یکبار مصرف'
+        values, factory, checks = H.LIVE_VALUES, H.FACTORY_LEAD, H.WHY_CHECKS
+    else:
+        import pages_home_i18n as I
+        t = I.T[lang]
+        eyebrow, heading = t['why_eb'], t['why_h']
+        values, factory, checks = t['values'], t['factory'], t['checks']
+    vals = ''.join(f'<div class="card value reveal"><h3>{esc(a)}</h3><p>{esc(b)}</p></div>' for a, b in values)
+    lis = ''.join(f'<li>{esc(c)}</li>' for c in checks)
+    return f'''  <section class="section section--alt" id="benefits">
+    <div class="wrap">
+      <div class="section-head reveal has-mark">{section_mark(p, 'why')}<div><p class="eyebrow">{esc(eyebrow)}</p><h2>{esc(heading)}</h2></div></div>
+      <div class="grid g-4 values">{vals}</div>
+      <div class="split" style="margin-top:28px">
+        <div class="reveal"><p>{esc(factory)}</p></div>
+        <ul class="checks reveal">{lis}</ul>
+      </div>
+    </div>
+  </section>'''
+
+
+def patch_suction_bag_benefits():
+    """Hand-built FA page: keep the home benefits block across shell rebuilds."""
+    from lib import SITE
+    path = SITE / 'products/suction-bag/index.html'
+    html = path.read_text(encoding='utf-8')
+    block = '<!-- phase2:bag-benefits -->\n' + bag_benefits('fa', '../../') + '\n<!-- /phase2:bag-benefits -->\n'
+    if '<!-- phase2:bag-benefits -->' in html:
+        html = re.sub(r'<!-- phase2:bag-benefits -->.*?<!-- /phase2:bag-benefits -->\n',
+                      lambda m: block, html, count=1, flags=re.S)
+    else:
+        needle = '  <section class="section spec-summary" id="specs"'
+        if needle not in html:
+            raise SystemExit('suction-bag: specs section missing, benefits not inserted')
+        html = html.replace(needle, block + needle, 1)
+        html = html.replace('<a href="#intro">معرفی</a>',
+                            '<a href="#intro">معرفی</a><a href="#benefits">مزایا</a>', 1)
+    path.write_text(html, encoding='utf-8')
+    return 'products/suction-bag/index.html'
+
+
 def build(write):
     p = '../../'
     summaries = {}
@@ -314,4 +359,5 @@ def build(write):
                 + f'  <section class="section"><div class="wrap">\n{blocks}\n  </div></section>\n'
                 + related(p, slug) + '\n' + INQUIRY)
         write(f'products/{slug}/index.html', page(p, 'products', h1, f'{h1} آبادیس: ' + lead, main, lightbox=True, fa_path=f'products/{slug}/'))
+    patch_suction_bag_benefits()
     write_products_hub(write, 'fa', summaries)
