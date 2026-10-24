@@ -1,5 +1,32 @@
 /* Latest-news hero samples only. Scoped so the live news page is untouched.
-   Three themes use the site tokens. No cursor-follow motion. */
+   Three themes use the site tokens. No cursor-follow motion.
+   Sample heroes use Vazirmatn (SIL OFL). The site header and footer stay on Kalameh. */
+@font-face { font-family: Vazirmatn; src: url("fonts/Vazirmatn-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: Vazirmatn; src: url("fonts/Vazirmatn-Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: Vazirmatn; src: url("fonts/Vazirmatn-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: Vazirmatn; src: url("fonts/Vazirmatn-ExtraBold.woff2") format("woff2"); font-weight: 800; font-display: swap; }
+.nho, .nho-switch { font-family: Vazirmatn, Kalameh, Tahoma, sans-serif; }
+
+.nho-switch {
+  position: fixed; top: 78px; inset-inline: 0; z-index: 90;
+  display: flex; gap: 6px; align-items: center;
+  padding: 6px 14px; overflow-x: auto;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.nho-switch a {
+  flex: none; text-decoration: none; color: var(--ink);
+  font-weight: 700; font-size: .78rem; line-height: 1.4;
+  padding: 4px 10px; border-radius: 999px; white-space: nowrap;
+  border: 1px solid transparent;
+}
+.nho-switch a[aria-current="page"] { background: var(--btn-bg); color: var(--btn-ink); }
+body:has(.nho-switch) .nho { padding-top: 176px; }
+@media (max-width: 720px) {
+  .nho-switch { top: 60px; }
+  body:has(.nho-switch) .nho { padding-top: 150px; }
+}
 
 .nho-wrap { width: min(1180px, 100%); margin-inline: auto; padding-inline: 24px; }
 .nho { padding: 132px 0 56px; position: relative; }
