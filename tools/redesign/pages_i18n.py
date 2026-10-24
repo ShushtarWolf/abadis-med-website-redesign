@@ -198,7 +198,11 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
             'الحوسبة/': 'calculator',
             'csr/': 'zagros',
         }.get(site_path)
-        main = f'''{page_hero(p, trail, esc(title), esc(desc), lang=lang, mark=_hero_mark)}{sec}{after}'''
+        benefits = ''
+        if site_path in ('products/suction-bag/', 'كيس-الشفط/'):
+            import pages_products
+            benefits = '\n' + pages_products.bag_benefits(lang, p) + '\n'
+        main = f'''{page_hero(p, trail, esc(title), esc(desc), lang=lang, mark=_hero_mark)}{benefits}{sec}{after}'''
     html = page(p, cur_key, title, desc, main, lang=lang, fa_path=fa_path, canonical_path=can, scripts=extra_js)
     write(rel if rel.endswith('.html') else rel + 'index.html', html)
     return rel
