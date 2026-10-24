@@ -1,0 +1,6 @@
+# Preview build. TODO(launch): allow crawling and confirm the Sitemap URL
+# after the site is published on https://abadis-med.com/.
+User-agent: *
+Disallow: /
+
+Sitemap: https://abadis-med.com/sitemap.xml

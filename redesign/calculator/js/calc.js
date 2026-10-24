@@ -255,7 +255,7 @@
     summary: (d, W, C, H) => d.n <= 0
       ? 'برای شروع، اسکرول کنید تا تعداد عمل جراحی در سال افزایش یابد.'
       : '<span class="sum-long">با <b>' + fa(d.n) + '</b> عمل جراحی در سال: صرفه‌جویی حدود <b>' + fa(W) + '</b> لیتر آب، <b>' + fa(C) + '</b> تومان هزینه شست‌وشو و ضدعفونی و <b>' + fa(H) + '</b> ساعت از زمان کادر درمان.</span>' +
-        '<span class="sum-note">* محاسبات بر اساس فرمول‌های محاسبه‌گر فعلی آبادیس</span>',
+        '',
   });
   c1Root.querySelectorAll('.chip').forEach((c) => c.addEventListener('click', () => {
     const P = +c.dataset.n;
@@ -286,7 +286,7 @@
     summary: (d, W, C, H) => (d.a + d.b) <= 0
       ? 'برای شروع، اسکرول کنید تا تعداد تخت اتاق عمل افزایش یابد.'
       : '<span class="sum-long">با <b>' + fa(d.a) + '</b> تخت اتاق عمل و <b>' + fa(d.b) + '</b> تخت ICU|CCU: صرفه‌جویی حدود <b>' + fa(W) + '</b> لیتر آب، <b>' + fa(C) + '</b> تومان هزینه شست‌وشو و ضدعفونی و <b>' + fa(H) + '</b> ساعت از زمان کادر درمان.</span>' +
-        '<span class="sum-note">* محاسبات بر اساس فرمول‌های محاسبه‌گر فعلی آبادیس</span>',
+        '',
     afterRender: (api) => {
       const st = api.state, d = api.disp;
       bedA.classList.toggle('active', st.phase === 'a');

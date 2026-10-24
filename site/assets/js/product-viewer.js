@@ -225,6 +225,30 @@ export function initProductViewer(host) {
       shadow.position.y = -fitData.halfH - 0.004;
       scene.add(shadow);
 
+      /* 1 / 2 / 3 L: same lid, diameter 11 cm; body height scaled to the catalogue heights (15.5 / 24.5 / 39 cm).
+         Approximation from the 2 L model until dedicated 1 L / 3 L GLBs exist. */
+      const H = { 1: 15.5, 2: 24.5, 3: 39 };
+      const body0 = { y: body.position.y, sy: body.scale.y };
+      const top0 = new THREE.Box3().setFromObject(body).max.y;
+      const root0 = root.position.clone();
+      api.setSize = (L) => {
+        const k = (H[L] || 24.5) / 24.5;
+        body.scale.y = body0.sy * k; body.position.y = body0.y;
+        root.position.copy(root0); root.updateMatrixWorld(true);
+        const t = new THREE.Box3().setFromObject(body).max.y;
+        body.position.y += (top0 - t) / (body.parent ? body.parent.matrixWorld.elements[5] || 1 : 1);
+        root.updateMatrixWorld(true);
+        const bb = new THREE.Box3().setFromObject(root);
+        root.position.y -= bb.getCenter(new THREE.Vector3()).y; root.updateMatrixWorld(true);
+        const b2 = new THREE.Box3().setFromObject(root);
+        const halfH = (b2.max.y - b2.min.y) / 2;
+        const rx = Math.max(b2.max.x - b2.min.x, b2.max.z - b2.min.z) / 2;
+        fitData = { R: Math.hypot(rx, halfH), halfH };
+        shadow.position.y = -halfH - 0.004;
+        api.size = L; applySize(true); requestRender();
+      };
+      host.dispatchEvent(new CustomEvent('pv-ready'));
+
       applySize(true);
       renderer.compile(scene, camera);
       state.ready = true;

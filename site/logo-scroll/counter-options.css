@@ -1,0 +1,26 @@
+.impact-counter{position:relative;overflow:hidden;isolation:isolate}
+.impact-num{display:block;font-variant-numeric:tabular-nums;line-height:1.15}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* M1: uses site .odo styles (1.2em cells) */
+.cnt-m1 .odo-col{width:.62em;height:1.2em;overflow:hidden}
+/* M2 */
+.cnt-water{position:absolute;inset:auto 0 0 0;height:var(--fill,0%);background:color-mix(in srgb,currentColor 7%,transparent);z-index:-1;transition:height 2s cubic-bezier(.2,.7,.2,1);color:#7fdcdd}
+[data-theme="noir"] .cnt-water{color:#c4b5fd}
+.cnt-water svg{position:absolute;bottom:100%;left:0;width:200%;height:14px;fill:color-mix(in srgb,currentColor 7%,transparent);animation:cntwave 7s linear infinite}
+.cnt-water svg+svg{animation-duration:11s;animation-direction:reverse;opacity:.7}
+@keyframes cntwave{to{transform:translateX(-50%)}}
+.cnt-drop{position:absolute;top:18px;left:22px;width:6px;height:9px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:#7fdcdd;opacity:0}
+[data-theme="noir"] .cnt-drop{background:#c4b5fd}
+.cnt-drop.go{animation:cntdrop 1.1s ease-in forwards}
+@keyframes cntdrop{0%{opacity:0;transform:translateY(-6px)}20%{opacity:.8}100%{opacity:0;transform:translateY(60px)}}
+/* M3 */
+.cnt-m3 .chg{animation:cntglow 1.2s ease-out}
+@keyframes cntglow{0%{color:#7fdcdd;text-shadow:0 0 14px rgba(127,220,221,.8)}100%{text-shadow:0 0 0 transparent}}
+[data-theme="noir"] .cnt-m3 .chg{animation-name:cntglown}
+@keyframes cntglown{0%{color:#c4b5fd;text-shadow:0 0 14px rgba(196,181,253,.8)}100%{text-shadow:none}}
+.cnt-rate{margin:10px 0 6px;font-size:.92rem;opacity:.85}
+.cnt-bar{height:3px;border-radius:3px;background:color-mix(in srgb,currentColor 14%,transparent);overflow:hidden}
+.cnt-bar i{display:block;height:100%;background:#7fdcdd;margin-inline-start:auto;margin-inline-end:0}
+[data-theme="noir"] .cnt-bar i{background:#c4b5fd}
+.cnt-barlbl{margin:6px 0 0;font-size:.78rem;opacity:.65}
+@media (prefers-reduced-motion:reduce){.cnt-water svg,.cnt-drop,.cnt-m3 .chg{animation:none!important}}

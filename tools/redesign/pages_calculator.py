@@ -9,14 +9,6 @@ from layout import page
 SRC = ROOT / 'redesign' / 'calculator'
 DESC = 'محاسبه‌گر صرفه‌جویی آبادیس: صرفه‌جویی در مصرف آب، هزینه شست‌وشو و ضدعفونی و زمان کادر درمان.'
 VARIANTS = [('dial', 'طرح دایال'), ('receipt', 'طرح رسید'), ('hospital', 'طرح بیمارستان'), ('scale', 'طرح ترازو'), ('flood', 'طرح سیلاب')]
-# Extra dial pages shipped on main (site/dial-*, site/template-dials/*) — link only, leave pages as-is.
-EXTRA_DIALS = [
-    ('dial-practical/', 'دایال عملی'),
-    ('dial-steppers/', 'دایال +/−'),
-    ('template-dials/1-neumorphic/', 'دایال نیومورفیک'),
-    ('template-dials/2-abadis-plus/', 'دایال آبادیس+'),
-    ('template-dials/3-cost-time-h2o/', 'دایال COST/TIME'),
-]
 THEME_DARK = '[data-theme="dark"]'
 THEME_ANY_DARK = ':is([data-theme="dark"],[data-theme="noir"])'
 DROP = re.compile(r'(^|[\s,>+~(])(\.header\b|\.nav\b|\.logo\b|\.theme-toggle|\.header-cta|\.header-actions|\.site-footer|\.foot-(inner|brand|links|copy)\b|footer\b|\.i-sun|\.i-moon)')
@@ -105,14 +97,10 @@ def adapt(html, p, here):
         return 'class="' + ' '.join(toks) + '"'
     body = re.sub(r'class="([^"]*)"', cls, body)
     body = body.replace('class="calc calc--dark"', 'class="calc calc--dark" data-tone="dark"')
+    from pages_dial import strip_formula_notes
+    body = strip_formula_notes(body)
     body = re.sub(r'href="https://abadis-med\.com/ارتباط-با-ما/" target="_blank" rel="noopener"', f'href="{p}contact/"', body)
     return scoped, body, scripts
-
-def switcher(p, cur):
-    items = [('', 'طرح اصلی')] + [(k + '/', v) for k, v in VARIANTS]
-    a = ''.join(f'<a href="{p}calculator/{h}"' + (' aria-current="page"' if h == cur else '') + f'>{t}</a>' for h, t in items)
-    extras = ''.join(f'<a href="{p}{h}">{t}</a>' for h, t in EXTRA_DIALS)
-    return f'<nav class="gfc-switch" aria-label="طرح‌های محاسبه‌گر"><span>طرح‌های محاسبه‌گر:</span>{a}{extras}</nav>'
 
 JS_CUTS = [  # their own header/theme handling: replaced by site.js (keeps noir + our header)
     (r"\n  /\* ---------- template header \+ anchors ---------- \*/.*?\n  \}\)\(\);\n(?=\}\)\(\);)", '\n'),
@@ -121,6 +109,8 @@ JS_CUTS = [  # their own header/theme handling: replaced by site.js (keeps noir 
 def patch_js(src, dst):
     s = src.read_text(encoding='utf-8'); n0 = len(s)
     for a, b in JS_CUTS: s = re.sub(a, b, s, flags=re.S)
+    from pages_dial import strip_formula_notes
+    s = strip_formula_notes(s)
     assert len(s) < n0, src
     dst.parent.mkdir(parents=True, exist_ok=True); dst.write_text(s, encoding='utf-8')
 
@@ -138,8 +128,7 @@ def build(write):
         (SITE / rel).parent.mkdir(parents=True, exist_ok=True)
         (SITE / rel).parent.joinpath('calc.css' if here else 'calc-page.css').write_text(css + '\n', encoding='utf-8')
         cssname = 'calc.css' if here else 'calc-page.css'
-        sw = switcher(p, here)
-        main = f'<link rel="stylesheet" href="{cssname}">\n<div class="gfc">\n{body}\n{sw}\n</div>'
+        main = f'<link rel="stylesheet" href="{cssname}">\n<div class="gfc">\n{body}\n</div>'
         js = ''.join(f'<script src="{s}" defer></script>\n' for s in
                      [('calc.js' if s.endswith('js/calc.js') else ('../common/abadis-common.js' if 'common' in s else s)) for s in scripts])
         # variant pages carry inline <script> blocks that need Abadis loaded first: keep their order

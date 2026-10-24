@@ -50,6 +50,35 @@
     }
   });
 
+  /* ---------- game button (Angry Bags) ----------
+     Injected once here so every page sharing this header gets it. The link is
+     resolved relative to this script's own URL (…/assets/js/site.js → site root),
+     so it works on GitHub Pages, githack and any sub-folder. */
+  (() => {
+    const hdr = document.getElementById('header');
+    if (!hdr || hdr.querySelector('.play-btn')) return;
+    const me = document.querySelector('script[src*="assets/js/site.js"]');
+    const base = me ? new URL('../../', me.src).href : new URL('./', location.href).href;
+    const l = (root.lang || 'fa').slice(0, 2);
+    const code = l === 'en' ? 'en' : l === 'ar' ? 'ar' : 'fa';
+    const label = { fa: 'بازی', en: 'Play', ar: 'العب' }[code];
+    const title = { fa: 'بازی کیسه‌های خشمگین', en: 'Play Angry Bags', ar: 'العب الأكياس الغاضبة' }[code];
+    const href = base + 'seed-slingshot/?lang=' + code;
+    const icon = '<svg class="pb-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3v7a5 5 0 0 0 10 0V3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M12 15v6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><ellipse cx="12" cy="8.6" rx="2.6" ry="3" fill="currentColor"/><path d="M9.6 6.6h4.8" stroke="var(--pb-bg,#066163)" stroke-width="1.2"/></svg>';
+    const a = document.createElement('a');
+    a.className = 'play-btn'; a.href = href; a.title = title; a.setAttribute('aria-label', title);
+    a.dataset.track = 'game_open';
+    a.innerHTML = icon + '<span class="pb-label">' + label + '</span>';
+    const anchor = hdr.querySelector('.lang-switch') || hdr.querySelector('.theme-toggle');
+    hdr.insertBefore(a, anchor);
+    const nav = hdr.querySelector('.nav');
+    if (nav) {
+      const m = document.createElement('a');
+      m.className = 'nav-play'; m.href = href; m.innerHTML = icon + '<span>' + title + '</span>';
+      nav.appendChild(m);
+    }
+  })();
+
   /* ---------- header ----------
      Transparent in every theme. `.scrolled` only fades in an untinted blur;
      `.on-light` (light theme only) switches the ink + logo to teal while the
@@ -97,11 +126,39 @@
   }
   const menuBtn = document.querySelector('.menu-btn');
   if (menuBtn && header) {
-    const setOpen = (open) => { header.classList.toggle('open', open); menuBtn.setAttribute('aria-expanded', String(open)); };
+    const setOpen = (open) => {
+      header.classList.toggle('open', open);
+      menuBtn.setAttribute('aria-expanded', String(open));
+      if (!open) header.querySelectorAll('.nav-item.open').forEach((el) => {
+        el.classList.remove('open');
+        const t = el.querySelector('.nav-parent');
+        if (t) t.setAttribute('aria-expanded', 'false');
+      });
+    };
     menuBtn.addEventListener('click', () => setOpen(!header.classList.contains('open')));
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
     document.addEventListener('click', (e) => { if (!header.contains(e.target)) setOpen(false); });
   }
+
+  /* About-group (and any .nav-item.has-sub): toggle on click for touch / mobile hamburger */
+  document.querySelectorAll('.nav-item.has-sub > .nav-parent').forEach((parent) => {
+    const item = parent.parentElement;
+    parent.addEventListener('click', (e) => {
+      const mobile = menuBtn && getComputedStyle(menuBtn).display !== 'none';
+      if (!mobile && matchMedia('(hover: hover) and (pointer: fine)').matches) return; /* desktop hover */
+      e.preventDefault();
+      const willOpen = !item.classList.contains('open');
+      item.parentElement.querySelectorAll('.nav-item.open').forEach((el) => {
+        if (el !== item) {
+          el.classList.remove('open');
+          const t = el.querySelector('.nav-parent');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        }
+      });
+      item.classList.toggle('open', willOpen);
+      parent.setAttribute('aria-expanded', String(willOpen));
+    });
+  });
 
   /* ---------- scroll reveal ---------- */
   const rev = document.querySelectorAll('.reveal');
@@ -113,13 +170,47 @@
     rev.forEach((e) => io.observe(e));
   }
 
+  /* sustainability counters — final value is already in the element */
+  document.querySelectorAll('[data-sdg-count]').forEach((el) => {
+    const to = parseFloat(el.getAttribute('data-sdg-count'));
+    if (!isFinite(to)) return;
+    const lang = document.documentElement.lang || '';
+    const loc = lang.startsWith('en') ? 'en' : (lang.startsWith('ar') ? 'ar-EG' : 'fa-IR');
+    const fmt = (n) => n.toLocaleString(loc, { maximumFractionDigits: 0, useGrouping: false });
+    if (reduce) { el.textContent = fmt(to); return; }
+    el.textContent = fmt(0);
+    const dur = 1100;
+    const tick = (t0) => (now) => {
+      const p = Math.min(1, (now - t0) / dur);
+      const e = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(Math.round(to * e));
+      if (p < 1) requestAnimationFrame(tick(t0));
+    };
+    const start = () => requestAnimationFrame((now) => requestAnimationFrame(tick(now)));
+    if (!('IntersectionObserver' in window)) { start(); return; }
+    const cio = new IntersectionObserver((ents) => {
+      if (!ents.some((x) => x.isIntersecting)) return;
+      cio.disconnect();
+      start();
+    }, { threshold: 0.35 });
+    cio.observe(el.closest('.sdg-stat') || el);
+  });
+
   /* ---------- mosaic video (مربع مربعی) ----------
      The <video> is decoded off-screen; every frame is sampled down to a
      grid (one pixel per tile) and redrawn as crisp square tiles with a
      thin gap. On load the tiles resolve from coarse to fine; while the
      hero scrolls away they grow coarse again. Scroll-driven only. */
+  /* Square-tile rendering is retired site-wide (Siamak, Oct 2026): any leftover .mosaic host just
+     plays its video plainly. Flip to true to bring the tiles back. */
+  const MOSAIC_TILES = false;
   function mosaic(host) {
     const video = host.querySelector('video');
+    if (!MOSAIC_TILES) {
+      host.classList.add('no-canvas');
+      if (video) { if (reduce) { video.removeAttribute('autoplay'); video.pause(); } else video.play().catch(() => {}); }
+      return;
+    }
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d', { alpha: false });
     if (!ctx || !video) { host.classList.add('no-canvas'); return; }
@@ -415,6 +506,17 @@
     });
   });
 
+  /* ---------- home: first-screen OR video — reduced motion keeps the poster; pause off-screen ---------- */
+  const orVid = document.getElementById('homeOrVideo');
+  if (orVid) {
+    if (reduce) { orVid.removeAttribute('autoplay'); orVid.pause(); }
+    else if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([e]) => {
+        if (e.isIntersecting) { const pr = orVid.play(); if (pr && pr.catch) pr.catch(() => {}); } else orVid.pause();
+      }).observe(orVid);
+    }
+  }
+
   /* ---------- home customers logo carousel (infinite marquee; track-only) ---------- */
   document.querySelectorAll('[data-logo-carousel]').forEach((root) => {
     const track = root.querySelector('.logo-carousel-track');
@@ -623,4 +725,39 @@
       window.setTimeout(() => { if (!dragging) { layout(); lastTs = 0; } }, 400);
     });
   });
+})();
+
+/* Analytics hooks (brief §6): no third-party key. Pushes to window.dataLayer and fires a
+   CustomEvent "abadis:track" so any tag manager added later can listen.
+   Events: catalogue_download, contact_click, form_submit, language_switch. */
+(function () {
+  window.dataLayer = window.dataLayer || [];
+  function consentGranted() {
+    try { return localStorage.getItem('abadis-consent') === 'accepted'; } catch (e) { return false; }
+  }
+  function track(name, data) {
+    /* Cookie banner (consent.js) must be accepted before any analytics event. */
+    if (!consentGranted()) return;
+    var ev = Object.assign({ event: name, page: location.pathname }, data || {});
+    window.dataLayer.push(ev);
+    try { document.dispatchEvent(new CustomEvent('abadis:track', { detail: ev })); } catch (e) {}
+  }
+  window.abadisTrack = track;
+  function kind(a) {
+    if (a.dataset.track) return a.dataset.track;
+    var h = (a.getAttribute('href') || '').toLowerCase();
+    if (/\.pdf($|\?)/.test(h)) return 'catalogue_download';
+    if (/^(tel:|mailto:|https?:\/\/(wa\.me|api\.whatsapp\.com|t\.me))/.test(h)) return 'contact_click';
+    if (a.classList.contains('lang-link')) return 'language_switch';
+    return '';
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var k = kind(a);
+    if (!k) return;
+    var d = { href: a.getAttribute('href'), label: (a.dataset.trackLabel || a.textContent || '').trim().slice(0, 80) };
+    if (k === 'language_switch') d.lang = a.getAttribute('hreflang');
+    track(k, d);
+  }, true);
 })();

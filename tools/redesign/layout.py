@@ -1,7 +1,10 @@
 """Shared <head>, header, footer and hero markup for all redesign pages."""
 from lib import esc
 from lib import SITE_ORIGIN, FORM_ENDPOINT, FORM_MAILTO
-from i18n import LANGS, NAV as I18N_NAV, SECONDARY as I18N_SECONDARY, switcher_html, hreflang_tags
+from i18n import (
+    LANGS, NAV as I18N_NAV, SECONDARY as I18N_SECONDARY, nav_flat, switcher_html,
+    hreflang_tags, canonical_href, ROBOTS_META,
+)
 
 # Back-compat aliases (FA)
 NAV = I18N_NAV['fa']
@@ -16,30 +19,28 @@ THEME_ICON = '''<svg class="tt-icon" viewBox="0 0 24 24" aria-hidden="true" focu
 CUR = ' aria-current="page"'
 
 
-def head(p, title, desc, og=None, lang='fa', fa_path='', canonical_path=None):
+def head(p, title, desc, og=None, lang='fa', fa_path='', canonical_path=None, html_attrs=''):
     L = LANGS[lang]
     brand = L['brand']
     # Avoid double brand suffix
     full = title if title.rstrip().endswith(brand) else f'{title} — {brand}'
     t = esc(full); d = esc(desc or '')
     ogi = og or f'{p}assets/img/og-image.jpg'
-    can_rel = canonical_path if canonical_path is not None else (LANGS[lang]['root'] + (fa_path if lang == 'fa' else ''))
-    if lang != 'fa' and canonical_path is None:
-        can_rel = None  # caller should pass canonical_path for en/ar
     can_tag = ''
     if canonical_path is not None:
-        # Root-relative canonical keeps preview/link checks on-site until launch.
-        can_tag = f'<link rel="canonical" href="/{canonical_path.lstrip("/")}">\n'
-    alts = hreflang_tags(fa_path, p)
+        # Final URL on abadis-med.com (not the GitHub Pages host).
+        can_tag = f'<link rel="canonical" href="{canonical_href(canonical_path)}">\n'
+    alts = hreflang_tags(fa_path, p, canonical_path=canonical_path)
     alts_block = (alts + '\n') if alts else ''
+    extra = (' ' + html_attrs.strip()) if html_attrs and html_attrs.strip() else ''
     return f'''<!DOCTYPE html>
-<html lang="{L['lang']}" dir="{L['dir']}" data-theme="light">
+<html lang="{L['lang']}" dir="{L['dir']}" data-theme="light"{extra}>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{t}</title>
 <meta name="description" content="{d}">
-<meta name="robots" content="noindex,nofollow">
+{ROBOTS_META}
 <meta name="theme-color" content="#e8f3f3">
 <meta name="abadis-form-endpoint" content="{esc(FORM_ENDPOINT)}">
 <meta name="abadis-form-mailto" content="{esc(FORM_MAILTO)}">
@@ -53,23 +54,52 @@ def head(p, title, desc, og=None, lang='fa', fa_path='', canonical_path=None):
 <link rel="preload" href="{p}assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{p}assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{p}assets/css/site.css">
+<link rel="stylesheet" href="{p}assets/css/consent.css">
+<link rel="stylesheet" href="{p}assets/css/footer-motion.css">
 </head>
 <body>
 <a class="skip" href="#main">{esc(L['skip'])}</a>
 '''
 
 
+def _href(p, root, h):
+    """Join a nav href. A leading '~' is a path from the site root (not the language root)."""
+    if h.startswith('~'):
+        return p + h[1:]
+    return p + root + h
+
+
+def _nav_item(p, root, cur, item):
+    k, h, l = item[0], item[1], item[2]
+    kids = item[3] if len(item) > 3 else None
+    if not kids:
+        return f'<a href="{_href(p, root, h)}"{CUR if k == cur else ""}>{l}</a>'
+    child_keys = {ck for ck, _, _ in kids}
+    open_cur = CUR if (k == cur or cur in child_keys) else ''
+    sub = ''.join(
+        f'<a href="{_href(p, root, ch)}" role="menuitem"{CUR if ck == cur else ""}>{cl}</a>'
+        for ck, ch, cl in kids
+    )
+    return (
+        f'<div class="nav-item has-sub">'
+        f'<a class="nav-parent" href="{_href(p, root, h)}"{open_cur} aria-haspopup="true" aria-expanded="false">{l}'
+        f'<span class="nav-caret" aria-hidden="true"></span></a>'
+        f'<div class="nav-sub" role="menu">{sub}</div>'
+        f'</div>'
+    )
+
+
 def header(p, cur, lang='fa', fa_path=''):
     L = LANGS[lang]
     root = L['root']
     nav = I18N_NAV[lang]
-    links = ''.join(f'<a href="{p}{root}{h}"{CUR if k == cur else ""}>{l}</a>' for k, h, l in nav)
+    links = ''.join(_nav_item(p, root, cur, item) for item in nav)
     home = (p or './') if lang == 'fa' else (p + root)
     sw = switcher_html(lang, fa_path, p)
     return f'''<header class="header" id="header">
   <a class="logo" href="{home}" aria-label="{esc(L['brand'])} — {esc(L['home_label'])}">
-    <img class="lg-light" src="{p}assets/img/abadis-logo-teal.png" width="658" height="309" alt="{esc(L['brand'])}">
-    <img class="lg-dark" src="{p}assets/img/abadis-logo-on-teal.png" width="670" height="309" alt="" aria-hidden="true">
+    <img class="lg-light" src="{p}assets/img/abadis-logo-teal.svg" width="646" height="309" alt="{esc(L['brand'])}">
+    <img class="lg-dark" src="{p}assets/img/abadis-logo-white.svg" width="646" height="309" alt="" aria-hidden="true">
   </a>
   <nav class="nav" id="mainNav" aria-label="{esc(L['nav_aria'])}">{links}</nav>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mainNav" aria-label="{esc(L['menu_aria'])}"><span class="mb-bars" aria-hidden="true"><i></i><i></i><i></i></span></button>
@@ -80,18 +110,28 @@ def header(p, cur, lang='fa', fa_path=''):
 </header>'''
 
 
+def _footer_label(lang, key, label):
+    """Link text inside the footer. Header nav is unchanged."""
+    if lang == 'fa' and key == 'customers':
+        return 'خانواده سبز آبادیس'
+    return label
+
+
 def footer(p, cur=None, lang='fa'):
     L = LANGS[lang]
     root = L['root']
-    nav = I18N_NAV[lang]
+    nav = nav_flat(I18N_NAV[lang])
     sec = I18N_SECONDARY[lang]
-    main = '\n        '.join(f'<a href="{p}{root}{h}">{l}</a>' for _, h, l in nav)
-    secl = '\n        '.join(f'<a href="{p}{root}{h}"{CUR if k == cur else ""}>{l}</a>' for k, h, l in sec)
+    main = '\n        '.join(
+        f'<a href="{_href(p, root, h)}">{_footer_label(lang, k, l)}</a>' for k, h, l in nav)
+    secl = '\n        '.join(
+        f'<a href="{_href(p, root, h)}"{CUR if k == cur else ""}>{_footer_label(lang, k, l)}</a>'
+        for k, h, l in sec)
     return f'''<footer class="site-footer">
   <div class="wrap foot-inner">
     <div class="foot-col foot-col-brand">
       <div class="foot-brand">
-        <img src="{p}assets/img/abadis-logo-on-teal.png" width="670" height="309" alt="{esc(L['brand'])}" loading="lazy">
+        <img src="{p}assets/img/abadis-logo-white.svg" width="646" height="309" alt="{esc(L['brand'])}" loading="lazy">
         <p>{esc(L['footer_blurb'])}</p>
       </div>
       <details class="foot-acc foot-nav" open>
@@ -143,12 +183,12 @@ LIGHTBOX = lightbox_html('fa')
 
 
 def page(p, cur, title, desc, main, og=None, lightbox=False, scripts='', lang='fa', fa_path='',
-         canonical_path=None, extra_head='', main_class='', body_class=''):
+         canonical_path=None, extra_head='', main_class='', body_class='', html_attrs=''):
     if lang == 'fa' and not fa_path and cur:
         guess = {
             'about': 'about/', 'products': 'products/', 'news': 'news/', 'articles': 'articles/',
             'dealers': 'dealers/', 'csr': 'csr/', 'sdgs': 'sdgs/', 'contact': 'contact/',
-            'calculator': 'calculator/', 'customers': 'customers/', 'experiences': 'experiences/',
+            'calculator': 'calculator/', 'customers': 'customers/', 'experiences': 'academy/',
             'downloads': 'downloads/', 'install': 'install-guide/', 'faq': 'faq/',
             'careers': 'careers/', 'jobs': 'jobs/',
         }.get(cur, '')
@@ -156,7 +196,7 @@ def page(p, cur, title, desc, main, og=None, lightbox=False, scripts='', lang='f
     if lang == 'fa' and canonical_path is None:
         canonical_path = fa_path
     lb = (lightbox_html(lang) + '\n') if lightbox else ''
-    html = head(p, title, desc, og, lang=lang, fa_path=fa_path, canonical_path=canonical_path)
+    html = head(p, title, desc, og, lang=lang, fa_path=fa_path, canonical_path=canonical_path, html_attrs=html_attrs)
     if extra_head:
         html = html.replace('</head>', extra_head.rstrip() + '\n</head>', 1)
     if body_class:
@@ -165,7 +205,7 @@ def page(p, cur, title, desc, main, og=None, lightbox=False, scripts='', lang='f
     return (html
             + header(p, cur, lang=lang, fa_path=fa_path) + f'\n<main id="main"{main_attrs}>\n' + main + '\n</main>\n'
             + lb + footer(p, cur, lang=lang)
-            + f'\n<script src="{p}assets/js/site.js" defer></script>\n{scripts}</body>\n</html>\n')
+            + f'\n<script src="{p}assets/js/site.js" defer></script>\n<script src="{p}assets/js/consent.js" defer></script>\n<script src="{p}assets/js/footer-motion.js" defer></script>\n{scripts}</body>\n</html>\n')
 
 
 def crumbs(p, trail, lang='fa'):

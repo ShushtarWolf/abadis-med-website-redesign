@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>محاسبه‌گر صرفه‌جویی — طرح سیلاب — مخازن طبی آبادیس</title>
 <meta name="description" content="محاسبه‌گر صرفه‌جویی آبادیس: صرفه‌جویی در مصرف آب، هزینه شست‌وشو و ضدعفونی و زمان کادر درمان.">
-<meta name="robots" content="noindex,nofollow">
+<!-- TODO(launch): remove this robots meta when the site is published on https://abadis-med.com/ -->
+<meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#e8f3f3">
 <meta name="abadis-form-endpoint" content="">
 <meta name="abadis-form-mailto" content="info@abadis-med.com">
@@ -13,26 +14,28 @@
 <link rel="icon" href="../../favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="../../assets/img/apple-touch-icon.png">
-<link rel="canonical" href="/calculator/">
-<link rel="alternate" hreflang="fa-IR" href="/calculator/">
-<link rel="alternate" hreflang="en" href="/en/calculator/">
-<link rel="alternate" hreflang="ar" href="/arabic/الحوسبة/">
-<link rel="alternate" hreflang="x-default" href="/calculator/">
+<link rel="canonical" href="https://abadis-med.com/calculator/">
+<link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/calculator/">
+<link rel="alternate" hreflang="en" href="https://abadis-med.com/en/calculator/">
+<link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/الحوسبة/">
+<link rel="alternate" hreflang="x-default" href="https://abadis-med.com/calculator/">
 <meta property="og:locale" content="fa_IR"><meta property="og:site_name" content="مخازن طبی آبادیس">
 <meta property="og:title" content="محاسبه‌گر صرفه‌جویی — طرح سیلاب — مخازن طبی آبادیس"><meta property="og:description" content="محاسبه‌گر صرفه‌جویی آبادیس: صرفه‌جویی در مصرف آب، هزینه شست‌وشو و ضدعفونی و زمان کادر درمان.">
 <meta property="og:image" content="../../assets/img/og-image.jpg">
 <link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../../assets/css/site.css">
+<link rel="stylesheet" href="../../assets/css/consent.css">
+<link rel="stylesheet" href="../../assets/css/footer-motion.css">
 </head>
 <body>
 <a class="skip" href="#main">پرش به محتوا</a>
 <header class="header" id="header">
   <a class="logo" href="../../" aria-label="مخازن طبی آبادیس — خانه">
-    <img class="lg-light" src="../../assets/img/abadis-logo-teal.png" width="658" height="309" alt="مخازن طبی آبادیس">
-    <img class="lg-dark" src="../../assets/img/abadis-logo-on-teal.png" width="670" height="309" alt="" aria-hidden="true">
+    <img class="lg-light" src="../../assets/img/abadis-logo-teal.svg" width="646" height="309" alt="مخازن طبی آبادیس">
+    <img class="lg-dark" src="../../assets/img/abadis-logo-white.svg" width="646" height="309" alt="" aria-hidden="true">
   </a>
-  <nav class="nav" id="mainNav" aria-label="منوی اصلی"><a href="../../about/">آشنایی با ما</a><a href="../../products/">محصولات</a><a href="../../news/">آخرین اخبار</a><a href="../../dealers/">لیست نمایندگان</a><a href="../../sdgs/">توسعه پایدار</a><a href="../../articles/">مقالات</a><a href="../../contact/">ارتباط با ما</a><a href="../../calculator/" aria-current="page">محاسبه‌گر</a></nav>
+  <nav class="nav" id="mainNav" aria-label="منوی اصلی"><div class="nav-item has-sub"><a class="nav-parent" href="../../about/" aria-haspopup="true" aria-expanded="false">آشنایی با ما<span class="nav-caret" aria-hidden="true"></span></a><div class="nav-sub" role="menu"><a href="../../about/" role="menuitem">درباره ما</a><a href="../../customers/" role="menuitem">مشتریان ما</a><a href="../../dealers/" role="menuitem">لیست نمایندگان</a><a href="../../sdgs/" role="menuitem">توسعه پایدار</a><a href="../../careers/" role="menuitem">فرصت‌های همکاری</a></div></div><a href="../../products/">محصولات</a><a href="../../news/">آخرین اخبار</a><a href="../../articles/">مقالات</a><a href="../../csr/">مسئولیت اجتماعی</a><a href="../../contact/">ارتباط با ما</a></nav>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mainNav" aria-label="منو"><span class="mb-bars" aria-hidden="true"><i></i><i></i><i></i></span></button>
   <nav class="lang-switch" aria-label="زبان"><a class="lang-link" href="../../calculator/" hreflang="fa-IR" lang="fa-IR" title="فارسی" aria-label="فارسی" aria-current="true">FA</a><span class="lang-sep" aria-hidden="true">·</span><a class="lang-link" href="../../en/calculator/" hreflang="en" lang="en" title="English" aria-label="English">EN</a><span class="lang-sep" aria-hidden="true">·</span><a class="lang-link" href="../../arabic/الحوسبة/" hreflang="ar" lang="ar" title="العربية" aria-label="العربية">AR</a></nav>
   <button class="theme-toggle" type="button" aria-label="حالت نمایش" title="تغییر حالت نمایش">
@@ -86,7 +89,7 @@
       <div class="pile" aria-hidden="true"><span class="fig" data-x="0.5" data-y="0" data-r="-1" style="--w:493;--h:173"><i><img src="img/staff-a.webp" alt="" width="493" height="173" decoding="async"></i></span><span class="fig fl" data-x="1.48" data-y="0.02" data-r="2" style="--w:493;--h:172"><i><img src="img/staff-b.webp" alt="" width="493" height="172" decoding="async"></i></span><span class="fig" data-x="1.0" data-y="0.58" data-r="-3" style="--w:492;--h:315"><i><img src="img/staff-c.webp" alt="" width="492" height="315" decoding="async"></i></span><span class="fig" data-x="0.42" data-y="0.64" data-r="5" style="--w:493;--h:172"><i><img src="img/staff-b.webp" alt="" width="493" height="172" decoding="async"></i></span><span class="fig fl" data-x="1.6" data-y="0.66" data-r="-5" style="--w:493;--h:173"><i><img src="img/staff-a.webp" alt="" width="493" height="173" decoding="async"></i></span><span class="fig fl" data-x="0.98" data-y="1.18" data-r="3" style="--w:493;--h:173"><i><img src="img/staff-a.webp" alt="" width="493" height="173" decoding="async"></i></span><span class="fig fl" data-x="0.4" data-y="1.3" data-r="-6" style="--w:492;--h:315"><i><img src="img/staff-c.webp" alt="" width="492" height="315" decoding="async"></i></span><span class="fig" data-x="1.5" data-y="1.26" data-r="5" style="--w:493;--h:172"><i><img src="img/staff-b.webp" alt="" width="493" height="172" decoding="async"></i></span></div>
       <div class="base">
         <div class="legend"><span><i class="lw"></i>آب</span><span><i class="lf"></i>مایع شست‌وشو و ضدعفونی (نمایش تصویری)</span><span><img src="img/staff-icon.webp" alt="" width="10" height="24">هر آدمک = ۲۰۰ شیفت کاری ۸ ساعته</span></div>
-        <p class="fl-sum" data-sum></p><a class="hero-btn" href="tel:02192001017">مشاوره با کارشناس فروش</a><p class="note">* محاسبات بر اساس فرمول‌های محاسبه‌گر فعلی آبادیس</p>
+        <p class="fl-sum" data-sum></p><a class="hero-btn" href="tel:02192001017">مشاوره با کارشناس فروش</a>
       </div>
     </div></div>
   </section>
@@ -123,12 +126,10 @@
       <div class="pile" aria-hidden="true"><span class="fig" data-x="0.5" data-y="0" data-r="-1" style="--w:493;--h:173"><i><img src="img/staff-a.webp" alt="" width="493" height="173" decoding="async"></i></span><span class="fig fl" data-x="1.48" data-y="0.02" data-r="2" style="--w:493;--h:172"><i><img src="img/staff-b.webp" alt="" width="493" height="172" decoding="async"></i></span><span class="fig" data-x="1.0" data-y="0.58" data-r="-3" style="--w:492;--h:315"><i><img src="img/staff-c.webp" alt="" width="492" height="315" decoding="async"></i></span><span class="fig" data-x="0.42" data-y="0.64" data-r="5" style="--w:493;--h:172"><i><img src="img/staff-b.webp" alt="" width="493" height="172" decoding="async"></i></span><span class="fig fl" data-x="1.6" data-y="0.66" data-r="-5" style="--w:493;--h:173"><i><img src="img/staff-a.webp" alt="" width="493" height="173" decoding="async"></i></span><span class="fig fl" data-x="0.98" data-y="1.18" data-r="3" style="--w:493;--h:173"><i><img src="img/staff-a.webp" alt="" width="493" height="173" decoding="async"></i></span><span class="fig fl" data-x="0.4" data-y="1.3" data-r="-6" style="--w:492;--h:315"><i><img src="img/staff-c.webp" alt="" width="492" height="315" decoding="async"></i></span><span class="fig" data-x="1.5" data-y="1.26" data-r="5" style="--w:493;--h:172"><i><img src="img/staff-b.webp" alt="" width="493" height="172" decoding="async"></i></span></div>
       <div class="base">
         <div class="legend"><span><i class="lw"></i>آب</span><span><i class="lf"></i>مایع شست‌وشو و ضدعفونی (نمایش تصویری)</span><span><img src="img/staff-icon.webp" alt="" width="10" height="24">هر آدمک = ۱٬۵۰۰ شیفت کاری ۸ ساعته</span></div>
-        <p class="fl-sum" data-sum></p><a class="hero-btn" href="tel:02192001017">مشاوره با کارشناس فروش</a><p class="note">* محاسبات بر اساس فرمول‌های محاسبه‌گر فعلی آبادیس</p>
+        <p class="fl-sum" data-sum></p><a class="hero-btn" href="tel:02192001017">مشاوره با کارشناس فروش</a>
       </div>
     </div></div>
   </section>
-
-  <p class="foot-note"><b>*</b> محاسبات بر اساس فرمول‌های محاسبه‌گر فعلی آبادیس</p>
 
   <section class="cta-band">
     <h2>برای محاسبه دقیق مرکز درمانی خود با ما صحبت کنید</h2>
@@ -138,40 +139,41 @@
   </section>
   
 
-<nav class="gfc-switch" aria-label="طرح‌های محاسبه‌گر"><span>طرح‌های محاسبه‌گر:</span><a href="../../calculator/">طرح اصلی</a><a href="../../calculator/dial/">طرح دایال</a><a href="../../calculator/receipt/">طرح رسید</a><a href="../../calculator/hospital/">طرح بیمارستان</a><a href="../../calculator/scale/">طرح ترازو</a><a href="../../calculator/flood/" aria-current="page">طرح سیلاب</a><a href="../../dial-practical/">دایال عملی</a><a href="../../dial-steppers/">دایال +/−</a><a href="../../template-dials/1-neumorphic/">دایال نیومورفیک</a><a href="../../template-dials/2-abadis-plus/">دایال آبادیس+</a><a href="../../template-dials/3-cost-time-h2o/">دایال COST/TIME</a></nav>
 </div>
 </main>
 <footer class="site-footer">
   <div class="wrap foot-inner">
     <div class="foot-col foot-col-brand">
       <div class="foot-brand">
-        <img src="../../assets/img/abadis-logo-on-teal.png" width="670" height="309" alt="مخازن طبی آبادیس" loading="lazy">
+        <img src="../../assets/img/abadis-logo-white.svg" width="646" height="309" alt="مخازن طبی آبادیس" loading="lazy">
         <p>با ما در ارتباط باشید...</p>
       </div>
       <details class="foot-acc foot-nav" open>
         <summary>منو</summary>
         <div class="foot-links">
           <a href="../../about/">آشنایی با ما</a>
-        <a href="../../products/">محصولات</a>
-        <a href="../../news/">آخرین اخبار</a>
+        <a href="../../customers/">خانواده سبز آبادیس</a>
         <a href="../../dealers/">لیست نمایندگان</a>
         <a href="../../sdgs/">توسعه پایدار</a>
+        <a href="../../careers/">فرصت‌های همکاری</a>
+        <a href="../../products/">محصولات</a>
+        <a href="../../news/">آخرین اخبار</a>
         <a href="../../articles/">مقالات</a>
+        <a href="../../csr/">مسئولیت اجتماعی</a>
         <a href="../../contact/">ارتباط با ما</a>
-        <a href="../../calculator/">محاسبه‌گر</a>
         </div>
       </details>
     </div>
     <details class="foot-acc foot-more" open>
       <summary>بیشتر</summary>
       <div class="foot-links">
-        <a href="../../customers/">مشتریان ما</a>
-        <a href="../../experiences/">تجارب ما</a>
+        <a href="../../customers/">خانواده سبز آبادیس</a>
+        <a href="../../academy/">آکادمی آبادیس</a>
         <a href="../../downloads/">مرکز دانلود</a>
         <a href="../../install-guide/">راهنمای نصب</a>
         <a href="../../faq/">پرسش های متداول</a>
-        <a href="../../careers/">فرصت های همکاری</a>
-        <a href="../../jobs/">موقعیت های شغلی</a>
+        <a href="../../sdgs/">توسعه پایدار</a>
+        <a href="../../calculator/" aria-current="page">محاسبه‌گر صرفه‌جویی</a>
         <a href="../../csr/">نجات زاگرس</a>
       </div>
     </details>
@@ -195,6 +197,8 @@
   <div class="wrap foot-copy">کلیه حقوق مادی و معنوی این وبسایت متعلق است به: مخازن طبی آبادیس · نسخهٔ پیش‌نمایش بازطراحی</div>
 </footer>
 <script src="../../assets/js/site.js" defer></script>
+<script src="../../assets/js/consent.js" defer></script>
+<script src="../../assets/js/footer-motion.js" defer></script>
 <script src="../common/abadis-common.js"></script>
 <script>
 

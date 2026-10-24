@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>محاسبه‌گر آبادیس+ — مخازن طبی آبادیس</title>
 <meta name="description" content="محاسبه‌گر صرفه‌جویی آبادیس بر مبنای تعداد عمل جراحی در سال و تعداد تخت اتاق عمل و ICU|CCU؛ همان ورودی‌ها و فرمول محاسبه‌گر سایت abadis-med.com.">
-<meta name="robots" content="noindex,nofollow">
+<!-- TODO(launch): remove this robots meta when the site is published on https://abadis-med.com/ -->
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://abadis-med.com/template-dials/2-abadis-plus/">
 <meta name="theme-color" content="#e8f3f3">
 <script>(function(){var t;try{var q=new URLSearchParams(location.search).get('theme');if(q){localStorage.setItem('abadis-theme',q)}t=localStorage.getItem('abadis-theme')}catch(e){}var d=document.documentElement;d.dataset.theme=(t==='dark'||t==='noir')?t:'light';d.classList.add('js')})();</script>
 <link rel="icon" href="../../favicon.ico" sizes="any">
@@ -17,6 +19,8 @@
 <link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../../assets/css/site.css">
+<link rel="stylesheet" href="../../assets/css/consent.css">
+<link rel="stylesheet" href="../../assets/css/footer-motion.css">
 <style>
 .dial-page { padding: 100px 0 64px; }
 .dial-page .wrap { width: min(1000px, 100%); }
@@ -146,8 +150,8 @@
 <a class="skip" href="#main">پرش به محتوا</a>
 <header class="header solid" id="header">
   <a class="logo" href="../../" aria-label="مخازن طبی آبادیس — خانه">
-    <img class="lg-light" src="../../assets/img/abadis-logo.png" width="658" height="309" alt="مخازن طبی آبادیس">
-    <img class="lg-dark" src="../../assets/img/abadis-logo-on-teal.png" width="670" height="309" alt="مخازن طبی آبادیس">
+    <img class="lg-light" src="../../assets/img/abadis-logo-teal.svg" width="646" height="309" alt="مخازن طبی آبادیس">
+    <img class="lg-dark" src="../../assets/img/abadis-logo-white.svg" width="646" height="309" alt="مخازن طبی آبادیس">
   </a>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mainNav">منو</button>
   <nav class="nav" id="mainNav" aria-label="منوی اصلی"><a href="../../">خانه</a><a href="../../products/">محصولات</a><a href="../../csr/">مسئولیت اجتماعی</a><a href="../../contact/">ارتباط با ما</a></nav>
@@ -225,7 +229,7 @@
   <div class="wrap foot-inner">
     <div class="foot-col foot-col-brand">
       <div class="foot-brand">
-        <img src="../../assets/img/abadis-logo-on-teal.png" width="670" height="309" alt="مخازن طبی آبادیس" loading="lazy">
+        <img src="../../assets/img/abadis-logo-white.svg" width="646" height="309" alt="مخازن طبی آبادیس" loading="lazy">
         <p>با ما در ارتباط باشید...</p>
       </div>
       <details class="foot-acc foot-nav" open>
@@ -245,7 +249,7 @@
     <details class="foot-acc foot-more" open>
       <summary>بیشتر</summary>
       <div class="foot-links">
-        <a href="../../customers/">مشتریان ما</a>
+        <a href="../../customers/">خانواده سبز آبادیس</a>
         <a href="../../experiences/">تجارب ما</a>
         <a href="../../downloads/">مرکز دانلود</a>
         <a href="../../install-guide/">راهنمای نصب</a>
@@ -274,6 +278,8 @@
   <div class="wrap foot-copy">کلیه حقوق مادی و معنوی این وبسایت متعلق است به: مخازن طبی آبادیس · نسخهٔ پیش‌نمایش بازطراحی</div>
 </footer>
 <script src="../../assets/js/site.js" defer></script>
+<script src="../../assets/js/consent.js" defer></script>
+<script src="../../assets/js/footer-motion.js" defer></script>
 
 <script>
 /* Page 2 — Abadis+ 270 degree sweep with magnetic presets (snapIfNear / MAGNET_DIST) on the surgery dial */

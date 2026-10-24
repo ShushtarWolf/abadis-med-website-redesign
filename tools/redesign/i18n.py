@@ -118,49 +118,86 @@ LANGS = {
     },
 }
 
-# Main nav: (key, href under lang root, label)
+# Main nav entry: (key, href under lang root, label) or
+# (key, href, label, children) where children is a list of (key, href, label).
+# About-group children match live abadis-med.com (آشنایی با ما mega / related pages).
 NAV = {
+    # Identical structure in fa/en/ar (Alireza review): about-group holds customers + dealers;
+    # jobs merged into careers; calculator only on home + footer.
     'fa': [
-        ('about', 'about/', 'آشنایی با ما'),
+        ('about', 'about/', 'آشنایی با ما', [
+            ('about', 'about/', 'درباره ما'),
+            ('customers', 'customers/', 'مشتریان ما'),
+            ('dealers', 'dealers/', 'لیست نمایندگان'),
+            ('sdgs', 'sdgs/', 'توسعه پایدار'),
+            ('careers', 'careers/', 'فرصت‌های همکاری'),
+        ]),
         ('products', 'products/', 'محصولات'),
         ('news', 'news/', 'آخرین اخبار'),
-        ('dealers', 'dealers/', 'لیست نمایندگان'),
-        ('sdgs', 'sdgs/', 'توسعه پایدار'),
         ('articles', 'articles/', 'مقالات'),
+        ('csr', 'csr/', 'مسئولیت اجتماعی'),
         ('contact', 'contact/', 'ارتباط با ما'),
-        ('calculator', 'calculator/', 'محاسبه‌گر'),
     ],
     'en': [
-        ('about', 'about-us/', 'About us'),
+        ('about', 'about-us/', 'About us', [
+            ('about', 'about-us/', 'About us'),
+            ('customers', 'our-customers/', 'Our customers'),
+            ('dealers', 'representatives/', 'Representatives'),
+            ('sdgs', 'sdgs/', 'SDGs'),
+            ('careers', 'collaboration-opportunities/', 'Collaboration opportunities'),
+        ]),
         ('products', 'products/', 'Products'),
         ('news', 'latest-news/', 'News'),
-        ('dealers', 'representatives/', 'Representatives'),
-        ('csr', 'csr/', 'CSR'),
-        ('articles', 'blog/', 'Blog'),
+        ('articles', 'blog/', 'Articles'),
+        ('csr', 'csr/', 'Social Responsibility'),
         ('contact', 'contact-us/', 'Contact Us'),
-        ('calculator', 'calculator/', 'Calculator'),
     ],
     'ar': [
-        ('about', 'من-نحن/', 'من نحن'),
+        # '~' = path from the site root (no Arabic URL on the live site; links to the FA page).
+        ('about', 'من-نحن/', 'من نحن', [
+            ('about', 'من-نحن/', 'من نحن'),
+            ('customers', 'customers/', 'عملاؤنا'),
+            ('dealers', 'قائمة-الممثلين/', 'قائمة الممثلين'),
+            ('sdgs', '~sdgs/', 'التنمية المستدامة'),
+            ('careers', '~careers/', 'فرص التعاون'),
+        ]),
         ('products', 'منتجات/', 'منتجات'),
         ('news', 'الاخبار/', 'الاخبار'),
-        ('dealers', 'قائمة-الممثلين/', 'قائمة الممثلين'),
+        ('articles', '~articles/', 'المقالات'),
+        ('csr', '~csr/', 'المسؤولية الاجتماعية'),
         ('contact', 'اتصل-بنا/', 'اتصل بنا'),
-        ('calculator', 'الحوسبة/', 'الحوسبة'),
-        ('faq', 'پرسش-های-متداول/', 'پرسش های متداول'),
-        ('install', 'دليل-التركيب/', 'دليل التركيب'),
     ],
 }
 
+
+def nav_flat(nav):
+    """Flatten NAV entries to (key, href, label) for footer / cur matching."""
+    out = []
+    for item in nav:
+        k, h, l = item[0], item[1], item[2]
+        kids = item[3] if len(item) > 3 else None
+        out.append((k, h, l))
+        if kids:
+            for ck, ch, cl in kids:
+                if ch == h:  # skip duplicate of parent (e.g. درباره ما → same about/)
+                    continue
+                out.append((ck, ch, cl))
+    return out
+
+
+def nav_keys(nav):
+    return {k for k, _, _ in nav_flat(nav)}
+
 SECONDARY = {
     'fa': [
-        ('customers', 'customers/', 'مشتریان ما'),
-        ('experiences', 'experiences/', 'تجارب ما'),
+        # Footer column only. The header submenu keeps «مشتریان ما» (NAV above).
+        ('customers', 'customers/', 'خانواده سبز آبادیس'),
+        ('experiences', 'academy/', 'آکادمی آبادیس'),
         ('downloads', 'downloads/', 'مرکز دانلود'),
         ('install', 'install-guide/', 'راهنمای نصب'),
         ('faq', 'faq/', 'پرسش های متداول'),
-        ('careers', 'careers/', 'فرصت های همکاری'),
-        ('jobs', 'jobs/', 'موقعیت های شغلی'),
+        ('sdgs', 'sdgs/', 'توسعه پایدار'),
+        ('calculator', 'calculator/', 'محاسبه‌گر صرفه‌جویی'),
         ('zagros', 'csr/', 'نجات زاگرس'),
     ],
     'en': [
@@ -168,11 +205,13 @@ SECONDARY = {
         ('downloads', 'center-download/', 'Download Center'),
         ('install', 'installation-manual/', 'Installation Manual'),
         ('faq', 'faqs/', 'FAQs'),
-        ('collab', 'collaboration-opportunities/', 'Collaboration'),
-        ('sdgs', 'sdgs/', 'SDGs'),
+        ('calculator', 'calculator/', 'Savings calculator'),
     ],
     'ar': [
         ('downloads', 'مركز-التنزيل/', 'مركز التنزيل'),
+        ('faq', 'پرسش-های-متداول/', 'پرسش های متداول'),
+        ('install', 'دليل-التركيب/', 'دليل التركيب'),
+        ('calculator', 'الحوسبة/', 'حاسبة التوفير'),
         ('products_other', 'منتجات-اخری/', 'منتجات اخری'),
         ('suction', 'كيس-الشفط/', 'كيس الشفط'),
     ],
@@ -464,6 +503,8 @@ def switcher_html(lang: str, fa_path: str, p: str) -> str:
         if rel is None:
             rel = defaults[code]
         href = p + rel
+        if not href:
+            href = './'
         cur = ' aria-current="true"' if code == lang else ''
         hl = LANGS[code]['lang']
         name = escape(names[code])
@@ -474,25 +515,82 @@ def switcher_html(lang: str, fa_path: str, p: str) -> str:
     return f'<nav class="lang-switch" aria-label="{escape(LANGS[lang]["lang_aria"])}">{"".join(parts)}</nav>'
 
 
-def hreflang_tags(fa_path: str, p: str) -> str:
-    """Root-relative hreflang so static preview links stay on-site (not abadis-med.com)."""
-    m = load_map()
-    key = fa_path if fa_path == '' or fa_path.endswith('/') else fa_path + '/'
-    entry = m.get(key)
+def canonical_href(site_path: str) -> str:
+    """Final production URL. FA lives at the domain root; EN is /en/; AR is /arabic/."""
+    path = (site_path or '').split('#', 1)[0].split('?', 1)[0].strip()
+    path = path.lstrip('/')
+    if path.endswith('index.html'):
+        path = path[:-len('index.html')]
+    if path and not path.endswith('/'):
+        path += '/'
+    return SITE_ORIGIN + '/' + path
+
+
+# Preview stays out of Google until launch. Remove this meta in the launch task.
+ROBOTS_META = (
+    '<!-- TODO(launch): remove this robots meta when the site is published on '
+    'https://abadis-med.com/ -->\n'
+    '<meta name="robots" content="noindex, nofollow">'
+)
+
+
+def _norm_site_path(site_path: str) -> str:
+    path = (site_path or '').split('#', 1)[0].split('?', 1)[0].strip().lstrip('/')
+    if path.endswith('index.html'):
+        path = path[:-len('index.html')]
+    if path and not path.endswith('/'):
+        path += '/'
+    return path
+
+
+def translation_entry(site_path: str):
+    """i18n-map entry whose fa/en/ar path is this page, or None."""
+    path = _norm_site_path(site_path)
+    for entry in load_map().values():
+        for code in ('fa', 'en', 'ar'):
+            rel = entry.get(code)
+            if rel is not None and _norm_site_path(rel) == path:
+                return entry
+    return None
+
+
+def hreflang_links(site_path: str) -> list:
+    """Reciprocal absolute alternates for a page that has another language.
+
+    Returns [] when the page is not in the translation map, or only one language
+    exists (nothing to reciprocate). Every language version of the same entry
+    gets the same list, including x-default = the FA URL.
+    """
+    entry = translation_entry(site_path)
     if not entry:
-        return ''
+        return []
     tags = []
     for code, hreflang in (('fa', 'fa-IR'), ('en', 'en'), ('ar', 'ar')):
         rel = entry.get(code)
         if rel is None:
             continue
-        href = '/' + rel.lstrip('/')
-        tags.append(f'<link rel="alternate" hreflang="{hreflang}" href="{href}">')
-    # x-default → FA URL (entry["fa"] may differ from map key)
+        tags.append((hreflang, canonical_href(rel)))
+    if len(tags) < 2:
+        return []
     fa_rel = entry.get('fa')
     if fa_rel is not None:
-        tags.append(f'<link rel="alternate" hreflang="x-default" href="/{fa_rel.lstrip("/")}">')
-    return '\n'.join(tags)
+        tags.append(('x-default', canonical_href(fa_rel)))
+    return tags
+
+
+def hreflang_tags(fa_path: str, p: str = '', canonical_path=None) -> str:
+    """Absolute hreflang on https://abadis-med.com/, matching canonicals.
+
+    Uses the page's own canonical path so a news post does not inherit the
+    news-index alternates. `p` is unused (kept for callers).
+    """
+    path = canonical_path if canonical_path is not None else fa_path
+    if path is None:
+        return ''
+    return '\n'.join(
+        f'<link rel="alternate" hreflang="{hl}" href="{href}">'
+        for hl, href in hreflang_links(path)
+    )
 
 
 def fa_path_from_site_rel(rel: str) -> str:
