@@ -1,6 +1,49 @@
 /* Home impact counter — formula + three motion samples (M1 odometer, M2 water, M3 pulse+rate).
    Mode is data-counter on the card (c2 wires m2); <html data-counter> still works. */
 (function () {
+  function formatStat(n, lang, decimals) {
+    var neg = n < 0;
+    n = Math.abs(n);
+    var parts = n.toFixed(decimals).split('.');
+    var whole = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    var frac = parts[1] || '';
+    var map = lang === 'fa' ? '۰۱۲۳۴۵۶۷۸۹' : (lang === 'ar' ? '٠١٢٣٤٥٦٧٨٩' : '');
+    if (map) {
+      var sep = '\u066c';
+      whole = whole.replace(/,/g, sep).replace(/\d/g, function (d) { return map[d]; });
+      frac = frac.replace(/\d/g, function (d) { return map[d]; });
+    }
+    return (neg ? '-' : '') + whole + (decimals ? '.' + frac : '');
+  }
+  /* Four published impact figures. Final text is already in the markup. */
+  document.querySelectorAll('[data-impact-stat]').forEach(function (el) {
+    var to = parseFloat(el.getAttribute('data-impact-stat'));
+    var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+    var lang = el.getAttribute('data-lang') || 'fa';
+    if (!isFinite(to)) return;
+    var finalText = formatStat(to, lang, decimals);
+    var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion || !('IntersectionObserver' in window)) { el.textContent = finalText; return; }
+    el.textContent = formatStat(0, lang, decimals);
+    var dur = 1100, started = false;
+    function run(t0) {
+      function frame(now) {
+        var p = Math.min(1, (now - t0) / dur);
+        var e = 1 - Math.pow(1 - p, 3);
+        el.textContent = p < 1 ? formatStat(to * e, lang, decimals) : finalText;
+        if (p < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+    var io = new IntersectionObserver(function (ents) {
+      if (started || !ents.some(function (x) { return x.isIntersecting; })) return;
+      started = true;
+      io.disconnect();
+      requestAnimationFrame(function (now) { run(now); });
+    }, { threshold: 0.35 });
+    io.observe(el.closest('.impact-stat') || el);
+  });
+
   // PLACEHOLDER: day the counter read exactly 56,500,000 L (1 Farvardin 1405, Tehran). Change here only.
   var COUNTER_BASE_DATE = '2026-03-21T00:00:00+03:30';
 

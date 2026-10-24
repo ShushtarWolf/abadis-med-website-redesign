@@ -33,6 +33,85 @@ HOME_TITLE = 'تولیدکنندهٔ کیسه ساکشن یک‌بارمصرف �
 CALC_TEASER = 'جهت محاسبه آنلاین میزان صرفه‌جویی در مصرف آب و زباله‌های عفونی مرکز خود می‌توانید روی دکمه زیر کلیک نمایید.'
 LOGO_STRIP_N = 24
 
+# Live home counters (abadis-med.com, read 2026-10-24). The active-customer
+# figure on that page is still 612; the redesign uses the full customers list
+# instead (site/zagros-names/names.json, #custAllN on /customers/).
+_STAT_DIGITS = {
+    'fa': str.maketrans('0123456789', '۰۱۲۳۴۵۶۷۸۹'),
+    'ar': str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩'),
+}
+
+
+def active_centre_count():
+    """Unique names in the full customers list, the same set as #custAllN."""
+    import json
+    from lib import SITE
+    names = json.loads((SITE / 'zagros-names/names.json').read_text(encoding='utf-8'))
+    return len({n.strip() for n in names if isinstance(n, str) and n.strip()})
+
+
+def fmt_stat(n, lang, decimals=0):
+    """Grouped digits: fa ۰٬ en 0, ar ٠. Decimal point stays '.' as on the live counters."""
+    sign = '-' if n < 0 else ''
+    whole, _, frac = f'{abs(n):.{decimals}f}'.partition('.')
+    grouped = f'{int(whole):,}'
+    table = _STAT_DIGITS.get(lang)
+    if table:
+        grouped = grouped.replace(',', '\u066c').translate(table)
+        frac = frac.translate(table)
+    num = grouped + (('.' + frac) if decimals else '')
+    return sign + num
+
+
+def customers_lead(lang):
+    """Logo strip is a sample. The total is the full active-centre list, not 155 or 600."""
+    n = fmt_stat(active_centre_count(), lang)
+    if lang == 'en':
+        return f'A selection of healthcare-centre logos, out of {n} active treatment centres.'
+    if lang == 'ar':
+        return f'نماذج من شعارات المراكز الطبية مع آباديس، من أصل {n} مركزًا طبيًا نشطًا.'
+    return f'نمونه‌ای از لوگوهای مراکز درمانی همراه آبادیس، از میان {n} مرکز درمانی فعال.'
+
+
+def _impact_rows():
+    return [
+        (active_centre_count(), 0, {
+            'fa': ('تعداد مشتری فعال', 'مرکز درمانی'),
+            'en': ('Active Customers', 'treatment centres'),
+            'ar': ('عدد العملاء النشطين', 'مركز طبي'),
+        }),
+        (11112, 0, {
+            'fa': ('تعداد کاربر', 'نفر'),
+            'en': ('Number Of Users', 'people'),
+            'ar': ('عدد المستخدمين', 'شخص'),
+        }),
+        (98.99, 2, {
+            'fa': ('میزان رضایت مشتریان', 'درصد'),
+            'en': ('Customer Satisfaction Rate', 'percent'),
+            'ar': ('نسبة رضا العملاء', 'بالمائة'),
+        }),
+        (0.0018, 4, {
+            'fa': ('میزان خرابی محصول', 'درصد'),
+            'en': ('Product Failure Rate', 'percent'),
+            'ar': ('نسبة عيوب المنتج', 'بالمائة'),
+        }),
+    ]
+
+
+def impact_stats(lang='fa'):
+    bits = []
+    for i, (value, decimals, labels) in enumerate(_impact_rows()):
+        label, unit = labels[lang]
+        shown = fmt_stat(value, lang, decimals)
+        raw = f'{value:.{decimals}f}' if decimals else str(int(value))
+        bits.append(
+            f'<div class="impact-stat reveal" style="--i:{i}">'
+            f'<strong><bdi dir="ltr" data-impact-stat="{raw}" data-decimals="{decimals}" data-lang="{lang}">{shown}</bdi></strong>'
+            f'<span class="impact-stat-unit">{esc(unit)}</span>'
+            f'<span class="impact-stat-label">{esc(label)}</span></div>'
+        )
+    return f'<div class="impact-stats">{"".join(bits)}</div>'
+
 
 def _B(path):
     return PAGES[path]['blocks']
@@ -318,7 +397,7 @@ def customers_section():
     return f'''  <section class="section" id="customers">
     <div class="wrap">
       <div class="section-head reveal"><p class="eyebrow">مشتریان</p><h2>مشتریان</h2>
-        <p>همراه با بیش از {fa(len(items))} مرکز درمانی در سطح کشور.</p>
+        <p>{esc(customers_lead('fa'))}</p>
         <p><a class="more-link" style="margin:0" href="customers/">همهٔ مشتریان</a></p></div>
       <div class="logo-carousel reveal" data-logo-carousel>
         <button type="button" class="logo-carousel-btn logo-carousel-prev" aria-label="قبلی">‹</button>
@@ -478,7 +557,8 @@ def logo_scroll_scripts(prefix='', existing=''):
 def impact_section():
     lines = ''.join(f'<span class="slogan-line" style="--i:{i}">{esc(t)}</span>' for i, t in enumerate(SLOGAN))
     return f'''  <section class="section deep impact" id="impact">
-    <div class="wrap impact-inner">
+    <div class="wrap">
+      <div class="impact-inner">
       <div class="impact-slogan reveal">
         {IMPACT_MARK}
         <p class="slogan" aria-label="{esc(' '.join(SLOGAN))}">{lines}</p>
@@ -489,6 +569,8 @@ def impact_section():
         <strong class="impact-num" aria-live="off">۰</strong>
         <span class="impact-unit">لیتر آب صرفه‌جویی‌شده از ابتدای سال ۱۴۰۵ (تخمینی)</span>
       </div>
+      </div>
+      {impact_stats('fa')}
     </div>
   </section>'''
 
