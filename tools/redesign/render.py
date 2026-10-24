@@ -11,11 +11,12 @@ def picture(p, url, alt='', maxw=1000, cls='', fallback=None, lazy=True):
     lz = ' loading="lazy"' if lazy else ''
     return f'<img{c} src="{p}{r["src"]}" width="{r["w"]}" height="{r["h"]}"{lz} decoding="async" alt="{esc(alt)}">'
 
-def gallery_link(p, url, group, alt='', thumbw=480, fullw=1600, cls=''):
-    t = best_img(url, thumbw); f = best_img(url, fullw)
+def gallery_link(p, url, group, alt='', thumbw=480, fullw=1600, cls='', zoom=''):
+    t = best_img(url, thumbw); f = best_img(url, fullw) or t
     if not t: return ''
     c = f' class="{cls}"' if cls else ''
-    return (f'<a{c} href="{p}{f["src"]}" data-gallery="{group}" data-w="{f["w"]}" data-h="{f["h"]}" aria-label="نمایش بزرگ‌تر{": " + esc(alt) if alt else ""}">'
+    label = zoom or 'نمایش بزرگ‌تر'
+    return (f'<a{c} href="{p}{f["src"]}" data-gallery="{group}" data-w="{f["w"]}" data-h="{f["h"]}" aria-label="{esc(label)}{": " + esc(alt) if alt else ""}">'
             f'<img src="{p}{t["src"]}" width="{t["w"]}" height="{t["h"]}" loading="lazy" decoding="async" alt="{esc(alt)}"></a>')
 
 def table(rows):

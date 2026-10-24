@@ -8,7 +8,7 @@ FAMILIES = [  # slug, live path, hub title (verbatim from live hub), hub image, 
     ('suction-bag', '/محصولات/کیسه-ساکشن/', 'کیسه های ساکشن', 'https://abadis-med.com/wp-content/uploads/2022/12/کیسه-ساکشن.jpg', 'assets/img/p/p2-main.webp'),
     ('stand', '/محصولات/پایه/', 'پایه و نگهدارنده', 'https://abadis-med.com/wp-content/uploads/2022/12/پایه-ترولی.jpg', 'assets/img/p/p1-g3-t.webp'),
     ('filters', '/محصولات/فیلترها/', 'فیلتر', 'https://abadis-med.com/wp-content/uploads/2022/12/فیلتر1-2-845x684-1.jpg', 'assets/img/filters/anti-1-t.webp'),
-    ('suction-tube', '/محصولات/ساکشن-تیوب/', 'ساکشن تیوب', 'https://abadis-med.com/wp-content/uploads/2022/12/ساکشن-تیوب-7e83722522e8aeb7512b7075311316b7__m8ULku2SAG__1-1-300x300.jpg', 'assets/img/p/p1-g4-t.webp'),
+    ('suction-tube', '/محصولات/ساکشن-تیوب/', 'ساکشن تیوب', 'https://abadis-med.com/wp-content/uploads/2023/02/7e83722522e8aeb7512b7075311316b7__m8ULku2SAG__1-1-300x300.jpg', None),
     ('canister', '/محصولات/مخزن/', 'مخزن', 'https://abadis-med.com/wp-content/uploads/2022/12/AMR_4901.jpg', 'assets/img/p/p3-g1-t.webp'),
     ('connectors', '/محصولات/اتصالات/', 'اتصالات', 'https://abadis-med.com/wp-content/uploads/2022/12/اتصالات-845x684-1.jpg', 'assets/img/p/p2-g3-t.webp'),
     ('other', '/محصولات/سایر-محصولات/', 'سایر محصولات',
@@ -26,14 +26,14 @@ FALLBACK = {
     'mot': ['local:assets/img/filters/porous-1.webp'],
 }
 LOCAL_DIMS = {}
-def local_link(p, path, gid, alt, cls=''):
+def local_link(p, path, gid, alt, cls='', zoom='نمایش بزرگ‌تر'):
     from PIL import Image
     from lib import SITE
     w, h = Image.open(SITE / path).size
     t = path.replace('.webp', '-t.webp')
     tw, th = Image.open(SITE / t).size if (SITE / t).exists() else (w, h)
     if not (SITE / t).exists(): t = path
-    return (f'<a href="{p}{path}" data-gallery="{gid}" data-w="{w}" data-h="{h}" aria-label="نمایش بزرگ‌تر: {esc(alt)}">'
+    return (f'<a href="{p}{path}" data-gallery="{gid}" data-w="{w}" data-h="{h}" aria-label="{esc(zoom)}: {esc(alt)}">'
             f'<img src="{p}{t}" width="{tw}" height="{th}" loading="lazy" decoding="async" alt="{esc(alt)}"></a>')
 SUCTION_BAG_ITEMS = ['کیسه ساکشن ۱ لیتری', 'کیسه ساکشن ۲ لیتری', 'کیسه ساکشن ۳ لیتری']
 
@@ -43,6 +43,39 @@ def pick(b):
     return b['src']
 
 def norm(s): return re.sub(r'[\s\u200c\u200b():]+', '', strip_tags(s))
+
+def any_img(url):
+    if not url: return None
+    for w in (640, 900, 480, 1000, 1400, 1600):
+        r = best_img(url, w)
+        if r: return r
+    return None
+
+def _overlaps(a, b):
+    na, nb = norm(a), norm(b)
+    return bool(na and nb and (na in nb or nb in na))
+
+_LABEL = re.compile(
+    r'^(کاربردها|مزایا|موارد مصرف|موارد استفاده|ویژگی‌ها|ویژگی ها|ویژگی های محصول|سایز|بسته‌بندی|بسته بندی|'
+    r'جنس|اجزاء|اجزای محصول|مکان استفاده محصول|حجم ساکشن|نوع جنس|کاربرد|ظرفیت|مشخصات محصول|ابعاد محصول)$')
+
+def _demote(html):
+    """Product title is the h2. Inner headings, including label lines, sit under it."""
+    for src, dst in (('h4', 'h5'), ('h3', 'h4'), ('h2', 'h3'), ('h1', 'h3')):
+        html = re.sub(fr'<{src}(\b[^>]*)>', f'<{dst}\\1>', html, flags=re.I)
+        html = re.sub(fr'</{src}>', f'</{dst}>', html, flags=re.I)
+    def repl(m):
+        inner = m.group(1)
+        parts = re.split(r'<br\s*/?>', inner, maxsplit=1, flags=re.I)
+        text = strip_tags(parts[0]).strip()
+        core = re.sub(r'\s+', ' ', text).rstrip(':：').strip()
+        if not core or len(text) > 80:
+            return m.group(0)
+        if not (_LABEL.match(core) or ((text.endswith(':') or text.endswith('：')) and len(core) < 48)):
+            return m.group(0)
+        rest = f'<p>{parts[1].strip()}</p>' if len(parts) > 1 and strip_tags(parts[1]).strip() else ''
+        return f'<h3>{esc(core)}</h3>{rest}'
+    return re.sub(r'<p>(.*?)</p>', repl, html, flags=re.S)
 
 def family(path):
     bl = PAGES[path]['blocks']
@@ -56,44 +89,61 @@ def family(path):
     for i, bs in enumerate(items):
         title, aid = anchors[i] if i < len(anchors) else (None, f'item{i+1}')
         htmls = [b['html'] for b in bs if b['t'] == 'html' and b.get('html')]
-        body = '\n'.join(htmls)
-        m = re.match(r'\s*(?:<p>)?\s*<strong>(.*?)</strong>\s*(?:</p>)?', body, re.S)
+        body = '\n'.join(htmls).lstrip()
+        m = re.match(r'(?:<p>\s*)?<strong>(.*?)</strong>\s*(?:</p>)?', body, re.S)
         if m:
-            lead = strip_tags(m.group(1))
+            lead = strip_tags(m.group(1)).strip()
             if title is None: title = lead
-            if norm(lead) and (norm(lead) in norm(title) or norm(title) in norm(lead) or len(lead) < 60):
-                body = body[m.end():]
+            if _overlaps(lead, title or ''):
+                body = body[m.end():].lstrip()
+        m2 = re.match(r'([^<]+)', body)
+        if m2 and title and _overlaps(m2.group(1).strip(), title):
+            body = body[m2.end():].lstrip()
         out.append({'id': aid, 'title': title or '', 'html': body,
                     'imgs': [(pick(b), b.get('alt', '')) for b in bs if b['t'] == 'img'],
                     'tables': [b['rows'] for b in bs if b['t'] == 'table']})
     return h1, out
 
-def product_block(p, it, n):
-    imgs = it['imgs']; gid = it['id']
-    media = ''
-    links = [gallery_link(p, u_, gid, a or it['title'], 900, 1600) for u_, a in imgs]
-    links = [l for l in links if l]
-    if not links:
-        for src in FALLBACK.get(gid, []):
-            if src.startswith('local:'): links.append(local_link(p, src[6:], gid, it['title']))
-            else:
-                l = gallery_link(p, src, gid, it['title'], 900, 1600)
-                if l: links.append(l)
+ZOOM = {'fa': 'نمایش بزرگ‌تر', 'en': 'Larger view', 'ar': 'عرض أكبر'}
+MISSING = {
+    'fa': 'تصویر این محصول در نسخهٔ آرشیوشدهٔ سایت موجود نبود',
+    'en': 'No separate photo of this product is in the archived site',
+    'ar': 'لا توجد صورة مستقلة لهذا المنتج في أرشيف الموقع',
+}
+
+def product_block(p, it, lang='fa'):
+    gid = it['id']
+    zoom = ZOOM.get(lang, ZOOM['fa'])
+    links = []
+    if not it.get('force_missing'):
+        links = [gallery_link(p, u_, gid, a or it['title'], 900, 1600, zoom=zoom) for u_, a in it['imgs']]
+        links = [l for l in links if l]
+        if not links:
+            for src in FALLBACK.get(gid, []):
+                if src.startswith('local:'): links.append(local_link(p, src[6:], gid, it['title'], zoom=zoom))
+                else:
+                    l = gallery_link(p, src, gid, it['title'], 900, 1600, zoom=zoom)
+                    if l: links.append(l)
     if links:
         main = links[0].replace('<a ', '<a class="gal-main" ', 1)
         thumbs = ''.join(links[1:])
         media = f'<div class="size-media">{main}{f"<div class=gal-thumbs>{thumbs}</div>" if thumbs else ""}</div>'
     else:
-        media = f'<div class="size-media"><div class="gal-main gal-missing"><img src="{p}assets/img/abadis-logo-teal.png" width="658" height="309" alt=""><span>تصویر این محصول در نسخهٔ آرشیوشدهٔ سایت موجود نبود</span></div></div>'
+        media = (f'<div class="size-media"><div class="gal-main gal-missing">'
+                 f'<img src="{p}assets/img/abadis-logo-teal.png" width="658" height="309" alt="">'
+                 f'<span>{esc(MISSING.get(lang, MISSING["fa"]))}</span></div></div>')
     tables = ''.join(table(t) for t in it['tables'])
-    return f'''    <div class="size-block reveal" id="{esc(it["id"])}">
-      <h3>{esc(it["title"])}</h3>
+    body = rewrite_html(it['html'], p) if lang == 'fa' else it['html']
+    if lang == 'fa':
+        body = _demote(body)
+    return f'''    <article class="ptab size-block" id="{esc(it["id"])}">
+      <h2>{esc(it["title"])}</h2>
       <div class="size-grid">
         {media}
-        <div class="size-info prose">{rewrite_html(it["html"], p)}</div>
+        <div class="size-info prose">{body}</div>
       </div>
       {tables}
-    </div>'''
+    </article>'''
 
 def related(p, here):
     cards = []
@@ -125,23 +175,17 @@ DOCS = {  # real files linked from the live download centre
               (UP + '2024/02/راهنمای-نصب-مخازن-بر-روی-پایه-پرتابل.pdf', 'راهنمای نصب روی پایه پرتابل (PDF)'),
               (UP + '2024/02/راهنمای-نصب-مخازن-بر-روی-کنسول.pdf', 'راهنمای نصب روی کنسول (PDF)'), CAT_ALL],
     'canister': [CAT_ALL], 'connectors': [CAT_ALL],
-    'other': [(UP + '2022/12/endotracheal-tube-holder-catalog-Fa.pdf', 'کاتالوگ نگهدارنده لوله تراشه (PDF)'),
-              (UP + '2022/12/wall-suction-catalog-Fa.pdf', 'کاتالوگ ساکشن دیواری (PDF)'), CAT_ALL],
+    'other': [(UP + '2022/12/endotracheal-tube-holder-catalog-Fa.pdf', 'کاتالوگ نگهدارنده لوله تراشه (PDF)'), CAT_ALL],
 }
-PH = '<span class="ph-data">[در انتظار اطلاعات از شرکت]</span>'
-
-def spec_summary(p, slug, items):
-    docs = '، '.join(f'<a href="{esc(h)}" target="_blank" rel="noopener" data-track="catalogue_download">{esc(t)}</a>' for h, t in DOCS.get(slug, [CAT_ALL]))
-    models = '، '.join(f'<a href="#{esc(i["id"])}">{esc(i["title"])}</a>' for i in items)
-    rows = [('مدل‌ها', models), ('ظرفیت', PH), ('ابعاد', PH + ' (جدول‌های هر مدل در پایین صفحه)'), ('سازگاری', PH),
-            ('جنس / مواد', PH), ('لوازم جانبی', PH),
-            ('گواهی‌ها', 'گواهی‌های شرکت: IMED، ISO، CE <span class="ph-data">[پوشش این محصول در انتظار تأیید شرکت]</span>'),
-            ('کاتالوگ و راهنما', docs + ' · IFU: ' + PH)]
-    body = ''.join(f'<tr><th scope="row">{k}</th><td>{v}</td></tr>' for k, v in rows)
-    return f'''  <section class="section spec-summary" id="specs"><div class="wrap reveal">
-    <h2 style="margin-bottom:14px">مشخصات در یک نگاه</h2>
-    <table class="spec-table"><tbody>{body}</tbody></table>
-  </div></section>'''
+def doc_bar(slug, lang='fa'):
+    docs = DOCS.get(slug) or []
+    if not docs: return ''
+    from product_copy import DOC_LABELS
+    labels = DOC_LABELS.get(lang, {})
+    links = ''.join(
+        f'<a href="{esc(h)}" target="_blank" rel="noopener" data-track="catalogue_download">{esc(labels.get(t, t))}</a>'
+        for h, t in docs)
+    return f'''  <section class="section" id="docs" style="padding-top:0"><div class="wrap"><div class="doc-links">{links}</div></div></section>\n'''
 
 # Products hub. The two category labels are Hamid's (Oct 2026).
 # "By product" is the live hub families (data/pages.json "/محصولات/"), same titles and order.
@@ -189,7 +233,7 @@ HUB_FAMILIES = {
     ],
     'en': [
         ('suction-bag', 'suction-bag/', 'Suction Bag', '1 Liter, 2 Liter, 3 Liter'),
-        ('stand', 'base-and-holder/', 'Base and Holder', 'Trolleys, Wall bracket, Rail bracket'),
+        ('stand', 'base-and-holder/', 'Base and Holder', 'Trolley, wall clamp, rear part of the portable clamp'),
         ('filters', 'filters/', 'Filter', 'Antibacterial Filter(Viral Filter), Flow stopper filter, Sintered Filter'),
         ('suction-tube', '../suction-tube/', 'Suction tube', 'Suction Tube, Fingertip'),
         ('canister', 'canisters/', 'Canister', 'Suction Canisters, Wall Suction, Collection Cup, Fat Collection Canister System'),
@@ -201,50 +245,64 @@ HUB_FAMILIES = {
         ('stand', '../تثبیت/', 'تثبیت', 'قاعدة تثبيت شفط آباديس المحمولة (ترولي)، مشابك خزان الحائط، مشابك الخزان المحمول'),
         ('filters', '../الفلتر/', 'الفلتر', ''),
         ('suction-tube', '../أنبوب-الشفط/', 'أنبوب الشفط', ''),
-        ('canister', '../خزانات/', 'خزانات', 'خزانات الشفط، الشفط الجداري'),
+        ('canister', '../خزانات/', 'خزانات', 'خزانات الشفط، الشفط الجداري، كوب جمع العينة، جهاز جمع الدهون'),
         ('connectors', '../الوصلات/', 'الوصلات', ''),
-        ('other', '../منتجات-اخری/', 'منتجات اخری', 'فرشاة أسنان الشفط ذات الاستعمال الواحد، حامل أنبوب القصبة الهوائية، Kidney dish'),
+        ('other', '../منتجات-اخری/', 'منتجات اخری', 'فرشاة الشفط، حامل أنبوب القصبة، الوعاء الكلوي، Splash-Vac'),
     ],
 }
-# image slug, href, title, parent family (all titles already published on the family pages)
+# photo id, href from the hub, title, parent family
+SOL_PHOTO = {
+    'paye': 'https://abadis-med.com/wp-content/uploads/2022/12/11.jpg',
+    'wallp': 'https://abadis-med.com/wp-content/uploads/2022/12/13.jpg',
+    'sdv': 'https://abadis-med.com/wp-content/uploads/2022/12/ساکشن-دیواری-بزرگسال-1030x1030-1.jpg',
+    'wallg': 'https://abadis-med.com/wp-content/uploads/2022/12/12.jpg',
+    'mesvak': 'https://abadis-med.com/wp-content/uploads/2022/12/19-1024x880.jpg',
+    'negahdarande': 'https://abadis-med.com/wp-content/uploads/2022/12/24-1024x683.jpg',
+    'receiver': 'https://abadis-med.com/wp-content/uploads/2022/12/26.jpg',
+}
 SOLUTIONS = {
     'fa': [
-        ('stand', 'stand/#paye', 'پایه ساکشن پرتابل (ترولی)', 'پایه و نگهدارنده'),
-        ('stand', 'stand/#wallp', 'گیره و مخزن پرتابل', 'پایه و نگهدارنده'),
-        ('canister', 'canister/#sdv', 'ساکشن دیواری', 'مخزن'),
-        ('stand', 'stand/#wallg', 'گیره و مخزن دیواری', 'پایه و نگهدارنده'),
-        ('other', 'other/#mesvak', 'مسواک ساکشن یکبارمصرف', 'سایر محصولات'),
-        ('other', 'other/#negahdarande', 'نگهدارنده لوله تراشه', 'سایر محصولات'),
-        ('other', 'other/#receiver', 'رسیور پزشکی یکبارمصرف', 'سایر محصولات'),
-        ('other', 'other/#splashvac', 'مکش سطحی چند منظوره (Splash-Vac)\u200b', 'سایر محصولات'),
+        ('paye', 'stand/#paye', 'پایه ساکشن پرتابل (ترولی)', 'پایه و نگهدارنده'),
+        ('wallp', 'stand/#wallp', 'پشت گیره مخزن پرتابل', 'پایه و نگهدارنده'),
+        ('sdv', 'canister/#sdv', 'ساکشن دیواری', 'مخزن'),
+        ('wallg', 'stand/#wallg', 'گیره و مخزن دیواری', 'پایه و نگهدارنده'),
+        ('mesvak', 'other/#mesvak', 'مسواک ساکشن یکبارمصرف', 'سایر محصولات'),
+        ('negahdarande', 'other/#negahdarande', 'نگهدارنده لوله تراشه', 'سایر محصولات'),
+        ('receiver', 'other/#receiver', 'رسیور پزشکی یکبارمصرف', 'سایر محصولات'),
+        ('splashvac', 'other/#splashvac', 'مکش سطحی چند منظوره (Splash-Vac)', 'سایر محصولات'),
     ],
     'en': [
-        ('stand', 'base-and-holder/#Trolleys', 'Trolleys', 'Base and Holder'),
-        ('stand', 'base-and-holder/', 'Rail bracket', 'Base and Holder'),
-        ('canister', 'canisters/#b', 'Wall Suction', 'Canister'),
-        ('stand', 'base-and-holder/', 'Wall bracket', 'Base and Holder'),
-        ('other', 'other-products/#Suction%20Brush', 'Suction Brush', 'Other Products'),
-        ('other', 'other-products/#Endotracheal%20Tube%20Holder', 'Endotracheal Tube Holder', 'Other Products'),
-        ('other', 'other-products/#Kidney%20dish', 'Disposable Kidney Dish', 'Other Products'),
-        ('other', 'other-products/#splashvac', 'Splash-Vac', 'Other Products'),
+        ('paye', 'base-and-holder/#paye', 'Trolleys', 'Base and Holder'),
+        ('wallp', 'base-and-holder/#wallp', 'Rear part of the portable canister clamp', 'Base and Holder'),
+        ('sdv', 'canisters/#sdv', 'Wall Suction', 'Canister'),
+        ('wallg', 'base-and-holder/#wallg', 'Wall bracket', 'Base and Holder'),
+        ('mesvak', 'other-products/#mesvak', 'Suction Brush', 'Other Products'),
+        ('negahdarande', 'other-products/#negahdarande', 'Endotracheal Tube Holder', 'Other Products'),
+        ('receiver', 'other-products/#receiver', 'Disposable Kidney Dish', 'Other Products'),
+        ('splashvac', 'other-products/#splashvac', 'Splash-Vac', 'Other Products'),
     ],
     'ar': [
-        ('stand', '../تثبیت/', 'قاعدة تثبيت شفط آباديس المحمولة (ترولي)', 'تثبیت'),
-        ('stand', '../تثبیت/', 'مشابك الخزان المحمول', 'تثبیت'),
-        ('canister', '../خزانات/', 'الشفط الجداري', 'خزانات'),
-        ('stand', '../تثبیت/', 'مشابك خزان الحائط', 'تثبیت'),
-        ('other', '../منتجات-اخری/', 'فرشاة أسنان الشفط ذات الاستعمال الواحد', 'منتجات اخری'),
-        ('other', '../منتجات-اخری/', 'حامل أنبوب القصبة الهوائية', 'منتجات اخری'),
-        ('other', '../منتجات-اخری/', 'Kidney dish', 'منتجات اخری'),
+        ('paye', '../تثبیت/#paye', 'قاعدة تثبيت شفط آباديس المحمولة (ترولي)', 'تثبیت'),
+        ('wallp', '../تثبیت/#wallp', 'الجزء الخلفي لمشبك الخزان المحمول', 'تثبیت'),
+        ('sdv', '../خزانات/#sdv', 'الشفط الجداري', 'خزانات'),
+        ('wallg', '../تثبیت/#wallg', 'مشابك خزان الحائط', 'تثبیت'),
+        ('mesvak', '../منتجات-اخری/#mesvak', 'فرشاة أسنان الشفط ذات الاستعمال الواحد', 'منتجات اخری'),
+        ('negahdarande', '../منتجات-اخری/#negahdarande', 'حامل أنبوب القصبة الهوائية', 'منتجات اخری'),
+        ('receiver', '../منتجات-اخری/#receiver', 'وعاء كلوي للاستعمال الواحد', 'منتجات اخری'),
+        ('splashvac', '../منتجات-اخری/#splashvac', 'Splash-Vac', 'منتجات اخری'),
     ],
 }
 
 def family_src(p):
     srcs = {}
     for slug, path, title, im, fb in FAMILIES:
-        r = best_img(im, 640) if im else None
+        r = any_img(im) if im else None
         srcs[slug] = (p + r['src']) if r else ((p + fb) if fb else None)
     return srcs
+
+def solution_src(p, photo_id):
+    r = any_img(SOL_PHOTO.get(photo_id))
+    return (p + r['src']) if r else None
 
 def _pcard(href, title, sub, src, view, alt):
     ph = (f'<div class="ph"><img src="{src}" alt="{esc(alt)}" loading="lazy" decoding="async"></div>'
@@ -261,8 +319,8 @@ def hub_main(p, lang, summaries=None):
         slug, href, title = row[0], row[1], row[2]
         sub = ('، '.join(summaries[slug]) if summaries else '') if lang == 'fa' else row[3]
         fams.append(_pcard(href, title, sub, srcs.get(slug), ui['view'], title + ui['alt_suffix']))
-    sols = [_pcard(href, title, sub, srcs.get(slug), ui['view'], title + ui['alt_suffix'])
-            for slug, href, title, sub in SOLUTIONS[lang]]
+    sols = [_pcard(href, title, sub, solution_src(p, photo), ui['view'], title + ui['alt_suffix'])
+            for photo, href, title, sub in SOLUTIONS[lang]]
     docs = ''.join(f'<a href="{h}">{esc(t)}</a>' for h, t in ui['docs'])
     nav = (f'  <nav class="anchors" aria-label="{esc(ui["nav"])}"><div class="wrap">'
            f'<a href="#by-product">{esc(ui["by_product"])}</a>'
@@ -342,22 +400,376 @@ def patch_suction_bag_benefits():
     return 'products/suction-bag/index.html'
 
 
+# Live rear-part copy. The crawled table repeated the wall clamp 060503; only 060504 belongs here.
+WALLP_HTML = (
+    '<p>پشت‌گیره مخزن پرتابل آبادیس در کنار گیره مخزن دیواری قرار می‌گیرد و با اتصال به آن، '
+    'امکان نصب و نگهداری مخزن ساکشن روی دستگاه‌های ساکشن پرتابل بیمارستانی را فراهم می‌کند. '
+    'این قطعه از جنس پلاستیک مقاوم تولید شده و به تثبیت مناسب مخزن روی دستگاه و جلوگیری از '
+    'جابه‌جایی آن هنگام استفاده یا حمل دستگاه کمک می‌کند.</p>'
+    '<p>پشت‌گیره مخزن پرتابل آبادیس قابلیت شست‌وشو در دمای حداکثر ۹۵ درجه سانتی‌گراد را دارد '
+    'و برای استفاده در بیمارستان‌ها و سایر مراکز درمانی مناسب است.</p>'
+    '<h2>ابعاد محصول</h2><p>عرض: ۲٫۵ سانتی‌متر</p><p>طول: ۵٫۳ سانتی‌متر</p>'
+)
+LIPO_HTML = (
+    '<p>دستگاه تزریق چربی آبادیس، سامانه‌ای متصل‌شونده به دستگاه لیپوساکشن است که چربی برداشت‌شده را '
+    'در یک مخزن مدرج و بسته جمع‌آوری می‌کند. پس از پایان مرحله لیپوساکشن و آماده‌سازی چربی، خروجی مخزن '
+    'به بخش پمپ تزریق دستگاه متصل شده و چربی از طریق شیلنگ و کانولای مخصوص به ناحیه گیرنده انتقال می‌یابد. '
+    'به این ترتیب، مراحل برداشت و تزریق مجدد چربی در یک گردش‌کار یکپارچه و در همان جلسه جراحی انجام می‌شوند.</p>'
+    '<h2>ویژگی‌های محصول</h2><ul>'
+    '<li>قابل اتصال به بخش پمپ تزریق دستگاه لیپوساکشن</li>'
+    '<li>انتقال چربی در یک مدار بسته و کنترل‌شده</li>'
+    '<li>مناسب برای انتقال و تزریق چربی پس از لیپوساکشن</li>'
+    '<li>کاهش انتقال‌های دستی و جابه‌جایی چربی میان ظروف مختلف</li>'
+    '<li>محدودکردن تماس چربی برداشت‌شده با محیط</li>'
+    '<li>امکان کنترل جریان تزریق از طریق پمپ دستگاه</li>'
+    '<li>کمک به پیوستگی فرایند برداشت، آماده‌سازی و تزریق چربی</li></ul>'
+)
+NO_PHOTO = {'collectioncup', 'splashvac', 'lipo'}
+IMG_REPLACE = {
+    'sdv': 'https://abadis-med.com/wp-content/uploads/2022/12/ساکشن-دیواری-بزرگسال-1030x1030-1.jpg',
+}
+# rel, prefix, canonical, products-crumb href, h1 override (None = Persian page title)
+OUT = {
+    'stand': {
+        'fa': ('products/stand/index.html', '../../', 'products/stand/', '../', None),
+        'en': ('en/products/base-and-holder/index.html', '../../../', 'en/products/base-and-holder/', '../', 'Base and Holder'),
+        'ar': ('arabic/تثبیت/index.html', '../../', 'arabic/تثبیت/', '../منتجات/', 'تثبیت'),
+    },
+    'filters': {
+        'fa': ('products/filters/index.html', '../../', 'products/filters/', '../', None),
+        'en': ('en/products/filters/index.html', '../../../', 'en/products/filters/', '../', 'Filters'),
+        'ar': ('arabic/الفلتر/index.html', '../../', 'arabic/الفلتر/', '../منتجات/', 'الفلتر'),
+    },
+    'suction-tube': {
+        'fa': ('products/suction-tube/index.html', '../../', 'products/suction-tube/', '../', None),
+        'en': ('en/suction-tube/index.html', '../../', 'en/suction-tube/', '../products/', 'Suction Tube'),
+        'ar': ('arabic/أنبوب-الشفط/index.html', '../../', 'arabic/أنبوب-الشفط/', '../منتجات/', 'أنبوب الشفط'),
+    },
+    'canister': {
+        'fa': ('products/canister/index.html', '../../', 'products/canister/', '../', None),
+        'en': ('en/products/canisters/index.html', '../../../', 'en/products/canisters/', '../', 'Canisters'),
+        'ar': ('arabic/خزانات/index.html', '../../', 'arabic/خزانات/', '../منتجات/', 'خزانات'),
+    },
+    'connectors': {
+        'fa': ('products/connectors/index.html', '../../', 'products/connectors/', '../', None),
+        'en': ('en/products/connections/index.html', '../../../', 'en/products/connections/', '../', 'Connections'),
+        'ar': ('arabic/الوصلات/index.html', '../../', 'arabic/الوصلات/', '../منتجات/', 'الوصلات'),
+    },
+    'other': {
+        'fa': ('products/other/index.html', '../../', 'products/other/', '../', None),
+        'en': ('en/products/other-products/index.html', '../../../', 'en/products/other-products/', '../', 'Other Products'),
+        'ar': ('arabic/منتجات-اخری/index.html', '../../', 'arabic/منتجات-اخری/', '../منتجات/', 'منتجات أخرى'),
+    },
+    'suction-bag': {
+        'en': ('en/products/suction-bag/index.html', '../../../', 'en/products/suction-bag/', '../', 'Suction Bag'),
+        'ar': ('arabic/كيس-الشفط/index.html', '../../', 'arabic/كيس-الشفط/', '../منتجات/', 'كيس الشفط'),
+    },
+}
+I18N_PATH = {
+    ('en', 'products/base-and-holder/'): 'stand',
+    ('en', 'products/filters/'): 'filters',
+    ('en', 'products/canisters/'): 'canister',
+    ('en', 'products/connections/'): 'connectors',
+    ('en', 'products/other-products/'): 'other',
+    ('en', 'suction-tube/'): 'suction-tube',
+    ('en', 'products/suction-bag/'): 'suction-bag',
+    ('ar', 'تثبیت/'): 'stand',
+    ('ar', 'الفلتر/'): 'filters',
+    ('ar', 'خزانات/'): 'canister',
+    ('ar', 'الوصلات/'): 'connectors',
+    ('ar', 'منتجات-اخری/'): 'other',
+    ('ar', 'أنبوب-الشفط/'): 'suction-tube',
+    ('ar', 'كيس-الشفط/'): 'suction-bag',
+}
+_FA_UI = dict(products='محصولات', specs='کاتالوگ', more_a='سایر محصولات', inquiry_a='استعلام',
+              sep='، ', missing_note='')
+
+
+def prepare_family(slug):
+    path = next(p for s, p, *_rest in FAMILIES if s == slug)
+    h1, items = family(path)
+    if slug == 'stand':
+        for it in items:
+            if it['id'] == 'wallp':
+                it['title'] = 'پشت گیره مخزن پرتابل'
+                it['html'] = WALLP_HTML
+                it['tables'] = [[['کد کالا', 'نام کالا'], ['060504', 'پشت گیره مخزن پرتابل (پلاستیکی)']]]
+    if slug == 'canister':
+        items.append({
+            'id': 'lipo', 'title': 'دستگاه تزریق چربی (جمع‌آوری چربی)', 'html': LIPO_HTML,
+            'imgs': [], 'tables': [[['نام کالا', 'کد کالا'], ['دستگاه تزریق چربی', '']]],
+            'force_missing': True,
+        })
+    for it in items:
+        if it['id'] in NO_PHOTO:
+            it['imgs'] = []
+            it['force_missing'] = True
+        elif it['id'] in IMG_REPLACE:
+            it['imgs'] = [(IMG_REPLACE[it['id']], it['title'])]
+    return h1, items
+
+
+def items_for(slug, lang):
+    h1, items = prepare_family(slug)
+    if lang == 'fa':
+        return h1, items
+    from product_copy import HTML, TITLES, localize_cell
+    out = []
+    for it in items:
+        html, title = HTML[lang].get(it['id']), TITLES[lang].get(it['id'])
+        if not html or not title:
+            raise SystemExit(f'missing {lang} copy for {it["id"]}')
+        tables = [[[localize_cell(lang, c) for c in row] for row in t] for t in it['tables']]
+        out.append({**it, 'title': title, 'html': html, 'tables': tables})
+    return h1, out
+
+
+def _tabs(items, blocks):
+    nav = ''.join(f'<a href="#{esc(it["id"])}" data-ptab="{esc(it["id"])}">{esc(it["title"])}</a>' for it in items)
+    rules = ''.join(
+        '.ptabs:not(.js-tabs):has(#%s:target) .ptab-nav a[href="#%s"]{background:var(--brand-3);color:#fff;border-color:transparent}'
+        % (it['id'], it['id']) for it in items)
+    return f'''  <section class="section" id="range"><div class="wrap">
+    <style>{rules}</style>
+    <div class="ptabs" data-ptabs>
+      <div class="ptab-nav" role="tablist">{nav}</div>
+{blocks}
+    </div>
+  </div></section>\n'''
+
+
+def _related_i18n(p, here, lang):
+    from product_copy import UI
+    ui = UI[lang]
+    titles = {row[0]: row[2] for row in HUB_FAMILIES[lang]}
+    srcs = family_src(p)
+    cards = []
+    for slug, _path, _title, _im, _fb in FAMILIES:
+        if slug == here: continue
+        href = p + OUT[slug][lang][2]
+        src = srcs.get(slug)
+        ph = f'<div class="ph"><img src="{src}" alt="" loading="lazy" decoding="async"></div>' if src else '<div class="ph txt">Abadis</div>'
+        cards.append(f'<a class="mini-card" href="{href}">{ph}<strong>{esc(titles[slug])}</strong></a>')
+    return f'''  <section class="section section--alt" id="more"><div class="wrap">
+    <h2 class="reveal" style="margin-bottom:20px">{esc(ui["more"])}</h2>
+    <div class="mini-grid">{''.join(cards)}</div>
+  </div></section>'''
+
+
+def _inquiry(p, lang):
+    if lang == 'fa':
+        return INQUIRY
+    from product_copy import UI
+    ui = UI[lang]
+    quote = p + 'export/#quote'
+    return f'''  <section class="section" id="inquiry"><div class="wrap">
+    <div class="cta-band reveal">
+      <h2>{esc(ui["inquiry_h"])}</h2>
+      <p>{esc(ui["inquiry_p"])}</p>
+      <div class="cta-actions"><a class="btn btn-light" href="tel:+982192001017">{esc(ui["call"])}</a><a class="btn btn-ghost" href="https://wa.me/989100145809" target="_blank" rel="noopener">{esc(ui["wa"])}</a><a class="btn btn-ghost" href="{quote}">{esc(ui["quote"])}</a></div>
+    </div>
+  </div></section>'''
+
+
+def write_family_page(write, slug, lang):
+    if slug == 'suction-bag':
+        return write_bag(write, lang)
+    rel, p, can, crumb_href, h1_over = OUT[slug][lang]
+    h1, items = items_for(slug, lang)
+    if h1_over:
+        h1 = h1_over
+    from product_copy import UI
+    ui = UI[lang] if lang != 'fa' else _FA_UI
+    sep = '، ' if lang != 'en' else ', '
+    lead = sep.join(i['title'] for i in items)
+    products = ui['products']
+    anchors = ''.join(f'<a href="#{esc(i["id"])}">{esc(i["title"])}</a>' for i in items)
+    if DOCS.get(slug):
+        anchors += f'<a href="#docs">{esc(ui["specs"])}</a>'
+    anchors += f'<a href="#more">{esc(ui["more_a"])}</a><a href="#inquiry">{esc(ui["inquiry_a"])}</a>'
+    blocks = '\n'.join(product_block(p, it, lang) for it in items)
+    more = related(p, slug) if lang == 'fa' else _related_i18n(p, slug, lang)
+    main = (page_hero(p, [(products, crumb_href), (h1, None)], esc(h1), esc(lead), lang=lang)
+            + f'\n  <nav class="anchors" aria-label="{esc(products)}"><div class="wrap">{anchors}</div></nav>\n'
+            + doc_bar(slug, lang)
+            + _tabs(items, blocks)
+            + more + '\n' + _inquiry(p, lang))
+    desc = f'{h1} — {lead}'
+    write(rel, page(p, 'products', h1, desc, main, lightbox=True, lang=lang,
+                    fa_path=f'products/{slug}/', canonical_path=can))
+    return rel
+
+
+def _bag_table(lang, size, p):
+    from product_copy import BAG_ROWS, UI
+    ui = UI[lang]
+    rows = BAG_ROWS[size]
+    sterile = any(r[5] is not None for r in rows)
+    heads = [ui['code'], ui['irc'], ui['size'], ui['ftype'], ui['powder']]
+    if sterile:
+        heads.append(ui['sterile'])
+    heads.append(ui['lid'])
+    body = []
+    for code, irc, sz, kind, powder, ster, lid in rows:
+        cells = [code, irc or '—', ui[sz], ui[kind], '✓' if powder else '×']
+        if sterile:
+            cells.append('—' if ster is None else ('✓' if ster else '×'))
+        alt = ui['lid_' + lid]
+        cells.append(f'<img class="lid" src="{p}assets/img/p/lid-{lid}.webp" width="50" height="20" alt="{esc(alt)}">')
+        tds = ''.join(f'<td>{c if c.startswith("<img") else esc(c)}</td>' for c in cells)
+        body.append(f'<tr>{tds}</tr>')
+    th = ''.join(f'<th>{esc(h)}</th>' for h in heads)
+    return f'<div class="table-wrap"><table><thead><tr>{th}</tr></thead><tbody>{"".join(body)}</tbody></table></div>'
+
+
+def _bag_uses(lang, size, p):
+    from product_copy import BAG_USES, UI
+    ui = UI[lang]
+    idx = 2 if lang == 'en' else 3
+    bits = []
+    for icon, _fa, en, ar in BAG_USES[size]:
+        label = en if lang == 'en' else ar
+        bits.append(
+            f'<div class="use"><span class="use-ic" style="--ic:url(\'{p}assets/img/use/{icon}.webp\')">'
+            f'<img src="{p}assets/img/use/{icon}.webp" width="100" height="100" loading="lazy" alt=""></span>{esc(label)}</div>')
+    return f'<h3 class="uses-h">{esc(ui["use"])}</h3><div class="uses">{"".join(bits)}</div>'
+
+
+def write_bag(write, lang):
+    """EN/AR suction bag: 1 L then 2 L then 3 L, current codes, benefits kept by the caller shell."""
+    if lang == 'fa':
+        return None
+    from product_copy import UI
+    ui = UI[lang]
+    rel, p, can, crumb_href, h1 = OUT['suction-bag'][lang]
+    filters = '../filters/' if lang == 'en' else '../الفلتر/'
+    guide = '../../installation-manual/' if lang == 'en' else '../دليل-التركيب/'
+    downloads = '../../center-download/' if lang == 'en' else '../مركز-التنزيل/'
+    cat = 'https://abadis-med.com/wp-content/uploads/2022/12/suction-bag-catalog-Fa.pdf'
+    if lang == 'en':
+        cat = 'https://www.abadis-med.com/en/wp-content/uploads/2021/12/suction-bag-catalog-En.pdf'
+    media = {
+        '1': ('p1-main.webp', 900, 900, 'p1-g5.webp', 'p1-g5-t.webp', '11 cm', '15.5 cm', '57.5 × 42.5 × 44'),
+        '2': ('p2-main.webp', 900, 900, 'p2-g4.webp', 'p2-g4-t.webp', '11 cm', '24.5 cm', '57.5 × 42.5 × 44'),
+        '3': ('p3-main.webp', 561, 900, 'p3-g5.webp', 'p3-g5-t.webp', '11 cm', '39 cm', '49 × 49 × 49'),
+    }
+    blocks = []
+    for size, (main_img, w, h, dim, dim_t, dia, height, carton) in media.items():
+        title = ui['s' + size]
+        meta = ui['s' + size + 'm']
+        spec = ui['spec3'] if size == '3' else (ui['intro'] if size == '1' else ui['spec2'])
+        extra = f'<p class="note">{esc(ui["note3"])}</p>' if size == '3' else ''
+        vol = f'<p class="note"><strong>{esc(ui["vol"])}:</strong> {esc(ui["one_l"])}</p>' if size == '1' else ''
+        sterile = ''
+        if size == '3':
+            sterile = (f'<div class="sterile"><h3>{esc(ui["sterile_h"])}</h3><p>{esc(ui["sterile_p"])}</p></div>')
+        blocks.append(f'''    <article class="size-block" id="s{size}">
+      <h2>{esc(title)}</h2>
+      <p class="meta">{esc(meta)}</p>
+      <div class="size-grid">
+        <div class="size-media">
+          <a class="gal-main" href="{p}assets/img/p/{main_img}" data-gallery="s{size}" data-w="{w}" data-h="{h}"><img src="{p}assets/img/p/{main_img}" width="{w}" height="{h}" alt="{esc(title)}" loading="lazy" decoding="async"></a>
+          <div class="gal-thumbs"><a href="{p}assets/img/p/{dim}" data-gallery="s{size}" data-w="1254" data-h="1254"><img src="{p}assets/img/p/{dim_t}" width="480" height="480" alt="{esc(height)}" loading="lazy" decoding="async"></a></div>
+        </div>
+        <div class="size-info">
+          {vol}{extra}
+          <div class="dims"><span>{esc(ui["d_d"])}: {esc(dia)}</span><span>{esc(ui["d_h"])}: {esc(height)}</span><span>{esc(ui["d_c"])}: {esc(ui["pcs"])}</span><span>{esc(ui["d_cd"])}: {esc(carton)}</span></div>
+          <p class="meta-line">{esc(spec)}</p>
+          <p class="note"><a href="{filters}">{esc(ui["filters_a"])}</a></p>
+        </div>
+      </div>
+      {_bag_table(lang, size, p)}
+      {sterile}
+      {_bag_uses(lang, size, p)}
+    </article>''')
+    benefit = 'Benefits' if lang == 'en' else 'المزايا'
+    anchors = (f'<a href="#benefits">{esc(benefit)}</a><a href="#s1">{esc(ui["sz1"])}</a>'
+               f'<a href="#s2">{esc(ui["sz2"])}</a><a href="#s3">{esc(ui["sz3"])}</a>'
+               f'<a href="{filters}">{esc(ui["filters_h"])}</a><a href="#pack">{esc(ui["pack_h"])}</a>')
+    intro = f'''  <section class="section" id="intro"><div class="wrap">
+    <div class="section-head"><h2>{esc(ui["intro_h"])}</h2></div>
+    <div class="card prose"><p>{esc(ui["intro"])}</p><p>{esc(ui["intro2"])}</p><p>{esc(ui["intro3"])}</p></div>
+    <div class="grid g-3">
+      <article class="card"><h3>{esc(ui["v1"])}</h3><p>{esc(ui["v1p"])}</p></article>
+      <article class="card"><h3>{esc(ui["v2"])}</h3><p>{esc(ui["v2p"])}</p></article>
+      <article class="card"><h3>{esc(ui["v3"])}</h3><p>{esc(ui["v3p"])}</p></article>
+    </div>
+  </div></section>'''
+    main = (page_hero(p, [(ui['products'], crumb_href), (h1, None)], esc(h1), esc(ui['bag_lead']), lang=lang)
+            + '\n' + bag_benefits(lang, p) + '\n'
+            + f'  <nav class="anchors"><div class="wrap">{anchors}</div></nav>\n'
+            + intro
+            + '  <section class="section"><div class="wrap">\n' + '\n'.join(blocks) + '\n  </div></section>\n'
+            + f'''  <section class="section section--alt" id="filters"><div class="wrap">
+    <h2>{esc(ui["filters_h"])}</h2>
+    <p>{esc(ui["filters_p"])}</p>
+    <div class="doc-links"><a href="{filters}">{esc(ui["filters_a"])}</a></div>
+  </div></section>
+  <section class="section" id="pack"><div class="wrap">
+    <h2>{esc(ui["pack_h"])}</h2>
+    <p>{esc(ui["pack_p"])}</p>
+    <div class="doc-links"><a href="{esc(cat)}" target="_blank" rel="noopener" data-track="catalogue_download">{esc(ui["cat"])}</a><a href="{guide}">{esc(ui["guide"])}</a><a href="{downloads}">{esc(ui["downloads"])}</a></div>
+  </div></section>\n'''
+            + _inquiry(p, lang))
+    write(rel, page(p, 'products', h1, ui['bag_desc'], main, lightbox=True, lang=lang,
+                    fa_path='products/suction-bag/', canonical_path=can))
+    return rel
+
+
+def patch_suction_bag_cleanup():
+    """Hand-built FA page. Idempotent: 1 L → viewer → 2 L → 3 L, one height, no duplicate SKUs."""
+    from lib import SITE
+    path = SITE / 'products/suction-bag/index.html'
+    html = path.read_text(encoding='utf-8')
+    i1, iv, i2 = html.find('id="s1"'), html.find('id="viewer"'), html.find('id="s2"')
+    if not (i1 != -1 and iv != -1 and i2 != -1 and i1 < iv < i2):
+        m = re.search(r'  <section class="section deep" id="viewer">.*?\n  </section>\n', html, re.S)
+        if not m:
+            raise SystemExit('suction-bag: viewer section missing')
+        viewer = m.group(0)
+        html = html[:m.start()] + '\n' + html[m.end():]
+        needle = '    <div class="size-block" id="s2">'
+        if needle not in html:
+            raise SystemExit('suction-bag: 2 L block missing')
+        html = html.replace(needle, '  </div></section>\n' + viewer + '  <section class="section"><div class="wrap">\n' + needle, 1)
+    html = html.replace('فیلترهایاستفاده‌شده', 'فیلترهای استفاده‌شده')
+    html = html.replace('۲ لیتری ۲۳٫۵', '۲ لیتری ۲۴٫۵')
+    html = html.replace('۲ لیتری</a> (۵ مدل)', '۲ لیتری</a> (۴ مدل)')
+    html = html.replace('۳ لیتری</a> (۸ مدل)', '۳ لیتری</a> (۷ مدل)')
+    html = html.replace('<tr><th scope="row">جنس / مواد</th><td><span class="ph-data">[در انتظار اطلاعات از شرکت]</span></td></tr>', '')
+    html = html.replace(' · IFU انگلیسی/عربی: <span class="ph-data">[در انتظار اطلاعات از شرکت]</span>', '')
+    html = html.replace('فیلتر هیدروفوبیک / مکانیکی / CIF', 'فیلتر هیدروفوبیک / مکانیکی')
+    html = re.sub(r'\n<tr><td>۰۴۰۱۱۱۲</td><td dir="ltr" class="irc">9647935197253589</td><td>دو لیتری</td><td>CIF</td>.*?</tr>', '', html, count=1)
+    html = re.sub(r'\n<tr><td>۰۴۰۱۱۱۳</td><td dir="ltr" class="irc">6579214989949869</td><td>سه لیتری</td><td>CIF</td>.*?</tr>', '', html, count=1)
+    html = html.replace('>۰۴۰۱۱۲۳</td><td dir="ltr" class="irc">7600653363719319<', '>۰۴۰۱۱۲۳</td><td dir="ltr" class="irc">3011241869977602<')
+    html = html.replace('href="#filters"', 'href="../filters/"')
+    if 'class="filter-card"' in html:
+        short = '''  <section class="section section--alt" id="filters"><div class="wrap">
+    <h2 class="reveal">فیلترها</h2>
+    <p class="sub"><a href="../filters/">فیلتر آنتی‌باکتریال، فیلتر قطع‌کننده جریان و فیلتر متخلخل</a></p>
+  </div></section>\n'''
+        html2, n = re.subn(r'  <section class="section section--alt" id="filters"><div class="wrap">.*?\n  </div></section>\n',
+                           short, html, count=1, flags=re.S)
+        if n != 1:
+            raise SystemExit('suction-bag: filters chapter not replaced')
+        html = html2
+    path.write_text(html, encoding='utf-8')
+    return 'products/suction-bag/index.html'
+
+
 def build(write):
-    p = '../../'
     summaries = {}
     for slug, path, title, im, fb in FAMILIES:
         if slug == 'suction-bag':
-            summaries[slug] = SUCTION_BAG_ITEMS; continue
-        h1, items = family(path)
+            summaries[slug] = list(SUCTION_BAG_ITEMS)
+            continue
+        write_family_page(write, slug, 'fa')
+        _h1, items = prepare_family(slug)
         summaries[slug] = [i['title'] for i in items]
-        anchors = ''.join(f'<a href="#{esc(i["id"])}">{esc(i["title"])}</a>' for i in items) + '<a href="#specs">مشخصات</a><a href="#more">سایر محصولات</a><a href="#inquiry">استعلام</a>'
-        blocks = '\n'.join(product_block(p, it, n) for n, it in enumerate(items))
-        lead = '، '.join(i['title'] for i in items)
-        main = (page_hero(p, [('محصولات', '../'), (h1, None)], esc(h1), esc(lead))
-                + f'\n  <nav class="anchors" aria-label="بخش‌های صفحه"><div class="wrap">{anchors}</div></nav>\n'
-                + spec_summary(p, slug, items) + '\n'
-                + f'  <section class="section"><div class="wrap">\n{blocks}\n  </div></section>\n'
-                + related(p, slug) + '\n' + INQUIRY)
-        write(f'products/{slug}/index.html', page(p, 'products', h1, f'{h1} آبادیس: ' + lead, main, lightbox=True, fa_path=f'products/{slug}/'))
+    patch_suction_bag_cleanup()
     patch_suction_bag_benefits()
     write_products_hub(write, 'fa', summaries)
+    for lang in ('en', 'ar'):
+        for slug, _path, _title, _im, _fb in FAMILIES:
+            write_family_page(write, slug, lang)
+        write_products_hub(write, lang)

@@ -761,3 +761,38 @@
     track(k, d);
   }, true);
 })();
+
+/* Sub-product tabs. CSS :target covers no-JS; this only syncs the active tab and hash. */
+(function () {
+  var roots = document.querySelectorAll('[data-ptabs]');
+  if (!roots.length) return;
+  function panel(root, id) {
+    if (!id) return null;
+    var el = document.getElementById(id);
+    return el && root.contains(el) ? el : null;
+  }
+  function activate(root, id, scroll) {
+    var panels = root.querySelectorAll('.ptab');
+    var hit = panel(root, id);
+    if (!hit && panels[0]) hit = panels[0];
+    panels.forEach(function (p) { p.classList.toggle('is-on', p === hit); });
+    var on = hit ? hit.id : '';
+    root.querySelectorAll('[data-ptab]').forEach(function (a) {
+      var yes = a.getAttribute('data-ptab') === on;
+      a.classList.toggle('is-on', yes);
+      if (yes) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
+    if (scroll && hit) hit.scrollIntoView({ block: 'start' });
+  }
+  function sync(scroll) {
+    var id = '';
+    try { id = decodeURIComponent((location.hash || '').replace(/^#/, '')); } catch (e) { id = ''; }
+    roots.forEach(function (root) {
+      root.classList.add('js-tabs');
+      activate(root, panel(root, id) ? id : '', scroll && !!panel(root, id));
+    });
+  }
+  sync(!!location.hash);
+  window.addEventListener('hashchange', function () { sync(true); });
+})();
