@@ -143,6 +143,11 @@ def calc_widget(lang):
 
 def render_content_page(write, lang, site_path, wp, cur_key, chip):
     """Generic prose page from a WP page payload."""
+    if site_path in ('products/', 'منتجات/'):
+        # Same two-category hub as the FA products page. A later i18n rebuild
+        # must not put the scraped Elementor dump back.
+        import pages_products
+        return pages_products.write_products_hub(write, lang)
     L = LANGS[lang]
     root = L['root']
     rel = root + site_path + ('index.html' if site_path == '' or site_path.endswith('/') else '/index.html')

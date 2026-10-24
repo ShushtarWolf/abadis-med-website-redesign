@@ -143,6 +143,160 @@ def spec_summary(p, slug, items):
     <table class="spec-table"><tbody>{body}</tbody></table>
   </div></section>'''
 
+# Products hub. The two category labels are Hamid's (Oct 2026).
+# "By product" is the live hub families (data/pages.json "/محصولات/"), same titles and order.
+# "By solution" lists systems those family pages already name (stand, canister, other).
+# Boss notes and PHASE-1 do not define a second taxonomy; they list these families only.
+HUB_UI = {
+    'fa': dict(
+        nav='دسته‌بندی محصولات', by_product='بر مبنای محصولات', by_solution='بر اساس راهکار',
+        view='مشاهده ←', h1='محصولات <em>آبادیس</em>', title='محصولات',
+        desc='محصولات مخازن طبی آبادیس: کیسه ساکشن یکبار مصرف، فیلترها، مخزن، پایه و نگهدارنده ها، اتصالات، ساکشن تیوب و سایر محصولات.',
+        lead='کیسه ساکشن یکبار مصرف، فیلترها، مخزن، پایه و نگهدارنده ها، اتصالات، ساکشن تیوب و سایر محصولات.',
+        crumb='محصولات', alt_suffix=' آبادیس',
+        docs=[('../downloads/', 'مرکز دانلود کاتالوگ‌ها'), ('../install-guide/', 'راهنمای نصب'), ('../calculator/', 'محاسبه‌گر صرفه‌جویی')],
+        rel='products/index.html', prefix='../', fa_path='products/', canonical='products/',
+    ),
+    'en': dict(
+        nav='Product categories', by_product='By product', by_solution='By solution',
+        view='Find Out More', h1='Products', title='Products',
+        desc='Suction Bag, Base and Holder, Filter, Suction tube, Canister, Connections and Other Products.',
+        lead='Suction Bag, Base and Holder, Filter, Suction tube, Canister, Connections and Other Products.',
+        crumb='Products', alt_suffix=' Abadis',
+        docs=[('../center-download/', 'Download Center'), ('../installation-manual/', 'Installation Manual'), ('../calculator/', 'Savings calculator')],
+        rel='en/products/index.html', prefix='../../', fa_path='products/', canonical='en/products/',
+    ),
+    'ar': dict(
+        nav='تصنيف المنتجات', by_product='حسب المنتجات', by_solution='حسب الحلول',
+        view='مشاهدة منتجاتنا', h1='منتجات', title='منتجات',
+        desc='كيس الشفط، خزانات، تثبیت، الوصلات، الفلتر، أنبوب الشفط ومنتجات اخری.',
+        lead='كيس الشفط، خزانات، تثبیت، الوصلات، الفلتر، أنبوب الشفط ومنتجات اخری.',
+        crumb='منتجات', alt_suffix=' آباديس',
+        docs=[('../مركز-التنزيل/', 'مركز التنزيل'), ('../دليل-التركيب/', 'دليل التركيب'), ('../الحوسبة/', 'حاسبة التوفير')],
+        rel='arabic/منتجات/index.html', prefix='../../', fa_path='products/', canonical='arabic/منتجات/',
+    ),
+}
+# slug, href from the hub page, title, subtitle (FA subtitle is filled from the family pages)
+HUB_FAMILIES = {
+    'fa': [
+        ('suction-bag', 'suction-bag/', 'کیسه های ساکشن'),
+        ('stand', 'stand/', 'پایه و نگهدارنده'),
+        ('filters', 'filters/', 'فیلتر'),
+        ('suction-tube', 'suction-tube/', 'ساکشن تیوب'),
+        ('canister', 'canister/', 'مخزن'),
+        ('connectors', 'connectors/', 'اتصالات'),
+        ('other', 'other/', 'سایر محصولات'),
+    ],
+    'en': [
+        ('suction-bag', 'suction-bag/', 'Suction Bag', '1 Liter, 2 Liter, 3 Liter'),
+        ('stand', 'base-and-holder/', 'Base and Holder', 'Trolleys, Wall bracket, Rail bracket'),
+        ('filters', 'filters/', 'Filter', 'Antibacterial Filter(Viral Filter), Flow stopper filter, Sintered Filter'),
+        ('suction-tube', '../suction-tube/', 'Suction tube', 'Suction Tube, Fingertip'),
+        ('canister', 'canisters/', 'Canister', 'Suction Canisters, Wall Suction, Collection Cup, Fat Collection Canister System'),
+        ('connectors', 'connections/', 'Connections', 'T connector, Connector, Silicone Slang, Regulator, ON/OFF valve, Accessories'),
+        ('other', 'other-products/', 'Other Products', 'Suction Brush, Endotracheal Tube Holder, Disposable Kidney Dish, Splash-Vac'),
+    ],
+    'ar': [
+        ('suction-bag', '../كيس-الشفط/', 'كيس الشفط', ''),
+        ('stand', '../تثبیت/', 'تثبیت', 'قاعدة تثبيت شفط آباديس المحمولة (ترولي)، مشابك خزان الحائط، مشابك الخزان المحمول'),
+        ('filters', '../الفلتر/', 'الفلتر', ''),
+        ('suction-tube', '../أنبوب-الشفط/', 'أنبوب الشفط', ''),
+        ('canister', '../خزانات/', 'خزانات', 'خزانات الشفط، الشفط الجداري'),
+        ('connectors', '../الوصلات/', 'الوصلات', ''),
+        ('other', '../منتجات-اخری/', 'منتجات اخری', 'فرشاة أسنان الشفط ذات الاستعمال الواحد، حامل أنبوب القصبة الهوائية، Kidney dish'),
+    ],
+}
+# image slug, href, title, parent family (all titles already published on the family pages)
+SOLUTIONS = {
+    'fa': [
+        ('stand', 'stand/#paye', 'پایه ساکشن پرتابل (ترولی)', 'پایه و نگهدارنده'),
+        ('stand', 'stand/#wallp', 'گیره و مخزن پرتابل', 'پایه و نگهدارنده'),
+        ('canister', 'canister/#sdv', 'ساکشن دیواری', 'مخزن'),
+        ('stand', 'stand/#wallg', 'گیره و مخزن دیواری', 'پایه و نگهدارنده'),
+        ('other', 'other/#mesvak', 'مسواک ساکشن یکبارمصرف', 'سایر محصولات'),
+        ('other', 'other/#negahdarande', 'نگهدارنده لوله تراشه', 'سایر محصولات'),
+        ('other', 'other/#receiver', 'رسیور پزشکی یکبارمصرف', 'سایر محصولات'),
+        ('other', 'other/#splashvac', 'مکش سطحی چند منظوره (Splash-Vac)\u200b', 'سایر محصولات'),
+    ],
+    'en': [
+        ('stand', 'base-and-holder/#Trolleys', 'Trolleys', 'Base and Holder'),
+        ('stand', 'base-and-holder/', 'Rail bracket', 'Base and Holder'),
+        ('canister', 'canisters/#b', 'Wall Suction', 'Canister'),
+        ('stand', 'base-and-holder/', 'Wall bracket', 'Base and Holder'),
+        ('other', 'other-products/#Suction%20Brush', 'Suction Brush', 'Other Products'),
+        ('other', 'other-products/#Endotracheal%20Tube%20Holder', 'Endotracheal Tube Holder', 'Other Products'),
+        ('other', 'other-products/#Kidney%20dish', 'Disposable Kidney Dish', 'Other Products'),
+        ('other', 'other-products/#splashvac', 'Splash-Vac', 'Other Products'),
+    ],
+    'ar': [
+        ('stand', '../تثبیت/', 'قاعدة تثبيت شفط آباديس المحمولة (ترولي)', 'تثبیت'),
+        ('stand', '../تثبیت/', 'مشابك الخزان المحمول', 'تثبیت'),
+        ('canister', '../خزانات/', 'الشفط الجداري', 'خزانات'),
+        ('stand', '../تثبیت/', 'مشابك خزان الحائط', 'تثبیت'),
+        ('other', '../منتجات-اخری/', 'فرشاة أسنان الشفط ذات الاستعمال الواحد', 'منتجات اخری'),
+        ('other', '../منتجات-اخری/', 'حامل أنبوب القصبة الهوائية', 'منتجات اخری'),
+        ('other', '../منتجات-اخری/', 'Kidney dish', 'منتجات اخری'),
+    ],
+}
+
+def family_src(p):
+    srcs = {}
+    for slug, path, title, im, fb in FAMILIES:
+        r = best_img(im, 640) if im else None
+        srcs[slug] = (p + r['src']) if r else ((p + fb) if fb else None)
+    return srcs
+
+def _pcard(href, title, sub, src, view, alt):
+    ph = (f'<div class="ph"><img src="{src}" alt="{esc(alt)}" loading="lazy" decoding="async"></div>'
+          if src else '<div class="ph txt">آبادیس</div>')
+    sub_html = f'<span>{esc(sub)}</span>' if sub else ''
+    return (f'<a class="pcard reveal" href="{href}">{ph}<strong>{esc(title)}</strong>'
+            f'{sub_html}<span class="go">{view}</span></a>')
+
+def hub_main(p, lang, summaries=None):
+    ui = HUB_UI[lang]
+    srcs = family_src(p)
+    fams = []
+    for row in HUB_FAMILIES[lang]:
+        slug, href, title = row[0], row[1], row[2]
+        sub = ('، '.join(summaries[slug]) if summaries else '') if lang == 'fa' else row[3]
+        fams.append(_pcard(href, title, sub, srcs.get(slug), ui['view'], title + ui['alt_suffix']))
+    sols = [_pcard(href, title, sub, srcs.get(slug), ui['view'], title + ui['alt_suffix'])
+            for slug, href, title, sub in SOLUTIONS[lang]]
+    docs = ''.join(f'<a href="{h}">{esc(t)}</a>' for h, t in ui['docs'])
+    nav = (f'  <nav class="anchors" aria-label="{esc(ui["nav"])}"><div class="wrap">'
+           f'<a href="#by-product">{esc(ui["by_product"])}</a>'
+           f'<a href="#by-solution">{esc(ui["by_solution"])}</a>'
+           f'</div></nav>\n')
+    return (page_hero(p, [(ui['crumb'], None)], ui['h1'], ui['lead'], lang=lang) + '\n' + nav
+            + f'  <section class="section product-cat" id="by-product"><div class="wrap">'
+            + f'<div class="section-head"><h2>{esc(ui["by_product"])}</h2></div>'
+            + f'<div class="grid g-3">{"".join(fams)}</div></div></section>\n'
+            + f'  <section class="section section--alt product-cat" id="by-solution"><div class="wrap">'
+            + f'<div class="section-head"><h2>{esc(ui["by_solution"])}</h2></div>'
+            + f'<div class="grid g-3">{"".join(sols)}</div></div></section>\n'
+            + f'  <section class="section" style="padding-top:0"><div class="wrap"><div class="doc-links">{docs}</div></div></section>')
+
+def fa_summaries():
+    out = {}
+    for slug, path, title, im, fb in FAMILIES:
+        if slug == 'suction-bag':
+            out[slug] = list(SUCTION_BAG_ITEMS)
+            continue
+        _, items = family(path)
+        out[slug] = [i['title'] for i in items]
+    return out
+
+def write_products_hub(write, lang, summaries=None):
+    ui = HUB_UI[lang]
+    if lang == 'fa' and summaries is None:
+        summaries = fa_summaries()
+    main = hub_main(ui['prefix'], lang, summaries)
+    html = page(ui['prefix'], 'products', ui['title'], ui['desc'], main, lang=lang,
+                fa_path=ui['fa_path'], canonical_path=ui['canonical'])
+    write(ui['rel'], html)
+    return ui['rel']
+
 def build(write):
     p = '../../'
     summaries = {}
@@ -160,17 +314,4 @@ def build(write):
                 + f'  <section class="section"><div class="wrap">\n{blocks}\n  </div></section>\n'
                 + related(p, slug) + '\n' + INQUIRY)
         write(f'products/{slug}/index.html', page(p, 'products', h1, f'{h1} آبادیس: ' + lead, main, lightbox=True, fa_path=f'products/{slug}/'))
-    # hub
-    p = '../'
-    cards = []
-    for slug, path, title, im, fb in FAMILIES:
-        r = best_img(im, 640) if im else None
-        src = (p + r['src']) if r else (p + fb if fb else None)
-        ph = f'<div class="ph"><img src="{src}" alt="{esc(title)} آبادیس" loading="lazy" decoding="async"></div>' if src else '<div class="ph txt">آبادیس</div>'
-        sub = '، '.join(summaries[slug])
-        cards.append(f'<a class="pcard reveal" href="{slug}/">{ph}<strong>{esc(title)}</strong><span>{esc(sub)}</span><span class="go">مشاهده ←</span></a>')
-    main = (page_hero(p, [('محصولات', None)], 'محصولات <em>آبادیس</em>',
-                      'کیسه ساکشن یکبار مصرف، فیلترها، مخزن، پایه و نگهدارنده ها، اتصالات، ساکشن تیوب و سایر محصولات.')
-            + f'\n  <section class="section"><div class="wrap"><div class="grid g-3">{"".join(cards)}</div></div></section>\n'
-            + f'  <section class="section" style="padding-top:0"><div class="wrap"><div class="doc-links"><a href="../downloads/">مرکز دانلود کاتالوگ‌ها</a><a href="../install-guide/">راهنمای نصب</a><a href="../calculator/">محاسبه‌گر صرفه‌جویی</a></div></div></section>')
-    write('products/index.html', page(p, 'products', 'محصولات', 'محصولات مخازن طبی آبادیس: کیسه ساکشن یکبار مصرف، فیلترها، مخزن، پایه و نگهدارنده ها، اتصالات، ساکشن تیوب و سایر محصولات.', main, fa_path='products/'))
+    write_products_hub(write, 'fa', summaries)
