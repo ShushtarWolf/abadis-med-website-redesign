@@ -30,7 +30,7 @@ T = {
   news_eb='News', news_h='The Latest News Company', news_href='latest-news/', view='View all →', read='View news',
   art_eb='Articles', art_h='The Latest Blogs', art_href='blog/', art_read='Find out more',
   mem_eb='Memberships', mem_h='Memberships', mem_alt='Abadis membership',
-  cust_eb='Customers', cust_h='Customers', cust_p='Along with more than 600 Treatment Centers in the Country', cust_btn='See the customer list', cust_href='our-customers/', prev='Previous', next='Next', cust_aria='Sample customers'),
+  cust_eb='Customers', cust_h='Customers', cust_btn='See the customer list', cust_href='our-customers/', prev='Previous', next='Next', cust_aria='Sample customers'),
  'ar': dict(
   root='arabic/', title='أكياس الشفط ذات الاستعمال الواحد وإدارة سوائل المستشفيات — آباديس',
   desc='شركة مخازن طبية آباديس المعرفية: أكياس الشفط ذات الاستعمال الواحد وحلول إدارة السوائل والنفايات المعدية في المستشفيات.',
@@ -54,7 +54,7 @@ T = {
   news_eb='الاخبار', news_h='أحدث أخبار الشركة', news_href='الاخبار/', view='عرض الكل ←', read='مشاهده خبر',
   art_eb='المقالات', art_h='المقالات', art_href='~articles/', art_read='',
   mem_eb='الأعضاء', mem_h='الأعضاء', mem_alt='عضوية آباديس',
-  cust_eb='عملاؤنا', cust_h='عملاؤنا', cust_p='انضم إلى آبادیس رفقة أكثر من 600 مركزًا طبيًا على مستوى إيران...', cust_btn='قائمة العملاء', cust_href='customers/', prev='السابق', next='التالي', cust_aria='نماذج من العملاء'),
+  cust_eb='عملاؤنا', cust_h='عملاؤنا', cust_btn='قائمة العملاء', cust_href='customers/', prev='السابق', next='التالي', cust_aria='نماذج من العملاء'),
 }
 
 
@@ -93,13 +93,16 @@ def build_home(write, lang):
     </div></section>'''
     lines = ''.join(f'<span class="slogan-line" style="--i:{i}">{esc(s)}</span>' for i, s in enumerate(t['slogan']))
     zero = '0' if lang == 'en' else '٠'
-    impact = f'''  <section class="section deep impact" id="impact"><div class="wrap impact-inner">
+    impact = f'''  <section class="section deep impact" id="impact"><div class="wrap">
+      <div class="impact-inner">
       <div class="impact-slogan reveal">{H.IMPACT_MARK}
         <p class="slogan" aria-label="{esc(' '.join(t['slogan']))}">{lines}</p></div>
       <div class="impact-counter reveal" data-impact-counter data-counter="m2" data-locale="{'en-US' if lang == 'en' else 'ar-EG'}">
         {section_mark(p, 'impact', 'sec-mark--lg')}
         <p class="eyebrow">{esc(t['imp_eb'])}</p><strong class="impact-num" aria-live="off">{zero}</strong>
         <span class="impact-unit">{esc(t['imp_unit'])}</span></div>
+      </div>
+      {H.impact_stats(lang)}
     </div></section>'''
     vals = ''.join(f'<div class="card value reveal"><h3>{esc(a)}</h3><p>{esc(b)}</p></div>' for a, b in t['values'])
     checks = ''.join(f'<li>{esc(c)}</li>' for c in t['checks'])
@@ -139,7 +142,7 @@ def build_home(write, lang):
         pic = picture(p, im['src'], im.get('alt') or name, 300) if im else ''
         if pic: lg.append(f'<div class="home-logo" role="group" aria-label="{esc(name)}" title="{esc(name)}" lang="fa">{pic}</div>')
     cust = f'''  <section class="section" id="customers"><div class="wrap">
-      <div class="section-head reveal"><p class="eyebrow">{esc(t['cust_eb'])}</p><h2>{esc(t['cust_h'])}</h2><p>{esc(t['cust_p'])}</p></div>
+      <div class="section-head reveal"><p class="eyebrow">{esc(t['cust_eb'])}</p><h2>{esc(t['cust_h'])}</h2><p>{esc(H.customers_lead(lang))}</p></div>
       <div class="logo-carousel reveal" data-logo-carousel><button type="button" class="logo-carousel-btn logo-carousel-prev" aria-label="{esc(t['prev'])}">‹</button>
         <div class="logo-carousel-track" tabindex="0" aria-label="{esc(t['cust_aria'])}">{''.join(lg)}</div>
         <button type="button" class="logo-carousel-btn logo-carousel-next" aria-label="{esc(t['next'])}">›</button></div>
