@@ -1237,7 +1237,12 @@ html[lang="en"] input, html[lang="en"] select, html[lang="en"] textarea, html[la
 .liner-box .bag-icon { width: min(220px, 60vw); height: auto; display: block; margin-inline: auto; }
 .why-list { columns: 3 220px; column-gap: 26px; }
 .why-list li { break-inside: avoid; }
+.cert-groups { display: flex; flex-direction: column; gap: 32px; }
+#certs, .cert-group { scroll-margin-top: 132px; }
+.cert-group h3 { font-size: 1.2rem; line-height: 1.35; font-weight: 700; margin: 0 0 12px; }
 .cert-wall { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+.cert-item { margin: 0; }
+.cert-item figcaption { font-size: .82rem; line-height: 1.6; margin-top: 6px; text-align: center; }
 .cert-tile { display: block; border-radius: 12px; overflow: hidden; background: #fff; border: 1px solid var(--line); aspect-ratio: 3/4; }
 .cert-tile img { width: 100%; height: 100%; object-fit: contain; display: block; }
 .team--mobile { display: none; }

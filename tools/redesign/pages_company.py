@@ -1,5 +1,5 @@
 """About, dealers, contact extras, CSR/SDG extras, calculator, and footer pages."""
-import re, json
+import re, json, urllib.parse
 from lib import PAGES, SITE, esc, strip_tags, best_img, rewrite_html, href, fa, load
 from layout import page, page_hero
 from render import picture, gallery_link, table, faq_list, aparat, secs, blocks_to_prose
@@ -19,6 +19,124 @@ BAG_ICON = '''<svg class="bag-icon" viewBox="0 0 120 160" role="img" aria-label=
 </svg>'''
 SLOGAN_ABOUT = ['ما به اندازه یک سرانگشت اثر می‌گذاریم،', 'به شما', 'به طبیعت', 'به جهان']   # Abadis-Sign (live)
 TEAM_VIDEOS = {'علیرضا حسنعلی': ('alireza', 'team-member'), 'نوید حسنعلی': ('navid', 'team-member-navid')}
+
+# About «مجوزها و گواهینامه‌ها»: Hamid's order. ISO, CE, export permits and
+# industrial-design filings stay inside the nearest group.
+CERT_GROUPS = {
+    'fa': (('imed', 'IMED'), ('patent', 'ثبت اختراع'), ('operate', 'بهره‌برداری'), ('awards', 'جوایز و مقالات')),
+    'en': (('imed', 'IMED'), ('patent', 'Patents'), ('operate', 'Operating license'), ('awards', 'Awards and Articles')),
+    'ar': (('imed', 'IMED'), ('patent', 'براءات الاختراع'), ('operate', 'رخصة التشغيل'), ('awards', 'الجوائز والمقالات')),
+}
+
+
+def _cert_base(url):
+    path = urllib.parse.unquote(urllib.parse.urlsplit(url).path)
+    return path.rstrip('/').rsplit('/', 1)[-1].lower()
+
+
+def cert_group(url):
+    """Which of the four About certificate groups a file belongs to."""
+    b = _cert_base(url)
+    if 'bahre' in b or 'operation-license' in b or 'بهره' in b:
+        return 'operate'
+    if b.startswith('sabte') or b.startswith('patent') or 'tarh-sanati' in b or b.startswith('industrial'):
+        return 'patent'
+    if (b.startswith('iso') or b.startswith('igc') or b.startswith('ce.') or b == 'ce.jpg'
+            or b.startswith('پروانه') or b.startswith('imed') or b.startswith('صادرات')
+            or b.startswith('export') or b.startswith('filter-license')):
+        return 'imed'
+    return 'awards'
+
+
+def _cert_rank(url):
+    """Inside a group: the named documents first, ISO/CE and طرح صنعتی beside them."""
+    b = _cert_base(url)
+    g = cert_group(url)
+    if g == 'imed':
+        if b.startswith('imed') or b.startswith('پروانه') or b.startswith('filter-license'):
+            return 0
+        if b.startswith('iso') or b.startswith('igc'):
+            return 1
+        if b.startswith('ce.') or b == 'ce.jpg':
+            return 2
+        return 3
+    if g == 'patent' and ('fixator' in b or 'tarh-sanati' in b or b.startswith('industrial')):
+        return 1
+    return 0
+
+
+def _ordered_certs(certs):
+    tagged = []
+    for i, c in enumerate(certs):
+        url = c.get('url') or c.get('href') or ''
+        tagged.append((cert_group(url), _cert_rank(url), i, c))
+    order = {k: n for n, (k, _) in enumerate(CERT_GROUPS['fa'])}
+    tagged.sort(key=lambda t: (order.get(t[0], 9), t[1], t[2]))
+    return tagged
+
+
+_CERT_ANCHOR = re.compile(
+    r'<a\b[^>]*href="[^"]*wp-content/uploads/[^"]+\.(?:jpe?g|png|webp)"[^>]*>[\s\S]*?</a>',
+    re.I)
+
+
+def regroup_i18n_certs(html, lang):
+    """Reorder the EN/AR About license galleries into the same four groups. Idempotent."""
+    spec = {
+        'en': (['<h2>Certificates</h2>', '<h2>Licenses</h2>'], '<h2>Business Partners</h2>'),
+        'ar': (['<h2>التراخيص</h2>', '<h2>الشهادات</h2>'], '<h2>الأعضاء</h2>'),
+    }.get(lang)
+    if not spec or 'class="cert-groups"' in html:
+        return html
+    heads, end = spec
+    found = sorted((html.find(h), h) for h in heads if html.find(h) >= 0)
+    if not found:
+        return html
+    start = found[0][0]
+    end_i = html.find(end, start)
+    if end_i < 0:
+        return html
+    region = html[start:end_i]
+    anchors = _CERT_ANCHOR.findall(region)
+    if not anchors:
+        return html
+    ranked = []
+    for n, a in enumerate(anchors):
+        href = re.search(r'href="([^"]+)"', a).group(1)
+        ranked.append((cert_group(href), _cert_rank(href), n, a, href))
+    order = {k: i for i, (k, _) in enumerate(CERT_GROUPS[lang])}
+    ranked.sort(key=lambda t: (order.get(t[0], 9), t[1], t[2]))
+    buckets = {k: [] for k, _ in CERT_GROUPS[lang]}
+    for g, _r, _n, a, href in ranked:
+        buckets[g].append((a, href))
+    parts = ['<div class="cert-groups">']
+    for key, label in CERT_GROUPS[lang]:
+        items = buckets[key]
+        if not items:
+            continue
+        h3 = f'<h3 lang="en">{esc(label)}</h3>' if key == 'imed' else f'<h3>{esc(label)}</h3>'
+        tiles = []
+        for a, href in items:
+            cap = ''
+            for bit in re.findall(r'>([^<]{1,120})<', a):
+                bit = bit.strip()
+                if bit:
+                    cap = bit
+                    break
+            tiles.append(
+                f'<figure class="cert-item"><a class="cert-tile" href="{esc(href)}" data-gallery="certs">'
+                f'<img src="{esc(href)}" alt="{esc(cap or label)}" loading="lazy" decoding="async"></a>'
+                + (f'<figcaption>{esc(cap)}</figcaption>' if cap else '')
+                + '</figure>'
+            )
+        parts.append(f'<div class="cert-group" id="certs-{key}">{h3}<div class="cert-wall">{"".join(tiles)}</div></div>')
+    parts.append('</div>')
+    new_region = region
+    for a in anchors:
+        new_region = new_region.replace(a, '', 1)
+    for h in heads:
+        new_region = new_region.replace(h, '', 1)
+    return html[:start] + ''.join(parts) + new_region + html[end_i:]
 
 
 def _team_html(p, members, cls):
@@ -54,14 +172,26 @@ def about(write):
     goals_h = f'<h3>{esc(goals[0])}</h3><p>{esc(goals[1])}</p><ul>' + ''.join(f'<li>{esc(x)}</li>' for x in goals[2:]) + '</ul>'
     whys = ''.join(f'<li>{esc(x)}</li>' for x in d['why'][1:])
     from PIL import Image
-    certs = []
-    for n, c in enumerate(d['certs']):
+    grouped = {k: [] for k, _ in CERT_GROUPS['fa']}
+    n = 0
+    for g, _rank, _i, c in _ordered_certs(d['certs']):
         f = SITE / f'assets/img/live/{c["file"]}.webp'
-        if not f.exists(): continue
+        if not f.exists():
+            continue
+        n += 1
         w, h = Image.open(f).size
         src = f'{p}assets/img/live/{c["file"]}.webp'
-        certs.append(f'<a class="cert-tile" href="{src}" data-gallery="certs" data-w="{w}" data-h="{h}" aria-label="نمایش بزرگ‌تر: مجوز و گواهی {n + 1}">'
-                     f'<img src="{src}" width="{w}" height="{h}" alt="مجوز / گواهی‌نامه آبادیس {n + 1}" loading="lazy" decoding="async"></a>')
+        grouped[g].append(
+            f'<a class="cert-tile" href="{src}" data-gallery="certs" data-w="{w}" data-h="{h}" aria-label="نمایش بزرگ‌تر: مجوز و گواهی {fa(n)}">'
+            f'<img src="{src}" width="{w}" height="{h}" alt="مجوز / گواهی‌نامه آبادیس {fa(n)}" loading="lazy" decoding="async"></a>'
+        )
+    cert_blocks = []
+    for key, label in CERT_GROUPS['fa']:
+        if not grouped[key]:
+            continue
+        h3 = f'<h3 lang="en">{esc(label)}</h3>' if key == 'imed' else f'<h3>{esc(label)}</h3>'
+        cert_blocks.append(f'<div class="cert-group reveal" id="certs-{key}">{h3}<div class="cert-wall">{"".join(grouped[key])}</div></div>')
+    certs_html = f'<div class="cert-groups">{"".join(cert_blocks)}</div>'
     pb = [b for b in bl if b.get('sec') == '70f87b0' and b['t'] in ('img', 'html', 'btn')]
     partners = []
     for k in range(0, len(pb) - 2, 3):
@@ -101,8 +231,8 @@ def about(write):
   </div></section>
   <section class="section" id="certs"><div class="wrap">
     <h2 class="reveal" style="margin-bottom:8px">مجوزها و گواهینامه‌ها</h2>
-    <p class="reveal" style="margin-bottom:18px">همهٔ {fa(len(certs))} مجوز، گواهینامه و تقدیرنامهٔ منتشرشده در سایت آبادیس.</p>
-    <div class="cert-wall">{''.join(certs)}</div>
+    <p class="reveal" style="margin-bottom:18px">همهٔ {fa(n)} مجوز، گواهینامه و تقدیرنامهٔ منتشرشده در سایت آبادیس.</p>
+    {certs_html}
   </div></section>
   <section class="section section--alt" id="partners"><div class="wrap">
     <h2 class="reveal" style="margin-bottom:20px">شرکای تجاری</h2>
