@@ -1,7 +1,7 @@
 """About, dealers, contact extras, CSR/SDG extras, calculator, and footer pages."""
 import re, json, urllib.parse
 from lib import PAGES, SITE, esc, strip_tags, best_img, rewrite_html, href, fa, load
-from layout import page, page_hero
+from layout import page, page_hero, section_mark
 from render import picture, gallery_link, table, faq_list, aparat, secs, blocks_to_prose
 
 def B(path): return PAGES[path]['blocks']
@@ -226,7 +226,7 @@ def about(write):
     <div class="card prose reveal">{goals_h}</div>
   </div></section>
   <section class="section section--alt" id="why"><div class="wrap">
-    <h2 class="reveal" style="margin-bottom:20px">چرا آبادیس؟</h2>
+    <h2 class="reveal sec-title" style="margin-bottom:20px">{section_mark(p, 'why')}چرا آبادیس؟</h2>
     <ul class="checks why-list reveal">{whys}</ul>
   </div></section>
   <section class="section" id="certs"><div class="wrap">
@@ -416,7 +416,7 @@ def sdgs(write):
     bl = B('/توسعه-پایدار/')
     body = _sdg_sections(p, bl)
     lead = next((strip_tags(b['html']) for b in bl if b['t'] == 'html'), '')
-    main = f'''{page_hero(p, [('توسعه پایدار', None)], 'توسعه پایدار', esc(lead))}
+    main = f'''{page_hero(p, [('توسعه پایدار', None)], 'توسعه پایدار', esc(lead), mark='sustainable')}
   <section class="section sdg-page" id="sdg"><div class="wrap" style="max-width:980px">
     {sdg_stats('fa')}
     {body}

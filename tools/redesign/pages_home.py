@@ -1,7 +1,7 @@
 """Generate site/index.html — Zagros hero + about / why / calculator / news / articles / customers."""
 from lib import PAGES, esc, fa
 import pages_dial
-from layout import page
+from layout import page, section_mark
 from render import picture
 import pages_posts
 
@@ -484,6 +484,7 @@ def impact_section():
         <p class="slogan" aria-label="{esc(' '.join(SLOGAN))}">{lines}</p>
       </div>
       <div class="impact-counter reveal" data-impact-counter data-counter="m2">
+        {section_mark('', 'impact', 'sec-mark--lg')}
         <p class="eyebrow">اثر آبادیس، همین حالا</p>
         <strong class="impact-num" aria-live="off">۰</strong>
         <span class="impact-unit">لیتر آب صرفه‌جویی‌شده از ابتدای سال ۱۴۰۵ (تخمینی)</span>
@@ -497,7 +498,7 @@ def why_v2():
     vals = ''.join(f'<div class="card value reveal"><h3>{esc(t)}</h3><p>{esc(d)}</p></div>' for t, d in LIVE_VALUES)
     return f'''  <section class="section section--alt" id="why">
     <div class="wrap">
-      <div class="section-head reveal"><p class="eyebrow">چرا آبادیس؟</p><h2>ارزش افزوده‌های کیسه ساکشن یکبار مصرف</h2></div>
+      <div class="section-head reveal has-mark">{section_mark('', 'why')}<div><p class="eyebrow">چرا آبادیس؟</p><h2>ارزش افزوده‌های کیسه ساکشن یکبار مصرف</h2></div></div>
       <div class="grid g-4 values">{vals}</div>
       <div class="split" style="margin-top:28px">
         <div class="reveal"><p>{esc(FACTORY_LEAD)}</p></div>
@@ -526,10 +527,10 @@ def products_v2():
 
 
 def quick_links():
-    return '''  <section class="section quick" id="quick" style="padding-block:28px">
+    return f'''  <section class="section quick" id="quick" style="padding-block:28px">
     <div class="wrap quick-row">
-      <a class="quick-btn" href="calculator/"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M8 7h8M8 11h2M12 11h2M16 11h0M8 15h2M12 15h2M8 18h2M12 18h4"/></svg>محاسبه‌گر صرفه‌جویی</a>
-      <a class="quick-btn" href="csr/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20l6-10 4 6 3-4 5 8z"/><path d="M15 6c0-2 2-3 3-3 0 2-1 3-3 3z"/></svg>نجات زاگرس</a>
+      <a class="quick-btn" href="calculator/">{section_mark('', 'calculator', 'sec-mark--sm')}محاسبه‌گر صرفه‌جویی</a>
+      <a class="quick-btn" href="csr/">{section_mark('', 'zagros', 'sec-mark--sm')}نجات زاگرس</a>
     </div>
   </section>'''
 

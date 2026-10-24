@@ -1,6 +1,6 @@
 """EN / AR home in the same Alireza order (1-10) as the FA home, with live abadis-med.com/en + /arabic text (re-read 2026-10-15)."""
 from lib import esc, load, SITE
-from layout import page
+from layout import page, section_mark
 from render import picture
 import pages_home as H
 
@@ -97,13 +97,14 @@ def build_home(write, lang):
       <div class="impact-slogan reveal">{H.IMPACT_MARK}
         <p class="slogan" aria-label="{esc(' '.join(t['slogan']))}">{lines}</p></div>
       <div class="impact-counter reveal" data-impact-counter data-counter="m2" data-locale="{'en-US' if lang == 'en' else 'ar-EG'}">
+        {section_mark(p, 'impact', 'sec-mark--lg')}
         <p class="eyebrow">{esc(t['imp_eb'])}</p><strong class="impact-num" aria-live="off">{zero}</strong>
         <span class="impact-unit">{esc(t['imp_unit'])}</span></div>
     </div></section>'''
     vals = ''.join(f'<div class="card value reveal"><h3>{esc(a)}</h3><p>{esc(b)}</p></div>' for a, b in t['values'])
     checks = ''.join(f'<li>{esc(c)}</li>' for c in t['checks'])
     why = f'''  <section class="section section--alt" id="why"><div class="wrap">
-      <div class="section-head reveal"><p class="eyebrow">{esc(t['why_eb'])}</p><h2>{esc(t['why_h'])}</h2></div>
+      <div class="section-head reveal has-mark">{section_mark(p, 'why')}<div><p class="eyebrow">{esc(t['why_eb'])}</p><h2>{esc(t['why_h'])}</h2></div></div>
       <div class="grid g-4 values">{vals}</div>
       <div class="split" style="margin-top:28px"><div class="reveal"><p>{esc(t['factory'])}</p></div><ul class="checks reveal">{checks}</ul></div>
     </div></section>'''
@@ -112,8 +113,8 @@ def build_home(write, lang):
       <div class="section-head reveal"><p class="eyebrow">{esc(t['prod_eb'])}</p><h2>{esc(t['prod_h'])}</h2><p><a class="more-link" style="margin:0" href="{_h(t, p, t['prod_href'])}">{esc(t['prod_all'])}</a></p></div>
       <div class="mini-grid">{cards}</div></div></section>'''
     quick = f'''  <section class="section quick" id="quick" style="padding-block:28px"><div class="wrap quick-row">
-      <a class="quick-btn" href="{_h(t, p, t['calc_href'])}"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M8 7h8M8 11h2M12 11h2M8 15h2M12 15h2M8 18h2M12 18h4"/></svg>{esc(t['calc'])}</a>
-      <a class="quick-btn" href="{_h(t, p, t['zag_href'])}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20l6-10 4 6 3-4 5 8z"/><path d="M15 6c0-2 2-3 3-3 0 2-1 3-3 3z"/></svg>{esc(t['zag'])}</a>
+      <a class="quick-btn" href="{_h(t, p, t['calc_href'])}">{section_mark(p, 'calculator', 'sec-mark--sm')}{esc(t['calc'])}</a>
+      <a class="quick-btn" href="{_h(t, p, t['zag_href'])}">{section_mark(p, 'zagros', 'sec-mark--sm')}{esc(t['zag'])}</a>
     </div></section>'''
     def pc(x, label):
         href = x['href'].split('abadis-med.com/', 1)[1]

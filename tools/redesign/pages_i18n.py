@@ -192,7 +192,13 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
         wrap = '' if ('id="dealerList"' in body or 'class="sdg-stats"' in body) else ' prose reveal'
         sec = f'''
   <section class="section"><div class="wrap{wrap}">{body}</div></section>''' if body.strip() else ''
-        main = f'''{page_hero(p, trail, esc(title), esc(desc), lang=lang)}{sec}{after}'''
+        _hero_mark = {
+            'sdgs/': 'sustainable',
+            'calculator/': 'calculator',
+            'الحوسبة/': 'calculator',
+            'csr/': 'zagros',
+        }.get(site_path)
+        main = f'''{page_hero(p, trail, esc(title), esc(desc), lang=lang, mark=_hero_mark)}{sec}{after}'''
     html = page(p, cur_key, title, desc, main, lang=lang, fa_path=fa_path, canonical_path=can, scripts=extra_js)
     write(rel if rel.endswith('.html') else rel + 'index.html', html)
     return rel
