@@ -185,8 +185,6 @@
     </div></div></div>
   </section>
 
-  <p class="foot-note"><b>*</b> محاسبات بر اساس فرمول‌های محاسبه‌گر فعلی آبادیس</p>
-
   <section class="cta-band">
     <h2>برای محاسبه دقیق مرکز درمانی خود با ما صحبت کنید</h2>
     <p>کارشناسان فروش مخازن طبی آبادیس آماده پاسخ‌گویی به پرسش‌های شما هستند.</p>
@@ -280,7 +278,7 @@
           sub.tubs.innerHTML = s.W > 0 ? '≈ ' + fa(s.W / 200) + ' وان حمام ۲۰۰ لیتری (تقریبی)' : '&nbsp;';
           sub.read.innerHTML = s.C >= 1e6 ? '≈ ' + A.readableToman(s.C) : '&nbsp;';
           sub.shifts.innerHTML = s.H > 0 ? '≈ ' + fa(s.H / 8) + ' شیفت کاری ۸ ساعته' : '&nbsp;';
-          const note = '<span class="note">* محاسبات بر اساس فرمول‌های محاسبه‌گر فعلی آبادیس</span>';
+          const note = '';
           if (kind === 'surgery') {
             sum.innerHTML = s.disp.n > 0 ? 'با <b>' + fa(s.disp.n) + '</b> عمل جراحی در سال، کفهٔ آبادیس <b>' + fa(s.W) + '</b> لیتر آب، <b>' + fa(s.C) + '</b> تومان و <b>' + fa(s.H) + '</b> ساعت سنگین‌تر است.' + note : 'با اسکرول، تعداد عمل جراحی در سال را بالا ببرید.' + note;
           } else {

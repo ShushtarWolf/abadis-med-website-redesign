@@ -336,7 +336,6 @@ def calculator(write):
         <div class="calc-out">{outs('cb')}</div>
       </form>
     </div>
-    <p class="note" style="margin-top:18px">ضرایب محاسبه همان ضرایب محاسبه‌گر سایت فعلی آبادیس است.</p>
   </div></section>
   <section class="section" style="padding-top:0"><div class="wrap"><div class="doc-links"><a href="../products/suction-bag/">کیسه ساکشن یکبار مصرف</a><a href="../sdgs/">توسعه پایدار</a><a href="../contact/">ارتباط با ما</a></div></div></section>'''
     js = '''<script>

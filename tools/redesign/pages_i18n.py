@@ -105,22 +105,15 @@ CALC_T = {
   'en': dict(by_s='By surgeries per year', by_b='By number of beds', n='Operations per year', a='Operating room beds', b='ICU|CCU beds',
     cur='Cost currency', none='Hide cost', irt='IRT (toman, Iranian calculator unit cost)', custom='Custom unit cost (your currency)',
     unit='Cost per cleaning cycle', code='Currency code (e.g. USD)', water='Water saved (litres/year)', cost='Washing & disinfection cost saved', hours='Staff time saved (hours/year)',
-    mh='Method and data source',
-    m=[('Formula (surgeries n)', 'water = n × 1.6 × 9.3 L · cost = n × 2.5 × unit cost · staff time = n × 1.7 × 2.2 × 7.1 ÷ 60 h'),
-       ('Formula (beds: OR a, ICU|CCU b)', 'water = (254a + 67b) × 1.6 × 9.3 · cost = (200a + 50b) × 2.5 × unit cost · time = (254a + 67b) × 1.7 × 2.2 × 7.1 ÷ 60'),
-       ('Data source', 'Coefficients are taken unchanged from the calculator on abadis-med.com; the Iranian unit cost is 85,000 IRT. [Scientific basis of the coefficients: pending from the company]')]),
+    ),
   'ar': dict(by_s='بحسب عدد العمليات سنوياً', by_b='بحسب عدد الأسِرّة', n='عدد العمليات الجراحية سنوياً', a='أسِرّة غرفة العمليات', b='أسِرّة ICU|CCU',
     cur='عملة التكلفة', none='إخفاء التكلفة', irt='IRT (تومان، تكلفة الوحدة في الحاسبة الإيرانية)', custom='تكلفة وحدة مخصّصة (بعملتك)',
     unit='تكلفة دورة التنظيف الواحدة', code='رمز العملة (مثل USD)', water='توفير الماء (لتر/سنة)', cost='توفير تكلفة الغسيل والتعقيم', hours='توفير وقت الكادر (ساعة/سنة)',
-    mh='طريقة الحساب ومصدر البيانات',
-    m=[('المعادلة (العمليات n)', 'الماء = n × 1.6 × 9.3 لتر · التكلفة = n × 2.5 × تكلفة الوحدة · الوقت = n × 1.7 × 2.2 × 7.1 ÷ 60 ساعة'),
-       ('المعادلة (الأسرّة: العمليات a، ICU|CCU b)', 'الماء = (254a + 67b) × 1.6 × 9.3 · التكلفة = (200a + 50b) × 2.5 × تكلفة الوحدة · الوقت = (254a + 67b) × 1.7 × 2.2 × 7.1 ÷ 60'),
-       ('مصدر البيانات', 'المعاملات مأخوذة دون تغيير من حاسبة موقع abadis-med.com؛ تكلفة الوحدة في إيران ٨٥٬٠٠٠ تومان. [الأساس العلمي للمعاملات: بانتظار البيانات من الشركة]')]),
+    ),
 }
 
 def calc_widget(lang):
     T = CALC_T[lang]
-    m = ''.join(f'<div><dt>{esc(k)}</dt><dd>{esc(v)}</dd></div>' for k, v in T['m'])
     return f'''<div class="calc-i18n card" data-calc-i18n style="padding:22px">
   <fieldset class="qf-field" style="border:0;padding:0;margin:0 0 14px"><legend class="sr-only">{esc(T['by_s'])}</legend>
     <label><input type="radio" name="ci-mode" value="surgery" checked> {esc(T['by_s'])}</label>
@@ -137,7 +130,6 @@ def calc_widget(lang):
     <tr id="ci-cost-row" hidden><th scope="row">{esc(T['cost'])}</th><td id="ci-cost">0</td></tr>
     <tr><th scope="row">{esc(T['hours'])}</th><td id="ci-hours">0</td></tr>
   </tbody></table>
-  <aside class="calc-method"><h3>{esc(T['mh'])}</h3><dl>{m}</dl></aside>
 </div>'''
 
 

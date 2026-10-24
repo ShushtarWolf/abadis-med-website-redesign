@@ -97,6 +97,8 @@ def adapt(html, p, here):
         return 'class="' + ' '.join(toks) + '"'
     body = re.sub(r'class="([^"]*)"', cls, body)
     body = body.replace('class="calc calc--dark"', 'class="calc calc--dark" data-tone="dark"')
+    from pages_dial import strip_formula_notes
+    body = strip_formula_notes(body)
     body = re.sub(r'href="https://abadis-med\.com/ارتباط-با-ما/" target="_blank" rel="noopener"', f'href="{p}contact/"', body)
     return scoped, body, scripts
 
@@ -107,6 +109,8 @@ JS_CUTS = [  # their own header/theme handling: replaced by site.js (keeps noir 
 def patch_js(src, dst):
     s = src.read_text(encoding='utf-8'); n0 = len(s)
     for a, b in JS_CUTS: s = re.sub(a, b, s, flags=re.S)
+    from pages_dial import strip_formula_notes
+    s = strip_formula_notes(s)
     assert len(s) < n0, src
     dst.parent.mkdir(parents=True, exist_ok=True); dst.write_text(s, encoding='utf-8')
 

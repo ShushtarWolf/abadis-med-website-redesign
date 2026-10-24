@@ -9,10 +9,23 @@ SRC = SITE / 'dial-practical'
 OUT = SITE / 'assets' / 'dial'
 DESC = 'محاسبه‌گر صرفه‌جویی آبادیس: صرفه‌جویی در مصرف آب، هزینه شست‌وشو و ضدعفونی و زمان کادر درمان.'
 
+_NOTE = 'محاسبات بر اساس فرمول‌های محاسبه‌گر فعلی آبادیس'
+
+def strip_formula_notes(s):
+    """Drop visible formula explanations. The arithmetic in the calculator script stays."""
+    if not s:
+        return s
+    s = re.sub(r'<span class="(?:sum-note|note)">\*\s*' + re.escape(_NOTE) + r'</span>', '', s)
+    s = re.sub(r'<p class="note">\*\s*' + re.escape(_NOTE) + r'</p>', '', s)
+    s = re.sub(r'<p>\*\s*' + re.escape(_NOTE) + r'</p>', '', s)
+    s = re.sub(r'\s*<p class="foot-note"><b>\*</b>\s*' + re.escape(_NOTE) + r'</p>', '', s)
+    s = re.sub(r'\s*<aside class="calc-method"[\s\S]*?</aside>', '', s)
+    return s
+
 def _parts():
-    h = (SRC / 'index.html').read_text(encoding='utf-8')
+    h = strip_formula_notes((SRC / 'index.html').read_text(encoding='utf-8'))
     css = re.search(r'<style[^>]*>(.*?)</style>', h, re.S).group(1)
-    js = [b for b in re.findall(r'<script>(.*?)</script>', h, re.S) if 'Abadis' in b][0]
+    js = strip_formula_notes([b for b in re.findall(r'<script>(.*?)</script>', h, re.S) if 'Abadis' in b][0])
     main = h[h.index('<main'):h.index('</main>')]
     sec = lambda sid: re.search(r'(<section class="calc dial-sec" id="%s".*?</section>)\s*(?=<section|\Z)' % sid, main + '<section', re.S).group(1)
     intro = re.search(r'<section class="intro".*?</section>', main, re.S).group(0)
@@ -36,18 +49,6 @@ def scripts(p):
 def head(p):
     return f'<link rel="stylesheet" href="{p}assets/dial/dial.css">'
 
-METHOD_FA = '''<aside class="calc-method" id="calc-method" aria-labelledby="calc-method-h">
-      <h3 id="calc-method-h">روش محاسبه و منبع داده</h3>
-      <dl>
-        <div><dt>فرمول (بر اساس تعداد عمل در سال، n)</dt>
-          <dd>آب = <code>n × 1.6 × 9.3</code> لیتر · هزینه = <code>n × 2.5 × 85,000</code> تومان · زمان کادر = <code>n × 1.7 × 2.2 × 7.1 ÷ 60</code> ساعت</dd></div>
-        <div><dt>فرمول (بر اساس تخت: اتاق عمل a، ICU|CCU b)</dt>
-          <dd>آب = <code>(254a + 67b) × 1.6 × 9.3</code> · هزینه = <code>(200a + 50b) × 2.5 × 85,000</code> · زمان = <code>(254a + 67b) × 1.7 × 2.2 × 7.1 ÷ 60</code></dd></div>
-        <div><dt>منبع داده</dt>
-          <dd>ضرایب عیناً از محاسبه‌گر فعلی سایت abadis-med.com برداشته شده‌اند. <span class="ph-data">[شرح علمی ضرایب و منبع مطالعه: در انتظار اطلاعات از شرکت]</span></dd></div>
-      </dl>
-    </aside>'''
-
 def home_section():
     css, js, intro, c1, c2, cta = _parts()
     _assets(css, js)
@@ -58,7 +59,6 @@ def home_section():
       {intro.replace('<section class="intro" id="top">', '<section class="intro home-dial-intro">').replace('<h1>', '<h2>').replace('</h1>', '</h2>')}
       {c1}
       {c2}
-      {METHOD_FA}
       <p class="home-dial-more"><a class="more-link" href="calculator/">صفحهٔ محاسبه‌گر ←</a></p>
     </div>
   </section>'''
@@ -68,6 +68,6 @@ def build(write):
     _assets(css, js)
     p = '../'
     cta = cta.replace('href="../contact/" target="_blank" rel="noopener"', 'href="../contact/"')
-    main = f'<div class="dp-embed dp-page">\n{intro}\n{c1}\n{c2}\n{METHOD_FA}\n{cta}\n</div>'
+    main = f'<div class="dp-embed dp-page">\n{intro}\n{c1}\n{c2}\n{cta}\n</div>'
     write('calculator/index.html', page(p, 'calculator', 'محاسبه‌گر صرفه‌جویی', DESC, main,
           extra_head=head(p) + f'\n<link rel="stylesheet" href="calc-page.css">', scripts=scripts(p)))
