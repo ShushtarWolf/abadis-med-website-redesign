@@ -397,12 +397,7 @@ def sdgs(write):
 # ------------------------------------------------------------------ CSR (Zagros hand-built + مسئولیت اجتماعی / SDG summary blocks)
 def csr(write):
     p = '../'
-    sdg = B('/توسعه-پایدار/'); soc = B('/مسئولیت-اجتماعی/')
-    sdg_html = f'''  <section class="section section--alt" id="sdg"><div class="wrap" style="max-width:980px">
-    <span class="eyebrow">توسعه پایدار</span>
-    {_sdg_sections(p, sdg)}
-    <p class="reveal" style="margin-top:28px"><a class="more-link" href="../sdgs/">صفحهٔ توسعه پایدار ←</a></p>
-  </div></section>'''
+    soc = B('/مسئولیت-اجتماعی/')
     acts = []
     videos = {'1290544': ('P1YTe', 'فعالیت های مخازن طبی آبادیس در بحران کرونا'), '875d853': ('sSfGv', 'جشن روز پرستار')}
     for sid, bs in secs(soc):
@@ -422,7 +417,7 @@ def csr(write):
     {''.join(acts)}
   </div></section>'''
     f = SITE / 'csr/index.html'; s = f.read_text(encoding='utf-8')
-    block = '<!-- phase2:csr -->\n' + act_html + '\n' + sdg_html + '\n<!-- /phase2:csr -->\n'
+    block = '<!-- phase2:csr -->\n' + act_html + '\n<!-- /phase2:csr -->\n'
     if '<!-- phase2:csr -->' in s: s = re.sub(r'<!-- phase2:csr -->.*?<!-- /phase2:csr -->\n', lambda m: block, s, flags=re.S)
     else: s = s.replace('</main>', block + '</main>', 1)
     if 'id="lightbox"' not in s:
