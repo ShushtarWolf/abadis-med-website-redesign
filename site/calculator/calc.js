@@ -16,16 +16,16 @@
     return fa(t) + ' تومان';
   }
 
-  /* ---------- formulas (exactly as on the live abadis-med.com calculator) ---------- */
+  /* ---------- formulas (Alireza, فرمول محاسبه گر: water × 9.971; surgery staff 1.6; beds cost OR 254 / ICU 65; beds staff 1.7) ---------- */
   const F = {
     surgery: ({ n }) => ({
-      water: n * 1.6 * 9.3,
+      water: n * 1.6 * 9.971,
       cost: n * 2.5 * 85000,
-      hours: n * 1.7 / 60 * 2.2 * 7.1,
+      hours: n * 1.6 * 2.2 * 7.1 / 60,
     }),
     beds: ({ a, b }) => ({
-      water: ((a * 254) + (b * 67)) * 1.6 * 9.3,
-      cost: ((a * 200) + (b * 50)) * 2.5 * 85000,
+      water: ((a * 254) + (b * 67)) * 1.6 * 9.971,
+      cost: ((a * 254) + (b * 65)) * 2.5 * 85000,
       hours: ((a * 254) + (b * 67)) * 1.7 * 2.2 * 7.1 / 60,
     }),
   };
@@ -272,7 +272,7 @@
   const calc2 = makeCalc(c2Root, {
     inputs: [A_IN, B_IN],
     formula: F.beds,
-    fractions: ({ a, b }) => ({ water: (a * 254 + b * 67) / (321 * 700), cost: (a * 200 + b * 50) / (250 * 700), hours: (a * 254 + b * 67) / (321 * 700) }),
+    fractions: ({ a, b }) => ({ water: (a * 254 + b * 67) / (321 * 700), cost: (a * 254 + b * 65) / ((254 + 65) * 700), hours: (a * 254 + b * 67) / (321 * 700) }),
     targets: (p, t, api) => {
       const st = api.state;
       const rawA = rawValue(A_IN, p), rawB = rawValue(B_IN, p);
