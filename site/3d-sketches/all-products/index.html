@@ -122,7 +122,7 @@
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr 1fr;
       gap: 14px;
-      min-height: 0;
+      min-height: 760px; /* guarantee room for 2× viewport rows */
     }
     .stylePanel {
       background: var(--panel-bg);
@@ -131,6 +131,7 @@
       position: relative;
       overflow: hidden;
       display: flex; flex-direction: column;
+      min-height: 360px;
       background-image:
         linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
         linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
@@ -144,11 +145,32 @@
     .panelTitleFa { font-size: 13.5px; font-weight: 900; color: var(--text-main); }
     .panelTitleEn { font-size: 11.5px; font-weight: 700; color: var(--accent); direction: ltr; }
     .viewportBox {
-      flex: 1; position: relative; width: 100%; height: 100%; min-height: 0;
+      flex: 1 1 auto; position: relative; width: 100%;
+      min-height: 360px; height: 100%;
       display: flex; align-items: center; justify-content: center;
     }
+    .topDownInset.viewportBox,
+    #vpTopInset.viewportBox,
+    .topDownInset {
+      min-height: 0 !important;
+      height: 118px;
+    }
     .viewportBox canvas {
-      width: 100% !important; height: 100% !important; display: block;
+      width: 100% !important; height: 100% !important;
+      display: block;
+    }
+    .stylesGrid > .stylePanel > .viewportBox canvas {
+      min-height: 360px;
+    }
+    .topDownInset canvas, #vpTopInset canvas {
+      min-height: 0 !important;
+    }
+    .viewportError {
+      position: absolute; inset: 12px; z-index: 20;
+      background: rgba(120, 20, 20, 0.92); color: #fff;
+      border-radius: 10px; padding: 12px 14px;
+      font-size: 12px; font-weight: 700; white-space: pre-wrap;
+      overflow: auto; pointer-events: none;
     }
     .topDownInset {
       position: absolute; bottom: 10px; left: 10px;
@@ -317,7 +339,7 @@
   <script type="module">
     import * as THREE from 'three';
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-    import { CATEGORIES, PRODUCTS, buildProductModel } from './all-products-models.js';
+    import { CATEGORIES, PRODUCTS, buildProductModel, preloadPhotoTextures } from './all-products-models.js';
 
     const params = new URLSearchParams(window.location.search);
     if (params.get('capture') === '1') {
@@ -327,15 +349,40 @@
       document.body.classList.add('dark');
     }
 
+    function showViewportError(container, err) {
+      let el = container.querySelector('.viewportError');
+      if (!el) {
+        el = document.createElement('div');
+        el.className = 'viewportError';
+        container.appendChild(el);
+      }
+      el.textContent = String(err && err.stack ? err.stack : err);
+      console.error('[Abadis 3D Viewer]', err);
+    }
+    function clearViewportError(container) {
+      const el = container.querySelector('.viewportError');
+      if (el) el.remove();
+    }
+
     function createStage(container, isOrtho = false) {
-      const w = container.clientWidth || 660;
-      const h = container.clientHeight || 360;
+      // Force a usable layout size even before flex settles
+      const isInset = container.classList.contains('topDownInset') || container.id === 'vpTopInset';
+      const minW = isInset ? 64 : 320;
+      const minH = isInset ? 64 : 360;
+      const w = Math.max(container.clientWidth || 0, minW);
+      const h = Math.max(container.clientHeight || 0, minH);
       const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-      renderer.setSize(w, h);
+      renderer.setSize(w, h, false);
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1.12;
+      renderer.domElement.style.width = '100%';
+      renderer.domElement.style.height = '100%';
+      if (!(container.classList.contains('topDownInset') || container.id === 'vpTopInset')) {
+        renderer.domElement.style.minHeight = '360px';
+      }
+      renderer.domElement.style.display = 'block';
       container.insertBefore(renderer.domElement, container.firstChild);
 
       const scene = new THREE.Scene();
@@ -355,29 +402,60 @@
 
       const rootHolder = new THREE.Group();
       scene.add(rootHolder);
-      return { container, renderer, scene, camera, rootHolder };
+      const stage = { container, renderer, scene, camera, rootHolder, isOrtho };
+
+      const resize = () => {
+        const isInset = container.classList.contains('topDownInset') || container.id === 'vpTopInset';
+        const nw = Math.max(container.clientWidth || 0, isInset ? 64 : 320);
+        const nh = Math.max(container.clientHeight || 0, isInset ? 64 : 360);
+        renderer.setSize(nw, nh, false);
+        if (camera.isPerspectiveCamera) {
+          camera.aspect = nw / nh;
+        } else {
+          const halfH = Math.abs(camera.top - camera.bottom) / 2 || 0.13;
+          const halfW = halfH * (nw / nh);
+          camera.left = -halfW; camera.right = halfW;
+        }
+        camera.updateProjectionMatrix();
+        renderer.render(scene, camera);
+      };
+      stage.resize = resize;
+      if (typeof ResizeObserver !== 'undefined') {
+        const ro = new ResizeObserver(() => resize());
+        ro.observe(container);
+        stage._ro = ro;
+      }
+      window.addEventListener('resize', resize);
+      // Second pass after layout paints
+      requestAnimationFrame(() => requestAnimationFrame(resize));
+      return stage;
     }
 
     const stCad = createStage(document.getElementById('vpCad'), false);
     const stStudio = createStage(document.getElementById('vpStudio'), false);
     const stTop = createStage(document.getElementById('vpTopInset'), true);
     const stCallout = createStage(document.getElementById('vpCallout'), false);
+    const ALL_STAGES = [stCad, stStudio, stTop, stCallout];
 
     const controls = new OrbitControls(stStudio.camera, stStudio.renderer.domElement);
     controls.enableDamping = true;
 
-    function fitCameraToObject(camera, obj, viewVec, zoomScale = 1.28) {
+    function fitCameraToObject(camera, obj, viewVec, zoomScale = 1.28, orthoStage = null) {
       const box = new THREE.Box3().setFromObject(obj);
       const center = box.getCenter(new THREE.Vector3());
       const size = box.getSize(new THREE.Vector3());
       const maxDim = Math.max(size.x, size.y, size.z, 0.08);
       obj.position.sub(center);
-      const dist = (maxDim * zoomScale) / (2 * Math.tan(( (camera.fov || 34) * Math.PI ) / 360));
+      const fov = camera.fov || 34;
+      const dist = (maxDim * zoomScale) / (2 * Math.tan((fov * Math.PI) / 360));
       const dir = viewVec.clone().normalize();
       camera.position.copy(dir.multiplyScalar(dist));
       camera.lookAt(0, 0, 0);
       if (camera.isOrthographicCamera) {
-        const aspect = stTop.container.clientWidth / stTop.container.clientHeight;
+        const st = orthoStage || stTop;
+        const cw = Math.max(st.container.clientWidth || 0, 100);
+        const ch = Math.max(st.container.clientHeight || 0, 100);
+        const aspect = cw / ch;
         const half = maxDim * 0.65;
         camera.left = -half * aspect; camera.right = half * aspect;
         camera.top = half; camera.bottom = -half;
@@ -387,8 +465,8 @@
 
     function drawCallouts(prod, stage) {
       const svg = document.getElementById('calloutSvg');
-      const w = stage.container.clientWidth || 660;
-      const h = stage.container.clientHeight || 360;
+      const w = Math.max(stage.container.clientWidth || 0, 320);
+      const h = Math.max(stage.container.clientHeight || 0, 360);
       svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
       svg.innerHTML = '';
       const isDark = document.body.classList.contains('dark');
@@ -401,12 +479,10 @@
         const p3 = new THREE.Vector3(...c.target).project(stage.camera);
         const x1 = (p3.x * 0.5 + 0.5) * w;
         const y1 = (-p3.y * 0.5 + 0.5) * h;
-
         const side = idx % 2 === 0 ? 1 : -1;
         const row = Math.floor(idx / 2);
         const x2 = side > 0 ? w - 135 : 135;
         const y2 = row === 0 ? 78 : h - 68;
-
         const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
         g.innerHTML = `
           <polyline points="${x1.toFixed(1)},${y1.toFixed(1)} ${(x1*0.45+x2*0.55).toFixed(1)},${y2.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}"
@@ -426,6 +502,18 @@
     async function renderProductCardState(productId, isDark = false) {
       currentProdId = productId;
       document.body.classList.toggle('dark', !!isDark);
+      ALL_STAGES.forEach(st => clearViewportError(st.container));
+
+      // Never block forever on textures — 2.5s timeout then solid fallback colors
+      try {
+        await Promise.race([
+          preloadPhotoTextures(THREE),
+          new Promise((_, rej) => setTimeout(() => rej(new Error('texture preload timeout')), 2500)),
+        ]);
+      } catch (err) {
+        console.warn('Photo texture preload skipped:', err);
+      }
+
       const idx = PRODUCTS.findIndex(p => p.id === productId);
       const prod = PRODUCTS[idx >= 0 ? idx : 0];
       const cat = CATEGORIES.find(c => c.id === prod.catId) || CATEGORIES[0];
@@ -452,40 +540,48 @@
         if (refImg.complete) resolve();
       });
 
-      // Clear & rebuild all 4 3D stages
-      [stCad, stStudio, stTop, stCallout].forEach(st => {
+      ALL_STAGES.forEach(st => {
         while (st.rootHolder.children.length) st.rootHolder.remove(st.rootHolder.children[0]);
+        st.resize();
       });
 
-      const mCad = buildProductModel(THREE, prod.id, { isCad: true, isDark });
-      stCad.rootHolder.add(mCad);
-      fitCameraToObject(stCad.camera, mCad, new THREE.Vector3(0.75, 0.42, 0.95), 1.26);
+      try {
+        const mCad = buildProductModel(THREE, prod.id, { isCad: true, isDark });
+        stCad.rootHolder.add(mCad);
+        fitCameraToObject(stCad.camera, mCad, new THREE.Vector3(0.75, 0.42, 0.95), 1.26);
 
-      const mStudio = buildProductModel(THREE, prod.id, { isCad: false, isDark });
-      stStudio.rootHolder.add(mStudio);
-      fitCameraToObject(stStudio.camera, mStudio, new THREE.Vector3(-0.78, 0.48, 0.92), 1.24);
-      controls.target.set(0, 0, 0);
-      controls.update();
+        const mStudio = buildProductModel(THREE, prod.id, { isCad: false, isDark });
+        stStudio.rootHolder.add(mStudio);
+        fitCameraToObject(stStudio.camera, mStudio, new THREE.Vector3(-0.78, 0.48, 0.92), 1.24);
+        controls.target.set(0, 0, 0);
+        controls.update();
 
-      const mTop = buildProductModel(THREE, prod.id, { isCad: false, isDark });
-      stTop.rootHolder.add(mTop);
-      fitCameraToObject(stTop.camera, mTop, new THREE.Vector3(0.01, 1.0, 0.01), 1.25);
+        const mTop = buildProductModel(THREE, prod.id, { isCad: false, isDark });
+        stTop.rootHolder.add(mTop);
+        fitCameraToObject(stTop.camera, mTop, new THREE.Vector3(0.01, 1.0, 0.01), 1.25, stTop);
 
-      const mCallout = buildProductModel(THREE, prod.id, { isCad: false, isDark });
-      mCallout.rotation.y = 0.35;
-      stCallout.rootHolder.add(mCallout);
-      fitCameraToObject(stCallout.camera, mCallout, new THREE.Vector3(0.55, 0.32, 1.0), 1.38);
+        const mCallout = buildProductModel(THREE, prod.id, { isCad: false, isDark });
+        mCallout.rotation.y = 0.35;
+        stCallout.rootHolder.add(mCallout);
+        fitCameraToObject(stCallout.camera, mCallout, new THREE.Vector3(0.55, 0.32, 1.0), 1.38);
 
-      [stCad, stStudio, stTop, stCallout].forEach(st => st.renderer.render(st.scene, st.camera));
-      drawCallouts(prod, stCallout);
+        ALL_STAGES.forEach(st => st.renderer.render(st.scene, st.camera));
+        drawCallouts(prod, stCallout);
+        window.__LAST_RENDER_OK = true;
+        window.__LAST_RENDER_ERROR = null;
+      } catch (err) {
+        window.__LAST_RENDER_OK = false;
+        window.__LAST_RENDER_ERROR = String(err && err.stack ? err.stack : err);
+        ALL_STAGES.forEach(st => showViewportError(st.container, err));
+      }
       return true;
     }
 
     window.renderProductCardState = renderProductCardState;
     window.PRODUCTS = PRODUCTS;
     window.CATEGORIES = CATEGORIES;
+    window.__THREE_OK = !!THREE && !!THREE.WebGLRenderer;
 
-    // UI Controls setup
     const catSelect = document.getElementById('catSelect');
     const prodSelect = document.getElementById('prodSelect');
     catSelect.innerHTML = `<option value="all">همه دسته‌ها (All 7 Categories)</option>` +
@@ -521,9 +617,14 @@
     });
 
     const initProd = params.get('product') || 'p01';
-    renderProductCardState(initProd, document.body.classList.contains('dark')).then(() => {
-      window.__VIEWER_READY = true;
-    });
+    renderProductCardState(initProd, document.body.classList.contains('dark'))
+      .then(() => { window.__VIEWER_READY = true; })
+      .catch((err) => {
+        window.__VIEWER_READY = true;
+        window.__LAST_RENDER_OK = false;
+        window.__LAST_RENDER_ERROR = String(err);
+        ALL_STAGES.forEach(st => showViewportError(st.container, err));
+      });
 
     if (params.get('capture') !== '1') {
       const animate = () => {
@@ -534,5 +635,6 @@
       animate();
     }
   </script>
+</script>
 </body>
 </html>

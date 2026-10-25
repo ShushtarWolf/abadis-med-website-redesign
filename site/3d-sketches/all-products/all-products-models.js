@@ -143,7 +143,7 @@ export const PRODUCTS = [
     faName: 'لوله رابط ساکشن پزشکی (Suction Connecting Tube)',
     enName: 'Medical PVC Suction Connecting Tube with Conical Ends',
     dims: 'ID 6.5 mm / OD 9.5 mm × L 1.8m / 2.1m / 3.0m',
-    material: 'DEHP-Free Medical Grade Transparent PVC (Shore A 72)',
+    material: 'DEHP-Free Clear Frosted PVC Hose (Shore A 72) + Bright Blue Ribbed Funnel Connectors',
     specFa: 'لوله شفاف و انعطاف‌پذیر مقاوم در برابر کولاپس در فشار منفی بالا، مجهز به سرکانکتورهای مخروطی شیاردار استاندارد در دو سر',
     specEn: 'Collapse-resistant striated medical PVC tubing coils with universal ribbed female funnel connectors on both ends',
     refImg: './assets/refs/p09-ref.png',
@@ -159,7 +159,7 @@ export const PRODUCTS = [
     faName: 'فینگر تیپ / رابط کنترل خلا ساکشن (Finger-Tip Adapter)',
     enName: 'Ergonomic Finger-Tip Vacuum Control Adapter',
     dims: 'L 72 mm | Stepped Ø5–11 mm Cones',
-    material: 'Medical Grade PE/PP Copolymer (Teal / Translucent)',
+    material: 'Medical Grade PE/PP Copolymer (Deep Royal Blue Injection-Molded)',
     specFa: 'رابط ارگونومیک مجهز به دریچه انگشتی جهت کنترل لحظه‌ای و متناوب مکش توسط جراح یا پرستار',
     specEn: 'Inline thumb-vented suction control adapter with stepped barbed male cone & ribbed funnel female end',
     refImg: './assets/refs/p10-ref.png',
@@ -413,6 +413,8 @@ export const PRODUCTS = [
 ];
 
 let _cachedTex = null;
+let _photoTexPromise = null;
+
 function getSharedTextures(THREE) {
   if (_cachedTex) return _cachedTex;
   const size = 256;
@@ -481,7 +483,7 @@ function getSharedTextures(THREE) {
   // Needle
   dctx.strokeStyle = '#d12626'; dctx.lineWidth = 4;
   dctx.beginPath(); dctx.moveTo(128, 128); dctx.lineTo(68, 78); dctx.stroke();
-  dctx.fillStyle = '#05686b'; dctx.beginPath(); dctx.arc(128, 128, 10, 0, Math.PI*2); dctx.fill();
+  dctx.fillStyle = '#05686b'; dctx.beginPath(); dctx.arc(128, 128, 10, 0, Math.PI * 2); dctx.fill();
   const dialTex = new THREE.CanvasTexture(dialCanvas);
   dialTex.colorSpace = THREE.SRGBColorSpace;
 
@@ -493,8 +495,55 @@ function getSharedTextures(THREE) {
     scalePC: makeScale(2000, 10, 'rgba(5, 95, 100, 0.85)'),
     scale150: makeScale(150, 6, 'rgba(5, 95, 100, 0.85)'),
     dialTex,
+    // Photo-derived material maps (filled by preloadPhotoTextures)
+    pvcHoseClear: null,
+    blueConnectorRibbed: null,
+    fingertipBlueBody: null,
   };
   return _cachedTex;
+}
+
+/** Load real Abadis product-photo UV maps for P09/P10 (clear PVC + bright/dark blue plastics). */
+export function preloadPhotoTextures(THREE) {
+  if (_photoTexPromise) return _photoTexPromise;
+  const tex = getSharedTextures(THREE);
+  if (tex.pvcHoseClear && tex.blueConnectorRibbed && tex.fingertipBlueBody) {
+    return Promise.resolve(tex);
+  }
+  const loader = new THREE.TextureLoader();
+  const loadOne = (url, repeatX = 1, repeatY = 1) => new Promise((resolve) => {
+    loader.load(
+      url,
+      (t) => {
+        t.colorSpace = THREE.SRGBColorSpace;
+        t.wrapS = t.wrapT = THREE.RepeatWrapping;
+        t.repeat.set(repeatX, repeatY);
+        t.anisotropy = 8;
+        t.needsUpdate = true;
+        resolve(t);
+      },
+      undefined,
+      (err) => {
+        console.warn('Texture load failed:', url, err);
+        resolve(null); // never reject — solid color fallback
+      }
+    );
+  });
+  _photoTexPromise = Promise.all([
+    loadOne('./assets/textures/pvc-hose-clear.png', 1.0, 6.0),
+    loadOne('./assets/textures/blue-connector-ribbed.png', 1.0, 1.0),
+    loadOne('./assets/textures/fingertip-blue-body.png', 2.0, 1.0),
+  ]).then(([hose, conn, finger]) => {
+    if (hose) tex.pvcHoseClear = hose;
+    if (conn) tex.blueConnectorRibbed = conn;
+    if (finger) tex.fingertipBlueBody = finger;
+    return tex;
+  }).catch((err) => {
+    console.warn('preloadPhotoTextures failed', err);
+    _photoTexPromise = null;
+    return tex;
+  });
+  return _photoTexPromise;
 }
 
 function makeMats(THREE, isCad, isDark) {
@@ -557,9 +606,49 @@ function makeMats(THREE, isCad, isDark) {
     transparent: isCad, opacity: isCad ? 0.45 : 1.0
   });
 
+  // --- Photo-derived materials for P09 / P10 (real Abadis product photos) ---
+  const texPack = getSharedTextures(THREE);
+  const pvcHoseMat = new THREE.MeshPhysicalMaterial({
+    color: 0xf2f6f8,
+    map: texPack.pvcHoseClear || null,
+    roughness: 0.28,
+    metalness: 0.0,
+    transmission: isCad ? 0.12 : 0.55,
+    transparent: true,
+    opacity: isCad ? 0.28 : (isDark ? 0.58 : 0.62),
+    thickness: 0.35,
+    clearcoat: 0.55,
+    clearcoatRoughness: 0.35,
+    side: THREE.DoubleSide,
+    depthWrite: false,
+  });
+  const brightBlueConnMat = new THREE.MeshPhysicalMaterial({
+    color: 0x3d8fd0, // vivid opaque connector blue (NOT Abadis teal)
+    map: texPack.blueConnectorRibbed || null,
+    roughness: 0.42,
+    metalness: 0.04,
+    clearcoat: 0.22,
+    clearcoatRoughness: 0.45,
+    transparent: isCad,
+    opacity: isCad ? 0.42 : 1.0,
+    side: THREE.DoubleSide,
+  });
+  const fingertipBlueMat = new THREE.MeshPhysicalMaterial({
+    color: 0x1a3f9a, // deep royal / dark blue from real P10 photo
+    map: texPack.fingertipBlueBody || null,
+    roughness: 0.48,
+    metalness: 0.03,
+    clearcoat: 0.18,
+    clearcoatRoughness: 0.5,
+    transparent: isCad,
+    opacity: isCad ? 0.40 : 1.0,
+    side: THREE.DoubleSide,
+  });
+
   return {
     tealLid, darkTeal, lightTeal, frostedBag, clearPC, siliconeMat,
     whitePorous, chromeMetal, brassMetal, darkPolymer, foamPink,
+    pvcHoseMat, brightBlueConnMat, fingertipBlueMat,
     cadEdgeMat, cadGridMat
   };
 }
@@ -773,48 +862,102 @@ export function buildProductModel(THREE, productId, options = {}) {
     }
 
     case 'p09': {
-      // Medical PVC Suction Connecting Tube (Coiled Helix + 2 Ribbed Funnel Ends)
+      // Medical PVC Suction Connecting Tube — photo-textured clear frosted coil + bright blue ribbed funnels
       const pts = [];
       const turns = 4.2;
-      for (let i = 0; i <= 140; i++) {
-        const t = i / 140;
+      for (let i = 0; i <= 160; i++) {
+        const t = i / 160;
         const a = t * turns * Math.PI * 2;
         const r = 0.068 + Math.sin(t * Math.PI) * 0.006;
         const y = (t - 0.5) * 0.075;
         pts.push(new THREE.Vector3(Math.cos(a) * r, y, Math.sin(a) * r));
       }
       const coilCurve = new THREE.CatmullRomCurve3(pts);
-      addMesh(THREE, root, new THREE.TubeGeometry(coilCurve, 160, 0.0052, 14, false), mats.clearPC, mats.cadEdgeMat);
-      // Ribbed Universal Conical Female Ends
-      for (const [ex, ey, ez, rz] of [[-0.055, 0.058, 0.025, 0.5], [0.055, -0.058, -0.025, -0.5]]) {
-        const cG = new THREE.Group(); cG.position.set(ex, ey, ez); cG.rotation.z = rz;
-        addMesh(THREE, cG, new THREE.CylinderGeometry(0.011, 0.006, 0.038, 24), mats.tealLid, mats.cadEdgeMat);
-        for (let r = -1; r <= 1; r++) {
-          addMesh(THREE, cG, new THREE.TorusGeometry(0.0085 + r*0.0012, 0.0014, 10, 24).rotateX(Math.PI/2).translate(0, r*0.009, 0), mats.lightTeal, null);
+      const hoseGeo = new THREE.TubeGeometry(coilCurve, 180, 0.0054, 16, false);
+      addMesh(THREE, root, hoseGeo, mats.pvcHoseMat, mats.cadEdgeMat);
+
+      // Bright opaque blue ribbed funnel connectors (match real photo: flared lip + ~6 grip rings)
+      const buildBlueFunnel = (parent) => {
+        // Smooth tapered sleeve into tube
+        addMesh(THREE, parent, new THREE.CylinderGeometry(0.0072, 0.0060, 0.014, 24).translate(0, -0.018, 0), mats.brightBlueConnMat, mats.cadEdgeMat);
+        // Ribbed grip section (~6 raised rings)
+        addMesh(THREE, parent, new THREE.CylinderGeometry(0.0090, 0.0084, 0.022, 24).translate(0, -0.001, 0), mats.brightBlueConnMat, mats.cadEdgeMat);
+        for (let i = 0; i < 6; i++) {
+          const yy = -0.010 + i * 0.0036;
+          addMesh(THREE, parent, new THREE.TorusGeometry(0.0092, 0.00115, 10, 28).rotateX(Math.PI/2).translate(0, yy, 0), mats.brightBlueConnMat, null);
         }
+        // Flared funnel mouth
+        addMesh(THREE, parent, new THREE.CylinderGeometry(0.0125, 0.0090, 0.016, 28).translate(0, 0.018, 0), mats.brightBlueConnMat, mats.cadEdgeMat);
+        addMesh(THREE, parent, new THREE.TorusGeometry(0.0122, 0.0013, 10, 28).rotateX(Math.PI/2).translate(0, 0.026, 0), mats.brightBlueConnMat, null);
+      };
+      for (const [ex, ey, ez, rx, ry, rz] of [
+        [-0.055, 0.058, 0.025, 0.15, 0.0, 0.55],
+        [0.055, -0.058, -0.025, -0.15, 0.0, -0.55],
+      ]) {
+        const cG = new THREE.Group();
+        cG.position.set(ex, ey, ez);
+        cG.rotation.set(rx, ry, rz);
+        buildBlueFunnel(cG);
         root.add(cG);
       }
       break;
     }
 
     case 'p10': {
-      // Finger-Tip Vacuum Control Adapter
+      // Finger-Tip Vacuum Control Adapter — deep royal blue, photo-textured, matching real P10 geometry
       const fG = new THREE.Group();
-      // Main horizontal body
-      addMesh(THREE, fG, new THREE.CylinderGeometry(0.012, 0.012, 0.065, 28).rotateZ(Math.PI/2), mats.tealLid, mats.cadEdgeMat);
-      // Stepped male cone on right
-      for (let s = 0; s < 4; s++) {
-        const r1 = 0.0095 - s * 0.0014;
-        const r2 = 0.0082 - s * 0.0014;
-        addMesh(THREE, fG, new THREE.CylinderGeometry(r2, r1, 0.014, 24).rotateZ(-Math.PI/2).translate(0.038 + s*0.012, 0, 0), mats.lightTeal, mats.cadEdgeMat);
+      const blue = mats.fingertipBlueMat;
+
+      // Main horizontal ribbed body
+      addMesh(THREE, fG, new THREE.CylinderGeometry(0.0115, 0.0115, 0.055, 32).rotateZ(Math.PI/2), blue, mats.cadEdgeMat);
+      // Circumferential grip ribs along body
+      for (let i = -3; i <= 3; i++) {
+        if (i === 0) continue;
+        addMesh(THREE, fG, new THREE.TorusGeometry(0.0122, 0.00125, 10, 28).rotateZ(Math.PI/2).translate(i * 0.0065, 0, 0), blue, null);
       }
-      // Ribbed female funnel on left
-      addMesh(THREE, fG, new THREE.CylinderGeometry(0.015, 0.011, 0.042, 24).rotateZ(Math.PI/2).translate(-0.052, 0, 0), mats.tealLid, mats.cadEdgeMat);
-      // Angled ergonomic thumb-vent chimney on top
-      const vG = new THREE.Group(); vG.position.set(-0.004, 0.018, 0); vG.rotation.z = -0.22;
-      addMesh(THREE, vG, new THREE.CylinderGeometry(0.013, 0.010, 0.028, 24), mats.whitePorous, mats.cadEdgeMat);
-      addMesh(THREE, vG, new THREE.TorusGeometry(0.0125, 0.0022, 12, 24).rotateX(Math.PI/2).translate(0, 0.014, 0), mats.tealLid, mats.cadEdgeMat);
-      fG.add(vG);
+
+      // Flat oval thumb plate with circular vent hole on top
+      const plateGeo = new THREE.CylinderGeometry(0.0145, 0.0145, 0.0036, 32);
+      plateGeo.scale(1.35, 1, 1.0);
+      addMesh(THREE, fG, plateGeo.translate(0, 0.0165, 0), blue, mats.cadEdgeMat);
+      // Neck under plate
+      addMesh(THREE, fG, new THREE.CylinderGeometry(0.0085, 0.010, 0.008, 24).translate(0, 0.011, 0), blue, mats.cadEdgeMat);
+      // Vent hole (dark inset ring + void feel)
+      const ventMat = new THREE.MeshStandardMaterial({
+        color: 0x071428, roughness: 0.55, metalness: 0.05,
+        transparent: isCad, opacity: isCad ? 0.45 : 1.0
+      });
+      addMesh(THREE, fG, new THREE.CylinderGeometry(0.0048, 0.0048, 0.0045, 20).translate(0, 0.0182, 0), ventMat, null);
+      addMesh(THREE, fG, new THREE.TorusGeometry(0.0052, 0.0009, 10, 24).rotateX(Math.PI/2).translate(0, 0.0184, 0), blue, null);
+
+      // Stepped cones on BOTH ends (photo: tapered barbs both sides)
+      for (const dir of [-1, 1]) {
+        for (let s = 0; s < 4; s++) {
+          const r1 = 0.0105 - s * 0.00135;
+          const r2 = 0.0092 - s * 0.00135;
+          addMesh(
+            THREE, fG,
+            new THREE.CylinderGeometry(r2, r1, 0.011, 24)
+              .rotateZ(-dir * Math.PI/2)
+              .translate(dir * (0.032 + s * 0.0105), 0, 0),
+            blue, mats.cadEdgeMat
+          );
+        }
+      }
+
+      // Tethered plug/cap on one side (matches real photo)
+      const tetherPts = [
+        new THREE.Vector3(-0.018, 0.012, 0.010),
+        new THREE.Vector3(-0.032, 0.022, 0.018),
+        new THREE.Vector3(-0.042, 0.018, 0.022),
+        new THREE.Vector3(-0.048, 0.006, 0.018),
+      ];
+      const tetherCurve = new THREE.CatmullRomCurve3(tetherPts);
+      addMesh(THREE, fG, new THREE.TubeGeometry(tetherCurve, 24, 0.0011, 8, false), blue, mats.cadEdgeMat);
+      // Cap plug body
+      addMesh(THREE, fG, new THREE.SphereGeometry(0.0055, 16, 12).translate(-0.050, 0.002, 0.016), blue, mats.cadEdgeMat);
+      addMesh(THREE, fG, new THREE.CylinderGeometry(0.0038, 0.0045, 0.007, 16).translate(-0.050, -0.004, 0.016), blue, mats.cadEdgeMat);
+
       root.add(fG);
       break;
     }
