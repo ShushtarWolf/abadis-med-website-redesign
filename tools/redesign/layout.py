@@ -89,8 +89,7 @@ def _nav_item(p, root, cur, item):
     nav_attr = f' data-ps-nav="{k}"' if k in ('products', 'solutions') else ''
     return (
         f'<div class="nav-item has-sub"{nav_attr}>'
-        f'<a class="nav-parent" href="{_href(p, root, h)}"{open_cur} aria-haspopup="true" aria-expanded="false">{l}'
-        f'<span class="nav-caret" aria-hidden="true"></span></a>'
+        f'<a class="nav-parent" href="{_href(p, root, h)}"{open_cur} aria-haspopup="true" aria-expanded="false">{l}</a>'
         f'<div class="nav-sub{sub_cls}" role="menu">{"".join(bits)}</div>'
         f'</div>'
     )

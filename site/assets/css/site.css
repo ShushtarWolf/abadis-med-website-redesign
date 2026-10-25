@@ -1412,37 +1412,11 @@ body.academy { background: #f3f8f8; }
   .section-head.has-mark { gap: 12px; }
 }
 
-.nav > a[href$="csr/"],
-.nav > a[href$="calculator/"],
-.nav > a[href$="الحوسبة/"] { display: inline-flex; align-items: center; gap: 6px; }
-.nav > a[href$="csr/"]::before,
-.nav > a[href$="calculator/"]::before,
-.nav > a[href$="الحوسبة/"]::before {
-  content: ""; width: 22px; height: 22px; flex: none; background: center / contain no-repeat;
-}
-.nav > a[href$="csr/"]::before { background-image: url("../../brand/section-logos/zagros-icon-dark.svg"); }
-.nav > a[href$="calculator/"]::before,
-.nav > a[href$="الحوسبة/"]::before { background-image: url("../../brand/section-logos/calculator-icon-dark.svg"); }
-[data-theme="light"] .nav.on-light > a[href$="csr/"]::before { background-image: url("../../brand/section-logos/zagros-icon.svg"); }
-[data-theme="light"] .nav.on-light > a[href$="calculator/"]::before,
-[data-theme="light"] .nav.on-light > a[href$="الحوسبة/"]::before { background-image: url("../../brand/section-logos/calculator-icon.svg"); }
-@media (max-width: 1180px) {
-  .nav > a[href$="csr/"],
-  .nav > a[href$="calculator/"],
-  .nav > a[href$="الحوسبة/"] { display: flex; }
-  [data-theme="light"] .nav > a[href$="csr/"]::before { background-image: url("../../brand/section-logos/zagros-icon.svg"); }
-  [data-theme="light"] .nav > a[href$="calculator/"]::before,
-  [data-theme="light"] .nav > a[href$="الحوسبة/"]::before { background-image: url("../../brand/section-logos/calculator-icon.svg"); }
-}
-.nav-sub a[href$="sdgs/"] { display: flex; align-items: center; gap: 8px; }
-.nav-sub a[href$="sdgs/"]::before {
-  position: static; width: 22px; height: 22px; margin: 0; border-radius: 0; opacity: 1; flex: none;
-  background: url("../../brand/section-logos/sustainable-icon.svg") center / contain no-repeat;
-}
-[data-theme="dark"] .nav-sub a[href$="sdgs/"]::before,
-[data-theme="noir"] .nav-sub a[href$="sdgs/"]::before {
-  opacity: 1; background-image: url("../../brand/section-logos/sustainable-icon-dark.svg");
-}
+/* Header nav: text-only top-level and dropdown links (no section-logo icons). Footer keeps icons below. */
+.nav .nav-caret { display: none; }
+.nav .nav-sub a::before { content: none !important; opacity: 0 !important; }
+.nav .nav-sub a:hover,
+.nav .nav-sub a[aria-current="page"] { padding-inline-start: 14px; }
 .site-footer .foot-links a[href$="sdgs/"],
 .site-footer .foot-links a[href$="calculator/"],
 .site-footer .foot-links a[href$="csr/"],
