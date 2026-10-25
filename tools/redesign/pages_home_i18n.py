@@ -8,10 +8,10 @@ AR_D = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
 
 T = {
  'en': dict(
-  root='en/', title='Specialized solutions for safer, more efficient care — Abadis Med',
+  root='en/', title='About us',
   desc='Abadis Med, a knowledge-based company: disposable suction liner bags and solutions for managing hospital fluid and infectious waste.',
-  kicker='Abadis Med · a knowledge-based group', h1='Specialized solutions for safer, more efficient care',
-  sub='IMED · ISO · CE certified. Suction bags in 1, 2 and 3 L with hydrophobic, dual and mechanical filters.',
+  kicker='Abadis Med · a knowledge-based group', h1='About us',
+  sub='Finally, after years of planning, dynamics and changes in the management system, in 2017, we established the Makhazen Tebi Abadis Company to start the production of Abadis disposable suction liner bags and to achieve our goals in the field of hospital infection control and medical equipment.',
   cat='Download catalogue', quote='Request a quote / export cooperation', quote_href='export/#quote',
   bag_alt='Abadis 1 L and 2 L disposable suction liner bags',
   about_eb='About us', about_h='Find out more on Abadis Med; a knowledge-based group',
@@ -32,10 +32,10 @@ T = {
   mem_eb='Memberships', mem_h='Memberships', mem_alt='Abadis membership',
   cust_eb='Customers', cust_h='Customers', cust_btn='See the customer list', cust_href='our-customers/', prev='Previous', next='Next', cust_aria='Sample customers'),
  'ar': dict(
-  root='arabic/', title='حلول متخصصة لرعاية أكثر أمانًا وكفاءة — آباديس',
+  root='arabic/', title='اعرف المزيد عنا',
   desc='شركة مخازن طبية آباديس المعرفية: أكياس الشفط ذات الاستعمال الواحد وحلول إدارة السوائل والنفايات المعدية في المستشفيات.',
-  kicker='شركة مخازن طبية آباديس المعرفية', h1='حلول متخصصة لرعاية أكثر أمانًا وكفاءة',
-  sub='حاصلة على شهادات IMED وISO وCE؛ أكياس شفط بسعة ١ و٢ و٣ لتر مع فلاتر كارهة للماء ومزدوجة وميكانيكية.',
+  kicker='شركة مخازن طبية آباديس المعرفية', h1='اعرف المزيد عنا',
+  sub='بعد سنوات من التخطيط واستمرار الحركة التي تم انطلاقها، ومع العمل بالنشاط وإجراء التغييرات في نظام الإدارة، أنشأنا شركة آباديس القائمة على المعرفة في عام 2017، لكي نبدأ بإنتاج أكياس شفط آباديس ذات الاستعمال الواحد، وأيضاً نخطو خطوات أكبر في تحقيق أهدافنا التي تتمثل في مكافحة عدوى المستشفيات والمعدات الطبية؛ فأدركنا بأننا مستعدون لإحداث التأثير، التأثير في مكافحة عدوى المستشفيات.',
   cat='تحميل الكتالوج', quote='طلب سعر / تعاون تصديري', quote_href='export/#quote',
   bag_alt='أكياس الشفط آباديس ذات الاستعمال الواحد ١ و٢ لتر',
   about_eb='من نحن', about_h='اعرف أكثر عن مجموعة آباديس المعرفية',
@@ -117,20 +117,38 @@ def build_home(write, lang):
       <a class="quick-btn" href="{_h(t, p, t['calc_href'])}">{section_mark(p, 'calculator', 'sec-mark--sm')}{esc(t['calc'])}</a>
       <a class="quick-btn" href="{_h(t, p, t['zag_href'])}">{section_mark(p, 'zagros', 'sec-mark--sm')}{esc(t['zag'])}</a>
     </div></section>'''
-    def pc(x, label):
+    def pc(x, label, tag):
         href = x['href'].split('abadis-med.com/', 1)[1]
         return (f'<a class="post-card reveal" href="{p}{esc(href)}"><div class="ph"><img src="{img(x["local"])}" alt="{esc(x["t"])}" loading="lazy" decoding="async"></div>'
-                f'<div class="body"><h3>{esc(x["t"])}</h3><span class="go">{esc(label)}</span></div></a>')
-    news_items = live[:6] if lang == 'ar' else live[:6]
-    def posts(cid, eb, h, href, items, label, alt=''):
-        return f'''  <section class="section{alt}" id="{cid}"><div class="wrap">
-      <div class="section-head reveal"><p class="eyebrow">{esc(eb)}</p><h2>{esc(h)}</h2><p><a class="more-link" style="margin:0" href="{_h(t, p, href)}">{esc(t['view'])}</a></p></div>
-      <div class="post-grid">{''.join(pc(x, label) for x in items[:3])}</div></div></section>'''
-    news = posts('news', t['news_eb'], t['news_h'], t['news_href'], news_items, t['read'])
+                f'<div class="body"><span class="tag">{esc(tag)}</span><h3>{esc(x["t"])}</h3><span class="go">{esc(label)}</span></div></a>')
+    import solutions_arch as S
     if lang == 'en':
-        arts = posts('articles', t['art_eb'], t['art_h'], t['art_href'], live[6:], t['art_read'], ' section--alt')
-    else:  # no Arabic articles on the live site: show the next live news and point to the Persian articles
-        arts = posts('articles', t['art_eb'], t['art_h'], t['art_href'], live[3:6], t['read'], ' section--alt')
+        news_items, art_items = live[:6], live[6:]
+        art_go = t['art_read']
+    else:
+        # No Arabic articles on the live site: the next live news items fill the articles tab.
+        news_items, art_items = live[:3], live[3:]
+        art_go = t['read']
+    news_rail = S.carousel(''.join(pc(x, t['read'], t['news_eb']) for x in news_items), len(news_items), t['prev'], t['next'], t['news_eb'])
+    art_rail = S.carousel(''.join(pc(x, art_go, t['art_eb']) for x in art_items), len(art_items), t['prev'], t['next'], t['art_eb'])
+    box_h = 'Articles & News' if lang == 'en' else 'المقالات والأخبار'
+    news_all = 'View all news →' if lang == 'en' else 'عرض كل الأخبار ←'
+    art_all = 'View all articles →' if lang == 'en' else 'عرض كل المقالات ←'
+    stories = f'''  <section class="section" id="stories"><div class="wrap">
+      <div class="section-head reveal"><h2>{esc(box_h)}</h2></div>
+      <div class="h-box ps-root" data-ps data-ps-home data-ps-default="news">
+        <div class="ps-tabs" role="tablist" aria-orientation="horizontal" aria-label="{esc(box_h)}">
+          <a role="tab" id="tab-home-news" href="#news" data-ps-tab="news" aria-selected="true" aria-controls="news">{esc(t['news_eb'])}</a>
+          <a role="tab" id="tab-home-articles" href="#articles" data-ps-tab="articles" aria-selected="false" aria-controls="articles">{esc(t['art_eb'])}</a>
+        </div>
+        <div class="ps-panel is-default" id="news" role="tabpanel" aria-labelledby="tab-home-news" data-ps-panel="news">{news_rail}</div>
+        <div class="ps-panel" id="articles" role="tabpanel" aria-labelledby="tab-home-articles" data-ps-panel="articles" hidden>{art_rail}</div>
+        <p class="h-all">
+          <a class="btn btn-ghost" href="{_h(t, p, t['news_href'])}">{esc(news_all)}</a>
+          <a class="btn btn-ghost" href="{_h(t, p, t['art_href'])}">{esc(art_all)}</a>
+        </p>
+      </div>
+    </div></section>'''
     logos = ''.join(f'<li><img src="{img(n)}" alt="{esc(t["mem_alt"])}" loading="lazy" decoding="async"></li>' for n in H.MEMBERSHIPS if (SITE / H._live(n)).exists())
     mem = f'''  <section class="section" id="memberships"><div class="wrap"><div class="section-head reveal"><p class="eyebrow">{esc(t['mem_eb'])}</p><h2>{esc(t['mem_h'])}</h2></div><ul class="member-logos reveal">{logos}</ul></div></section>'''
     bl = H._B('/مشتریان-ما/'); lg = []
@@ -146,7 +164,7 @@ def build_home(write, lang):
         <button type="button" class="logo-carousel-btn logo-carousel-next" aria-label="{esc(t['next'])}">›</button></div>
       <p class="home-logo-cta reveal"><a class="btn btn-ghost" href="{_h(t, p, t['cust_href'])}">{esc(t['cust_btn'])}</a></p>
     </div></section>'''
-    main = '\n'.join([hero, about, impact, why, products, quick, news, arts, mem, cust])
+    main = '\n'.join([hero, about, impact, why, products, quick, stories, mem, cust])
     if lang == 'en': main = main.replace('←', '→')
     extra_head = f'<link rel="preload" as="image" href="{p}assets/img/p/hero-bags.webp" type="image/webp">\n<link rel="stylesheet" href="{p}assets/css/home.css">\n{H.logo_scroll_css(p)}\n{H.counter_options_css(p)}'
     html = page(p, None, t['title'], t['desc'], main, lang=lang, fa_path='', canonical_path=t['root'],
