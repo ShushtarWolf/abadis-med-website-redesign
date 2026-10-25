@@ -46,6 +46,11 @@ try:
 except ImportError: pass
 
 if __name__ == '__main__':
+    try:
+        import solutions_arch
+        solutions_arch.assert_nav_catalog_sync()
+    except ImportError:
+        pass
     want = sys.argv[1:] or [g for g in GROUPS if g not in ('en', 'ar')]  # full build includes i18n once
     if 'posts' in GROUPS: pages_posts.prepare()   # fill POST_MAP first so every page links posts internally
     # avoid double-running en/ar when both i18n and en/ar requested

@@ -15,9 +15,18 @@
     return out;
   };
   const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
+  const LAST_KNOWN_USD_TOMAN = 269500;
+  const USD_RATE_KEY = 'abadis-usd-toman';
+  const USD_RATE_URL = 'https://api.tgju.org/v1/market/indicator/today-table-data/price_dollar_rl?lang=fa&start=0&length=1';
+  let usdToman = LAST_KNOWN_USD_TOMAN;
+  try {
+    const saved = JSON.parse(localStorage.getItem(USD_RATE_KEY) || '');
+    const t = Number(saved && saved.toman);
+    if (Number.isFinite(t) && t > 0) usdToman = t;
+  } catch (e) {}
   const F = {
     water: (n) => n * 1.6 * 9.971,
-    cost: (n) => n * 2.5 * 85000,
+    cost: (n) => n * 2.5 * usdToman,
     hours: (n) => n * 1.6 * 2.2 * 7.1 / 60,
   };
 
@@ -147,4 +156,24 @@
   };
   if (document.readyState === 'complete') setTimeout(start, 120);
   else window.addEventListener('load', () => setTimeout(start, 120));
+  if (typeof fetch === 'function') {
+    const ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+    const timer = setTimeout(() => { if (ctrl) ctrl.abort(); }, 8000);
+    const opts = { cache: 'no-store' };
+    if (ctrl) opts.signal = ctrl.signal;
+    fetch(USD_RATE_URL, opts)
+      .then((r) => { if (!r.ok) throw new Error('usd'); return r.json(); })
+      .then((data) => {
+        const row = data && data.data && data.data[0];
+        const n = Number(String(row && row[0] || '').replace(/<[^>]*>/g, '').replace(/[,،٬\s]/g, ''));
+        if (!Number.isFinite(n) || n < 10000) throw new Error('usd');
+        const toman = n / 10;
+        try {
+          localStorage.setItem(USD_RATE_KEY, JSON.stringify({ toman: toman, rial: n, updatedAt: new Date().toISOString(), source: USD_RATE_URL }));
+        } catch (e) {}
+        if (toman !== usdToman) { usdToman = toman; paint(value); }
+      })
+      .catch(() => {})
+      .finally(() => clearTimeout(timer));
+  }
 })();
