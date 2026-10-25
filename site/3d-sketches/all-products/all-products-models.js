@@ -15,15 +15,15 @@ export const PRODUCTS = [
     faName: 'کیسه ساکشن یکبار مصرف ۱ لیتری آبادیس',
     enName: '1L Disposable Suction Liner Bag',
     dims: 'Ø110 × 155 mm | 1000 mL',
-    material: 'Medical PP Frosted Liner + CATPart CAD Pit/Rim (1l-pit.glb) + HDPE Teal Lid (#05686b)',
+    material: 'CAD Open Pit+Rim (1l-pit.glb) + Photo-Accurate HDPE Teal Closed Lid (#05686b) + PP Frosted Liner',
     specFa: 'مجهز به فیلتر هیدروفوبیک قطع‌کن خودکار، پورت بیمار و وکیوم زاویه‌دار ۴۵ درجه، درپوش متصل و ساشه پودر ژل‌کننده',
     specEn: '45° angled patient & vacuum ports, deep crescent recess, tethered cap with U-clip, internal shut-off filter cage & coagulant pad',
     refImg: './assets/refs/p01-ref.png',
     callouts: [
-      { label: 'CATPart CAD Rim & Bracket | ریم و براکت CAD', target: [0.055, 0.02, 0.02], offset: [0.11, 0.08, 0] },
-      { label: 'Patient & Vacuum 45° Ports | پورت بیمار و وکیوم', target: [0.02, 0.055, 0.015], offset: [0.095, 0.11, 0] },
-      { label: 'CAD 1L Pit Shell | بدنه پیت ۱ لیتری CAD', target: [0.06, -0.05, 0.0], offset: [0.11, -0.04, 0] },
-      { label: 'Frosted Liner + Filter Cage | کیسه و فیلتر داخلی', target: [-0.02, -0.02, 0.0], offset: [-0.11, -0.02, 0] },
+      { label: 'Photo Teal Closed Lid + 45° Ports | درب سبز و پورت‌ها', target: [0.02, 0.055, 0.015], offset: [0.105, 0.11, 0] },
+      { label: 'CAD Clear Pit Shell | بدنه پیت باز CAD', target: [0.058, -0.05, 0.0], offset: [0.11, -0.04, 0] },
+      { label: 'CAD Rim Collar / Bracket | ریم شفاف CAD', target: [0.055, 0.01, 0.02], offset: [0.11, 0.055, 0] },
+      { label: 'Filter Tube + Frosted Liner | فیلتر و کیسه', target: [-0.01, -0.03, 0.0], offset: [-0.11, -0.025, 0] },
     ]
   },
   {
@@ -656,6 +656,129 @@ export function getCadPitTemplate() {
  * plus improved frosted bag, filter cage, coagulant pad, and photo-matched teal ports.
  * Falls back to procedural buildSteppedLidAndBag if CAD not loaded.
  */
+/**
+ * Photo-accurate CLOSED teal suction-bag lid (NOT the CAD rim).
+ * Matches angle-1/2/3 + p01-ref: flat deck, dual 45° ports, wells,
+ * side tab + tethered plug, underside filter tube.
+ */
+function buildPhotoAccurateTealLid(THREE, parent, mats, opts) {
+  const {
+    lidR,
+    scaleXZ = 1,
+    y = 0,
+    hasTandem = true,
+  } = opts;
+  const lidG = new THREE.Group();
+  lidG.name = 'PhotoAccurateTealLid';
+  lidG.position.set(0, y, 0);
+
+  // Outer overhanging flange (wider than pit mouth — matches photos)
+  const flangeR = lidR * 1.06;
+  addMesh(THREE, lidG, new THREE.CylinderGeometry(flangeR, flangeR, 0.0075, 56), mats.tealLid, mats.cadEdgeMat);
+  // Stepped snap collar that seats into CAD rim / pit mouth
+  addMesh(THREE, lidG, new THREE.CylinderGeometry(lidR * 0.96, lidR * 0.99, 0.014, 48).translate(0, -0.008, 0), mats.tealLid, mats.cadEdgeMat);
+  addMesh(THREE, lidG, new THREE.CylinderGeometry(lidR * 0.90, lidR * 0.94, 0.010, 48).translate(0, -0.018, 0), mats.darkTeal, mats.cadEdgeMat);
+
+  // Flat top deck plate
+  addMesh(THREE, lidG, new THREE.CylinderGeometry(lidR * 0.98, lidR * 0.98, 0.0055, 56).translate(0, 0.0055, 0), mats.tealLid, mats.cadEdgeMat);
+
+  // Molded wells / recessed circular indentations between ports (top-down photo)
+  const wellMat = mats.darkTeal;
+  for (const [wx, wz, wr] of [
+    [0.012 * scaleXZ, 0.008 * scaleXZ, 0.011],
+    [-0.010 * scaleXZ, -0.012 * scaleXZ, 0.009],
+    [0.002 * scaleXZ, -0.020 * scaleXZ, 0.007],
+  ]) {
+    addMesh(
+      THREE, lidG,
+      new THREE.CylinderGeometry(wr, wr * 0.92, 0.0045, 24).translate(wx, 0.004, wz),
+      wellMat, mats.cadEdgeMat
+    );
+  }
+  // Deep crescent / sculpted recess near ports
+  addMesh(
+    THREE, lidG,
+    new THREE.CylinderGeometry(lidR * 0.38, lidR * 0.36, 0.006, 36, 1, false, -0.4, Math.PI * 1.25)
+      .translate(0.004, 0.007, 0.002),
+    mats.darkTeal, mats.cadEdgeMat
+  );
+
+  // --- Dual 45° conical ports (patient + vacuum) — photo-matched ---
+  // Port A: larger patient port, angled ~45°
+  const portA = new THREE.Group();
+  portA.position.set(-0.016 * scaleXZ, 0.008, 0.014 * scaleXZ);
+  portA.rotation.z = 0.72; // ~41°
+  portA.rotation.x = -0.18;
+  addMesh(THREE, portA, new THREE.CylinderGeometry(0.0050, 0.0072, 0.028, 28).translate(0, 0.016, 0), mats.tealLid, mats.cadEdgeMat);
+  addMesh(THREE, portA, new THREE.CylinderGeometry(0.0068, 0.0078, 0.008, 28).translate(0, 0.004, 0), mats.tealLid, mats.cadEdgeMat);
+  addMesh(THREE, portA, new THREE.TorusGeometry(0.0052, 0.0011, 10, 24).rotateX(Math.PI / 2).translate(0, 0.030, 0), mats.lightTeal, null);
+  lidG.add(portA);
+
+  // Port B: vacuum port, opposing ~45°
+  const portB = new THREE.Group();
+  portB.position.set(0.015 * scaleXZ, 0.008, -0.012 * scaleXZ);
+  portB.rotation.z = -0.70;
+  portB.rotation.x = 0.15;
+  addMesh(THREE, portB, new THREE.CylinderGeometry(0.0046, 0.0066, 0.024, 28).translate(0, 0.014, 0), mats.tealLid, mats.cadEdgeMat);
+  addMesh(THREE, portB, new THREE.CylinderGeometry(0.0062, 0.0072, 0.007, 28).translate(0, 0.003, 0), mats.tealLid, mats.cadEdgeMat);
+  addMesh(THREE, portB, new THREE.TorusGeometry(0.0048, 0.0010, 10, 24).rotateX(Math.PI / 2).translate(0, 0.026, 0), mats.lightTeal, null);
+  lidG.add(portB);
+
+  // Optional short auxiliary / tandem well on deck
+  if (hasTandem) {
+    addMesh(
+      THREE, lidG,
+      new THREE.CylinderGeometry(0.0055, 0.0065, 0.012, 22).translate(-0.018 * scaleXZ, 0.012, -0.018 * scaleXZ),
+      mats.lightTeal, mats.cadEdgeMat
+    );
+  }
+
+  // Side flat tab + flexible tether loop + upright plug (left of lid in photos)
+  const tabGeo = new THREE.BoxGeometry(0.022 * scaleXZ, 0.0028, 0.014 * scaleXZ);
+  tabGeo.translate(-flangeR * 0.92, 0.003, 0.010 * scaleXZ);
+  addMesh(THREE, lidG, tabGeo, mats.tealLid, mats.cadEdgeMat);
+
+  const tetherPts = [
+    new THREE.Vector3(-flangeR * 1.02, 0.004, 0.012 * scaleXZ),
+    new THREE.Vector3(-flangeR * 1.28, 0.006, 0.022 * scaleXZ),
+    new THREE.Vector3(-flangeR * 1.42, 0.010, 0.012 * scaleXZ),
+    new THREE.Vector3(-flangeR * 1.38, 0.016, -0.002 * scaleXZ),
+  ];
+  const tetherCurve = new THREE.CatmullRomCurve3(tetherPts);
+  addMesh(THREE, lidG, new THREE.TubeGeometry(tetherCurve, 40, 0.00135, 10, false), mats.lightTeal, mats.cadEdgeMat);
+  // U-notch clip + plug body
+  addMesh(THREE, lidG, new THREE.TorusGeometry(0.0055, 0.0013, 10, 20, Math.PI * 1.2)
+    .rotateZ(Math.PI / 2)
+    .translate(-flangeR * 1.40, 0.014, 0.004 * scaleXZ), mats.tealLid, null);
+  addMesh(THREE, lidG, new THREE.CylinderGeometry(0.0058, 0.0050, 0.010, 18)
+    .translate(-flangeR * 1.40, 0.020, 0.004 * scaleXZ), mats.tealLid, mats.cadEdgeMat);
+  addMesh(THREE, lidG, new THREE.SphereGeometry(0.0042, 14, 12)
+    .translate(-flangeR * 1.40, 0.026, 0.004 * scaleXZ), mats.lightTeal, null);
+
+  // Underside internal hydrophobic filter tube (hangs into liner — visible through frosted bag)
+  const filterG = new THREE.Group();
+  filterG.position.set(0, -0.022, 0);
+  addMesh(THREE, filterG, new THREE.CylinderGeometry(0.015, 0.017, 0.018, 28), mats.darkTeal, mats.cadEdgeMat);
+  addMesh(THREE, filterG, new THREE.CylinderGeometry(0.014, 0.013, 0.055, 28).translate(0, -0.032, 0), mats.darkTeal, mats.cadEdgeMat);
+  addMesh(THREE, filterG, new THREE.CylinderGeometry(0.010, 0.011, 0.048, 24).translate(0, -0.030, 0), mats.whitePorous, null);
+  for (let i = 0; i < 6; i++) {
+    const a = (i / 6) * Math.PI * 2;
+    const slot = new THREE.BoxGeometry(0.0020, 0.040, 0.0030);
+    slot.translate(0, -0.028, 0.0145);
+    slot.rotateY(a);
+    addMesh(THREE, filterG, slot, mats.darkTeal, null);
+  }
+  lidG.add(filterG);
+
+  parent.add(lidG);
+  return lidG;
+}
+
+/**
+ * Assembly: CAD open pit shell + CAD clear rim/bracket collar
+ *           + photo-accurate CLOSED teal lid + frosted liner inside.
+ * CAD rim is structural only — never treated as the closed lid.
+ */
 function buildCadPitBag(THREE, group, mats, cfg) {
   const {
     scaleXZ = 1.0,
@@ -676,116 +799,79 @@ function buildCadPitBag(THREE, group, mats, cfg) {
   const cadG = new THREE.Group();
   cadG.name = 'CadPitAssembly';
 
-  // --- CAD pit cylinder (visible clear/engineering outer shell from CATPart) ---
+  // --- CAD pit = hard open canister shell (clear/frosted) ---
   const pitGeo = tpl.pitGeo.clone();
   const pitShellMat = mats.clearPC.clone();
-  pitShellMat.opacity = Math.min(0.55, (pitShellMat.opacity || 0.46) + 0.12);
-  pitShellMat.transmission = Math.max(0.25, (pitShellMat.transmission || 0.4) - 0.08);
+  pitShellMat.color = new THREE.Color(0xe8f4f5);
+  pitShellMat.opacity = 0.42;
+  pitShellMat.transmission = 0.48;
+  pitShellMat.roughness = 0.28;
   pitShellMat.depthWrite = false;
   const pitMesh = addMesh(THREE, cadG, pitGeo, pitShellMat, mats.cadGridMat, 14);
   pitMesh.renderOrder = 1;
   pitMesh.name = 'CadPitBody';
 
-  // --- CAD rim collar + side bracket/ports (Abadis teal — real CATPart mesh) ---
+  // --- CAD rim = clear structural collar + side bracket (NOT the closed lid, NOT teal ports) ---
   const rimGeo = tpl.rimGeo.clone();
-  const rimMesh = addMesh(THREE, cadG, rimGeo, mats.tealLid, mats.cadEdgeMat, 16);
-  rimMesh.renderOrder = 5;
-  rimMesh.name = 'CadPitRim';
+  const rimMat = mats.clearPC.clone();
+  rimMat.color = new THREE.Color(0xddecee);
+  rimMat.opacity = 0.55;
+  rimMat.transmission = 0.30;
+  rimMat.roughness = 0.35;
+  rimMat.depthWrite = false;
+  const rimMesh = addMesh(THREE, cadG, rimGeo, rimMat, mats.cadEdgeMat, 16);
+  rimMesh.renderOrder = 2;
+  rimMesh.name = 'CadPitRimCollar';
 
   cadG.scale.set(scaleXZ, scaleY, scaleXZ);
   group.add(cadG);
 
-  // Effective radii after CAD scale (pit outer ~0.0615m)
   const pitR = (tpl.pitRadius || 0.0615) * scaleXZ;
-  const bagRTop = Math.min(rTop, pitR * 0.90);
-  const bagRBot = Math.min(rBot, pitR * 0.78);
-  const yTop = -0.004 * scaleY; // just under rim / pit top
-  const yBot = yTop - hBag;
+  const bagRTop = Math.min(rTop, pitR * 0.88);
+  const bagRBot = Math.min(rBot, pitR * 0.76);
+  // Liner hangs under pit top; lid seats on rim at ~y=0
+  const yBagTop = -0.012 * scaleY;
+  const yBot = yBagTop - hBag;
 
-  // --- Frosted translucent liner bag (photo-matched) inside pit ---
+  // --- Frosted disposable liner inside open pit ---
   const bagPts = [
     new THREE.Vector2(0, yBot),
-    new THREE.Vector2(bagRBot * 0.90, yBot),
+    new THREE.Vector2(bagRBot * 0.88, yBot),
     new THREE.Vector2(bagRBot, yBot + 0.008),
-    new THREE.Vector2(bagRTop, yTop - 0.014),
-    new THREE.Vector2(bagRTop * 1.02, yTop - 0.006),
-    new THREE.Vector2(bagRTop * 1.02, yTop),
+    new THREE.Vector2(bagRTop, yBagTop - 0.012),
+    new THREE.Vector2(bagRTop * 1.015, yBagTop - 0.004),
+    new THREE.Vector2(bagRTop * 1.015, yBagTop),
   ];
   const bagGeo = new THREE.LatheGeometry(bagPts, 56);
   const bagMesh = addMesh(THREE, group, bagGeo, mats.frostedBag, mats.cadGridMat, 12);
   bagMesh.renderOrder = 3;
   bagMesh.name = 'FrostedLinerBag';
 
-  // Graduation scale wrap
   if (scaleTex) {
     const scGeo = new THREE.CylinderGeometry(
-      bagRTop * 0.992, bagRBot * 1.0, hBag * 0.82, 40, 1, true
+      bagRTop * 0.992, bagRBot * 1.0, hBag * 0.80, 40, 1, true
     );
-    scGeo.translate(0, (yTop + yBot) * 0.5, 0);
+    scGeo.translate(0, (yBagTop + yBot) * 0.5, 0);
     const scMat = new THREE.MeshBasicMaterial({
-      map: scaleTex, transparent: true, opacity: 0.80, depthWrite: false, side: THREE.DoubleSide
+      map: scaleTex, transparent: true, opacity: 0.78, depthWrite: false, side: THREE.DoubleSide
     });
     const scMesh = new THREE.Mesh(scGeo, scMat);
     scMesh.renderOrder = 4;
     group.add(scMesh);
   }
 
-  // Internal hydrophobic shut-off filter cage (hanging from lid)
-  const cageG = new THREE.Group();
-  cageG.position.set(0, yTop - 0.038, 0);
-  addMesh(THREE, cageG, new THREE.CylinderGeometry(0.016, 0.018, 0.052, 28), mats.darkTeal, mats.cadEdgeMat);
-  addMesh(THREE, cageG, new THREE.CylinderGeometry(0.0125, 0.0135, 0.042, 24), mats.whitePorous, null);
-  for (let i = 0; i < 8; i++) {
-    const a = (i / 8) * Math.PI * 2;
-    const rib = new THREE.BoxGeometry(0.0022, 0.048, 0.0032);
-    rib.translate(0, 0, 0.0165);
-    rib.rotateY(a);
-    addMesh(THREE, cageG, rib, mats.darkTeal, null);
-  }
-  group.add(cageG);
-
   // Bottom coagulant / gelling pad
-  const padGeo = new THREE.BoxGeometry(bagRBot * 1.15, 0.012, bagRBot * 0.90, 6, 1, 6);
+  const padGeo = new THREE.BoxGeometry(bagRBot * 1.12, 0.012, bagRBot * 0.88, 6, 1, 6);
   padGeo.translate(0, yBot + 0.011, 0);
   addMesh(THREE, group, padGeo, mats.whitePorous, mats.cadEdgeMat);
 
-  // --- Photo-accurate teal lid deck + 45° ports sitting on CAD rim ---
-  const lidG = new THREE.Group();
-  lidG.position.set(0, 0.002 * scaleY, 0);
-  const lidR = pitR * 1.02;
-  addMesh(THREE, lidG, new THREE.CylinderGeometry(lidR, lidR, 0.009, 48), mats.tealLid, mats.cadEdgeMat);
-  addMesh(THREE, lidG, new THREE.CylinderGeometry(lidR * 0.92, lidR * 0.98, 0.011, 48).translate(0, 0.008, 0), mats.tealLid, mats.cadEdgeMat);
-  // Deep crescent recess
-  addMesh(
-    THREE, lidG,
-    new THREE.CylinderGeometry(lidR * 0.42, lidR * 0.40, 0.007, 32, 1, false, 0.2, Math.PI * 1.2)
-      .translate(0.006, 0.012, 0.004),
-    mats.darkTeal, mats.cadEdgeMat
-  );
-
-  // Two 45° patient & vacuum ports
-  for (const [px, pz, rz] of [[-0.017 * scaleXZ, 0.015 * scaleXZ, 0.65], [0.017 * scaleXZ, -0.013 * scaleXZ, -0.65]]) {
-    const pG = new THREE.Group();
-    pG.position.set(px, 0.011, pz);
-    pG.rotation.z = rz;
-    addMesh(THREE, pG, new THREE.CylinderGeometry(0.0052, 0.0068, 0.030, 24).translate(0, 0.015, 0), mats.tealLid, mats.cadEdgeMat);
-    addMesh(THREE, pG, new THREE.TorusGeometry(0.0054, 0.00105, 10, 24).rotateX(Math.PI / 2).translate(0, 0.030, 0), mats.lightTeal, null);
-    lidG.add(pG);
-  }
-  if (hasTandem) {
-    addMesh(THREE, lidG, new THREE.CylinderGeometry(0.0065, 0.0075, 0.020, 22).translate(-0.020 * scaleXZ, 0.018, -0.020 * scaleXZ), mats.lightTeal, mats.cadEdgeMat);
-  }
-  // Tethered cap loop
-  const loopCurve = new THREE.CatmullRomCurve3([
-    new THREE.Vector3(-lidR * 0.98, 0.004, 0.014),
-    new THREE.Vector3(-lidR * 1.35, 0.002, 0.020),
-    new THREE.Vector3(-lidR * 1.40, 0.001, -0.004),
-    new THREE.Vector3(-lidR * 0.98, 0.003, -0.012),
-  ]);
-  addMesh(THREE, lidG, new THREE.TubeGeometry(loopCurve, 36, 0.0015, 10, false), mats.lightTeal, mats.cadEdgeMat);
-  addMesh(THREE, lidG, new THREE.CylinderGeometry(0.006, 0.006, 0.007, 18).translate(-lidR * 1.36, 0.003, 0.008), mats.tealLid, mats.cadEdgeMat);
-
-  group.add(lidG);
+  // --- CLOSED teal lid from product photos, seated on CAD rim ---
+  buildPhotoAccurateTealLid(THREE, group, mats, {
+    lidR: pitR * 1.01,
+    scaleXZ,
+    y: 0.006 * scaleY,
+    hasTandem,
+  });
 }
 
 function makeMats(THREE, isCad, isDark) {
