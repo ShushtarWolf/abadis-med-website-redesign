@@ -1101,51 +1101,97 @@ html[dir="ltr"] .prose ul, html[dir="ltr"] .prose ol { padding-inline-start: 1.3
   body { overflow-x: clip; }
 }
 
-/* Footer contact CTAs: no fill (footer background shows through), hairline border,
-   footer-ink text + teal icon, stacked one under another (full width on mobile). */
+/* Footer social row: equal icon buttons filling the column. Names stay in aria-label / .sr-only. */
 .site-footer .foot-contact-pills {
-  display: flex; flex-direction: column; flex-wrap: nowrap;
-  align-items: stretch; justify-content: flex-start; gap: 8px;
-  max-width: 340px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
+  gap: 8px;
+  width: 100%;
+  max-width: none;
+  align-items: stretch;
 }
 .site-footer .foot-pill,
 .site-footer .foot-pill--tel,
 .site-footer .foot-pill--mail,
 .site-footer .foot-pill--wa,
-.site-footer .foot-pill--ig {
-  display: flex; width: 100%;
-  justify-content: flex-start; gap: 10px;
-  background: transparent;
-  border: 1px solid rgba(168,213,214,.18);
-  border-radius: 12px;
-  padding: 8px 12px; min-height: 42px;
-  font-size: .82rem;
+.site-footer .foot-pill--ig,
+.site-footer .foot-pill--tg,
+.site-footer .foot-pill--ap,
+.site-footer .foot-pill--yt,
+.site-footer .foot-pill--tw,
+.site-footer .foot-pill--fb,
+.site-footer .foot-pill--li {
+  display: flex;
+  width: 100%;
+  height: 48px;
+  min-height: 44px;
+  aspect-ratio: auto;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 6px;
+  margin: 0;
+  border: 1px solid rgba(168,213,214,.28);
+  border-radius: 14px;
+  background: rgba(255,255,255,.04);
   color: var(--on-deep);
-  direction: inherit;
-  transition: border-color .2s ease;
+  text-decoration: none;
+  box-sizing: border-box;
+  direction: ltr;
+  transition: border-color .2s ease, background-color .2s ease;
 }
 .site-footer .foot-pill:hover,
-.site-footer .foot-pill:focus-visible { border-color: rgba(95,208,209,.55); }
+.site-footer .foot-pill:focus-visible {
+  border-color: var(--deep-accent);
+  background: rgba(255,255,255,.08);
+}
 .site-footer .foot-pill .foot-pill-ico,
 .site-footer .foot-pill--wa .foot-pill-ico,
 .site-footer .foot-pill--ig .foot-pill-ico {
-  width: 18px; height: 18px; background: none;
+  width: 26px; height: 26px; background: none;
+  color: var(--deep-accent);
   -webkit-mask: none; mask: none;
 }
-.site-footer .foot-pill .foot-pill-label {
-  position: static; width: auto; height: auto; margin: 0; padding: 0;
-  overflow: visible; clip: auto;
-  color: var(--on-deep-muted); opacity: 1; font-weight: 700;
+.site-footer .foot-pill .foot-pill-ico svg { width: 26px; height: 26px; display: block; }
+.site-footer .foot-pill .foot-pill-label,
+.site-footer .foot-pill .foot-pill-val,
+.site-footer .foot-pill .sr-only {
+  position: absolute !important;
+  width: 1px !important; height: 1px !important;
+  margin: -1px !important; padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
-.site-footer .foot-pill .foot-pill-val {
-  margin-inline-start: auto;
-  direction: ltr; unicode-bidi: isolate;
+.site-footer a.foot-addr-link {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin: 0 0 8px;
+  padding: 10px 12px;
+  border: 1px solid rgba(168,213,214,.28);
+  border-radius: 12px;
+  text-decoration: none;
   color: var(--on-deep);
+  background: rgba(255,255,255,.04);
 }
-.site-footer .foot-pill--mail { font-size: .82rem; }
+.site-footer a.foot-addr-link:hover,
+.site-footer a.foot-addr-link:focus-visible {
+  border-color: var(--deep-accent);
+  background: rgba(255,255,255,.08);
+}
+.site-footer .foot-addr-maps {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: .78rem;
+  font-weight: 800;
+  color: var(--deep-accent);
+  border-bottom: 1px solid currentColor;
+}
 @media (max-width: 560px) {
   .site-footer .foot-contact-pills { max-width: none; }
-  .site-footer .foot-pill { font-size: .8rem; }
+  .foot-acc > .foot-addr-link { margin-top: 8px; }
 }
 
 /* ---------- header menu polish (Oct 14) ---------- */
