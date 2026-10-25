@@ -482,3 +482,231 @@ body.home .zh-exit {
 .member-logos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 14px; }
 .member-logos li { display: grid; place-items: center; padding: 12px; border-radius: 14px; background: #fff; border: 1px solid var(--line); aspect-ratio: 3/2; }
 .member-logos img { max-width: 100%; max-height: 70px; width: auto; height: auto; object-fit: contain; }
+
+
+/* ===== mobile-home-15 fixes (Designer, Oct 2026) ===== */
+
+/* #1 Slogan rotator: only one rotating line visible at a time */
+.slogan.slogan-rotator {
+  position: relative;
+}
+.slogan.slogan-rotator .slogan-line--main {
+  display: block;
+  opacity: 1;
+  transform: none;
+}
+.slogan.slogan-rotator .slogan-rotate {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+  min-height: 1.7em;
+  margin-top: 0.15em;
+}
+.slogan.slogan-rotator .slogan-rotate .slogan-line {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .45s ease, transform .45s ease;
+  pointer-events: none;
+}
+.slogan.slogan-rotator .slogan-rotate .slogan-line.is-on {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  .slogan.slogan-rotator .slogan-rotate .slogan-line {
+    position: static; opacity: 1; transform: none; transition: none;
+    display: block;
+  }
+  .slogan.slogan-rotator .slogan-rotate { display: block; min-height: 0; }
+}
+
+/* #2 Quick pills: center icon+label; sec-mark no longer double-renders after site.css fix */
+.quick-btn {
+  justify-content: center;
+  text-align: center;
+  min-height: 44px;
+  padding-inline: 18px;
+}
+.quick-btn .sec-mark {
+  display: inline-grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+/* #3/#4 Tabs sit cleanly above rail — no overlap on card image */
+.h-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow: hidden; /* clip broken next-card peek at box edges */
+}
+.h-box .ps-tabs {
+  position: relative;
+  z-index: 2;
+  margin: 0 0 16px;
+  flex: none;
+}
+.h-box .ps-panel {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+@media (max-width: 560px) {
+  .h-box .ps-tabs {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+  .h-box .ps-tabs a {
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
+    box-sizing: border-box;
+  }
+}
+
+/* #5 View-all CTAs: equal width, tighter under dots, sensible RTL arrow */
+.h-all {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin: 12px 0 0;
+  padding-top: 2px;
+}
+.h-all .btn {
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 14px;
+  font-size: .88rem;
+  box-sizing: border-box;
+}
+@media (min-width: 560px) {
+  .h-all {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+}
+[dir="rtl"] .h-all .btn {
+  flex-direction: row-reverse;
+}
+
+/* #6 Cookie bar must not cover hero CTAs */
+@media (max-width: 760px) {
+  body:has(.consent-bar) .hx {
+    padding-bottom: calc(132px + env(safe-area-inset-bottom, 0px));
+  }
+  body:has(.consent-bar) .hx .hero-actions {
+    margin-bottom: 8px;
+  }
+}
+
+/* #8/#9 Hero CTAs: stack full-width, equal widths; fit first screen */
+@media (max-width: 760px) {
+  .hx {
+    min-height: auto;
+  }
+  .hx-inner {
+    padding-top: 88px;
+    padding-bottom: 28px;
+    gap: 14px;
+  }
+  .hx-product img {
+    max-height: min(28svh, 220px);
+  }
+  .hx-sub {
+    font-size: .95rem;
+    line-height: 1.75;
+    margin-bottom: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .hx .hero-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    width: 100%;
+  }
+  .hx .hero-actions .btn {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 44px;
+    justify-content: center;
+  }
+}
+
+/* #10 Product carousel: clean rail edges, no broken peek */
+@media (max-width: 719px) {
+  .h-track > .ps-card,
+  .h-track > .post-card {
+    flex: 0 0 100cqi;
+    width: 100cqi;
+  }
+}
+.h-scroller {
+  border-radius: 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.h-rail-btn {
+  z-index: 2;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+/* #11 Memberships title: keep «ها» with stem */
+#memberships .section-head h2,
+#memberships .section-head .eyebrow {
+  white-space: nowrap;
+}
+
+/* #12 Customers: less empty gap; logos less faint/sparse */
+@media (max-width: 560px) {
+  .logo-carousel-track { padding-block: 28px 36px; }
+  .home-logo {
+    opacity: 0.62;
+    filter: grayscale(.55) brightness(0.98);
+    transform: scale(0.9) translateY(2px);
+  }
+  .home-logo.is-center {
+    opacity: 1;
+    filter: none;
+    transform: scale(1.12) translateY(-2px);
+  }
+  #customers .section-head { margin-bottom: 10px; }
+  #customers .section-head p { margin-top: 6px; }
+}
+
+/* #13 Video placeholder + impact gap */
+.video-slot {
+  max-width: 100%;
+}
+.video-slot img {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center 40%;
+}
+@media (max-width: 760px) {
+  #about.section { padding-bottom: 28px; }
+  #impact.section { padding-top: 36px; }
+  .impact-inner { gap: 18px; }
+  .impact-mark.logo-grow {
+    width: 88px;
+    height: 88px;
+  }
+  .impact-slogan {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+/* #15 Value cards / goals: avoid awkward orphans */
+.value h3 {
+  text-wrap: balance;
+  line-height: 1.45;
+}

@@ -10,3 +10,8 @@
 /* Overrides .deep .reveal > p { text-align: justify } so the slogan sits on the
    reading-direction edge: right in Persian and Arabic, left in English. */
 .impact .reveal > p.slogan { text-align: start; }
+
+
+/* Rotator mode (mobile-home-15): GSAP wipe no longer used; CSS owns visibility. */
+.slogan.slogan-rotator .slogan-line--main { opacity: 1; transform: none; transition: none; }
+.slogan.slogan-static .slogan-line { opacity: 1; transform: none; transition: none; }

@@ -114,3 +114,20 @@
   .consent-bar,
   .lang-suggest { display: none !important; }
 }
+
+
+/* mobile-home-15: keep cookie bar shorter so hero CTAs stay reachable */
+@media (max-width: 640px) {
+  .consent-bar {
+    padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
+    font-size: .9rem;
+    line-height: 1.45;
+    gap: 6px;
+  }
+  .consent-bar p { font-size: .88rem; }
+  .consent-bar button {
+    min-height: 40px;
+    padding: 6px 10px;
+    font-size: .88rem;
+  }
+}

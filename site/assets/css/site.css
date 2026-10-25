@@ -381,7 +381,10 @@ h2 { font-size: clamp(1.55rem, 3.2vw, 2.25rem); font-weight: 900; line-height: 1
   text-justify: inter-word;
 }
 .goals { list-style: none; display: grid; gap: 10px; margin-top: 18px; }
-.goals li { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; font-weight: 600; }
+.goals li {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; font-weight: 600;
+  text-wrap: pretty; line-height: 1.7;
+}
 
 /* product family cards */
 .pcard { display: flex; flex-direction: column; gap: 12px; text-decoration: none; color: inherit; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 18px; box-shadow: var(--shadow); }
@@ -751,14 +754,32 @@ details.letter[open] summary { margin-bottom: 12px; }
   }
   .foot-contact h3 { margin: 0 0 8px; font-size: .88rem; }
   .foot-contact-pills {
-    gap: 6px;
+    gap: 8px;
     justify-content: center;
+  }
+  .site-footer .foot-contact-pills {
+    grid-template-columns: repeat(5, minmax(44px, 1fr));
   }
   .site-footer .foot-pill {
     padding: 6px 10px;
     font-size: .74rem;
-    min-height: 32px;
-    /* Compact: icon + value so three can share a row / wrap evenly */
+    min-height: 44px;
+    justify-content: center;
+  }
+  .site-footer .foot-pill--tel,
+  .site-footer .foot-pill--mail {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+    gap: 8px;
+    padding-inline: 12px;
+  }
+  .site-footer .foot-pill--tel .foot-pill-val,
+  .site-footer .foot-pill--mail .foot-pill-val {
+    display: inline;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    direction: ltr;
+    unicode-bidi: isolate;
   }
   .site-footer .foot-pill-label {
     position: absolute;
@@ -1065,11 +1086,11 @@ html[dir="ltr"] .prose ul, html[dir="ltr"] .prose ol { padding-inline-start: 1.3
     margin-inline-end: auto; /* preserve wide gap to lang/theme */
   }
   .theme-toggle { width: 40px; height: 40px; min-width: 40px; min-height: 40px; }
-  .lang-switch { gap: 2px; flex: none; }
-  .lang-sep { font-size: .65rem; }
+  .lang-switch { gap: 6px; flex: none; }
+  .lang-sep { display: none; } /* drop separators — frees tap space */
   .lang-link {
-    min-width: 30px; width: 30px; height: 30px; min-height: 30px;
-    padding: 0; font-size: .68rem; letter-spacing: .03em;
+    min-width: 44px; width: 44px; height: 44px; min-height: 44px;
+    padding: 0; font-size: .72rem; letter-spacing: .03em;
   }
   .section { padding: 48px 0; }
   .section-head { margin-bottom: 18px; }
@@ -1182,12 +1203,15 @@ html[dir="ltr"] .prose ul, html[dir="ltr"] .prose ol { padding-inline-start: 1.3
   background: rgba(255,255,255,.08);
 }
 .site-footer .foot-addr-maps {
-  display: inline-block;
-  margin-top: 6px;
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin-top: 8px;
   font-size: .78rem;
   font-weight: 800;
   color: var(--deep-accent);
   border-bottom: 1px solid currentColor;
+  line-height: 1.4;
 }
 @media (max-width: 560px) {
   .site-footer .foot-contact-pills { max-width: none; }
@@ -1443,11 +1467,17 @@ body.academy { background: #f3f8f8; }
   margin: 0 !important; padding: 0 !important; object-fit: contain; display: block;
   border-radius: 0; background: none !important; filter: none;
 }
-.sec-mark-dark { display: none; }
-[data-theme="dark"] .sec-mark-light,
-[data-theme="noir"] .sec-mark-light { display: none; }
-[data-theme="dark"] .sec-mark-dark,
-[data-theme="noir"] .sec-mark-dark { display: block; }
+/* Higher specificity than .sec-mark img so light/dark variants never both show (ghost icons). */
+.sec-mark img.sec-mark-dark { display: none; }
+[data-theme="dark"] .sec-mark img.sec-mark-light,
+[data-theme="noir"] .sec-mark img.sec-mark-light { display: none; }
+[data-theme="dark"] .sec-mark img.sec-mark-dark,
+[data-theme="noir"] .sec-mark img.sec-mark-dark { display: block; }
+/* Deep bands (impact) stay dark-looking even on light theme — use dark marks there. */
+.deep .sec-mark img.sec-mark-light { display: none; }
+.deep .sec-mark img.sec-mark-dark { display: block; }
+[data-theme="dark"] .deep .sec-mark img.sec-mark-dark,
+[data-theme="noir"] .deep .sec-mark img.sec-mark-dark { display: block; }
 .sec-mark--sm { width: 40px; height: 40px; }
 .sec-mark--lg { width: 104px; height: 104px; }
 .section-head.has-mark { display: flex; align-items: center; gap: 16px; max-width: 52rem; }
@@ -1516,13 +1546,13 @@ body.academy { background: #f3f8f8; }
   display: inline-block; margin-inline-start: 6px; padding: 0 6px; border-radius: 999px;
   border: 1px solid currentColor; font-size: .68rem; font-weight: 800; vertical-align: middle;
 }
-.path-ico { display: inline-grid; width: 42px; height: 42px; flex: 0 0 auto; }
+.path-ico { display: inline-grid; width: 42px; height: 42px; flex: 0 0 auto; place-items: center; }
 .path-ico img { grid-area: 1 / 1; width: 42px; height: 42px; }
-.path-ico-dark { display: none; }
-[data-theme="dark"] .path-ico-light,
-[data-theme="noir"] .path-ico-light { display: none; }
-[data-theme="dark"] .path-ico-dark,
-[data-theme="noir"] .path-ico-dark { display: block; }
+.path-ico img.path-ico-dark { display: none; }
+[data-theme="dark"] .path-ico img.path-ico-light,
+[data-theme="noir"] .path-ico img.path-ico-light { display: none; }
+[data-theme="dark"] .path-ico img.path-ico-dark,
+[data-theme="noir"] .path-ico img.path-ico-dark { display: block; }
 .ps-overview { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 8px 0 28px; }
 .ps-ov {
   border: 1px solid var(--line); border-radius: 22px; padding: 18px 18px 14px; background: var(--surface);
