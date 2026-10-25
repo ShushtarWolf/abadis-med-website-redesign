@@ -75,17 +75,23 @@ def _nav_item(p, root, cur, item):
     kids = item[3] if len(item) > 3 else None
     if not kids:
         return f'<a href="{_href(p, root, h)}"{CUR if k == cur else ""}>{l}</a>'
-    child_keys = {ck for ck, _, _ in kids}
+    child_keys = {row[0] for row in kids}
     open_cur = CUR if (k == cur or cur in child_keys) else ''
-    sub = ''.join(
-        f'<a href="{_href(p, root, ch)}" role="menuitem"{CUR if ck == cur else ""}>{cl}</a>'
-        for ck, ch, cl in kids
-    )
+    bits = []
+    for row in kids:
+        ck, ch, cl = row[0], row[1], row[2]
+        badge = row[3] if len(row) > 3 and row[3] else ''
+        mark = f'<span class="nav-soon">{badge}</span>' if badge else ''
+        bits.append(
+            f'<a href="{_href(p, root, ch)}" role="menuitem"{CUR if ck == cur else ""}>{cl}{mark}</a>'
+        )
+    sub_cls = ' nav-sub--catalog' if k in ('products', 'solutions') else ''
+    nav_attr = f' data-ps-nav="{k}"' if k in ('products', 'solutions') else ''
     return (
-        f'<div class="nav-item has-sub">'
+        f'<div class="nav-item has-sub"{nav_attr}>'
         f'<a class="nav-parent" href="{_href(p, root, h)}"{open_cur} aria-haspopup="true" aria-expanded="false">{l}'
         f'<span class="nav-caret" aria-hidden="true"></span></a>'
-        f'<div class="nav-sub" role="menu">{sub}</div>'
+        f'<div class="nav-sub{sub_cls}" role="menu">{"".join(bits)}</div>'
         f'</div>'
     )
 
@@ -154,7 +160,7 @@ def footer_address_html(lang):
 def footer(p, cur=None, lang='fa'):
     L = LANGS[lang]
     root = L['root']
-    nav = nav_flat(I18N_NAV[lang])
+    nav = nav_flat(I18N_NAV[lang], footer=True)
     sec = I18N_SECONDARY[lang]
     main = '\n        '.join(
         f'<a href="{_href(p, root, h)}">{_footer_label(lang, k, l)}</a>' for k, h, l in nav)

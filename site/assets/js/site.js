@@ -796,3 +796,74 @@
   sync(!!location.hash);
   window.addEventListener('hashchange', function () { sync(true); });
 })();
+
+/* Products / solutions switcher and the sales configurator. */
+(function () {
+  var roots = document.querySelectorAll('[data-ps]');
+  function nameFromHash() {
+    if (location.hash === '#by-solution') return 'solution';
+    if (location.hash === '#by-product') return 'product';
+    return '';
+  }
+  function apply(root, name) {
+    root.querySelectorAll('[data-ps-tab]').forEach(function (a) {
+      var on = a.getAttribute('data-ps-tab') === name;
+      a.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    root.querySelectorAll('[data-ps-panel]').forEach(function (p) {
+      p.hidden = p.getAttribute('data-ps-panel') !== name;
+    });
+  }
+  function sync() {
+    var hashed = nameFromHash();
+    roots.forEach(function (root) {
+      root.classList.add('js-ps');
+      apply(root, hashed || root.getAttribute('data-ps-default') || 'product');
+    });
+  }
+  if (roots.length) {
+    sync();
+    window.addEventListener('hashchange', sync);
+  }
+  document.querySelectorAll('[data-sol-open]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var d = document.getElementById('sol-config');
+      if (!d) return;
+      if (d.showModal) d.showModal();
+      else d.hidden = false;
+    });
+  });
+  var form = document.querySelector('[data-sol-form]');
+  if (!form) return;
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var lines = [];
+    form.querySelectorAll('[data-sum]').forEach(function (field) {
+      var val = (field.value || '').trim();
+      if (!val) return;
+      var lab = field.getAttribute('data-sum') || '';
+      lines.push(lab + ': ' + val);
+    });
+    var parts = [];
+    document.querySelectorAll('.ps-part').forEach(function (el) {
+      var name = (el.querySelector('strong') || {}).textContent || '';
+      var badge = (el.querySelector('.ps-badge') || {}).textContent || '';
+      if (name) parts.push(name.trim() + (badge ? ' — ' + badge.trim() : ''));
+    });
+    if (parts.length) lines.push((form.getAttribute('data-reco-label') || '') + ': ' + parts.join(' | '));
+    var text = lines.join('\n');
+    var box = document.getElementById('sol-summary');
+    if (box) {
+      box.hidden = false;
+      var pre = box.querySelector('pre');
+      if (pre) pre.textContent = text;
+    }
+    var wa = document.getElementById('sol-wa');
+    if (wa) wa.href = 'https://wa.me/989100145809?text=' + encodeURIComponent(text);
+    var mail = document.getElementById('sol-mail');
+    if (mail) {
+      var sub = form.getAttribute('data-subject') || 'Abadis';
+      mail.href = 'mailto:info@abadis-med.com?subject=' + encodeURIComponent(sub) + '&body=' + encodeURIComponent(text);
+    }
+  });
+})();

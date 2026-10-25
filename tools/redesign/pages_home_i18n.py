@@ -111,10 +111,8 @@ def build_home(write, lang):
       <div class="grid g-4 values">{vals}</div>
       <div class="split" style="margin-top:28px"><div class="reveal"><p>{esc(t['factory'])}</p></div><ul class="checks reveal">{checks}</ul></div>
     </div></section>'''
-    cards = ''.join(f'<a class="mini-card reveal" href="{_h(t, p, h)}">' + (f'<div class="ph"><img src="{p}{im}" alt="{esc(n)}" loading="lazy" decoding="async"></div>' if im else '<div class="ph txt">Abadis</div>') + f'<strong>{esc(n)}</strong></a>' for n, h, im in t['products'])
-    products = f'''  <section class="section" id="products"><div class="wrap">
-      <div class="section-head reveal"><p class="eyebrow">{esc(t['prod_eb'])}</p><h2>{esc(t['prod_h'])}</h2><p><a class="more-link" style="margin:0" href="{_h(t, p, t['prod_href'])}">{esc(t['prod_all'])}</a></p></div>
-      <div class="mini-grid">{cards}</div></div></section>'''
+    import solutions_arch
+    products = solutions_arch.home_section(p, lang)
     quick = f'''  <section class="section quick" id="quick" style="padding-block:28px"><div class="wrap quick-row">
       <a class="quick-btn" href="{_h(t, p, t['calc_href'])}">{section_mark(p, 'calculator', 'sec-mark--sm')}{esc(t['calc'])}</a>
       <a class="quick-btn" href="{_h(t, p, t['zag_href'])}">{section_mark(p, 'zagros', 'sec-mark--sm')}{esc(t['zag'])}</a>

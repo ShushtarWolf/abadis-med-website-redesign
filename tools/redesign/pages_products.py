@@ -136,8 +136,9 @@ def product_block(p, it, lang='fa'):
     body = rewrite_html(it['html'], p) if lang == 'fa' else it['html']
     if lang == 'fa':
         body = _demote(body)
+    import solutions_arch as S
     return f'''    <article class="ptab size-block" id="{esc(it["id"])}">
-      <h2>{esc(it["title"])}</h2>
+      <h2>{esc(it["title"])}{S.badge(lang, S.status_for(it["id"]))}</h2>
       <div class="size-grid">
         {media}
         <div class="size-info prose">{body}</div>
@@ -194,27 +195,27 @@ def doc_bar(slug, lang='fa'):
 HUB_UI = {
     'fa': dict(
         nav='دسته‌بندی محصولات', by_product='بر مبنای محصولات', by_solution='بر اساس راهکار',
-        view='مشاهده ←', h1='محصولات <em>آبادیس</em>', title='محصولات',
-        desc='محصولات مخازن طبی آبادیس: کیسه ساکشن یکبار مصرف، فیلترها، مخزن، پایه و نگهدارنده ها، اتصالات، ساکشن تیوب و سایر محصولات.',
-        lead='کیسه ساکشن یکبار مصرف، فیلترها، مخزن، پایه و نگهدارنده ها، اتصالات، ساکشن تیوب و سایر محصولات.',
+        view='مشاهده ←',         h1='محصولات و راهکارهای آبادیس', title='محصولات و راهکارهای آبادیس',
+        desc='از محصولات تخصصی ساکشن تا راهکارهای نوآورانه برای مراقبت ایمن‌تر و کارآمدتر',
+        lead='از محصولات تخصصی ساکشن تا راهکارهای نوآورانه برای مراقبت ایمن‌تر و کارآمدتر',
         crumb='محصولات', alt_suffix=' آبادیس',
         docs=[('../downloads/', 'مرکز دانلود کاتالوگ‌ها'), ('../install-guide/', 'راهنمای نصب'), ('../calculator/', 'محاسبه‌گر صرفه‌جویی')],
         rel='products/index.html', prefix='../', fa_path='products/', canonical='products/',
     ),
     'en': dict(
         nav='Product categories', by_product='By product', by_solution='By solution',
-        view='Find Out More', h1='Products', title='Products',
-        desc='Suction Bag, Base and Holder, Filter, Suction tube, Canister, Connections and Other Products.',
-        lead='Suction Bag, Base and Holder, Filter, Suction tube, Canister, Connections and Other Products.',
+        view='Find Out More',         h1='Abadis Products &amp; Solutions', title='Abadis Products & Solutions',
+        desc='From specialised suction products to innovative solutions for safer, more efficient care.',
+        lead='From specialised suction products to innovative solutions for safer, more efficient care.',
         crumb='Products', alt_suffix=' Abadis',
         docs=[('../center-download/', 'Download Center'), ('../installation-manual/', 'Installation Manual'), ('../calculator/', 'Savings calculator')],
         rel='en/products/index.html', prefix='../../', fa_path='products/', canonical='en/products/',
     ),
     'ar': dict(
         nav='تصنيف المنتجات', by_product='حسب المنتجات', by_solution='حسب الحلول',
-        view='مشاهدة منتجاتنا', h1='منتجات', title='منتجات',
-        desc='كيس الشفط، خزانات، تثبیت، الوصلات، الفلتر، أنبوب الشفط ومنتجات اخری.',
-        lead='كيس الشفط، خزانات، تثبیت، الوصلات، الفلتر، أنبوب الشفط ومنتجات اخری.',
+        view='مشاهدة منتجاتنا',         h1='منتجات وحلول آباديس', title='منتجات وحلول آباديس',
+        desc='من منتجات الشفط المتخصصة إلى حلول مبتكرة لرعاية أكثر أماناً وكفاءة.',
+        lead='من منتجات الشفط المتخصصة إلى حلول مبتكرة لرعاية أكثر أماناً وكفاءة.',
         crumb='منتجات', alt_suffix=' آباديس',
         docs=[('../مركز-التنزيل/', 'مركز التنزيل'), ('../دليل-التركيب/', 'دليل التركيب'), ('../الحوسبة/', 'حاسبة التوفير')],
         rel='arabic/منتجات/index.html', prefix='../../', fa_path='products/', canonical='arabic/منتجات/',
@@ -312,28 +313,8 @@ def _pcard(href, title, sub, src, view, alt):
             f'{sub_html}<span class="go">{view}</span></a>')
 
 def hub_main(p, lang, summaries=None):
-    ui = HUB_UI[lang]
-    srcs = family_src(p)
-    fams = []
-    for row in HUB_FAMILIES[lang]:
-        slug, href, title = row[0], row[1], row[2]
-        sub = ('، '.join(summaries[slug]) if summaries else '') if lang == 'fa' else row[3]
-        fams.append(_pcard(href, title, sub, srcs.get(slug), ui['view'], title + ui['alt_suffix']))
-    sols = [_pcard(href, title, sub, solution_src(p, photo), ui['view'], title + ui['alt_suffix'])
-            for photo, href, title, sub in SOLUTIONS[lang]]
-    docs = ''.join(f'<a href="{h}">{esc(t)}</a>' for h, t in ui['docs'])
-    nav = (f'  <nav class="anchors" aria-label="{esc(ui["nav"])}"><div class="wrap">'
-           f'<a href="#by-product">{esc(ui["by_product"])}</a>'
-           f'<a href="#by-solution">{esc(ui["by_solution"])}</a>'
-           f'</div></nav>\n')
-    return (page_hero(p, [(ui['crumb'], None)], ui['h1'], ui['lead'], lang=lang) + '\n' + nav
-            + f'  <section class="section product-cat" id="by-product"><div class="wrap">'
-            + f'<div class="section-head"><h2>{esc(ui["by_product"])}</h2></div>'
-            + f'<div class="grid g-3">{"".join(fams)}</div></div></section>\n'
-            + f'  <section class="section section--alt product-cat" id="by-solution"><div class="wrap">'
-            + f'<div class="section-head"><h2>{esc(ui["by_solution"])}</h2></div>'
-            + f'<div class="grid g-3">{"".join(sols)}</div></div></section>\n'
-            + f'  <section class="section" style="padding-top:0"><div class="wrap"><div class="doc-links">{docs}</div></div></section>')
+    import solutions_arch
+    return solutions_arch.hub_main(p, lang, opening='product')
 
 def fa_summaries():
     out = {}
@@ -524,15 +505,17 @@ def items_for(slug, lang):
     return h1, out
 
 
-def _tabs(items, blocks):
-    nav = ''.join(f'<a href="#{esc(it["id"])}" data-ptab="{esc(it["id"])}">{esc(it["title"])}</a>' for it in items)
+def _tabs(items, blocks, lang='fa', slug='', p=''):
+    import solutions_arch as S
+    nav = ''.join(S.tab_anchor(it['id'], it['title'], lang) for it in items)
+    pva = ('\n' + S.pva_card(p, lang)) if slug == 'other' else ''
     rules = ''.join(
         '.ptabs:not(.js-tabs):has(#%s:target) .ptab-nav a[href="#%s"]{background:var(--brand-3);color:#fff;border-color:transparent}'
         % (it['id'], it['id']) for it in items)
     return f'''  <section class="section" id="range"><div class="wrap">
     <style>{rules}</style>
     <div class="ptabs" data-ptabs>
-      <div class="ptab-nav" role="tablist">{nav}</div>
+      <div class="ptab-nav" role="tablist">{nav}</div>{pva}
 {blocks}
     </div>
   </div></section>\n'''
@@ -583,16 +566,21 @@ def write_family_page(write, slug, lang):
     sep = '، ' if lang != 'en' else ', '
     lead = sep.join(i['title'] for i in items)
     products = ui['products']
-    anchors = ''.join(f'<a href="#{esc(i["id"])}">{esc(i["title"])}</a>' for i in items)
+    import solutions_arch as S
+    anchors = ''.join(
+        f'<a href="#{esc(i["id"])}">{esc(i["title"])}{S.badge(lang, S.status_for(i["id"]))}</a>' for i in items)
     if DOCS.get(slug):
         anchors += f'<a href="#docs">{esc(ui["specs"])}</a>'
     anchors += f'<a href="#more">{esc(ui["more_a"])}</a><a href="#inquiry">{esc(ui["inquiry_a"])}</a>'
     blocks = '\n'.join(product_block(p, it, lang) for it in items)
     more = related(p, slug) if lang == 'fa' else _related_i18n(p, slug, lang)
-    main = (page_hero(p, [(products, crumb_href), (h1, None)], esc(h1), esc(lead), lang=lang)
+    hero = S.inject_h1_badge(
+        page_hero(p, [(products, crumb_href), (h1, None)], esc(h1), esc(lead), lang=lang), lang, 'order')
+    main = (hero
             + f'\n  <nav class="anchors" aria-label="{esc(products)}"><div class="wrap">{anchors}</div></nav>\n'
             + doc_bar(slug, lang)
-            + _tabs(items, blocks)
+            + _tabs(items, blocks, lang, slug, p)
+            + S.related_section(p, lang, slug)
             + more + '\n' + _inquiry(p, lang))
     desc = f'{h1} — {lead}'
     write(rel, page(p, 'products', h1, desc, main, lightbox=True, lang=lang,
@@ -640,6 +628,7 @@ def write_bag(write, lang):
     if lang == 'fa':
         return None
     from product_copy import UI
+    import solutions_arch as S
     ui = UI[lang]
     rel, p, can, crumb_href, h1 = OUT['suction-bag'][lang]
     filters = '../filters/' if lang == 'en' else '../الفلتر/'
@@ -664,7 +653,7 @@ def write_bag(write, lang):
         if size == '3':
             sterile = (f'<div class="sterile"><h3>{esc(ui["sterile_h"])}</h3><p>{esc(ui["sterile_p"])}</p></div>')
         blocks.append(f'''    <article class="size-block" id="s{size}">
-      <h2>{esc(title)}</h2>
+      <h2>{esc(title)}{S.badge(lang, "order")}</h2>
       <p class="meta">{esc(meta)}</p>
       <div class="size-grid">
         <div class="size-media">
@@ -683,8 +672,10 @@ def write_bag(write, lang):
       {_bag_uses(lang, size, p)}
     </article>''')
     benefit = 'Benefits' if lang == 'en' else 'المزايا'
-    anchors = (f'<a href="#benefits">{esc(benefit)}</a><a href="#s1">{esc(ui["sz1"])}</a>'
-               f'<a href="#s2">{esc(ui["sz2"])}</a><a href="#s3">{esc(ui["sz3"])}</a>'
+    anchors = (f'<a href="#benefits">{esc(benefit)}</a>'
+               f'<a href="#s1">{esc(ui["sz1"])}{S.badge(lang, "order")}</a>'
+               f'<a href="#s2">{esc(ui["sz2"])}{S.badge(lang, "order")}</a>'
+               f'<a href="#s3">{esc(ui["sz3"])}{S.badge(lang, "order")}</a>'
                f'<a href="{filters}">{esc(ui["filters_h"])}</a><a href="#pack">{esc(ui["pack_h"])}</a>')
     intro = f'''  <section class="section" id="intro"><div class="wrap">
     <div class="section-head"><h2>{esc(ui["intro_h"])}</h2></div>
@@ -695,7 +686,7 @@ def write_bag(write, lang):
       <article class="card"><h3>{esc(ui["v3"])}</h3><p>{esc(ui["v3p"])}</p></article>
     </div>
   </div></section>'''
-    main = (page_hero(p, [(ui['products'], crumb_href), (h1, None)], esc(h1), esc(ui['bag_lead']), lang=lang)
+    main = (S.inject_h1_badge(page_hero(p, [(ui['products'], crumb_href), (h1, None)], esc(h1), esc(ui['bag_lead']), lang=lang), lang, 'order')
             + '\n' + bag_benefits(lang, p) + '\n'
             + f'  <nav class="anchors"><div class="wrap">{anchors}</div></nav>\n'
             + intro
@@ -710,6 +701,7 @@ def write_bag(write, lang):
     <p>{esc(ui["pack_p"])}</p>
     <div class="doc-links"><a href="{esc(cat)}" target="_blank" rel="noopener" data-track="catalogue_download">{esc(ui["cat"])}</a><a href="{guide}">{esc(ui["guide"])}</a><a href="{downloads}">{esc(ui["downloads"])}</a></div>
   </div></section>\n'''
+            + S.related_section(p, lang, 'suction-bag')
             + _inquiry(p, lang))
     write(rel, page(p, 'products', h1, ui['bag_desc'], main, lightbox=True, lang=lang,
                     fa_path='products/suction-bag/', canonical_path=can))
@@ -768,6 +760,8 @@ def build(write):
         summaries[slug] = [i['title'] for i in items]
     patch_suction_bag_cleanup()
     patch_suction_bag_benefits()
+    import solutions_arch
+    solutions_arch.stamp_product_pages()
     write_products_hub(write, 'fa', summaries)
     for lang in ('en', 'ar'):
         for slug, _path, _title, _im, _fb in FAMILIES:

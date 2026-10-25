@@ -591,21 +591,8 @@ def why_v2():
 
 
 def products_v2():
-    import pages_products
-    from lib import best_img
-    cards = []
-    for slug, path, title, im, fb in pages_products.FAMILIES:
-        r = best_img(im, 480) if im else None
-        src = r['src'] if r else fb
-        ph = f'<div class="ph"><img src="{src}" alt="{esc(title)} آبادیس" loading="lazy" decoding="async"></div>' if src else '<div class="ph txt">آبادیس</div>'
-        cards.append(f'<a class="mini-card reveal" href="products/{slug}/">{ph}<strong>{esc(title)}</strong></a>')
-    return f'''  <section class="section" id="products">
-    <div class="wrap">
-      <div class="section-head reveal"><p class="eyebrow">محصولات</p><h2>محصولات آبادیس</h2>
-        <p><a class="more-link" style="margin:0" href="products/">همهٔ محصولات ←</a></p></div>
-      <div class="mini-grid">{''.join(cards)}</div>
-    </div>
-  </section>'''
+    import solutions_arch
+    return solutions_arch.home_section('', 'fa')
 
 
 def quick_links():
