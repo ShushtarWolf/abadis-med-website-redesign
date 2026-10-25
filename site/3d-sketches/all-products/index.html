@@ -339,7 +339,8 @@
   <script type="module">
     import * as THREE from 'three';
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-    import { CATEGORIES, PRODUCTS, buildProductModel, preloadPhotoTextures } from './all-products-models.js';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { CATEGORIES, PRODUCTS, buildProductModel, preloadPhotoTextures, preloadCadPit } from './all-products-models.js';
 
     const params = new URLSearchParams(window.location.search);
     if (params.get('capture') === '1') {
@@ -504,14 +505,17 @@
       document.body.classList.toggle('dark', !!isDark);
       ALL_STAGES.forEach(st => clearViewportError(st.container));
 
-      // Never block forever on textures — 2.5s timeout then solid fallback colors
+      // Never block forever on textures / CAD GLB — timeout then procedural fallback
       try {
         await Promise.race([
-          preloadPhotoTextures(THREE),
-          new Promise((_, rej) => setTimeout(() => rej(new Error('texture preload timeout')), 2500)),
+          Promise.all([
+            preloadPhotoTextures(THREE),
+            preloadCadPit(THREE, GLTFLoader),
+          ]),
+          new Promise((_, rej) => setTimeout(() => rej(new Error('asset preload timeout')), 4000)),
         ]);
       } catch (err) {
-        console.warn('Photo texture preload skipped:', err);
+        console.warn('Asset preload skipped (using fallbacks):', err);
       }
 
       const idx = PRODUCTS.findIndex(p => p.id === productId);
