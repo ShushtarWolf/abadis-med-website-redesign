@@ -391,7 +391,7 @@
             odoList.forEach(([key, o]) => { if (vals[key] != null) o.set(vals[key]); });
             const fr = kind === 'surgery'
               ? { water: disp.n / 30000, cost: disp.n / 30000, hours: disp.n / 30000, input: disp.n / 30000 }
-              : { water: (disp.a * 254 + disp.b * 67) / (321 * 700), cost: (disp.a * 200 + disp.b * 50) / (250 * 700), hours: (disp.a * 254 + disp.b * 67) / (321 * 700), a: disp.a / 700, b: disp.b / 700 };
+              : { water: (disp.a * 254 + disp.b * 67) / (321 * 700), cost: (disp.a * 254 + disp.b * 65) / ((254 + 65) * 700), hours: (disp.a * 254 + disp.b * 67) / (321 * 700), a: disp.a / 700, b: disp.b / 700 };
             chips.forEach((c) => c.classList.toggle('on', c.dataset.n != null ? +c.dataset.n === disp.n : (+c.dataset.a === disp.a && +c.dataset.b === disp.b)));
             if (confirmBtn) {
               st.mode = st.phase === 'a' ? (disp.a > 0 ? 'confirm' : '') : 'edit';

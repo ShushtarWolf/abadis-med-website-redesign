@@ -16,9 +16,9 @@
   };
   const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
   const F = {
-    water: (n) => n * 1.6 * 9.3,
+    water: (n) => n * 1.6 * 9.971,
     cost: (n) => n * 2.5 * 85000,
-    hours: (n) => n * 1.7 / 60 * 2.2 * 7.1,
+    hours: (n) => n * 1.6 * 2.2 * 7.1 / 60,
   };
 
   const wrap = document.getElementById('dhKnob');

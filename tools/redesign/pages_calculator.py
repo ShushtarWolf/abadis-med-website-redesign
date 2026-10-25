@@ -1,7 +1,7 @@
 """Calculator: abadismedit's redesign drafts (redesign/calculator/, merged from team-assets-2026-10-06)
 adapted into the site shell. Their page CSS is scoped under .gfc (and `dark` rules also apply to noir),
-their header/footer/theme toggle are replaced by ours. Formulas are untouched (redesign/calculator/js/calc.js,
-common/abadis-common.js) and match the live GFCalc formulas."""
+their header/footer/theme toggle are replaced by ours. Formulas live in redesign/calculator/js/calc.js
+and common/abadis-common.js and follow Alireza's فرمول محاسبه گر."""
 import re, shutil, pathlib
 from lib import ROOT, SITE
 from layout import page

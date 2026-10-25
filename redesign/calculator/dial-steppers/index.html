@@ -491,7 +491,7 @@
             ? { water: disp.n / 30000, cost: disp.n / 30000, hours: disp.n / 30000 }
             : {
                 water: (disp.a * 254 + disp.b * 67) / (321 * 700),
-                cost: (disp.a * 200 + disp.b * 50) / (250 * 700),
+                cost: (disp.a * 254 + disp.b * 65) / ((254 + 65) * 700),
                 hours: (disp.a * 254 + disp.b * 67) / (321 * 700),
               };
           ['water', 'cost', 'hours'].forEach((k) => {

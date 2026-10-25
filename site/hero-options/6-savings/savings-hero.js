@@ -5,7 +5,7 @@
   var hero = document.getElementById('hero');
   if (!hero) return;
   var n = 5000;
-  var out = { water: n * 1.6 * 9.3, cost: n * 2.5 * 85000, hours: n * 1.7 / 60 * 2.2 * 7.1 };
+  var out = { water: n * 1.6 * 9.971, cost: n * 2.5 * 85000, hours: n * 1.6 * 2.2 * 7.1 / 60 };
   var fa = function (v) { return Math.round(v).toLocaleString('en-US').replace(/\d/g, function (d) { return '۰۱۲۳۴۵۶۷۸۹'[d]; }).replace(/,/g, '٬'); };
   var els = [].slice.call(hero.querySelectorAll('[data-k]'));
   var num = hero.querySelector('.s6-num');

@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Abadis Med — Complete 25-Product 3D Sketch & CAD Catalog</title>
+  <style>
+    @font-face {
+      font-family: 'KalamehWeb';
+      src: url('./fonts/KalamehWeb-FaNum-Regular.woff2') format('woff2');
+      font-weight: 400;
+    }
+    @font-face {
+      font-family: 'KalamehWeb';
+      src: url('./fonts/KalamehWeb-FaNum-Bold.woff2') format('woff2');
+      font-weight: 700;
+    }
+    @font-face {
+      font-family: 'KalamehWeb';
+      src: url('./fonts/KalamehWeb-FaNum-Black.woff2') format('woff2');
+      font-weight: 900;
+    }
+    :root {
+      --bg: #f3f8f8;
+      --card-bg: #ffffff;
+      --panel-bg: #f7fbfb;
+      --border: #cde2e3;
+      --accent: #05686b;
+      --accent-light: #0d9498;
+      --accent-soft: rgba(5, 104, 107, 0.10);
+      --text-main: #08292b;
+      --text-muted: #46696b;
+      --grid-line: rgba(5, 104, 107, 0.065);
+    }
+    body.dark {
+      --bg: #061416;
+      --card-bg: #0b1f22;
+      --panel-bg: #0f282c;
+      --border: #1b494d;
+      --accent: #28d0d4;
+      --accent-light: #5ef0f3;
+      --accent-soft: rgba(40, 208, 212, 0.13);
+      --text-main: #e9fafa;
+      --text-muted: #8cb8bc;
+      --grid-line: rgba(40, 208, 212, 0.075);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'KalamehWeb', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
+    /* Interactive App Bar */
+    #appHeader {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 24px; background: var(--card-bg); border-bottom: 1px solid var(--border);
+      gap: 14px; flex-wrap: wrap;
+    }
+    .brandTitle { display: flex; align-items: center; gap: 12px; }
+    .brandBadge {
+      background: var(--accent); color: #fff; font-weight: 900; padding: 6px 12px;
+      border-radius: 8px; font-size: 13px; letter-spacing: 0.6px;
+    }
+    body.dark .brandBadge { color: #04181a; }
+    .controlsRow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    select, button {
+      font-family: inherit; font-size: 13px; font-weight: 700;
+      padding: 7px 13px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--panel-bg); color: var(--text-main); cursor: pointer;
+    }
+    button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    body.dark button.active { color: #04181a; }
+
+    /* Master Product Card (1400 x 920 fixed aspect for crisp comparison sheets & interactive view) */
+    #cardWrapper {
+      display: flex; justify-content: center; align-items: flex-start; padding: 16px;
+    }
+    body.card-capture-mode #appHeader { display: none !important; }
+    body.card-capture-mode #cardWrapper { padding: 0 !important; }
+
+    #productCard {
+      width: 1400px; height: 900px;
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      border-radius: 18px;
+      padding: 20px 24px;
+      display: flex; flex-direction: column; gap: 14px;
+      position: relative; overflow: hidden;
+      box-shadow: 0 14px 36px rgba(0,0,0,0.08);
+    }
+    .cardHeader {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-bottom: 12px; border-bottom: 2px solid var(--border);
+    }
+    .headerRight { display: flex; flex-direction: column; gap: 4px; }
+    .catPillRow { display: flex; align-items: center; gap: 10px; }
+    .prodIndexBadge {
+      background: var(--accent); color: #fff; font-weight: 900; font-size: 13px;
+      padding: 3px 10px; border-radius: 6px; direction: ltr;
+    }
+    body.dark .prodIndexBadge { color: #03191b; }
+    .catTag {
+      background: var(--accent-soft); color: var(--accent); font-weight: 700;
+      font-size: 13px; padding: 3px 10px; border-radius: 6px;
+    }
+    .faTitle { font-size: 24px; font-weight: 900; color: var(--text-main); }
+    .enTitle { font-size: 14px; font-weight: 700; color: var(--text-muted); direction: ltr; text-align: right; }
+    .headerLeft {
+      display: flex; flex-direction: column; align-items: flex-end; gap: 5px; direction: ltr;
+    }
+    .codePill {
+      font-family: monospace; font-size: 14px; font-weight: 700;
+      background: var(--panel-bg); border: 1px solid var(--border);
+      padding: 4px 12px; border-radius: 6px; color: var(--accent);
+    }
+    .dimText { font-size: 12.5px; font-weight: 700; color: var(--text-muted); }
+
+    /* 2x2 Grid of 4 Styles */
+    .stylesGrid {
+      flex: 1; display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 14px;
+      min-height: 760px; /* guarantee room for 2× viewport rows */
+    }
+    .stylePanel {
+      background: var(--panel-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      position: relative;
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      min-height: 360px;
+      background-image:
+        linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    .panelBar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 14px; background: rgba(5, 104, 107, 0.07);
+      border-bottom: 1px solid var(--border); z-index: 3;
+    }
+    .panelTitleFa { font-size: 13.5px; font-weight: 900; color: var(--text-main); }
+    .panelTitleEn { font-size: 11.5px; font-weight: 700; color: var(--accent); direction: ltr; }
+    .viewportBox {
+      flex: 1 1 auto; position: relative; width: 100%;
+      min-height: 360px; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .topDownInset.viewportBox,
+    #vpTopInset.viewportBox,
+    .topDownInset {
+      min-height: 0 !important;
+      height: 118px;
+    }
+    .viewportBox canvas {
+      width: 100% !important; height: 100% !important;
+      display: block;
+    }
+    .stylesGrid > .stylePanel > .viewportBox canvas {
+      min-height: 360px;
+    }
+    .topDownInset canvas, #vpTopInset canvas {
+      min-height: 0 !important;
+    }
+    .viewportError {
+      position: absolute; inset: 12px; z-index: 20;
+      background: rgba(120, 20, 20, 0.92); color: #fff;
+      border-radius: 10px; padding: 12px 14px;
+      font-size: 12px; font-weight: 700; white-space: pre-wrap;
+      overflow: auto; pointer-events: none;
+    }
+    .topDownInset {
+      position: absolute; bottom: 10px; left: 10px;
+      width: 118px; height: 118px;
+      background: var(--card-bg); border: 1.5px solid var(--accent);
+      border-radius: 10px; overflow: hidden; z-index: 4;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.14);
+    }
+    .topDownInsetLabel {
+      position: absolute; top: 3px; left: 6px; font-size: 9.5px; font-weight: 800;
+      color: var(--accent); direction: ltr; z-index: 5;
+    }
+    /* Callout SVG Overlay */
+    #calloutSvg {
+      position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5;
+    }
+    /* Panel 4 Reference & Specs */
+    .refSpecLayout {
+      flex: 1; display: grid; grid-template-columns: 230px 1fr; gap: 14px;
+      padding: 14px; align-items: center; min-height: 0;
+    }
+    .refImgFrame {
+      width: 220px; height: 270px; background: #ffffff;
+      border: 1.5px solid var(--border); border-radius: 12px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 10px; position: relative; overflow: hidden;
+    }
+    .refImgFrame img {
+      max-width: 100%; max-height: 225px; object-fit: contain;
+    }
+    .refCaption {
+      margin-top: 6px; font-size: 10.5px; font-weight: 800; color: #05686b; direction: ltr;
+    }
+    .specDetails {
+      display: flex; flex-direction: column; gap: 9px; height: 100%; justify-content: center;
+    }
+    .specBox {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 10px; padding: 9px 12px;
+    }
+    .specBoxLabel {
+      font-size: 11px; font-weight: 900; color: var(--accent); margin-bottom: 3px;
+    }
+    .specBoxTextFa { font-size: 12.5px; line-height: 1.55; color: var(--text-main); font-weight: 600; }
+    .specBoxTextEn { font-size: 11.5px; line-height: 1.45; color: var(--text-muted); direction: ltr; text-align: left; font-weight: 600; }
+    .calloutListGrid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+    }
+    .calloutChip {
+      font-size: 11px; font-weight: 700; padding: 5px 8px;
+      border-radius: 6px; background: var(--accent-soft); color: var(--text-main);
+      border-right: 3px solid var(--accent);
+    }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./vendor/three/build/three.module.js",
+        "three/addons/": "./vendor/three/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <header id="appHeader">
+    <div class="brandTitle">
+      <span class="brandBadge">ABADIS MED 3D CAD</span>
+      <div>
+        <div style="font-weight:900;font-size:16px;">کاتالوگ جامع طراحی سه‌بعدی و مهندسی محصولات آبادیس مد</div>
+        <div style="font-size:12px;color:var(--text-muted);direction:ltr;">Interactive 360° Three.js WebGL & Technical CAD Product Suite (25 Products)</div>
+      </div>
+    </div>
+    <div class="controlsRow">
+      <select id="catSelect"></select>
+      <select id="prodSelect"></select>
+      <button id="prevBtn">◀ قبلی</button>
+      <button id="nextBtn">بعدی ▶</button>
+      <button id="themeBtn">تم تیره / روشن (Dark/Light)</button>
+    </div>
+  </header>
+
+  <main id="cardWrapper">
+    <section id="productCard">
+      <div class="cardHeader">
+        <div class="headerRight">
+          <div class="catPillRow">
+            <span class="prodIndexBadge" id="uiProdIdx">PRODUCT #01 / 25</span>
+            <span class="catTag" id="uiCatName">۱. کیسه‌های ساکشن | Suction Bags</span>
+          </div>
+          <h1 class="faTitle" id="uiFaTitle">کیسه ساکشن یکبار مصرف ۱ لیتری آبادیس</h1>
+          <div class="enTitle" id="uiEnTitle">1L Disposable Suction Liner Bag</div>
+        </div>
+        <div class="headerLeft">
+          <span class="codePill" id="uiCode">CODE: ABD-SB-1000</span>
+          <div class="dimText" id="uiDims">Ø110 × 155 mm | 1000 mL</div>
+          <div class="dimText" id="uiMat" style="color:var(--accent);">Medical PP Copolymer Liner + HDPE Teal Lid</div>
+        </div>
+      </div>
+
+      <div class="stylesGrid">
+        <!-- Panel 1: Technical CAD Wireframe + Shaded -->
+        <div class="stylePanel">
+          <div class="panelBar">
+            <span class="panelTitleFa">۱. اسکچ مهندسی وایرفریم و سایه‌زنی (CAD Wireframe + Shaded)</span>
+            <span class="panelTitleEn">STYLE 1 · ORTHO / ISO CAD WIREFRAME</span>
+          </div>
+          <div class="viewportBox" id="vpCad"></div>
+        </div>
+
+        <!-- Panel 2: Multi-Angle Studio 3D Render + Top-Down Inset -->
+        <div class="stylePanel">
+          <div class="panelBar">
+            <span class="panelTitleFa">۲. رندر استودیویی سه‌بعدی ۳۶۰ درجه (Interactive Studio 3D + Top View)</span>
+            <span class="panelTitleEn">STYLE 2 · 360° STUDIO 3D & TOP-DOWN</span>
+          </div>
+          <div class="viewportBox" id="vpStudio">
+            <div class="topDownInset" id="vpTopInset">
+              <span class="topDownInsetLabel">TOP VIEW</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 3: Engineering Callouts & Component Architecture -->
+        <div class="stylePanel">
+          <div class="panelBar">
+            <span class="panelTitleFa">۳. نمای اجزای مهندسی و جزئیات فنی (Engineering Callouts & Cutaway)</span>
+            <span class="panelTitleEn">STYLE 3 · TECHNICAL CALLOUTS</span>
+          </div>
+          <div class="viewportBox" id="vpCallout">
+            <svg id="calloutSvg" viewBox="0 0 660 360" preserveAspectRatio="none"></svg>
+          </div>
+        </div>
+
+        <!-- Panel 4: Reference Photo & Clinical Specifications -->
+        <div class="stylePanel">
+          <div class="panelBar">
+            <span class="panelTitleFa">۴. تصویر مرجع محصول و مشخصات فنی و بالینی (Reference & Clinical Specs)</span>
+            <span class="panelTitleEn">STYLE 4 · REFERENCE & CLINICAL SPECS</span>
+          </div>
+          <div class="refSpecLayout">
+            <div class="refImgFrame">
+              <img id="uiRefImg" src="./assets/refs/p01-ref.png" alt="Product Reference" />
+              <div class="refCaption" id="uiRefCaption">ABADIS MED REFERENCE</div>
+            </div>
+            <div class="specDetails">
+              <div class="specBox">
+                <div class="specBoxLabel">عملکرد بالینی و ویژگی‌های طراحی | Clinical & Engineering Function</div>
+                <div class="specBoxTextFa" id="uiSpecFa"></div>
+              </div>
+              <div class="specBox">
+                <div class="specBoxLabel">Technical Description & Geometry</div>
+                <div class="specBoxTextEn" id="uiSpecEn"></div>
+              </div>
+              <div class="specBox">
+                <div class="specBoxLabel">اجزای کلیدی مدل سه‌بعدی | Key 3D Modeled Components</div>
+                <div class="calloutListGrid" id="uiCalloutChips"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { CATEGORIES, PRODUCTS, buildProductModel, preloadPhotoTextures } from './all-products-models.js';
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('capture') === '1') {
+      document.body.classList.add('card-capture-mode');
+    }
+    if (params.get('dark') === '1') {
+      document.body.classList.add('dark');
+    }
+
+    function showViewportError(container, err) {
+      let el = container.querySelector('.viewportError');
+      if (!el) {
+        el = document.createElement('div');
+        el.className = 'viewportError';
+        container.appendChild(el);
+      }
+      el.textContent = String(err && err.stack ? err.stack : err);
+      console.error('[Abadis 3D Viewer]', err);
+    }
+    function clearViewportError(container) {
+      const el = container.querySelector('.viewportError');
+      if (el) el.remove();
+    }
+
+    function createStage(container, isOrtho = false) {
+      // Force a usable layout size even before flex settles
+      const isInset = container.classList.contains('topDownInset') || container.id === 'vpTopInset';
+      const minW = isInset ? 64 : 320;
+      const minH = isInset ? 64 : 360;
+      const w = Math.max(container.clientWidth || 0, minW);
+      const h = Math.max(container.clientHeight || 0, minH);
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setSize(w, h, false);
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.12;
+      renderer.domElement.style.width = '100%';
+      renderer.domElement.style.height = '100%';
+      if (!(container.classList.contains('topDownInset') || container.id === 'vpTopInset')) {
+        renderer.domElement.style.minHeight = '360px';
+      }
+      renderer.domElement.style.display = 'block';
+      container.insertBefore(renderer.domElement, container.firstChild);
+
+      const scene = new THREE.Scene();
+      const aspect = w / h;
+      const camera = isOrtho
+        ? new THREE.OrthographicCamera(-0.13 * aspect, 0.13 * aspect, 0.13, -0.13, 0.01, 10)
+        : new THREE.PerspectiveCamera(34, aspect, 0.01, 10);
+
+      const amb = new THREE.AmbientLight(0xffffff, 1.35);
+      const key = new THREE.DirectionalLight(0xffffff, 1.75);
+      key.position.set(0.5, 0.8, 0.7);
+      const fill = new THREE.DirectionalLight(0xb8f2f4, 0.95);
+      fill.position.set(-0.6, 0.3, 0.5);
+      const rim = new THREE.DirectionalLight(0x0dd2d6, 0.75);
+      rim.position.set(0, -0.6, -0.6);
+      scene.add(amb, key, fill, rim);
+
+      const rootHolder = new THREE.Group();
+      scene.add(rootHolder);
+      const stage = { container, renderer, scene, camera, rootHolder, isOrtho };
+
+      const resize = () => {
+        const isInset = container.classList.contains('topDownInset') || container.id === 'vpTopInset';
+        const nw = Math.max(container.clientWidth || 0, isInset ? 64 : 320);
+        const nh = Math.max(container.clientHeight || 0, isInset ? 64 : 360);
+        renderer.setSize(nw, nh, false);
+        if (camera.isPerspectiveCamera) {
+          camera.aspect = nw / nh;
+        } else {
+          const halfH = Math.abs(camera.top - camera.bottom) / 2 || 0.13;
+          const halfW = halfH * (nw / nh);
+          camera.left = -halfW; camera.right = halfW;
+        }
+        camera.updateProjectionMatrix();
+        renderer.render(scene, camera);
+      };
+      stage.resize = resize;
+      if (typeof ResizeObserver !== 'undefined') {
+        const ro = new ResizeObserver(() => resize());
+        ro.observe(container);
+        stage._ro = ro;
+      }
+      window.addEventListener('resize', resize);
+      // Second pass after layout paints
+      requestAnimationFrame(() => requestAnimationFrame(resize));
+      return stage;
+    }
+
+    const stCad = createStage(document.getElementById('vpCad'), false);
+    const stStudio = createStage(document.getElementById('vpStudio'), false);
+    const stTop = createStage(document.getElementById('vpTopInset'), true);
+    const stCallout = createStage(document.getElementById('vpCallout'), false);
+    const ALL_STAGES = [stCad, stStudio, stTop, stCallout];
+
+    const controls = new OrbitControls(stStudio.camera, stStudio.renderer.domElement);
+    controls.enableDamping = true;
+
+    function fitCameraToObject(camera, obj, viewVec, zoomScale = 1.28, orthoStage = null) {
+      const box = new THREE.Box3().setFromObject(obj);
+      const center = box.getCenter(new THREE.Vector3());
+      const size = box.getSize(new THREE.Vector3());
+      const maxDim = Math.max(size.x, size.y, size.z, 0.08);
+      obj.position.sub(center);
+      const fov = camera.fov || 34;
+      const dist = (maxDim * zoomScale) / (2 * Math.tan((fov * Math.PI) / 360));
+      const dir = viewVec.clone().normalize();
+      camera.position.copy(dir.multiplyScalar(dist));
+      camera.lookAt(0, 0, 0);
+      if (camera.isOrthographicCamera) {
+        const st = orthoStage || stTop;
+        const cw = Math.max(st.container.clientWidth || 0, 100);
+        const ch = Math.max(st.container.clientHeight || 0, 100);
+        const aspect = cw / ch;
+        const half = maxDim * 0.65;
+        camera.left = -half * aspect; camera.right = half * aspect;
+        camera.top = half; camera.bottom = -half;
+      }
+      camera.updateProjectionMatrix();
+    }
+
+    function drawCallouts(prod, stage) {
+      const svg = document.getElementById('calloutSvg');
+      const w = Math.max(stage.container.clientWidth || 0, 320);
+      const h = Math.max(stage.container.clientHeight || 0, 360);
+      svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+      svg.innerHTML = '';
+      const isDark = document.body.classList.contains('dark');
+      const strokeCol = isDark ? '#3ce8ea' : '#05686b';
+      const bgCol = isDark ? 'rgba(9, 28, 31, 0.90)' : 'rgba(255, 255, 255, 0.92)';
+      const txtCol = isDark ? '#e9fafa' : '#072729';
+
+      stage.camera.updateMatrixWorld();
+      (prod.callouts || []).forEach((c, idx) => {
+        const p3 = new THREE.Vector3(...c.target).project(stage.camera);
+        const x1 = (p3.x * 0.5 + 0.5) * w;
+        const y1 = (-p3.y * 0.5 + 0.5) * h;
+        const side = idx % 2 === 0 ? 1 : -1;
+        const row = Math.floor(idx / 2);
+        const x2 = side > 0 ? w - 135 : 135;
+        const y2 = row === 0 ? 78 : h - 68;
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.innerHTML = `
+          <polyline points="${x1.toFixed(1)},${y1.toFixed(1)} ${(x1*0.45+x2*0.55).toFixed(1)},${y2.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}"
+            fill="none" stroke="${strokeCol}" stroke-width="1.8" stroke-dasharray="4,2" />
+          <circle cx="${x1.toFixed(1)}" cy="${y1.toFixed(1)}" r="4.2" fill="${strokeCol}" />
+          <rect x="${(x2 - 122).toFixed(1)}" y="${(y2 - 15).toFixed(1)}" width="244" height="28" rx="6"
+            fill="${bgCol}" stroke="${strokeCol}" stroke-width="1.3" />
+          <text x="${x2.toFixed(1)}" y="${(y2 + 4).toFixed(1)}" fill="${txtCol}" font-size="10.5" font-weight="700"
+            text-anchor="middle" font-family="KalamehWeb, sans-serif">${c.label}</text>
+        `;
+        svg.appendChild(g);
+      });
+    }
+
+    let currentProdId = 'p01';
+
+    async function renderProductCardState(productId, isDark = false) {
+      currentProdId = productId;
+      document.body.classList.toggle('dark', !!isDark);
+      ALL_STAGES.forEach(st => clearViewportError(st.container));
+
+      // Never block forever on textures — 2.5s timeout then solid fallback colors
+      try {
+        await Promise.race([
+          preloadPhotoTextures(THREE),
+          new Promise((_, rej) => setTimeout(() => rej(new Error('texture preload timeout')), 2500)),
+        ]);
+      } catch (err) {
+        console.warn('Photo texture preload skipped:', err);
+      }
+
+      const idx = PRODUCTS.findIndex(p => p.id === productId);
+      const prod = PRODUCTS[idx >= 0 ? idx : 0];
+      const cat = CATEGORIES.find(c => c.id === prod.catId) || CATEGORIES[0];
+
+      document.getElementById('uiProdIdx').textContent = `PRODUCT #${String(idx + 1).padStart(2, '0')} / 25`;
+      document.getElementById('uiCatName').textContent = `${cat.num}. ${cat.fa} | ${cat.en}`;
+      document.getElementById('uiFaTitle').textContent = prod.faName;
+      document.getElementById('uiEnTitle').textContent = prod.enName;
+      document.getElementById('uiCode').textContent = `CODE: ${prod.code}`;
+      document.getElementById('uiDims').textContent = prod.dims;
+      document.getElementById('uiMat').textContent = prod.material;
+      document.getElementById('uiSpecFa').textContent = prod.specFa;
+      document.getElementById('uiSpecEn').textContent = prod.specEn;
+      document.getElementById('uiRefCaption').textContent = `${prod.code} · REFERENCE`;
+
+      const chipsEl = document.getElementById('uiCalloutChips');
+      chipsEl.innerHTML = (prod.callouts || []).map(c => `<div class="calloutChip">${c.label}</div>`).join('');
+
+      const refImg = document.getElementById('uiRefImg');
+      await new Promise((resolve) => {
+        refImg.onload = resolve;
+        refImg.onerror = resolve;
+        refImg.src = prod.refImg;
+        if (refImg.complete) resolve();
+      });
+
+      ALL_STAGES.forEach(st => {
+        while (st.rootHolder.children.length) st.rootHolder.remove(st.rootHolder.children[0]);
+        st.resize();
+      });
+
+      try {
+        const mCad = buildProductModel(THREE, prod.id, { isCad: true, isDark });
+        stCad.rootHolder.add(mCad);
+        fitCameraToObject(stCad.camera, mCad, new THREE.Vector3(0.75, 0.42, 0.95), 1.26);
+
+        const mStudio = buildProductModel(THREE, prod.id, { isCad: false, isDark });
+        stStudio.rootHolder.add(mStudio);
+        fitCameraToObject(stStudio.camera, mStudio, new THREE.Vector3(-0.78, 0.48, 0.92), 1.24);
+        controls.target.set(0, 0, 0);
+        controls.update();
+
+        const mTop = buildProductModel(THREE, prod.id, { isCad: false, isDark });
+        stTop.rootHolder.add(mTop);
+        fitCameraToObject(stTop.camera, mTop, new THREE.Vector3(0.01, 1.0, 0.01), 1.25, stTop);
+
+        const mCallout = buildProductModel(THREE, prod.id, { isCad: false, isDark });
+        mCallout.rotation.y = 0.35;
+        stCallout.rootHolder.add(mCallout);
+        fitCameraToObject(stCallout.camera, mCallout, new THREE.Vector3(0.55, 0.32, 1.0), 1.38);
+
+        ALL_STAGES.forEach(st => st.renderer.render(st.scene, st.camera));
+        drawCallouts(prod, stCallout);
+        window.__LAST_RENDER_OK = true;
+        window.__LAST_RENDER_ERROR = null;
+      } catch (err) {
+        window.__LAST_RENDER_OK = false;
+        window.__LAST_RENDER_ERROR = String(err && err.stack ? err.stack : err);
+        ALL_STAGES.forEach(st => showViewportError(st.container, err));
+      }
+      return true;
+    }
+
+    window.renderProductCardState = renderProductCardState;
+    window.PRODUCTS = PRODUCTS;
+    window.CATEGORIES = CATEGORIES;
+    window.__THREE_OK = !!THREE && !!THREE.WebGLRenderer;
+
+    const catSelect = document.getElementById('catSelect');
+    const prodSelect = document.getElementById('prodSelect');
+    catSelect.innerHTML = `<option value="all">همه دسته‌ها (All 7 Categories)</option>` +
+      CATEGORIES.map(c => `<option value="${c.id}">${c.num}. ${c.fa} (${c.en})</option>`).join('');
+
+    function populateProdSelect(catFilter = 'all') {
+      const list = catFilter === 'all' ? PRODUCTS : PRODUCTS.filter(p => p.catId === catFilter);
+      prodSelect.innerHTML = list.map(p => `<option value="${p.id}">${p.id.toUpperCase()} — ${p.faName}</option>`).join('');
+    }
+    populateProdSelect();
+
+    catSelect.addEventListener('change', () => {
+      populateProdSelect(catSelect.value);
+      renderProductCardState(prodSelect.value, document.body.classList.contains('dark'));
+    });
+    prodSelect.addEventListener('change', () => {
+      renderProductCardState(prodSelect.value, document.body.classList.contains('dark'));
+    });
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      const i = PRODUCTS.findIndex(p => p.id === currentProdId);
+      const next = PRODUCTS[(i - 1 + PRODUCTS.length) % PRODUCTS.length];
+      prodSelect.value = next.id;
+      renderProductCardState(next.id, document.body.classList.contains('dark'));
+    });
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      const i = PRODUCTS.findIndex(p => p.id === currentProdId);
+      const next = PRODUCTS[(i + 1) % PRODUCTS.length];
+      prodSelect.value = next.id;
+      renderProductCardState(next.id, document.body.classList.contains('dark'));
+    });
+    document.getElementById('themeBtn').addEventListener('click', () => {
+      renderProductCardState(currentProdId, !document.body.classList.contains('dark'));
+    });
+
+    const initProd = params.get('product') || 'p01';
+    renderProductCardState(initProd, document.body.classList.contains('dark'))
+      .then(() => { window.__VIEWER_READY = true; })
+      .catch((err) => {
+        window.__VIEWER_READY = true;
+        window.__LAST_RENDER_OK = false;
+        window.__LAST_RENDER_ERROR = String(err);
+        ALL_STAGES.forEach(st => showViewportError(st.container, err));
+      });
+
+    if (params.get('capture') !== '1') {
+      const animate = () => {
+        requestAnimationFrame(animate);
+        controls.update();
+        stStudio.renderer.render(stStudio.scene, stStudio.camera);
+      };
+      animate();
+    }
+  </script>
+</script>
+</body>
+</html>

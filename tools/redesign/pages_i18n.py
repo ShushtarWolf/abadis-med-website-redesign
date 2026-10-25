@@ -162,8 +162,10 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
         from icons import decorate_contact_html
         body = decorate_contact_html(body)
     if site_path in ('about-us/', 'من-نحن/'):
-        from pages_company import regroup_i18n_certs
+        from pages_company import regroup_i18n_certs, apply_strategic_about, STRATEGIC_LEAD
+        body = apply_strategic_about(body, lang)
         body = regroup_i18n_certs(body, lang)
+        desc = STRATEGIC_LEAD[lang].split('. ', 1)[0] + '.'
     if site_path == 'sdgs/' and lang == 'en':
         from pages_company import sdg_stats
         body = f'<div class="sdg-page">{sdg_stats("en")}<div class="prose">{body}</div></div>'
