@@ -17,15 +17,73 @@
   }
 
   /* ---------- formulas (Alireza, فرمول محاسبه گر: water × 9.971; surgery staff 1.6; beds cost OR 254 / ICU 65; beds staff 1.7) ---------- */
+  /* Free-market USD from TGJU (price_dollar_rl, quoted in rial). toman = rial / 10.
+     api.tgju.org sends Access-Control-Allow-Origin: *. See docs/usd-rate.md. */
+  const LAST_KNOWN_USD_TOMAN = 269500;
+  const USD_RATE_KEY = 'abadis-usd-toman';
+  const USD_RATE_URL = 'https://api.tgju.org/v1/market/indicator/today-table-data/price_dollar_rl?lang=fa&start=0&length=1';
+  let usdToman = LAST_KNOWN_USD_TOMAN;
+  function readStoredUsd() {
+    try {
+      const data = JSON.parse(localStorage.getItem(USD_RATE_KEY) || '');
+      const t = Number(data && data.toman);
+      return Number.isFinite(t) && t > 0 ? t : null;
+    } catch (e) { return null; }
+  }
+  function rialFromTgju(data) {
+    const row = data && data.data && data.data[0];
+    if (!row) return null;
+    let s = String(row[0]).replace(/<[^>]*>/g, '');
+    s = s.replace(/[۰-۹]/g, (ch) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(ch)));
+    s = s.replace(/[,،٬\s]/g, '');
+    const n = Number(s);
+    return Number.isFinite(n) && n >= 10000 && n <= 1e12 ? n : null;
+  }
+  const storedUsd = readStoredUsd();
+  if (storedUsd) usdToman = storedUsd;
+  function refreshUsdCosts() {
+    const poke = (c) => { if (c && c.update) c.update(0, true); else if (c && c.kick) c.kick(); };
+    try { calcs.forEach(poke); } catch (e) {}
+    [window.DIAL_PRACTICAL, window.ABADIS_CALCS].forEach((bag) => {
+      if (!bag) return;
+      Object.keys(bag).forEach((k) => poke(bag[k]));
+    });
+  }
+  function loadUsdRate() {
+    if (typeof fetch !== 'function') return;
+    const ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+    const timer = setTimeout(() => { if (ctrl) ctrl.abort(); }, 8000);
+    const opts = { cache: 'no-store' };
+    if (ctrl) opts.signal = ctrl.signal;
+    fetch(USD_RATE_URL, opts)
+      .then((r) => { if (!r.ok) throw new Error('usd'); return r.json(); })
+      .then((data) => {
+        const rial = rialFromTgju(data);
+        if (rial == null) throw new Error('usd');
+        const toman = rial / 10;
+        try {
+          localStorage.setItem(USD_RATE_KEY, JSON.stringify({
+            toman: toman, rial: rial, updatedAt: new Date().toISOString(), source: USD_RATE_URL,
+          }));
+        } catch (e) {}
+        if (toman !== usdToman) { usdToman = toman; refreshUsdCosts(); }
+      })
+      .catch(() => {})
+      .finally(() => clearTimeout(timer));
+  }
+  loadUsdRate();
+  Object.defineProperty(window, 'ABADIS_USD_TOMAN', { configurable: true, get: () => usdToman });
+
+
   const F = {
     surgery: ({ n }) => ({
       water: n * 1.6 * 9.971,
-      cost: n * 2.5 * 85000,
+      cost: n * 2.5 * usdToman,
       hours: n * 1.6 * 2.2 * 7.1 / 60,
     }),
     beds: ({ a, b }) => ({
       water: ((a * 254) + (b * 67)) * 1.6 * 9.971,
-      cost: ((a * 254) + (b * 65)) * 2.5 * 85000,
+      cost: ((a * 254) + (b * 65)) * 2.5 * usdToman,
       hours: ((a * 254) + (b * 67)) * 1.7 * 2.2 * 7.1 / 60,
     }),
   };
