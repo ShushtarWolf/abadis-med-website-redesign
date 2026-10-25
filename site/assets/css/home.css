@@ -726,3 +726,107 @@ body.home .zh-exit {
   text-wrap: balance;
   line-height: 1.45;
 }
+
+/* ===== mobile-home-16-18 (Designer, Oct 2026) — Hamid Siamak screenshot ===== */
+
+/* #16 Quick pills: full-width stacked + centered on ~390px (kill left-shift / empty right gap) */
+@media (max-width: 560px) {
+  #quick.section {
+    padding-inline: 0;
+  }
+  #quick .quick-row,
+  .quick-row {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  #quick .quick-btn,
+  .quick-btn {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+    margin-inline: 0;
+  }
+}
+
+/* #17 «مقاله و اخبار» heading: keep full title on-screen in RTL mobile */
+@media (max-width: 560px) {
+  #stories.section {
+    overflow-x: clip;
+  }
+  #stories .wrap {
+    max-width: 100%;
+    box-sizing: border-box;
+    padding-inline: max(16px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+  }
+  #stories .section-head {
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    margin-inline: 0;
+    padding-inline: 0;
+    overflow: visible;
+  }
+  #stories .section-head h2 {
+    max-width: 100%;
+    box-sizing: border-box;
+    margin-inline: 0;
+    padding-inline: 2px; /* glyph overhang safety for Persian marks */
+    overflow-wrap: anywhere;
+    word-break: normal;
+    line-height: 1.4;
+  }
+}
+
+/* #18 Sticky header overlap helper: rails stay under the fixed header stacking context */
+@media (max-width: 760px) {
+  #products .h-box,
+  #products .h-rail,
+  #products .ps-card,
+  #products .h-rail-btn {
+    z-index: auto;
+  }
+  #products .ps-card,
+  #products .h-track > .ps-card {
+    position: relative;
+    z-index: 0;
+  }
+}
+
+/* Contain product/news rails so max-content tracks cannot shift the page horizontally
+   (was making pills look left-shifted and clipping RTL section titles on the right). */
+@media (max-width: 760px) {
+  .home-page,
+  body.home {
+    overflow-x: clip;
+    max-width: 100%;
+  }
+  #products.section,
+  #stories.section,
+  #products .wrap,
+  #stories .wrap,
+  #products .h-box,
+  #stories .h-box {
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: clip;
+  }
+  #products .h-rail,
+  #stories .h-rail {
+    max-width: 100%;
+    min-width: 0;
+  }
+  #products .h-scroller,
+  #stories .h-scroller {
+    max-width: 100%;
+    min-width: 0;
+  }
+}
