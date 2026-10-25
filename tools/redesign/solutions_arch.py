@@ -61,6 +61,13 @@ UI = {
         cat='کاتالوگ جامع',
         subject='درخواست راهکار آبادیس',
         home='خانه',
+        box='راهکار و محصول',
+        all_p='مشاهده همه محصولات ←',
+        all_s='مشاهده همه راهکارها ←',
+        prev='قبلی',
+        next='بعدی',
+        rail_p='محصولات',
+        rail_s='راهکارها',
     ),
     'en': dict(
         h1='Abadis Products & Solutions',
@@ -102,6 +109,13 @@ UI = {
         cat='Full catalogue',
         subject='Abadis solution request',
         home='Home',
+        box='Solutions & Products',
+        all_p='View all products →',
+        all_s='View all solutions →',
+        prev='Previous',
+        next='Next',
+        rail_p='Products',
+        rail_s='Solutions',
     ),
     'ar': dict(
         h1='منتجات وحلول آباديس',
@@ -143,6 +157,13 @@ UI = {
         cat='الكتالوج الشامل',
         subject='طلب حل آباديس',
         home='الرئيسية',
+        box='الحلول والمنتجات',
+        all_p='عرض كل المنتجات ←',
+        all_s='عرض كل الحلول ←',
+        prev='السابق',
+        next='التالي',
+        rail_p='المنتجات',
+        rail_s='الحلول',
     ),
 }
 
@@ -620,15 +641,64 @@ def hub_main(p, lang, opening='product'):
     ) + '\n  </div></section>'
 
 
+_CHEV_PREV = ('<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">'
+              '<path d="M14.5 5.5 8 12l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2" '
+              'stroke-linecap="round" stroke-linejoin="round"/></svg>')
+_CHEV_NEXT = ('<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">'
+              '<path d="M9.5 5.5 16 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="2" '
+              'stroke-linecap="round" stroke-linejoin="round"/></svg>')
+
+
+def carousel(cards_html, n, prev, nxt, region):
+    """Horizontal snap rail. Same chrome for solutions/products and news/articles."""
+    dots = []
+    for i in range(n):
+        cur = ' aria-current="true"' if i == 0 else ''
+        dots.append(
+            f'<button type="button" class="h-dot" data-ps-dot="{i}" aria-label="{esc(region)} {i + 1}"{cur}></button>'
+        )
+    return (
+        f'<div class="h-rail" data-ps-rail>'
+        f'<button type="button" class="h-rail-btn" data-ps-prev aria-label="{esc(prev)}">{_CHEV_PREV}</button>'
+        f'<div class="h-scroller" data-ps-scroller tabindex="0" role="region" aria-label="{esc(region)}">'
+        f'<div class="h-track">{cards_html}</div></div>'
+        f'<button type="button" class="h-rail-btn" data-ps-next aria-label="{esc(nxt)}">{_CHEV_NEXT}</button>'
+        f'<div class="h-dots" data-ps-dots role="group" aria-label="{esc(region)}">{"".join(dots)}</div>'
+        f'</div>'
+    )
+
+
 def home_section(p, lang):
+    """One homepage box: product/solution tabs, each a horizontal snap rail."""
     ui = UI[lang]
     hub = href(p, lang, 'solutions/' if lang != 'ar' else 'الحلول/') + '#phil'
     tease = PHIL.teaser_html(lang, hub)
+    prod_cards = ''.join(
+        _card(p, lang, prod_href(p, lang, c['slug']), c['title'][lang], c['sub'][lang], c['photo'], 'product', badge(lang, 'order'))
+        for c in CATALOG)
+    sol_cards = ''.join(
+        _card(p, lang, sol_href(p, lang, s['slug']), s['title'][lang], s['sub'][lang], s['parts'][0]['photo'] or s['parts'][0]['slug'],
+              'solution', badge(lang, 'future') if s['future'] else f'<span class="ps-state">{esc(ui["active"])}</span>')
+        for s in SOLS)
+    prod_hub = href(p, lang, 'منتجات/' if lang == 'ar' else 'products/')
+    sol_hub = href(p, lang, 'الحلول/' if lang == 'ar' else 'solutions/')
+    box = f'''<div class="h-box ps-root" data-ps data-ps-home data-ps-default="product">
+      <div class="ps-tabs" role="tablist" aria-orientation="horizontal" aria-label="{esc(ui["box"])}">
+        <a role="tab" id="tab-by-product" href="#by-product" data-ps-tab="product" aria-selected="true" aria-controls="by-product">{icons(p, "product")}{esc(ui["by_p"])}</a>
+        <a role="tab" id="tab-by-solution" href="#by-solution" data-ps-tab="solution" aria-selected="false" aria-controls="by-solution">{icons(p, "solution")}{esc(ui["by_s"])}</a>
+      </div>
+      <div class="ps-panel is-default" id="by-product" role="tabpanel" aria-labelledby="tab-by-product" data-ps-panel="product">
+        {carousel(prod_cards, len(CATALOG), ui["prev"], ui["next"], ui["rail_p"])}</div>
+      <div class="ps-panel" id="by-solution" role="tabpanel" aria-labelledby="tab-by-solution" data-ps-panel="solution" hidden>
+        {carousel(sol_cards, len(SOLS), ui["prev"], ui["next"], ui["rail_s"])}</div>
+      <p class="h-all">
+        <a class="btn btn-ghost" href="{prod_hub}">{esc(ui["all_p"])}</a>
+        <a class="btn btn-ghost" href="{sol_hub}">{esc(ui["all_s"])}</a>
+      </p>
+    </div>'''
     return (f'  <section class="section ps-block" id="products"><div class="wrap">'
-            f'<div class="section-head reveal"><h2>{esc(ui["h1"])}</h2><p>{esc(ui["sub"])}</p></div>'
-            f'{tease}'
-            + architecture(p, lang, default='product', layers=False)
-            + '</div></section>')
+            f'<div class="section-head reveal"><h2>{esc(ui["box"])}</h2><p>{esc(ui["sub"])}</p></div>'
+            f'{tease}{box}</div></section>')
 
 
 def _write(rel, html):

@@ -30,7 +30,7 @@ HOME_DESC = ('شرکت دانش‌بنیان مخازن طبی آبادیس؛ ت
              'راهکارهای مدیریت سیالات و زباله‌های عفونی بیمارستانی.')
 # Ends with brand so layout.head does not double-suffix.
 # Hero positioning: Alireza, 17 Oct 2026.
-HOME_TITLE = 'راهکارهای تخصصی برای مراقبت ایمن‌تر و کارآمدتر — مخازن طبی آبادیس'
+HOME_TITLE = 'درباره ما بیشتر بدانید — مخازن طبی آبادیس'
 CALC_TEASER = 'جهت محاسبه آنلاین میزان صرفه‌جویی در مصرف آب و زباله‌های عفونی مرکز خود می‌توانید روی دکمه زیر کلیک نمایید.'
 LOGO_STRIP_N = 24
 
@@ -157,7 +157,8 @@ def zagros_hero(img_base):
 LIVE_HERO_H1 = 'شرکت دانش بنیان مخازن طبی آبادیس'
 
 
-HERO_H1 = 'راهکارهای تخصصی برای مراقبت ایمن‌تر و کارآمدتر'
+HERO_H1 = 'درباره ما بیشتر بدانید...'
+HERO_SUB_LIVE = ABOUT_P
 # Provable from abadis-med.com: certificates (hero slider) + sizes/filters (product page)
 HERO_SUB = 'دارای گواهی‌های IMED، ISO و CE؛ کیسه ساکشن در حجم‌های ۱، ۲ و ۳ لیتری با فیلتر هیدروفوبیک، دوئال و مکانیکی.'
 CATALOGUE = 'https://abadis-med.com/wp-content/uploads/2024/12/کاتالوگ-جامع-آبادیس.pdf'
@@ -442,7 +443,7 @@ def hero_v2():
       <div class="hx-copy">
         <p class="hx-kicker">شرکت دانش‌بنیان مخازن طبی آبادیس</p>
         <h1>{esc(HERO_H1)}</h1>
-        <p class="hx-sub">{esc(HERO_SUB)}</p>
+        <p class="hx-sub">{esc(HERO_SUB_LIVE)}</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="{esc(CATALOGUE)}" target="_blank" rel="noopener" data-track="catalogue_download" data-track-label="home_hero_catalogue">دریافت کاتالوگ</a>
           <a class="btn btn-ghost" href="export/#quote" data-track="contact_click" data-track-label="home_hero_quote">درخواست قیمت / همکاری صادراتی</a>
@@ -462,7 +463,7 @@ def about_v2():
     <div class="wrap split">
       <div class="reveal">
         <p class="eyebrow">آشنایی با ما</p>
-        <h2>درباره مجموعه دانش بنیان آبادیس</h2>
+        <h2>درباره مجموعه دانش بنیان آبادیس بیشتر بدانید ...</h2>
         <p style="margin-top:12px;text-align:justify">{esc(LIVE_ABOUT)}</p>
         <h3 style="font-weight:900;font-size:1.1rem;margin-top:18px">اهداف ما:</h3>
         <ul class="goals">{goals}</ul>
@@ -605,18 +606,34 @@ def quick_links():
   </section>'''
 
 
-def posts_v2(cat):
+def posts_unified():
+    """One «مقاله و اخبار» box: news and articles as horizontal snap rails."""
+    import solutions_arch as S
     pages_posts.prepare()
-    items = [x for x in pages_posts.POSTS if x['cat'] == cat][:3]
-    cards = ''.join(pages_posts.card('', x, from_list=False) for x in items)
-    label = 'آخرین اخبار آبادیس' if cat == 'news' else 'مقالات آبادیس'
-    more = 'news/' if cat == 'news' else 'articles/'
-    alt = ' section--alt' if cat == 'articles' else ''
-    return f'''  <section class="section{alt}" id="{cat}">
+
+    def pack(cat, n=6):
+        items = [x for x in pages_posts.POSTS if x['cat'] == cat][:n]
+        html = ''.join(pages_posts.card('', x, from_list=False, tag=pages_posts.TAG[cat]) for x in items)
+        label = 'اخبار' if cat == 'news' else 'مقالات'
+        return S.carousel(html, len(items), 'قبلی', 'بعدی', label), len(items)
+
+    news_rail, _nn = pack('news')
+    art_rail, _na = pack('articles')
+    return f'''  <section class="section" id="stories">
     <div class="wrap">
-      <div class="section-head reveal"><p class="eyebrow">{'اخبار' if cat == 'news' else 'مقالات'}</p><h2>{label}</h2>
-        <p><a class="more-link" style="margin:0" href="{more}">مشاهده همه ←</a></p></div>
-      <div class="post-grid">{cards}</div>
+      <div class="section-head reveal"><h2>مقاله و اخبار</h2></div>
+      <div class="h-box ps-root" data-ps data-ps-home data-ps-default="news">
+        <div class="ps-tabs" role="tablist" aria-orientation="horizontal" aria-label="مقاله و اخبار">
+          <a role="tab" id="tab-home-news" href="#news" data-ps-tab="news" aria-selected="true" aria-controls="news">آخرین اخبار</a>
+          <a role="tab" id="tab-home-articles" href="#articles" data-ps-tab="articles" aria-selected="false" aria-controls="articles">مقالات</a>
+        </div>
+        <div class="ps-panel is-default" id="news" role="tabpanel" aria-labelledby="tab-home-news" data-ps-panel="news">{news_rail}</div>
+        <div class="ps-panel" id="articles" role="tabpanel" aria-labelledby="tab-home-articles" data-ps-panel="articles" hidden>{art_rail}</div>
+        <p class="h-all">
+          <a class="btn btn-ghost" href="news/">مشاهده همه اخبار ←</a>
+          <a class="btn btn-ghost" href="articles/">مشاهده همه مقالات ←</a>
+        </p>
+      </div>
     </div>
   </section>'''
 
@@ -645,8 +662,7 @@ def build(write):
         why_v2(),
         products_v2(),
         quick_links(),
-        posts_v2('news'),
-        posts_v2('articles'),
+        posts_unified(),
         memberships_section(),
         customers_section(),
     ])

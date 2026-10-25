@@ -797,33 +797,168 @@
   window.addEventListener('hashchange', function () { sync(true); });
 })();
 
-/* Products / solutions switcher and the sales configurator. */
+/* Products / solutions switcher, homepage snap rails, and the sales configurator. */
 (function () {
   var roots = document.querySelectorAll('[data-ps]');
-  function nameFromHash() {
-    if (location.hash === '#by-solution') return 'solution';
-    if (location.hash === '#by-product') return 'product';
-    return '';
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function tabFromHash(root) {
+    var hash = location.hash || '';
+    if (!hash) return '';
+    try { hash = decodeURIComponent(hash); } catch (e) { /* keep raw */ }
+    var tabs = root.querySelectorAll('[data-ps-tab]');
+    for (var i = 0; i < tabs.length; i++) {
+      if (tabs[i].getAttribute('href') === hash) return tabs[i].getAttribute('data-ps-tab');
+    }
+    var panel = null;
+    try { panel = root.querySelector(hash); } catch (e2) { panel = null; }
+    return panel && panel.getAttribute('data-ps-panel') ? panel.getAttribute('data-ps-panel') : '';
   }
+
   function apply(root, name) {
-    root.querySelectorAll('[data-ps-tab]').forEach(function (a) {
+    var tabs = root.querySelectorAll('[data-ps-tab]');
+    var known = false;
+    tabs.forEach(function (a) { if (a.getAttribute('data-ps-tab') === name) known = true; });
+    if (!known) name = root.getAttribute('data-ps-default') || (tabs[0] && tabs[0].getAttribute('data-ps-tab')) || 'product';
+    var home = root.hasAttribute('data-ps-home');
+    tabs.forEach(function (a) {
       var on = a.getAttribute('data-ps-tab') === name;
       a.setAttribute('aria-selected', on ? 'true' : 'false');
+      if (home) a.tabIndex = on ? 0 : -1;
     });
     root.querySelectorAll('[data-ps-panel]').forEach(function (p) {
       p.hidden = p.getAttribute('data-ps-panel') !== name;
     });
+    if (home) requestAnimationFrame(function () { paintRails(root); });
   }
+
+  function selected(root) {
+    var on = root.querySelector('[data-ps-tab][aria-selected="true"]');
+    return on ? on.getAttribute('data-ps-tab') : '';
+  }
+
   function sync() {
-    var hashed = nameFromHash();
     roots.forEach(function (root) {
       root.classList.add('js-ps');
-      apply(root, hashed || root.getAttribute('data-ps-default') || 'product');
+      // A hash that belongs to the other homepage box must not reset this one.
+      apply(root, tabFromHash(root) || selected(root) || root.getAttribute('data-ps-default') || 'product');
     });
   }
+
+  function rtlOf(el) { return getComputedStyle(el).direction === 'rtl'; }
+
+  function initRail(rail) {
+    if (rail._psReady) return;
+    var scroller = rail.querySelector('[data-ps-scroller]');
+    if (!scroller) return;
+    rail._psReady = true;
+    var prev = rail.querySelector('[data-ps-prev]');
+    var next = rail.querySelector('[data-ps-next]');
+    var dots = rail.querySelector('[data-ps-dots]');
+    function cards() {
+      return Array.prototype.slice.call(scroller.querySelectorAll('.h-track > .ps-card, .h-track > .post-card'));
+    }
+    function indexOfStart() {
+      var items = cards();
+      var box = scroller.getBoundingClientRect();
+      var rtl = rtlOf(scroller);
+      var best = 0, bestDist = Infinity;
+      items.forEach(function (el, i) {
+        var r = el.getBoundingClientRect();
+        var dist = Math.abs((rtl ? r.right : r.left) - (rtl ? box.right : box.left));
+        if (dist < bestDist) { bestDist = dist; best = i; }
+      });
+      return best;
+    }
+    function go(i) {
+      var items = cards();
+      if (!items.length) return;
+      i = Math.max(0, Math.min(items.length - 1, i));
+      var el = items[i];
+      var box = scroller.getBoundingClientRect();
+      var r = el.getBoundingClientRect();
+      var delta = rtlOf(scroller) ? (r.right - box.right) : (r.left - box.left);
+      scroller.scrollBy({ left: delta, behavior: reduce ? 'auto' : 'smooth' });
+    }
+    function paint() {
+      if (rail.closest('[hidden]')) return;
+      var items = cards();
+      var box = scroller.getBoundingClientRect();
+      var rtl = rtlOf(scroller);
+      var i = indexOfStart();
+      var atStart = true, atEnd = true;
+      if (items.length) {
+        var first = items[0].getBoundingClientRect();
+        var last = items[items.length - 1].getBoundingClientRect();
+        atStart = rtl ? first.right <= box.right + 4 : first.left >= box.left - 4;
+        atEnd = rtl ? last.left >= box.left - 4 : last.right <= box.right + 4;
+      }
+      if (prev) prev.disabled = atStart;
+      if (next) next.disabled = atEnd;
+      if (dots) {
+        Array.prototype.forEach.call(dots.children, function (b, n) {
+          var on = n === i;
+          b.classList.toggle('is-on', on);
+          if (on) b.setAttribute('aria-current', 'true');
+          else b.removeAttribute('aria-current');
+        });
+      }
+    }
+    if (prev) prev.addEventListener('click', function () { go(indexOfStart() - 1); });
+    if (next) next.addEventListener('click', function () { go(indexOfStart() + 1); });
+    if (dots) {
+      Array.prototype.forEach.call(dots.children, function (b, n) {
+        b.addEventListener('click', function () { go(n); });
+      });
+    }
+    var timer;
+    scroller.addEventListener('scroll', function () {
+      clearTimeout(timer);
+      timer = setTimeout(paint, 60);
+    }, { passive: true });
+    rail._psPaint = paint;
+  }
+
+  function paintRails(root) {
+    root.querySelectorAll('[data-ps-rail]').forEach(function (rail) {
+      initRail(rail);
+      if (rail._psPaint && !rail.closest('[hidden]')) rail._psPaint();
+    });
+  }
+
   if (roots.length) {
+    roots.forEach(function (root) {
+      if (!root.hasAttribute('data-ps-home')) return;
+      root.querySelectorAll('[data-ps-tab]').forEach(function (a) {
+        a.addEventListener('click', function (e) {
+          e.preventDefault();
+          var name = a.getAttribute('data-ps-tab');
+          apply(root, name);
+          var href = a.getAttribute('href') || '';
+          if (href && location.hash !== href) history.pushState(null, '', href);
+        });
+        a.addEventListener('keydown', function (e) {
+          var tabs = Array.prototype.slice.call(root.querySelectorAll('[data-ps-tab]'));
+          var i = tabs.indexOf(a);
+          var rtl = rtlOf(root);
+          var delta = 0;
+          if (e.key === 'ArrowRight') delta = rtl ? -1 : 1;
+          else if (e.key === 'ArrowLeft') delta = rtl ? 1 : -1;
+          else if (e.key === 'Home') delta = 'home';
+          else if (e.key === 'End') delta = 'end';
+          else return;
+          e.preventDefault();
+          var nxt = delta === 'home' ? tabs[0] : delta === 'end' ? tabs[tabs.length - 1] : tabs[(i + delta + tabs.length) % tabs.length];
+          if (nxt) nxt.click();
+        });
+      });
+    });
     sync();
     window.addEventListener('hashchange', sync);
+    window.addEventListener('popstate', sync);
+    window.addEventListener('resize', function () {
+      roots.forEach(paintRails);
+    });
   }
   document.querySelectorAll('[data-sol-open]').forEach(function (btn) {
     btn.addEventListener('click', function () {

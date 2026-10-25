@@ -68,13 +68,14 @@ def excerpt(post):
         d = strip_tags(post.get('t') or post.get('title') or '')
     return d[:190] + ('…' if len(d) > 190 else '')
 
-def card(p, post, from_list=True):
+def card(p, post, from_list=True, tag=''):
     r = thumb(p, post)
     alt = esc(post['t'])
     ph = (f'<div class="ph"><img src="{p}{r["src"]}" width="{r["w"]}" height="{r["h"]}" alt="{alt}" loading="lazy" decoding="async"></div>' if r
           else f'<div class="ph txt"><img src="{p}{FALLBACK_THUMB}" width="1280" height="720" alt="{alt}" loading="lazy"></div>')
     href = (post['rel'].split('/', 1)[1] if from_list else p + post['rel'])
-    return (f'<a class="post-card reveal" href="{href}" data-name="{esc(post["t"])}">{ph}<div class="body"><time datetime="{post["date"][:10]}">{jdate(post["date"])}</time>'
+    tag_html = f'<span class="tag">{esc(tag)}</span>' if tag else ''
+    return (f'<a class="post-card reveal" href="{href}" data-name="{esc(post["t"])}">{ph}<div class="body">{tag_html}<time datetime="{post["date"][:10]}">{jdate(post["date"])}</time>'
             f'<h3>{esc(post["t"])}</h3><p>{esc(excerpt(post))}</p><span class="go">ادامه مطلب ←</span></div></a>')
 
 def missing_card(p, m):
