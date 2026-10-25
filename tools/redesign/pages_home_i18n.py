@@ -3,6 +3,7 @@ from lib import esc, load, SITE
 from layout import page, section_mark
 from render import picture
 import pages_home as H
+import home_map_hero
 
 AR_D = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
 
@@ -67,22 +68,10 @@ def build_home(write, lang):
     t = T[lang]; p = '../'
     live = load('home_live_i18n.json')[lang]
     img = lambda n: f'{p}assets/img/live/{n}.webp'
-    hero = f'''  <section class="hx" data-tone="dark" id="intro" aria-label="{esc(t['bag_alt'])}">
-    <div class="hx-bg" aria-hidden="true"><span class="hx-grid"></span><span class="hx-ring hx-ring--a"></span><span class="hx-ring hx-ring--b"></span><span class="hx-scan"></span></div>
-    <div class="wrap hx-inner">
-      <div class="hx-copy">
-        <p class="hx-kicker">{esc(t['kicker'])}</p>
-        <h1>{esc(t['h1'])}</h1>
-        <p class="hx-sub">{esc(t['sub'])}</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="{esc(H.CATALOGUE)}" target="_blank" rel="noopener" data-track="catalogue_download" data-track-label="home_hero_catalogue_{lang}">{esc(t['cat'])}</a>
-          <a class="btn btn-ghost" href="{_h(t, p, t['quote_href'])}" data-track="contact_click" data-track-label="home_hero_quote_{lang}">{esc(t['quote'])}</a>
-        </div>
-      </div>
-      <figure class="hx-product"><span class="hx-glow" aria-hidden="true"></span>
-        <img src="{p}assets/img/p/hero-bags.webp" alt="{esc(t['bag_alt'])}" width="555" height="554" decoding="async" fetchpriority="high"></figure>
-    </div>
-  </section>'''
+    hero = home_map_hero.render(
+        p, lang, t['kicker'], t['h1'], t['sub'], H.CATALOGUE, _h(t, p, t['quote_href']),
+        t['cat'], t['quote'], lang,
+    )
     goals = ''.join(f'<li>{esc(g)}</li>' for g in t['goals'])
     about = f'''  <section class="section" id="about"><div class="wrap split">
       <div class="reveal"><p class="eyebrow">{esc(t['about_eb'])}</p><h2>{esc(t['about_h'])}</h2>
@@ -148,7 +137,7 @@ def build_home(write, lang):
     </div></section>'''
     main = '\n'.join([hero, about, impact, why, products, quick, news, arts, mem, cust])
     if lang == 'en': main = main.replace('←', '→')
-    extra_head = f'<link rel="preload" as="image" href="{p}assets/img/p/hero-bags.webp" type="image/webp">\n<link rel="stylesheet" href="{p}assets/css/home.css">\n{H.logo_scroll_css(p)}\n{H.counter_options_css(p)}'
+    extra_head = f'{home_map_hero.extra_head(p)}{H.logo_scroll_css(p)}\n{H.counter_options_css(p)}'
     html = page(p, None, t['title'], t['desc'], main, lang=lang, fa_path='', canonical_path=t['root'],
                 extra_head=extra_head, scripts=H.logo_scroll_scripts(p) + H.counter_options_script(p), main_class='home-page', body_class='home', lightbox=True,
                 html_attrs='data-slogan="t1"')

@@ -4,6 +4,7 @@ import pages_dial
 from layout import page, section_mark
 from render import picture
 import pages_posts
+import home_map_hero
 
 # Verbatim home copy (from live / prior home — do not invent)
 ABOUT_P = ('پس از سال ها برنامه ریزی و ادامه دادن جریان ایجاد شده و با پویایی و تغییرات سیستم مدیریتی '
@@ -436,24 +437,10 @@ def _live(name):
 
 
 def hero_v2():
-    return f'''  <section class="hx" data-tone="dark" id="intro" aria-label="کیسه ساکشن یکبار مصرف آبادیس">
-    <div class="hx-bg" aria-hidden="true"><span class="hx-grid"></span><span class="hx-ring hx-ring--a"></span><span class="hx-ring hx-ring--b"></span><span class="hx-scan"></span></div>
-    <div class="wrap hx-inner">
-      <div class="hx-copy">
-        <p class="hx-kicker">شرکت دانش‌بنیان مخازن طبی آبادیس</p>
-        <h1>{esc(HERO_H1)}</h1>
-        <p class="hx-sub">{esc(HERO_SUB)}</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="{esc(CATALOGUE)}" target="_blank" rel="noopener" data-track="catalogue_download" data-track-label="home_hero_catalogue">دریافت کاتالوگ</a>
-          <a class="btn btn-ghost" href="export/#quote" data-track="contact_click" data-track-label="home_hero_quote">درخواست قیمت / همکاری صادراتی</a>
-        </div>
-      </div>
-      <figure class="hx-product">
-        <span class="hx-glow" aria-hidden="true"></span>
-        <img src="assets/img/p/hero-bags.webp" alt="کیسه ساکشن یکبار مصرف ۱ و ۲ لیتری آبادیس" width="555" height="554" decoding="async" fetchpriority="high">
-      </figure>
-    </div>
-  </section>'''
+    return home_map_hero.render(
+        '', 'fa', 'شرکت دانش‌بنیان مخازن طبی آبادیس', HERO_H1, HERO_SUB,
+        CATALOGUE, 'export/#quote', 'دریافت کاتالوگ', 'درخواست قیمت / همکاری صادراتی', 'fa',
+    )
 
 
 def about_v2():
@@ -650,9 +637,7 @@ def build(write):
         memberships_section(),
         customers_section(),
     ])
-    extra_head = '''<link rel="preload" as="image" href="assets/img/p/hero-bags.webp" type="image/webp">
-<link rel="stylesheet" href="assets/css/home.css">
-''' + logo_scroll_css('') + '\n' + counter_options_css('')
+    extra_head = home_map_hero.extra_head('') + logo_scroll_css('') + counter_options_css('')
     scripts = logo_scroll_scripts('') + counter_options_script('')
     html = page(
         '', None, HOME_TITLE, HOME_DESC, main,

@@ -350,6 +350,79 @@ body.home .zh-exit {
   .hx-ring { left: 50%; top: 28%; }
 }
 @media (prefers-reduced-motion: reduce) { .hx-ring, .hx-scan, .hx-product img { animation: none; } }
+
+/* ===== Home hero: calm Iran map (idea #1) ===== */
+.home-map {
+  position: relative; overflow: hidden; isolation: isolate;
+  min-height: min(100svh, 880px); display: grid; align-items: center;
+  color: #e8f3f3;
+  background: radial-gradient(115% 95% at 72% 42%, #087673 0%, #066163 42%, #034547 78%, #01292b 100%);
+}
+[data-theme="dark"] .home-map {
+  background: radial-gradient(115% 95% at 72% 42%, #0a5c5e 0%, #044345 50%, #021819 100%);
+}
+[data-theme="noir"] .home-map {
+  background: radial-gradient(120% 90% at 70% 40%, #2a2844 0%, #161525 55%, #07060d 100%);
+}
+.home-map-bg {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(ellipse 55% 45% at 78% 50%, rgba(127, 220, 221, .12), transparent 70%);
+}
+.home-map-inner {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: 1.05fr .95fr; gap: 28px; align-items: center;
+  padding-top: 108px; padding-bottom: 56px;
+}
+.home-map-kicker { color: #7fdcdd; font-weight: 800; margin: 0 0 10px; }
+.home-map h1 {
+  font-size: clamp(1.75rem, 3.6vw, 3rem); font-weight: 900; line-height: 1.45;
+  margin: 0 0 14px; color: #fff; max-width: 24ch;
+}
+.home-map-sub {
+  color: #c9dfe0; font-size: clamp(1rem, 1.5vw, 1.18rem); line-height: 1.9;
+  max-width: 46ch; text-align: justify; margin: 0 0 22px;
+}
+.home-map .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.home-map .btn-primary { background: #e8f3f3; color: #015F61; }
+.home-map .btn-ghost { border-color: rgba(232, 243, 243, .55); color: #fff; }
+.home-map-figure { margin: 0; display: grid; place-items: center; }
+.home-map-svg {
+  width: 100%; max-width: min(100%, 420px); height: auto; display: block;
+  filter: drop-shadow(0 18px 36px rgba(0, 0, 0, .22));
+}
+.home-map-land {
+  fill: color-mix(in srgb, #7fdcdd 10%, transparent);
+  stroke: rgba(232, 243, 243, .22);
+  stroke-width: 1;
+  transition: fill 1.2s ease;
+}
+.home-map-dot {
+  fill: rgba(127, 220, 221, .18);
+  stroke: rgba(232, 243, 243, .35);
+  stroke-width: 1.2;
+  opacity: .45;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: fill .55s ease, stroke .55s ease, opacity .55s ease, transform .55s ease;
+}
+.home-map-dot.is-lit {
+  fill: #7fdcdd;
+  stroke: #e8f3f3;
+  opacity: 1;
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 5px rgba(127, 220, 221, .55));
+}
+@media (max-width: 760px) {
+  .home-map-inner {
+    grid-template-columns: 1fr; padding-top: 92px; padding-bottom: 36px; gap: 18px;
+  }
+  .home-map-figure { order: -1; }
+  .home-map-svg { max-width: min(92vw, 360px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-map-dot { transition: none; }
+}
+
 .video-slot { margin: 0; position: relative; border-radius: 18px; overflow: hidden; border: 1px dashed var(--brand); background: var(--surface-2); }
 .video-slot img { display: block; width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; opacity: .9; }
 .video-slot figcaption { position: absolute; inset-inline: 12px; bottom: 12px; padding: 6px 12px; border-radius: 10px; background: rgba(1,41,43,.72); color: #e8f3f3; font-size: .88rem; text-align: center; }
