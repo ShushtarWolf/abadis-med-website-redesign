@@ -13,6 +13,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from lib import esc, SITE
 from i18n import LANGS, NAV
 from layout import page, page_hero, _href, _nav_item
+import solutions_philosophy as PHIL
 
 UPLOADS = pathlib.Path('/home/ubuntu/.cursor/projects/workspace/uploads')
 
@@ -34,10 +35,10 @@ UI = {
         related='راهکارهای مرتبط',
         layers_h='ساختار این صفحه',
         layers=[
-            ('محصولات', 'چه چیزی تولید و عرضه می‌کنیم؟'),
-            ('راهکارها', 'این محصولات کنار هم چه مسئله‌ای را حل می‌کنند؟'),
+            ('محصولات', 'ما چه چیزی تولید و عرضه می‌کنیم؟'),
+            ('راهکارها', 'این محصولات در کنار هم چه مسئله‌ای را حل می‌کنند؟'),
             ('کاربردها', 'این راهکارها در کدام بخش‌های بیمارستان استفاده می‌شوند؟'),
-            ('نوآوری', 'آبادیس برای حل مسائل آینده روی چه فناوری‌هایی کار می‌کند؟'),
+            ('نوآوری', 'آبادیس برای حل مسئله آینده روی چه فناوری‌هایی کار می‌کنند؟'),
         ],
         pva_title='محصولات PVA (مواد پلیمری زیست‌تخریب‌پذیر)',
         pva_text='فناوری مواد و محصولات آینده. هنوز صفحه محصول مستقل ندارد و فقط از همین مدخل به راهکار در حال توسعه وصل می‌شود.',
@@ -77,8 +78,8 @@ UI = {
         layers=[
             ('Products', 'What do we manufacture and supply?'),
             ('Solutions', 'Which problem do these products solve together?'),
-            ('Applications', 'Which hospital departments use them?'),
-            ('Innovation', 'Which technologies is Abadis developing for future problems?'),
+            ('Applications', 'Which hospital departments use these solutions?'),
+            ('Innovation', 'Which technologies is Abadis working on to solve the problem of the future?'),
         ],
         pva_title='PVA products (biodegradable polymer materials)',
         pva_text='Materials technology and future products. There is no separate product page yet; this entry only links to the in-development solution.',
@@ -118,8 +119,8 @@ UI = {
         layers=[
             ('المنتجات', 'ماذا ننتج ونعرض؟'),
             ('الحلول', 'أي مسألة تحلّها هذه المنتجات معاً؟'),
-            ('الاستخدامات', 'في أي أقسام المستشفى تُستخدم؟'),
-            ('الابتكار', 'على أي تقنيات تعمل آباديس لمسائل المستقبل؟'),
+            ('الاستخدامات', 'في أي أقسام المستشفى تُستخدم هذه الحلول؟'),
+            ('الابتكار', 'على أي تقنيات تعمل آباديس لحل مسألة المستقبل؟'),
         ],
         pva_title='منتجات PVA (مواد بوليمرية قابلة للتحلل)',
         pva_text='تقنية المواد والمنتجات المستقبلية. لا توجد بعد صفحة منتج مستقلة؛ هذا المدخل يصل فقط إلى الحل قيد التطوير.',
@@ -534,6 +535,7 @@ def solution_main(p, lang, sol):
     hero = page_hero(p, [(ui['crumb_s'], href(p, lang, 'solutions/' if lang != 'ar' else 'الحلول/')), (sol['title'][lang], None)],
                      esc(sol['title'][lang]), esc(sol['sub'][lang]),
                      meta=future + cta, lang=lang)
+    philosophy = PHIL.theme_html(lang, sol['slug'], lambda h: href(p, lang, h))
     parts = ''.join(_part(p, lang, part) for part in sol['parts'])
     packs = ''.join(f'<li><strong>{esc(a)}</strong> — {esc(b)}</li>' for a, b in sol['packs'][lang])
     econ_links = (f'<div class="doc-links"><a href="{href(p, lang, "calculator/")}">{esc(ui["s_econ"])}</a>'
@@ -554,7 +556,7 @@ def solution_main(p, lang, sol):
     body = ''.join(
         f'<section class="section sol-sec{" section--alt" if i % 2 else ""}" id="{key}"><div class="wrap"><h2>{esc(title)}</h2>{inner}</div></section>'
         for i, (key, title, inner) in enumerate(blocks))
-    return hero + '\n' + body + '\n' + configurator(lang)
+    return hero + '\n' + philosophy + '\n' + body + '\n' + configurator(lang)
 
 
 def _card(p, lang, href_, title, sub, photo, kind, badge_html=''):
@@ -610,15 +612,21 @@ def hub_main(p, lang, opening='product'):
     ui = UI[lang]
     crumb = ui['crumb_s'] if opening == 'solution' else ui['crumb_p']
     hero = page_hero(p, [(crumb, None)], esc(ui['h1']), esc(ui['sub']), lang=lang)
-    return hero + '\n  <section class="section"><div class="wrap">\n' + architecture(
-        p, lang, default='solution' if opening == 'solution' else 'product', layers=(opening == 'solution')
+    philosophy = ''
+    if opening == 'solution':
+        philosophy = '\n' + PHIL.hub_html(lang, lambda h: href(p, lang, h))
+    return hero + philosophy + '\n  <section class="section" id="browse"><div class="wrap">\n' + architecture(
+        p, lang, default='solution' if opening == 'solution' else 'product', layers=False
     ) + '\n  </div></section>'
 
 
 def home_section(p, lang):
     ui = UI[lang]
+    hub = href(p, lang, 'solutions/' if lang != 'ar' else 'الحلول/') + '#phil'
+    tease = PHIL.teaser_html(lang, hub)
     return (f'  <section class="section ps-block" id="products"><div class="wrap">'
             f'<div class="section-head reveal"><h2>{esc(ui["h1"])}</h2><p>{esc(ui["sub"])}</p></div>'
+            f'{tease}'
             + architecture(p, lang, default='product', layers=False)
             + '</div></section>')
 
@@ -847,14 +855,16 @@ def stamp_home():
     n = 0
     for rel, p, lang in homes:
         path = SITE / rel
-        raw = path.read_text(encoding='utf-8')
-        if 'class="section ps-block" id="products"' in raw:
+        if not path.exists():
             continue
-        new, count = re.subn(
-            r'<section class="section" id="products">.*?</section>',
-            lambda m: home_section(p, lang).strip(),
-            raw, count=1, flags=re.S)
-        if count:
+        raw = path.read_text(encoding='utf-8')
+        block = home_section(p, lang).strip('\n')
+        if 'class="section ps-block" id="products"' in raw:
+            pat = r'[ \t]*<section class="section ps-block" id="products">.*?</section>'
+        else:
+            pat = r'[ \t]*<section class="section" id="products">.*?</section>'
+        new, count = re.subn(pat, lambda m, block=block: block, raw, count=1, flags=re.S)
+        if count and new != raw:
             path.write_text(new, encoding='utf-8')
             n += 1
     return n
