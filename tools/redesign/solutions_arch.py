@@ -726,6 +726,31 @@ def nav_pair(prefix, lang, cur):
     return ''.join(_nav_item(prefix, root_of(lang), cur, it) for it in items)
 
 
+def assert_nav_catalog_sync():
+    """Header dropdown slugs/paths must match CATALOG / SOLS (guards products↔solutions swap)."""
+    future = {'fa': 'آینده', 'en': 'Future', 'ar': 'مستقبل'}
+    sol_href = {
+        'fa': lambda slug: f'solutions/{slug}/',
+        'en': lambda slug: f'solutions/{slug}/',
+        'ar': lambda slug: f'الحلول/{slug}/',
+    }
+    for lang in ('fa', 'en', 'ar'):
+        nav = {item[0]: item for item in NAV[lang]}
+        prod = nav['products'][3]
+        sol = nav['solutions'][3]
+        if [row[0] for row in prod] != [c['slug'] for c in CATALOG]:
+            raise SystemExit(f'NAV[{lang}] product slugs ≠ CATALOG order')
+        if [row[1] for row in prod] != [c['href'][lang] for c in CATALOG]:
+            raise SystemExit(f'NAV[{lang}] product hrefs ≠ CATALOG')
+        if [row[0] for row in sol] != [s['slug'] for s in SOLS]:
+            raise SystemExit(f'NAV[{lang}] solution slugs ≠ SOLS (possible menu swap)')
+        if [row[1] for row in sol] != [sol_href[lang](s['slug']) for s in SOLS]:
+            raise SystemExit(f'NAV[{lang}] solution hrefs ≠ SOLS')
+        for row, s in zip(sol, SOLS):
+            if s['future'] and (len(row) < 4 or row[3] != future[lang]):
+                raise SystemExit(f'NAV[{lang}] solutions future badge missing on {s["slug"]}')
+
+
 def stamp_nav_html(html, rel):
     m = re.search(r'(<nav class="nav" id="mainNav"[^>]*>)(.*?)(</nav>)', html, re.S)
     if not m or 'data-ps-nav="products"' in m.group(2):
