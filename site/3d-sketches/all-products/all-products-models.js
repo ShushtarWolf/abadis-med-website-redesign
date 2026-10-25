@@ -15,15 +15,15 @@ export const PRODUCTS = [
     faName: 'کیسه ساکشن یکبار مصرف ۱ لیتری آبادیس',
     enName: '1L Disposable Suction Liner Bag',
     dims: 'Ø110 × 155 mm | 1000 mL',
-    material: 'Medical PP Copolymer Liner + HDPE Teal Lid (#05686b)',
+    material: 'Medical PP Frosted Liner + CATPart CAD Pit/Rim (1l-pit.glb) + HDPE Teal Lid (#05686b)',
     specFa: 'مجهز به فیلتر هیدروفوبیک قطع‌کن خودکار، پورت بیمار و وکیوم زاویه‌دار ۴۵ درجه، درپوش متصل و ساشه پودر ژل‌کننده',
     specEn: '45° angled patient & vacuum ports, deep crescent recess, tethered cap with U-clip, internal shut-off filter cage & coagulant pad',
     refImg: './assets/refs/p01-ref.png',
     callouts: [
-      { label: 'Patient & Vacuum 45° Ports | پورت بیمار و وکیوم', target: [0.02, 0.088, 0.015], offset: [0.095, 0.115, 0] },
-      { label: 'Hydrophobic Shut-Off Cage | فیلتر قطع‌کن داخلی', target: [0.0, 0.015, 0.0], offset: [-0.105, 0.035, 0] },
-      { label: '1000 mL Frosted Liner | بدنه مدرج ۱ لیتری', target: [0.048, -0.03, 0.01], offset: [0.105, -0.025, 0] },
-      { label: 'Coagulant Sachet | پد پودر ژل‌کننده', target: [0.0, -0.085, 0.0], offset: [-0.095, -0.095, 0] },
+      { label: 'CATPart CAD Rim & Bracket | ریم و براکت CAD', target: [0.055, 0.02, 0.02], offset: [0.11, 0.08, 0] },
+      { label: 'Patient & Vacuum 45° Ports | پورت بیمار و وکیوم', target: [0.02, 0.055, 0.015], offset: [0.095, 0.11, 0] },
+      { label: 'CAD 1L Pit Shell | بدنه پیت ۱ لیتری CAD', target: [0.06, -0.05, 0.0], offset: [0.11, -0.04, 0] },
+      { label: 'Frosted Liner + Filter Cage | کیسه و فیلتر داخلی', target: [-0.02, -0.02, 0.0], offset: [-0.11, -0.02, 0] },
     ]
   },
   {
@@ -546,6 +546,248 @@ export function preloadPhotoTextures(THREE) {
   return _photoTexPromise;
 }
 
+/* ------------------------------------------------------------------ */
+/*  CAD 1L Pit (from CATPart → 1l-pit.glb)                            */
+/*  Mesh0 = rim collar + side bracket/ports  |  Mesh1 = cylindrical pit */
+/*  CAD is Z-up; we rotate to Y-up and cache a normalized template.     */
+/* ------------------------------------------------------------------ */
+let _cadPitPromise = null;
+let _cadPitTemplate = null; // { rimGeo, pitGeo, rimSize, pitSize } geometries only
+
+export function preloadCadPit(THREE, GLTFLoader) {
+  if (_cadPitTemplate) return Promise.resolve(_cadPitTemplate);
+  if (_cadPitPromise) return _cadPitPromise;
+
+  const LoaderCtor = GLTFLoader || (typeof THREE !== 'undefined' && THREE.GLTFLoader);
+  if (!LoaderCtor) {
+    console.warn('GLTFLoader not provided to preloadCadPit');
+    return Promise.resolve(null);
+  }
+
+  _cadPitPromise = new Promise((resolve) => {
+    const loader = new LoaderCtor();
+    const url = './assets/1l-pit.glb';
+    const timer = setTimeout(() => {
+      console.warn('CAD pit GLB preload timeout');
+      resolve(null);
+    }, 4000);
+
+    loader.load(
+      url,
+      (gltf) => {
+        clearTimeout(timer);
+        try {
+          const scene = gltf.scene;
+          // CAD Z-up → Three.js Y-up
+          scene.rotation.x = -Math.PI / 2;
+          scene.updateMatrixWorld(true);
+
+          const meshList = [];
+          scene.traverse((o) => {
+            if (o.isMesh) meshList.push(o);
+          });
+          if (meshList.length < 2) {
+            console.warn('CAD pit GLB expected 2 meshes, got', meshList.length);
+            resolve(null);
+            return;
+          }
+
+          // Classify: taller mesh = pit cylinder; other = rim/bracket
+          const boxed = meshList.map((m) => {
+            const geo = m.geometry.clone();
+            // Bake world transform (scale 0.001 + rotation) into geometry
+            m.updateWorldMatrix(true, false);
+            geo.applyMatrix4(m.matrixWorld);
+            geo.computeBoundingBox();
+            const bb = geo.boundingBox;
+            const size = bb.getSize(new THREE.Vector3());
+            return { geo, size, bb, height: size.y };
+          });
+          boxed.sort((a, b) => b.height - a.height);
+          const pit = boxed[0];
+          const rim = boxed[1];
+
+          // Normalize so pit TOP sits at y=0 (pit extends downward)
+          const pitTopY = pit.bb.max.y;
+          const shift = new THREE.Matrix4().makeTranslation(0, -pitTopY, 0);
+          pit.geo.applyMatrix4(shift);
+          rim.geo.applyMatrix4(shift);
+          pit.geo.computeBoundingBox();
+          rim.geo.computeBoundingBox();
+          pit.geo.computeVertexNormals();
+          rim.geo.computeVertexNormals();
+
+          _cadPitTemplate = {
+            pitGeo: pit.geo,
+            rimGeo: rim.geo,
+            pitSize: pit.geo.boundingBox.getSize(new THREE.Vector3()).toArray(),
+            rimSize: rim.geo.boundingBox.getSize(new THREE.Vector3()).toArray(),
+            pitRadius: Math.max(
+              Math.abs(pit.geo.boundingBox.max.x),
+              Math.abs(pit.geo.boundingBox.min.x),
+              Math.abs(pit.geo.boundingBox.max.z),
+              Math.abs(pit.geo.boundingBox.min.z)
+            ),
+            pitHeight: pit.geo.boundingBox.getSize(new THREE.Vector3()).y,
+          };
+          resolve(_cadPitTemplate);
+        } catch (err) {
+          console.warn('CAD pit parse failed', err);
+          resolve(null);
+        }
+      },
+      undefined,
+      (err) => {
+        clearTimeout(timer);
+        console.warn('CAD pit GLB load failed', err);
+        resolve(null);
+      }
+    );
+  });
+  return _cadPitPromise;
+}
+
+export function getCadPitTemplate() {
+  return _cadPitTemplate;
+}
+
+/**
+ * Build Abadis 1L/2L/3L liner using real CATPart pit+rim CAD,
+ * plus improved frosted bag, filter cage, coagulant pad, and photo-matched teal ports.
+ * Falls back to procedural buildSteppedLidAndBag if CAD not loaded.
+ */
+function buildCadPitBag(THREE, group, mats, cfg) {
+  const {
+    scaleXZ = 1.0,
+    scaleY = 1.0,
+    hBag = 0.165,
+    rTop = 0.056,
+    rBot = 0.045,
+    scaleTex,
+    hasTandem = true,
+  } = cfg;
+
+  const tpl = _cadPitTemplate;
+  if (!tpl) {
+    buildSteppedLidAndBag(THREE, group, mats, { rTop, rBot, hBag, scaleTex, hasTandem });
+    return;
+  }
+
+  const cadG = new THREE.Group();
+  cadG.name = 'CadPitAssembly';
+
+  // --- CAD pit cylinder (visible clear/engineering outer shell from CATPart) ---
+  const pitGeo = tpl.pitGeo.clone();
+  const pitShellMat = mats.clearPC.clone();
+  pitShellMat.opacity = Math.min(0.55, (pitShellMat.opacity || 0.46) + 0.12);
+  pitShellMat.transmission = Math.max(0.25, (pitShellMat.transmission || 0.4) - 0.08);
+  pitShellMat.depthWrite = false;
+  const pitMesh = addMesh(THREE, cadG, pitGeo, pitShellMat, mats.cadGridMat, 14);
+  pitMesh.renderOrder = 1;
+  pitMesh.name = 'CadPitBody';
+
+  // --- CAD rim collar + side bracket/ports (Abadis teal — real CATPart mesh) ---
+  const rimGeo = tpl.rimGeo.clone();
+  const rimMesh = addMesh(THREE, cadG, rimGeo, mats.tealLid, mats.cadEdgeMat, 16);
+  rimMesh.renderOrder = 5;
+  rimMesh.name = 'CadPitRim';
+
+  cadG.scale.set(scaleXZ, scaleY, scaleXZ);
+  group.add(cadG);
+
+  // Effective radii after CAD scale (pit outer ~0.0615m)
+  const pitR = (tpl.pitRadius || 0.0615) * scaleXZ;
+  const bagRTop = Math.min(rTop, pitR * 0.90);
+  const bagRBot = Math.min(rBot, pitR * 0.78);
+  const yTop = -0.004 * scaleY; // just under rim / pit top
+  const yBot = yTop - hBag;
+
+  // --- Frosted translucent liner bag (photo-matched) inside pit ---
+  const bagPts = [
+    new THREE.Vector2(0, yBot),
+    new THREE.Vector2(bagRBot * 0.90, yBot),
+    new THREE.Vector2(bagRBot, yBot + 0.008),
+    new THREE.Vector2(bagRTop, yTop - 0.014),
+    new THREE.Vector2(bagRTop * 1.02, yTop - 0.006),
+    new THREE.Vector2(bagRTop * 1.02, yTop),
+  ];
+  const bagGeo = new THREE.LatheGeometry(bagPts, 56);
+  const bagMesh = addMesh(THREE, group, bagGeo, mats.frostedBag, mats.cadGridMat, 12);
+  bagMesh.renderOrder = 3;
+  bagMesh.name = 'FrostedLinerBag';
+
+  // Graduation scale wrap
+  if (scaleTex) {
+    const scGeo = new THREE.CylinderGeometry(
+      bagRTop * 0.992, bagRBot * 1.0, hBag * 0.82, 40, 1, true
+    );
+    scGeo.translate(0, (yTop + yBot) * 0.5, 0);
+    const scMat = new THREE.MeshBasicMaterial({
+      map: scaleTex, transparent: true, opacity: 0.80, depthWrite: false, side: THREE.DoubleSide
+    });
+    const scMesh = new THREE.Mesh(scGeo, scMat);
+    scMesh.renderOrder = 4;
+    group.add(scMesh);
+  }
+
+  // Internal hydrophobic shut-off filter cage (hanging from lid)
+  const cageG = new THREE.Group();
+  cageG.position.set(0, yTop - 0.038, 0);
+  addMesh(THREE, cageG, new THREE.CylinderGeometry(0.016, 0.018, 0.052, 28), mats.darkTeal, mats.cadEdgeMat);
+  addMesh(THREE, cageG, new THREE.CylinderGeometry(0.0125, 0.0135, 0.042, 24), mats.whitePorous, null);
+  for (let i = 0; i < 8; i++) {
+    const a = (i / 8) * Math.PI * 2;
+    const rib = new THREE.BoxGeometry(0.0022, 0.048, 0.0032);
+    rib.translate(0, 0, 0.0165);
+    rib.rotateY(a);
+    addMesh(THREE, cageG, rib, mats.darkTeal, null);
+  }
+  group.add(cageG);
+
+  // Bottom coagulant / gelling pad
+  const padGeo = new THREE.BoxGeometry(bagRBot * 1.15, 0.012, bagRBot * 0.90, 6, 1, 6);
+  padGeo.translate(0, yBot + 0.011, 0);
+  addMesh(THREE, group, padGeo, mats.whitePorous, mats.cadEdgeMat);
+
+  // --- Photo-accurate teal lid deck + 45° ports sitting on CAD rim ---
+  const lidG = new THREE.Group();
+  lidG.position.set(0, 0.002 * scaleY, 0);
+  const lidR = pitR * 1.02;
+  addMesh(THREE, lidG, new THREE.CylinderGeometry(lidR, lidR, 0.009, 48), mats.tealLid, mats.cadEdgeMat);
+  addMesh(THREE, lidG, new THREE.CylinderGeometry(lidR * 0.92, lidR * 0.98, 0.011, 48).translate(0, 0.008, 0), mats.tealLid, mats.cadEdgeMat);
+  // Deep crescent recess
+  addMesh(
+    THREE, lidG,
+    new THREE.CylinderGeometry(lidR * 0.42, lidR * 0.40, 0.007, 32, 1, false, 0.2, Math.PI * 1.2)
+      .translate(0.006, 0.012, 0.004),
+    mats.darkTeal, mats.cadEdgeMat
+  );
+
+  // Two 45° patient & vacuum ports
+  for (const [px, pz, rz] of [[-0.017 * scaleXZ, 0.015 * scaleXZ, 0.65], [0.017 * scaleXZ, -0.013 * scaleXZ, -0.65]]) {
+    const pG = new THREE.Group();
+    pG.position.set(px, 0.011, pz);
+    pG.rotation.z = rz;
+    addMesh(THREE, pG, new THREE.CylinderGeometry(0.0052, 0.0068, 0.030, 24).translate(0, 0.015, 0), mats.tealLid, mats.cadEdgeMat);
+    addMesh(THREE, pG, new THREE.TorusGeometry(0.0054, 0.00105, 10, 24).rotateX(Math.PI / 2).translate(0, 0.030, 0), mats.lightTeal, null);
+    lidG.add(pG);
+  }
+  if (hasTandem) {
+    addMesh(THREE, lidG, new THREE.CylinderGeometry(0.0065, 0.0075, 0.020, 22).translate(-0.020 * scaleXZ, 0.018, -0.020 * scaleXZ), mats.lightTeal, mats.cadEdgeMat);
+  }
+  // Tethered cap loop
+  const loopCurve = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(-lidR * 0.98, 0.004, 0.014),
+    new THREE.Vector3(-lidR * 1.35, 0.002, 0.020),
+    new THREE.Vector3(-lidR * 1.40, 0.001, -0.004),
+    new THREE.Vector3(-lidR * 0.98, 0.003, -0.012),
+  ]);
+  addMesh(THREE, lidG, new THREE.TubeGeometry(loopCurve, 36, 0.0015, 10, false), mats.lightTeal, mats.cadEdgeMat);
+  addMesh(THREE, lidG, new THREE.CylinderGeometry(0.006, 0.006, 0.007, 18).translate(-lidR * 1.36, 0.003, 0.008), mats.tealLid, mats.cadEdgeMat);
+
+  group.add(lidG);
+}
+
 function makeMats(THREE, isCad, isDark) {
   const { bumpTex } = getSharedTextures(THREE);
   const edgeColor = isDark ? 0x3ce8ea : 0x046669;
@@ -753,13 +995,25 @@ export function buildProductModel(THREE, productId, options = {}) {
 
   switch (productId) {
     case 'p01':
-      buildSteppedLidAndBag(THREE, root, mats, { rTop: 0.056, rBot: 0.045, hBag: 0.165, scaleTex: tex.scale1000, hasTandem: true });
+      // 1L — real CATPart pit+rim CAD (1l-pit.glb) + frosted liner + photo ports
+      buildCadPitBag(THREE, root, mats, {
+        scaleXZ: 1.0, scaleY: 1.0, hBag: 0.155,
+        rTop: 0.056, rBot: 0.045, scaleTex: tex.scale1000, hasTandem: true
+      });
       break;
     case 'p02':
-      buildSteppedLidAndBag(THREE, root, mats, { rTop: 0.054, rBot: 0.043, hBag: 0.205, scaleTex: tex.scale2000, hasTandem: true });
+      // 2L — same CAD lid/pit scaled, taller liner
+      buildCadPitBag(THREE, root, mats, {
+        scaleXZ: 0.98, scaleY: 1.18, hBag: 0.195,
+        rTop: 0.054, rBot: 0.043, scaleTex: tex.scale2000, hasTandem: true
+      });
       break;
     case 'p03':
-      buildSteppedLidAndBag(THREE, root, mats, { rTop: 0.064, rBot: 0.052, hBag: 0.212, scaleTex: tex.scale3000, hasTandem: true });
+      // 3L — wider+taller CAD scale
+      buildCadPitBag(THREE, root, mats, {
+        scaleXZ: 1.14, scaleY: 1.22, hBag: 0.205,
+        rTop: 0.064, rBot: 0.052, scaleTex: tex.scale3000, hasTandem: true
+      });
       break;
 
     case 'p04': {
