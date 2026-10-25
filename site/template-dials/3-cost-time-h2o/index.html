@@ -353,12 +353,12 @@ window.DIAL_PAGE = {
   'use strict';
   var F = {
     surgery: function (n) {
-      return { water: n * 1.6 * 9.3, cost: n * 2.5 * 85000, hours: n * 1.7 / 60 * 2.2 * 7.1 };
+      return { water: n * 1.6 * 9.971, cost: n * 2.5 * 85000, hours: n * 1.6 * 2.2 * 7.1 / 60 };
     },
     beds: function (a, b) {
       return {
-        water: ((a * 254) + (b * 67)) * 1.6 * 9.3,
-        cost: ((a * 200) + (b * 50)) * 2.5 * 85000,
+        water: ((a * 254) + (b * 67)) * 1.6 * 9.971,
+        cost: ((a * 254) + (b * 65)) * 2.5 * 85000,
         hours: ((a * 254) + (b * 67)) * 1.7 * 2.2 * 7.1 / 60
       };
     }

@@ -8,9 +8,9 @@ AR_D = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
 
 T = {
  'en': dict(
-  root='en/', title='Disposable Suction Liner Bags & Hospital Fluid Management — Abadis Med',
+  root='en/', title='Specialized solutions for safer, more efficient care — Abadis Med',
   desc='Abadis Med, a knowledge-based company: disposable suction liner bags and solutions for managing hospital fluid and infectious waste.',
-  kicker='Abadis Med · a knowledge-based group', h1='The first and largest manufacturer of disposable suction liner bags',
+  kicker='Abadis Med · a knowledge-based group', h1='Specialized solutions for safer, more efficient care',
   sub='IMED · ISO · CE certified. Suction bags in 1, 2 and 3 L with hydrophobic, dual and mechanical filters.',
   cat='Download catalogue', quote='Request a quote / export cooperation', quote_href='export/#quote',
   bag_alt='Abadis 1 L and 2 L disposable suction liner bags',
@@ -32,9 +32,9 @@ T = {
   mem_eb='Memberships', mem_h='Memberships', mem_alt='Abadis membership',
   cust_eb='Customers', cust_h='Customers', cust_btn='See the customer list', cust_href='our-customers/', prev='Previous', next='Next', cust_aria='Sample customers'),
  'ar': dict(
-  root='arabic/', title='أكياس الشفط ذات الاستعمال الواحد وإدارة سوائل المستشفيات — آباديس',
+  root='arabic/', title='حلول متخصصة لرعاية أكثر أمانًا وكفاءة — آباديس',
   desc='شركة مخازن طبية آباديس المعرفية: أكياس الشفط ذات الاستعمال الواحد وحلول إدارة السوائل والنفايات المعدية في المستشفيات.',
-  kicker='شركة مخازن طبية آباديس المعرفية', h1='أكياس الشفط ذات الاستعمال الواحد وحلول إدارة السوائل في المستشفيات',
+  kicker='شركة مخازن طبية آباديس المعرفية', h1='حلول متخصصة لرعاية أكثر أمانًا وكفاءة',
   sub='حاصلة على شهادات IMED وISO وCE؛ أكياس شفط بسعة ١ و٢ و٣ لتر مع فلاتر كارهة للماء ومزدوجة وميكانيكية.',
   cat='تحميل الكتالوج', quote='طلب سعر / تعاون تصديري', quote_href='export/#quote',
   bag_alt='أكياس الشفط آباديس ذات الاستعمال الواحد ١ و٢ لتر',

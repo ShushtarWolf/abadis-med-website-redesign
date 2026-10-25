@@ -28,8 +28,9 @@ WHY_CHECKS = [
 ZAGROS_LEAD = 'کاشت نهال بلوط در ارتفاعات زاگرس؛ تا مکانی به نام آبادیس و به یاد صنعت سلامت کشور ثبت شود.'
 HOME_DESC = ('شرکت دانش‌بنیان مخازن طبی آبادیس؛ تولیدکننده کیسه ساکشن یکبار مصرف و '
              'راهکارهای مدیریت سیالات و زباله‌های عفونی بیمارستانی.')
-# Ends with brand so layout.head does not double-suffix
-HOME_TITLE = 'تولیدکنندهٔ کیسه ساکشن یک‌بارمصرف و راهکارهای مدیریت مایعات بیمارستانی — مخازن طبی آبادیس'
+# Ends with brand so layout.head does not double-suffix.
+# Hero positioning: Alireza, 17 Oct 2026.
+HOME_TITLE = 'راهکارهای تخصصی برای مراقبت ایمن‌تر و کارآمدتر — مخازن طبی آبادیس'
 CALC_TEASER = 'جهت محاسبه آنلاین میزان صرفه‌جویی در مصرف آب و زباله‌های عفونی مرکز خود می‌توانید روی دکمه زیر کلیک نمایید.'
 LOGO_STRIP_N = 24
 
@@ -156,7 +157,7 @@ def zagros_hero(img_base):
 LIVE_HERO_H1 = 'شرکت دانش بنیان مخازن طبی آبادیس'
 
 
-HERO_H1 = 'تولیدکنندهٔ کیسه ساکشن یک‌بارمصرف و راهکارهای مدیریت مایعات بیمارستانی'
+HERO_H1 = 'راهکارهای تخصصی برای مراقبت ایمن‌تر و کارآمدتر'
 # Provable from abadis-med.com: certificates (hero slider) + sizes/filters (product page)
 HERO_SUB = 'دارای گواهی‌های IMED، ISO و CE؛ کیسه ساکشن در حجم‌های ۱، ۲ و ۳ لیتری با فیلتر هیدروفوبیک، دوئال و مکانیکی.'
 CATALOGUE = 'https://abadis-med.com/wp-content/uploads/2024/12/کاتالوگ-جامع-آبادیس.pdf'

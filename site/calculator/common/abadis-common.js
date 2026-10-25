@@ -17,12 +17,12 @@
   }
   Object.assign(A, { clamp, fa, fa1, readableToman });
 
-  /* formulas exactly as on the live abadis-med.com calculator */
+  /* formulas from Alireza, فرمول محاسبه گر: water × 9.971; surgery staff 1.6; beds cost OR 254 / ICU 65; beds staff 1.7 */
   const F = {
-    surgery: ({ n }) => ({ water: n * 1.6 * 9.3, cost: n * 2.5 * 85000, hours: n * 1.7 / 60 * 2.2 * 7.1 }),
+    surgery: ({ n }) => ({ water: n * 1.6 * 9.971, cost: n * 2.5 * 85000, hours: n * 1.6 * 2.2 * 7.1 / 60 }),
     beds: ({ a, b }) => ({
-      water: ((a * 254) + (b * 67)) * 1.6 * 9.3,
-      cost: ((a * 200) + (b * 50)) * 2.5 * 85000,
+      water: ((a * 254) + (b * 67)) * 1.6 * 9.971,
+      cost: ((a * 254) + (b * 65)) * 2.5 * 85000,
       hours: ((a * 254) + (b * 67)) * 1.7 * 2.2 * 7.1 / 60,
     }),
   };
@@ -174,7 +174,7 @@
         odoList.forEach(([key, o]) => { if (vals[key] != null) o.set(vals[key]); });
         const fr = kind === 'surgery'
           ? { water: disp.n / 30000, cost: disp.n / 30000, hours: disp.n / 30000, input: disp.n / 30000 }
-          : { water: (disp.a * 254 + disp.b * 67) / (321 * 700), cost: (disp.a * 200 + disp.b * 50) / (250 * 700), hours: (disp.a * 254 + disp.b * 67) / (321 * 700), a: disp.a / 700, b: disp.b / 700 };
+          : { water: (disp.a * 254 + disp.b * 67) / (321 * 700), cost: (disp.a * 254 + disp.b * 65) / ((254 + 65) * 700), hours: (disp.a * 254 + disp.b * 67) / (321 * 700), a: disp.a / 700, b: disp.b / 700 };
         chips.forEach((c) => c.classList.toggle('on', c.dataset.n != null ? +c.dataset.n === disp.n : (+c.dataset.a === disp.a && +c.dataset.b === disp.b)));
         if (confirmBtn) {
           confirmBtn.hidden = !state.mode; confirmBtn.dataset.mode = state.mode;

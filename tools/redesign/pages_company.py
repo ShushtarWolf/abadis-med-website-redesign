@@ -18,6 +18,119 @@ BAG_ICON = '''<svg class="bag-icon" viewBox="0 0 120 160" role="img" aria-label=
   <circle cx="60" cy="78" r="13" fill="none" stroke="#015F61" stroke-width="3"/><path d="M60 70v16M52 78h16" stroke="#015F61" stroke-width="3" stroke-linecap="round"/>
 </svg>'''
 SLOGAN_ABOUT = ['ما به اندازه یک سرانگشت اثر می‌گذاریم،', 'به شما', 'به طبیعت', 'به جهان']   # Abadis-Sign (live)
+
+# Alireza, 17 Oct 2026, «تغییرات ماهوی سایت». Third person. Home hero uses the same line.
+STRATEGIC_LINE = {
+    'fa': 'راهکارهای تخصصی برای مراقبت ایمن‌تر و کارآمدتر',
+    'en': 'Specialized solutions for safer, more efficient care',
+    'ar': 'حلول متخصصة لرعاية أكثر أمانًا وكفاءة',
+}
+STRATEGIC_LEAD = {
+    'fa': ('آبادیس از یک محصول موفق به مجموعه‌ای از راهکارهای تخصصی حرکت می‌کند. '
+           'تا سال ۱۴۱۰، آبادیس از یک تولیدکننده شناخته‌شده کیسه ساکشن به شرکتی تبدیل شود که با اتکا به دانش مهندسی، '
+           'توسعه محصولات تخصصی و حضور در بازارهای بین‌المللی، راهکارهایی برای افزایش ایمنی، کاهش آلودگی و بهبود کارایی '
+           'فرایندهای مراقبت بیمارستانی عرضه می‌کند.'),
+    'en': ('Abadis is moving from one successful product to a set of specialized solutions. '
+           'By 1410, Abadis is to grow from a recognized manufacturer of suction bags into a company that, '
+           'drawing on engineering knowledge, specialized product development and a presence in international markets, '
+           'offers solutions that raise safety, reduce contamination and improve the efficiency of hospital care.'),
+    'ar': ('تنتقل آباديس من منتج ناجح إلى مجموعة من الحلول المتخصصة. '
+           'حتى عام 1410، تتحول آباديس من منتج معروف لأكياس الشفط إلى شركة تقدّم، بالاعتماد على المعرفة الهندسية '
+           'وتطوير المنتجات المتخصصة والحضور في الأسواق الدولية، حلولاً لرفع الأمان وتقليل التلوث وتحسين كفاءة عمليات الرعاية في المستشفيات.'),
+}
+STRATEGIC_STAGES = {
+    'fa': ('سه مرحله', [
+        ('مرحله ابتدایی', 'مدیریت مایعات و ترشحات و تکمیل سیستم ساکشن: کیسه ساکشن، تیوب، فیلتر، مخزن و رگولاتور.'),
+        ('برنامه فعلی', 'ایمنی مراقبت و راه هوایی: مسواک ساکشن، فیکسر لوله تراشه و محصولات مرتبط.'),
+        ('برنامه آینده', 'کنترل آلودگی و پسماند: راهکارهای مبتنی بر PVA و فناوری مواد. این مرحله توسعه آینده است.'),
+    ]),
+    'en': ('Three stages', [
+        ('Initial stage', 'Management of fluids and secretions, and completion of the suction system: suction bag, tube, filter, canister and regulator.'),
+        ('Current programme', 'Care safety and the airway: suction toothbrush, endotracheal-tube fixator and related products.'),
+        ('Future programme', 'Contamination and waste control: PVA-based solutions and materials technology. This stage is future development.'),
+    ]),
+    'ar': ('ثلاث مراحل', [
+        ('المرحلة الابتدائية', 'إدارة السوائل والإفرازات وإكمال نظام الشفط: كيس الشفط، الأنبوب، الفلتر، الخزان والمنظم.'),
+        ('البرنامج الحالي', 'سلامة الرعاية والمجرى الهوائي: فرشاة الشفط، مثبّت أنبوب الرغامي والمنتجات المرتبطة.'),
+        ('البرنامج المستقبلي', 'السيطرة على التلوث والنفايات: حلول قائمة على PVA وتقنية المواد. هذه المرحلة تطوير مستقبلي.'),
+    ]),
+}
+STRATEGIC_OUTCOMES = {
+    'fa': ('سه نتیجه تا پایان پنج سال سوم',
+           'برای آنکه چشم‌انداز صرفاً یک شعار نباشد، تا پایان پنج سال سوم آبادیس باید سه نتیجه قابل اندازه‌گیری را نشان دهد:',
+           ['یک کسب‌وکار صادراتی سودآور و پایدار حول سیستم ساکشن',
+            'حداقل دو خانواده محصول جدید با فروش تکرارشونده و سهم معناداری از سود ناخالص',
+            'چند مطالعه مستند از تأثیر راهکارهای آبادیس بر ایمنی یا کارایی مراکز درمانی']),
+    'en': ('Three results by the end of the third five-year period',
+           'So the vision is more than a slogan, by the end of the third five-year period Abadis is to show three measurable results:',
+           ['a profitable, durable export business built around the suction system',
+            'at least two new product families with recurring sales and a meaningful share of gross profit',
+            'documented studies of how Abadis solutions affect the safety or efficiency of treatment centres']),
+    'ar': ('ثلاث نتائج حتى نهاية الخطة الخمسية الثالثة',
+           'حتى لا يبقى الأفق شعاراً، على آباديس أن تُظهر ثلاث نتائج قابلة للقياس حتى نهاية الخطة الخمسية الثالثة:',
+           ['عمل تصديري مربح ومستدام حول نظام الشفط',
+            'عائلتان جديدتان على الأقل من المنتجات بمبيعات متكررة وحصة معتبرة من إجمالي الربح',
+            'دراسات موثّقة لأثر حلول آباديس على سلامة المراكز العلاجية أو كفاءتها']),
+}
+STRATEGIC_ENGINES = {
+    'fa': ('سه موتور رشد', 'رشد آبادیس تا افق ۱۴۱۰ بر سه موتور استوار است:',
+           ['۷۰٪ هسته ساکشن', '۲۰٪ محصولات مجاور', '۱۰٪ پژوهش و توسعه نسل بعد']),
+    'en': ('Three growth engines', 'Abadis growth through 1410 rests on three engines:',
+           ['70% suction core', '20% adjacent products', '10% next-generation research and development']),
+    'ar': ('ثلاثة محركات للنمو', 'يقوم نمو آباديس حتى أفق 1410 على ثلاثة محركات:',
+           ['٧٠٪ نواة الشفط', '٢٠٪ منتجات مجاورة', '١٠٪ بحث وتطوير الجيل التالي']),
+}
+
+
+def _pva(text):
+    """Keep the Latin token PVA in its own direction run."""
+    return esc(text).replace('PVA', '<bdi dir="ltr">PVA</bdi>')
+
+
+def strategic_cards(lang):
+    title, rows = STRATEGIC_STAGES[lang]
+    return title, ''.join(
+        f'<div class="card prose reveal"><h3>{esc(h)}</h3><p>{_pva(body)}</p></div>' for h, body in rows)
+
+
+def strategic_pair(lang):
+    """Outcomes and growth engines, same two-card row the About page already uses."""
+    oh, op, items = STRATEGIC_OUTCOMES[lang]
+    eh, ep, engines = STRATEGIC_ENGINES[lang]
+    outcomes = f'<h3>{esc(oh)}</h3><p>{esc(op)}</p><ul>' + ''.join(f'<li>{esc(x)}</li>' for x in items) + '</ul>'
+    growth = f'<h3>{esc(eh)}</h3><p>{esc(ep)}</p><ul>' + ''.join(f'<li>{esc(x)}</li>' for x in engines) + '</ul>'
+    return outcomes, growth
+
+
+def apply_strategic_about(body, lang):
+    """Replace the old mission/vision intro on EN/AR About when that copy is still present."""
+    if lang not in ('en', 'ar') or STRATEGIC_LINE[lang] in body:
+        return body
+    markers = {
+        'en': ('Abadis Med, a', 'Central America'),
+        'ar': ('شركة مخازن طبية', 'أمريكا الوسطى'),
+    }.get(lang)
+    if not markers or markers[0] not in body:
+        return body
+    start = body.find('<p>', body.find(markers[0]) - 80)
+    if start < 0:
+        start = body.rfind('<p>', 0, body.find(markers[0]))
+    end_at = body.find(markers[1])
+    if start < 0 or end_at < 0:
+        return body
+    end = body.find('</p>', end_at)
+    if end < 0:
+        return body
+    title, cards = strategic_cards(lang)
+    outcomes, growth = strategic_pair(lang)
+    block = (
+        f'<h2>{esc(STRATEGIC_LINE[lang])}</h2>'
+        f'<p>{esc(STRATEGIC_LEAD[lang])}</p>'
+        f'<h3>{esc(title)}</h3>{cards}'
+        f'<div class="card prose">{outcomes}</div>'
+        f'<div class="card prose">{growth}</div>'
+    )
+    return body[:start] + block + body[end + 4:]
 TEAM_VIDEOS = {'علیرضا حسنعلی': ('alireza', 'team-member'), 'نوید حسنعلی': ('navid', 'team-member-navid')}
 
 # About «مجوزها و گواهینامه‌ها»: Hamid's order. ISO, CE, export permits and
@@ -156,20 +269,10 @@ def about(write):
     """About page from the LIVE abadis-med.com/درباره-ما/ (data/about_live.json, fetched 2026-10-14).
     Team order is exactly live: desktop list on desktop, mobile list on mobile (the live site has two)."""
     p = '../'; d = load('about_live.json'); bl = B('/درباره-ما/')
-    it = d['intro']
-    lead = it[1]
-    blocks = []
-    i = 2
-    while i < len(it):
-        if i + 2 < len(it) and it[i + 1] == ':':
-            blocks.append((it[i], it[i + 2])); i += 3
-        else:
-            i += 1
-    cards = ''.join(f'<div class="card prose reveal"><h3>{esc(t)}</h3><p>{esc(x)}</p></div>' for t, x in blocks)
+    lead = STRATEGIC_LEAD['fa']
+    stage_title, cards = strategic_cards('fa')
     hist_h, hist_p = d['history'][0], d['history'][1]
-    commit = d['commit']; goals = d['goals']
-    commit_h = f'<h3>{esc(commit[0])}</h3><p>{esc(commit[1])}</p><ul>' + ''.join(f'<li>{esc(x)}</li>' for x in commit[2:]) + '</ul>'
-    goals_h = f'<h3>{esc(goals[0])}</h3><p>{esc(goals[1])}</p><ul>' + ''.join(f'<li>{esc(x)}</li>' for x in goals[2:]) + '</ul>'
+    commit_h, goals_h = strategic_pair('fa')
     whys = ''.join(f'<li>{esc(x)}</li>' for x in d['why'][1:])
     from PIL import Image
     grouped = {k: [] for k, _ in CERT_GROUPS['fa']}
@@ -213,8 +316,9 @@ def about(write):
     main = f'''{hero}
   <nav class="anchors" aria-label="بخش‌های صفحه"><div class="wrap"><a href="#intro">درباره ما</a><a href="#history">تاریخچه</a><a href="#why">چرا آبادیس؟</a><a href="#certs">مجوزها و گواهینامه‌ها</a><a href="#partners">شرکای تجاری</a><a href="#team">تیم اجرایی</a></div></nav>
   <section class="section" id="intro"><div class="wrap" style="max-width:1000px">
-    <h2 class="reveal" style="margin-bottom:14px">درباره ما بیشتر بدانید...</h2>
+    <h2 class="reveal" style="margin-bottom:14px">{esc(STRATEGIC_LINE['fa'])}</h2>
     <p class="reveal" style="text-align:justify">{esc(lead)}</p>
+    <h3 class="reveal" style="margin-top:22px">{esc(stage_title)}</h3>
     <div class="grid g-3" style="margin-top:18px;gap:16px">{cards}</div>
   </div></section>
   <section class="section section--alt" id="history"><div class="wrap split">
@@ -345,8 +449,8 @@ def calculator(write):
   function v(f, n){ var x = parseFloat(String(f.elements[n].value).replace(/[۰-۹]/g, function(c){return '۰۱۲۳۴۵۶۷۸۹'.indexOf(c)})); return isFinite(x) && x > 0 ? x : 0; }
   function set(id, x){ document.getElementById(id).textContent = nf.format(x); }
   var s = document.getElementById('calcSurg'), b = document.getElementById('calcBeds');
-  function surg(){ var S = v(s, 's'); set('cs0', r(S*1.6*9.3, 0)); set('cs1', r(S*2.5*85000, 1)); set('cs2', r(S*1.7/60*2.2*7.1, 1)); }
-  function beds(){ var O = v(b, 'o'), I = v(b, 'i'), u = O*254 + I*67; set('cb0', r(u*1.6*9.3, 0)); set('cb1', r((O*200 + I*50)*2.5*85000, 1)); set('cb2', r(u*1.7*2.2*7.1/60, 1)); }
+  function surg(){ var S = v(s, 's'); set('cs0', r(S*1.6*9.971, 0)); set('cs1', r(S*2.5*85000, 1)); set('cs2', r(S*1.6*2.2*7.1/60, 1)); }
+  function beds(){ var O = v(b, 'o'), I = v(b, 'i'), u = O*254 + I*67; set('cb0', r(u*1.6*9.971, 0)); set('cb1', r((O*254 + I*65)*2.5*85000, 1)); set('cb2', r(u*1.7*2.2*7.1/60, 1)); }
   s.addEventListener('input', surg); b.addEventListener('input', beds); surg(); beds();
 })();
 </script>
