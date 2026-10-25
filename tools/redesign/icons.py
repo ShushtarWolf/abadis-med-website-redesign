@@ -76,26 +76,30 @@ def svg_whatsapp() -> str:
     return _svg(f'<path fill="#25D366" fill-rule="evenodd" d="{_WA_PATH}"/>')
 
 
-def svg_instagram() -> str:
-    """Original Instagram camera glyph. Radial stops plus the linear brand colors."""
+def svg_instagram(uid: str = 'abadis-ig') -> str:
+    """Original Instagram camera glyph. Radial stops plus the linear brand colors.
+
+    uid keeps gradient ids unique when the footer and a contact page both draw the mark.
+    """
+    radial, linear = f'{uid}-r', f'{uid}-l'
     return _svg(
         '<defs>'
-        '<radialGradient id="abadis-ig-r" cx="30%" cy="107%" r="150%">'
+        f'<radialGradient id="{radial}" cx="30%" cy="107%" r="150%">'
         '<stop offset="0" stop-color="#f09433"/>'
         '<stop offset="0.25" stop-color="#e6683c"/>'
         '<stop offset="0.5" stop-color="#dc2743"/>'
         '<stop offset="0.75" stop-color="#cc2366"/>'
         '<stop offset="1" stop-color="#bc1888"/>'
         '</radialGradient>'
-        '<linearGradient id="abadis-ig-l" x1="0" y1="24" x2="24" y2="0" gradientUnits="userSpaceOnUse">'
+        f'<linearGradient id="{linear}" x1="0" y1="24" x2="24" y2="0" gradientUnits="userSpaceOnUse">'
         '<stop offset="0" stop-color="#F58529"/>'
         '<stop offset="0.3" stop-color="#DD2A7B"/>'
         '<stop offset="0.65" stop-color="#8134AF"/>'
         '<stop offset="1" stop-color="#515BD4"/>'
         '</linearGradient>'
         '</defs>'
-        f'<path fill="url(#abadis-ig-r)" fill-rule="evenodd" d="{_IG_PATH}"/>'
-        f'<path fill="url(#abadis-ig-l)" fill-opacity="0.72" fill-rule="evenodd" d="{_IG_PATH}"/>'
+        f'<path fill="url(#{radial})" fill-rule="evenodd" d="{_IG_PATH}"/>'
+        f'<path fill="url(#{linear})" fill-opacity="0.72" fill-rule="evenodd" d="{_IG_PATH}"/>'
     )
 
 
@@ -119,6 +123,11 @@ def svg_aparat() -> str:
     return _svg('<rect width="24" height="24" rx="6" fill="#ED145B"/><path fill="#fff" d="M9.6 7.8v8.4l6.8-4.2-6.8-4.2z"/>')
 
 
+def svg_linkedin() -> str:
+    """Official LinkedIn “in” mark, brand blue #0A66C2."""
+    return _svg('<path fill="#0A66C2" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.73V1.73C24 .77 23.21 0 22.23 0z"/>')
+
+
 def ch(svg: str, sm: bool = False) -> str:
     cls = 'ch-ico ch-ico--sm' if sm else 'ch-ico'
     return f'<span class="{cls}" aria-hidden="true">{svg}</span>'
@@ -136,6 +145,15 @@ def brand_buttons(items: list[tuple[str, str, str]]) -> str:
 
 WA_URL = 'https://wa.me/989100145809'
 IG_URL = 'https://www.instagram.com/abadismedical.co'
+# Channels already linked on the EN/AR contact pages or the live footer icon row.
+TG_URL = 'https://t.me/abadis_med'
+YT_URL = 'https://www.youtube.com/channel/UC2J9yTFmf6fHLhKQ6y3gdCw/featured?view_as=subscriber'
+FB_URL = 'https://fb.com/AbadisMedCo'
+TW_URL = 'https://twitter.com/abadismed'
+AP_URL = 'https://www.aparat.com/abadismed'
+LI_URL = 'https://www.linkedin.com/company/abadis-medical-co/'
+TEL_URL = 'tel:+982192001017'
+MAIL_URL = 'mailto:info@abadis-med.com'
 
 _FA_I = re.compile(r'<i\b([^>]*)>\s*</i>', re.I)
 _CLASS_ICON = (
@@ -288,9 +306,27 @@ def iconize_extensions(ext_html: str) -> str:
     return ext_html
 
 
+def _strip_footer_more_sdgs(html: str) -> str:
+    """Drop SDG links from the More accordion. About / footer منو keeps the one listing."""
+    def repl(block_m):
+        return re.sub(
+            r'\n[ \t]*<a href="[^"]*sdgs/"[^>]*>[^<]*</a>',
+            '',
+            block_m.group(0),
+        )
+    return re.sub(
+        r'<details class="foot-acc foot-more"[^>]*>.*?</details>',
+        repl,
+        html,
+        count=1,
+        flags=re.S,
+    )
+
+
 def stamp_html(html: str, pills_for, addr_for, kind: str = '') -> tuple[str, list[str]]:
     """Refresh baked footer icons. kind is 'fa-contact', 'en-contact', or 'ar-contact'."""
     notes = []
+    html = _strip_footer_more_sdgs(html)
     lang_m = re.search(r'<html[^>]*\blang="([^"]+)"', html)
     lang = 'fa'
     if lang_m:
@@ -310,7 +346,7 @@ def stamp_html(html: str, pills_for, addr_for, kind: str = '') -> tuple[str, lis
             html = html2
     if 'foot-acc foot-address' in html:
         html2, n = re.subn(
-            r'(<details class="foot-acc foot-address"[^>]*>\s*<summary>[^<]*</summary>\s*)(?:<p\b[\s\S]*?</p>\s*){1,4}',
+            r'(<details class="foot-acc foot-address"[^>]*>\s*<summary>[^<]*</summary>\s*)(?:<(?:p|a)\b[\s\S]*?</(?:p|a)>\s*){1,4}',
             lambda m: m.group(1) + addr_for(lang) + '\n    ',
             html,
             count=1,

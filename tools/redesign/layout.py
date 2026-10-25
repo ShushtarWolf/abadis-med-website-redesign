@@ -1,11 +1,19 @@
 """Shared <head>, header, footer and hero markup for all redesign pages."""
+import urllib.parse
 from lib import esc
 from lib import SITE_ORIGIN, FORM_ENDPOINT, FORM_MAILTO
 from i18n import (
     LANGS, NAV as I18N_NAV, SECONDARY as I18N_SECONDARY, nav_flat, switcher_html,
     hreflang_tags, canonical_href, ROBOTS_META,
 )
-from icons import svg_phone, svg_mail, svg_whatsapp, svg_instagram, svg_pin
+from icons import (
+    svg_phone, svg_mail, svg_whatsapp, svg_instagram, svg_pin,
+    svg_telegram, svg_youtube, svg_facebook, svg_twitter, svg_aparat, svg_linkedin,
+    WA_URL, IG_URL, TG_URL, YT_URL, FB_URL, TW_URL, AP_URL, LI_URL, TEL_URL, MAIL_URL,
+)
+
+# HQ pin already used on the FA contact page (and the EN map embed is the same place).
+MAPS_HQ = 'https://www.google.com/maps/search/?api=1&query=35.79866,51.44826'
 
 # Back-compat aliases (FA)
 NAV = I18N_NAV['fa']
@@ -124,26 +132,32 @@ def _footer_label(lang, key, label):
     return label
 
 
-def _foot_pill(kind, href, label, val, icon, extra=''):
+def _foot_icon(kind, href, label, icon, extra='', value=''):
+    aria = f'{label} {value}'.strip()
     return (
-        f'<a class="foot-pill foot-pill--{kind}" href="{href}"{extra} dir="ltr" '
-        f'aria-label="{esc(label + " " + val)}">'
+        f'<a class="foot-pill foot-pill--{kind}" href="{esc(href)}"{extra} '
+        f'aria-label="{esc(aria)}">'
         f'<span class="foot-pill-ico" aria-hidden="true">{icon}</span>'
-        f'<span class="foot-pill-label">{esc(label)}</span>'
-        f'<span class="foot-pill-val">{esc(val)}</span></a>'
+        f'<span class="sr-only">{esc(aria)}</span></a>'
     )
 
 
 def footer_pills_html(lang):
+    """Icon strip: phone, email, and every Abadis channel already linked on contact or the live footer."""
     L = LANGS[lang]
     lab = lambda key: L[key].rstrip(':')
+    ext = ' target="_blank" rel="noopener"'
     return '\n        '.join((
-        _foot_pill('tel', 'tel:+982192001017', lab('contact_center'), '02192001017', svg_phone()),
-        _foot_pill('mail', 'mailto:info@abadis-med.com', lab('email'), 'info@abadis-med.com', svg_mail()),
-        _foot_pill('wa', 'https://wa.me/989100145809', lab('whatsapp'), '+989100145809', svg_whatsapp(),
-                   ' target="_blank" rel="noopener"'),
-        _foot_pill('ig', 'https://www.instagram.com/abadismedical.co', lab('instagram'), 'abadismedical.co',
-                   svg_instagram(), ' target="_blank" rel="noopener"'),
+        _foot_icon('tel', TEL_URL, lab('contact_center'), svg_phone(), value='02192001017'),
+        _foot_icon('mail', MAIL_URL, lab('email'), svg_mail(), value='info@abadis-med.com'),
+        _foot_icon('wa', WA_URL, lab('whatsapp'), svg_whatsapp(), ext, '+989100145809'),
+        _foot_icon('ig', IG_URL, lab('instagram'), svg_instagram('foot-ig'), ext, 'abadismedical.co'),
+        _foot_icon('tg', TG_URL, lab('telegram'), svg_telegram(), ext),
+        _foot_icon('ap', AP_URL, lab('aparat'), svg_aparat(), ext),
+        _foot_icon('yt', YT_URL, lab('youtube'), svg_youtube(), ext),
+        _foot_icon('tw', TW_URL, lab('twitter'), svg_twitter(), ext),
+        _foot_icon('fb', FB_URL, lab('facebook'), svg_facebook(), ext),
+        _foot_icon('li', LI_URL, lab('linkedin'), svg_linkedin(), ext),
     ))
 
 
@@ -151,10 +165,24 @@ def footer_address_html(lang):
     L = LANGS[lang]
     pin = f'<span class="foot-pin" aria-hidden="true">{svg_pin()}</span>'
 
-    def row(label, val):
-        return f'<p class="foot-addr">{pin}<span><b>{esc(label)}</b><br>{esc(val)}</span></p>'
+    def row(label, val, href=None):
+        maps = '<span class="foot-addr-maps">Google Maps</span>' if href else ''
+        body = f'{pin}<span><b>{esc(label)}</b><br>{esc(val)}{maps}</span>'
+        if not href:
+            return f'<p class="foot-addr">{body}</p>'
+        aria = esc(f'{label} {val} — Google Maps')
+        return (
+            f'<a class="foot-addr foot-addr-link" href="{esc(href)}" target="_blank" rel="noopener" '
+            f'aria-label="{aria}">{body}</a>'
+        )
 
-    return row(L['addr_hq'], L['addr_hq_val']) + '\n      ' + row(L['addr_factory'], L['addr_factory_val'])
+    hq_href = factory_href = None
+    if lang == 'en':
+        hq_href = MAPS_HQ
+        factory_href = 'https://www.google.com/maps/search/?api=1&query=' + urllib.parse.quote(
+            L['addr_factory_val'], safe='')
+    return row(L['addr_hq'], L['addr_hq_val'], hq_href) + '\n      ' + row(
+        L['addr_factory'], L['addr_factory_val'], factory_href)
 
 
 def footer(p, cur=None, lang='fa'):

@@ -628,3 +628,11 @@ details.letter[open] summary { margin-bottom: 12px; }
 .nav-item.open > .nav-sub, .nav-item:hover > .nav-sub, .nav-item:focus-within > .nav-sub { display: flex; }
 .nav-sub a { display: block; padding: 8px 10px; color: inherit; text-decoration: none; }
 .nav-soon { margin-inline-start: 6px; font-size: .72rem; }
+
+/* Footer social row — same icon grid as site/assets/css/site.css */
+.site-footer .foot-contact-pills { display: grid; grid-template-columns: repeat(auto-fit, minmax(44px, 1fr)); gap: 8px; width: 100%; max-width: none; }
+.site-footer .foot-pill { display: flex; width: 100%; height: 48px; min-height: 44px; align-items: center; justify-content: center; gap: 0; padding: 6px; border: 1px solid rgba(168,213,214,.28); border-radius: 14px; background: rgba(255,255,255,.04); text-decoration: none; }
+.site-footer .foot-pill-ico, .site-footer .foot-pill-ico svg { width: 26px; height: 26px; }
+.site-footer .foot-pill .sr-only, .site-footer .foot-pill-label, .site-footer .foot-pill-val { position: absolute !important; width: 1px !important; height: 1px !important; margin: -1px !important; padding: 0 !important; overflow: hidden !important; clip: rect(0,0,0,0) !important; white-space: nowrap !important; border: 0 !important; }
+.site-footer a.foot-addr-link { display: flex; gap: 8px; align-items: flex-start; margin: 0 0 8px; padding: 10px 12px; border: 1px solid rgba(168,213,214,.28); border-radius: 12px; text-decoration: none; color: var(--on-deep); }
+.site-footer .foot-addr-maps { display: inline-block; margin-top: 6px; font-size: .78rem; font-weight: 800; color: var(--deep-accent); border-bottom: 1px solid currentColor; }
