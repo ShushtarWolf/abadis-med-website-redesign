@@ -663,21 +663,37 @@ body.home .zh-exit {
   white-space: nowrap;
 }
 
-/* #12 Customers: less empty gap; logos less faint/sparse */
+/* #12 Customers: tighten empty band; readable logos; no bottom clip */
 @media (max-width: 560px) {
-  .logo-carousel-track { padding-block: 28px 36px; }
-  .home-logo {
-    opacity: 0.62;
-    filter: grayscale(.55) brightness(0.98);
-    transform: scale(0.9) translateY(2px);
+  #customers.section { padding-block: 32px 36px; }
+  #customers .section-head { margin-bottom: 8px; }
+  #customers .section-head p { margin-top: 4px; }
+  #customers .home-logo-cta { margin-top: 8px; }
+  .logo-carousel { margin-top: 0; }
+  /* Enough room for center scale + glow; not a tall empty band */
+  .logo-carousel-track { padding-block: 40px 44px; }
+  .logo-carousel-strip { gap: 14px; }
+  .logo-carousel::before,
+  .logo-carousel::after { width: min(32px, 10%); }
+  /* Beat theme-specific opacity (dark/noir) that kept logos ghosted */
+  .home-logo,
+  [data-theme="dark"] .home-logo,
+  [data-theme="noir"] .home-logo {
+    flex-basis: 84px;
+    width: 84px;
+    height: 84px;
+    opacity: 0.84;
+    filter: grayscale(0.2) brightness(1);
+    transform: scale(0.94) translateY(0);
   }
-  .home-logo.is-center {
+  .home-logo.is-center,
+  [data-theme="dark"] .home-logo.is-center,
+  [data-theme="noir"] .home-logo.is-center {
     opacity: 1;
     filter: none;
-    transform: scale(1.12) translateY(-2px);
+    transform: scale(1.16) translateY(-2px);
+    z-index: 1;
   }
-  #customers .section-head { margin-bottom: 10px; }
-  #customers .section-head p { margin-top: 6px; }
 }
 
 /* #13 Video placeholder + impact gap */

@@ -1185,6 +1185,54 @@ html[dir="ltr"] .prose ul, html[dir="ltr"] .prose ol { padding-inline-start: 1.3
   white-space: nowrap !important;
   border: 0 !important;
 }
+/* FAIL 14: tel/mail values must stay readable (override icon-only !important clip).
+   Social pills keep icon-only; maps (Neshan/Google) untouched. */
+.site-footer .foot-pill--tel,
+.site-footer .foot-pill--mail {
+  justify-content: flex-start;
+  gap: 8px;
+  padding-inline: 12px;
+  width: 100%;
+}
+.site-footer .foot-pill--tel .foot-pill-ico,
+.site-footer .foot-pill--mail .foot-pill-ico {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+.site-footer .foot-pill--tel .foot-pill-ico svg,
+.site-footer .foot-pill--mail .foot-pill-ico svg {
+  width: 20px;
+  height: 20px;
+}
+.site-footer .foot-pill--tel .foot-pill-val,
+.site-footer .foot-pill--mail .foot-pill-val {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  clip: auto !important;
+  -webkit-clip-path: none !important;
+  clip-path: none !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+  display: inline !important;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--on-deep);
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-size: inherit;
+  line-height: 1.25;
+}
+@media (max-width: 560px) {
+  .site-footer .foot-pill--tel,
+  .site-footer .foot-pill--mail {
+    grid-column: 1 / -1;
+  }
+}
 .site-footer a.foot-addr-link {
   display: flex;
   gap: 8px;
