@@ -135,7 +135,22 @@ NAV = {
             ('sdgs', 'sdgs/', 'توسعه پایدار'),
             ('careers', 'careers/', 'فرصت‌های همکاری'),
         ]),
-        ('products', 'products/', 'محصولات'),
+        ('products', 'products/#by-product', 'محصولات', [
+            ('suction-bag', 'products/suction-bag/', 'کیسه‌های ساکشن'),
+            ('suction-tube', 'products/suction-tube/', 'ساکشن تیوب'),
+            ('filters', 'products/filters/', 'فیلترها'),
+            ('canister', 'products/canister/', 'مخازن'),
+            ('stand', 'products/stand/', 'پایه و نگهدارنده'),
+            ('connectors', 'products/connectors/', 'اتصالات'),
+            ('other', 'products/other/', 'سایر محصولات'),
+        ]),
+        ('solutions', 'solutions/', 'راهکارها', [
+            ('fluid-management', 'solutions/fluid-management/', 'مدیریت مایعات و ترشحات'),
+            ('hospital-suction-systems', 'solutions/hospital-suction-systems/', 'سیستم‌های ساکشن بیمارستانی'),
+            ('contamination-control', 'solutions/contamination-control/', 'کنترل آلودگی و حفاظت از سیستم ساکشن'),
+            ('airway-care', 'solutions/airway-care/', 'ایمنی و مراقبت از راه هوایی'),
+            ('waste-management-pva', 'solutions/waste-management-pva/', 'کنترل آلودگی و مدیریت پسماند', 'آینده'),
+        ]),
         ('news', 'news/', 'آخرین اخبار'),
         ('articles', 'articles/', 'مقالات'),
         ('csr', 'csr/', 'مسئولیت اجتماعی'),
@@ -149,7 +164,22 @@ NAV = {
             ('sdgs', 'sdgs/', 'SDGs'),
             ('careers', 'collaboration-opportunities/', 'Collaboration opportunities'),
         ]),
-        ('products', 'products/', 'Products'),
+        ('products', 'products/#by-product', 'Products', [
+            ('suction-bag', 'products/suction-bag/', 'Suction bags'),
+            ('suction-tube', 'suction-tube/', 'Suction tube'),
+            ('filters', 'products/filters/', 'Filters'),
+            ('canister', 'products/canisters/', 'Canisters'),
+            ('stand', 'products/base-and-holder/', 'Stands and holders'),
+            ('connectors', 'products/connections/', 'Connectors'),
+            ('other', 'products/other-products/', 'Other products'),
+        ]),
+        ('solutions', 'solutions/', 'Solutions', [
+            ('fluid-management', 'solutions/fluid-management/', 'Fluid management'),
+            ('hospital-suction-systems', 'solutions/hospital-suction-systems/', 'Hospital suction systems'),
+            ('contamination-control', 'solutions/contamination-control/', 'Contamination control'),
+            ('airway-care', 'solutions/airway-care/', 'Airway care'),
+            ('waste-management-pva', 'solutions/waste-management-pva/', 'Waste management and materials', 'Future'),
+        ]),
         ('news', 'latest-news/', 'News'),
         ('articles', 'blog/', 'Articles'),
         ('csr', 'csr/', 'Social Responsibility'),
@@ -164,7 +194,22 @@ NAV = {
             ('sdgs', '~sdgs/', 'التنمية المستدامة'),
             ('careers', '~careers/', 'فرص التعاون'),
         ]),
-        ('products', 'منتجات/', 'منتجات'),
+        ('products', 'منتجات/#by-product', 'المنتجات', [
+            ('suction-bag', 'كيس-الشفط/', 'أكياس الشفط'),
+            ('suction-tube', 'أنبوب-الشفط/', 'أنبوب الشفط'),
+            ('filters', 'الفلتر/', 'الفلاتر'),
+            ('canister', 'خزانات/', 'الخزانات'),
+            ('stand', 'تثبیت/', 'الحوامل'),
+            ('connectors', 'الوصلات/', 'الوصلات'),
+            ('other', 'منتجات-اخری/', 'منتجات أخرى'),
+        ]),
+        ('solutions', 'الحلول/', 'الحلول', [
+            ('fluid-management', 'الحلول/fluid-management/', 'إدارة السوائل والإفرازات'),
+            ('hospital-suction-systems', 'الحلول/hospital-suction-systems/', 'أنظمة الشفط في المستشفى'),
+            ('contamination-control', 'الحلول/contamination-control/', 'السيطرة على التلوث وحماية نظام الشفط'),
+            ('airway-care', 'الحلول/airway-care/', 'سلامة العناية بالطريق الهوائي'),
+            ('waste-management-pva', 'الحلول/waste-management-pva/', 'إدارة النفايات وتقنية المواد', 'مستقبل'),
+        ]),
         ('news', 'الاخبار/', 'الاخبار'),
         ('articles', '~articles/', 'المقالات'),
         ('csr', '~csr/', 'المسؤولية الاجتماعية'),
@@ -173,18 +218,25 @@ NAV = {
 }
 
 
-def nav_flat(nav):
-    """Flatten NAV entries to (key, href, label) for footer / cur matching."""
+def nav_flat(nav, footer=False):
+    """Flatten NAV entries to (key, href, label) for footer / cur matching.
+
+    Product and solution children stay in the header dropdown only. The footer
+    keeps one link for each parent so the column does not grow by twelve items.
+    """
     out = []
     for item in nav:
         k, h, l = item[0], item[1], item[2]
         kids = item[3] if len(item) > 3 else None
         out.append((k, h, l))
-        if kids:
-            for ck, ch, cl in kids:
-                if ch == h:  # skip duplicate of parent (e.g. درباره ما → same about/)
-                    continue
-                out.append((ck, ch, cl))
+        if not kids or (footer and k in ('products', 'solutions')):
+            continue
+        parent = h.split('#', 1)[0]
+        for row in kids:
+            ck, ch, cl = row[0], row[1], row[2]
+            if ch.split('#', 1)[0] == parent:
+                continue
+            out.append((ck, ch, cl))
     return out
 
 

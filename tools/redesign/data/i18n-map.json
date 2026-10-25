@@ -123,5 +123,35 @@
     "fa": "export/",
     "en": "en/export/",
     "ar": "arabic/export/"
+  },
+  "solutions/": {
+    "fa": "solutions/",
+    "en": "en/solutions/",
+    "ar": "arabic/الحلول/"
+  },
+  "solutions/fluid-management/": {
+    "fa": "solutions/fluid-management/",
+    "en": "en/solutions/fluid-management/",
+    "ar": "arabic/الحلول/fluid-management/"
+  },
+  "solutions/hospital-suction-systems/": {
+    "fa": "solutions/hospital-suction-systems/",
+    "en": "en/solutions/hospital-suction-systems/",
+    "ar": "arabic/الحلول/hospital-suction-systems/"
+  },
+  "solutions/contamination-control/": {
+    "fa": "solutions/contamination-control/",
+    "en": "en/solutions/contamination-control/",
+    "ar": "arabic/الحلول/contamination-control/"
+  },
+  "solutions/airway-care/": {
+    "fa": "solutions/airway-care/",
+    "en": "en/solutions/airway-care/",
+    "ar": "arabic/الحلول/airway-care/"
+  },
+  "solutions/waste-management-pva/": {
+    "fa": "solutions/waste-management-pva/",
+    "en": "en/solutions/waste-management-pva/",
+    "ar": "arabic/الحلول/waste-management-pva/"
   }
 }
