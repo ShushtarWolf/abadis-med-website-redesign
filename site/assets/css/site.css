@@ -526,9 +526,27 @@ details.letter[open] summary { margin-bottom: 12px; }
 .latin { direction: ltr; unicode-bidi: isolate; font-weight: 700; }
 
 /* ---------- contact ---------- */
-.contact-dl { display: grid; grid-template-columns: auto 1fr; gap: 10px 16px; }
-.contact-dl dt { color: var(--muted); font-weight: 700; white-space: nowrap; }
+.contact-dl { display: grid; grid-template-columns: auto 1fr; gap: 12px 16px; align-items: center; }
+.contact-dl dt { align-self: start; margin-top: 1px; }
+.contact-dl dt { color: var(--muted); font-weight: 700; display: flex; align-items: center; gap: 8px; }
 .contact-dl dd a { color: var(--ink); text-decoration: none; border-bottom: 1px dotted var(--line); }
+.ch-ico { width: 22px; height: 22px; display: inline-grid; place-items: center; color: var(--brand); flex: none; }
+.ch-ico--sm { width: 16px; height: 16px; }
+.ch-ico svg { width: 100%; height: 100%; display: block; }
+.with-ico { display: flex; align-items: center; gap: 8px; }
+.dept-row { display: flex; align-items: center; gap: 8px; }
+.brand-row, .soc-links { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 4px; }
+.soc-links > span { display: flex; }
+.brand-btn, .soc-links a {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 12px; border-radius: 12px;
+  border: 1px solid var(--line); background: var(--surface);
+  color: var(--ink); text-decoration: none; font-weight: 800; border-bottom: 0;
+}
+.brand-btn svg, .soc-links svg { width: 22px; height: 22px; display: block; flex: none; }
+.prose a:has(> .ch-ico--sm) { display: inline-flex; align-items: center; gap: 4px; text-decoration: none; }
+.bdt-advanced-icon-box { display: flex; gap: 12px; align-items: flex-start; }
+.bdt-icon-wrapper .ch-ico, .prose .ch-ico { color: var(--brand); }
 /* Light: muted on mint/white was borderline for axe; use darker teal (ink-2). */
 [data-theme="light"] .contact-dl dt,
 [data-theme="light"] .form .hint,
@@ -606,43 +624,18 @@ details.letter[open] summary { margin-bottom: 12px; }
   box-sizing: border-box;
 }
 .site-footer .foot-pill-ico {
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
   flex: 0 0 auto;
-  display: block;
-  background: currentColor;
-  -webkit-mask: center / contain no-repeat;
-  mask: center / contain no-repeat;
+  display: inline-grid;
+  place-items: center;
+  background: none;
+  color: #5fd0d1;
 }
-.site-footer .foot-pill--tel .foot-pill-ico {
-  /* phone handset */
-  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .7-.2 1L6.6 10.8z'/></svg>");
-  mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .7-.2 1L6.6 10.8z'/></svg>");
-}
-.site-footer .foot-pill--mail .foot-pill-ico {
-  /* envelope */
-  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z'/></svg>");
-  mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z'/></svg>");
-}
-.site-footer .foot-pill--wa .foot-pill-ico {
-  /* WhatsApp glyph */
-  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M12 2C6.5 2 2 6.3 2 11.6c0 2 .6 3.9 1.7 5.5L2 22l5.1-1.6c1.5.8 3.2 1.3 4.9 1.3 5.5 0 10-4.3 10-9.6S17.5 2 12 2zm0 17.4c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .9.9-2.9-.2-.3c-.9-1.4-1.4-3-1.4-4.6 0-4.3 3.7-7.8 8.3-7.8s8.3 3.5 8.3 7.8-3.7 7.8-8.3 7.8zm4.6-5.8c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.7.9-.1.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.4.1-.5.1-.1.2-.3.3-.4.1-.1.1-.2.2-.4 0-.1 0-.3-.1-.4-.1-.1-.5-1.3-.7-1.8-.2-.5-.4-.4-.5-.4h-.4c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.3c.1.2 1.6 2.5 3.9 3.5 2.3 1 2.3.7 2.7.6.4-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.2-.2-.4-.3z'/></svg>");
-  mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M12 2C6.5 2 2 6.3 2 11.6c0 2 .6 3.9 1.7 5.5L2 22l5.1-1.6c1.5.8 3.2 1.3 4.9 1.3 5.5 0 10-4.3 10-9.6S17.5 2 12 2zm0 17.4c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .9.9-2.9-.2-.3c-.9-1.4-1.4-3-1.4-4.6 0-4.3 3.7-7.8 8.3-7.8s8.3 3.5 8.3 7.8-3.7 7.8-8.3 7.8zm4.6-5.8c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.7.9-.1.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.4.1-.5.1-.1.2-.3.3-.4.1-.1.1-.2.2-.4 0-.1 0-.3-.1-.4-.1-.1-.5-1.3-.7-1.8-.2-.5-.4-.4-.5-.4h-.4c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.3c.1.2 1.6 2.5 3.9 3.5 2.3 1 2.3.7 2.7.6.4-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.2-.2-.4-.3z'/></svg>");
-}
-.site-footer .foot-pill--tel,
-.site-footer .foot-pill--mail {
-  background: color-mix(in srgb, #066163 22%, transparent);
-  border: 1px solid color-mix(in srgb, #0e7475 55%, transparent);
-  color: #a8d5d6;
-}
-.site-footer .foot-pill--tel .foot-pill-ico,
-.site-footer .foot-pill--mail .foot-pill-ico { background: #0e7475; }
-.site-footer .foot-pill--wa {
-  background: rgba(37, 211, 102, .14);
-  border: 1px solid rgba(37, 211, 102, .38);
-  color: #d7f7e4;
-}
-.site-footer .foot-pill--wa .foot-pill-ico { background: #25d366; }
+.site-footer .foot-pill-ico svg { width: 18px; height: 18px; display: block; }
+.site-footer .foot-addr { display: flex; gap: 8px; align-items: flex-start; }
+.site-footer .foot-pin { color: #5fd0d1; flex: none; width: 18px; height: 18px; margin-top: 2px; }
+.site-footer .foot-pin svg { width: 18px; height: 18px; display: block; }
 .site-footer .foot-pill-label { opacity: .85; font-weight: 700; color: var(--on-deep); }
 .site-footer .foot-pill-val {
   font-weight: 800;
@@ -1099,7 +1092,8 @@ html[dir="ltr"] .prose ul, html[dir="ltr"] .prose ol { padding-inline-start: 1.3
 .site-footer .foot-pill,
 .site-footer .foot-pill--tel,
 .site-footer .foot-pill--mail,
-.site-footer .foot-pill--wa {
+.site-footer .foot-pill--wa,
+.site-footer .foot-pill--ig {
   display: flex; width: 100%;
   justify-content: flex-start; gap: 10px;
   background: transparent;
@@ -1114,7 +1108,11 @@ html[dir="ltr"] .prose ul, html[dir="ltr"] .prose ol { padding-inline-start: 1.3
 .site-footer .foot-pill:hover,
 .site-footer .foot-pill:focus-visible { border-color: rgba(95,208,209,.55); }
 .site-footer .foot-pill .foot-pill-ico,
-.site-footer .foot-pill--wa .foot-pill-ico { width: 16px; height: 16px; background: #5fd0d1; }
+.site-footer .foot-pill--wa .foot-pill-ico,
+.site-footer .foot-pill--ig .foot-pill-ico {
+  width: 18px; height: 18px; background: none;
+  -webkit-mask: none; mask: none;
+}
 .site-footer .foot-pill .foot-pill-label {
   position: static; width: auto; height: auto; margin: 0; padding: 0;
   overflow: visible; clip: auto;

@@ -468,11 +468,14 @@ def contact(write):
         return ''.join(out)
     office = [b['html'] for b in bl if b['t'] == 'html' and 'داخلی ها' in b['html']][0]
     ext = re.search(r'(<p><strong>داخلی ها:</strong></p>.*)', office, re.S).group(1)
+    from icons import svg_clock, svg_pin, svg_postal, ch, iconize_extensions, brand_buttons, WA_URL, IG_URL, svg_whatsapp, svg_instagram
+    ext = iconize_extensions(ext)
+    brands = brand_buttons([(WA_URL, svg_whatsapp(), 'واتس‌اپ'), (IG_URL, svg_instagram(), 'اینستاگرام')])
     block = f'''<!-- phase2:contact -->
   <section class="section section--alt" id="hours"><div class="wrap grid g-2" style="gap:24px;align-items:start">
-    <div class="reveal"><h2 style="font-size:1.4rem;margin-bottom:14px">ساعات کاری</h2><div class="hours">{boxes('ساعات کاری')}</div>
-      <h2 style="font-size:1.4rem;margin:26px 0 14px">روزهای تعطیل</h2><div class="hours">{boxes('روزهای تعطیل')}</div></div>
-    <div class="card prose reveal"><h3>دفتر مرکزی</h3>{ext}<h3>کارخانه</h3><p><strong>کدپستی: </strong>۱۸۳۴۱۶۵۷۷۶</p><p><strong>شبکه های اجتماعی: </strong><a href="https://yek.link/abadis.med" target="_blank" rel="noopener">https://yek.link/abadis.med</a></p></div>
+    <div class="reveal"><h2 class="with-ico" style="font-size:1.4rem;margin-bottom:14px">{ch(svg_clock())}ساعات کاری</h2><div class="hours">{boxes('ساعات کاری')}</div>
+      <h2 class="with-ico" style="font-size:1.4rem;margin:26px 0 14px">{ch(svg_clock())}روزهای تعطیل</h2><div class="hours">{boxes('روزهای تعطیل')}</div></div>
+    <div class="card prose reveal"><h3 class="with-ico">{ch(svg_pin())}دفتر مرکزی</h3>{ext}<h3 class="with-ico">{ch(svg_pin())}کارخانه</h3><p class="with-ico">{ch(svg_postal())}<strong>کدپستی: </strong>۱۸۳۴۱۶۵۷۷۶</p><p><strong>شبکه های اجتماعی: </strong><a href="https://yek.link/abadis.med" target="_blank" rel="noopener">https://yek.link/abadis.med</a></p>{brands}</div>
   </div></section>
   <section class="section" id="map"><div class="wrap"><h2 style="font-size:1.4rem;margin-bottom:14px">موقعیت دفتر مرکزی روی نقشه</h2>
     <div class="map-embed reveal"><iframe title="نقشه دفتر مرکزی آبادیس (نشان)" src="https://neshan.org/maps/iframe/places/9399a4513b6974a287127c06bd9269b9#c35.799-51.448-20z-0p/35.79866645611763/51.44826324948928" loading="lazy" allowfullscreen></iframe></div>

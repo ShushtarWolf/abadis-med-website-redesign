@@ -158,6 +158,9 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
     raw_content = wp.get('content', {}).get('rendered', '')
     desc = meta_description(title, wp.get('excerpt', {}).get('rendered', ''), raw_content, lang)
     body = clean_html(raw_content, lang=lang, prefix=p)
+    if site_path in ('contact-us/', 'اتصل-بنا/'):
+        from icons import decorate_contact_html
+        body = decorate_contact_html(body)
     if site_path in ('about-us/', 'من-نحن/'):
         from pages_company import regroup_i18n_certs
         body = regroup_i18n_certs(body, lang)
