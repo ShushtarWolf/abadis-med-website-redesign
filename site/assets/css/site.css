@@ -1751,3 +1751,33 @@ body.academy { background: #f3f8f8; }
     display: block; font-weight: 800; color: var(--brand); font-size: .82rem; line-height: 1.4;
   }
 }
+
+/* ===== mobile-home #18: sticky header must fully cover body content on phones =====
+   Light theme used --header-tint: transparent, so scrolled blur still let product-rail
+   titles («پایه و نگهدارنده») read through the chrome. On mobile, use opaque --header-bg
+   with no fade mask so fixed header fully occludes rails underneath. */
+@media (max-width: 760px) {
+  .header {
+    z-index: 200;
+  }
+  .header.scrolled::before {
+    opacity: 1;
+    inset: 0;
+    background: var(--header-bg);
+    backdrop-filter: blur(16px) saturate(1.15);
+    -webkit-backdrop-filter: blur(16px) saturate(1.15);
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  /* Light theme: ensure a real frosted plate (tint was transparent) */
+  :root .header.scrolled::before,
+  [data-theme="light"] .header.scrolled::before {
+    background: rgba(243, 250, 250, 0.96);
+  }
+  [data-theme="dark"] .header.scrolled::before {
+    background: rgba(6, 23, 25, 0.94);
+  }
+  [data-theme="noir"] .header.scrolled::before {
+    background: rgba(10, 10, 18, 0.94);
+  }
+}
