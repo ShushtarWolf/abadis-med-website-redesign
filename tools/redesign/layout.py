@@ -14,6 +14,8 @@ from icons import (
 
 # HQ pin already used on the FA contact page (and the EN map embed is the same place).
 MAPS_HQ = 'https://www.google.com/maps/search/?api=1&query=35.79866,51.44826'
+# Only Neshan place linked on the site (FA contact «مسیریابی با نشان»). No separate factory pin.
+NESHAN_HQ = 'https://neshan.org/maps/places/9399a4513b6974a287127c06bd9269b9'
 
 # Back-compat aliases (FA)
 NAV = I18N_NAV['fa']
@@ -165,24 +167,29 @@ def footer_address_html(lang):
     L = LANGS[lang]
     pin = f'<span class="foot-pin" aria-hidden="true">{svg_pin()}</span>'
 
-    def row(label, val, href=None):
-        maps = '<span class="foot-addr-maps">Google Maps</span>' if href else ''
+    def row(label, val, href=None, cue=''):
+        maps = f'<span class="foot-addr-maps">{esc(cue)}</span>' if href and cue else ''
         body = f'{pin}<span><b>{esc(label)}</b><br>{esc(val)}{maps}</span>'
         if not href:
             return f'<p class="foot-addr">{body}</p>'
-        aria = esc(f'{label} {val} — Google Maps')
+        aria = esc(f'{label} {val} — {cue}')
         return (
             f'<a class="foot-addr foot-addr-link" href="{esc(href)}" target="_blank" rel="noopener" '
             f'aria-label="{aria}">{body}</a>'
         )
 
     hq_href = factory_href = None
-    if lang == 'en':
+    cue = ''
+    if lang == 'fa':
+        hq_href = factory_href = NESHAN_HQ
+        cue = 'مسیریابی با نشان'
+    elif lang == 'en':
         hq_href = MAPS_HQ
         factory_href = 'https://www.google.com/maps/search/?api=1&query=' + urllib.parse.quote(
             L['addr_factory_val'], safe='')
-    return row(L['addr_hq'], L['addr_hq_val'], hq_href) + '\n      ' + row(
-        L['addr_factory'], L['addr_factory_val'], factory_href)
+        cue = 'Google Maps'
+    return row(L['addr_hq'], L['addr_hq_val'], hq_href, cue) + '\n      ' + row(
+        L['addr_factory'], L['addr_factory_val'], factory_href, cue)
 
 
 def footer(p, cur=None, lang='fa'):
