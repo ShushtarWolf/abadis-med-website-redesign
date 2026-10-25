@@ -422,7 +422,8 @@ def tab_anchor(tab_id, title, lang):
 
 
 def icons(p, kind):
-    light, dark = ('M1-teal.svg', 'M1-dark.svg') if kind == 'product' else ('R1-teal.svg', 'R1-dark.svg')
+    # Alireza finalists: M5 for «بر اساس محصول», R9 for «بر اساس راهکار».
+    light, dark = ('M5-teal.svg', 'M5-dark.svg') if kind == 'product' else ('R9-teal.svg', 'R9-dark.svg')
     base = f'{p}assets/img/icons/'
     return (f'<span class="path-ico" aria-hidden="true">'
             f'<img class="path-ico-light" src="{base}{light}" alt="" width="48" height="48">'
@@ -663,19 +664,23 @@ def install_icons():
     dst = SITE / 'assets/img/icons'
     dst.mkdir(parents=True, exist_ok=True)
     pairs = [
-        ('M1-teal_cbf5.svg', 'M1-teal.svg', 'by-product-light.svg'),
-        ('M1-dark_d855.svg', 'M1-dark.svg', 'by-product-dark.svg'),
-        ('R1-teal_7b96.svg', 'R1-teal.svg', 'by-solution-light.svg'),
-        ('R1-dark_dd4e.svg', 'R1-dark.svg', 'by-solution-dark.svg'),
+        ('M5-teal_bcf2.svg', 'M5-teal.svg', ('by-product-teal.svg', 'by-product-light.svg')),
+        ('M5-dark_a9b5.svg', 'M5-dark.svg', ('by-product-dark.svg',)),
+        ('R9-teal_d60a.svg', 'R9-teal.svg', ('by-solution-teal.svg', 'by-solution-light.svg')),
+        ('R9-dark_db7e.svg', 'R9-dark.svg', ('by-solution-dark.svg',)),
     ]
-    for raw, canon, alias in pairs:
-        data = (UPLOADS / raw).read_bytes()
+    for raw, canon, aliases in pairs:
+        src = UPLOADS / raw
         target = dst / canon
-        target.write_bytes(data)
-        link = dst / alias
-        if link.exists() or link.is_symlink():
-            link.unlink()
-        os.link(target, link)
+        if src.exists():
+            target.write_bytes(src.read_bytes())
+        elif not target.exists():
+            continue
+        for alias in aliases:
+            link = dst / alias
+            if link.is_symlink() or link.exists():
+                link.unlink()
+            os.symlink(canon, link)
 
 
 NAV_PAT = {
