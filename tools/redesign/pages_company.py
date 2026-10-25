@@ -449,9 +449,14 @@ def calculator(write):
   function v(f, n){ var x = parseFloat(String(f.elements[n].value).replace(/[۰-۹]/g, function(c){return '۰۱۲۳۴۵۶۷۸۹'.indexOf(c)})); return isFinite(x) && x > 0 ? x : 0; }
   function set(id, x){ document.getElementById(id).textContent = nf.format(x); }
   var s = document.getElementById('calcSurg'), b = document.getElementById('calcBeds');
-  function surg(){ var S = v(s, 's'); set('cs0', r(S*1.6*9.971, 0)); set('cs1', r(S*2.5*85000, 1)); set('cs2', r(S*1.6*2.2*7.1/60, 1)); }
-  function beds(){ var O = v(b, 'o'), I = v(b, 'i'), u = O*254 + I*67; set('cb0', r(u*1.6*9.971, 0)); set('cb1', r((O*254 + I*65)*2.5*85000, 1)); set('cb2', r(u*1.7*2.2*7.1/60, 1)); }
-  s.addEventListener('input', surg); b.addEventListener('input', beds); surg(); beds();
+  var LAST_KNOWN_USD_TOMAN = 269500, USD_RATE_KEY = 'abadis-usd-toman';
+  var USD_RATE_URL = 'https://api.tgju.org/v1/market/indicator/today-table-data/price_dollar_rl?lang=fa&start=0&length=1';
+  var usdToman = LAST_KNOWN_USD_TOMAN;
+  try { var saved = JSON.parse(localStorage.getItem(USD_RATE_KEY) || ''); if (saved && isFinite(+saved.toman) && +saved.toman > 0) usdToman = +saved.toman; } catch (e) {}
+  function surg(){ var S = v(s, 's'); set('cs0', r(S*1.6*9.971, 0)); set('cs1', r(S*2.5*usdToman, 1)); set('cs2', r(S*1.6*2.2*7.1/60, 1)); }
+  function beds(){ var O = v(b, 'o'), I = v(b, 'i'), u = O*254 + I*67; set('cb0', r(u*1.6*9.971, 0)); set('cb1', r((O*254 + I*65)*2.5*usdToman, 1)); set('cb2', r(u*1.7*2.2*7.1/60, 1)); }
+  function loadUsd(){ if (typeof fetch !== 'function') return; var ctrl = typeof AbortController === 'function' ? new AbortController() : null; var timer = setTimeout(function(){ if (ctrl) ctrl.abort(); }, 8000); fetch(USD_RATE_URL, ctrl ? {cache:'no-store', signal:ctrl.signal} : {cache:'no-store'}).then(function(res){ if (!res.ok) throw new Error('usd'); return res.json(); }).then(function(data){ var cell = data && data.data && data.data[0] && data.data[0][0]; var n = Number(String(cell == null ? '' : cell).replace(/<[^>]*>/g, '').replace(/[,،٬\\s]/g, '')); if (!isFinite(n) || n < 10000) throw new Error('usd'); usdToman = n / 10; try { localStorage.setItem(USD_RATE_KEY, JSON.stringify({toman:usdToman, rial:n, updatedAt:new Date().toISOString(), source:USD_RATE_URL})); } catch (e) {} surg(); beds(); }).catch(function(){}).then(function(){ clearTimeout(timer); }); }
+  s.addEventListener('input', surg); b.addEventListener('input', beds); surg(); beds(); loadUsd();
 })();
 </script>
 '''

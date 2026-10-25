@@ -320,14 +320,36 @@ window.DIAL_PAGE = {
    Uses ONLY the inputs and formulas of the live calculator at abadis-med.com/محاسبه-گر/ */
 (function () {
   'use strict';
+  var LAST_KNOWN_USD_TOMAN = 269500;
+  var USD_RATE_KEY = 'abadis-usd-toman';
+  var USD_RATE_URL = 'https://api.tgju.org/v1/market/indicator/today-table-data/price_dollar_rl?lang=fa&start=0&length=1';
+  var usdToman = LAST_KNOWN_USD_TOMAN;
+  function readStoredUsd() {
+    try {
+      var data = JSON.parse(localStorage.getItem(USD_RATE_KEY) || '');
+      var t = Number(data && data.toman);
+      return isFinite(t) && t > 0 ? t : null;
+    } catch (e) { return null; }
+  }
+  function rialFromTgju(data) {
+    var row = data && data.data && data.data[0];
+    if (!row) return null;
+    var s = String(row[0]).replace(/<[^>]*>/g, '');
+    s = s.replace(/[۰-۹]/g, function (ch) { return String('۰۱۲۳۴۵۶۷۸۹'.indexOf(ch)); });
+    s = s.replace(/[,،٬\s]/g, '');
+    var n = Number(s);
+    return isFinite(n) && n >= 10000 && n <= 1e12 ? n : null;
+  }
+  var storedUsd = readStoredUsd();
+  if (storedUsd) usdToman = storedUsd;
   var F = {
     surgery: function (n) {
-      return { water: n * 1.6 * 9.971, cost: n * 2.5 * 85000, hours: n * 1.6 * 2.2 * 7.1 / 60 };
+      return { water: n * 1.6 * 9.971, cost: n * 2.5 * usdToman, hours: n * 1.6 * 2.2 * 7.1 / 60 };
     },
     beds: function (a, b) {
       return {
         water: ((a * 254) + (b * 67)) * 1.6 * 9.971,
-        cost: ((a * 254) + (b * 65)) * 2.5 * 85000,
+        cost: ((a * 254) + (b * 65)) * 2.5 * usdToman,
         hours: ((a * 254) + (b * 67)) * 1.7 * 2.2 * 7.1 / 60
       };
     }
@@ -456,6 +478,32 @@ window.DIAL_PAGE = {
     });
   });
 
+
+  function loadUsdRate() {
+    if (typeof fetch !== 'function') return;
+    var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 8000);
+    var opts = { cache: 'no-store' };
+    if (ctrl) opts.signal = ctrl.signal;
+    fetch(USD_RATE_URL, opts).then(function (r) {
+      if (!r.ok) throw new Error('usd');
+      return r.json();
+    }).then(function (data) {
+      var rial = rialFromTgju(data);
+      if (rial == null) throw new Error('usd');
+      var toman = rial / 10;
+      try {
+        localStorage.setItem(USD_RATE_KEY, JSON.stringify({
+          toman: toman, rial: rial, updatedAt: new Date().toISOString(), source: USD_RATE_URL
+        }));
+      } catch (e) {}
+      if (toman === usdToman) return;
+      usdToman = toman;
+      MAX_OUT = { s: F.surgery(LIM.n.max), b: F.beds(LIM.a.max, LIM.b.max) };
+      render();
+    }).catch(function () {}).then(function () { clearTimeout(timer); });
+  }
+  loadUsdRate();
   if (page.init) page.init(LIM);
   render();
   window.AbadisCalc = { F: F, LIM: LIM, state: state, set: set, fa: fa };
