@@ -608,3 +608,14 @@ details.letter[open] summary { margin-bottom: 12px; }
 [data-theme="dark"] .sec-mark-dark, [data-theme="noir"] .sec-mark-dark { display: block; }
 .sec-mark--lg { width: 104px; height: 104px; }
 .csr-hero .sec-mark, .zn-index .sec-mark { display: flex; margin: 0 auto 10px; }
+
+/* Official contact icons (same marks as the main site footer). */
+.site-footer .foot-contact-pills { display: flex; flex-direction: column; align-items: stretch; gap: 8px; max-width: 340px; }
+.site-footer .foot-pill { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 12px; min-height: 42px; border-radius: 12px; border: 1px solid rgba(168,213,214,.18); color: var(--on-deep); text-decoration: none; background: transparent; font-weight: 800; font-size: .82rem; }
+.site-footer .foot-pill-ico { width: 18px; height: 18px; display: inline-grid; place-items: center; color: #5fd0d1; flex: none; background: none; }
+.site-footer .foot-pill-ico svg { width: 18px; height: 18px; display: block; }
+.site-footer .foot-pill-label { color: var(--on-deep-muted); font-weight: 700; }
+.site-footer .foot-pill-val { margin-inline-start: auto; direction: ltr; unicode-bidi: isolate; }
+.site-footer .foot-addr { display: flex; gap: 8px; align-items: flex-start; }
+.site-footer .foot-pin { color: #5fd0d1; width: 18px; height: 18px; flex: none; margin-top: 2px; }
+.site-footer .foot-pin svg { width: 18px; height: 18px; display: block; }

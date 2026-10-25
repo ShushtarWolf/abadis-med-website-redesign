@@ -5,6 +5,7 @@ from i18n import (
     LANGS, NAV as I18N_NAV, SECONDARY as I18N_SECONDARY, nav_flat, switcher_html,
     hreflang_tags, canonical_href, ROBOTS_META,
 )
+from icons import svg_phone, svg_mail, svg_whatsapp, svg_instagram, svg_pin
 
 # Back-compat aliases (FA)
 NAV = I18N_NAV['fa']
@@ -117,6 +118,39 @@ def _footer_label(lang, key, label):
     return label
 
 
+def _foot_pill(kind, href, label, val, icon, extra=''):
+    return (
+        f'<a class="foot-pill foot-pill--{kind}" href="{href}"{extra} dir="ltr" '
+        f'aria-label="{esc(label + " " + val)}">'
+        f'<span class="foot-pill-ico" aria-hidden="true">{icon}</span>'
+        f'<span class="foot-pill-label">{esc(label)}</span>'
+        f'<span class="foot-pill-val">{esc(val)}</span></a>'
+    )
+
+
+def footer_pills_html(lang):
+    L = LANGS[lang]
+    lab = lambda key: L[key].rstrip(':')
+    return '\n        '.join((
+        _foot_pill('tel', 'tel:+982192001017', lab('contact_center'), '02192001017', svg_phone()),
+        _foot_pill('mail', 'mailto:info@abadis-med.com', lab('email'), 'info@abadis-med.com', svg_mail()),
+        _foot_pill('wa', 'https://wa.me/989100145809', lab('whatsapp'), '+989100145809', svg_whatsapp(),
+                   ' target="_blank" rel="noopener"'),
+        _foot_pill('ig', 'https://www.instagram.com/abadismedical.co', lab('instagram'), 'abadismedical.co',
+                   svg_instagram(), ' target="_blank" rel="noopener"'),
+    ))
+
+
+def footer_address_html(lang):
+    L = LANGS[lang]
+    pin = f'<span class="foot-pin" aria-hidden="true">{svg_pin()}</span>'
+
+    def row(label, val):
+        return f'<p class="foot-addr">{pin}<span><b>{esc(label)}</b><br>{esc(val)}</span></p>'
+
+    return row(L['addr_hq'], L['addr_hq_val']) + '\n      ' + row(L['addr_factory'], L['addr_factory_val'])
+
+
 def footer(p, cur=None, lang='fa'):
     L = LANGS[lang]
     root = L['root']
@@ -150,15 +184,12 @@ def footer(p, cur=None, lang='fa'):
     <div class="foot-contact">
       <h3>{esc(L['footer_contact'])}</h3>
       <div class="foot-contact-pills">
-        <a class="foot-pill foot-pill--tel" href="tel:+982192001017" dir="ltr" aria-label="{esc(L['contact_center'].rstrip(':') + ' 02192001017')}"><span class="foot-pill-ico" aria-hidden="true"></span><span class="foot-pill-label">{esc(L['contact_center'].rstrip(':'))}</span><span class="foot-pill-val">02192001017</span></a>
-        <a class="foot-pill foot-pill--mail" href="mailto:info@abadis-med.com" dir="ltr" aria-label="{esc(L['email'].rstrip(':') + ' info@abadis-med.com')}"><span class="foot-pill-ico" aria-hidden="true"></span><span class="foot-pill-label">{esc(L['email'].rstrip(':'))}</span><span class="foot-pill-val">info@abadis-med.com</span></a>
-        <a class="foot-pill foot-pill--wa" href="https://wa.me/989100145809" target="_blank" rel="noopener" dir="ltr" aria-label="{esc(L['whatsapp'].rstrip(':') + ' +989100145809')}"><span class="foot-pill-ico" aria-hidden="true"></span><span class="foot-pill-label">{esc(L['whatsapp'].rstrip(':'))}</span><span class="foot-pill-val">+989100145809</span></a>
+        {footer_pills_html(lang)}
       </div>
     </div>
     <details class="foot-acc foot-address" open>
       <summary>{esc(L['footer_address'])}</summary>
-      <p><b>{esc(L['addr_hq'])}</b><br>{esc(L['addr_hq_val'])}</p>
-      <p><b>{esc(L['addr_factory'])}</b><br>{esc(L['addr_factory_val'])}</p>
+      {footer_address_html(lang)}
     </details>
   </div>
   <div class="wrap foot-certs-bar">
