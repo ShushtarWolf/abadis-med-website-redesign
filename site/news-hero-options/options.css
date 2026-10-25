@@ -312,7 +312,10 @@ body:has(.nho-switch) .nho { padding-top: 176px; }
 @keyframes nho-tick { to { transform: translateX(50%); } }
 
 /* ---------- switcher ---------- */
+.nho-round { margin: 36px 0 0; font-size: 1.35rem; font-weight: 900; line-height: 1.45; }
 .nho-choices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 28px; }
+.nho-finalists { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.nho-finalists .nho-choice { border-color: color-mix(in srgb, var(--brand) 45%, var(--line)); }
 .nho-choice {
   display: flex; flex-direction: column; gap: 10px; align-items: flex-start;
   text-decoration: none; color: inherit;
@@ -339,6 +342,13 @@ body:has(.nho-switch) .nho { padding-top: 176px; }
   .nho-tile-main { grid-row: auto; }
   .nho-mag-head { flex-direction: column; align-items: flex-start; }
   .nho-side .nho-tile-ph, .nho-tile-main .nho-tile-ph { aspect-ratio: 16 / 9; }
+}
+
+@media (max-width: 1100px) {
+  .nho-finalists { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .nho-finalists { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 560px) {
