@@ -1141,7 +1141,8 @@ html[dir="ltr"] .prose ul, html[dir="ltr"] .prose ol { padding-inline-start: 1.3
 .site-footer .foot-pill--yt,
 .site-footer .foot-pill--tw,
 .site-footer .foot-pill--fb,
-.site-footer .foot-pill--li {
+.site-footer .foot-pill--li,
+.site-footer .foot-pill--pi {
   display: flex;
   width: 100%;
   height: 48px;
@@ -1165,6 +1166,23 @@ html[dir="ltr"] .prose ul, html[dir="ltr"] .prose ol { padding-inline-start: 1.3
 .site-footer .foot-pill:focus-visible {
   border-color: var(--deep-accent);
   background: rgba(255,255,255,.08);
+}
+.site-footer .foot-pill--placeholder,
+.soc-placeholder {
+  cursor: not-allowed;
+  opacity: .72;
+}
+.site-footer .foot-pill--placeholder:hover,
+.site-footer .foot-pill--placeholder:focus-visible {
+  border-color: rgba(168,213,214,.28);
+  background: rgba(255,255,255,.04);
+}
+.soc-placeholder {
+  display: inline-block;
+  font-size: .82rem;
+  line-height: 1.5;
+  color: var(--muted);
+  border-bottom: 1px dashed var(--line);
 }
 .site-footer .foot-pill .foot-pill-ico,
 .site-footer .foot-pill--wa .foot-pill-ico,

@@ -8,8 +8,8 @@ from i18n import (
 )
 from icons import (
     svg_phone, svg_mail, svg_whatsapp, svg_instagram, svg_pin,
-    svg_telegram, svg_youtube, svg_facebook, svg_twitter, svg_aparat, svg_linkedin,
-    WA_URL, IG_URL, TG_URL, YT_URL, FB_URL, TW_URL, AP_URL, LI_URL, TEL_URL, MAIL_URL,
+    svg_telegram, svg_youtube, svg_facebook, svg_twitter, svg_aparat, svg_linkedin, svg_pinterest,
+    WA_URL, IG_URL, TG_URL, YT_URL, FB_URL, TW_URL, AP_URL, LI_URL, PIN_NOTE, TEL_URL, MAIL_URL,
 )
 
 # HQ pin already used on the FA contact page (and the EN map embed is the same place).
@@ -143,6 +143,19 @@ def _foot_icon(kind, href, label, icon, extra='', value=''):
     )
 
 
+def _foot_placeholder(kind, label, icon, note):
+    """Non-navigating pill when abadis-med.com publishes no official profile URL."""
+    aria = f'{label} — {note}'
+    return (
+        f'<a class="foot-pill foot-pill--{kind} foot-pill--placeholder" '
+        f'data-social="{esc(kind)}" data-status="placeholder" data-official-url="" '
+        f'data-note="{esc(note)}" aria-disabled="true" tabindex="-1" '
+        f'aria-label="{esc(aria)}">'
+        f'<span class="foot-pill-ico" aria-hidden="true">{icon}</span>'
+        f'<span class="sr-only">{esc(aria)}</span></a>'
+    )
+
+
 def footer_pills_html(lang):
     """Icon strip: phone, email, and every Abadis channel already linked on contact or the live footer."""
     L = LANGS[lang]
@@ -159,6 +172,7 @@ def footer_pills_html(lang):
         _foot_icon('tw', TW_URL, lab('twitter'), svg_twitter(), ext),
         _foot_icon('fb', FB_URL, lab('facebook'), svg_facebook(), ext),
         _foot_icon('li', LI_URL, lab('linkedin'), svg_linkedin(), ext),
+        _foot_placeholder('pi', lab('pinterest'), svg_pinterest(), PIN_NOTE),
     ))
 
 
