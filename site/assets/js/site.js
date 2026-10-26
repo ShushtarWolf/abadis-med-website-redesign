@@ -820,6 +820,9 @@
     var known = false;
     tabs.forEach(function (a) { if (a.getAttribute('data-ps-tab') === name) known = true; });
     if (!known) name = root.getAttribute('data-ps-default') || (tabs[0] && tabs[0].getAttribute('data-ps-tab')) || 'product';
+    root.classList.remove('is-tab-product', 'is-tab-solution', 'is-tab-news', 'is-tab-articles');
+    root.classList.add('is-tab-' + name);
+    root.setAttribute('data-ps-current', name);
     var home = root.hasAttribute('data-ps-home');
     tabs.forEach(function (a) {
       var on = a.getAttribute('data-ps-tab') === name;

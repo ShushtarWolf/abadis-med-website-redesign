@@ -260,15 +260,18 @@ def decorate_contact_html(html: str) -> str:
     return html
 
 
-def _ensure_contact_network_links(html: str) -> str:
-    """Add LinkedIn (live homepage footer URL) and a Pinterest placeholder inside soc-links.
+def _soc_span(url, label, icon, extra=''):
+    return (
+        f'\n\t\t\t\t\t\t\t<span{extra}>\n\t\t\t\t\t<a href="{url}" target="_blank" rel="noopener">'
+        f'\n\t\t\t\t\t\t<span>{label}</span>\n\t\t\t\t\t\t{ch(icon)}\t\t\t</a>\n\t\t\t\t</span>'
+    )
 
-    EN/AR contact bodies on abadis-med.com list Facebook and Instagram and do not
-    list LinkedIn or Pinterest. LinkedIn is copied from the live homepage icon row.
-    Pinterest stays a non-URL placeholder.
-    """
+
+def _ensure_contact_network_links(html: str) -> str:
+    """Fill any official channel missing from the contact soc-links row. Pinterest stays hidden."""
+    html = html.replace('>Eaparat<', '>آپارات<')
     start = html.find('class="soc-links"')
-    if start < 0 or 'data-social="pinterest"' in html[start:start + 20000]:
+    if start < 0:
         return html
     ig = html.find('instagram.com/', start)
     if ig < 0 or ig > start + 20000:
@@ -279,23 +282,33 @@ def _ensure_contact_network_links(html: str) -> str:
         return html
     span_end += len('</span>')
     window = html[start:start + 20000]
-    if 'Eaparat' in window or 'العنوان' in window:
-        li_label, pi_label = ('لينكدإن', 'بينترست')
-    else:
-        li_label, pi_label = ('LinkedIn', 'Pinterest')
-    extra = (
-        f'\n\t\t\t\t\t\t\t<span>\n\t\t\t\t\t<a href="{LI_URL}" target="_blank" rel="noopener">'
-        f'\n\t\t\t\t\t\t<span>{li_label}</span>\n\t\t\t\t\t\t{ch(svg_linkedin())}\t\t\t</a>\n\t\t\t\t</span>'
-        f'\n\t\t\t\t\t\t\t<span class="soc-placeholder-row" hidden>\n\t\t\t\t\t<a class="soc-placeholder" data-social="pinterest" '
-        f'data-status="placeholder" data-official-url="" aria-disabled="true" title="{PIN_NOTE}">'
-        f'\n\t\t\t\t\t\t<span>{pi_label}</span>\n\t\t\t\t\t\t{ch(svg_pinterest())}\t\t\t</a>\n\t\t\t\t</span>'
-    )
+    ar = 'العنوان' in window or 'لينكدإن' in window
+    extra = ''
+    if 'aparat.com/abadismed' not in window:
+        extra += _soc_span(AP_URL, 'آپارات' if ar else 'Aparat', svg_aparat())
+    if 'linkedin.com/company/abadis' not in window:
+        extra += _soc_span(LI_URL, 'لينكدإن' if ar else 'LinkedIn', svg_linkedin())
+    if 'fb.com/AbadisMedCo' not in window and 'facebook.com' not in window:
+        extra += _soc_span(FB_URL, 'فيسبوك' if ar else 'Facebook', svg_facebook())
+    if 'data-social="pinterest"' not in window:
+        note = 'لا يوجد رابط رسمي لبينترست على موقع آباديس' if ar else PIN_NOTE
+        pi = 'بينترست' if ar else 'Pinterest'
+        extra += (
+            f'\n\t\t\t\t\t\t\t<span class="soc-placeholder-row" hidden>\n\t\t\t\t\t<a class="soc-placeholder" data-social="pinterest" '
+            f'data-status="placeholder" data-official-url="" aria-disabled="true" title="{note}">'
+            f'\n\t\t\t\t\t\t<span>{pi}</span>\n\t\t\t\t\t\t{ch(svg_pinterest())}\t\t\t</a>\n\t\t\t\t</span>'
+        )
+    if ar:
+        html = html.replace(PIN_NOTE, 'لا يوجد رابط رسمي لبينترست على موقع آباديس')
+        span_end = html.find('</span>', html.find('</a>', html.find('instagram.com/', start))) + len('</span>')
+    if not extra:
+        return html
     return html[:span_end] + extra + html[span_end:]
 
 
 def decorate_fa_contact_main(html: str) -> str:
     """Icons on the hand-built FA contact list and the phase-2 block. Idempotent."""
-    if 'contact-dl' in html and 'contact-dl' in html and 'dt><span class="ch-ico"' not in html:
+    if 'contact-dl' in html and 't.me/abadis_med' not in html.split('contact-dl', 1)[-1][:4000]:
         dl = f'''<dl class="contact-dl">
         <dt>{ch(svg_phone())}مرکز تماس:</dt><dd><a href="tel:+982192001017" dir="ltr">02192001017</a></dd>
         <dt>{ch(svg_phone())}تلفن تماس:</dt><dd><a href="tel:+982122671845" dir="ltr">02122671845</a> | <a href="tel:+982122205502" dir="ltr">02122205502</a><br><a href="tel:+982122215503" dir="ltr">02122215503</a> | <a href="tel:+982122218910" dir="ltr">02122218910</a></dd>
@@ -303,9 +316,13 @@ def decorate_fa_contact_main(html: str) -> str:
         <dt>{ch(svg_mail())}پست الکترونیک:</dt><dd><a href="mailto:info@abadis-med.com">info@abadis-med.com</a></dd>
         <dt>{ch(svg_whatsapp())}واتس‌اپ:</dt><dd><a href="{WA_URL}" target="_blank" rel="noopener" dir="ltr">+989100145809</a></dd>
         <dt>{ch(svg_instagram())}اینستاگرام:</dt><dd><a href="{IG_URL}" target="_blank" rel="noopener" dir="ltr">abadismedical.co</a></dd>
+        <dt>{ch(svg_telegram())}تلگرام:</dt><dd><a href="{TG_URL}" target="_blank" rel="noopener" dir="ltr">t.me/abadis_med</a></dd>
+        <dt>{ch(svg_aparat())}آپارات:</dt><dd><a href="{AP_URL}" target="_blank" rel="noopener" dir="ltr">aparat.com/abadismed</a></dd>
+        <dt>{ch(svg_youtube())}یوتیوب:</dt><dd><a href="{YT_URL}" target="_blank" rel="noopener" dir="ltr">youtube.com/abadis</a></dd>
+        <dt>{ch(svg_twitter())}ایکس:</dt><dd><a href="{TW_URL}" target="_blank" rel="noopener" dir="ltr">twitter.com/abadismed</a></dd>
         <dt>{ch(svg_facebook())}فیسبوک:</dt><dd><a href="{FB_URL}" target="_blank" rel="noopener" dir="ltr">fb.com/AbadisMedCo</a></dd>
         <dt>{ch(svg_linkedin())}لینکدین:</dt><dd><a href="{LI_URL}" target="_blank" rel="noopener" dir="ltr">abadis-medical-co</a></dd>
-        <dt>{ch(svg_pinterest())}پینترست:</dt><dd><span class="soc-placeholder" data-social="pinterest" data-status="placeholder" data-official-url="" title="{PIN_NOTE}">{PIN_NOTE}</span></dd>
+        <dt class="soc-placeholder-row" hidden>{ch(svg_pinterest())}پینترست:</dt><dd class="soc-placeholder-row" hidden><span class="soc-placeholder" data-social="pinterest" data-status="placeholder" data-official-url="" title="نشانی رسمی پینترست در آبادیس منتشر نشده است">نشانی رسمی پینترست در آبادیس منتشر نشده است</span></dd>
         <dt>{ch(svg_pin())}دفتر مرکزی:</dt><dd>ایران، تهران، قیطریه، خیابان اندرزگو، پلاک 104، واحد2</dd>
         <dt>{ch(svg_pin())}کارخانه:</dt><dd>ایران،تهران،شهرک صنعتی شمس آباد، بلوار گلستان، کوچه گلشن ۱۹،پلاک۱۷</dd>
       </dl>'''

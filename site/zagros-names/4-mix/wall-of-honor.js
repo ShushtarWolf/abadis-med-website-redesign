@@ -140,7 +140,7 @@
     } else runSearch();
   });
 
-  ZN.loadNames().then(function (names) {
+  (ZN.loadCenters || ZN.loadNames)().then(function (names) {
     var coll = new Intl.Collator('fa');
     NAMES = names.slice().sort(coll.compare); N = NAMES.length;
     normd = NAMES.map(ZN.norm);
