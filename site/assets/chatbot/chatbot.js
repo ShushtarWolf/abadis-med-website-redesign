@@ -593,7 +593,10 @@
     ['نماینده', 'نمایندگی', 'استان', 'پخش', 'توزیع', 'dealer', 'distributor', 'agent', 'representative', 'ممثل', 'وکیل'],
     ['نصب', 'راهاندازی', 'سری', 'اتصال', 'نشتی', 'install', 'installation', 'series', 'leak', 'ترکیب', 'تسلسل'],
     ['گارانتی', 'وارانتی', 'ضمانت', 'تعمیر', 'تعویض', 'warranty', 'guarantee', 'replacement', 'ضمان', 'استبدال'],
-    ['نمونه', 'دمو', 'تست', 'sample', 'trial', 'عینه']
+    ['نمونه', 'دمو', 'تست', 'sample', 'trial', 'عینه'],
+    ['کارشناس', 'کارشناسان', 'فروشنده', 'فروشندگان', 'تیم', 'اعضا', 'پرسنل', 'همکاران', 'اسامی', 'اسم', 'نام', 'بخش فروش', 'واحد فروش', 'امور مشتریان', 'بازرگانی', 'expert', 'seller', 'team', 'staff', 'executive', 'name'],
+    ['مدیر', 'مدیران', 'مدیرعامل', 'هیئت مدیره', 'معاون', 'رییس', 'رئیس', 'سرپرست', 'ceo', 'chairman', 'manager', 'director', 'board'],
+    ['شریک', 'شرکا', 'شرکای', 'همکار تجاری', 'انجمن', 'اتحادیه', 'عضویت', 'پارتنر', 'partner', 'membership', 'union', 'association']
   ];
 
   var ACADEMY_QUIZ = [
@@ -724,8 +727,53 @@
     return extra;
   }
 
+  function collectDomChunks() {
+    var extra = [];
+    try {
+      var mainEl = document.querySelector('main') || document.body;
+      if (!mainEl) return extra;
+      var pageUrl = window.location.pathname || '/';
+      var members = mainEl.querySelectorAll('.member, .bdt-member-item');
+      if (members && members.length) {
+        var mLines = [];
+        members.forEach(function (m) {
+          var t = (m.textContent || '').replace(/\s+/g, ' ').trim();
+          if (t && mLines.indexOf(t) === -1) mLines.push('• ' + t);
+        });
+        if (mLines.length) {
+          extra.push({
+            id: 'live-dom-team',
+            section: 'company',
+            url: { fa: pageUrl, en: pageUrl, ar: pageUrl },
+            text: { fa: mLines.join('\n'), en: mLines.join('\n'), ar: mLines.join('\n') },
+            keywords: 'تیم اجرایی کارشناس فروش مدیر اسامی اسم نام'
+          });
+        }
+      }
+      var secs = mainEl.querySelectorAll('section, article, .dealer-card, .prov-panel');
+      secs.forEach(function (sec, idx) {
+        if (sec.closest('#abadis-chatbot-root')) return;
+        var raw = (sec.innerText || sec.textContent || '').replace(/\s+/g, ' ').trim();
+        if (raw.length < 60 || raw.length > 3500) return;
+        var h = sec.querySelector('h1, h2, h3, h4');
+        var hTxt = h ? (h.textContent || '').replace(/\s+/g, ' ').trim() : '';
+        var sid = sec.id ? ('#' + sec.id) : '';
+        extra.push({
+          id: 'live-dom-sec-' + idx,
+          section: 'page',
+          url: { fa: pageUrl + sid, en: pageUrl + sid, ar: pageUrl + sid },
+          text: { fa: raw, en: raw, ar: raw },
+          keywords: hTxt
+        });
+      });
+    } catch (e) {}
+    return extra;
+  }
+
   function buildIndex() {
-    var chunks = (state.kb && state.kb.chunks) || [];
+    var baseChunks = (state.kb && state.kb.chunks) || [];
+    var domChunks = collectDomChunks();
+    var chunks = baseChunks.concat(domChunks);
     var docs = [];
     var df = {};
     var total = 0;
@@ -764,13 +812,22 @@
     return score;
   }
 
-  function search(query) {
-    if (!index) return null;
+  function searchRanked(query, limit) {
+    if (!index) return [];
     var q = tokens(query);
-    if (!q.length) return null;
+    if (!q.length) return [];
     var extra = expand(q);
-    var best = null;
-    var bestScore = 0;
+    var qRaw = String(query || '').toLowerCase()
+      .replace(/\u200c/g, ' ')
+      .replace(/[يئ]/g, 'ی')
+      .replace(/ك/g, 'ک')
+      .replace(/[أإآ]/g, 'ا');
+    var asksPeopleOrNames = /اسم|اسامی|نام|کیه|کیست|چه کسانی|معرفی|کارشناس|کارشناسان|فروشنده|فروشندگان|تیم|اعضا|پرسنل|همکاران|مدیر|مدیران|مدیرعامل|رئیس|هیئت مدیره|معاون|سرپرست|حسابدار|انباردار|حسنعلی|کوکبی|محسن زاده|رعیتی|ناطقی|هاشمیان|تیموری|شرفی|رستمی|مهین دوست|احمدی|اخوان|پورحسن|ناصری|خلیلی|صالحی|قدیمی|تقوی|اسدالهی|فرهنگ|قائم پناه|seller|sales expert|sales team|account executive|who is|team|staff|ceo|manager/.test(qRaw);
+    var asksSalesTeam = /فروش|بازرگانی|مشتریان|پیش فاکتور|پیشفاکتور|پشتیبانی|seller|sales|commercial|account executive/.test(qRaw);
+    var asksDealers = /نماینده|نمایندگان|نمایندگی|عامل فروش|پخش|توزیع|استان|نیک طب|نیک منش|پردیس طب|کاراطب|قنبریان|جام جم|نائل|پویا طب|مصلحی|بوشهر درمان|محبوسی|رادمان تجهیز|الاسوندی|بهپود|ترابی|جهان درمان|حاج غنی|آبیدر|طبرستان|رضازاده|پاکان طبیب|هگمتان طب|مجیدی|بهسان تجهیز|رفیعی|اصفهان|شیراز|فارس|اهواز|خوزستان|تبریز|آذربایجان|اردبیل|مشهد|خراسان|کرمان|یزد|همدان|مازندران|اراک|مرکزی|بوشهر|گیلان|زنجان|قزوین|کردستان|هرمزگان|سیستان|dealer|distributor|representative|province/.test(qRaw);
+    var asksPartners = /شریک|شرکا|شرکای تجاری|عضویت|انجمن|اتحادیه|اتاق بازرگانی|پارک فناوری|آمدال|ویراکام|مهندسین مشاور فیلتر|ابزار درمان پرشیا|gulf innovation|تاریخچه|پیشینه|partner|membership/.test(qRaw);
+
+    var scored = [];
     index.docs.forEach(function (doc) {
       var text = doc.chunk.text || {};
       var langText = text[state.lang] || '';
@@ -792,15 +849,43 @@
       if (q.length >= 2 && docHits === q.length) score += 8;
       if (q.length >= 2 && headHits === q.length) {
         score += 8;
-        if (doc.chunk.section === 'faq') score += 4;
+        if (doc.chunk.section === 'faq' && !asksPeopleOrNames && !asksDealers) score += 4;
       }
-      var qRaw = String(query || '').toLowerCase();
       if ((qRaw.indexOf('اتاق عمل') !== -1 || qRaw.indexOf('مایعات بالا') !== -1 || qRaw.indexOf('حجم مایعات') !== -1 || qRaw.indexOf('جراحی') !== -1) && qRaw.indexOf('قیمت') === -1) {
         if (doc.chunk.id === 'sol-fluid' || doc.chunk.id === 'cat-canisters-liners') score += 28;
       }
-      if (score > bestScore) { bestScore = score; best = doc.chunk; }
+      if (asksPeopleOrNames && !asksDealers) {
+        if (doc.chunk.id === 'sales-experts-team' && asksSalesTeam) score += 55;
+        else if (doc.chunk.id === 'executive-team-full') score += 45;
+        else if (doc.chunk.id === 'sales-experts-team') score += 35;
+        if (doc.chunk.id === 'faq-17' && !/مراحل خرید|چطور بخرم/.test(qRaw)) score -= 25;
+      }
+      if (asksDealers) {
+        if (doc.chunk.id === 'dealers-directory-all') score += 55;
+      }
+      if (asksPartners) {
+        if (doc.chunk.id === 'partners-and-memberships') score += 48;
+      }
+      if (score > 0) {
+        scored.push({ chunk: doc.chunk, score: score });
+      }
     });
-    return bestScore > 0 ? best : null;
+    scored.sort(function (a, b) { return b.score - a.score; });
+    var out = [];
+    var seenIds = {};
+    for (var i = 0; i < scored.length && out.length < (limit || 5); i++) {
+      var cid = scored[i].chunk.id;
+      if (!seenIds[cid]) {
+        seenIds[cid] = 1;
+        out.push(scored[i].chunk);
+      }
+    }
+    return out;
+  }
+
+  function search(query) {
+    var top = searchRanked(query, 1);
+    return top.length ? top[0] : null;
   }
 
   function fmtMd(s) {
@@ -844,10 +929,11 @@
     }
     var lead = composeWarmLead(hit);
     var shown = body;
-    if (shown.length > 820) {
-      shown = shown.slice(0, 820);
-      var cut = Math.max(shown.lastIndexOf('.'), shown.lastIndexOf('؟'), shown.lastIndexOf('?'));
-      if (cut > 400) shown = shown.slice(0, cut + 1);
+    var maxChars = (hit.id === 'dealers-directory-all' || hit.id === 'executive-team-full' || hit.id === 'sales-experts-team') ? 2600 : 1200;
+    if (shown.length > maxChars) {
+      shown = shown.slice(0, maxChars);
+      var cut = Math.max(shown.lastIndexOf('.'), shown.lastIndexOf('؟'), shown.lastIndexOf('?'), shown.lastIndexOf('\n'));
+      if (cut > 500) shown = shown.slice(0, cut + 1);
       else shown = shown.replace(/\s+\S*$/, '') + '…';
     }
     var tail = state.lang === 'en'
@@ -994,7 +1080,7 @@
     }
 
     // 4. Greetings & Salutations (only when the message is primarily a greeting/small-talk, not a domain question starting with سلام)
-    var domainWords = /کیسه|مخزن|ساکشن|فیلتر|تیوب|رگولاتور|پودر|قیمت|خرید|فاکتور|کارتن|گارانتی|وارانتی|نصب|زاگرس|بلوط|مراکز|رضایت|امار|تاسیس|گواهی|مجوز|ایزو|imed|iso|فلسفه|راهکار|شیشه|تخت|عمل|جراحی|اینترنت|فیلترینگ|تلفن|شماره|ادرس|کارخانه|نمایند|کاتالوگ|اورولوژی|گوارش|زنان|بیهوشی|مسواک|تراشه|liner|canister|suction|filter|tube|price|quote|zagros|certificate|solution|glass|surgery|hospital|intranet|contact|address|catalog|dealer|شهاده|كيس|خزان|سعر|زاغروس|مستشفي/;
+    var domainWords = /اسم|اسامی|نام|کارشناس|فروشنده|تیم|مدیر|اعضا|پرسنل|شریک|شرکا|مقاله|اخبار|کیسه|مخزن|ساکشن|فیلتر|تیوب|رگولاتور|پودر|قیمت|خرید|فاکتور|کارتن|گارانتی|وارانتی|نصب|زاگرس|بلوط|مراکز|رضایت|امار|تاسیس|گواهی|مجوز|ایزو|imed|iso|فلسفه|راهکار|شیشه|تخت|عمل|جراحی|اینترنت|فیلترینگ|تلفن|شماره|ادرس|کارخانه|نمایند|کاتالوگ|اورولوژی|گوارش|زنان|بیهوشی|مسواک|تراشه|liner|canister|suction|filter|tube|price|quote|zagros|certificate|solution|glass|surgery|hospital|intranet|contact|address|catalog|dealer|شهاده|كيس|خزان|سعر|زاغروس|مستشفي/;
     if (!domainWords.test(q)) {
       if (/^(سلام|درود|وقت بخیر|صبح بخیر|عصر بخیر|شب بخیر|خسته نباشید|قوت اله|سلام علیکم|علیکم السلام|های|هلو|salam|salaam|hi|hello|hey|good morning|good afternoon|good evening|greetings|مرحبا|اهلا|أهلا|السلام علیکم|صباح الخیر|مساء الخیر)(\s|$)/.test(q)) {
         var greetTxt = state.lang === 'en'
@@ -1049,16 +1135,24 @@
 
   function topKbContext(query, hit) {
     var parts = [];
-    if (hit && hit.text) parts.push(textOf(hit.text));
-    var list = (state.kb && state.kb.chunks) || [];
-    for (var i = 0; i < list.length && parts.length < 3; i++) {
-      var c = list[i];
-      if (hit && c.id === hit.id) continue;
-      if (c.id === 'company-overview' || c.id === 'products-overview') {
+    var seen = {};
+    if (hit && hit.text) {
+      parts.push(textOf(hit.text));
+      seen[hit.id] = 1;
+    }
+    var ranked = searchRanked(query, 5);
+    for (var i = 0; i < ranked.length && parts.length < 5; i++) {
+      var c = ranked[i];
+      if (!seen[c.id] && c.text) {
+        seen[c.id] = 1;
         parts.push(textOf(c.text));
       }
     }
-    return parts.join('\n---\n');
+    return parts.join('\n---\n').slice(0, 4200);
+  }
+
+  function isRefusalText(txt) {
+    return /نمی‌?توانم این اطلاعات|متأسفم،?\s*نمی‌?توانم|متاسفم،?\s*نمی‌?توانم|معذورم|اجازه ارائه|i cannot provide|i'm sorry, i can't|i am sorry, i cannot|unable to provide/i.test(txt || '');
   }
 
   function tryLiveAi(query, hit, fallbackHtml) {
@@ -1067,12 +1161,15 @@
     var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 13000);
     var refText = topKbContext(query, hit);
     var langInstruction = state.lang === 'en'
-      ? 'Reply warmly, naturally, and concisely in English like a knowledgeable human colleague at Abadis Medical. Use ONLY the verified Abadis facts below; never invent specifications.'
+      ? 'Reply warmly, naturally, and accurately in English like a knowledgeable colleague at Abadis Medical (abadis-med.com). All names, roles, dealers, and specs below are official public website information—share them completely when asked.'
       : state.lang === 'ar'
-      ? 'أجب بأسلوب ودي وطبيعي ومختصر باللغة العربية الفصحى كمستشار بشري في شركة آباديس الطبية، بالاعتماد فقط على المعلومات المرجعية أدناه.'
-      : 'تو مشاور و همکار صمیمی شرکت دانش‌بنیان مخازن طبی آبادیس (abadis-med.com) هستی. بسیار گرم، طبیعی، روان و کوتاه (در ۲ تا ۴ جمله خوش‌خوان) به فارسی معیار پاسخ بده. فقط و فقط از اطلاعات و واژگان متن مرجع زیر استفاده کن و هیچ اصطلاح یا مشخصه فنی خارج از متن مرجع نساز.';
-    var sys = langInstruction + '\n\nاطلاعات پایه آبادیس: کیسه ساکشن یکبارمصرف در ۳ سایز ۱، ۲ و ۳ لیتر (هر کارتن ۴۵ عدد، فیلتر مکانیکی ۳۰ عدد) با فیلتر هیدروفوبیک قطع‌کننده جریان و پودر جاذب؛ مخازن پلی‌کربنات نشکن؛ ساکشن تیوب CH25/CH30/CH35 (۱۰۰ عدد در کارتن)؛ مسواک ساکشن یکبارمصرف؛ نگهدارنده لوله تراشه؛ رگولاتور وکیوم بزرگسال VR-A1 و اطفال VR-B1؛ فیلتر آنتی‌باکتریال؛ ترولی سری تا ۴ مخزن (۱۲ لیتر). آمار: ۱٬۲۳۲ مرکز درمانی فعال (۱٬۲۹۴ بیمارستان و مرکز جراحی در نقشه خانواده سبز)، ۹۸.۹۹٪ رضایت، ۰.۰۰۱۸٪ خرابی، سال تأسیس ۱۳۹۶/2017. پویش نجات زاگرس: کاشت ۲٬۰۰۰ نهال بلوط. تلفن فروش: ۰۲۱-۹۲۰۰۱۰۱۷ داخلی ۱۱، واتس‌اپ +۹۸۹۱۰۰۱۴۵۸۰۹.'
-      + (refText ? ('\n\nمتن مرجع مرتبط با سؤال کاربر:\n' + refText) : '');
+      ? 'أجب بأسلوب ودي وطبيعي ودقيق باللغة العربية الفصحى كمستشار في شركة آباديس الطبية، بالاعتماد على المعلومات الرسمية المنشورة في الموقع أدناه.'
+      : 'تو مشاور و همکار صمیمی شرکت دانش‌بنیان مخازن طبی آبادیس (abadis-med.com) هستی. گرم، طبیعی، روان و دقیق به فارسی معیار پاسخ بده. تمام اطلاعات زیر (شامل اسامی مدیران، کارشناسان فروش، نمایندگان استانی، محصولات و آمار) اطلاعات رسمی و عمومی منتشرشده در وب‌سایت شرکت است؛ آن‌ها را کامل و دقیق از روی متن مرجع بیان کن.';
+    var sys = langInstruction + '\n\nاطلاعات پایه رسمی وب‌سایت آبادیس: '
+      + 'هیئت‌مدیره و مدیران: ابوالفضل حسنعلی (رئیس هیئت مدیره)، علیرضا حسنعلی (مدیرعامل)، نوید حسنعلی (معاونت بازرگانی و فروش)، میلاد پورحسن (مشاور عالی مدیرعامل)، مژده مهین‌دوست (مدیر مالی)، محمدمهدی احمدی (مدیر کارخانه)، نازنین اخوان طباطبایی (مدیر حقوقی)، نازنین حسنعلی (مدیر روابط عمومی)، مائده ناصری (مدیر تضمین کیفیت)، مهران خلیلی (سرپرست تولید)، علی‌سینا صالحی (مدیر IT). '
+      + 'کارشناسان فروش و بازرگانی: روژان کوکبی، امیر محسن‌زاده، محبوبه رعیتی، زهرا ناطقی / سونا هاشمیان (کارشناسان فروش و امور مشتریان)، هلیا تیموری (کارشناس عملیات فروش)، نیلوفر شرفی (کارشناس ارشد تأمین و بازرگانی)، الهه رستمی (کارشناس بازرگانی). '
+      + 'محصولات: کیسه ساکشن یکبارمصرف در ۳ سایز ۱، ۲ و ۳ لیتر (هر کارتن ۴۵ عدد، فیلتر مکانیکی ۳۰ عدد) با فیلتر هیدروفوبیک قطع‌کننده جریان و پودر جاذب؛ مخازن پلی‌کربنات نشکن؛ ساکشن تیوب CH25/CH30/CH35 (۱۰۰ عدد در کارتن)؛ مسواک ساکشن؛ فیکسر لوله تراشه؛ رگولاتور وکیوم VR-A1 و VR-B1؛ فیلتر آنتی‌باکتریال؛ ترولی سری تا ۴ مخزن (۱۲ لیتر). آمار: ۱٬۲۳۲ مرکز درمانی فعال (۱٬۲۹۴ بیمارستان و مرکز جراحی در نقشه خانواده سبز)، ۹۸.۹۹٪ رضایت، ۰.۰۰۱۸٪ خرابی، تأسیس ۱۳۹۶/2017. تلفن فروش: ۰۲۱-۹۲۰۰۱۰۱۷ داخلی ۱۱، واتس‌اپ +۹۸۹۱۰۰۱۴۵۸۰۹.'
+      + (refText ? ('\n\nمتن مرجع مرتبط با سؤال کاربر از صفحات وب‌سایت:\n' + refText) : '');
 
     var msgs = [{ role: 'system', content: sys }];
     state.history = state.history || [];
@@ -1112,7 +1209,7 @@
           }
         } catch (e) {}
       }
-      if (txt && txt.length > 8 && txt.indexOf('<!DOCTYPE') === -1 && txt.indexOf('"error"') === -1) {
+      if (txt && txt.length > 8 && txt.indexOf('<!DOCTYPE') === -1 && txt.indexOf('"error"') === -1 && !isRefusalText(txt)) {
         state.history.push({ role: 'user', content: query });
         state.history.push({ role: 'assistant', content: txt });
         var srcHtml = hit && hit.url ? linkLine(urlOf(hit.url), urlOf(hit.url)) : '';
