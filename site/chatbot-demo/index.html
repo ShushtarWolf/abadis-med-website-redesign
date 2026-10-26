@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>مشاور فروش و آکادمی آبادیس — مخازن طبی آبادیس</title>
-<meta name="description" content="نمونه تعاملی مشاور فروش و پرسش‌وپاسخ آکادمی آبادیس، روی دانش‌نامه همین سایت.">
+<title>دستیار هوشمند آبادیس — مخازن طبی آبادیس</title>
+<meta name="description" content="دستیار هوشمند مشاور فروش و آکادمی آبادیس">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#e8f3f3">
 <script>(function(){var t;try{var q=new URLSearchParams(location.search).get('theme');if(q){localStorage.setItem('abadis-theme',q)}t=localStorage.getItem('abadis-theme')}catch(e){}var d=document.documentElement;d.dataset.theme=(t==='dark'||t==='noir')?t:'light';d.classList.add('js')})();</script>
@@ -23,123 +23,36 @@
   <button class="theme-toggle on-light" type="button" id="themeBtn" aria-label="حالت نمایش">تم</button>
 </header>
 <main id="main">
-  <section class="chat-demo">
+  <section class="chat-demo" style="padding:108px 0 64px">
     <div class="wrap">
-      <p class="chat-demo-kicker" id="demoKicker">نمونه برای جلسه</p>
-      <h1 id="demoTitle">مشاور فروش و آکادمی آبادیس</h1>
-      <p class="chat-demo-nin" id="ninBadge">
-        <strong>موتور داخلی هسته سایت (فعال در شبکه ملی اطلاعات / بدون نیاز به اینترنت بین‌الملل)</strong>
-        <span dir="ltr">Core On-Site Engine — 100% Iran Intranet Resilient</span>
-      </p>
-      <p class="chat-demo-lead" id="demoLead">ویجت از دانش‌نامه محلی پاسخ می‌دهد و به اینترنت یا کلید مدل نیاز ندارد. حالت شناور همان دکمه گوشه صفحه است؛ حالت کنار هم برای ارائه روی پرده است.</p>
-      <div class="chat-demo-arch" id="ninArch">
-        <p id="archLead">اگر فیلتر، دسترسی را به شبکه ملی اطلاعات محدود کند، لایه ۱ همچنان پاسخ می‌دهد. هیچ قلم، کتابخانه یا API خارجی برای این لایه بار نمی‌شود.</p>
-        <ol>
-          <li id="arch1">لایه ۱، پیش‌فرض: موتور بومی داخل هسته سایت. BM25 و مترادف‌ها روی دانش‌نامه همین دامنه. ترافیک خارجی صفر.</li>
-          <li id="arch2">لایه ۲، اختیاری: نشانی مدل داخل ایران، مثلاً /api/chat روی لیارا، abadis-med.com، یا Ollama/vLLM داخل شبکه. اگر نرسد، پاسخ لایه ۱ می‌ماند.</li>
-          <li id="arch3">لایه ۳، اختیاری: API بین‌المللی با مهلت ۲٫۵ ثانیه. اگر قطع یا مسدود باشد، همان لحظه به لایه ۱ برمی‌گردد.</li>
-        </ol>
+      <h1 id="demoTitle" style="margin:0 0 8px;font-size:clamp(1.5rem,2.6vw,2.2rem)">دستیار هوشمند فروش و آکادمی آبادیس</h1>
+      <p id="demoLead" style="max-width:44rem;color:var(--ink-2,#2f4e51);margin:0 0 20px">از دکمه گفتگوی پایین صفحه (یا کادر زیر) درباره محصولات، راهکارهای بالینی، محاسبه صرفه‌جویی بیمارستانی و آکادمی آبادیس بپرسید.</p>
+      <div class="chat-demo-toolbar" style="display:flex;gap:8px;margin-bottom:16px">
+        <button type="button" id="layoutFloat" aria-pressed="true" class="btn btn-outline">حالت شناور (پایین صفحه)</button>
+        <button type="button" id="layoutDock" aria-pressed="false" class="btn btn-outline">نمایش بزرگ در صفحه</button>
       </div>
-      <div class="chat-demo-toolbar" id="tierBar">
-        <button type="button" data-tier="core" aria-pressed="true">لایه ۱ — موتور بومی</button>
-        <button type="button" data-tier="domestic" aria-pressed="false">لایه ۲ — مدل داخلی</button>
-        <button type="button" data-tier="intl" aria-pressed="false">لایه ۳ — API بین‌الملل</button>
-        <button type="button" id="layoutFloat" aria-pressed="true">شناور</button>
-        <button type="button" id="layoutDock" aria-pressed="false">کنار هم</button>
-        <button type="button" id="themeBtn2">روشن / تیره / نوآر</button>
-      </div>
-      <label class="chat-demo-cut"><input type="checkbox" id="ninCutoff"> <span id="cutoffLabel">شبیه‌سازی قطع اینترنت بین‌الملل</span></label>
-      <p class="chat-demo-status" id="ninStatus">لایه فعال: موتور بومی داخل هسته سایت</p>
-      <div class="chat-demo-grid">
-        <div class="chat-demo-stage" id="demoStage">
-          <img class="chat-demo-logo lg-light" src="../assets/img/abadis-logo-white.svg" width="180" height="86" alt="">
-          <h2 id="stageTitle">ما به اندازه یک سرانگشت اثر می‌گذاریم</h2>
-          <p id="stageBody">به شما، به طبیعت، به جهان. کیسه ساکشن یکبارمصرف در حجم‌های ۱، ۲ و ۳ لیتر.</p>
-          <div class="chat-demo-cards">
-            <a href="../products/suction-bag/"><b id="card1">کیسه ساکشن</b><span id="card1s">۱ / ۲ / ۳ لیتر</span></a>
-            <a href="../solutions/fluid-management/"><b id="card2">مدیریت مایعات</b><span id="card2s">راهکار بالینی</span></a>
-            <a href="../dial-practical/"><b id="card3">محاسبه‌گر</b><span id="card3s">تا ۱۵٬۰۰۰ عمل، بدون CO₂</span></a>
-          </div>
-        </div>
-        <div class="chat-demo-dock" id="abadis-chat-dock"></div>
-      </div>
-      <p class="chat-demo-lead" id="embedNote">جاسازی در هر صفحه: یک برچسب اسکریپت به <span dir="ltr">/assets/chatbot/chatbot.js</span> با <span dir="ltr">data-kb="/assets/data/abadis-knowledge-base.json"</span>.</p>
+      <div id="abadis-chat-dock" style="max-width:520px"></div>
     </div>
   </section>
 </main>
-<script type="application/json" id="demoCopy">{
-  "fa": {"kicker":"نمونه برای جلسه","title":"مشاور فروش و آکادمی آبادیس","lead":"پاسخ پیش‌فرض از دانش‌نامه همین سایت است و به اینترنت بین‌الملل نیاز ندارد. حالت شناور دکمه گوشه صفحه است؛ حالت کنار هم برای پرده است.","float":"شناور","dock":"کنار هم","theme":"روشن / تیره / نوآر","stage":"ما به اندازه یک سرانگشت اثر می‌گذاریم","body":"به شما، به طبیعت، به جهان. کیسه ساکشن یکبارمصرف در حجم‌های ۱، ۲ و ۳ لیتر.","c1":"کیسه ساکشن","c1s":"۱ / ۲ / ۳ لیتر","c2":"مدیریت مایعات","c2s":"راهکار بالینی","c3":"محاسبه‌گر","c3s":"تا ۱۵٬۰۰۰ عمل، بدون CO₂","embed":"جاسازی با یک اسکریپت. اگر JSON باز نشود، kb-fallback.js همان دانش‌نامه را روی خود سایت دارد.","arch":"اگر فیلتر، دسترسی را به شبکه ملی اطلاعات محدود کند، لایه ۱ همچنان پاسخ می‌دهد. هیچ قلم، کتابخانه یا API خارجی برای این لایه بار نمی‌شود.","a1":"لایه ۱، پیش‌فرض: موتور بومی داخل هسته سایت. BM25 و مترادف‌ها روی دانش‌نامه همین دامنه. ترافیک خارجی صفر.","a2":"لایه ۲، اختیاری: نشانی مدل داخل ایران، مثلاً /api/chat روی لیارا، abadis-med.com، یا Ollama/vLLM داخل شبکه. اگر نرسد، پاسخ لایه ۱ می‌ماند.","a3":"لایه ۳، اختیاری: API بین‌المللی با مهلت ۲٫۵ ثانیه. اگر قطع یا مسدود باشد، همان لحظه به لایه ۱ برمی‌گردد.","t1":"لایه ۱ — موتور بومی","t2":"لایه ۲ — مدل داخلی","t3":"لایه ۳ — API بین‌الملل","cut":"شبیه‌سازی قطع اینترنت بین‌الملل"},
-  "en": {"kicker":"Meeting prototype","title":"Abadis sales and academy assistant","lead":"The default answer comes from this site’s knowledge base and does not need international internet. Float is the corner button. Side by side is for the projector.","float":"Float","dock":"Side by side","theme":"Light / dark / noir","stage":"We make a difference as small as a fingertip","body":"For you, for nature, for the world. Disposable suction liners in 1, 2 and 3 litres.","c1":"Suction liner","c1s":"1 / 2 / 3 L","c2":"Fluid management","c2s":"Clinical solution","c3":"Calculator","c3s":"Up to 15,000 surgeries, no CO₂","embed":"Embed with one script. If the JSON fetch fails, kb-fallback.js on this same site holds the knowledge base.","arch":"If filtering leaves only Iran’s national network, Tier 1 still answers. That tier loads no foreign font, library, or API.","a1":"Tier 1, default: on-site core engine. BM25 and synonyms over the same-origin knowledge base. Zero foreign traffic.","a2":"Tier 2, optional: a model URL inside Iran, such as /api/chat on Liara, abadis-med.com, or on-prem Ollama/vLLM. If it fails, the Tier 1 answer remains.","a3":"Tier 3, optional: an international API with a 2.5s timeout. If it is cut or blocked, the widget falls back to Tier 1 immediately.","t1":"Tier 1 — on-site","t2":"Tier 2 — domestic","t3":"Tier 3 — international","cut":"Simulate Iran intranet cut-off"},
-  "ar": {"kicker":"نموذج الاجتماع","title":"مستشار مبيعات آباديس والأكاديمية","lead":"الإجابة الافتراضية من قاعدة معرفة هذا الموقع ولا تحتاج إلى إنترنت دولي. الوضع العائم زر الزاوية، والوضع جنبًا إلى جنب للعرض.","float":"عائم","dock":"جنبًا إلى جنب","theme":"فاتح / داكن / نوار","stage":"نُحدِث أثرًا بقدر رأس إصبع","body":"لك، وللطبيعة، وللعالم. أكياس شفط ذات استعمال واحد بسعات ١ و٢ و٣ لتر.","c1":"كيس الشفط","c1s":"١ / ٢ / ٣ لتر","c2":"إدارة السوائل","c2s":"حل سريري","c3":"الحاسبة","c3s":"حتى ١٥٬٠٠٠ عملية، بلا CO₂","embed":"يُدرج بسكربت واحد. إذا فشل جلب JSON، يحمل kb-fallback.js على نفس الموقع قاعدة المعرفة.","arch":"إذا حصر التصفية الوصول في شبكة إيران الوطنية، تبقى الطبقة ١ تجيب. لا تُحمّل هذه الطبقة خطًا أو مكتبة أو واجهة أجنبية.","a1":"الطبقة ١، الافتراضي: المحرك المحلي داخل نواة الموقع. BM25 والمترادفات على قاعدة المعرفة من نفس النطاق. بلا أي اتصال خارجي.","a2":"الطبقة ٢، اختيارية: عنوان نموذج داخل إيران مثل /api/chat على ليارا أو abadis-med.com أو Ollama/vLLM في الشبكة. إن فشل، تبقى إجابة الطبقة ١.","a3":"الطبقة ٣، اختيارية: واجهة دولية بمهلة ٢٫٥ ثانية. إذا قُطعت أو حُجبت، الرجوع فورًا إلى الطبقة ١.","t1":"الطبقة ١ — محلي","t2":"الطبقة ٢ — داخلي","t3":"الطبقة ٣ — دولي","cut":"محاكاة قطع الإنترنت الدولي"}
-}</script>
 <script>
 (function () {
-  var copy = JSON.parse(document.getElementById('demoCopy').textContent);
   var themes = ['light', 'dark', 'noir'];
   function setTheme(next) {
     document.documentElement.dataset.theme = next;
     try { localStorage.setItem('abadis-theme', next); } catch (e) {}
-    var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.content = next === 'light' ? '#e8f3f3' : next === 'dark' ? '#061719' : '#0a0a12';
     var on = next === 'light';
     document.querySelectorAll('.logo, .theme-toggle').forEach(function (node) {
       node.classList.toggle('on-light', on);
     });
   }
   setTheme(document.documentElement.dataset.theme || 'light');
-  function cycleTheme() {
+  document.getElementById('themeBtn').addEventListener('click', function () {
     var cur = document.documentElement.dataset.theme || 'light';
-    var i = themes.indexOf(cur);
-    setTheme(themes[(i + 1) % themes.length]);
-  }
-  document.getElementById('themeBtn').addEventListener('click', cycleTheme);
-  document.getElementById('themeBtn2').addEventListener('click', cycleTheme);
-  function paint(lang) {
-    var L = copy[lang] || copy.fa;
-    document.getElementById('demoKicker').textContent = L.kicker;
-    document.getElementById('demoTitle').textContent = L.title;
-    document.getElementById('demoLead').textContent = L.lead;
-    document.getElementById('layoutFloat').textContent = L.float;
-    document.getElementById('layoutDock').textContent = L.dock;
-    document.getElementById('themeBtn2').textContent = L.theme;
-    document.getElementById('stageTitle').textContent = L.stage;
-    document.getElementById('stageBody').textContent = L.body;
-    document.getElementById('card1').textContent = L.c1;
-    document.getElementById('card1s').textContent = L.c1s;
-    document.getElementById('card2').textContent = L.c2;
-    document.getElementById('card2s').textContent = L.c2s;
-    document.getElementById('card3').textContent = L.c3;
-    document.getElementById('card3s').textContent = L.c3s;
-    document.getElementById('embedNote').textContent = L.embed;
-    document.getElementById('archLead').textContent = L.arch;
-    document.getElementById('arch1').textContent = L.a1;
-    document.getElementById('arch2').textContent = L.a2;
-    document.getElementById('arch3').textContent = L.a3;
-    document.querySelector('[data-tier="core"]').textContent = L.t1;
-    document.querySelector('[data-tier="domestic"]').textContent = L.t2;
-    document.querySelector('[data-tier="intl"]').textContent = L.t3;
-    document.getElementById('cutoffLabel').textContent = L.cut;
-  }
-  document.addEventListener('abadis-chat-lang', function (ev) { paint(ev.detail); });
-  document.getElementById('tierBar').addEventListener('click', function (ev) {
-    var button = ev.target.closest('[data-tier]');
-    if (!button || !window.AbadisChat) return;
-    window.AbadisChat.setTier(button.getAttribute('data-tier'));
-  });
-  document.getElementById('ninCutoff').addEventListener('change', function () {
-    if (window.AbadisChat) window.AbadisChat.setCutoff(this.checked);
-  });
-  document.addEventListener('abadis-chat-engine', function (ev) {
-    var detail = ev.detail || {};
-    document.querySelectorAll('#tierBar [data-tier]').forEach(function (button) {
-      button.setAttribute('aria-pressed', button.getAttribute('data-tier') === detail.tier ? 'true' : 'false');
-    });
-    var box = document.getElementById('ninCutoff');
-    if (box.checked !== !!detail.cutoff) box.checked = !!detail.cutoff;
-    document.getElementById('ninStatus').textContent = detail.status || '';
+    setTheme(themes[(themes.indexOf(cur) + 1) % themes.length]);
   });
   document.getElementById('layoutFloat').addEventListener('click', function () {
-    if (window.AbadisChat) window.AbadisChat.float();
+    if (window.AbadisChat) { window.AbadisChat.float(); window.AbadisChat.open(); }
     document.getElementById('layoutFloat').setAttribute('aria-pressed', 'true');
     document.getElementById('layoutDock').setAttribute('aria-pressed', 'false');
   });
@@ -148,8 +61,12 @@
     document.getElementById('layoutDock').setAttribute('aria-pressed', 'true');
     document.getElementById('layoutFloat').setAttribute('aria-pressed', 'false');
   });
+  window.addEventListener('DOMContentLoaded', function () {
+    setTimeout(function () { if (window.AbadisChat) window.AbadisChat.open(); }, 150);
+  });
 })();
 </script>
+<script src="../assets/chatbot/kb-fallback.js" defer></script>
 <script src="../assets/chatbot/chatbot.js" defer data-demo="true" data-kb="../assets/data/abadis-knowledge-base.json"></script>
 </body>
 </html>
