@@ -1,229 +1,566 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa-IR" dir="rtl" data-theme="light">
 <head>
-  <meta charset="UTF-8">
-  <title>برگه مقایسه گزینه‌های بخش چرا آبادیس (Light & Dark)</title>
-  <style>
-    @font-face { font-family: "Kalameh"; src: url("assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2") format("woff2"); font-weight: 400; }
-    @font-face { font-family: "Kalameh"; src: url("assets/fonts/kalameh/KalamehWeb-FaNum-Bold.woff2") format("woff2"); font-weight: 700; }
-    @font-face { font-family: "Kalameh"; src: url("assets/fonts/kalameh/KalamehWeb-FaNum-ExtraBold.woff2") format("woff2"); font-weight: 800; }
-    @font-face { font-family: "Kalameh"; src: url("assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2") format("woff2"); font-weight: 900; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>پیشنهادهای دور دوم بخش «چرا آبادیس؟» — مدل مدار در حرکت (W1 / W2 / W3)</title>
+<style>
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('../assets/fonts/Vazirmatn-Regular.woff2') format('woff2'),
+       url('../assets/fonts/Vazirmatn-Regular.woff2') format('woff2');
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('../assets/fonts/Vazirmatn-Bold.woff2') format('woff2'),
+       url('../assets/fonts/Vazirmatn-Bold.woff2') format('woff2');
+  font-weight: 700;
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('../assets/fonts/Vazirmatn-ExtraBold.woff2') format('woff2'),
+       url('../assets/fonts/Vazirmatn-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+}
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: "Kalameh", Tahoma, sans-serif;
-      background: #07191b;
-      color: #e8f3f3;
-      padding: 36px 40px 44px;
-      width: 2400px;
-    }
-    .sheet-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: linear-gradient(135deg, #0b2e32 0%, #061c1e 100%);
-      border: 1.5px solid rgba(95, 208, 209, 0.3);
-      border-radius: 24px;
-      padding: 24px 32px;
-      margin-bottom: 30px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.45);
-    }
-    .sheet-header-right {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-    .sheet-logo {
-      width: 72px;
-      height: 72px;
-      border-radius: 20px;
-      background: rgba(95, 208, 209, 0.12);
-      border: 1.5px solid #5fd0d1;
-      display: grid;
-      place-items: center;
-      padding: 10px;
-    }
-    .sheet-logo img { width: 100%; height: 100%; object-fit: contain; }
-    .sheet-title-wrap h1 {
-      font-size: 1.85rem;
-      font-weight: 900;
-      color: #ffffff;
-      margin-bottom: 6px;
-    }
-    .sheet-title-wrap p {
-      font-size: 1rem;
-      color: #9fbcbe;
-    }
-    .sheet-note-box {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(95, 208, 209, 0.28);
-      border-radius: 16px;
-      padding: 12px 20px;
-      text-align: right;
-      max-width: 760px;
-    }
-    .sheet-note-box strong {
-      display: block;
-      color: #5fd0d1;
-      font-size: 0.92rem;
-      margin-bottom: 4px;
-    }
-    .sheet-note-box span {
-      font-size: 0.86rem;
-      color: #d0e7e8;
-      line-height: 1.6;
-    }
+:root, [data-theme="light"] {
+  --bg: #f2f8f8;
+  --surface: #ffffff;
+  --surface-2: #e7f3f3;
+  --surface-3: #d9ecec;
+  --ink: #072a2d;
+  --ink-2: #244b4f;
+  --muted: #4d6d70;
+  --brand: #05686b;
+  --brand-2: #0d9488;
+  --neon: #0d9488;
+  --line: rgba(5, 104, 107, 0.16);
+  --line-strong: rgba(5, 104, 107, 0.34);
+  --node-bg: #ffffff;
+  --node-border: #05686b;
+  --node-shadow: 0 10px 24px rgba(5, 104, 107, 0.14);
+  --hub-bg: linear-gradient(145deg, #05686b 0%, #0a4f52 100%);
+}
 
-    .option-row {
-      background: #0b2427;
-      border: 1.5px solid rgba(95, 208, 209, 0.22);
-      border-radius: 26px;
-      padding: 24px 28px 28px;
-      margin-bottom: 28px;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.38);
-    }
-    .option-row:last-child { margin-bottom: 0; }
-    .option-row-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 18px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid rgba(95, 208, 209, 0.16);
-    }
-    .option-badge-title {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-    .opt-pill {
-      background: #087673;
-      color: #ffffff;
-      font-weight: 900;
-      font-size: 0.95rem;
-      padding: 6px 16px;
-      border-radius: 99px;
-      border: 1px solid #5fd0d1;
-    }
-    .option-badge-title h2 {
-      font-size: 1.38rem;
-      font-weight: 900;
-      color: #ffffff;
-    }
-    .option-desc {
-      font-size: 0.92rem;
-      color: #9fbcbe;
-      font-weight: 700;
-    }
+[data-theme="dark"] {
+  --bg: #061518;
+  --surface: #0b2226;
+  --surface-2: #102e34;
+  --surface-3: #153c43;
+  --ink: #ecfeff;
+  --ink-2: #bce3e6;
+  --muted: #84b0b4;
+  --brand: #2dd4bf;
+  --brand-2: #14b8a6;
+  --neon: #00f5d4;
+  --line: rgba(45, 212, 191, 0.18);
+  --line-strong: rgba(45, 212, 191, 0.42);
+  --node-bg: #0e2a30;
+  --node-border: #2dd4bf;
+  --node-shadow: 0 0 22px rgba(45, 212, 191, 0.25);
+  --hub-bg: radial-gradient(circle at 35% 30%, #0f766e 0%, #042f2e 100%);
+}
 
-    .pair-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-    .theme-frame {
-      background: #061719;
-      border: 1px solid rgba(95, 208, 209, 0.25);
-      border-radius: 18px;
-      overflow: hidden;
-    }
-    .theme-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 18px;
-      background: rgba(255, 255, 255, 0.04);
-      border-bottom: 1px solid rgba(95, 208, 209, 0.16);
-      font-size: 0.88rem;
-      font-weight: 800;
-    }
-    .theme-bar--light { color: #7fdcdd; }
-    .theme-bar--dark { color: #f0b44c; }
-    .theme-frame img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-  </style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Vazirmatn', Tahoma, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+  padding: 24px 32px 40px;
+}
+.container { max-width: 1380px; margin: 0 auto; }
+
+.top-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  background: var(--surface); border: 1.5px solid var(--line-strong);
+  border-radius: 20px; padding: 18px 24px; margin-bottom: 22px;
+}
+.top-bar h1 { font-size: 22px; font-weight: 800; color: var(--ink); }
+.top-bar p { font-size: 13.5px; color: var(--ink-2); margin-top: 4px; }
+.top-actions { display: flex; align-items: center; gap: 10px; }
+.theme-btn {
+  background: var(--brand); color: #fff; border: none; border-radius: 999px;
+  padding: 8px 18px; font-family: inherit; font-weight: 700; font-size: 13px; cursor: pointer;
+}
+[data-theme="dark"] .theme-btn { color: #042f2e; }
+
+.variant-card {
+  background: var(--surface);
+  border: 1.5px solid var(--line-strong);
+  border-radius: 24px;
+  padding: 22px 26px;
+  margin-bottom: 24px;
+}
+.variant-card.rec {
+  border-width: 2px;
+  border-color: var(--neon);
+  box-shadow: 0 12px 36px rgba(13, 148, 136, 0.14);
+}
+.v-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 14px; margin-bottom: 18px; border-bottom: 1px solid var(--line);
+}
+.v-badge {
+  display: inline-block; background: var(--brand); color: #fff;
+  font-weight: 800; font-size: 13px; padding: 5px 14px; border-radius: 999px; margin-left: 10px;
+}
+[data-theme="dark"] .v-badge { color: #042f2e; }
+.v-badge.gold { background: #f59e0b; color: #1e293b; }
+.v-title { font-size: 18px; font-weight: 800; color: var(--ink); }
+.v-sub { font-size: 13px; color: var(--muted); }
+
+/* Orbit Stage & Circular Nodes (100% Inside Circle) */
+.orb-stage {
+  position: relative;
+  margin: 0 auto;
+  user-select: none;
+}
+.orb-svg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+}
+.orb-bound { fill: none; stroke: var(--line); stroke-width: 1.2; }
+.orb-ring-main { fill: none; stroke: var(--brand); stroke-width: 2; opacity: 0.55; }
+.orb-ring-sec { fill: none; stroke: var(--brand-2); stroke-width: 1.5; opacity: 0.38; }
+.orb-ring-inner { fill: none; stroke: var(--line-strong); stroke-width: 1.2; }
+.orb-ring-sweep { fill: none; stroke: var(--neon); stroke-width: 4.5; stroke-linecap: round; opacity: 0.85; }
+.orb-arc { fill: none; stroke: var(--neon); stroke-width: 3; stroke-linecap: round; }
+.orb-arrow { fill: var(--neon); }
+.orb-spoke { stroke: var(--brand); stroke-width: 1.8; opacity: 0.55; }
+.orb-pulse { fill: var(--neon); }
+.orb-tick-maj { stroke: var(--brand); stroke-width: 2.2; opacity: 0.75; }
+.orb-tick-min { stroke: var(--muted); stroke-width: 1.1; opacity: 0.35; }
+
+.orb-hub {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--hub-bg);
+  border: 3px solid #ffffff;
+  box-shadow: 0 0 0 8px var(--surface-2), 0 12px 28px rgba(0,0,0,0.22);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 12px;
+  color: #ffffff;
+  z-index: 3;
+}
+[data-theme="dark"] .orb-hub {
+  border-color: var(--neon);
+  box-shadow: 0 0 28px rgba(0, 245, 212, 0.32);
+}
+.orb-hub-q2 { width: 52px; height: 52px; color: #5eead4; margin-bottom: 2px; }
+.orb-hub-q2 svg { width: 100%; height: 100%; display: block; }
+.orb-hub-title { font-size: 17px; font-weight: 800; line-height: 1.2; color: #ffffff; }
+.orb-hub-sub { font-size: 10.5px; color: #ccfbf1; margin-top: 2px; font-weight: 700; }
+
+.orb-node {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--node-bg);
+  border: 2.6px solid var(--node-border);
+  box-shadow: var(--node-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 13px;
+  z-index: 4;
+  transition: transform 0.2s, border-color 0.2s;
+  cursor: pointer;
+}
+.orb-node.is-active {
+  border-width: 3.2px;
+  border-color: var(--neon);
+  box-shadow: 0 0 0 5px rgba(20, 184, 166, 0.18), var(--node-shadow);
+}
+.orb-node-inner {
+  width: 96px;
+  max-width: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+.orb-node-num {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 800;
+  color: #ffffff;
+  background: var(--brand);
+  padding: 1px 8px;
+  border-radius: 999px;
+  line-height: 1.3;
+}
+[data-theme="dark"] .orb-node-num { color: #042f2e; }
+.orb-node-title {
+  font-size: 11.6px;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1.24;
+  word-wrap: break-word;
+}
+.orb-node-stat {
+  font-size: 9.4px;
+  font-weight: 700;
+  color: var(--brand-2);
+  line-height: 1.2;
+}
+
+/* Layouts for W1, W2, W3 */
+.w1-grid {
+  display: grid;
+  grid-template-columns: 600px 1fr;
+  gap: 26px;
+  align-items: center;
+}
+.w-side-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.w-mini-card {
+  background: var(--surface-2);
+  border: 1px solid var(--line-strong);
+  border-radius: 16px;
+  padding: 14px 16px;
+}
+.w-mini-card strong { display: block; font-size: 14px; color: var(--ink); margin-bottom: 4px; }
+.w-mini-card p { font-size: 12px; color: var(--ink-2); line-height: 1.5; }
+
+.w2-grid {
+  display: grid;
+  grid-template-columns: 600px 1fr;
+  gap: 26px;
+  align-items: center;
+}
+.w2-detail-panel {
+  background: var(--surface-2);
+  border: 1.5px solid var(--line-strong);
+  border-radius: 20px;
+  padding: 22px 24px;
+}
+.w2-active-tag {
+  display: inline-block; background: rgba(20, 184, 166, 0.16); color: var(--brand);
+  border: 1px solid var(--line-strong); padding: 4px 12px; border-radius: 999px;
+  font-size: 12px; font-weight: 800; margin-bottom: 10px;
+}
+.w2-detail-panel h3 { font-size: 20px; font-weight: 800; color: var(--ink); margin-bottom: 8px; }
+.w2-detail-panel p { font-size: 13.5px; color: var(--ink-2); margin-bottom: 16px; }
+.w2-kpi-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px;
+}
+.w2-kpi {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+  padding: 10px 8px; text-align: center;
+}
+.w2-kpi b { display: block; font-size: 16px; font-weight: 800; color: var(--brand); }
+.w2-kpi span { font-size: 11px; color: var(--muted); }
+.w2-compare {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+  padding: 12px 14px;
+}
+.w2-bar-row { margin-bottom: 8px; font-size: 12px; }
+.w2-bar-row:last-child { margin-bottom: 0; }
+.w2-bar-track { height: 8px; background: var(--surface-3); border-radius: 99px; overflow: hidden; margin-top: 4px; }
+.w2-bar-fill { height: 100%; background: var(--brand); border-radius: 99px; }
+
+.w3-kpi-strip {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+</style>
 </head>
 <body>
-  <header class="sheet-header">
-    <div class="sheet-header-right">
-      <div class="sheet-logo">
-        <img src="../assets/img/why-icon-dark.svg" alt="Q2">
-      </div>
-      <div class="sheet-title-wrap">
-        <h1>پیش‌نمایش گزینه‌های طراحی بخش «چرا آبادیس؟» — مقایسه حالت روشن و تاریک (Light / Dark)</h1>
-        <p>طراحی‌شده بر اساس دست‌خط مهندس حمید (۴ آبان ۱۴۰۵ / 2026-10-26) · همراه با لوگوی مصوب Q2 و متن و آمار رسمی سایت آبادیس</p>
-      </div>
+<div class="container">
+  <header class="top-bar">
+    <div>
+      <h1>پیشنهادهای دور دوم بخش «چرا آبادیس؟» — مدل جدید «مدار در حرکت» با هسته مصوب Q2</h1>
+      <p>پاسخ مستقیم به دستور مدیریت: «مدل چرا آبادیس؟ بشه مدار در حرکت که برای عضویت‌ها آوردید» · تمام عناوین و اعداد ۱۰۰٪ داخل دایره‌ها</p>
     </div>
-    <div class="sheet-note-box">
-      <strong>خلاصه دستور دست‌خط (صفحه ۱ و ۲):</strong>
-      <span>«چرا آبادیس ← داینامیک، اکتیو، گرافیکی‌تر (پاکشوما)» و «چرا آبادیس ← مثل پاکشوما؛ هر بخش یک باکس باشد». هیچ تغییری روی سایت اعمال نشده و این گزینه‌ها صرفاً جهت انتخاب و تایید اولیه آماده شده‌اند.</span>
+    <div class="top-actions">
+      <button class="theme-btn" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'">تغییر حالت روشن / تاریک</button>
     </div>
   </header>
 
-  <!-- Option 1 -->
-  <section class="option-row">
-    <div class="option-row-head">
-      <div class="option-badge-title">
-        <span class="opt-pill">گزینه ۱ (Option A)</span>
-        <h2>شبکه بنتو و کارت‌های اینفوگرافیک زنده (Dynamic Bento & Live Infographics)</h2>
+  <!-- W1 -->
+  <section class="variant-card" id="w1">
+    <div class="v-head">
+      <div>
+        <span class="v-badge">طرح W1</span>
+        <span class="v-title">مدار در حرکت تک‌حلقه متمرکز (هم‌خانواده با مدار درباره ما + هسته Q2)</span>
       </div>
-      <span class="option-desc">۴ کارت گرافیکی با نمودار مقایسه هزینه، شماتیک فیلتر هیدروفوبیک، چرخه بازیافت و فرآیند ۳ مرحله‌ای + باکس کارخانه و ۵ تضمین</span>
+      <span class="v-sub">۶ دایره بزرگ ۱۳۰ پیکسلی با جای‌گیری کامل متن و آمار داخل دایره</span>
     </div>
-    <div class="pair-grid">
-      <div class="theme-frame">
-        <div class="theme-bar theme-bar--light"><span>حالت روز / روشن (Light Mode)</span><span>option-1-light.png</span></div>
-        <img src="option-1-light.png" alt="Option 1 Light">
+    <div class="w1-grid">
+      
+    <div class="orb-stage orb-stage--w1" style="width:580px;height:580px;">
+      <svg viewBox="0 0 580 580" class="orb-svg" aria-hidden="true">
+        <circle cx="290.0" cy="290.0" r="278.0" class="orb-bound"/>
+        
+        <circle cx="290.0" cy="290.0" r="205" class="orb-ring-main" stroke-dasharray="10 7"/>
+        <circle cx="290.0" cy="290.0" r="110" class="orb-ring-inner"/>
+        
+      <path d="M 85.0 290.0 A 205 205 0 0 1 290.0 85.0" class="orb-arc"/>
+      <path d="M 495.0 290.0 A 205 205 0 0 1 290.0 495.0" class="orb-arc"/>
+      <polygon points="290.0,79.0 279.0,89.0 290.0,86.0" class="orb-arrow"/>
+      <polygon points="290.0,501.0 301.0,491.0 290.0,494.0" class="orb-arrow"/>
+    
+        <line x1="290.0" y1="208.0" x2="290.0" y2="85.0" class="orb-spoke" stroke-dasharray="6 5"/><circle cx="290.0" cy="146.5" r="4" class="orb-pulse"/><line x1="361.0" y1="249.0" x2="467.5" y2="187.5" class="orb-spoke" stroke-dasharray="6 5"/><circle cx="414.3" cy="218.2" r="4" class="orb-pulse"/><line x1="361.0" y1="331.0" x2="467.5" y2="392.5" class="orb-spoke" stroke-dasharray="6 5"/><circle cx="414.3" cy="361.8" r="4" class="orb-pulse"/><line x1="290.0" y1="372.0" x2="290.0" y2="495.0" class="orb-spoke" stroke-dasharray="6 5"/><circle cx="290.0" cy="433.5" r="4" class="orb-pulse"/><line x1="219.0" y1="331.0" x2="112.5" y2="392.5" class="orb-spoke" stroke-dasharray="6 5"/><circle cx="165.7" cy="361.8" r="4" class="orb-pulse"/><line x1="219.0" y1="249.0" x2="112.5" y2="187.5" class="orb-spoke" stroke-dasharray="6 5"/><circle cx="165.7" cy="218.2" r="4" class="orb-pulse"/>
+      </svg>
+      <div class="orb-hub" style="width:166px;height:166px;left:207.0px;top:207.0px;">
+        <div class="orb-hub-q2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" class="q2-svg"><path d="M107.82 55.82A48 48 0 1 1 96.77 29.15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="107.82" cy="55.82" r="2.6" fill="currentColor"/><circle cx="96.77" cy="29.15" r="2.6" fill="currentColor"/><path d="M38 42L48 29L70 29L80 39L80 50L60 64L60 76" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38.00" cy="42.00" r="2.4" fill="currentColor"/><circle cx="60.00" cy="76.00" r="2.4" fill="currentColor"/><circle cx="48.00" cy="29.00" r="2.2" fill="currentColor"/><circle cx="70.00" cy="29.00" r="2.2" fill="currentColor"/><circle cx="80.00" cy="39.00" r="2.2" fill="currentColor"/><circle cx="80.00" cy="50.00" r="2.2" fill="currentColor"/><circle cx="60.00" cy="64.00" r="2.2" fill="currentColor"/><path d="M43.55 46.27L51.45 36.0L67.1 36.0L73.0 44.13L53.0 60.36L53.0 76.0" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="43.55" cy="46.27" r="2.4" fill="currentColor"/><circle cx="53.00" cy="76.00" r="2.4" fill="currentColor"/><circle cx="51.45" cy="36.00" r="2.2" fill="currentColor"/><circle cx="67.10" cy="36.00" r="2.2" fill="currentColor"/><circle cx="73.00" cy="44.13" r="2.2" fill="currentColor"/><circle cx="53.00" cy="60.36" r="2.2" fill="currentColor"/><circle cx="56.50" cy="90.00" r="3.4" fill="currentColor"/></svg></div>
+        <div class="orb-hub-title">چرا آبادیس؟</div>
+        <div class="orb-hub-sub">مدار ارزش‌آفرینی · Q2</div>
       </div>
-      <div class="theme-frame">
-        <div class="theme-bar theme-bar--dark"><span>حالت شب / تاریک (Dark Mode)</span><span>option-1-dark.png</span></div>
-        <img src="option-1-dark.png" alt="Option 1 Dark">
+      
+        <div class="orb-node is-active" style="width:130px;height:130px;left:225.0px;top:20.0px;" data-idx="0">
+          <div class="orb-node-inner">
+            <span class="orb-node-num">۰۱</span>
+            <strong class="orb-node-title">ایمنی و کنترل عفونت</strong>
+            <span class="orb-node-stat">سیستم بسته بدون نشت</span>
+          </div>
+        </div>
+        <div class="orb-node" style="width:130px;height:130px;left:402.5px;top:122.5px;" data-idx="1">
+          <div class="orb-node-inner">
+            <span class="orb-node-num">۰۲</span>
+            <strong class="orb-node-title">کیفیت دانش‌بنیان</strong>
+            <span class="orb-node-stat">۹۸.۹۹٪ رضایت · ۰.۰۰۱۸٪ خرابی</span>
+          </div>
+        </div>
+        <div class="orb-node" style="width:130px;height:130px;left:402.5px;top:327.5px;" data-idx="2">
+          <div class="orb-node-inner">
+            <span class="orb-node-num">۰۳</span>
+            <strong class="orb-node-title">صرفه‌جویی اقتصادی</strong>
+            <span class="orb-node-stat">حذف شست‌وشو و استریل</span>
+          </div>
+        </div>
+        <div class="orb-node" style="width:130px;height:130px;left:225.0px;top:430.0px;" data-idx="3">
+          <div class="orb-node-inner">
+            <span class="orb-node-num">۰۴</span>
+            <strong class="orb-node-title">خدمات مهندسی پزشکی</strong>
+            <span class="orb-node-stat">آموزش و پشتیبانی ۲۴/۷</span>
+          </div>
+        </div>
+        <div class="orb-node" style="width:130px;height:130px;left:47.5px;top:327.5px;" data-idx="4">
+          <div class="orb-node-inner">
+            <span class="orb-node-num">۰۵</span>
+            <strong class="orb-node-title">حفظ جنگل‌های زاگرس</strong>
+            <span class="orb-node-stat">۲٬۰۰۰+ نهال بلوط کاشته‌شده</span>
+          </div>
+        </div>
+        <div class="orb-node" style="width:130px;height:130px;left:47.5px;top:122.5px;" data-idx="5">
+          <div class="orb-node-inner">
+            <span class="orb-node-num">۰۶</span>
+            <strong class="orb-node-title">پوشش ۱٬۲۹۴ مرکز</strong>
+            <span class="orb-node-stat">تأمین پایدار سراسر کشور</span>
+          </div>
+        </div>
+    </div>
+    
+      <div class="w-side-cards">
+        <div class="w-mini-card"><strong>۰۱ · ایمنی و کنترل عفونت</strong><p>سیستم ساکشن بسته یک‌بارمصرف با فیلتر هیدروفوبیک آنتی‌باکتریال ۹۹.۹۹٪ و حذف کامل خطر نشت.</p></div>
+        <div class="w-mini-card"><strong>۰۲ · کیفیت دانش‌بنیان</strong><p>۹۸.۹۹٪ رضایت ثبت‌شده در ۱٬۲۹۴ مرکز درمانی و نرخ خرابی نزدیک به صفر (۰.۰۰۱۸٪).</p></div>
+        <div class="w-mini-card"><strong>۰۳ · صرفه‌جویی اقتصادی</strong><p>حذف کامل هزینه‌های شست‌وشو، مواد ضدعفونی‌کننده، اتوکلاو و استهلاک نیروی انسانی.</p></div>
+        <div class="w-mini-card"><strong>۰۴ · خدمات مهندسی پزشکی</strong><p>نصب استاندارد، آموزش حضوری کادر درمان و پشتیبانی فنی ۲۴ ساعته در سراسر کشور.</p></div>
+        <div class="w-mini-card"><strong>۰۵ · حفظ جنگل‌های زاگرس</strong><p>صرفه‌جویی میلیون‌ها لیتر آب بیمارستانی و کاشت بیش از ۲٬۰۰۰ نهال بلوط شناسنامه‌دار.</p></div>
+        <div class="w-mini-card"><strong>۰۶ · پوشش ۱٬۲۹۴ مرکز درمانی</strong><p>شبکه توزیع پایدار در ۳۱ استان با ۲۹ نماینده انحصاری و تامین بی‌وقفه مراکز جراحی.</p></div>
       </div>
     </div>
   </section>
 
-  <!-- Option 2 -->
-  <section class="option-row">
-    <div class="option-row-head">
-      <div class="option-badge-title">
-        <span class="opt-pill">گزینه ۲ (Option B)</span>
-        <h2>استیج پانورامای تعاملی و قاب معماری (به سبک پاکشوما / Pakshoma-Style Panorama Stage)</h2>
+  <!-- W2 -->
+  <section class="variant-card rec" id="w2">
+    <div class="v-head">
+      <div>
+        <span class="v-badge gold">طرح W2 ★ پیشنهاد ویژه</span>
+        <span class="v-title">مدار دوحلقه تعاملی + کارت جزئیات و آمار زنده در کنار مدار</span>
       </div>
-      <span class="option-desc">ریل عمودی ۴ ارزش افزوده در سمت راست + استیج پانورامای قاب‌بندی‌شده با تصویر محصول، نوارهای تله‌متری زنده و باکس کارخانه</span>
+      <span class="v-sub">با کلیک یا چرخش روی هر دایره مدار، کارت جزئیات، آمار و مقایسه سمت چپ به‌روز می‌شود</span>
     </div>
-    <div class="pair-grid">
-      <div class="theme-frame">
-        <div class="theme-bar theme-bar--light"><span>حالت روز / روشن (Light Mode)</span><span>option-2-light.png</span></div>
-        <img src="option-2-light.png" alt="Option 2 Light">
+    <div class="w2-grid">
+      
+    <div class="orb-stage orb-stage--w2" style="width:580px;height:580px;">
+      <svg viewBox="0 0 580 580" class="orb-svg" aria-hidden="true">
+        <circle cx="290.0" cy="290.0" r="278.0" class="orb-bound"/>
+        
+        <circle cx="290.0" cy="290.0" r="216" class="orb-ring-main" stroke-dasharray="10 7"/><circle cx="290.0" cy="290.0" r="182" class="orb-ring-sec" stroke-dasharray="5 6"/>
+        <circle cx="290.0" cy="290.0" r="110" class="orb-ring-inner"/>
+        
+      <path d="M 78.0 290.0 A 212 212 0 0 1 290.0 78.0" class="orb-arc"/>
+      <path d="M 502.0 290.0 A 212 212 0 0 1 290.0 502.0" class="orb-arc"/>
+      <polygon points="290.0,72.0 279.0,82.0 290.0,79.0" class="orb-arrow"/>
+      <polygon points="290.0,508.0 301.0,498.0 290.0,501.0" class="orb-arrow"/>
+    
+        <line x1="290.0" y1="208.0" x2="290.0" y2="74.0" class="orb-spoke" stroke-dasharray="6 5"/><circle cx="290.0" cy="141.0" r="4" class="orb-pulse"/><line x1="361.0" y1="249.0" x2="447.6" y2="199.0" class="orb-spoke" stroke-dasharray="6 5"/><circle cx="404.3" cy="224.0" r="4" class="orb-pulse"/><line x1="361.0" y1="331.0" x2="477.1" y2="398.0" class="orb-spoke" stroke-dasharray="6 5"/><circle cx="419.0" cy="364.5" r="4" class="orb-pulse"/><line x1="290.0" y1="372.0" x2="290.0" y2="472.0" class="orb-spoke" stroke-dasharray="6 5"/><circle cx="290.0" cy="422.0" r="4" class="orb-pulse"/><line x1="219.0" y1="331.0" x2="102.9" y2="398.0" class="orb-spoke" stroke-dasharray="6 5"/><circle cx="161.0" cy="364.5" r="4" class="orb-pulse"/><line x1="219.0" y1="249.0" x2="132.4" y2="199.0" class="orb-spoke" stroke-dasharray="6 5"/><circle cx="175.7" cy="224.0" r="4" class="orb-pulse"/>
+      </svg>
+      <div class="orb-hub" style="width:166px;height:166px;left:207.0px;top:207.0px;">
+        <div class="orb-hub-q2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" class="q2-svg"><path d="M107.82 55.82A48 48 0 1 1 96.77 29.15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="107.82" cy="55.82" r="2.6" fill="currentColor"/><circle cx="96.77" cy="29.15" r="2.6" fill="currentColor"/><path d="M38 42L48 29L70 29L80 39L80 50L60 64L60 76" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38.00" cy="42.00" r="2.4" fill="currentColor"/><circle cx="60.00" cy="76.00" r="2.4" fill="currentColor"/><circle cx="48.00" cy="29.00" r="2.2" fill="currentColor"/><circle cx="70.00" cy="29.00" r="2.2" fill="currentColor"/><circle cx="80.00" cy="39.00" r="2.2" fill="currentColor"/><circle cx="80.00" cy="50.00" r="2.2" fill="currentColor"/><circle cx="60.00" cy="64.00" r="2.2" fill="currentColor"/><path d="M43.55 46.27L51.45 36.0L67.1 36.0L73.0 44.13L53.0 60.36L53.0 76.0" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="43.55" cy="46.27" r="2.4" fill="currentColor"/><circle cx="53.00" cy="76.00" r="2.4" fill="currentColor"/><circle cx="51.45" cy="36.00" r="2.2" fill="currentColor"/><circle cx="67.10" cy="36.00" r="2.2" fill="currentColor"/><circle cx="73.00" cy="44.13" r="2.2" fill="currentColor"/><circle cx="53.00" cy="60.36" r="2.2" fill="currentColor"/><circle cx="56.50" cy="90.00" r="3.4" fill="currentColor"/></svg></div>
+        <div class="orb-hub-title">چرا آبادیس؟</div>
+        <div class="orb-hub-sub">مدار ارزش‌آفرینی · Q2</div>
       </div>
-      <div class="theme-frame">
-        <div class="theme-bar theme-bar--dark"><span>حالت شب / تاریک (Dark Mode)</span><span>option-2-dark.png</span></div>
-        <img src="option-2-dark.png" alt="Option 2 Dark">
+      
+        <div class="orb-node is-active" style="width:128px;height:128px;left:226.0px;top:10.0px;" data-idx="0">
+          <div class="orb-node-inner">
+            <span class="orb-node-num">۰۱</span>
+            <strong class="orb-node-title">ایمنی و کنترل عفونت</strong>
+            <span class="orb-node-stat">سیستم بسته بدون نشت</span>
+          </div>
+        </div>
+        <div class="orb-node" style="width:128px;height:128px;left:383.6px;top:135.0px;" data-idx="1">
+          <div class="orb-node-inner">
+            <span class="orb-node-num">۰۲</span>
+            <strong class="orb-node-title">کیفیت دانش‌بنیان</strong>
+            <span class="orb-node-stat">۹۸.۹۹٪ رضایت · ۰.۰۰۱۸٪ خرابی</span>
+          </div>
+        </div>
+        <div class="orb-node" style="width:128px;height:128px;left:413.1px;top:334.0px;" data-idx="2">
+          <div class="orb-node-inner">
+            <span class="orb-node-num">۰۳</span>
+            <strong class="orb-node-title">صرفه‌جویی اقتصادی</strong>
+            <span class="orb-node-stat">حذف شست‌وشو و استریل</span>
+          </div>
+        </div>
+        <div class="orb-node" style="width:128px;height:128px;left:226.0px;top:408.0px;" data-idx="3">
+          <div class="orb-node-inner">
+            <span class="orb-node-num">۰۴</span>
+            <strong class="orb-node-title">خدمات مهندسی پزشکی</strong>
+            <span class="orb-node-stat">آموزش و پشتیبانی ۲۴/۷</span>
+          </div>
+        </div>
+        <div class="orb-node" style="width:128px;height:128px;left:38.9px;top:334.0px;" data-idx="4">
+          <div class="orb-node-inner">
+            <span class="orb-node-num">۰۵</span>
+            <strong class="orb-node-title">حفظ جنگل‌های زاگرس</strong>
+            <span class="orb-node-stat">۲٬۰۰۰+ نهال بلوط کاشته‌شده</span>
+          </div>
+        </div>
+        <div class="orb-node" style="width:128px;height:128px;left:68.4px;top:135.0px;" data-idx="5">
+          <div class="orb-node-inner">
+            <span class="orb-node-num">۰۶</span>
+            <strong class="orb-node-title">پوشش ۱٬۲۹۴ مرکز</strong>
+            <span class="orb-node-stat">تأمین پایدار سراسر کشور</span>
+          </div>
+        </div>
+    </div>
+    
+      <div class="w2-detail-panel">
+        <span class="w2-active-tag">گره فعال در مدار · ۰۱ ایمنی و کیفیت دانش‌بنیان</span>
+        <h3>سیستم بسته مدیریت مایعات با هسته مصوب Q2</h3>
+        <p>در این الگو، کاربر هم نمای کلی ۶ مزیت رقابتی آبادیس را در مدار چرخان می‌بیند و هم با انتخاب هر دایره، جزئیات فنی، مستندات بیمارستانی و مقایسه اقتصادی همان مزیت را در پنل کنار مدار مشاهده می‌کند.</p>
+        <div class="w2-kpi-grid">
+          <div class="w2-kpi"><b>۱٬۲۹۴</b><span>مرکز درمانی</span></div>
+          <div class="w2-kpi"><b>۱۱٬۱۱۲</b><span>کاربر تخصصی</span></div>
+          <div class="w2-kpi"><b>۹۸.۹۹٪</b><span>رضایت مشتریان</span></div>
+          <div class="w2-kpi"><b>۰.۰۰۱۸٪</b><span>نرخ خرابی</span></div>
+        </div>
+        <div class="w2-compare">
+          <div class="w2-bar-row">
+            <div style="display:flex;justify-content:space-between;"><b>ایمنی و سرعت آماده‌سازی کیسه ساکشن آبادیس</b><span>۹۹.۹٪</span></div>
+            <div class="w2-bar-track"><div class="w2-bar-fill" style="width:99%"></div></div>
+          </div>
+          <div class="w2-bar-row">
+            <div style="display:flex;justify-content:space-between;"><span>مخازن سنتی چندبارمصرف (نیازمند شست‌وشو و استریل)</span><span>۳۸٪</span></div>
+            <div class="w2-bar-track"><div class="w2-bar-fill" style="width:38%;background:#94a3b8;"></div></div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Option 3 -->
-  <section class="option-row">
-    <div class="option-row-head">
-      <div class="option-badge-title">
-        <span class="opt-pill">گزینه ۳ (Option C)</span>
-        <h2>ماتریس شعاعی و هسته مرکزی لوگوی Q2 (Hub-and-Spoke Q2 Circuit Matrix)</h2>
+  <!-- W3 -->
+  <section class="variant-card" id="w3">
+    <div class="v-head">
+      <div>
+        <span class="v-badge">طرح W3</span>
+        <span class="v-title">مدار قطب‌نمای سررس (Serres Calibrated Dial Orbit) + نوار KPI پایین</span>
       </div>
-      <span class="option-desc">هسته مرکزی چرخان با نشان Q2 در مرکز و اتصال شعاعی (Hub-and-Spoke) با خطوط جریان متحرک به ۴ کارت ارزش افزوده + نوار کارخانه</span>
+      <span class="v-sub">حلقه درجه‌بندی مهندسی ۳۶۰ درجه با کمان اسکنر فعال و دایره‌های استاندارد</span>
     </div>
-    <div class="pair-grid">
-      <div class="theme-frame">
-        <div class="theme-bar theme-bar--light"><span>حالت روز / روشن (Light Mode)</span><span>option-3-light.png</span></div>
-        <img src="option-3-light.png" alt="Option 3 Light">
+    <div class="w1-grid">
+      
+    <div class="orb-stage orb-stage--w3" style="width:580px;height:580px;">
+      <svg viewBox="0 0 580 580" class="orb-svg" aria-hidden="true">
+        <circle cx="290.0" cy="290.0" r="278.0" class="orb-bound"/>
+        <line x1="558.0" y1="290.0" x2="570.0" y2="290.0" class="orb-tick-maj"/><line x1="556.5" y1="318.0" x2="562.5" y2="318.6" class="orb-tick-min"/><line x1="552.1" y1="345.7" x2="558.0" y2="347.0" class="orb-tick-min"/><line x1="544.9" y1="372.8" x2="550.6" y2="374.7" class="orb-tick-min"/><line x1="534.8" y1="399.0" x2="540.3" y2="401.4" class="orb-tick-min"/><line x1="522.1" y1="424.0" x2="532.5" y2="430.0" class="orb-tick-maj"/><line x1="506.8" y1="447.5" x2="511.7" y2="451.1" class="orb-tick-min"/><line x1="489.2" y1="469.3" x2="493.6" y2="473.3" class="orb-tick-min"/><line x1="469.3" y1="489.2" x2="473.3" y2="493.6" class="orb-tick-min"/><line x1="447.5" y1="506.8" x2="451.1" y2="511.7" class="orb-tick-min"/><line x1="424.0" y1="522.1" x2="430.0" y2="532.5" class="orb-tick-maj"/><line x1="399.0" y1="534.8" x2="401.4" y2="540.3" class="orb-tick-min"/><line x1="372.8" y1="544.9" x2="374.7" y2="550.6" class="orb-tick-min"/><line x1="345.7" y1="552.1" x2="347.0" y2="558.0" class="orb-tick-min"/><line x1="318.0" y1="556.5" x2="318.6" y2="562.5" class="orb-tick-min"/><line x1="290.0" y1="558.0" x2="290.0" y2="570.0" class="orb-tick-maj"/><line x1="262.0" y1="556.5" x2="261.4" y2="562.5" class="orb-tick-min"/><line x1="234.3" y1="552.1" x2="233.0" y2="558.0" class="orb-tick-min"/><line x1="207.2" y1="544.9" x2="205.3" y2="550.6" class="orb-tick-min"/><line x1="181.0" y1="534.8" x2="178.6" y2="540.3" class="orb-tick-min"/><line x1="156.0" y1="522.1" x2="150.0" y2="532.5" class="orb-tick-maj"/><line x1="132.5" y1="506.8" x2="128.9" y2="511.7" class="orb-tick-min"/><line x1="110.7" y1="489.2" x2="106.7" y2="493.6" class="orb-tick-min"/><line x1="90.8" y1="469.3" x2="86.4" y2="473.3" class="orb-tick-min"/><line x1="73.2" y1="447.5" x2="68.3" y2="451.1" class="orb-tick-min"/><line x1="57.9" y1="424.0" x2="47.5" y2="430.0" class="orb-tick-maj"/><line x1="45.2" y1="399.0" x2="39.7" y2="401.4" class="orb-tick-min"/><line x1="35.1" y1="372.8" x2="29.4" y2="374.7" class="orb-tick-min"/><line x1="27.9" y1="345.7" x2="22.0" y2="347.0" class="orb-tick-min"/><line x1="23.5" y1="318.0" x2="17.5" y2="318.6" class="orb-tick-min"/><line x1="22.0" y1="290.0" x2="10.0" y2="290.0" class="orb-tick-maj"/><line x1="23.5" y1="262.0" x2="17.5" y2="261.4" class="orb-tick-min"/><line x1="27.9" y1="234.3" x2="22.0" y2="233.0" class="orb-tick-min"/><line x1="35.1" y1="207.2" x2="29.4" y2="205.3" class="orb-tick-min"/><line x1="45.2" y1="181.0" x2="39.7" y2="178.6" class="orb-tick-min"/><line x1="57.9" y1="156.0" x2="47.5" y2="150.0" class="orb-tick-maj"/><line x1="73.2" y1="132.5" x2="68.3" y2="128.9" class="orb-tick-min"/><line x1="90.8" y1="110.7" x2="86.4" y2="106.7" class="orb-tick-min"/><line x1="110.7" y1="90.8" x2="106.7" y2="86.4" class="orb-tick-min"/><line x1="132.5" y1="73.2" x2="128.9" y2="68.3" class="orb-tick-min"/><line x1="156.0" y1="57.9" x2="150.0" y2="47.5" class="orb-tick-maj"/><line x1="181.0" y1="45.2" x2="178.6" y2="39.7" class="orb-tick-min"/><line x1="207.2" y1="35.1" x2="205.3" y2="29.4" class="orb-tick-min"/><line x1="234.3" y1="27.9" x2="233.0" y2="22.0" class="orb-tick-min"/><line x1="262.0" y1="23.5" x2="261.4" y2="17.5" class="orb-tick-min"/><line x1="290.0" y1="22.0" x2="290.0" y2="10.0" class="orb-tick-maj"/><line x1="318.0" y1="23.5" x2="318.6" y2="17.5" class="orb-tick-min"/><line x1="345.7" y1="27.9" x2="347.0" y2="22.0" class="orb-tick-min"/><line x1="372.8" y1="35.1" x2="374.7" y2="29.4" class="orb-tick-min"/><line x1="399.0" y1="45.2" x2="401.4" y2="39.7" class="orb-tick-min"/><line x1="424.0" y1="57.9" x2="430.0" y2="47.5" class="orb-tick-maj"/><line x1="447.5" y1="73.2" x2="451.1" y2="68.3" class="orb-tick-min"/><line x1="469.3" y1="90.8" x2="473.3" y2="86.4" class="orb-tick-min"/><line x1="489.2" y1="110.7" x2="493.6" y2="106.7" class="orb-tick-min"/><line x1="506.8" y1="132.5" x2="511.7" y2="128.9" class="orb-tick-min"/><line x1="522.1" y1="156.0" x2="532.5" y2="150.0" class="orb-tick-maj"/><line x1="534.8" y1="181.0" x2="540.3" y2="178.6" class="orb-tick-min"/><line x1="544.9" y1="207.2" x2="550.6" y2="205.3" class="orb-tick-min"/><line x1="552.1" y1="234.3" x2="558.0" y2="233.0" class="orb-tick-min"/><line x1="556.5" y1="262.0" x2="562.5" y2="261.4" class="orb-tick-min"/>
+        <circle cx="290.0" cy="290.0" r="266.0" class="orb-ring-sec"/><circle cx="290.0" cy="290.0" r="205" class="orb-ring-main"/><circle cx="290.0" cy="290.0" r="205" class="orb-ring-sweep" stroke-dasharray="440 999" transform="rotate(-90 290.0 290.0)"/>
+        <circle cx="290.0" cy="290.0" r="110" class="orb-ring-inner"/>
+        
+      <path d="M 85.0 290.0 A 205 205 0 0 1 290.0 85.0" class="orb-arc"/>
+      <path d="M 495.0 290.0 A 205 205 0 0 1 290.0 495.0" class="orb-arc"/>
+      <polygon points="290.0,79.0 279.0,89.0 290.0,86.0" class="orb-arrow"/>
+      <polygon points="290.0,501.0 301.0,491.0 290.0,494.0" class="orb-arrow"/>
+    
+        <line x1="290.0" y1="208.0" x2="290.0" y2="85.0" class="orb-spoke" stroke-dasharray="6 5"/><circle cx="290.0" cy="146.5" r="4" class="orb-pulse"/><line x1="361.0" y1="249.0" x2="467.5" y2="187.5" class="orb-spoke" stroke-dasharray="6 5"/><circle cx="414.3" cy="218.2" r="4" class="orb-pulse"/><line x1="361.0" y1="331.0" x2="467.5" y2="392.5" class="orb-spoke" stroke-dasharray="6 5"/><circle cx="414.3" cy="361.8" r="4" class="orb-pulse"/><line x1="290.0" y1="372.0" x2="290.0" y2="495.0" class="orb-spoke" stroke-dasharray="6 5"/><circle cx="290.0" cy="433.5" r="4" class="orb-pulse"/><line x1="219.0" y1="331.0" x2="112.5" y2="392.5" class="orb-spoke" stroke-dasharray="6 5"/><circle cx="165.7" cy="361.8" r="4" class="orb-pulse"/><line x1="219.0" y1="249.0" x2="112.5" y2="187.5" class="orb-spoke" stroke-dasharray="6 5"/><circle cx="165.7" cy="218.2" r="4" class="orb-pulse"/>
+      </svg>
+      <div class="orb-hub" style="width:166px;height:166px;left:207.0px;top:207.0px;">
+        <div class="orb-hub-q2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" class="q2-svg"><path d="M107.82 55.82A48 48 0 1 1 96.77 29.15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="107.82" cy="55.82" r="2.6" fill="currentColor"/><circle cx="96.77" cy="29.15" r="2.6" fill="currentColor"/><path d="M38 42L48 29L70 29L80 39L80 50L60 64L60 76" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38.00" cy="42.00" r="2.4" fill="currentColor"/><circle cx="60.00" cy="76.00" r="2.4" fill="currentColor"/><circle cx="48.00" cy="29.00" r="2.2" fill="currentColor"/><circle cx="70.00" cy="29.00" r="2.2" fill="currentColor"/><circle cx="80.00" cy="39.00" r="2.2" fill="currentColor"/><circle cx="80.00" cy="50.00" r="2.2" fill="currentColor"/><circle cx="60.00" cy="64.00" r="2.2" fill="currentColor"/><path d="M43.55 46.27L51.45 36.0L67.1 36.0L73.0 44.13L53.0 60.36L53.0 76.0" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="43.55" cy="46.27" r="2.4" fill="currentColor"/><circle cx="53.00" cy="76.00" r="2.4" fill="currentColor"/><circle cx="51.45" cy="36.00" r="2.2" fill="currentColor"/><circle cx="67.10" cy="36.00" r="2.2" fill="currentColor"/><circle cx="73.00" cy="44.13" r="2.2" fill="currentColor"/><circle cx="53.00" cy="60.36" r="2.2" fill="currentColor"/><circle cx="56.50" cy="90.00" r="3.4" fill="currentColor"/></svg></div>
+        <div class="orb-hub-title">چرا آبادیس؟</div>
+        <div class="orb-hub-sub">مدار ارزش‌آفرینی · Q2</div>
       </div>
-      <div class="theme-frame">
-        <div class="theme-bar theme-bar--dark"><span>حالت شب / تاریک (Dark Mode)</span><span>option-3-dark.png</span></div>
-        <img src="option-3-dark.png" alt="Option 3 Dark">
+      
+        <div class="orb-node is-active" style="width:128px;height:128px;left:226.0px;top:21.0px;" data-idx="0">
+          <div class="orb-node-inner">
+            <span class="orb-node-num">۰۱</span>
+            <strong class="orb-node-title">ایمنی و کنترل عفونت</strong>
+            <span class="orb-node-stat">سیستم بسته بدون نشت</span>
+          </div>
+        </div>
+        <div class="orb-node" style="width:128px;height:128px;left:403.5px;top:123.5px;" data-idx="1">
+          <div class="orb-node-inner">
+            <span class="orb-node-num">۰۲</span>
+            <strong class="orb-node-title">کیفیت دانش‌بنیان</strong>
+            <span class="orb-node-stat">۹۸.۹۹٪ رضایت · ۰.۰۰۱۸٪ خرابی</span>
+          </div>
+        </div>
+        <div class="orb-node" style="width:128px;height:128px;left:403.5px;top:328.5px;" data-idx="2">
+          <div class="orb-node-inner">
+            <span class="orb-node-num">۰۳</span>
+            <strong class="orb-node-title">صرفه‌جویی اقتصادی</strong>
+            <span class="orb-node-stat">حذف شست‌وشو و استریل</span>
+          </div>
+        </div>
+        <div class="orb-node" style="width:128px;height:128px;left:226.0px;top:431.0px;" data-idx="3">
+          <div class="orb-node-inner">
+            <span class="orb-node-num">۰۴</span>
+            <strong class="orb-node-title">خدمات مهندسی پزشکی</strong>
+            <span class="orb-node-stat">آموزش و پشتیبانی ۲۴/۷</span>
+          </div>
+        </div>
+        <div class="orb-node" style="width:128px;height:128px;left:48.5px;top:328.5px;" data-idx="4">
+          <div class="orb-node-inner">
+            <span class="orb-node-num">۰۵</span>
+            <strong class="orb-node-title">حفظ جنگل‌های زاگرس</strong>
+            <span class="orb-node-stat">۲٬۰۰۰+ نهال بلوط کاشته‌شده</span>
+          </div>
+        </div>
+        <div class="orb-node" style="width:128px;height:128px;left:48.5px;top:123.5px;" data-idx="5">
+          <div class="orb-node-inner">
+            <span class="orb-node-num">۰۶</span>
+            <strong class="orb-node-title">پوشش ۱٬۲۹۴ مرکز</strong>
+            <span class="orb-node-stat">تأمین پایدار سراسر کشور</span>
+          </div>
+        </div>
+    </div>
+    
+      <div>
+        <div class="w2-detail-panel" style="margin-bottom:12px;">
+          <span class="w2-active-tag">کالیبراسیون ۳۶۰ درجه · الهام‌گرفته از Serres</span>
+          <h3>مدار قطب‌نمای مهندسی با ۶ دایره هم‌تراز</h3>
+          <p>ترکیب دایال درجه‌بندی‌شده Serres با مدار چرخان آبادیس؛ مناسب برای نمایش هم‌زمان در دسکتاپ و تبلت با قابلیت چرخش گام‌به‌گام بین ۶ ستون ارزش‌آفرینی.</p>
+        </div>
+        <div class="w-side-cards">
+          <div class="w-mini-card"><strong>فیلتر هیدروفوبیک ۹۹.۹۹٪</strong><p>قطع خودکار جریان در زمان پر شدن کیسه و محافظت کامل از پمپ ساکشن مرکزی.</p></div>
+          <div class="w-mini-card"><strong>استاندارد CE و ISO 13485</strong><p>تولید در کلین‌روم استاندارد با مواد اولیه گرید پزشکی و کنترل کیفیت ۱۰۰٪.</p></div>
+        </div>
       </div>
     </div>
   </section>
+</div>
 </body>
 </html>
