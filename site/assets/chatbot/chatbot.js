@@ -323,20 +323,51 @@
     panel.appendChild(llm);
 
     var form = el('form', 'abadis-chat-form');
-    input = document.createElement('input');
-    input.type = 'text';
+    input = document.createElement('textarea');
+    input.className = 'abadis-chat-input';
+    input.rows = 1;
     input.required = true;
+    input.setAttribute('enterkeyhint', 'send');
+    input.setAttribute('dir', 'auto');
     var send = el('button', 'abadis-chat-send');
     send.type = 'submit';
     form.appendChild(input);
     form.appendChild(send);
+    function resizeInput() {
+      input.style.height = 'auto';
+      input.style.height = Math.min(input.scrollHeight || 46, 112) + 'px';
+    }
+    input.addEventListener('input', resizeInput);
+    input.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter' && !ev.shiftKey) {
+        ev.preventDefault();
+        if (typeof form.requestSubmit === 'function') form.requestSubmit();
+        else form.dispatchEvent(new Event('submit', { cancelable: true }));
+      }
+    });
+    input.addEventListener('focus', function () {
+      root.classList.add('is-typing');
+      setTimeout(function () { if (logEl) logEl.scrollTop = logEl.scrollHeight; }, 120);
+    });
+    input.addEventListener('blur', function () {
+      setTimeout(function () { root.classList.remove('is-typing'); }, 180);
+    });
     form.addEventListener('submit', function (ev) {
       ev.preventDefault();
       var q = input.value.trim();
       if (!q) return;
       input.value = '';
+      input.style.height = '';
+      root.classList.remove('is-typing');
       ask(q);
     });
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', function () {
+        if (!state.open) return;
+        root.style.setProperty('--ac-vvh', Math.round(window.visualViewport.height) + 'px');
+        if (logEl) logEl.scrollTop = logEl.scrollHeight;
+      });
+    }
     panel.appendChild(form);
 
     root.appendChild(launcher);
@@ -1240,12 +1271,18 @@
   function open() {
     state.open = true;
     panel.hidden = false;
+    root.classList.add('is-open');
+    if (window.visualViewport) {
+      root.style.setProperty('--ac-vvh', Math.round(window.visualViewport.height) + 'px');
+    }
     root.querySelector('.abadis-chat-launcher').setAttribute('aria-expanded', 'true');
+    if (logEl) logEl.scrollTop = logEl.scrollHeight;
   }
   function close() {
     if (root.classList.contains('is-docked')) return;
     state.open = false;
     panel.hidden = true;
+    root.classList.remove('is-open', 'is-typing');
     root.querySelector('.abadis-chat-launcher').setAttribute('aria-expanded', 'false');
   }
 
