@@ -207,7 +207,7 @@
 
   ZH.onLayout(onLayout);
   ZH.onRender(onRender);
-  Promise.all([ZN.loadNames(), ZN.fontsReady(['700 10.5px Kalameh', '700 12.5px Kalameh', '900 40px Kalameh'])]).then(function (res) {
+  Promise.all([(ZN.loadCenters || ZN.loadNames)(), ZN.fontsReady(['700 10.5px Kalameh', '700 12.5px Kalameh', '900 40px Kalameh'])]).then(function (res) {
     NAMES = res[0]; N = NAMES.length;
     fontKey = '';
     ZH.refresh(); onScroll();

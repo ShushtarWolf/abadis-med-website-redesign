@@ -104,13 +104,15 @@ def build_home(write, lang):
       </div>
       {H.impact_stats(lang)}
     </div></section>'''
-    vals = ''.join(f'<div class="card value reveal"><h3>{esc(a)}</h3><p>{esc(b)}</p></div>' for a, b in t['values'])
-    checks = ''.join(f'<li>{esc(c)}</li>' for c in t['checks'])
-    why = f'''  <section class="section section--alt" id="why"><div class="wrap">
-      <div class="section-head reveal has-mark">{section_mark(p, 'why')}<div><p class="eyebrow">{esc(t['why_eb'])}</p><h2>{esc(t['why_h'])}</h2></div></div>
-      <div class="grid g-4 values">{vals}</div>
-      <div class="split" style="margin-top:28px"><div class="reveal"><p>{esc(t['factory'])}</p></div><ul class="checks reveal">{checks}</ul></div>
-    </div></section>'''
+    sat = '98.99%' if lang == 'en' else '٩٨٫٩٩٪'
+    fail = '0.0018%' if lang == 'en' else '٠٫٠٠١٨٪'
+    cap = '5 million' if lang == 'en' else '٥ مليون'
+    cap_l = 'annual production capacity of disposable suction bags' if lang == 'en' else 'طاقة الإنتاج السنوية لأكياس الشفط'
+    sat_l = 'Customer Satisfaction Rate' if lang == 'en' else 'نسبة رضا العملاء'
+    fail_l = 'Product Failure Rate' if lang == 'en' else 'نسبة عيوب المنتج'
+    cost_l = t['values'][0][1]
+    metrics = [(cap, cap_l), (sat, sat_l), (fail, fail_l), (t['values'][0][0], cost_l)]
+    why = H.why_block(p, t['why_eb'], t['why_h'], t['values'], t['factory'], t['checks'], metrics)
     import solutions_arch
     products = solutions_arch.home_section(p, lang)
     quick = f'''  <section class="section quick" id="quick" style="padding-block:28px"><div class="wrap quick-row">
@@ -144,13 +146,14 @@ def build_home(write, lang):
         <div class="ps-panel is-default" id="news" role="tabpanel" aria-labelledby="tab-home-news" data-ps-panel="news">{news_rail}</div>
         <div class="ps-panel" id="articles" role="tabpanel" aria-labelledby="tab-home-articles" data-ps-panel="articles" hidden>{art_rail}</div>
         <p class="h-all">
-          <a class="btn btn-ghost" href="{_h(t, p, t['news_href'])}">{esc(news_all)}</a>
-          <a class="btn btn-ghost" href="{_h(t, p, t['art_href'])}">{esc(art_all)}</a>
+          <a class="btn btn-ghost" data-ps-cta="news" href="{_h(t, p, t['news_href'])}">{esc(news_all)}</a>
+          <a class="btn btn-ghost" data-ps-cta="articles" href="{_h(t, p, t['art_href'])}">{esc(art_all)}</a>
         </p>
       </div>
     </div></section>'''
     logos = ''.join(f'<li><img src="{img(n)}" alt="{esc(t["mem_alt"])}" loading="lazy" decoding="async"></li>' for n in H.MEMBERSHIPS if (SITE / H._live(n)).exists())
-    mem = f'''  <section class="section" id="memberships"><div class="wrap"><div class="section-head reveal"><p class="eyebrow">{esc(t['mem_eb'])}</p><h2>{esc(t['mem_h'])}</h2></div><ul class="member-logos reveal">{logos}</ul></div></section>'''
+    core = 'Moving targets' if lang == 'en' else 'أهداف قيد الحركة'
+    mem = f'''  <section class="section" id="memberships"><div class="wrap"><div class="section-head reveal"><p class="eyebrow">{esc(t['mem_eb'])}</p><h2>{esc(t['mem_h'])}</h2></div>{H.membership_orbit(p, t['mem_alt'], core)}<ul class="member-logos reveal">{logos}</ul></div></section>'''
     bl = H._B('/مشتریان-ما/'); lg = []
     for it in bl[1]['items']:
         if len(lg) >= H.LOGO_STRIP_N: break

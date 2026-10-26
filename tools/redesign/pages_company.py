@@ -45,16 +45,35 @@ def _colon_items(items):
     return ''.join(bits)
 
 
+def principle_cards(lang):
+    """Mission, vision, goals and values, each in its own card. Values use the live «تعهد ما» heading."""
+    d = about_copy(lang)
+    eyebrows = {
+        'fa': ('ماموریت', 'چشم‌انداز', 'اهداف', 'ارزش‌ها', 'چرا آکادمی'),
+        'en': ('Mission', 'Vision', 'Goals', 'Values', 'Why the Academy'),
+        'ar': ('الرسالة', 'الرؤية', 'الأهداف', 'القيم', 'لماذا الأكاديمية'),
+    }[lang]
+    academy = next((g for g in d['goals'] if 'Academy' in g or 'آکادمی' in g or 'أكاديمية' in g), d['goals'][0])
+    vision = _paras(d['vision']) + f'<ul>{_colon_items(d["pillars"])}</ul>' + _paras(d['vision_close'])
+    goals = _paras(d['goals_lead']) + f'<ul>{_colon_items(d["goals"])}</ul>'
+    commit = ''.join(f'<li>{esc(x)}</li>' for x in d['commit_items'])
+    values = _paras(d['commit_lead']) + f'<ul>{commit}</ul>' + _paras(d['commit_close'])
+    bodies = (_paras(d['mission']), vision, goals, values)
+    titles = (d['mission_h'], d['vision_h'], d['goals_h'], d['commit_h'])
+    cards = ''.join(
+        f'<article class="mv-card prose"><p class="eyebrow">{esc(eyebrows[i])}</p>'
+        f'<h3>{esc(titles[i].rstrip(":"))}</h3>{bodies[i]}</article>'
+        for i in range(4))
+    why = (f'<article class="mv-card prose why-academy" id="why-academy"><p class="eyebrow">{esc(eyebrows[4])}</p>'
+           f'<p>{esc(academy)}</p><p><a class="more-link" href="../academy/">{esc(eyebrows[4])}</a></p></article>')
+    return f'<div class="mv-grid">{cards}</div>{why}'
+
+
 def live_intro_html(lang):
     d = about_copy(lang)
     return (
         _paras(d['intro'])
-        + f'<h3 style="margin-top:22px">{esc(d["mission_h"].rstrip(":"))}</h3>'
-        + _paras(d['mission'])
-        + f'<h3 style="margin-top:22px">{esc(d["vision_h"].rstrip(":"))}</h3>'
-        + _paras(d['vision'])
-        + f'<ul>{_colon_items(d["pillars"])}</ul>'
-        + _paras(d['vision_close'])
+        + principle_cards(lang)
         + f'<h3 style="margin-top:22px">{esc(d["achieve_h"].rstrip(":"))}</h3>'
         + _paras(d['achieve'])
     )
@@ -64,14 +83,9 @@ def live_story_html(lang):
     d = about_copy(lang)
     phases = ''.join(
         f'<h3 style="margin-top:18px">{esc(ph["h"])}</h3>' + _paras(ph['p']) for ph in d['phases'])
-    commit = ''.join(f'<li>{esc(x)}</li>' for x in d['commit_items'])
     return (
         f'<h3>{esc(d["history_h"])}</h3>'
         + _paras(d['history']) + phases + _paras(d['history_close'])
-        + f'<h3 style="margin-top:22px">{esc(d["commit_h"])}</h3>'
-        + _paras(d['commit_lead']) + f'<ul>{commit}</ul>' + _paras(d['commit_close'])
-        + f'<h3 style="margin-top:22px">{esc(d["goals_h"])}</h3>'
-        + _paras(d['goals_lead']) + f'<ul>{_colon_items(d["goals"])}</ul>'
     )
 
 
@@ -252,11 +266,6 @@ def about(write):
         for ph in copy['phases'])
     hist = (f'<h2>{esc(copy["history_h"])}</h2>' + _paras(copy['history']) + phases
             + _paras(copy['history_close']))
-    commit_items = ''.join(f'<li>{esc(x)}</li>' for x in copy['commit_items'])
-    commit_card = (f'<h3>{esc(copy["commit_h"])}</h3>' + _paras(copy['commit_lead'])
-                   + f'<ul>{commit_items}</ul>' + _paras(copy['commit_close']))
-    goals_card = (f'<h3>{esc(copy["goals_h"])}</h3>' + _paras(copy['goals_lead'])
-                  + f'<ul>{_colon_items(copy["goals"])}</ul>')
     whys = ''.join(f'<li>{esc(x)}</li>' for x in d['why'][1:])
     from PIL import Image
     grouped = {k: [] for k, _ in CERT_GROUPS['fa']}
@@ -307,13 +316,10 @@ def about(write):
     <div class="prose reveal">{hist}</div>
     <div class="liner-box reveal">{BAG_ICON}</div>
   </div></section>
-  <section class="section"><div class="wrap grid g-2" style="gap:18px">
-    <div class="card prose reveal">{commit_card}</div>
-    <div class="card prose reveal">{goals_card}</div>
-  </div></section>
   <section class="section section--alt" id="why"><div class="wrap">
     <h2 class="reveal sec-title" style="margin-bottom:20px">{section_mark(p, 'why')}چرا آبادیس؟</h2>
     <ul class="checks why-list reveal">{whys}</ul>
+    {__import__('pages_home').membership_orbit(p, 'عضویت آبادیس', 'اهداف در حال حرکت')}
   </div></section>
   <section class="section" id="certs"><div class="wrap">
     <h2 class="reveal" style="margin-bottom:8px">مجوزها و گواهینامه‌ها</h2>
@@ -400,6 +406,7 @@ def dealers(write):
     main = f'''{page_hero(p, [('لیست نمایندگان', None)], 'لیست <em>نمایندگان</em>', esc(intro))}
   <section class="section"><div class="wrap">
     {dealers_widget('fa')}
+    {__import__('pages_home').membership_orbit(p, 'عضویت آبادیس', 'اهداف در حال حرکت')}
   </div></section>'''
     write('dealers/index.html', page(p, 'dealers', 'لیست نمایندگان', intro, main))
 
@@ -471,6 +478,8 @@ def _sdg_sections(p, bl):
 # live FA page is the broken digit for ۲۲, which the EN page states as 22 million.
 SDG_STATS = {
     'fa': [
+        (2000000, 'لیتر', 'آب صرفه‌جویی‌شده'),
+        (1400, 'درخت بلوط', 'نهال بلوط'),
         (25, 'لیتر', 'آب ذخیره به ازای هر کیسه'),
         (28, 'میلیون لیتر', 'تا پایان سال ۱۴۰۲'),
         (10, 'میلیون لیتر', 'میانگین صرفه‌جویی سالانه'),
@@ -480,6 +489,8 @@ SDG_STATS = {
         (50, 'شغل', 'شغل مستقیم تخصصی'),
     ],
     'en': [
+        (2000000, 'litres', 'of water saved'),
+        (1400, 'oak trees', 'oak seedlings'),
         (25, 'litres', 'of water saved per bag'),
         (28, 'million litres', 'saved by the end of 2023'),
         (10, 'million litres', 'average saved each year'),
@@ -490,10 +501,18 @@ SDG_STATS = {
     ],
 }
 
+def _sdg_shown(n, lang):
+    if n == 2000000:
+        return '۲٬۰۰۰٬۰۰۰' if lang == 'fa' else '2,000,000'
+    if n == 1400:
+        return '۱٬۴۰۰' if lang == 'fa' else '1,400'
+    return fa(n) if lang == 'fa' else str(n)
+
+
 def sdg_stats(lang):
     bits = []
     for i, (n, unit, label) in enumerate(SDG_STATS[lang]):
-        shown = fa(n) if lang == 'fa' else str(n)
+        shown = _sdg_shown(n, lang)
         bits.append(
             f'<div class="sdg-stat reveal" style="--i:{i}">'
             f'<strong><span data-sdg-count="{n}">{shown}</span> {esc(unit)}</strong>'
@@ -515,6 +534,20 @@ def sdgs(write):
     write('sdgs/index.html', page(p, 'sdgs', 'توسعه پایدار',
           'سند تعهد شرکت دانش‌بنیان مخازن طبی آبادیس به اهداف توسعه پایدار سازمان ملل (UN SDGs)',
           main, fa_path='sdgs/'))
+    redir = (
+        '<!DOCTYPE html><html lang="{lang}" dir="{direction}"><head><meta charset="utf-8">'
+        '<meta name="robots" content="noindex,nofollow">'
+        '<link rel="canonical" href="{canon}">'
+        '<meta http-equiv="refresh" content="0; url={url}">'
+        '<title>{title}</title></head><body><p><a href="{url}">{title}</a></p>'
+        '<script>location.replace("{url}")</script></body></html>'
+    )
+    write('sustainability/index.html', redir.format(
+        lang='fa', direction='rtl', canon='https://abadis-med.com/sdgs/', url='../sdgs/', title='توسعه پایدار'))
+    write('en/sustainability/index.html', redir.format(
+        lang='en', direction='ltr', canon='https://abadis-med.com/en/sdgs/', url='../sdgs/', title='SDGs'))
+    write('arabic/sustainability/index.html', redir.format(
+        lang='ar', direction='rtl', canon='https://abadis-med.com/sdgs/', url='../../sdgs/', title='التنمية المستدامة'))
 
 
 # ------------------------------------------------------------------ CSR (Zagros hand-built + مسئولیت اجتماعی / SDG summary blocks)
@@ -559,9 +592,22 @@ def contact(write):
         return ''.join(out)
     office = [b['html'] for b in bl if b['t'] == 'html' and 'داخلی ها' in b['html']][0]
     ext = re.search(r'(<p><strong>داخلی ها:</strong></p>.*)', office, re.S).group(1)
-    from icons import svg_clock, svg_pin, svg_postal, ch, iconize_extensions, brand_buttons, WA_URL, IG_URL, svg_whatsapp, svg_instagram
+    from icons import (
+        svg_clock, svg_pin, svg_postal, ch, iconize_extensions, brand_buttons,
+        WA_URL, IG_URL, TG_URL, AP_URL, YT_URL, TW_URL, FB_URL, LI_URL,
+        svg_whatsapp, svg_instagram, svg_telegram, svg_aparat, svg_youtube, svg_twitter, svg_facebook, svg_linkedin,
+    )
     ext = iconize_extensions(ext)
-    brands = brand_buttons([(WA_URL, svg_whatsapp(), 'واتس‌اپ'), (IG_URL, svg_instagram(), 'اینستاگرام')])
+    brands = brand_buttons([
+        (WA_URL, svg_whatsapp(), 'واتس‌اپ'),
+        (IG_URL, svg_instagram(), 'اینستاگرام'),
+        (TG_URL, svg_telegram(), 'تلگرام'),
+        (AP_URL, svg_aparat(), 'آپارات'),
+        (YT_URL, svg_youtube(), 'یوتیوب'),
+        (TW_URL, svg_twitter(), 'ایکس'),
+        (FB_URL, svg_facebook(), 'فیسبوک'),
+        (LI_URL, svg_linkedin(), 'لینکدین'),
+    ])
     block = f'''<!-- phase2:contact -->
   <section class="section section--alt" id="hours"><div class="wrap grid g-2" style="gap:24px;align-items:start">
     <div class="reveal"><h2 class="with-ico" style="font-size:1.4rem;margin-bottom:14px">{ch(svg_clock())}ساعات کاری</h2><div class="hours">{boxes('ساعات کاری')}</div>
@@ -580,32 +626,24 @@ def contact(write):
     write('contact/index.html', s)
 
 CUST_T = {
- 'fa': dict(h='همه مراکز درمانی همراه آبادیس', s='جستجوی نام مرکز درمانی...', c='مرکز درمانی', e='موردی یافت نشد.', note=''),
- 'en': dict(h='All healthcare centres working with Abadis', s='Search a centre name (Persian)...', c='healthcare centres', e='No match found.', note='Centre names are listed in Persian, as recorded by Abadis.'),
- 'ar': dict(h='جميع المراكز الصحية المتعاونة مع آباديس', s='ابحث عن اسم المركز...', c='مركزاً صحياً', e='لا توجد نتائج.', note='تُعرض أسماء المراكز بالفارسية كما سجّلتها آباديس.'),
+ 'fa': dict(h='خانواده سبز آبادیس', lead='۱٬۲۵۲ بیمارستان و ۴۲ مرکز جراحی روی نقشه و در جدول.'),
+ 'en': dict(h='Abadis green family', lead='1,252 hospitals and 42 surgery centers on the map and in the table.'),
+ 'ar': dict(h='عائلة آباديس الخضراء', lead='١٬٢٥٢ مستشفى و٤٢ مركز جراحة على الخريطة وفي الجدول.'),
 }
-def customers_all(lang='fa'):
-    """Searchable A–Z list of every centre in site/zagros-names/names.json (same list on fa/en/ar)."""
-    import json
+def iran_centers_section(p, lang):
+    """Live default: the full workbook (1,252 hospitals + 42 surgery centers)."""
     T = CUST_T[lang]
-    names = json.loads((SITE / 'zagros-names/names.json').read_text(encoding='utf-8'))
-    names = sorted(dict.fromkeys(n.strip() for n in names if n.strip()), key=lambda n: n.replace('آ', 'ا'))
-    groups = {}
-    for n in names: groups.setdefault(n[0].replace('آ', 'ا'), []).append(n)
-    body = ''.join(f'<div class="cust-letter"><h3 aria-hidden="true">{esc(k)}</h3><ul>{"".join(f"<li>{esc(n)}</li>" for n in v)}</ul></div>' for k, v in groups.items())
-    num = _num(lang, len(names))
-    note = f'<p class="prov-note">{esc(T["note"])}</p>' if T['note'] else ''
-    return f'''<section class="section" id="all-customers"><div class="wrap">
-    <h2 class="reveal">{esc(T["h"])}</h2>{note}
-    <div class="list-tools"><input class="search" id="custAllQ" type="search" placeholder="{esc(T["s"])}" aria-label="{esc(T["s"])}"><span class="count" id="custAllN" data-total="{len(names)}" aria-live="polite">{num} {esc(T["c"])}</span></div>
-    <div class="cust-all" id="custAll" lang="fa" dir="rtl">{body}</div>
-    <p class="empty-msg" id="custAllE" hidden>{esc(T["e"])}</p>
-  </div></section>
-  <script>(function(){{var q=document.getElementById('custAllQ'),n=document.getElementById('custAllN'),e=document.getElementById('custAllE'),L=document.querySelectorAll('#custAll li'),G=document.querySelectorAll('#custAll .cust-letter'),lab=n.textContent.replace(/^[^ ]+ /,''),lang=document.documentElement.lang;
-  function norm(s){{return s.replace(/[يى]/g,'ی').replace(/ك/g,'ک').replace(/[أإآ]/g,'ا').replace(/[\u200c\s]+/g,' ').trim().toLowerCase();}}
-  L.forEach(function(li){{li.dataset.n=norm(li.textContent);}});
-  function fmt(x){{return lang==='en'?String(x):x.toLocaleString(lang==='ar'?'ar-EG':'fa-IR',{{useGrouping:false}});}}
-  q.addEventListener('input',function(){{var v=norm(q.value),c=0;L.forEach(function(li){{var h=v&&li.dataset.n.indexOf(v)<0;li.hidden=h;if(!h)c++;}});G.forEach(function(g){{g.hidden=!g.querySelector('li:not([hidden])');}});n.textContent=fmt(c)+' '+lab;e.hidden=c>0;}});}})();</script>'''
+    return f'''<section class="section" id="green-family">
+  <div class="wrap">
+    <div class="section-head reveal"><h2>{esc(T["h"])}</h2><p>{esc(T["lead"])}</p></div>
+    <div data-iran-centers data-src="{p}assets/data/iran-hospitals-centers.json" data-map="{p}assets/data/iran-provinces.json" data-lang="{lang}"></div>
+  </div>
+</section>
+<script src="{p}assets/js/iran-centers.js" defer></script>'''
+
+
+def customers_all(lang='fa', p='../'):
+    return iran_centers_section(p, lang)
 
 # ------------------------------------------------------------------ customers
 def customers(write):
@@ -627,74 +665,149 @@ def customers(write):
     <div class="logo-grid" id="custGrid" data-paged="30">{''.join(cards)}</div>
     <p class="empty-msg" hidden>موردی یافت نشد.</p>
   </div></section>
-  {customers_all('fa')}'''
+  {customers_all('fa', p)}'''
     write('customers/index.html', page(p, 'customers', 'مشتریان ما', head, main))
+    for rel, prefix, lang, title, desc in (
+        ('green-family-map/index.html', '../', 'fa', 'خانواده سبز آبادیس', 'نقشه و فهرست بیمارستان‌ها و مراکز جراحی.'),
+        ('en/green-family-map/index.html', '../../', 'en', 'Abadis green family', 'Map and list of hospitals and surgery centers.'),
+        ('arabic/green-family-map/index.html', '../../', 'ar', 'عائلة آباديس الخضراء', 'خريطة وقائمة المستشفيات ومراكز الجراحة.'),
+    ):
+        body = f'''{page_hero(prefix, [(title, None)], title, esc(desc), lang=lang)}
+  {iran_centers_section(prefix, lang)}'''
+        write(rel, page(prefix, 'customers', title, desc, body, lang=lang, fa_path='customers/'))
     return len(items), nimg
 
 # ------------------------------------------------------------------ academy (was «تجارب ما»)
 ACADEMY_MARK = '<svg viewBox="0 0 40 40" aria-hidden="true" width="34" height="34"><rect x="2" y="2" width="36" height="36" rx="11" fill="#066163"/><path d="M8 17l12-6 12 6-12 6z" fill="#fff"/><path d="M13 20v6c0 2 3.5 4 7 4s7-2 7-4v-6" fill="none" stroke="#fff" stroke-width="2.2"/><path d="M32 17v7" stroke="#bfe3e2" stroke-width="2.2" stroke-linecap="round"/></svg>'
-MOCK_NOTE = '<div class="ac-mock" role="note"><b>نمونهٔ رابط کاربری (Mockup)</b> — آکادمی آبادیس هنوز راه‌اندازی نشده است؛ ورود، ثبت‌نام و دوره‌ها نمایشی‌اند و هیچ داده‌ای ارسال یا ذخیره نمی‌شود.</div>'
+AC_COPY = {
+    'fa': dict(brand='آکادمی آبادیس', back='سایت آبادیس', lock='محتوای تأییدشده — فقط خواندنی',
+               h1='آکادمی آبادیس', lead='درگاه سه‌مرحله‌ای آموزش، استخدام و گروه‌های شغلی. بازدید فقط‌خواندنی است.',
+               all='همه', p1='فاز ۱ — استقرار', p2='فاز ۲ — استخدام و آزمون‌ها', p3='فاز ۳ — تگ‌ها و گروه‌های شغلی هوشمند',
+               ind='صنعتی — مبتنی بر تجربه', hr='داخلی — آموزش HR ویژن',
+               mods=[
+                   ('field', 'ماژول‌های بالینی و میدانی'),
+                   ('field', 'مطالعات موردی بیمارستانی'),
+                   ('field', 'عیب‌یابی دستگاه'),
+                   ('field', 'راهنمای میدانی کنترل عفونت'),
+                   ('hr', 'شرح شغل'),
+                   ('hr', 'ویدیوی آشنایی و آموزش بدو ورود'),
+                   ('hr', 'پایگاه دانش فنی داخلی'),
+                   ('hire', 'آزمون فنی و شغلی'),
+                   ('hire', 'پیش‌نمایش MBTI'),
+                   ('hire', 'پیش‌نمایش گردش‌کار مصاحبه هوش مصنوعی'),
+                   ('tag', 'تگ محتوا'),
+                   ('tag', 'تگ شغلی هوش مصنوعی'),
+                   ('tag', 'فیلتر گروه‌های شغلی روی دوره، ویدیو و ارزیابی'),
+               ]),
+    'en': dict(brand='Abadis Academy', back='Abadis site', lock='Verified content — read only',
+               h1='Abadis Academy', lead='A three-phase portal for training, hiring and job groups. Visitors can only read.',
+               all='All', p1='Phase 1 — Rollout', p2='Phase 2 — Hiring and exams', p3='Phase 3 — Smart tags and job groups',
+               ind='Industrial — from field experience', hr='Internal — Vision HR training',
+               mods=[
+                   ('field', 'Clinical and field modules'),
+                   ('field', 'Hospital case studies'),
+                   ('field', 'Device troubleshooting'),
+                   ('field', 'Infection-control field guides'),
+                   ('hr', 'Job descriptions'),
+                   ('hr', 'Onboarding and training videos'),
+                   ('hr', 'Internal technical knowledge base'),
+                   ('hire', 'Technical and role exams'),
+                   ('hire', 'MBTI preview'),
+                   ('hire', 'AI interview workflow preview'),
+                   ('tag', 'Content tags'),
+                   ('tag', 'AI job tags'),
+                   ('tag', 'Job groups filtering courses, videos and assessments'),
+               ]),
+    'ar': dict(brand='أكاديمية آباديس', back='موقع آباديس', lock='محتوى موثّق — للقراءة فقط',
+               h1='أكاديمية آباديس', lead='بوابة من ثلاث مراحل للتدريب والتوظيف ومجموعات العمل. الزيارة للقراءة فقط.',
+               all='الكل', p1='المرحلة ١ — الاستقرار', p2='المرحلة ٢ — التوظيف والاختبارات', p3='المرحلة ٣ — الوسوم ومجموعات العمل الذكية',
+               ind='صناعي — مبني على الخبرة', hr='داخلي — تدريب الموارد البشرية',
+               mods=[
+                   ('field', 'وحدات سريرية وميدانية'),
+                   ('field', 'دراسات حالة للمستشفيات'),
+                   ('field', 'استكشاف أعطال الأجهزة'),
+                   ('field', 'أدلة ميدانية لمكافحة العدوى'),
+                   ('hr', 'الوصف الوظيفي'),
+                   ('hr', 'فيديو التهيئة والتدريب'),
+                   ('hr', 'قاعدة المعرفة الفنية الداخلية'),
+                   ('hire', 'اختبارات فنية ووظيفية'),
+                   ('hire', 'معاينة MBTI'),
+                   ('hire', 'معاينة مسار مقابلة الذكاء الاصطناعي'),
+                   ('tag', 'وسوم المحتوى'),
+                   ('tag', 'وسوم وظيفية بالذكاء الاصطناعي'),
+                   ('tag', 'تصفية مجموعات العمل للدورات والفيديو والتقييم'),
+               ]),
+}
 
-def _academy_shell(html, p, cur):
-    nav = [('', 'خانه آکادمی', 'home'), ('#courses', 'دوره‌ها', 'courses'), ('#experiences', 'تجارب ما', 'exp'), ('#faq', 'پرسش‌ها', 'faq')]
-    links = ''.join(f'<a href="{p}academy/{h}"{" aria-current=\"page\"" if k == cur else ""}>{t}</a>' for h, t, k in nav)
+def _academy_shell(html, p, lang):
+    t = AC_COPY[lang]
     head = f'''<header class="ac-header" data-tone="light"><div class="wrap ac-bar">
-    <a class="ac-brand" href="{p}academy/">{ACADEMY_MARK}<span><b>آکادمی آبادیس</b><small>Abadis Academy</small></span></a>
-    <nav class="ac-nav" aria-label="منوی آکادمی">{links}</nav>
-    <div class="ac-cta"><a class="ac-back" href="{p}">سایت آبادیس ↗</a><a class="btn btn-primary ac-login" href="{p}academy/login/">ورود / ثبت‌نام</a></div>
+    <a class="ac-brand" href="{p}academy/">{ACADEMY_MARK}<span><b>{esc(t["brand"])}</b><small>Abadis Academy</small></span></a>
+    <div class="ac-cta"><span class="ac-lock">{esc(t["lock"])}</span><a class="ac-back" href="{p}">{esc(t["back"])}</a></div>
   </div></header>'''
-    foot = f'''<footer class="ac-footer"><div class="wrap"><span>{ACADEMY_MARK} آکادمی آبادیس — بخشی از <a href="{p}">مخازن طبی آبادیس</a></span><span class="ac-foot-note">نسخهٔ نمایشی؛ نام نهایی بخش در انتظار تأیید است.</span></div></footer>'''
+    foot = f'''<footer class="ac-footer"><div class="wrap"><span>{ACADEMY_MARK} {esc(t["brand"])}</span><span class="ac-lock">{esc(t["lock"])}</span></div></footer>'''
     html = re.sub(r'<header class="header" id="header">.*?</header>', lambda m: head, html, count=1, flags=re.S)
     html = re.sub(r'<footer.*?</footer>', lambda m: foot, html, count=1, flags=re.S)
     return html.replace('<body>', '<body class="academy">', 1)
 
+def _academy_main(p, lang, stories):
+    t = AC_COPY[lang]
+    mods = ''.join(
+        f'<article class="ac-card ac-mod" data-ac-mod="{k}"><h3>{esc(label)}</h3></article>'
+        for k, label in t['mods'])
+    phases = (
+        f'<section class="ac-phase" id="phase-1"><h2>{esc(t["p1"])}</h2>'
+        f'<p class="eyebrow">{esc(t["ind"])}</p><p class="eyebrow">{esc(t["hr"])}</p>'
+        f'<div class="ac-grid ac-grid--2" id="experiences">{stories}</div></section>'
+        f'<section class="ac-phase" id="phase-2"><h2>{esc(t["p2"])}</h2></section>'
+        f'<section class="ac-phase" id="phase-3"><h2>{esc(t["p3"])}</h2></section>'
+    )
+    filters = ''.join(
+        f'<button type="button" data-ac-filter="{k}" aria-pressed="{"true" if k == "all" else "false"}">{esc(lab)}</button>'
+        for k, lab in (('all', t['all']), ('field', t['ind']), ('hr', t['hr']), ('hire', t['p2']), ('tag', t['p3'])))
+    script = '''<script>(function(){document.querySelectorAll("[data-ac-filter]").forEach(function(btn){btn.addEventListener("click",function(){var key=btn.getAttribute("data-ac-filter");btn.parentElement.querySelectorAll("button").forEach(function(b){b.setAttribute("aria-pressed",b===btn?"true":"false");});document.querySelectorAll("[data-ac-mod]").forEach(function(el){el.hidden=key!=="all"&&el.getAttribute("data-ac-mod")!==key;});});});})();</script>'''
+    return f'''<main id="main">
+  <section class="ac-hero"><div class="wrap">
+    <p class="ac-lock">{esc(t["lock"])}</p>
+    <h1>{esc(t["h1"])}</h1>
+    <p class="ac-lead">{esc(t["lead"])}</p>
+  </div></section>
+  <section class="section" id="phases"><div class="wrap">
+    <div class="ac-filters" role="group">{filters}</div>
+    <div class="ac-grid">{mods}</div>
+    <div class="ac-phases">{phases}</div>
+  </div></section>
+</main>
+{script}'''
+
 def experiences(write):
-    p = '../'; bl = B('/تجارب-ما/')
+    bl = B('/تجارب-ما/')
     cards = []; cur = None
     for b in bl:
-        if b['t'] == 'h': cur = [b['text'], '']; cards.append(cur)
-        elif b['t'] == 'html' and cur: cur[1] += rewrite_html(b['html'], p)
-    exp = ''.join(f'<article class="ac-card ac-exp reveal"><span class="ac-tag">تجربهٔ مشتری</span><h3>{esc(t)}</h3><div class="prose">{h}</div></article>' for t, h in cards)
-    courses = [('کنترل عفونت در اتاق عمل', 'مبانی پیشگیری از عفونت‌های بیمارستانی و نقش سیستم‌های ساکشن یک‌بارمصرف', '۶ درس'),
-               ('نصب و راه‌اندازی مخازن آبادیس', 'آموزش گام‌به‌گام نصب کیسه، مخزن و اتصالات', '۴ درس'),
-               ('مدیریت پسماند بیمارستانی', 'دفع ایمن پسماند عفونی و سازگاری با استانداردها', '۵ درس')]
-    cc = ''.join(f'<article class="ac-card ac-course reveal"><span class="ac-tag ac-tag--soon">به‌زودی · نمونه</span><h3>{t}</h3><p>{d}</p><span class="ac-meta">{n}</span></article>' for t, d, n in courses)
-    main = f'''<main id="main">
-  <section class="ac-hero"><div class="wrap">{MOCK_NOTE}
-    <h1>آکادمی <em>آبادیس</em></h1>
-    <p class="ac-lead">محل آموزش، تجربه و دانش کادر درمان درباره کنترل عفونت و سیستم‌های ساکشن.</p>
-    <div class="ac-hero-cta"><a class="btn btn-primary" href="{p}academy/login/">ورود به آکادمی</a><a class="btn btn-ghost" href="#experiences">تجارب مشتریان</a></div>
-  </div></section>
-  <section class="section" id="courses"><div class="wrap"><h2>دوره‌ها <small class="ac-ph">[محتوای نمونه — در انتظار برنامهٔ آموزشی]</small></h2><div class="ac-grid">{cc}</div></div></section>
-  <section class="section section--alt" id="experiences"><div class="wrap"><h2>تجارب ما</h2><div class="ac-grid ac-grid--2">{exp}</div></div></section>
-  <section class="section" id="faq"><div class="wrap" style="max-width:820px"><h2>پرسش‌ها</h2>
-    <details class="ac-card"><summary>آکادمی آبادیس چه زمانی راه‌اندازی می‌شود؟</summary><p class="ac-ph">[در انتظار تصمیم شرکت]</p></details>
-    <details class="ac-card"><summary>آیا شرکت در دوره‌ها گواهی دارد؟</summary><p class="ac-ph">[در انتظار تصمیم شرکت]</p></details>
-  </div></section>
-</main>'''
-    html = page(p, 'experiences', 'آکادمی آبادیس', 'آکادمی آبادیس: آموزش و تجربه کادر درمان درباره کنترل عفونت و سیستم‌های ساکشن (نسخهٔ نمایشی).', main)
-    html = re.sub(r'<main id="main">\s*<main id="main">', '<main id="main">', html).replace('</main>\n</main>', '</main>')
-    write('academy/index.html', _academy_shell(html, p, 'home'))
-    pl = '../../'
-    login = f'''<main id="main"><section class="ac-auth"><div class="wrap">
-  <div class="ac-auth-card">{MOCK_NOTE}
-    <a class="ac-brand ac-brand--lg" href="{pl}academy/">{ACADEMY_MARK}<span><b>آکادمی آبادیس</b><small>Abadis Academy</small></span></a>
-    <div class="ac-tabs" role="tablist"><button type="button" role="tab" aria-selected="true">ورود</button><button type="button" role="tab" aria-selected="false">ثبت‌نام</button></div>
-    <form class="ac-form" onsubmit="event.preventDefault();this.querySelector('.ac-out').hidden=false;" novalidate>
-      <label for="acU">شماره موبایل یا ایمیل</label><input id="acU" type="text" autocomplete="username" inputmode="email" placeholder="۰۹۱۲۰۰۰۰۰۰۰">
-      <label for="acP">رمز عبور</label><input id="acP" type="password" autocomplete="current-password">
-      <div class="ac-row"><label><input type="checkbox"> مرا به خاطر بسپار</label><a href="#" onclick="return false">فراموشی رمز</a></div>
-      <button class="btn btn-primary" type="submit">ورود</button>
-      <button class="btn btn-ghost" type="button" onclick="this.form.querySelector('.ac-out').hidden=false">ورود با کد یک‌بارمصرف (OTP)</button>
-      <p class="ac-out" hidden role="status">این صفحه نمایشی است و ورود هنوز فعال نشده است.</p>
-    </form>
-    <p class="ac-small">با ورود، <a href="#" onclick="return false">قوانین آکادمی</a> را می‌پذیرید. <span class="ac-ph">[متن قوانین: در انتظار]</span></p>
-  </div></div></section></main>'''
-    html = page(pl, 'experiences', 'ورود به آکادمی آبادیس', 'ورود به آکادمی آبادیس (نسخهٔ نمایشی)', login)
-    html = re.sub(r'<main id="main">\s*<main id="main">', '<main id="main">', html).replace('</main>\n</main>', '</main>')
-    html = html.replace('<meta name="robots" content="index', '<meta name="robots" content="noindex')
-    write('academy/login/index.html', _academy_shell(html, pl, 'login'))
-    stub = '<!doctype html><html lang="fa-IR" dir="rtl"><head><meta charset="utf-8"><meta name="robots" content="noindex"><link rel="canonical" href="../academy/"><meta http-equiv="refresh" content="0; url=../academy/#experiences"><title>آکادمی آبادیس</title></head><body><p><a href="../academy/#experiences">«تجارب ما» به آکادمی آبادیس منتقل شد</a></p><script>location.replace("../academy/#experiences")</script></body></html>'
+        if b['t'] == 'h':
+            cur = [b['text'], '']; cards.append(cur)
+        elif b['t'] == 'html' and cur:
+            cur[1] += rewrite_html(b['html'], '../')
+    stories = ''.join(
+        f'<article class="ac-card ac-exp" lang="fa" dir="rtl"><h3>{esc(t)}</h3><div class="prose">{h}</div></article>'
+        for t, h in cards)
+    specs = (
+        ('academy/index.html', '../', 'fa', ''),
+        ('en/academy/index.html', '../../', 'en', 'en/'),
+        ('arabic/academy/index.html', '../../', 'ar', 'arabic/'),
+    )
+    for rel, p, lang, fa_path in specs:
+        t = AC_COPY[lang]
+        main = _academy_main(p, lang, stories)
+        html = page(p, 'experiences', t['h1'], t['lead'], main, lang=lang, fa_path='academy/')
+        html = re.sub(r'<main id="main">\s*<main id="main">', '<main id="main">', html).replace('</main>\n</main>', '</main>')
+        write(rel, _academy_shell(html, p, lang))
+        login = (f'<!doctype html><html lang="{lang}"><head><meta charset="utf-8">'
+                 f'<meta name="robots" content="noindex,nofollow"><meta http-equiv="refresh" content="0; url=../">'
+                 f'<title>{esc(t["h1"])}</title></head><body><p><a href="../">{esc(t["h1"])}</a></p>'
+                 f'<script>location.replace("../")</script></body></html>')
+        write(rel.replace('index.html', 'login/index.html'), login)
+    stub = '<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><link rel="canonical" href="../academy/"><meta http-equiv="refresh" content="0; url=../academy/#experiences"><title>آکادمی آبادیس</title></head><body><p><a href="../academy/#experiences">آکادمی آبادیس</a></p><script>location.replace("../academy/#experiences")</script></body></html>'
     write('experiences/index.html', stub)
 
 # ------------------------------------------------------------------ downloads
@@ -874,10 +987,17 @@ def careers(write):
                           'چنانچه در حال حاضر مشاغل دیگری دارید نسبت به تکمیل این بخش اقدام نمایید.')
     computer = _list_field('آشنایی با کامپیوتر', 'آشنایی با کامپیوتر', COMPUTER_COLS, True,
                            'برای اضافه کردن ردیف روی «افزودن ردیف» کلیک کنید.')
-    main = f'''{page_hero(p, [('فرصت‌های همکاری', None)], 'فرصت‌های همکاری', 'جای شما در آبادیس خالیست...', CAREERS_ART)}
+    opts = '<option>ارسال رزومه عمومی / خارج از ردیف‌های شغلی فعلی</option>' + opts
+    main = f'''{page_hero(p, [('فرصت‌های شغلی / همکاری با ما', None)], 'فرصت‌های شغلی / همکاری با ما', 'جای شما در آبادیس خالیست...', CAREERS_ART)}
   <section class="section" id="jobs"><div class="wrap">
     <h2 class="reveal" style="margin-bottom:18px">موقعیت‌های شغلی</h2>
     <div class="grid g-3">{cards}</div>
+  </div></section>
+  <section class="section" id="general-resume"><div class="wrap" style="max-width:860px">
+    <article class="card resume-intro reveal">
+      <h2>ارسال رزومه عمومی / خارج از ردیف‌های شغلی فعلی</h2>
+      <p><a class="btn btn-primary" href="#apply" id="generalResumeCta">ارسال رزومه عمومی / خارج از ردیف‌های شغلی فعلی</a></p>
+    </article>
   </div></section>
   <section class="section section--alt" id="apply"><div class="wrap" style="max-width:860px">
     <div class="card reveal">
@@ -927,7 +1047,18 @@ def careers(write):
       </form>
     </div>
   </div></section>'''
-    write('careers/index.html', page(p, 'careers', 'فرصت‌های همکاری', 'فرصت های همکاری و موقعیت های شغلی شرکت دانش‌بنیان مخازن طبی آبادیس', main, fa_path='careers/'))
+    html = page(p, 'careers', 'فرصت‌های شغلی / همکاری با ما', 'فرصت های همکاری و موقعیت های شغلی شرکت دانش‌بنیان مخازن طبی آبادیس', main, fa_path='careers/')
+    html = html.replace('</body>', '<script>document.getElementById("generalResumeCta")&&document.getElementById("generalResumeCta").addEventListener("click",function(){var s=document.querySelector(\'[name="عنوان شغلی"]\');if(s)s.value="ارسال رزومه عمومی / خارج از ردیف‌های شغلی فعلی";});</script>\n</body>', 1)
+    write('careers/index.html', html)
+    en_path = SITE / 'en/collaboration-opportunities/index.html'
+    if en_path.exists() and 'id="general-resume"' not in en_path.read_text(encoding='utf-8'):
+        en_raw = en_path.read_text(encoding='utf-8')
+        block = ('<section class="section" id="general-resume"><div class="wrap" style="max-width:860px">'
+                 '<article class="card resume-intro"><h2>General résumé submission</h2>'
+                 '<p><a class="btn btn-primary" href="#apply">General résumé / outside the current openings</a></p>'
+                 '</article></div></section>\n')
+        en_raw = en_raw.replace('<section class="section"><div class="wrap prose reveal">', block + '<section class="section"><div class="wrap prose reveal">', 1)
+        en_path.write_text(en_raw, encoding='utf-8')
     p = '../../../'
     for j in jobs:
         slug = JOB_SLUGS[j['title']]

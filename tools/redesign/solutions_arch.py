@@ -28,7 +28,7 @@ UI = {
         by_p='بر اساس محصول', by_s='بر اساس راهکار',
         keep='دسته‌بندی فعلی حفظ شود', new_path='مسیر جدید مشتری',
         note='یک محصول می‌تواند در چند راهکار حضور داشته باشد. برای مثال فیلتر در سیستم ساکشن و راهکار کنترل آلودگی کاربرد دارد، اما صفحه اصلی معرفی فیلتر فقط یک بار ساخته می‌شود.',
-        uneven='این پنج عنوان وضعیتی یکسانی ندارند. سه حوزه نخست بر محصولات موجود متکی‌اند؛ حوزه مراقبت راه هوایی متناسب با محصولات واقعاً قابل عرضه فعال است و فناوری مواد و PVA در بخش «در حال توسعه» معرفی می‌شود.',
+        uneven='این هفت عنوان وضعیتی یکسانی ندارند. سه حوزه نخست بر محصولات موجود متکی‌اند؛ حوزه مراقبت راه هوایی متناسب با محصولات واقعاً قابل عرضه فعال است و فناوری مواد و PVA در بخش «در حال توسعه» معرفی می‌شود.',
         view='مشاهده صفحه',
         order='قابل سفارش', soon='به‌زودی', rnd='در حال تحقیق و توسعه', future='آینده / در حال توسعه', active='فعال',
         legend='وضعیت تجاری',
@@ -62,7 +62,7 @@ UI = {
         subject='درخواست راهکار آبادیس',
         home='خانه',
         box='راهکار و محصول',
-        all_p='مشاهده همه محصولات ←',
+        all_p='مشاهده محصولات ←',
         all_s='مشاهده همه راهکارها ←',
         prev='قبلی',
         next='بعدی',
@@ -76,7 +76,7 @@ UI = {
         by_p='By product', by_s='By solution',
         keep='Current categories stay', new_path='New customer path',
         note='One product can belong to more than one solution. A filter, for example, is used in the suction system and in contamination control, but its canonical product page is built only once.',
-        uneven='These five titles are not in the same state. The first three rely on products already on sale. Airway care is active only for the products that can actually be supplied. Materials technology and PVA stay in the In Development section.',
+        uneven='These seven titles are not in the same state. The first three rely on products already on sale. Airway care is active only for the products that can actually be supplied. Materials technology and PVA stay in the In Development section.',
         view='View page',
         order='Orderable', soon='Coming soon', rnd='In research and development', future='Future / In development', active='Active',
         legend='Commercial status',
@@ -110,7 +110,7 @@ UI = {
         subject='Abadis solution request',
         home='Home',
         box='Solutions & Products',
-        all_p='View all products →',
+        all_p='View products →',
         all_s='View all solutions →',
         prev='Previous',
         next='Next',
@@ -124,7 +124,7 @@ UI = {
         by_p='حسب المنتج', by_s='حسب الحل',
         keep='يُحفظ التصنيف الحالي', new_path='مسار جديد للعميل',
         note='يمكن أن يظهر منتج واحد في أكثر من حل. الفلتر مثلاً يُستخدم في نظام الشفط وفي السيطرة على التلوث، لكن صفحة تعريفه الأساسية تُبنى مرة واحدة.',
-        uneven='هذه العناوين الخمسة ليست في الوضع نفسه. المجالات الثلاثة الأولى تعتمد على منتجات قائمة. العناية بالطريق الهوائي تُفعَّل بقدر المنتجات القابلة للعرض فعلاً، وتقنية المواد وPVA تبقى في قسم «قيد التطوير».',
+        uneven='هذه العناوين السبعة ليست في الوضع نفسه. المجالات الثلاثة الأولى تعتمد على منتجات قائمة. العناية بالطريق الهوائي تُفعَّل بقدر المنتجات القابلة للعرض فعلاً، وتقنية المواد وPVA تبقى في قسم «قيد التطوير».',
         view='عرض الصفحة',
         order='قابل للطلب', soon='قريباً', rnd='قيد البحث والتطوير', future='مستقبل / قيد التطوير', active='نشط',
         legend='الحالة التجارية',
@@ -158,7 +158,7 @@ UI = {
         subject='طلب حل آباديس',
         home='الرئيسية',
         box='الحلول والمنتجات',
-        all_p='عرض كل المنتجات ←',
+        all_p='عرض المنتجات ←',
         all_s='عرض كل الحلول ←',
         prev='السابق',
         next='التالي',
@@ -201,17 +201,17 @@ BY_SLUG = {c['slug']: c for c in CATALOG}
 
 PHOTO = {
     'suction-bag': 'assets/img/c/611f0398754f-640.webp',
-    'stand': 'assets/img/c/90d179b67447-640.webp',
+    'stand': 'assets/img/c/90d179b67447-1600.webp',
     'filters': 'assets/img/c/ad713458f652-640.webp',
-    'suction-tube': 'assets/img/c/92b676038309-900.webp',
-    'canister': 'assets/img/c/38a87bcfaf85-640.webp',
+    'suction-tube': 'assets/img/c/92b676038309-1600.webp',
+    'canister': 'assets/img/c/38a87bcfaf85-1600.webp',
     'connectors': 'assets/img/c/9b6630cc8eaa-640.webp',
-    'other': 'assets/img/c/a75210c08710-640.webp',
-    'mesvak': 'assets/img/c/a75210c08710-900.webp',
-    'negahdarande': 'assets/img/c/d3d867132a50-900.webp',
-    'receiver': 'assets/img/c/928b52ffc716-900.webp',
-    'sdv': 'assets/img/c/d981ab7fae6e-900.webp',
-    'paye': 'assets/img/c/227665fb9960-900.webp',
+    'other': 'assets/img/c/a75210c08710-1600.webp',
+    'mesvak': 'assets/img/c/a75210c08710-1600.webp',
+    'negahdarande': 'assets/img/c/d3d867132a50-1600.webp',
+    'receiver': 'assets/img/c/928b52ffc716-1600.webp',
+    'sdv': 'assets/img/c/d981ab7fae6e-1600.webp',
+    'paye': 'assets/img/c/227665fb9960-1600.webp',
     'anti': 'assets/img/filters/anti-1-t.webp',
     'rgl': 'assets/img/c/9b6630cc8eaa-640.webp',
 }
@@ -375,6 +375,78 @@ SOLS = [
                P('suction-tube')],
     ),
     dict(
+        slug='icu-anesthesia', future=False,
+        title=L('مراقبت‌های ویژه و بیهوشی', 'ICU and anesthesia', 'العناية المركزة والتخدير'),
+        sub=L('ICU با ساکشن دیواری', 'ICU with wall suction', 'العناية المركزة بشفط جداري'),
+        problem=L(
+            'نیاز مراکز درمانی به ساکشن مطمئن، ایمن و متناسب با شرایط استفاده. اینجا مسئله، چیدن خود سیستم است: خروجی دیواری، دستگاه پرتابل، یا ترکیبی از هر دو، با پایه‌ای که مخزن و کیسه را سر جایش نگه می‌دارد.',
+            'Care centres need suction that is reliable, safe and matched to how it is used. Here the problem is the system itself: a wall outlet, a portable unit, or both, with a stand that holds the canister and the bag in place.',
+            'تحتاج المراكز العلاجية إلى شفط موثوق وآمن ومناسب لظروف الاستخدام. المسألة هنا تركيب النظام نفسه: مخرج جداري أو جهاز محمول أو الاثنان معاً، مع قاعدة تُبقي الخزان والكيس في مكانهما.'),
+        intro=L(
+            'اجزای آبادیس در این راهکار کنار هم یک سیستم قابل سفارش می‌سازند: پایه یا ترولی، گیره دیواری، مخزن، کیسه، تیوب، رگولاتور و فیلتر حفاظتی. صفحه هیچ‌کدام تکرار نمی‌شود؛ از اینجا فقط به صفحه اصلی همان قطعه می‌روید.',
+            'Together the Abadis parts make an orderable system: stand or trolley, wall clamp, canister, bag, tube, regulator and protective filter. None of those pages is copied; this page only links to each part’s canonical page.',
+            'تكوّن قطع آباديس معاً نظاماً قابلاً للطلب: قاعدة أو ترولي، مشبك جداري، خزان، كيس، أنبوب، منظّم وفلتر واقٍ. لا تُنسخ أي صفحة؛ من هنا تنتقل فقط إلى الصفحة الأساسية لكل قطعة.'),
+        apps=L(
+            ['ICU با ساکشن دیواری', 'ICU و مراقبت از بیمار اینتوبه', 'اورژانس', 'بخش‌هایی که ساکشن مرکزی باید از سرریز مایع محافظت شود'],
+            ['ICU with wall suction', 'ICU and care of an intubated patient', 'Emergency', 'Wards where central suction must be protected from liquid overflow'],
+            ['العناية المركزة بشفط جداري', 'العناية المركزة ورعاية المريض المنبَّب', 'الطوارئ', 'أقسام يجب فيها حماية الشفط المركزي من فيض السائل']),
+        adv=L(
+            ['یک زبان مشترک بین ست دیواری و ست پرتابل', 'حفاظت مدار با فیلتر و کیسه', 'بهداشت دهان همراه با ساکشن، بدون یک صفحه محصول تازه', 'تثبیت لوله تراشه با بند قابل تنظیم'],
+            ['One shared set of parts for wall and portable kits', 'Circuit protection from the filter and the bag', 'Oral care with suction, without a new product page', 'Tube fixation with an adjustable strap'],
+            ['لغة واحدة من القطع للطقم الجداري والمحمول', 'حماية الدارة بالفلتر والكيس', 'عناية بالفم مع الشفط من دون صفحة منتج جديدة', 'تثبيت الأنبوب بحزام قابل للضبط']),
+        economy=L(
+            'صرفه‌جویی این راهکار همان فرض محاسبه‌گر است: کمتر شستن مخزن، وقتی کیسه یکبارمصرف جای تخلیه و شست‌وشو را می‌گیرد. انتخاب دیواری یا پرتابل هزینه تجهیزات را عوض می‌کند و در فرم فروش جدا می‌شود.',
+            'The saving assumption is the one in the calculator: less canister washing once a disposable bag replaces emptying and washing. Choosing wall or portable changes the equipment cost and is separated in the sales form.',
+            'فرضية التوفير هي فرضية الحاسبة: غسل أقل للخزان حين يحل الكيس ذو الاستعمال الواحد محل التفريغ والغسل. اختيار الجداري أو المحمول يغيّر كلفة التجهيز ويُفصَل في نموذج المبيعات.'),
+        packs=L(
+            [('پکیج ساکشن دیواری ICU', 'ساکشن دیواری، کیسه، فیلتر و رگولاتور'),
+             ('پکیج مراقبت راه هوایی', 'مسواک ساکشن، نگهدارنده لوله تراشه و ساکشن تیوب')],
+            [('ICU wall-suction pack', 'Wall suction, bag, filter and regulator'),
+             ('Airway-care pack', 'Suction brush, endotracheal-tube holder and suction tube')],
+            [('حزمة شفط جداري للعناية', 'شفط جداري وكيس وفلتر ومنظّم'),
+             ('حزمة العناية بالطريق الهوائي', 'فرشاة شفط وحامل أنبوب القصبة وأنبوب شفط')]),
+        parts=[P('canister', 'sdv', 'order', L('ساکشن دیواری', 'Wall suction', 'الشفط الجداري'), 'sdv'),
+               P('suction-bag'), P('filters'),
+               P('connectors', 'rgl', 'order', L('رگولاتور', 'Regulator', 'المنظّم'), 'rgl'),
+               P('other', 'mesvak', 'order', L('مسواک ساکشن', 'Suction brush', 'فرشاة الشفط'), 'mesvak'),
+               P('other', 'negahdarande', 'order', L('نگهدارنده لوله تراشه', 'Endotracheal tube holder', 'حامل أنبوب القصبة'), 'negahdarande')],
+    ),
+    dict(
+        slug='or-efficiency', future=False,
+        title=L('کارایی اتاق عمل', 'OR efficiency', 'كفاءة غرفة العمليات'),
+        sub=L('پکیج اتاق عمل پرتابل', 'Portable operating-room pack', 'حزمة غرفة عمليات محمولة'),
+        problem=L(
+            'نیاز مراکز درمانی به ساکشن مطمئن، ایمن و متناسب با شرایط استفاده. در این راهکار مسئله، جمع‌آوری مایعات و ترشحات حین عمل یا مراقبت است، بدون شست‌وشوی مکرر مخزن و بدون بازماندن مدار.',
+            'Care centres need suction that is reliable, safe and matched to how it is used. Here the problem is collecting fluids and secretions during a procedure or during care, without repeatedly washing the canister and without leaving the circuit open.',
+            'تحتاج المراكز العلاجية إلى شفط موثوق وآمن ومناسب لظروف الاستخدام. المسألة هنا جمع السوائل والإفرازات أثناء الإجراء أو الرعاية، من دون غسل الخزان مراراً ومن دون ترك الدارة مفتوحة.'),
+        intro=L(
+            'سیستم ساکشن آبادیس در این راهکار کیسه یکبارمصرف را داخل مخزن می‌نشاند، تیوب و اتصالات مدار بیمار را به همان مجموعه می‌رسانند و درِ کیسه با فیلتر هیدروفوبیک از سرریز به سمت خلأ محافظت می‌کند. هر جزء صفحه اصلی خودش را دارد.',
+            'In this solution the Abadis suction system seats a disposable liner inside the canister. Tubing and connectors bring the patient circuit to that set, and the bag lid with its hydrophobic filter protects the vacuum side from overflow. Each part keeps its own canonical page.',
+            'في هذا الحل يضع نظام شفط آباديس كيساً ذا استعمال واحد داخل الخزان. الأنبوب والوصلات يوصلان دارة المريض إلى المجموعة نفسها، وغطاء الكيس بفلتره الكاره للماء يحمي جهة الخلاء من الفيض. كل جزء يحتفظ بصفحته الأساسية.'),
+        apps=L(
+            ['اتاق عمل (OR)', 'اتاق عمل با ست پرتابل', 'اتاق عمل، وقتی بهداشت دهان یا تثبیت لوله تراشه لازم است'],
+            ['Operating room (OR)', 'Operating room with a portable set', 'Operating room, when oral care or tube fixation is required'],
+            ['غرفة العمليات (OR)', 'غرفة العمليات بطقم محمول', 'غرفة العمليات حين تلزم عناية الفم أو تثبيت أنبوب القصبة']),
+        adv=L(
+            ['ایمنی مدار بسته و کاهش تماس با مایع', 'نصب روی پایه دیواری یا پرتابل، تکی یا سری', 'نصب و جابه‌جایی با ترولی و گیره', 'حذف بخش بزرگی از شست‌وشوی مخزن'],
+            ['A closed circuit and less contact with fluid', 'Fits a wall stand or a portable stand, single or in series', 'Install and move with the trolley and clamp', 'Removes most canister washing'],
+            ['دارة مغلقة وتلامس أقل مع السائل', 'يُركَّب على قاعدة جدارية أو محمولة، مفرداً أو على التسلسل', 'تركيب ونقل بالترولي والمشبك', 'إلغاء الجزء الأكبر من غسل الخزان']),
+        economy=L(
+            'محاسبه‌گر صرفه‌جویی و نسخه عملی آن، گردش‌کار کیسه یکبارمصرف را با شست‌وشوی مخزن چندبارمصرف مقایسه می‌کنند: آب، ماده شوینده، زمان نیروی انسانی و انرژی. عدد به تعداد تخت، نوع بخش و الگوی مصرف همان مرکز بستگی دارد.',
+            'The savings calculator and its practical version compare a disposable-liner workflow with washing a reusable canister: water, detergent, staff time and energy. The figure depends on that centre’s beds, department and usage.',
+            'تقارن حاسبة التوفير ونسختها العملية مسار الكيس ذي الاستعمال الواحد بغسل الخزان المتعدد الاستعمال: الماء والمنظّف ووقت الطاقم والطاقة. الرقم يعتمد على أسرّة ذلك المركز وقسمه ونمط استهلاكه.'),
+        packs=L(
+            [('پکیج اتاق عمل پرتابل', 'ترولی، کیسه ساکشن، تیوب و اتصالات'),
+             ('پکیج اتاق عمل پرتابل', 'ترولی، مخزن، کیسه، تیوب و اتصالات')],
+            [('Portable operating-room pack', 'Trolley, suction bag, tube and connectors'),
+             ('Portable operating-room pack', 'Trolley, canister, bag, tube and connectors')],
+            [('حزمة غرفة عمليات محمولة', 'ترولي وكيس شفط وأنبوب ووصلات'),
+             ('حزمة غرفة عمليات محمولة', 'ترولي وخزان وكيس وأنبوب ووصلات')]),
+        parts=[P('stand', 'paye', 'order', L('پایه ساکشن پرتابل (ترولی)', 'Portable suction trolley', 'قاعدة الشفط المحمولة'), 'paye'),
+               P('suction-bag'), P('suction-tube'), P('connectors'),
+               P('canister')],
+    ),
+    dict(
         slug='waste-management-pva', future=True,
         title=L('کنترل آلودگی و مدیریت پسماند', 'Contamination control and waste management', 'السيطرة على التلوث وإدارة النفايات'),
         sub=L('فناوری مواد و محصولات آینده', 'Materials technology and future products', 'تقنية المواد والمنتجات المستقبلية'),
@@ -433,9 +505,20 @@ def status_for(tab_id):
 
 
 def badge(lang, status):
+    # «قابل سفارش» / Coming soon were rollout stamps. Future and R&D stay on PVA.
+    if status in ('order', 'soon'):
+        return ''
     ui = UI[lang]
-    label = {'order': ui['order'], 'soon': ui['soon'], 'rnd': ui['rnd'], 'future': ui['future']}[status]
+    label = {'rnd': ui['rnd'], 'future': ui['future']}[status]
     return f'<span class="ps-badge ps-badge--{status}">{esc(label)}</span>'
+
+
+def strip_rollout_badges(html):
+    html = re.sub(
+        r'\s*<p class="ps-hero-badge">(?:(?!</p>).)*ps-badge--(?:order|soon)(?:(?!</p>).)*</p>',
+        '', html, flags=re.S)
+    html = re.sub(r'<span class="ps-badge ps-badge--(?:order|soon)">.*?</span>', '', html, flags=re.S)
+    return html
 
 
 def tab_anchor(tab_id, title, lang):
@@ -608,8 +691,8 @@ def architecture(p, lang, default='product', layers=False):
         _card(p, lang, sol_href(p, lang, s['slug']), s['title'][lang], s['sub'][lang], s['parts'][0]['photo'] or s['parts'][0]['slug'],
               'solution', badge(lang, 'future') if s['future'] else f'<span class="ps-state">{esc(ui["active"])}</span>')
         for s in SOLS)
-    legend = (f'<p class="ps-legend"><span>{esc(ui["legend"])}</span>{badge(lang, "order")}'
-              f'{badge(lang, "soon")}{badge(lang, "rnd")}</p>')
+    legend = (f'<p class="ps-legend"><span>{esc(ui["legend"])}</span>'
+              f'{badge(lang, "future")}{badge(lang, "rnd")}</p>')
     p_on = 'true' if default == 'product' else 'false'
     s_on = 'true' if default == 'solution' else 'false'
     tabs = f'''<div class="ps-root" data-ps data-ps-default="{default}">
@@ -692,8 +775,8 @@ def home_section(p, lang):
       <div class="ps-panel" id="by-solution" role="tabpanel" aria-labelledby="tab-by-solution" data-ps-panel="solution" hidden>
         {carousel(sol_cards, len(SOLS), ui["prev"], ui["next"], ui["rail_s"])}</div>
       <p class="h-all">
-        <a class="btn btn-ghost" href="{prod_hub}">{esc(ui["all_p"])}</a>
-        <a class="btn btn-ghost" href="{sol_hub}">{esc(ui["all_s"])}</a>
+        <a class="btn btn-ghost" data-ps-cta="product" href="{prod_hub}">{esc(ui["all_p"])}</a>
+        <a class="btn btn-ghost" data-ps-cta="solution" href="{sol_hub}">{esc(ui["all_s"])}</a>
       </p>
     </div>'''
     return (f'  <section class="section ps-block" id="products"><div class="wrap">'
@@ -919,7 +1002,7 @@ PRODUCT_FILES = [
 
 
 def stamp_product_html(html, p, lang, slug):
-    html = inject_h1_badge(html, lang, 'order')
+    html = strip_rollout_badges(html)
     html = badge_tabs(html, lang)
     html = badge_size_links(html, lang)
     html = badge_panel_heads(html, lang)
@@ -965,6 +1048,33 @@ def stamp_home():
     return n
 
 
+_SOL_INSERT = {
+    'fa': (('icu-anesthesia', 'مراقبت‌های ویژه و بیهوشی'), ('or-efficiency', 'کارایی اتاق عمل')),
+    'en': (('icu-anesthesia', 'ICU and anesthesia'), ('or-efficiency', 'OR efficiency')),
+    'ar': (('icu-anesthesia', 'العناية المركزة والتخدير'), ('or-efficiency', 'كفاءة غرفة العمليات')),
+}
+
+
+def patch_solution_links(html):
+    """Stamped menus skip nav refresh. Insert the two new solution links before PVA."""
+    if 'icu-anesthesia/' in html and 'or-efficiency/' in html:
+        return html
+    if 'waste-management-pva/' not in html:
+        return html
+    lang = _lang_of(html)
+    rows = _SOL_INSERT.get(lang) or _SOL_INSERT['fa']
+
+    def repl(m):
+        prefix = m.group(2)
+        links = ''.join(
+            f'<a href="{prefix}{slug}/" role="menuitem">{label}</a>' for slug, label in rows)
+        return links + m.group(0)
+
+    return re.sub(
+        r'(<a href="([^"]*)waste-management-pva/" role="menuitem">)',
+        repl, html, count=1)
+
+
 def stamp_site():
     nav_n = foot_n = 0
     missed = []
@@ -972,6 +1082,10 @@ def stamp_site():
         rel = str(path.relative_to(SITE))
         raw = path.read_text(encoding='utf-8')
         html, hit = stamp_nav_html(raw, rel)
+        patched = patch_solution_links(html)
+        if patched != html:
+            html = patched
+            hit = True
         if hit:
             nav_n += 1
         elif 'id="mainNav"' in raw and 'data-ps-nav="products"' not in raw and NAV_PAT[_lang_of(raw)].search(raw):

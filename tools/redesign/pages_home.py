@@ -1,5 +1,5 @@
 """Generate site/index.html — Zagros hero + about / why / calculator / news / articles / customers."""
-from lib import PAGES, esc, fa
+from lib import PAGES, esc, fa, SITE
 import pages_dial
 from layout import page, section_mark
 from render import picture
@@ -577,19 +577,39 @@ def impact_section():
   </section>'''
 
 
-def why_v2():
-    checks = ''.join(f'<li>{esc(c)}</li>' for c in WHY_CHECKS)
-    vals = ''.join(f'<div class="card value reveal"><h3>{esc(t)}</h3><p>{esc(d)}</p></div>' for t, d in LIVE_VALUES)
-    return f'''  <section class="section section--alt" id="why">
+def why_block(p, eyebrow, title, values, factory, checks, metrics):
+    """Richer why section. Copy stays the live sentences; the anim slot is empty for the designer."""
+    metric_html = ''.join(
+        f'<div class="why-metric"><strong>{esc(n)}</strong><span>{esc(label)}</span></div>' for n, label in metrics)
+    cards = ''.join(
+        f'<article class="why-card"><h3>{esc(t)}</h3><p>{esc(d)}</p></article>' for t, d in values)
+    lis = ''.join(f'<li>{esc(c)}</li>' for c in checks)
+    return f'''  <section class="section section--alt why-abadis" id="why" data-why-anim>
     <div class="wrap">
-      <div class="section-head reveal has-mark">{section_mark('', 'why')}<div><p class="eyebrow">چرا آبادیس؟</p><h2>ارزش افزوده‌های کیسه ساکشن یکبار مصرف</h2></div></div>
-      <div class="grid g-4 values">{vals}</div>
+      <div class="why-head reveal">
+        <img class="why-logo why-logo-light" src="{p}assets/img/icons/Q2-teal.svg" alt="" width="88" height="88">
+        <img class="why-logo why-logo-dark" src="{p}assets/img/icons/Q2-dark.svg" alt="" width="88" height="88">
+        <div class="section-head has-mark"><div><p class="eyebrow">{esc(eyebrow)}</p><h2>{esc(title)}</h2></div></div>
+      </div>
+      <div class="why-metrics">{metric_html}</div>
+      <div class="why-anim-slot" id="why-anim" data-why-anim aria-hidden="true"></div>
+      <div class="why-cards">{cards}</div>
       <div class="split" style="margin-top:28px">
-        <div class="reveal"><p>{esc(FACTORY_LEAD)}</p></div>
-        <ul class="checks reveal">{checks}</ul>
+        <div class="reveal"><p>{esc(factory)}</p></div>
+        <ul class="checks reveal">{lis}</ul>
       </div>
     </div>
   </section>'''
+
+
+def why_v2():
+    metrics = [
+        ('۵ میلیون', 'ظرفیت تولید سالانه کیسه ساکشن یکبارمصرف'),
+        (fmt_stat(98.99, 'fa', 2) + '٪', 'میزان رضایت مشتریان'),
+        (fmt_stat(0.0018, 'fa', 4) + '٪', 'میزان خرابی محصول'),
+        ('کاهش هزینه‌ها', LIVE_VALUES[0][1]),
+    ]
+    return why_block('', 'چرا آبادیس؟', 'ارزش افزوده‌های کیسه ساکشن یکبار مصرف', LIVE_VALUES, FACTORY_LEAD, WHY_CHECKS, metrics)
 
 
 def products_v2():
@@ -630,22 +650,35 @@ def posts_unified():
         <div class="ps-panel is-default" id="news" role="tabpanel" aria-labelledby="tab-home-news" data-ps-panel="news">{news_rail}</div>
         <div class="ps-panel" id="articles" role="tabpanel" aria-labelledby="tab-home-articles" data-ps-panel="articles" hidden>{art_rail}</div>
         <p class="h-all">
-          <a class="btn btn-ghost" href="news/">مشاهده همه اخبار ←</a>
-          <a class="btn btn-ghost" href="articles/">مشاهده همه مقالات ←</a>
+          <a class="btn btn-ghost" data-ps-cta="news" href="news/">مشاهده همه اخبار ←</a>
+          <a class="btn btn-ghost" data-ps-cta="articles" href="articles/">مشاهده همه مقالات ←</a>
         </p>
       </div>
     </div>
   </section>'''
 
 
+def membership_orbit(p, alt, core):
+    """Circular membership orbit. Positions are tokens a designer can restyle."""
+    logos = [n for n in MEMBERSHIPS if (SITE / _live(n)).exists()]
+    n = len(logos) or 1
+    items = []
+    for i, name in enumerate(logos):
+        deg = round(360 * i / n, 2)
+        items.append(
+            f'<span class="orbit-item" style="--a:{deg}deg"><img src="{p}{_live(name)}" alt="{esc(alt)}" loading="lazy" decoding="async"></span>')
+    return (f'<div class="orbit" id="moving-targets"><div class="orbit-spin">{"".join(items)}</div>'
+            f'<div class="orbit-core">{esc(core)}</div></div>')
+
+
 def memberships_section():
-    import pathlib
     from lib import SITE
     logos = ''.join(f'<li><img src="{_live(n)}" alt="عضویت آبادیس" loading="lazy" decoding="async"></li>'
                     for n in MEMBERSHIPS if (SITE / _live(n)).exists())
     return f'''  <section class="section" id="memberships">
     <div class="wrap">
-      <div class="section-head reveal"><p class="eyebrow">عضویت‌ها</p><h2>عضویت ها</h2></div>
+      <div class="section-head reveal"><p class="eyebrow">نمایندگی‌ها و عضویت‌ها</p><h2>عضویت ها</h2></div>
+      {membership_orbit('', 'عضویت آبادیس', 'اهداف در حال حرکت')}
       <ul class="member-logos reveal">{logos}</ul>
     </div>
   </section>'''

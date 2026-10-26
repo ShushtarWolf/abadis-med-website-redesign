@@ -161,6 +161,11 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
     if site_path in ('contact-us/', 'اتصل-بنا/'):
         from icons import decorate_contact_html
         body = decorate_contact_html(body)
+    if site_path == 'collaboration-opportunities/':
+        body = ('<section class="section" id="general-resume"><div class="wrap" style="max-width:860px">'
+                '<article class="card resume-intro"><h2>General résumé submission</h2>'
+                '<p><a class="btn btn-primary" href="#apply">General résumé / outside the current openings</a></p>'
+                '</article></div></section>') + body
     if site_path in ('about-us/', 'من-نحن/'):
         from pages_company import regroup_i18n_certs, apply_live_about, about_copy
         body = apply_live_about(body, lang)
@@ -188,7 +193,7 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
     after = ''
     if site_path in ('our-customers/', 'customers/'):
         from pages_company import customers_all
-        after = customers_all(lang)
+        after = customers_all(lang, p)
         if lang == 'ar':
             title = 'عملاؤنا'; desc = 'المراكز الصحية التي تستخدم منتجات آباديس الطبية في أنحاء إيران.'
     fa_path = _fa_for(site_path, lang)

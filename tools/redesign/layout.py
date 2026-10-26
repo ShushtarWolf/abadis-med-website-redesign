@@ -65,6 +65,7 @@ def head(p, title, desc, og=None, lang='fa', fa_path='', canonical_path=None, ht
 <link rel="preload" href="{p}assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{p}assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{p}assets/css/site.css">
+<link rel="stylesheet" href="{p}assets/css/boss-order.css">
 <link rel="stylesheet" href="{p}assets/css/consent.css">
 <link rel="stylesheet" href="{p}assets/css/footer-motion.css">
 </head>
@@ -172,7 +173,11 @@ def footer_pills_html(lang):
         _foot_icon('tw', TW_URL, lab('twitter'), svg_twitter(), ext),
         _foot_icon('fb', FB_URL, lab('facebook'), svg_facebook(), ext),
         _foot_icon('li', LI_URL, lab('linkedin'), svg_linkedin(), ext),
-        _foot_placeholder('pi', lab('pinterest'), svg_pinterest(), PIN_NOTE),
+        _foot_placeholder('pi', lab('pinterest'), svg_pinterest(), {
+            'fa': 'نشانی رسمی پینترست در آبادیس منتشر نشده است',
+            'en': 'No official Pinterest URL on abadis-med.com',
+            'ar': 'لا يوجد رابط رسمي لبينترست على موقع آباديس',
+        }[lang]),
     ))
 
 
