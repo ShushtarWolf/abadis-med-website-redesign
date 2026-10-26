@@ -866,6 +866,24 @@
       if (asksPartners) {
         if (doc.chunk.id === 'partners-and-memberships') score += 48;
       }
+      if (/تاریخچه|داستان ابادیس|خط زمانی|تایم لاین|سال تاسیس|1396|1397|1399|1400|1401|1402|1403|1404|1405|۱۳۹۶|۱۳۹۷|۱۳۹۹|۱۴۰۰|۱۴۰۱|۱۴۰۲|۱۴۰۳|۱۴۰۴|۱۴۰۵|عراق|عمان|فیلتر متخلخل/.test(qRaw)) {
+        if (doc.chunk.id === 'boss-abadis-timeline-1396-1405') score += 52;
+      }
+      if (/1410|۱۴۱۰|موتور رشد|سه موتور|برنامه پنج ساله|پنج ساله سوم|۷۰ درصد|70 درصد|افق توسعه/.test(qRaw)) {
+        if (doc.chunk.id === 'boss-strategic-vision-1410-and-growth-engines') score += 55;
+      }
+      if (/برند بوک|هویت بصری|کد رنگی|رنگ سازمانی|فونت|کلمه|ایران سنس|پیام گستر|crm|بازی ده سالگی|کمپین ده سالگی|تجارب ما|mbti/.test(qRaw)) {
+        if (doc.chunk.id === 'boss-brand-book-identity-crm-game') score += 55;
+      }
+      if (/لیست مقالات|همه مقالات|فهرست مقالات|عنوان مقالات|مقالات سایت|چند مقاله/.test(qRaw)) {
+        if (doc.chunk.id === 'site-articles-archive') score += 55;
+      }
+      if (/لیست اخبار|همه اخبار|فهرست اخبار|آخرین اخبار|اخبار سایت|رویدادهای ابادیس/.test(qRaw)) {
+        if (doc.chunk.id === 'site-news-archive') score += 55;
+      }
+      if (/بیمارستان های|مراکز درمانی|مراکز جراحی|کدام بیمارستان/.test(qRaw) && doc.chunk.id.indexOf('hospitals-province-') === 0) {
+        score += 35;
+      }
       if (score > 0) {
         scored.push({ chunk: doc.chunk, score: score });
       }
@@ -929,7 +947,7 @@
     }
     var lead = composeWarmLead(hit);
     var shown = body;
-    var maxChars = (hit.id === 'dealers-directory-all' || hit.id === 'executive-team-full' || hit.id === 'sales-experts-team') ? 2600 : 1200;
+    var maxChars = (hit.id === 'dealers-directory-all' || hit.id === 'executive-team-full' || hit.id === 'sales-experts-team' || hit.id === 'site-news-archive' || hit.id === 'site-articles-archive' || hit.id.indexOf('boss-') === 0 || hit.id.indexOf('hospitals-province-') === 0 || hit.id.indexOf('page-') === 0) ? 2800 : 1600;
     if (shown.length > maxChars) {
       shown = shown.slice(0, maxChars);
       var cut = Math.max(shown.lastIndexOf('.'), shown.lastIndexOf('؟'), shown.lastIndexOf('?'), shown.lastIndexOf('\n'));
