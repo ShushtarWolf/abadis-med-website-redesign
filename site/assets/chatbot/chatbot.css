@@ -1,4 +1,4 @@
-/* Abadis Sales & Academy chatbot. Uses site.css tokens when the page loads them. */
+/* Abadis Sales & Academy AI Assistant — clean visitor widget */
 .abadis-chat {
   --ac-teal: #066163;
   --ac-teal-2: #0e7475;
@@ -11,34 +11,48 @@
   --ac-deep: #043e40;
   font-family: Kalameh, "Segoe UI", Tahoma, sans-serif;
   color: var(--ac-ink);
-  line-height: 1.65;
+  line-height: 1.7;
 }
 .abadis-chat-launcher {
   position: fixed;
-  z-index: 80;
+  z-index: 95;
   inset-inline-end: 20px;
   bottom: 20px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 10px;
-  border: 0;
+  border: 1px solid rgba(255, 255, 255, .22);
   border-radius: 999px;
-  padding: 12px 16px 12px 12px;
-  background: var(--ac-teal);
+  padding: 12px 18px 12px 14px;
+  background: linear-gradient(135deg, #066163, #0e7475);
   color: #f3fafa;
   font: inherit;
+  font-size: .92rem;
   font-weight: 800;
   cursor: pointer;
-  box-shadow: 0 10px 28px rgba(4, 40, 42, .28);
+  box-shadow: 0 12px 32px rgba(4, 40, 42, .32);
+  transition: transform .18s ease, box-shadow .18s ease;
 }
-.abadis-chat-launcher svg { width: 26px; height: 26px; display: block; }
+.abadis-chat-launcher:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgba(4, 40, 42, .4);
+}
+.abadis-chat-launcher svg { width: 24px; height: 24px; display: block; flex-shrink: 0; }
+.abadis-chat-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #9eceb4;
+  box-shadow: 0 0 0 3px rgba(158, 206, 180, .28);
+  flex-shrink: 0;
+}
 .abadis-chat-panel {
   position: fixed;
-  z-index: 81;
+  z-index: 96;
   inset-inline-end: 20px;
-  bottom: 84px;
-  width: min(400px, calc(100vw - 24px));
-  height: min(640px, calc(100vh - 110px));
+  bottom: 82px;
+  width: min(410px, calc(100vw - 24px));
+  height: min(640px, calc(100vh - 108px));
   display: flex;
   flex-direction: column;
   background: var(--ac-bg);
@@ -46,48 +60,28 @@
   border: 1px solid var(--ac-line);
   border-radius: 22px;
   overflow: hidden;
-  box-shadow: 0 18px 50px rgba(4, 40, 42, .22);
+  box-shadow: 0 22px 56px rgba(4, 40, 42, .26);
 }
 .abadis-chat-panel[hidden] { display: none !important; }
 .abadis-chat-head {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
-  padding: 12px 12px 10px;
-  background: var(--ac-deep);
+  gap: 10px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #043e40, #066163);
   color: #f3fafa;
 }
-.abadis-chat-nin {
-  flex: 1 0 100%;
-  margin: 0;
-  padding: 6px 8px;
-  border-radius: 10px;
-  background: rgba(232, 243, 243, .16);
-  color: #f3fafa;
-  font-size: .68rem;
-  font-weight: 800;
-  line-height: 1.45;
-}
-.abadis-chat-nin strong,
-.abadis-chat-nin span { display: block; }
-.abadis-chat-nin span { font-weight: 650; opacity: .88; margin-top: 2px; }
-.abadis-chat-engine-tag {
-  margin: 0 0 4px;
-  font-size: .72rem;
-  font-weight: 800;
-  color: var(--ac-teal);
-}
-.abadis-chat-tiers { display: flex; flex-direction: column; gap: 4px; margin: 8px 0; }
-.abadis-chat-tiers label { display: flex; gap: 6px; align-items: flex-start; font-weight: 650; }
+.abadis-chat-head-titles { flex: 1; min-width: 0; }
 .abadis-chat-head h2 {
   margin: 0;
-  font-size: .98rem;
+  font-size: 1rem;
   font-weight: 800;
   line-height: 1.35;
-  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-.abadis-chat-head p { margin: 2px 0 0; font-size: .75rem; opacity: .8; font-weight: 500; }
+.abadis-chat-head p { margin: 2px 0 0; font-size: .76rem; opacity: .86; font-weight: 500; }
 .abadis-chat-langs, .abadis-chat-tabs {
   display: flex;
   gap: 4px;
@@ -103,19 +97,19 @@
 }
 .abadis-chat-langs button,
 .abadis-chat-iconbtn {
-  border: 1px solid rgba(255,255,255,.25);
-  background: transparent;
+  border: 1px solid rgba(255,255,255,.26);
+  background: rgba(255,255,255,.08);
   color: inherit;
   border-radius: 999px;
-  min-width: 36px;
-  height: 32px;
+  min-width: 34px;
+  height: 30px;
   padding: 0 8px;
   font-weight: 800;
-  font-size: .78rem;
+  font-size: .75rem;
 }
-.abadis-chat-langs button[aria-pressed="true"] { background: #fff; color: var(--ac-deep); }
+.abadis-chat-langs button[aria-pressed="true"] { background: #fff; color: var(--ac-deep); border-color: #fff; }
 .abadis-chat-tabs {
-  padding: 8px;
+  padding: 8px 10px;
   background: var(--ac-bg-2);
   border-bottom: 1px solid var(--ac-line);
 }
@@ -125,31 +119,36 @@
   background: transparent;
   color: var(--ac-ink-2);
   border-radius: 12px;
-  padding: 8px 6px;
+  padding: 7px 8px;
   font-weight: 800;
   font-size: .82rem;
+  transition: background .15s ease, color .15s ease;
 }
 .abadis-chat-tabs button[aria-selected="true"] {
   background: var(--ac-bg);
   color: var(--ac-teal);
   border-color: var(--ac-line);
+  box-shadow: 0 2px 6px rgba(4, 40, 42, .06);
 }
 .abadis-chat-log {
   flex: 1;
-  overflow: auto;
-  padding: 12px;
+  overflow-y: auto;
+  padding: 14px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   background: var(--ac-bg);
 }
 .abadis-chat-msg {
   max-width: 92%;
-  padding: 10px 12px;
-  border-radius: 16px;
-  font-size: .92rem;
-  white-space: pre-wrap;
+  padding: 11px 14px;
+  border-radius: 18px;
+  font-size: .9rem;
+  line-height: 1.72;
+  word-wrap: break-word;
 }
+.abadis-chat-msg strong { font-weight: 800; color: var(--ac-teal); }
+.abadis-chat-msg--user strong { color: #fff; }
 .abadis-chat-msg--bot {
   align-self: flex-start;
   background: var(--ac-bg-2);
@@ -161,150 +160,120 @@
   color: #f3fafa;
   border-end-end-radius: 4px;
 }
-.abadis-chat-msg a { color: inherit; font-weight: 800; }
+.abadis-chat-msg a { color: inherit; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
 .abadis-chat-msg--bot a { color: var(--ac-teal); }
-.abadis-chat-src { display: block; margin-top: 6px; font-size: .78rem; }
+.abadis-chat-src {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--ac-line);
+  font-size: .78rem;
+}
 .abadis-chat-chips, .abadis-chat-choices {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  padding: 0 12px 8px;
+  padding: 6px 12px 8px;
+  background: var(--ac-bg);
 }
+.abadis-chat-chips:empty, .abadis-chat-choices:empty { display: none; }
 .abadis-chat-chip, .abadis-chat-choice {
   border: 1px solid var(--ac-line);
   background: var(--ac-bg);
   color: var(--ac-ink);
   border-radius: 999px;
-  padding: 6px 10px;
-  font-size: .8rem;
+  padding: 6px 12px;
+  font-size: .79rem;
   font-weight: 700;
+  transition: background .15s ease, border-color .15s ease, color .15s ease;
 }
-.abadis-chat-chip:hover, .abadis-chat-choice:hover { border-color: var(--ac-teal-2); }
+.abadis-chat-choice {
+  background: rgba(6, 97, 99, .07);
+  border-color: rgba(6, 97, 99, .26);
+  color: var(--ac-teal);
+}
+.abadis-chat-chip:hover, .abadis-chat-choice:hover {
+  border-color: var(--ac-teal);
+  background: var(--ac-teal);
+  color: #fff;
+}
 .abadis-chat-form {
   display: flex;
-  gap: 6px;
-  padding: 8px;
+  gap: 8px;
+  padding: 10px 12px;
   border-top: 1px solid var(--ac-line);
   background: var(--ac-bg);
 }
 .abadis-chat-form input {
   flex: 1;
   border: 1px solid var(--ac-line);
-  border-radius: 12px;
-  padding: 10px 12px;
+  border-radius: 14px;
+  padding: 10px 14px;
   font: inherit;
-  font-size: 16px;
+  font-size: 15px;
   color: var(--ac-ink);
   background: var(--ac-bg-2);
+  outline: none;
+}
+.abadis-chat-form input:focus {
+  border-color: var(--ac-teal);
+  background: var(--ac-bg);
 }
 .abadis-chat-send {
   border: 0;
-  border-radius: 12px;
-  padding: 0 14px;
+  border-radius: 14px;
+  padding: 0 16px;
   background: var(--ac-teal);
   color: #fff;
   font-weight: 800;
+  font-size: .88rem;
 }
-.abadis-chat-llm {
-  padding: 0 12px 8px;
-  font-size: .75rem;
-  color: var(--ac-muted);
-}
-.abadis-chat-llm summary { cursor: pointer; font-weight: 700; }
-.abadis-chat-llm input {
-  width: 100%;
-  margin-top: 6px;
-  font: inherit;
-  font-size: .8rem;
-  padding: 6px 8px;
-  border-radius: 8px;
-  border: 1px solid var(--ac-line);
-  background: var(--ac-bg);
-  color: var(--ac-ink);
-}
+.abadis-chat-send:hover { background: var(--ac-teal-2); }
 .abadis-chat.is-docked .abadis-chat-launcher { display: none; }
 .abadis-chat.is-docked .abadis-chat-panel {
   position: relative;
   inset: auto;
   width: 100%;
-  height: min(720px, calc(100vh - 180px));
+  height: min(680px, calc(100vh - 160px));
   bottom: auto;
 }
 html[data-theme="dark"] .abadis-chat-panel,
-html[data-theme="noir"] .abadis-chat-panel { box-shadow: 0 18px 50px rgba(0,0,0,.45); }
+html[data-theme="noir"] .abadis-chat-panel {
+  box-shadow: 0 22px 56px rgba(0,0,0,.55);
+}
+html[data-theme="dark"] .abadis-chat-msg strong,
+html[data-theme="noir"] .abadis-chat-msg strong {
+  color: #9eceb4;
+}
+html[data-theme="dark"] .abadis-chat-msg--bot a,
+html[data-theme="noir"] .abadis-chat-msg--bot a {
+  color: #9eceb4;
+}
+@media (max-width: 640px) {
+  .abadis-chat-launcher {
+    inset-inline-end: 14px;
+    bottom: 14px;
+    padding: 10px 14px 10px 12px;
+    font-size: .84rem;
+  }
+  .abadis-chat-panel {
+    inset-inline-end: 10px;
+    bottom: 68px;
+    width: calc(100vw - 20px);
+    height: min(560px, calc(100vh - 84px));
+    border-radius: 18px;
+  }
+}
 
-/* Demo stage */
-.chat-demo { padding: 108px 0 64px; }
-.chat-demo-kicker {
-  margin: 0 0 8px;
-  color: var(--teal, #066163);
-  font-weight: 800;
-  letter-spacing: 0;
+body:has(.consent-bar:not([hidden])) .abadis-chat-launcher {
+  bottom: 78px;
 }
-.chat-demo-nin {
-  margin: 0 0 14px;
-  padding: 12px 14px;
-  border-radius: 16px;
-  background: var(--bg-2, #e8f3f3);
-  color: var(--ink, #043e40);
-  border: 1px solid var(--line, rgba(6, 97, 99, .2));
+body:has(.consent-bar:not([hidden])) .abadis-chat-panel {
+  bottom: 138px;
 }
-.chat-demo-nin strong,
-.chat-demo-nin span { display: block; }
-.chat-demo-nin span { margin-top: 4px; font-weight: 750; }
-.chat-demo-arch { max-width: 46rem; }
-.chat-demo-arch ol { margin: 8px 0 0; padding-inline-start: 1.2rem; }
-.chat-demo-arch li { margin: 4px 0; }
-.chat-demo-status { font-weight: 800; color: var(--teal, #066163); }
-.chat-demo-cut {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  font-weight: 800;
-  margin: 8px 0 16px;
-}
-.chat-demo h1 { margin: 0 0 8px; font-size: clamp(1.6rem, 3vw, 2.4rem); line-height: 1.35; }
-.chat-demo-lead { max-width: 42rem; color: var(--ink-2, #2f4e51); margin: 0 0 16px; }
-.chat-demo-toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-.chat-demo-toolbar button {
-  font: inherit;
-  font-weight: 800;
-  border-radius: 999px;
-  border: 1px solid var(--line, rgba(6,97,99,.16));
-  background: var(--surface, #fff);
-  color: var(--ink, #0a2e32);
-  padding: 8px 14px;
-  cursor: pointer;
-}
-.chat-demo-toolbar button[aria-pressed="true"] { background: #066163; color: #f3fafa; border-color: #066163; }
-.chat-demo-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 16px; align-items: start; }
-.chat-demo-stage {
-  border-radius: 24px;
-  overflow: hidden;
-  border: 1px solid var(--line, rgba(6,97,99,.16));
-  background:
-    linear-gradient(160deg, rgba(6,97,99,.92), rgba(4,62,64,.88)),
-    var(--bg-2, #e8f3f3);
-  color: #f3fafa;
-  min-height: 520px;
-  padding: 22px;
-}
-.chat-demo-stage img.chat-demo-logo { width: 148px; height: auto; }
-.chat-demo-stage h2 { margin: 14px 0 8px; font-size: 1.45rem; line-height: 1.4; }
-.chat-demo-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 18px; }
-.chat-demo-cards a {
-  display: block;
-  text-decoration: none;
-  color: #04282a;
-  background: #f3fafa;
-  border-radius: 16px;
-  padding: 12px;
-  font-weight: 800;
-  font-size: .88rem;
-}
-.chat-demo-cards a span { display: block; font-weight: 500; color: #2f4e51; margin-top: 4px; font-size: .78rem; }
-.chat-demo-dock:empty { display: none; }
-@media (max-width: 900px) {
-  .chat-demo-grid, .chat-demo-cards { grid-template-columns: 1fr; }
-  .abadis-chat-launcher span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.abadis-chat-typing {
+  opacity: .75;
+  font-style: italic;
 }
