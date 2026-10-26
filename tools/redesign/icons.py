@@ -128,6 +128,11 @@ def svg_linkedin() -> str:
     return _svg('<path fill="#0A66C2" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.73V1.73C24 .77 23.21 0 22.23 0z"/>')
 
 
+def svg_pinterest() -> str:
+    """Pinterest “P” mark, brand red #E60023. Used only as a documented placeholder."""
+    return _svg('<path fill="#E60023" d="M12 0C5.37 0 0 5.37 0 12c0 5.08 3.16 9.43 7.63 11.17-.1-.95-.2-2.4.04-3.44.22-.94 1.41-5.97 1.41-5.97s-.36-.72-.36-1.78c0-1.67.97-2.91 2.17-2.91 1.02 0 1.52.77 1.52 1.69 0 1.03-.66 2.57-.99 4 .28 1.19.6 2.17 1.78 2.17 2.13 0 3.77-2.25 3.77-5.5 0-2.87-2.06-4.88-5.01-4.88-3.41 0-5.42 2.56-5.42 5.21 0 1.03.4 2.14.89 2.74.1.12.11.22.08.34-.09.38-.29 1.2-.33 1.36-.05.22-.17.27-.4.16-1.5-.7-2.44-2.89-2.44-4.65 0-3.79 2.75-7.26 7.93-7.26 4.16 0 7.4 2.97 7.4 6.93 0 4.14-2.61 7.46-6.23 7.46-1.22 0-2.36-.63-2.75-1.38l-.75 2.85c-.27 1.04-1 2.35-1.49 3.15A12 12 0 0 0 12 24c6.63 0 12-5.37 12-12S18.63 0 12 0z"/>')
+
+
 def ch(svg: str, sm: bool = False) -> str:
     cls = 'ch-ico ch-ico--sm' if sm else 'ch-ico'
     return f'<span class="{cls}" aria-hidden="true">{svg}</span>'
@@ -152,6 +157,11 @@ FB_URL = 'https://fb.com/AbadisMedCo'
 TW_URL = 'https://twitter.com/abadismed'
 AP_URL = 'https://www.aparat.com/abadismed'
 LI_URL = 'https://www.linkedin.com/company/abadis-medical-co/'
+# Live abadis-med.com (FA/EN/AR, fetched 2026-10-26) has no Pinterest profile href.
+# Elementor only ships a .elementor-social-icon-pinterest color rule and a share-button
+# config key. Do not invent a pinterest.com handle.
+PIN_URL = ''
+PIN_NOTE = 'no official Pinterest URL on abadis-med.com'
 TEL_URL = 'tel:+982192001017'
 MAIL_URL = 'mailto:info@abadis-med.com'
 
@@ -246,7 +256,41 @@ def decorate_contact_html(html: str) -> str:
     for old, new in swaps:
         html = _swap(html, old, new)
     html = _iconize_tel_mail(html)
+    html = _ensure_contact_network_links(html)
     return html
+
+
+def _ensure_contact_network_links(html: str) -> str:
+    """Add LinkedIn (live homepage footer URL) and a Pinterest placeholder inside soc-links.
+
+    EN/AR contact bodies on abadis-med.com list Facebook and Instagram and do not
+    list LinkedIn or Pinterest. LinkedIn is copied from the live homepage icon row.
+    Pinterest stays a non-URL placeholder.
+    """
+    start = html.find('class="soc-links"')
+    if start < 0 or 'data-social="pinterest"' in html[start:start + 20000]:
+        return html
+    ig = html.find('instagram.com/', start)
+    if ig < 0 or ig > start + 20000:
+        return html
+    a_end = html.find('</a>', ig)
+    span_end = html.find('</span>', a_end)
+    if a_end < 0 or span_end < 0:
+        return html
+    span_end += len('</span>')
+    window = html[start:start + 20000]
+    if 'Eaparat' in window or 'العنوان' in window:
+        li_label, pi_label = ('لينكدإن', 'بينترست')
+    else:
+        li_label, pi_label = ('LinkedIn', 'Pinterest')
+    extra = (
+        f'\n\t\t\t\t\t\t\t<span>\n\t\t\t\t\t<a href="{LI_URL}" target="_blank" rel="noopener">'
+        f'\n\t\t\t\t\t\t<span>{li_label}</span>\n\t\t\t\t\t\t{ch(svg_linkedin())}\t\t\t</a>\n\t\t\t\t</span>'
+        f'\n\t\t\t\t\t\t\t<span>\n\t\t\t\t\t<a class="soc-placeholder" data-social="pinterest" '
+        f'data-status="placeholder" data-official-url="" aria-disabled="true" title="{PIN_NOTE}">'
+        f'\n\t\t\t\t\t\t<span>{pi_label}</span>\n\t\t\t\t\t\t{ch(svg_pinterest())}\t\t\t</a>\n\t\t\t\t</span>'
+    )
+    return html[:span_end] + extra + html[span_end:]
 
 
 def decorate_fa_contact_main(html: str) -> str:
@@ -259,6 +303,9 @@ def decorate_fa_contact_main(html: str) -> str:
         <dt>{ch(svg_mail())}پست الکترونیک:</dt><dd><a href="mailto:info@abadis-med.com">info@abadis-med.com</a></dd>
         <dt>{ch(svg_whatsapp())}واتس‌اپ:</dt><dd><a href="{WA_URL}" target="_blank" rel="noopener" dir="ltr">+989100145809</a></dd>
         <dt>{ch(svg_instagram())}اینستاگرام:</dt><dd><a href="{IG_URL}" target="_blank" rel="noopener" dir="ltr">abadismedical.co</a></dd>
+        <dt>{ch(svg_facebook())}فیسبوک:</dt><dd><a href="{FB_URL}" target="_blank" rel="noopener" dir="ltr">fb.com/AbadisMedCo</a></dd>
+        <dt>{ch(svg_linkedin())}لینکدین:</dt><dd><a href="{LI_URL}" target="_blank" rel="noopener" dir="ltr">abadis-medical-co</a></dd>
+        <dt>{ch(svg_pinterest())}پینترست:</dt><dd><span class="soc-placeholder" data-social="pinterest" data-status="placeholder" data-official-url="" title="{PIN_NOTE}">{PIN_NOTE}</span></dd>
         <dt>{ch(svg_pin())}دفتر مرکزی:</dt><dd>ایران، تهران، قیطریه، خیابان اندرزگو، پلاک 104، واحد2</dd>
         <dt>{ch(svg_pin())}کارخانه:</dt><dd>ایران،تهران،شهرک صنعتی شمس آباد، بلوار گلستان، کوچه گلشن ۱۹،پلاک۱۷</dd>
       </dl>'''
@@ -285,6 +332,14 @@ def decorate_fa_contact_main(html: str) -> str:
             (IG_URL, svg_instagram(), 'اینستاگرام'),
         ])
         html = html.replace(needle, needle + row, 1)
+    ig_dd = 'abadismedical.co</a></dd>'
+    if ig_dd in html and 'data-social="pinterest"' not in html:
+        extra = (
+            f'\n        <dt>{ch(svg_facebook())}فیسبوک:</dt><dd><a href="{FB_URL}" target="_blank" rel="noopener" dir="ltr">fb.com/AbadisMedCo</a></dd>'
+            f'\n        <dt>{ch(svg_linkedin())}لینکدین:</dt><dd><a href="{LI_URL}" target="_blank" rel="noopener" dir="ltr">abadis-medical-co</a></dd>'
+            f'\n        <dt>{ch(svg_pinterest())}پینترست:</dt><dd><span class="soc-placeholder" data-social="pinterest" data-status="placeholder" data-official-url="" title="{PIN_NOTE}">{PIN_NOTE}</span></dd>'
+        )
+        html = html.replace(ig_dd, ig_dd + extra, 1)
     return html
 
 
