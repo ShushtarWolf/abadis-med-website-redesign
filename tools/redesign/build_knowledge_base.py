@@ -24,6 +24,7 @@ OUT_JSON = [
     ROOT / 'docs/knowledge-base/abadis-knowledge-base.json',
 ]
 OUT_MD = ROOT / 'docs/knowledge-base/abadis-core-knowledge-base.md'
+OUT_FALLBACK = SITE / 'assets/chatbot/kb-fallback.js'
 
 # EN/AR mirrors of the short live FAQ items. Key = exact Persian question.
 # The two long published tables (vehicle loads, product codes) stay Persian-only.
@@ -808,7 +809,7 @@ def render_md(kb):
     w = lines.append
     w('# Core Abadis Knowledge Base')
     w('')
-    w('Version **2026-10-26**. Machine-readable twin: `site/assets/data/abadis-knowledge-base.json` (same file also at `docs/knowledge-base/abadis-knowledge-base.json`).')
+    w('Version **2026-10-26**. Machine-readable twin: `site/assets/data/abadis-knowledge-base.json` (same file also at `docs/knowledge-base/abadis-knowledge-base.json`). The chatbot also keeps `site/assets/chatbot/kb-fallback.js`, the same JSON on `window.ABADIS_KB`, for `file://` and a cache that cannot fetch the JSON. Section 8 is the Iran intranet engine.')
     w('')
     w('**Source of truth.** For pages that already exist — About, products, certificates, contact — [abadis-med.com](https://abadis-med.com) wins. New sections use the approved redesign (solutions philosophy, dial-practical calculator, Zagros CSR) and are labelled. Figures below are copied, not improved.')
     w('')
@@ -968,6 +969,25 @@ def render_md(kb):
     w('')
     w('CTAs: contact form, downloads (catalogue), `tel:+982192001017`, WhatsApp `https://wa.me/989100145809`.')
     w('')
+    w('## 8. Iran intranet engine (شبکه ملی اطلاعات)')
+    w('')
+    w('Hamid’s requirement: if filtering leaves only Iran’s National Information Network, the sales and academy chatbot must still answer. The engine is part of the site core. It does not load Google Fonts, jsDelivr, unpkg, Cloudflare, or any other foreign script or stylesheet. Kalameh is the set already in `site/assets/fonts/`. Icons in the widget are inline SVG.')
+    w('')
+    w('Files:')
+    w('')
+    w('- `site/assets/chatbot/chatbot.js` — widget, BM25 retrieval, synonym expansion, sales intent, and answer synthesis.')
+    w('- `site/assets/data/abadis-knowledge-base.json` — same-origin knowledge base. This is the copy the widget fetches first.')
+    w('- `site/assets/chatbot/kb-fallback.js` — that same JSON assigned to `window.ABADIS_KB`. The widget loads this sibling file only when the JSON fetch fails.')
+    w('- `site/chatbot-demo/index.html` — meeting page, with the badge, the tier switch, and the international-cut-off toggle.')
+    w('')
+    w('Three tiers. Tier 1 is the default and does not leave the site.')
+    w('')
+    w('1. **Tier 1 — موتور بومی داخل هسته سایت.** BM25 over the chunks, plus synonym groups (Persian, English, Arabic) and the sales intent rules (solution, product, volume, savings). The answer is synthesized from the winning chunk and cites the on-site page. No API key and no foreign host.')
+    w('2. **Tier 2 — optional domestic model.** A URL the hospital or Abadis hosts inside Iran, for example `/api/chat` on Liara, on abadis-med.com, or an on-prem Ollama or vLLM. The call uses a 2.5 second timeout. If it fails, the Tier 1 answer stays on screen.')
+    w('3. **Tier 3 — optional international model.** An OpenAI-style chat-completions URL and a session key. Same 2.5 second timeout. If the request is blocked, times out, or the demo toggle «شبیه‌سازی قطع اینترنت بین‌الملل» is on, the widget does not wait on that host: the Tier 1 answer is already shown, and the foreign request is skipped while the toggle is on.')
+    w('')
+    w('The widget header and `/chatbot-demo/` show this badge: **موتور داخلی هسته سایت (فعال در شبکه ملی اطلاعات / بدون نیاز به اینترنت بین‌الملل)** — Core On-Site Engine, 100% Iran intranet resilient.')
+    w('')
     return '\n'.join(lines) + '\n'
 
 
@@ -981,6 +1001,16 @@ def main():
     OUT_MD.parent.mkdir(parents=True, exist_ok=True)
     OUT_MD.write_text(render_md(kb), encoding='utf-8')
     print(OUT_MD, 'faq', len(kb['faq']), 'chunks', len(kb['chunks']))
+    OUT_FALLBACK.parent.mkdir(parents=True, exist_ok=True)
+    # JSON is valid JS except U+2028/U+2029, which would break a script.
+    literal = raw.replace('\u2028', '\\u2028').replace('\u2029', '\\u2029')
+    OUT_FALLBACK.write_text(
+        '/* Same-origin copy of the knowledge base. The chatbot loads this file only when '
+        'fetch of abadis-knowledge-base.json fails (file:// or a strict cache). Not a CDN. */\n'
+        'window.ABADIS_KB = ' + literal + ';\n',
+        encoding='utf-8',
+    )
+    print(OUT_FALLBACK, OUT_FALLBACK.stat().st_size)
 
 
 if __name__ == '__main__':

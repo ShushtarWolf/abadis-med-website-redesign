@@ -1,6 +1,7 @@
 /* Abadis Sales & Academy chatbot.
    Embed: <script src="/assets/chatbot/chatbot.js" defer data-kb="/assets/data/abadis-knowledge-base.json"></script>
-   Works offline from the knowledge-base JSON. An API key is optional and never required. */
+   Tier 1 answers from same-origin files only (JSON, then kb-fallback.js). No CDN and no foreign API
+   unless a person explicitly selects Tier 3 and international access is not cut off. */
 (function () {
   'use strict';
 
@@ -38,10 +39,22 @@
       whatsapp: 'واتس‌اپ',
       source: 'منبع',
       empty: 'در دانش‌نامه موردی برای این عبارت پیدا نشد. یکی از پرسش‌های آماده را بزنید یا دقیق‌تر بپرسید.',
-      llmLabel: 'مدل زنده (اختیاری) — بدون کلید، پاسخ فقط از دانش‌نامه است',
-      llmKey: 'کلید API، فقط در همین نشست',
-      llmUrl: 'نشانی تکمیل گفتگو',
-      llmFail: 'مدل زنده پاسخ نداد. پاسخ بالا از دانش‌نامه محلی است.',
+      tierSummary: 'لایه‌های پاسخ — پیش‌فرض موتور داخلی، بدون اینترنت بین‌الملل',
+      tier1: 'لایه ۱ — موتور بومی داخل هسته سایت (همیشه)',
+      tier2: 'لایه ۲ — مدل داخلی / خودمیزبان، مثلاً /api/chat',
+      tier3: 'لایه ۳ — API بین‌المللی، مهلت ۲٫۵ ثانیه، بازگشت خودکار',
+      domesticPh: 'نشانی مدل داخلی، مثلاً /api/chat',
+      intlPh: 'نشانی API بین‌المللی، فقط اگر این لایه روشن باشد',
+      llmKey: 'کلید لایه ۲ یا ۳، فقط در همین نشست',
+      coreTag: 'موتور داخلی هسته سایت',
+      cutoffNote: 'شبیه‌سازی قطع اینترنت بین‌الملل: درخواست خارجی ارسال نشد. پاسخ بالا از موتور داخلی است.',
+      intlFallback: 'اینترنت بین‌الملل در دسترس نبود. پاسخ بالا از موتور داخلی هسته سایت است.',
+      tierFail: 'لایه بالاتر پاسخ نداد. پاسخ بالا از موتور داخلی هسته سایت است.',
+      tier1short: 'لایه فعال: موتور بومی داخل هسته سایت',
+      tier2short: 'لایه فعال: مدل داخلی، با بازگشت به موتور هسته',
+      tier3short: 'لایه فعال: API بین‌المللی، با بازگشت به موتور هسته',
+      cutoffShort: 'قطع بین‌الملل شبیه‌سازی شده',
+      embeddedSrc: 'دانش‌نامه از نسخه جاسازی‌شده',
       estimate: function (r) {
         return 'با ' + fmt(r.n, 'fa') + ' عمل در سال: حدود ' + fmt(r.water, 'fa') + ' لیتر آب، ' + fmt(r.cost, 'fa') + ' تومان هزینه شست‌وشو و ضدعفونی، و ' + fmt(r.hours, 'fa') + ' ساعت از زمان کادر درمان. CO₂ و کیلوگرم پلاستیک در این فرمول نیست.';
       }
@@ -71,10 +84,22 @@
       whatsapp: 'WhatsApp',
       source: 'Source',
       empty: 'Nothing in the knowledge base matched that. Try one of the sample prompts.',
-      llmLabel: 'Optional live model — with no key, answers stay on the knowledge base',
-      llmKey: 'API key, this session only',
-      llmUrl: 'Chat completions URL',
-      llmFail: 'The live model did not answer. The reply above is from the local knowledge base.',
+      tierSummary: 'Answer tiers — default is the on-site engine, with no international network',
+      tier1: 'Tier 1 — on-site core engine (always available)',
+      tier2: 'Tier 2 — domestic / self-hosted model, for example /api/chat',
+      tier3: 'Tier 3 — international API, 2.5s timeout, automatic fallback',
+      domesticPh: 'Domestic model URL, for example /api/chat',
+      intlPh: 'International API URL, only if this tier is selected',
+      llmKey: 'Tier 2 or 3 key, this session only',
+      coreTag: 'On-site core engine',
+      cutoffNote: 'International cut-off simulated: the foreign request was not sent. The answer above is from the on-site engine.',
+      intlFallback: 'International access did not answer. The reply above is from the on-site core engine.',
+      tierFail: 'The higher tier did not answer. The reply above is from the on-site core engine.',
+      tier1short: 'Active tier: on-site core engine',
+      tier2short: 'Active tier: domestic model, falling back to the core engine',
+      tier3short: 'Active tier: international API, falling back to the core engine',
+      cutoffShort: 'international cut-off simulated',
+      embeddedSrc: 'knowledge base loaded from the embedded copy',
       estimate: function (r) {
         return 'At ' + fmt(r.n, 'en') + ' surgeries a year: about ' + fmt(r.water, 'en') + ' litres of water, ' + fmt(r.cost, 'en') + ' toman in wash and disinfectant, and ' + fmt(r.hours, 'en') + ' staff hours. This formula has no CO₂ and no plastic kilograms.';
       }
@@ -104,10 +129,22 @@
       whatsapp: 'واتساب',
       source: 'المصدر',
       empty: 'لا نتيجة في قاعدة المعرفة. جرّب أحد الأسئلة الجاهزة.',
-      llmLabel: 'نموذج مباشر اختياري — بلا مفتاح تبقى الإجابة من قاعدة المعرفة',
-      llmKey: 'مفتاح API لهذه الجلسة فقط',
-      llmUrl: 'عنوان إكمال المحادثة',
-      llmFail: 'النموذج المباشر لم يجب. الرد أعلاه من قاعدة المعرفة المحلية.',
+      tierSummary: 'طبقات الإجابة — الافتراضي محرك الموقع بلا إنترنت دولي',
+      tier1: 'الطبقة ١ — المحرك المحلي داخل نواة الموقع (دائمًا)',
+      tier2: 'الطبقة ٢ — نموذج داخلي / مستضاف ذاتيًا، مثل /api/chat',
+      tier3: 'الطبقة ٣ — واجهة دولية، مهلة ٢٫٥ ث، رجوع تلقائي',
+      domesticPh: 'عنوان النموذج الداخلي، مثل /api/chat',
+      intlPh: 'عنوان الواجهة الدولية، فقط إذا اختيرت هذه الطبقة',
+      llmKey: 'مفتاح الطبقة ٢ أو ٣ لهذه الجلسة فقط',
+      coreTag: 'المحرك المحلي لنواة الموقع',
+      cutoffNote: 'محاكاة قطع الإنترنت الدولي: لم يُرسل الطلب الخارجي. الإجابة أعلاه من المحرك المحلي.',
+      intlFallback: 'الوصول الدولي لم يجب. الرد أعلاه من المحرك المحلي.',
+      tierFail: 'الطبقة الأعلى لم تجب. الرد أعلاه من المحرك المحلي.',
+      tier1short: 'الطبقة النشطة: المحرك المحلي',
+      tier2short: 'الطبقة النشطة: نموذج داخلي مع الرجوع للمحرك',
+      tier3short: 'الطبقة النشطة: واجهة دولية مع الرجوع للمحرك',
+      cutoffShort: 'قطع دولي مُحاكى',
+      embeddedSrc: 'قاعدة المعرفة من النسخة المضمّنة',
       estimate: function (r) {
         return 'مع ' + fmt(r.n, 'ar') + ' عملية في السنة: نحو ' + fmt(r.water, 'ar') + ' لتر ماء، و' + fmt(r.cost, 'ar') + ' تومان لكلفة الغسل والتعقيم، و' + fmt(r.hours, 'ar') + ' ساعة من وقت الطاقم. بلا CO₂ وبلا كيلوغرامات بلاستيك.';
       }
@@ -160,8 +197,15 @@
     };
   }
 
-  var state = { lang: 'fa', mode: 'sales', open: false, kb: null, choice: null, volume: null };
-  var root, panel, logEl, chipEl, choiceEl, input, subEl, keyEl, urlEl;
+  var NIN_FA = 'موتور داخلی هسته سایت (فعال در شبکه ملی اطلاعات / بدون نیاز به اینترنت بین‌الملل)';
+  var NIN_EN = 'Core On-Site Engine — 100% Iran Intranet Resilient';
+  var TIER_MS = 2500;
+  var state = {
+    lang: 'fa', mode: 'sales', open: false, kb: null, kbSource: '',
+    choice: null, volume: null, tier: 'core', cutoff: false
+  };
+  var root, panel, logEl, chipEl, choiceEl, input, subEl, keyEl, domesticEl, intlEl, badgeEl;
+  var index = null;
 
   function t() { return I18N[state.lang] || I18N.fa; }
   function textOf(node) {
@@ -218,6 +262,9 @@
     closer.textContent = '×';
     closer.addEventListener('click', close);
     head.appendChild(closer);
+    badgeEl = el('p', 'abadis-chat-nin');
+    badgeEl.innerHTML = '<strong></strong><span dir="ltr"></span>';
+    head.appendChild(badgeEl);
     panel.appendChild(head);
 
     var tabs = el('div', 'abadis-chat-tabs');
@@ -243,14 +290,35 @@
     var llm = el('details', 'abadis-chat-llm');
     var sum = el('summary');
     llm.appendChild(sum);
+    var tiers = el('div', 'abadis-chat-tiers');
+    tiers.setAttribute('role', 'radiogroup');
+    ['core', 'domestic', 'intl'].forEach(function (tier) {
+      var label = el('label');
+      var radio = document.createElement('input');
+      radio.type = 'radio';
+      radio.name = 'abadis-chat-tier';
+      radio.value = tier;
+      if (tier === 'core') radio.checked = true;
+      radio.addEventListener('change', function () { if (radio.checked) setTier(tier); });
+      label.appendChild(radio);
+      label.appendChild(document.createTextNode(''));
+      tiers.appendChild(label);
+    });
+    llm.appendChild(tiers);
+    domesticEl = document.createElement('input');
+    domesticEl.type = 'text';
+    domesticEl.autocomplete = 'off';
+    domesticEl.spellcheck = false;
+    intlEl = document.createElement('input');
+    intlEl.type = 'text';
+    intlEl.autocomplete = 'off';
+    intlEl.spellcheck = false;
     keyEl = document.createElement('input');
     keyEl.type = 'password';
     keyEl.autocomplete = 'off';
-    urlEl = document.createElement('input');
-    urlEl.type = 'url';
-    urlEl.value = 'https://api.openai.com/v1/chat/completions';
+    llm.appendChild(domesticEl);
+    llm.appendChild(intlEl);
     llm.appendChild(keyEl);
-    llm.appendChild(urlEl);
     panel.appendChild(llm);
 
     var form = el('form', 'abadis-chat-form');
@@ -297,11 +365,24 @@
     input.placeholder = L.placeholder;
     input.setAttribute('aria-label', L.placeholder);
     root.querySelector('.abadis-chat-send').textContent = L.send;
-    root.querySelector('.abadis-chat-llm summary').textContent = L.llmLabel;
+    root.querySelector('.abadis-chat-llm summary').textContent = L.tierSummary;
+    var tierLabels = [L.tier1, L.tier2, L.tier3];
+    root.querySelectorAll('.abadis-chat-tiers label').forEach(function (label, i) {
+      label.lastChild.textContent = tierLabels[i];
+      var radio = label.querySelector('input');
+      radio.checked = radio.value === state.tier;
+    });
+    domesticEl.placeholder = L.domesticPh;
+    intlEl.placeholder = L.intlPh;
     keyEl.placeholder = L.llmKey;
-    urlEl.placeholder = L.llmUrl;
+    badgeEl.querySelector('strong').textContent = NIN_FA;
+    badgeEl.querySelector('span').textContent = NIN_EN;
     panel.setAttribute('aria-label', L.title);
+    root.dataset.tier = state.tier;
+    root.dataset.cutoff = state.cutoff ? 'on' : 'off';
+    root.dataset.kbSource = state.kbSource || '';
     paintChips();
+    emitEngine();
   }
 
   function paintChips() {
@@ -438,36 +519,117 @@
   }
 
   var STOP = { چه: 1, که: 1, از: 1, در: 1, به: 1, را: 1, با: 1, این: 1, است: 1, برای: 1, یا: 1, و: 1, می: 1, کند: 1, شود: 1, آیا: 1, the: 1, and: 1, what: 1, does: 1, do: 1, is: 1, of: 1, an: 1, a: 1, to: 1, for: 1, on: 1, in: 1, ما: 1, هل: 1, من: 1, في: 1 };
+  var SYN = [
+    ['فیلتر', 'filter', 'فلتر', 'filters'],
+    ['قطع', 'shutoff', 'هیدروفوبیک', 'hydrophobic', 'مسدود'],
+    ['سرریز', 'overflow', 'طفح'],
+    ['کیسه', 'liner', 'کيس', 'bag'],
+    ['مخزن', 'canister', 'خزان'],
+    ['زاگرس', 'zagros', 'زاغروس', 'بلوط', 'oak'],
+    ['گواهی', 'iso', 'imed', 'certificate', 'شهادة', 'مجوز'],
+    ['تاسیس', 'تأسیس', 'founded', 'established', '2017', '1396'],
+    ['عفونت', 'infection', 'تلوث', 'آلودگی'],
+    ['هوا', 'airway', 'هوائ'],
+    ['تیوب', 'tube', 'أنبوب'],
+    ['صرفه', 'saving', 'savings', 'توفير', 'calculator'],
+    ['پودر', 'powder', 'جاذب', 'absorbent', 'ماس']
+  ];
 
   function tokens(s) {
     return String(s || '').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').split(/\s+/).filter(function (w) { return w.length > 1 && !STOP[w]; });
   }
 
+  function expand(words) {
+    var extra = [];
+    var seen = {};
+    words.forEach(function (w) { seen[w] = 1; });
+    words.forEach(function (w) {
+      SYN.forEach(function (group) {
+        if (group.indexOf(w) === -1) return;
+        group.forEach(function (alt) {
+          if (!seen[alt]) { seen[alt] = 1; extra.push(alt); }
+        });
+      });
+    });
+    return extra;
+  }
+
+  function buildIndex() {
+    var chunks = (state.kb && state.kb.chunks) || [];
+    var docs = [];
+    var df = {};
+    var total = 0;
+    chunks.forEach(function (chunk) {
+      var text = chunk.text || {};
+      var toks = tokens([text.fa, text.en, text.ar, chunk.keywords].join('\n'));
+      var tf = {};
+      toks.forEach(function (w) { tf[w] = (tf[w] || 0) + 1; });
+      Object.keys(tf).forEach(function (w) { df[w] = (df[w] || 0) + 1; });
+      var len = toks.length || 1;
+      total += len;
+      docs.push({ chunk: chunk, tf: tf, len: len });
+    });
+    index = { docs: docs, df: df, n: docs.length, avg: total / (docs.length || 1) };
+  }
+
+  function idf(term) {
+    var n = index.df[term] || 0;
+    return Math.log(1 + (index.n - n + 0.5) / (n + 0.5));
+  }
+
+  function bm25(doc, terms, weight) {
+    var k1 = 1.2;
+    var b = 0.75;
+    var score = 0;
+    terms.forEach(function (term) {
+      var f = doc.tf[term] || 0;
+      if (!f) return;
+      var denom = f + k1 * (1 - b + b * doc.len / index.avg);
+      score += idf(term) * (f * (k1 + 1) / denom) * weight;
+    });
+    return score;
+  }
+
   function search(query) {
-    var list = (state.kb && state.kb.chunks) || [];
+    if (!index) return null;
     var q = tokens(query);
+    if (!q.length) return null;
+    var extra = expand(q);
     var best = null;
     var bestScore = 0;
-    list.forEach(function (chunk) {
-      var text = chunk.text || {};
+    index.docs.forEach(function (doc) {
+      var text = doc.chunk.text || {};
       var langText = text[state.lang] || '';
       var fa = text.fa || '';
       var head = tokens((langText.split('\n')[0] || '') + ' ' + (fa.split('\n')[0] || '')).join(' ');
-      var bag = tokens(langText + ' ' + fa + ' ' + (text.en || '') + ' ' + (chunk.keywords || '')).join(' ');
-      var score = 0;
+      var score = bm25(doc, q, 1) + bm25(doc, extra, 0.35);
       var headHits = 0;
       q.forEach(function (word) {
-        var weight = word.length > 3 ? 3 : 1;
-        if (head.indexOf(word) !== -1) { score += weight * 4; headHits += 1; }
-        else if (bag.indexOf(word) !== -1) score += weight;
+        if (head.indexOf(word) === -1) return;
+        headHits += 1;
+        score += (word.length > 3 ? 3 : 1) * 4;
       });
-      if (q.length && headHits === q.length) {
+      if (headHits === q.length) {
         score += 8;
-        if (chunk.section === 'faq') score += 4;
+        if (doc.chunk.section === 'faq') score += 4;
       }
-      if (score > bestScore) { bestScore = score; best = chunk; }
+      if (score > bestScore) { bestScore = score; best = doc.chunk; }
     });
     return bestScore > 0 ? best : null;
+  }
+
+  function synthesize(hit) {
+    var body = textOf(hit.text);
+    var shown = body;
+    if (shown.length > 720) {
+      shown = shown.slice(0, 720);
+      var cut = Math.max(shown.lastIndexOf('.'), shown.lastIndexOf('؟'), shown.lastIndexOf('?'));
+      if (cut > 400) shown = shown.slice(0, cut + 1);
+      else shown = shown.replace(/\s+\S*$/, '') + '…';
+    }
+    var url = urlOf(hit.url);
+    return '<p class="abadis-chat-engine-tag">' + esc(t().coreTag) + '</p>'
+      + esc(shown).replace(/\n/g, '<br>') + linkLine(url, url);
   }
 
   function answerSearch(query) {
@@ -477,36 +639,45 @@
       return;
     }
     var body = textOf(hit.text);
-    var url = urlOf(hit.url);
-    addMsg('bot', esc(body).replace(/\n/g, '<br>') + linkLine(url, url));
-    maybeModel(query, body);
+    addMsg('bot', synthesize(hit));
+    maybeEnrich(query, body);
   }
 
-  function maybeModel(query, context) {
-    var key = keyEl && keyEl.value.trim();
-    if (!key) return;
-    var endpoint = (urlEl && urlEl.value.trim()) || 'https://api.openai.com/v1/chat/completions';
+  function maybeEnrich(query, context) {
+    if (state.tier === 'core') return;
+    if (state.tier === 'intl' && state.cutoff) {
+      addMsg('bot', esc(t().cutoffNote));
+      return;
+    }
+    var url = state.tier === 'domestic' ? domesticEl.value.trim() : intlEl.value.trim();
+    var key = keyEl.value.trim();
+    if (!url || (state.tier === 'intl' && !key)) {
+      addMsg('bot', esc(t().tierFail));
+      return;
+    }
+    var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, TIER_MS);
+    var headers = { 'Content-Type': 'application/json' };
+    if (key) headers.Authorization = 'Bearer ' + key;
     var payload = {
-      model: 'gpt-4o-mini',
+      model: 'local',
       messages: [
         { role: 'system', content: 'Answer only from the Abadis context. If the context is silent, say so. Do not invent certificates, prices, or founding years.' },
         { role: 'user', content: 'Context:\n' + context + '\n\nQuestion:\n' + query }
       ]
     };
-    fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
-      body: JSON.stringify(payload)
-    }).then(function (r) {
+    var opts = { method: 'POST', headers: headers, body: JSON.stringify(payload) };
+    if (ctrl) opts.signal = ctrl.signal;
+    fetch(url, opts).then(function (r) {
       if (!r.ok) throw new Error('http');
       return r.json();
     }).then(function (data) {
       var msg = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
       if (msg) addMsg('bot', esc(msg).replace(/\n/g, '<br>'));
-      else addMsg('bot', esc(t().llmFail));
+      else addMsg('bot', esc(state.tier === 'intl' ? t().intlFallback : t().tierFail));
     }).catch(function () {
-      addMsg('bot', esc(t().llmFail));
-    });
+      addMsg('bot', esc(state.tier === 'intl' ? t().intlFallback : t().tierFail));
+    }).then(function () { clearTimeout(timer); });
   }
 
   function intent(query) {
@@ -614,16 +785,62 @@
     root.classList.remove('is-docked');
   }
 
+  function engineState() {
+    var L = t();
+    var tierName = state.tier === 'domestic' ? L.tier2short : state.tier === 'intl' ? L.tier3short : L.tier1short;
+    var bits = [tierName];
+    if (state.cutoff) bits.push(L.cutoffShort);
+    if (state.kbSource === 'embedded') bits.push(L.embeddedSrc);
+    return { tier: state.tier, cutoff: state.cutoff, kbSource: state.kbSource, status: bits.join(' · ') };
+  }
+
+  function emitEngine() {
+    document.dispatchEvent(new CustomEvent('abadis-chat-engine', { detail: engineState() }));
+  }
+
+  function setTier(tier) {
+    state.tier = tier === 'domestic' || tier === 'intl' ? tier : 'core';
+    paintChrome();
+  }
+
+  function setCutoff(on) {
+    state.cutoff = !!on;
+    paintChrome();
+  }
+
+  function applyKb(data, source) {
+    if (!data || !data.chunks) return false;
+    state.kb = data;
+    state.kbSource = source;
+    buildIndex();
+    resetThread();
+    paintChrome();
+    return true;
+  }
+
+  function fallbackSrc() {
+    if (script && script.src) return script.src.replace(/chatbot\.js(?:\?.*)?$/, 'kb-fallback.js');
+    return '/assets/chatbot/kb-fallback.js';
+  }
+
+  function loadEmbedded() {
+    if (applyKb(window.ABADIS_KB, 'embedded')) return;
+    var node = document.createElement('script');
+    node.src = fallbackSrc();
+    node.onload = function () {
+      if (!applyKb(window.ABADIS_KB, 'embedded')) addMsg('bot', esc(t().empty));
+    };
+    node.onerror = function () { addMsg('bot', esc(t().empty)); };
+    document.head.appendChild(node);
+  }
+
   build();
   fetch(kbUrl, { credentials: 'omit' }).then(function (r) {
     if (!r.ok) throw new Error('kb');
     return r.json();
   }).then(function (data) {
-    state.kb = data;
-    resetThread();
-  }).catch(function () {
-    addMsg('bot', esc(t().empty));
-  });
+    if (!applyKb(data, 'site-json')) throw new Error('kb');
+  }).catch(loadEmbedded);
 
   window.AbadisChat = {
     open: open,
@@ -632,6 +849,9 @@
     setMode: setMode,
     ask: ask,
     dock: dock,
-    float: float
+    float: float,
+    setTier: setTier,
+    setCutoff: setCutoff,
+    engine: engineState
   };
 })();
