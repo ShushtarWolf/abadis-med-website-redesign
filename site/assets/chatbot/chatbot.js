@@ -518,25 +518,86 @@
     }
   }
 
-  var STOP = { چه: 1, که: 1, از: 1, در: 1, به: 1, را: 1, با: 1, این: 1, است: 1, برای: 1, یا: 1, و: 1, می: 1, کند: 1, شود: 1, آیا: 1, the: 1, and: 1, what: 1, does: 1, do: 1, is: 1, of: 1, an: 1, a: 1, to: 1, for: 1, on: 1, in: 1, ما: 1, هل: 1, من: 1, في: 1 };
+  var STOP = {
+    چه: 1, که: 1, از: 1, در: 1, به: 1, را: 1, با: 1, این: 1, آن: 1, است: 1, هست: 1, بود: 1, شد: 1,
+    برای: 1, یا: 1, و: 1, می: 1, کند: 1, شود: 1, آیا: 1, ایا: 1, چند: 1, چنده: 1, چقدر: 1, چقدره: 1,
+    چطور: 1, چگونه: 1, چرا: 1, چیه: 1, چیست: 1, کجا: 1, کجاست: 1, کدام: 1, کی: 1, اگر: 1, بشه: 1,
+    میشه: 1, دارد: 1, دارند: 1, میشود: 1, میکند: 1, های: 1, ها: 1, یک: 1, هم: 1, بر: 1, تا: 1, هر: 1,
+    آبادیس: 1, ابادیس: 1, شرکت: 1, مورد: 1, درباره: 1, کار: 1,
+    the: 1, and: 1, what: 1, does: 1, do: 1, did: 1, is: 1, are: 1, was: 1, were: 1, of: 1, an: 1, a: 1,
+    to: 1, for: 1, on: 1, in: 1, at: 1, by: 1, with: 1, from: 1, how: 1, many: 1, much: 1, why: 1,
+    which: 1, where: 1, when: 1, who: 1, can: 1, if: 1, use: 1, used: 1, using: 1, offer: 1, have: 1,
+    has: 1, you: 1, your: 1, we: 1, our: 1, they: 1, it: 1, that: 1, this: 1, there: 1, be: 1, abadis: 1,
+    ما: 1, ماذا: 1, هل: 1, من: 1, في: 1, على: 1, الى: 1, إلى: 1, عن: 1, مع: 1, هذا: 1, هذه: 1,
+    التي: 1, الذي: 1, كم: 1, كيف: 1, لماذا: 1, اين: 1, أين: 1, متى: 1, هي: 1, هو: 1, او: 1, أو: 1,
+    كل: 1, عند: 1, اباديس: 1, آباديس: 1
+  };
   var SYN = [
-    ['فیلتر', 'filter', 'فلتر', 'filters'],
+    ['فیلتر', 'filter', 'فلتر'],
     ['قطع', 'shutoff', 'هیدروفوبیک', 'hydrophobic', 'مسدود'],
     ['سرریز', 'overflow', 'طفح'],
-    ['کیسه', 'liner', 'کيس', 'bag'],
+    ['کیسه', 'liner', 'کیس', 'bag'],
     ['مخزن', 'canister', 'خزان'],
     ['زاگرس', 'zagros', 'زاغروس', 'بلوط', 'oak'],
-    ['گواهی', 'iso', 'imed', 'certificate', 'شهادة', 'مجوز'],
-    ['تاسیس', 'تأسیس', 'founded', 'established', '2017', '1396'],
-    ['عفونت', 'infection', 'تلوث', 'آلودگی'],
-    ['هوا', 'airway', 'هوائ'],
-    ['تیوب', 'tube', 'أنبوب'],
-    ['صرفه', 'saving', 'savings', 'توفير', 'calculator'],
-    ['پودر', 'powder', 'جاذب', 'absorbent', 'ماس']
+    ['گواهی', 'گواهینامه', 'مجوز', 'پروانه', 'استاندارد', 'ایزو', 'iso', 'imed', 'ce', 'gmp', 'certificate', 'license', 'patent', 'اختراع', 'شهاده', 'شهادات', 'تراخیص'],
+    ['تاسیس', 'founded', 'established', '2017', '1396'],
+    ['عفونت', 'infection', 'تلوث', 'الودگی'],
+    ['هوا', 'هوایی', 'airway', 'هوايي'],
+    ['تیوب', 'tube', 'انبوب'],
+    ['صرفه', 'صرفهجویی', 'saving', 'توفیر', 'calculator', 'محاسبهگر'],
+    ['پودر', 'powder', 'جاذب', 'absorbent', 'ژله', 'جامدکننده', 'ماص'],
+    ['امار', 'رضایت', 'مراکز', 'مرکز', 'بیمارستان', 'کاربر', 'خرابی', 'ظرفیت', 'سهم', 'stats', 'satisfaction', 'center', 'hospital', 'user', 'failure', 'rate', '1232', '11112', '98', 'احصاییات', 'رضا', 'مراکز'],
+    ['فلسفه', 'ستون', 'رویکرد', 'معماری', 'راهکار', 'philosophy', 'pillar', 'solution', 'فلسفه', 'ارکان', 'حلول'],
+    ['شیشه', 'سنتی', 'چندبارمصرف', 'مداربسته', 'بسته', 'بهتر', 'برتری', 'مقایسه', 'glass', 'bottle', 'reusable', 'traditional', 'closed', 'better', 'beat', 'advantage', 'زجاج', 'زجاجیه', 'تقلیدیه', 'مغلق', 'افضل'],
+    ['قیمت', 'خرید', 'هزینه', 'تعرفه', 'پیشفاکتور', 'فاکتور', 'سفارش', 'حجم', 'سایز', 'لیتر', 'price', 'pricing', 'cost', 'quote', 'proforma', 'order', 'volume', 'سعر', 'اسعار', 'شراء', 'سعه', 'سعات'],
+    ['اینترنت', 'فیلترینگ', 'ملی', 'افلاین', 'چتبات', 'intranet', 'internet', 'filtering', 'offline', 'national', 'network', 'انترنت', 'انقطاع', 'حجب', 'وطنیه'],
+    ['تماس', 'تلفن', 'شماره', 'ادرس', 'نشانی', 'کارخانه', 'دفتر', 'واتساپ', 'contact', 'phone', 'address', 'factory', 'office', 'whatsapp', 'اتصال', 'عنوان', 'مصنع'],
+    ['کارتن', 'بستهبندی', 'تعداد', 'carton', 'pack', 'box', 'کرتون', 'عدد']
   ];
 
-  function tokens(s) {
-    return String(s || '').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').split(/\s+/).filter(function (w) { return w.length > 1 && !STOP[w]; });
+  function normWord(w) {
+    if (!w) return '';
+    w = w.replace(/\u200c/g, ' ')
+      .replace(/[يئ]/g, 'ی')
+      .replace(/ك/g, 'ک')
+      .replace(/ة/g, 'ه')
+      .replace(/[أإآ]/g, 'ا')
+      .replace(/ؤ/g, 'و')
+      .replace(/\u0640/g, '');
+    if (w === 'centres' || w === 'centers') return 'center';
+    if (w === 'surgeries') return 'surgery';
+    if (w === 'licences' || w === 'licenses' || w === 'licence') return 'license';
+    if (/^[a-z]+$/.test(w) && w.length > 4) {
+      if (w.slice(-3) === 'ies') w = w.slice(0, -3) + 'y';
+      else if (w.slice(-2) === 'es' && !/(ses|xes|zes|ches|shes)$/.test(w)) w = w.slice(0, -1);
+      else if (w.slice(-1) === 's' && w.slice(-2) !== 'ss') w = w.slice(0, -1);
+    }
+    var faSuf = ['هایمان', 'هایتان', 'هایشان', 'هایی', 'های', 'ها', 'مان', 'تان', 'شان', 'ایه', 'ای'];
+    for (var i = 0; i < faSuf.length; i++) {
+      var s = faSuf[i];
+      if (w.length - s.length >= 3 && w.slice(-s.length) === s) {
+        w = w.slice(0, -s.length);
+        break;
+      }
+    }
+    return w;
+  }
+
+  function tokens(s, keepStop) {
+    var raw = String(s || '').toLowerCase()
+      .replace(/\u200c/g, ' ')
+      .replace(/[^\p{L}\p{N}]+/gu, ' ')
+      .split(/\s+/);
+    var out = [];
+    raw.forEach(function (w) {
+      if (w.length <= 1) return;
+      var nw = normWord(w);
+      if (nw.length <= 1) return;
+      if (!keepStop && (STOP[w] || STOP[nw])) return;
+      out.push(nw);
+    });
+    if (!out.length && !keepStop) return tokens(s, true);
+    return out;
   }
 
   function expand(words) {
@@ -545,8 +606,9 @@
     words.forEach(function (w) { seen[w] = 1; });
     words.forEach(function (w) {
       SYN.forEach(function (group) {
-        if (group.indexOf(w) === -1) return;
-        group.forEach(function (alt) {
+        var normGroup = group.map(normWord);
+        if (normGroup.indexOf(w) === -1) return;
+        normGroup.forEach(function (alt) {
           if (!seen[alt]) { seen[alt] = 1; extra.push(alt); }
         });
       });
@@ -562,12 +624,16 @@
     chunks.forEach(function (chunk) {
       var text = chunk.text || {};
       var toks = tokens([text.fa, text.en, text.ar, chunk.keywords].join('\n'));
+      var kwToks = tokens(chunk.keywords || '');
+      var kwSet = {};
+      kwToks.forEach(function (w) { kwSet[w] = 1; });
       var tf = {};
       toks.forEach(function (w) { tf[w] = (tf[w] || 0) + 1; });
+      kwToks.forEach(function (w) { tf[w] = (tf[w] || 0) + 2; });
       Object.keys(tf).forEach(function (w) { df[w] = (df[w] || 0) + 1; });
       var len = toks.length || 1;
       total += len;
-      docs.push({ chunk: chunk, tf: tf, len: len });
+      docs.push({ chunk: chunk, tf: tf, kwSet: kwSet, len: len });
     });
     index = { docs: docs, df: df, n: docs.length, avg: total / (docs.length || 1) };
   }
@@ -601,15 +667,22 @@
       var text = doc.chunk.text || {};
       var langText = text[state.lang] || '';
       var fa = text.fa || '';
-      var head = tokens((langText.split('\n')[0] || '') + ' ' + (fa.split('\n')[0] || '')).join(' ');
-      var score = bm25(doc, q, 1) + bm25(doc, extra, 0.35);
+      var headToks = tokens((langText.split('\n')[0] || '') + ' ' + (fa.split('\n')[0] || ''));
+      var headSet = {};
+      headToks.forEach(function (w) { headSet[w] = 1; });
+      var score = bm25(doc, q, 2.5) + bm25(doc, extra, 0.9);
       var headHits = 0;
+      var docHits = 0;
       q.forEach(function (word) {
-        if (head.indexOf(word) === -1) return;
-        headHits += 1;
-        score += (word.length > 3 ? 3 : 1) * 4;
+        if (doc.tf[word]) docHits += 1;
+        if (doc.kwSet && doc.kwSet[word]) score += 5;
+        if (headSet[word]) {
+          headHits += 1;
+          score += 4;
+        }
       });
-      if (headHits === q.length) {
+      if (q.length >= 2 && docHits === q.length) score += 8;
+      if (q.length >= 2 && headHits === q.length) {
         score += 8;
         if (doc.chunk.section === 'faq') score += 4;
       }
@@ -680,22 +753,24 @@
     }).then(function () { clearTimeout(timer); });
   }
 
+  var WIZARD_SHORTCUTS = {
+    'راهکار مدیریت مایعات': { type: 'solution', id: 'fluid' },
+    'کیسه ۲ لیتری برای icu': { type: 'volume', id: '2' },
+    'fluid management solution': { type: 'solution', id: 'fluid' },
+    '2 litre liner for icu': { type: 'volume', id: '2' },
+    'حل إدارة السوائل': { type: 'solution', id: 'fluid' },
+    'كيس ٢ لتر لـ icu': { type: 'volume', id: '2' }
+  };
+
   function intent(query) {
-    var q = query.toLowerCase();
+    var q = query.trim().toLowerCase();
     var n = query.replace(/[۰-۹]/g, function (d) { return '۰۱۲۳۴۵۶۷۸۹'.indexOf(d); })
       .replace(/[٠-٩]/g, function (d) { return '٠١٢٣٤٥٦٧٨٩'.indexOf(d); });
     var surg = n.match(/(\d{3,5})/);
-    if (/صرف|saving|توفير|عمل|surger/.test(q) && surg) return { type: 'savings', n: surg[1] };
-    if (/۲ لیتر|2 لیتر|2 litre|2 liter|٢ لتر|دو لیتر/.test(query) || /\b2\s*l\b/i.test(q)) return { type: 'volume', id: '2' };
-    if (/۳ لیتر|3 لیتر|3 litre|٣ لتر|سه لیتر/.test(query) || /\b3\s*l\b/i.test(q)) return { type: 'volume', id: '3' };
-    if (/۱ لیتر|1 لیتر|1 litre|١ لتر|یک لیتر/.test(query) || /\b1\s*l\b/i.test(q)) return { type: 'volume', id: '1' };
-    if (/icu|سی‌سی‌یو|سی سی یو|عنایة مركزة|العناية/.test(q)) return { type: 'solution', id: 'icu-care' };
-    if (/اتاق عمل|operating room|غرفة العمليات/.test(q)) return { type: 'solution', id: 'or-efficiency' };
-    if (/راه هوا|airway|هوائ/.test(q)) return { type: 'solution', id: 'airway' };
-    if (/آلودگ|infection|تلوث|پسماند|waste/.test(q)) return { type: 'solution', id: 'infection-waste' };
-    if (/مایع|fluid|سوائل|ترشح/.test(q)) return { type: 'solution', id: 'fluid' };
-    if (/تیوب|tube|أنبوب|فینگ|fingertip/.test(q)) return { type: 'product', id: 'suction-instruments' };
-    if (/کیسه|مخزن|liner|canister|كيس|خزان/.test(q)) return { type: 'product', id: 'canisters-liners' };
+    if (/صرف|saving|توفير|عمل|surger/.test(q) && surg && !/سال\s*13|سال\s*20|1396|1397|2017|13485/.test(n)) {
+      return { type: 'savings', n: surg[1] };
+    }
+    if (WIZARD_SHORTCUTS[q]) return WIZARD_SHORTCUTS[q];
     return null;
   }
 
@@ -706,25 +781,20 @@
       addMsg('bot', esc(t().empty));
       return;
     }
-    if (state.mode === 'sales') {
-      var hit = intent(query);
-      if (hit && hit.type === 'savings') {
-        onChoice('savings', { id: hit.n, fa: hit.n, en: hit.n, ar: hit.n });
-        return;
-      }
-      if (hit && hit.type === 'volume') {
+    var hit = intent(query);
+    if (hit && hit.type === 'savings') {
+      onChoice('savings', { id: hit.n, fa: hit.n, en: hit.n, ar: hit.n });
+      return;
+    }
+    if (state.mode === 'sales' && hit) {
+      if (hit.type === 'volume') {
         onChoice('volume', { id: hit.id, fa: hit.id + ' L', en: hit.id + ' L', ar: hit.id + ' L' });
         return;
       }
-      if (hit && hit.type === 'solution') {
+      if (hit.type === 'solution') {
         var sol = null;
         SOLUTIONS.forEach(function (s) { if (s.id === hit.id) sol = s; });
         if (sol) { onChoice('solution', sol); return; }
-      }
-      if (hit && hit.type === 'product') {
-        var prod = null;
-        PRODUCTS.forEach(function (s) { if (s.id === hit.id) prod = s; });
-        if (prod) { onChoice('product', prod); return; }
       }
     }
     answerSearch(query);

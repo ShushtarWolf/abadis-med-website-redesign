@@ -147,7 +147,7 @@ def _foot_placeholder(kind, label, icon, note):
     """Non-navigating pill when abadis-med.com publishes no official profile URL."""
     aria = f'{label} — {note}'
     return (
-        f'<a class="foot-pill foot-pill--{kind} foot-pill--placeholder" '
+        f'<a class="foot-pill foot-pill--{kind} foot-pill--placeholder" hidden '
         f'data-social="{esc(kind)}" data-status="placeholder" data-official-url="" '
         f'data-note="{esc(note)}" aria-disabled="true" tabindex="-1" '
         f'aria-label="{esc(aria)}">'

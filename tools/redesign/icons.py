@@ -286,7 +286,7 @@ def _ensure_contact_network_links(html: str) -> str:
     extra = (
         f'\n\t\t\t\t\t\t\t<span>\n\t\t\t\t\t<a href="{LI_URL}" target="_blank" rel="noopener">'
         f'\n\t\t\t\t\t\t<span>{li_label}</span>\n\t\t\t\t\t\t{ch(svg_linkedin())}\t\t\t</a>\n\t\t\t\t</span>'
-        f'\n\t\t\t\t\t\t\t<span>\n\t\t\t\t\t<a class="soc-placeholder" data-social="pinterest" '
+        f'\n\t\t\t\t\t\t\t<span class="soc-placeholder-row" hidden>\n\t\t\t\t\t<a class="soc-placeholder" data-social="pinterest" '
         f'data-status="placeholder" data-official-url="" aria-disabled="true" title="{PIN_NOTE}">'
         f'\n\t\t\t\t\t\t<span>{pi_label}</span>\n\t\t\t\t\t\t{ch(svg_pinterest())}\t\t\t</a>\n\t\t\t\t</span>'
     )
@@ -337,7 +337,7 @@ def decorate_fa_contact_main(html: str) -> str:
         extra = (
             f'\n        <dt>{ch(svg_facebook())}فیسبوک:</dt><dd><a href="{FB_URL}" target="_blank" rel="noopener" dir="ltr">fb.com/AbadisMedCo</a></dd>'
             f'\n        <dt>{ch(svg_linkedin())}لینکدین:</dt><dd><a href="{LI_URL}" target="_blank" rel="noopener" dir="ltr">abadis-medical-co</a></dd>'
-            f'\n        <dt>{ch(svg_pinterest())}پینترست:</dt><dd><span class="soc-placeholder" data-social="pinterest" data-status="placeholder" data-official-url="" title="{PIN_NOTE}">{PIN_NOTE}</span></dd>'
+            f'\n        <dt class="soc-placeholder-row" hidden>{ch(svg_pinterest())}پینترست:</dt><dd class="soc-placeholder-row" hidden><span class="soc-placeholder" data-social="pinterest" data-status="placeholder" data-official-url="" title="{PIN_NOTE}">{PIN_NOTE}</span></dd>'
         )
         html = html.replace(ig_dd, ig_dd + extra, 1)
     return html

@@ -1168,21 +1168,12 @@ html[dir="ltr"] .prose ul, html[dir="ltr"] .prose ol { padding-inline-start: 1.3
   background: rgba(255,255,255,.08);
 }
 .site-footer .foot-pill--placeholder,
-.soc-placeholder {
-  cursor: not-allowed;
-  opacity: .72;
-}
-.site-footer .foot-pill--placeholder:hover,
-.site-footer .foot-pill--placeholder:focus-visible {
-  border-color: rgba(168,213,214,.28);
-  background: rgba(255,255,255,.04);
-}
-.soc-placeholder {
-  display: inline-block;
-  font-size: .82rem;
-  line-height: 1.5;
-  color: var(--muted);
-  border-bottom: 1px dashed var(--line);
+.soc-placeholder,
+.soc-placeholder-row,
+span:has(> .soc-placeholder),
+dt:has(+ dd > .soc-placeholder),
+dd:has(> .soc-placeholder) {
+  display: none !important;
 }
 .site-footer .foot-pill .foot-pill-ico,
 .site-footer .foot-pill--wa .foot-pill-ico,
