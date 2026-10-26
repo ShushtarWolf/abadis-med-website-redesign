@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>چرا آبادیس — گزینه ۲: استیج پانورامای تعاملی (سبک پاکشوما)</title>
+  <style>
+    
+@font-face { font-family: "Kalameh"; src: url("assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Kalameh"; src: url("assets/fonts/kalameh/KalamehWeb-FaNum-Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Kalameh"; src: url("assets/fonts/kalameh/KalamehWeb-FaNum-SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Kalameh"; src: url("assets/fonts/kalameh/KalamehWeb-FaNum-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Kalameh"; src: url("assets/fonts/kalameh/KalamehWeb-FaNum-ExtraBold.woff2") format("woff2"); font-weight: 800; font-display: swap; }
+@font-face { font-family: "Kalameh"; src: url("assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2") format("woff2"); font-weight: 900; font-display: swap; }
+
+:root, [data-theme="light"] {
+  --bg: #f3fafa;
+  --bg-2: #e8f3f3;
+  --surface: #ffffff;
+  --surface-2: #f0f7f7;
+  --surface-glass: rgba(255, 255, 255, 0.86);
+  --ink: #0a2e32;
+  --ink-2: #2f4e51;
+  --muted: #4e686b;
+  --brand: #066163;
+  --brand-2: #05686b;
+  --brand-3: #0e7475;
+  --accent: #087673;
+  --accent-bright: #0ca6a8;
+  --gold: #c98a1c;
+  --gold-soft: rgba(201, 138, 28, 0.14);
+  --chip-bg: #e2f2f2;
+  --chip-ink: #05686b;
+  --line: rgba(6, 97, 99, 0.14);
+  --line-strong: rgba(6, 97, 99, 0.28);
+  --shadow: 0 14px 36px rgba(11, 46, 50, 0.07);
+  --shadow-lg: 0 22px 54px rgba(6, 61, 65, 0.11);
+  --deep: #0b2e32;
+  --deep-2: #071c1e;
+  --on-deep: #e8f3f3;
+  --on-deep-muted: #9fbcbe;
+  --deep-accent: #5fd0d1;
+  --grid-pat: rgba(6, 97, 99, 0.045);
+  --glow: rgba(14, 165, 168, 0.16);
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg: #061719;
+  --bg-2: #08201f;
+  --surface: #0b2427;
+  --surface-2: #0f3034;
+  --surface-glass: rgba(11, 36, 39, 0.88);
+  --ink: #e8f3f3;
+  --ink-2: #c9dfe0;
+  --muted: #9fbcbe;
+  --brand: #5fd0d1;
+  --brand-2: #3fb8ba;
+  --brand-3: #0e7475;
+  --accent: #2ec4c6;
+  --accent-bright: #5fd0d1;
+  --gold: #f0b44c;
+  --gold-soft: rgba(240, 180, 76, 0.16);
+  --chip-bg: rgba(46, 196, 198, 0.14);
+  --chip-ink: #7fdcdd;
+  --line: rgba(127, 220, 221, 0.15);
+  --line-strong: rgba(127, 220, 221, 0.32);
+  --shadow: 0 16px 40px rgba(0, 0, 0, 0.42);
+  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.55);
+  --deep: #041113;
+  --deep-2: #030c0d;
+  --on-deep: #e8f3f3;
+  --on-deep-muted: #8fb0b2;
+  --deep-accent: #5fd0d1;
+  --grid-pat: rgba(95, 208, 209, 0.045);
+  --glow: rgba(95, 208, 209, 0.22);
+  color-scheme: dark;
+}
+
+[data-theme="noir"] {
+  --bg: #0a0a12;
+  --bg-2: #0e0d18;
+  --surface: #13121f;
+  --surface-2: #1c1a2e;
+  --surface-glass: rgba(19, 18, 31, 0.88);
+  --ink: #f1f0ff;
+  --ink-2: #ddd8f5;
+  --muted: #b8b3d6;
+  --brand: #a78bfa;
+  --brand-2: #c4b5fd;
+  --brand-3: #8b5cf6;
+  --accent: #c4b5fd;
+  --accent-bright: #a78bfa;
+  --gold: #fbbf24;
+  --gold-soft: rgba(251, 191, 36, 0.15);
+  --chip-bg: rgba(167, 139, 250, 0.15);
+  --chip-ink: #c4b5fd;
+  --line: rgba(196, 181, 253, 0.16);
+  --line-strong: rgba(196, 181, 253, 0.32);
+  --shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.65);
+  --deep: #07060d;
+  --deep-2: #050409;
+  --on-deep: #f1f0ff;
+  --on-deep-muted: #a9a3cc;
+  --deep-accent: #c4b5fd;
+  --grid-pat: rgba(167, 139, 250, 0.045);
+  --glow: rgba(167, 139, 250, 0.22);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { direction: rtl; font-family: "Kalameh", Tahoma, sans-serif; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: "Kalameh", Tahoma, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.75;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Top Prototype Bar (hidden when ?shot=1) */
+.proto-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 28px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  font-size: 0.85rem;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+body.shot-mode .proto-bar { display: none !important; }
+.proto-bar-title { display: flex; align-items: center; gap: 12px; font-weight: 800; color: var(--brand); }
+.proto-bar-actions { display: flex; align-items: center; gap: 8px; }
+.proto-btn {
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 99px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface-2);
+  color: var(--ink);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.proto-btn.active, .proto-btn:hover {
+  background: var(--brand);
+  color: var(--bg);
+  border-color: var(--brand);
+}
+
+/* Section container */
+.why-sec {
+  position: relative;
+  padding: 52px 0 60px;
+  background:
+    radial-gradient(900px 420px at 85% 10%, var(--glow), transparent 70%),
+    radial-gradient(700px 380px at 12% 88%, var(--glow), transparent 70%),
+    linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 100%);
+  overflow: hidden;
+}
+.why-sec::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--grid-pat) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-pat) 1px, transparent 1px);
+  background-size: 36px 36px;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse 85% 80% at 50% 50%, #000 35%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 85% 80% at 50% 50%, #000 35%, transparent 100%);
+}
+.wrap {
+  width: min(1280px, 100%);
+  margin-inline: auto;
+  padding-inline: 32px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Section Header with approved Q2 Mark */
+.sec-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.sec-head-main {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.q2-badge {
+  position: relative;
+  width: 78px;
+  height: 78px;
+  border-radius: 22px;
+  background: var(--surface);
+  border: 1.5px solid var(--line-strong);
+  box-shadow: var(--shadow);
+  display: grid;
+  place-items: center;
+  color: var(--brand);
+  flex-shrink: 0;
+}
+.q2-badge::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 26px;
+  border: 1px dashed var(--line-strong);
+  animation: spinSlow 28s linear infinite;
+  pointer-events: none;
+}
+.q2-badge .q2-mark-svg {
+  width: 58px;
+  height: 58px;
+  display: block;
+}
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: var(--brand);
+  background: var(--chip-bg);
+  padding: 4px 13px;
+  border-radius: 99px;
+  margin-bottom: 6px;
+  border: 1px solid var(--line);
+}
+.eyebrow-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--brand);
+  box-shadow: 0 0 0 4px var(--glow);
+  animation: pulseDot 2.2s ease-in-out infinite;
+}
+.sec-head h2 {
+  font-size: clamp(1.65rem, 2.6vw, 2.25rem);
+  font-weight: 900;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+.sec-head-sub {
+  font-size: 0.96rem;
+  color: var(--muted);
+  margin-top: 3px;
+}
+.sec-head-kpi {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--surface-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--line-strong);
+  padding: 12px 20px;
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+.kpi-pill {
+  text-align: center;
+  padding-inline: 12px;
+  border-inline-start: 1px solid var(--line);
+}
+.kpi-pill:first-child { border-inline-start: 0; }
+.kpi-pill strong {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--brand);
+  line-height: 1.2;
+}
+.kpi-pill span {
+  font-size: 0.76rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: 0.65; }
+}
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes dashFlow {
+  to { stroke-dashoffset: -48; }
+}
+@keyframes floatGentle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+.flow-line {
+  stroke-dasharray: 6 6;
+  animation: dashFlow 2.4s linear infinite;
+}
+
+    
+.opt2-shell {
+  display: grid;
+  grid-template-columns: 330px 1fr;
+  gap: 20px;
+  align-items: stretch;
+}
+.opt2-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: space-between;
+}
+.rail-tab {
+  position: relative;
+  text-align: right;
+  font-family: inherit;
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  border-radius: 18px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.rail-tab:hover {
+  border-color: var(--brand);
+}
+.rail-tab.is-active {
+  background: linear-gradient(135deg, var(--surface) 0%, var(--chip-bg) 100%);
+  border-color: var(--brand);
+  box-shadow: var(--shadow-lg);
+}
+.rail-tab.is-active::before {
+  content: "";
+  position: absolute;
+  inset: 10px 0 10px auto;
+  width: 4px;
+  border-radius: 99px;
+  background: var(--brand);
+}
+.rail-tab-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.rail-idx {
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: var(--brand);
+  background: var(--chip-bg);
+  padding: 2px 9px;
+  border-radius: 99px;
+  border: 1px solid var(--line);
+}
+.rail-metric {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--muted);
+}
+.rail-tab.is-active .rail-metric {
+  color: var(--brand);
+}
+.rail-tab h3 {
+  font-size: 1.02rem;
+  font-weight: 900;
+  color: var(--ink);
+  line-height: 1.35;
+}
+.rail-tab p {
+  font-size: 0.8rem;
+  color: var(--ink-2);
+  line-height: 1.55;
+}
+.rail-progress {
+  height: 3px;
+  background: var(--line);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+.rail-progress-bar {
+  height: 100%;
+  width: 30%;
+  background: var(--brand);
+  border-radius: 99px;
+  transition: width 0.35s ease;
+}
+.rail-tab.is-active .rail-progress-bar {
+  width: 100%;
+}
+
+/* Pakshoma-style Architectural Cutout Stage */
+.opt2-stage {
+  position: relative;
+  border-radius: 26px;
+  background: linear-gradient(135deg, var(--deep) 0%, var(--deep-2) 100%);
+  color: var(--on-deep);
+  border: 1.5px solid var(--line-strong);
+  box-shadow: var(--shadow-lg);
+  padding: 26px 28px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+/* Architectural stepped SVG frame overlay (inspired by pakshoma Union mask) */
+.opt2-arch-frame {
+  position: absolute;
+  inset: 12px;
+  pointer-events: none;
+  z-index: 1;
+}
+.opt2-stage-inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1.08fr 0.92fr;
+  gap: 24px;
+  align-items: center;
+}
+.stage-glass-card {
+  background: rgba(11, 46, 50, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(95, 208, 209, 0.28);
+  border-radius: 22px;
+  padding: 22px 24px;
+}
+.stage-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--deep-accent);
+  background: rgba(95, 208, 209, 0.14);
+  border: 1px solid rgba(95, 208, 209, 0.3);
+  padding: 4px 12px;
+  border-radius: 99px;
+  margin-bottom: 12px;
+}
+.stage-glass-card h3 {
+  font-size: 1.38rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+.stage-glass-card .stage-lead {
+  font-size: 0.92rem;
+  color: #d6ecec;
+  line-height: 1.75;
+  text-align: justify;
+  margin-bottom: 14px;
+}
+.stage-factory-box {
+  background: rgba(255, 255, 255, 0.05);
+  border-inline-start: 3px solid var(--deep-accent);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 0.83rem;
+  color: var(--on-deep-muted);
+  text-align: justify;
+  line-height: 1.7;
+}
+.stage-schematic {
+  position: relative;
+  background: rgba(4, 17, 19, 0.72);
+  border: 1px solid rgba(95, 208, 209, 0.3);
+  border-radius: 22px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 290px;
+}
+.stage-product-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 12px;
+}
+.stage-product-img {
+  width: 155px;
+  height: 175px;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.55));
+  animation: floatGentle 4s ease-in-out infinite;
+}
+.stage-telemetry {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.tele-box {
+  background: rgba(95, 208, 209, 0.09);
+  border: 1px solid rgba(95, 208, 209, 0.24);
+  border-radius: 12px;
+  padding: 8px 12px;
+}
+.tele-box-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.74rem;
+  color: var(--on-deep-muted);
+  margin-bottom: 4px;
+}
+.tele-box-top strong {
+  color: var(--deep-accent);
+  font-size: 0.84rem;
+  font-weight: 900;
+}
+.tele-bar {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.tele-bar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--brand-2), var(--deep-accent));
+  border-radius: 99px;
+}
+
+/* 4-Pillar Mini Strip inside Stage Footer + 5 Check Badges */
+.opt2-stage-foot {
+  position: relative;
+  z-index: 2;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(95, 208, 209, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.opt2-checks-label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--deep-accent);
+}
+.opt2-checks-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.opt2-check-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(95, 208, 209, 0.28);
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 99px;
+}
+.opt2-check-chip i {
+  font-style: normal;
+  color: var(--deep-accent);
+  font-weight: 900;
+}
+
+  </style>
+</head>
+<body>
+  
+  <header class="proto-bar">
+    <div class="proto-bar-title">
+      <span>پیش‌نمایش بخش «چرا آبادیس؟» — گزینه ۲: استیج پانورامای تعاملی و قاب معماری (به سبک پاکشوما)</span>
+    </div>
+    <div class="proto-bar-actions">
+      <a class="proto-btn" href="option-1.html">گزینه ۱: بنتو اینفوگرافیک</a><a class="proto-btn active" href="option-2.html">گزینه ۲: پانورامای تعاملی (پاکشوما)</a><a class="proto-btn" href="option-3.html">گزینه ۳: مدار مرکزی Q2 و رادار</a>
+      <span style="width:1px;height:18px;background:var(--line-strong);margin-inline:6px"></span>
+      <button type="button" class="proto-btn" data-set-theme="light">روشن (Light)</button>
+      <button type="button" class="proto-btn" data-set-theme="dark">تاریک (Dark)</button>
+      <button type="button" class="proto-btn" data-set-theme="noir">نوآر (Noir)</button>
+    </div>
+  </header>
+  <section class="why-sec" id="why">
+    <div class="wrap">
+      
+      <div class="sec-head">
+        <div class="sec-head-main">
+          <div class="q2-badge" title="نشان رسمی بخش چرا آبادیس (Q2)">
+            <svg class="q2-mark-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path class="q2-arc" d="M107.82 55.82A48 48 0 1 1 96.77 29.15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle class="q2-node q2-node--arc" cx="107.82" cy="55.82" r="2.4" fill="currentColor"/>
+  <circle class="q2-node q2-node--arc" cx="96.77" cy="29.15" r="2.4" fill="currentColor"/>
+  <path class="q2-circuit-1" d="M38 42L48 29L70 29L80 39L80 50L60 64L60 76" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle class="q2-node" cx="38.00" cy="42.00" r="2.4" fill="currentColor"/>
+  <circle class="q2-node" cx="60.00" cy="76.00" r="2.4" fill="currentColor"/>
+  <circle class="q2-node" cx="48.00" cy="29.00" r="2.0" fill="currentColor"/>
+  <circle class="q2-node" cx="70.00" cy="29.00" r="2.0" fill="currentColor"/>
+  <circle class="q2-node" cx="80.00" cy="39.00" r="2.0" fill="currentColor"/>
+  <circle class="q2-node" cx="80.00" cy="50.00" r="2.0" fill="currentColor"/>
+  <circle class="q2-node" cx="60.00" cy="64.00" r="2.0" fill="currentColor"/>
+  <path class="q2-circuit-2" d="M43.55 46.27L51.45 36.0L67.1 36.0L73.0 44.13L53.0 60.36L53.0 76.0" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle class="q2-node" cx="43.55" cy="46.27" r="2.4" fill="currentColor"/>
+  <circle class="q2-node" cx="53.00" cy="76.00" r="2.4" fill="currentColor"/>
+  <circle class="q2-node" cx="51.45" cy="36.00" r="2.0" fill="currentColor"/>
+  <circle class="q2-node" cx="67.10" cy="36.00" r="2.0" fill="currentColor"/>
+  <circle class="q2-node" cx="73.00" cy="44.13" r="2.0" fill="currentColor"/>
+  <circle class="q2-node" cx="53.00" cy="60.36" r="2.0" fill="currentColor"/>
+  <circle class="q2-dot-main" cx="56.50" cy="90.00" r="3.4" fill="currentColor"/>
+</svg>
+          </div>
+          <div>
+            <p class="eyebrow"><span class="eyebrow-dot"></span>چرا آبادیس؟</p>
+            <h2>ارزش افزوده‌های کیسه ساکشن یکبار مصرف</h2>
+            <p class="sec-head-sub">الهام‌گرفته از استایل پانوراما و قاب معماری پاکشوما: ریل انتخابگر چهار ارزش افزوده در کنار استیج زنده و باکس کارخانه</p>
+          </div>
+        </div>
+        <div class="sec-head-kpi">
+          <div class="kpi-pill">
+            <strong>۵ میلیون</strong>
+            <span>ظرفیت تولید سالانه</span>
+          </div>
+          <div class="kpi-pill">
+            <strong>۱٬۲۳۲</strong>
+            <span>مرکز درمانی فعال</span>
+          </div>
+          <div class="kpi-pill">
+            <strong>۹۸.۹۹٪</strong>
+            <span>رضایت مشتریان</span>
+          </div>
+          <div class="kpi-pill">
+            <strong>۰.۰۰۱۸٪</strong>
+            <span>نرخ خرابی محصول</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="opt2-shell">
+        <!-- Right Interactive Rail: All 4 Value Cards Visible & Active -->
+        <div class="opt2-rail" role="tablist" aria-label="ارزش افزوده‌های کیسه ساکشن">
+          <button type="button" class="rail-tab is-active" role="tab">
+            <div class="rail-tab-top">
+              <span class="rail-idx">۰۱ · اقتصاد درمان</span>
+              <span class="rail-metric">-۶۸٪ هزینه کل</span>
+            </div>
+            <h3>کاهش هزینه‌ها</h3>
+            <p>کاهش هزینه‌های مربوط به مواد شست‌و‌شو، مصرف آب، برق و منابع انسانی</p>
+            <div class="rail-progress"><div class="rail-progress-bar"></div></div>
+          </button>
+
+          <button type="button" class="rail-tab" role="tab">
+            <div class="rail-tab-top">
+              <span class="rail-idx">۰۲ · ایمنی زیستی</span>
+              <span class="rail-metric">۹۹.۹٪ ایزولاسیون</span>
+            </div>
+            <h3>مدیریت زباله‌های بیمارستانی و عفونی</h3>
+            <p>باعث جمع‌آوری بهتر زباله‌های مایع و عفونی می‌گردد.</p>
+            <div class="rail-progress"><div class="rail-progress-bar"></div></div>
+          </button>
+
+          <button type="button" class="rail-tab" role="tab">
+            <div class="rail-tab-top">
+              <span class="rail-idx">۰۳ · صنعت سبز</span>
+              <span class="rail-metric">پلیمر قابل بازیافت</span>
+            </div>
+            <h3>بازیافت پذیر</h3>
+            <p>باعث کاهش حجم زباله‌های بیمارستانی و حفظ محیط‌زیست می‌گردد.</p>
+            <div class="rail-progress"><div class="rail-progress-bar"></div></div>
+          </button>
+
+          <button type="button" class="rail-tab" role="tab">
+            <div class="rail-tab-top">
+              <span class="rail-idx">۰۴ · سرعت عمل</span>
+              <span class="rail-metric">نصب در ۳۰ ثانیه</span>
+            </div>
+            <h3>استفاده آسان</h3>
+            <p>حذف فعالیت‌های مربوط به شست‌و‌شوی مخازن و استفاده راحت برای جمع‌آوری ضایعات حین عمل</p>
+            <div class="rail-progress"><div class="rail-progress-bar"></div></div>
+          </button>
+        </div>
+
+        <!-- Left Panorama Architectural Stage -->
+        <div class="opt2-stage">
+          <!-- Pakshoma-inspired stepped architectural vector border -->
+          <svg class="opt2-arch-frame" viewBox="0 0 900 440" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M 24 2 H 740 Q 760 2 760 22 V 62 Q 760 82 780 82 H 876 Q 898 82 898 104 V 360 Q 898 382 876 382 H 150 Q 130 382 130 404 V 418 Q 130 438 110 438 H 24 Q 2 438 2 416 V 24 Q 2 2 24 2 Z"
+                  fill="none" stroke="rgba(95, 208, 209, 0.25)" stroke-width="1.5" />
+          </svg>
+
+          <div class="opt2-stage-inner">
+            <div class="stage-glass-card">
+              <span class="stage-tag" id="st-tag">محور ۰۱ · بهینه‌سازی اقتصادی و منابع</span>
+              <h3 id="st-title">کاهش هزینه‌ها و حذف کامل چرخه شست‌وشو</h3>
+              <p class="stage-lead" id="st-lead">کاهش هزینه‌های مربوط به مواد شست‌و‌شو، مصرف آب، برق و منابع انسانی در بیمارستان‌ها و مراکز جراحی با جایگزینی کیسه‌های ساکشن یکبارمصرف استاندارد.</p>
+              <div class="stage-factory-box">
+                <strong style="color:#fff;display:block;margin-bottom:4px">کارخانه دانش‌بنیان تجهیزات پزشکی آبادیس (تاسیس ۱۳۹۷ · ظرفیت ۵ میلیون کیسه در سال)</strong>
+                کارخانه دانش‌بنیان تجهیزات پزشکی آبادیس در سال ۱۳۹۷ با بهره‌گیری از پیشرفته‌ترین تجهیزات و ماشین‌آلات و با همکاری نیروهای متخصص راه‌اندازی شد. این کارخانه با ظرفیت تولید سالانه ۵ میلیون کیسه ساکشن یکبارمصرف، به‌عنوان بزرگ‌ترین تولیدکننده این محصولات در منطقه خاورمیانه شناخته می‌شود.
+              </div>
+            </div>
+
+            <div class="stage-schematic">
+              <div class="stage-product-row">
+                <img class="stage-product-img" src="../assets/img/hero-bags.webp" alt="کیسه ساکشن یکبار مصرف آبادیس">
+                <div class="stage-telemetry">
+                  <div class="tele-box">
+                    <div class="tele-box-top">
+                      <span id="t1-l">صرفه‌جویی مصرف آب و مواد شوینده</span>
+                      <strong id="t1-v">۱۰۰٪ حذف شست‌وشو</strong>
+                    </div>
+                    <div class="tele-bar"><span id="t1-b" style="width:96%"></span></div>
+                  </div>
+                  <div class="tele-box">
+                    <div class="tele-box-top">
+                      <span id="t2-l">کاهش بار کاری پرسنل و خدمات</span>
+                      <strong id="t2-v">بهینه‌سازی شیفت</strong>
+                    </div>
+                    <div class="tele-bar"><span id="t2-b" style="width:84%"></span></div>
+                  </div>
+                  <div class="tele-box">
+                    <div class="tele-box-top">
+                      <span id="t3-l">کاهش استهلاک دستگاه ساکشن مرکزی</span>
+                      <strong id="t3-v">حفاظت مدار وکیوم</strong>
+                    </div>
+                    <div class="tele-bar"><span id="t3-b" style="width:92%"></span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stage Bottom: 5 Core Guarantees Strip -->
+          <div class="opt2-stage-foot">
+            <span class="opt2-checks-label">مزایای رقابتی و تعهدات آبادیس:</span>
+            <div class="opt2-checks-row">
+              <span class="opt2-check-chip"><i>✓</i> کاهش هزینه‌ها</span>
+              <span class="opt2-check-chip"><i>✓</i> ارائه محصولات با کیفیت</span>
+              <span class="opt2-check-chip"><i>✓</i> ارتباط مستمر آبادیس با مراکز درمانی</span>
+              <span class="opt2-check-chip"><i>✓</i> ارسال رایگان</span>
+              <span class="opt2-check-chip"><i>✓</i> تحویل در کوتاه‌ترین زمان ممکن</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <script>
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  const t = params.get('theme');
+  if (t === 'dark' || t === 'light' || t === 'noir') {
+    document.documentElement.setAttribute('data-theme', t);
+  }
+  if (params.get('shot') === '1') {
+    document.body.classList.add('shot-mode');
+  }
+  const btns = document.querySelectorAll('[data-set-theme]');
+  function syncBtns() {
+    const cur = document.documentElement.getAttribute('data-theme') || 'light';
+    btns.forEach(b => b.classList.toggle('active', b.getAttribute('data-set-theme') === cur));
+  }
+  btns.forEach(b => {
+    b.addEventListener('click', () => {
+      document.documentElement.setAttribute('data-theme', b.getAttribute('data-set-theme'));
+      syncBtns();
+    });
+  });
+  syncBtns();
+})();
+</script>
+  <script>
+(function(){
+  const data = [
+    {
+      tag: "محور ۰۱ · بهینه‌سازی اقتصادی و منابع",
+      title: "کاهش هزینه‌ها و حذف کامل چرخه شست‌وشو",
+      lead: "کاهش هزینه‌های مربوط به مواد شست‌و‌شو، مصرف آب، برق و منابع انسانی در بیمارستان‌ها و مراکز جراحی با جایگزینی کیسه‌های ساکشن یکبارمصرف استاندارد.",
+      t1: ["صرفه‌جویی مصرف آب و مواد شوینده", "۱۰۰٪ حذف شست‌وشو", "96%"],
+      t2: ["کاهش بار کاری پرسنل و خدمات", "بهینه‌سازی شیفت", "84%"],
+      t3: ["کاهش استهلاک دستگاه ساکشن مرکزی", "حفاظت مدار وکیوم", "92%"]
+    },
+    {
+      tag: "محور ۰۲ · ایمنی زیستی و کنترل عفونت",
+      title: "مدیریت زباله‌های بیمارستانی و عفونی",
+      lead: "باعث جمع‌آوری بهتر زباله‌های مایع و عفونی می‌گردد و با ساختار کاملاً ایزوله و فیلتر هیدروفوبیک، ریسک نشت و انتقال آلودگی در اتاق عمل را به صفر می‌رساند.",
+      t1: ["ایزولاسیون ترشحات و سیالات عفونی", "۹۹.۹٪ مهار آلودگی", "99%"],
+      t2: ["محافظت از کادر درمان و پرستاران", "تماس صفر با مایعات", "98%"],
+      t3: ["تطابق با پروتکل‌های کنترل عفونت", "استاندارد بیمارستانی", "95%"]
+    },
+    {
+      tag: "محور ۰۳ · مهندسی سبز و توسعه پایدار",
+      title: "بازیافت‌پذیر و حافظ محیط‌زیست",
+      lead: "باعث کاهش حجم زباله‌های بیمارستانی و حفظ محیط‌زیست می‌گردد. تولید از پلیمرهای پزشکی سبک و استاندارد همراه با مسئولیت اجتماعی در احیای جنگل‌های زاگرس.",
+      t1: ["کاهش حجم فیزیکی پسماند بیمارستانی", "فشرده‌سازی بهینه", "88%"],
+      t2: ["حذف پساب شیمیایی مواد ضدعفونی", "حفاظت منابع آب", "97%"],
+      t3: ["پلیمر پزشکی سازگار با چرخه بازیافت", "گرید پزشکی خالص", "90%"]
+    },
+    {
+      tag: "محور ۰۴ · ارگونومی و سرعت در اتاق عمل",
+      title: "استفاده آسان و آماده‌سازی سریع بین دو عمل",
+      lead: "حذف فعالیت‌های مربوط به شست‌و‌شوی مخازن و استفاده راحت برای جمع‌آوری ضایعات حین عمل؛ نصب سریع در مخازن ۱، ۲ و ۳ لیتری بدون توقف روند جراحی.",
+      t1: ["سرعت تعویض کیسه بین دو جراحی", "کمتر از ۳۰ ثانیه", "95%"],
+      t2: ["نشانگر مدرج و دقیق حجم مایعات", "خوانش آسان حین عمل", "94%"],
+      t3: ["آب‌بندی مطمئن درب و پورت‌ها", "قفل مکانیکی ایمن", "99%"]
+    }
+  ];
+  const tabs = document.querySelectorAll('.rail-tab');
+  const tagEl = document.getElementById('st-tag');
+  const titleEl = document.getElementById('st-title');
+  const leadEl = document.getElementById('st-lead');
+  const l1 = document.getElementById('t1-l'), v1 = document.getElementById('t1-v'), b1 = document.getElementById('t1-b');
+  const l2 = document.getElementById('t2-l'), v2 = document.getElementById('t2-v'), b2 = document.getElementById('t2-b');
+  const l3 = document.getElementById('t3-l'), v3 = document.getElementById('t3-v'), b3 = document.getElementById('t3-b');
+
+  tabs.forEach((tab, idx) => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('is-active'));
+      tab.classList.add('is-active');
+      const d = data[idx];
+      if (!d) return;
+      tagEl.textContent = d.tag;
+      titleEl.textContent = d.title;
+      leadEl.textContent = d.lead;
+      l1.textContent = d.t1[0]; v1.textContent = d.t1[1]; b1.style.width = d.t1[2];
+      l2.textContent = d.t2[0]; v2.textContent = d.t2[1]; b2.style.width = d.t2[2];
+      l3.textContent = d.t3[0]; v3.textContent = d.t3[1]; b3.style.width = d.t3[2];
+    });
+  });
+})();
+</script>
+</body>
+</html>

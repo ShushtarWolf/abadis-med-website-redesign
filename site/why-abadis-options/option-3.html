@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>چرا آبادیس — گزینه ۳: مدار مرکزی Q2 و رادار ارزش‌آفرینی</title>
+  <style>
+    
+@font-face { font-family: "Kalameh"; src: url("assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Kalameh"; src: url("assets/fonts/kalameh/KalamehWeb-FaNum-Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Kalameh"; src: url("assets/fonts/kalameh/KalamehWeb-FaNum-SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Kalameh"; src: url("assets/fonts/kalameh/KalamehWeb-FaNum-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Kalameh"; src: url("assets/fonts/kalameh/KalamehWeb-FaNum-ExtraBold.woff2") format("woff2"); font-weight: 800; font-display: swap; }
+@font-face { font-family: "Kalameh"; src: url("assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2") format("woff2"); font-weight: 900; font-display: swap; }
+
+:root, [data-theme="light"] {
+  --bg: #f3fafa;
+  --bg-2: #e8f3f3;
+  --surface: #ffffff;
+  --surface-2: #f0f7f7;
+  --surface-glass: rgba(255, 255, 255, 0.86);
+  --ink: #0a2e32;
+  --ink-2: #2f4e51;
+  --muted: #4e686b;
+  --brand: #066163;
+  --brand-2: #05686b;
+  --brand-3: #0e7475;
+  --accent: #087673;
+  --accent-bright: #0ca6a8;
+  --gold: #c98a1c;
+  --gold-soft: rgba(201, 138, 28, 0.14);
+  --chip-bg: #e2f2f2;
+  --chip-ink: #05686b;
+  --line: rgba(6, 97, 99, 0.14);
+  --line-strong: rgba(6, 97, 99, 0.28);
+  --shadow: 0 14px 36px rgba(11, 46, 50, 0.07);
+  --shadow-lg: 0 22px 54px rgba(6, 61, 65, 0.11);
+  --deep: #0b2e32;
+  --deep-2: #071c1e;
+  --on-deep: #e8f3f3;
+  --on-deep-muted: #9fbcbe;
+  --deep-accent: #5fd0d1;
+  --grid-pat: rgba(6, 97, 99, 0.045);
+  --glow: rgba(14, 165, 168, 0.16);
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg: #061719;
+  --bg-2: #08201f;
+  --surface: #0b2427;
+  --surface-2: #0f3034;
+  --surface-glass: rgba(11, 36, 39, 0.88);
+  --ink: #e8f3f3;
+  --ink-2: #c9dfe0;
+  --muted: #9fbcbe;
+  --brand: #5fd0d1;
+  --brand-2: #3fb8ba;
+  --brand-3: #0e7475;
+  --accent: #2ec4c6;
+  --accent-bright: #5fd0d1;
+  --gold: #f0b44c;
+  --gold-soft: rgba(240, 180, 76, 0.16);
+  --chip-bg: rgba(46, 196, 198, 0.14);
+  --chip-ink: #7fdcdd;
+  --line: rgba(127, 220, 221, 0.15);
+  --line-strong: rgba(127, 220, 221, 0.32);
+  --shadow: 0 16px 40px rgba(0, 0, 0, 0.42);
+  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.55);
+  --deep: #041113;
+  --deep-2: #030c0d;
+  --on-deep: #e8f3f3;
+  --on-deep-muted: #8fb0b2;
+  --deep-accent: #5fd0d1;
+  --grid-pat: rgba(95, 208, 209, 0.045);
+  --glow: rgba(95, 208, 209, 0.22);
+  color-scheme: dark;
+}
+
+[data-theme="noir"] {
+  --bg: #0a0a12;
+  --bg-2: #0e0d18;
+  --surface: #13121f;
+  --surface-2: #1c1a2e;
+  --surface-glass: rgba(19, 18, 31, 0.88);
+  --ink: #f1f0ff;
+  --ink-2: #ddd8f5;
+  --muted: #b8b3d6;
+  --brand: #a78bfa;
+  --brand-2: #c4b5fd;
+  --brand-3: #8b5cf6;
+  --accent: #c4b5fd;
+  --accent-bright: #a78bfa;
+  --gold: #fbbf24;
+  --gold-soft: rgba(251, 191, 36, 0.15);
+  --chip-bg: rgba(167, 139, 250, 0.15);
+  --chip-ink: #c4b5fd;
+  --line: rgba(196, 181, 253, 0.16);
+  --line-strong: rgba(196, 181, 253, 0.32);
+  --shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.65);
+  --deep: #07060d;
+  --deep-2: #050409;
+  --on-deep: #f1f0ff;
+  --on-deep-muted: #a9a3cc;
+  --deep-accent: #c4b5fd;
+  --grid-pat: rgba(167, 139, 250, 0.045);
+  --glow: rgba(167, 139, 250, 0.22);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { direction: rtl; font-family: "Kalameh", Tahoma, sans-serif; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: "Kalameh", Tahoma, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.75;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Top Prototype Bar (hidden when ?shot=1) */
+.proto-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 28px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  font-size: 0.85rem;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+body.shot-mode .proto-bar { display: none !important; }
+.proto-bar-title { display: flex; align-items: center; gap: 12px; font-weight: 800; color: var(--brand); }
+.proto-bar-actions { display: flex; align-items: center; gap: 8px; }
+.proto-btn {
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 99px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface-2);
+  color: var(--ink);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.proto-btn.active, .proto-btn:hover {
+  background: var(--brand);
+  color: var(--bg);
+  border-color: var(--brand);
+}
+
+/* Section container */
+.why-sec {
+  position: relative;
+  padding: 52px 0 60px;
+  background:
+    radial-gradient(900px 420px at 85% 10%, var(--glow), transparent 70%),
+    radial-gradient(700px 380px at 12% 88%, var(--glow), transparent 70%),
+    linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 100%);
+  overflow: hidden;
+}
+.why-sec::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--grid-pat) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-pat) 1px, transparent 1px);
+  background-size: 36px 36px;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse 85% 80% at 50% 50%, #000 35%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 85% 80% at 50% 50%, #000 35%, transparent 100%);
+}
+.wrap {
+  width: min(1280px, 100%);
+  margin-inline: auto;
+  padding-inline: 32px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Section Header with approved Q2 Mark */
+.sec-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.sec-head-main {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.q2-badge {
+  position: relative;
+  width: 78px;
+  height: 78px;
+  border-radius: 22px;
+  background: var(--surface);
+  border: 1.5px solid var(--line-strong);
+  box-shadow: var(--shadow);
+  display: grid;
+  place-items: center;
+  color: var(--brand);
+  flex-shrink: 0;
+}
+.q2-badge::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 26px;
+  border: 1px dashed var(--line-strong);
+  animation: spinSlow 28s linear infinite;
+  pointer-events: none;
+}
+.q2-badge .q2-mark-svg {
+  width: 58px;
+  height: 58px;
+  display: block;
+}
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: var(--brand);
+  background: var(--chip-bg);
+  padding: 4px 13px;
+  border-radius: 99px;
+  margin-bottom: 6px;
+  border: 1px solid var(--line);
+}
+.eyebrow-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--brand);
+  box-shadow: 0 0 0 4px var(--glow);
+  animation: pulseDot 2.2s ease-in-out infinite;
+}
+.sec-head h2 {
+  font-size: clamp(1.65rem, 2.6vw, 2.25rem);
+  font-weight: 900;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+.sec-head-sub {
+  font-size: 0.96rem;
+  color: var(--muted);
+  margin-top: 3px;
+}
+.sec-head-kpi {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--surface-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--line-strong);
+  padding: 12px 20px;
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+.kpi-pill {
+  text-align: center;
+  padding-inline: 12px;
+  border-inline-start: 1px solid var(--line);
+}
+.kpi-pill:first-child { border-inline-start: 0; }
+.kpi-pill strong {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--brand);
+  line-height: 1.2;
+}
+.kpi-pill span {
+  font-size: 0.76rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: 0.65; }
+}
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes dashFlow {
+  to { stroke-dashoffset: -48; }
+}
+@keyframes floatGentle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+.flow-line {
+  stroke-dasharray: 6 6;
+  animation: dashFlow 2.4s linear infinite;
+}
+
+    
+.opt3-matrix {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 310px 1fr;
+  gap: 20px;
+  align-items: center;
+  padding: 12px 0;
+}
+.opt3-connectors {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+.opt3-col {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  position: relative;
+  z-index: 2;
+}
+.spoke-card {
+  background: var(--surface);
+  border: 1.5px solid var(--line-strong);
+  border-radius: 22px;
+  padding: 20px 20px 18px;
+  box-shadow: var(--shadow);
+  position: relative;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+.spoke-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--brand);
+  box-shadow: var(--shadow-lg);
+}
+.spoke-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.spoke-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.76rem;
+  font-weight: 900;
+  color: var(--brand);
+  background: var(--chip-bg);
+  border: 1px solid var(--line);
+  padding: 3px 11px;
+  border-radius: 99px;
+}
+.spoke-node-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--brand);
+  box-shadow: 0 0 0 4px var(--glow);
+}
+.spoke-kpi {
+  font-size: 0.82rem;
+  font-weight: 900;
+  color: var(--ink);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  padding: 3px 10px;
+  border-radius: 10px;
+}
+.spoke-body {
+  display: grid;
+  grid-template-columns: 1fr 86px;
+  gap: 14px;
+  align-items: center;
+}
+.spoke-card h3 {
+  font-size: 1.08rem;
+  font-weight: 900;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.spoke-card p {
+  font-size: 0.86rem;
+  color: var(--ink-2);
+  text-align: justify;
+  line-height: 1.65;
+}
+.spoke-mini-svg {
+  width: 86px;
+  height: 86px;
+  border-radius: 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  display: grid;
+  place-items: center;
+  padding: 8px;
+}
+
+/* Central Q2 Hub Core */
+.hub-core {
+  position: relative;
+  z-index: 3;
+  height: 360px;
+  border-radius: 30px;
+  background: radial-gradient(circle at 50% 42%, #0e484c 0%, var(--deep) 65%, var(--deep-2) 100%);
+  border: 2px solid var(--brand);
+  box-shadow: var(--shadow-lg), 0 0 0 8px var(--glow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 18px;
+  text-align: center;
+  color: var(--on-deep);
+  overflow: hidden;
+}
+.hub-rings {
+  position: relative;
+  width: 170px;
+  height: 170px;
+  display: grid;
+  place-items: center;
+}
+.hub-ring-outer {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(95, 208, 209, 0.45);
+  animation: spinSlow 24s linear infinite;
+}
+.hub-ring-mid {
+  position: absolute;
+  inset: 16px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(95, 208, 209, 0.28);
+}
+.hub-q2-wrap {
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  background: rgba(6, 23, 25, 0.85);
+  border: 2px solid var(--deep-accent);
+  display: grid;
+  place-items: center;
+  color: var(--deep-accent);
+  box-shadow: 0 0 28px rgba(95, 208, 209, 0.35);
+}
+.hub-q2-wrap .q2-mark-svg {
+  width: 78px;
+  height: 78px;
+}
+.hub-title {
+  font-size: 1.08rem;
+  font-weight: 900;
+  color: #ffffff;
+}
+.hub-sub {
+  font-size: 0.78rem;
+  color: var(--on-deep-muted);
+  margin-top: 2px;
+}
+.hub-live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(95, 208, 209, 0.14);
+  border: 1px solid rgba(95, 208, 209, 0.35);
+  color: var(--deep-accent);
+  font-size: 0.76rem;
+  font-weight: 800;
+  padding: 5px 14px;
+  border-radius: 99px;
+}
+
+/* Bottom Unified Factory & 5 Orbiting Guarantee Nodes */
+.opt3-bottom {
+  margin-top: 20px;
+  background: var(--surface);
+  border: 1.5px solid var(--line-strong);
+  border-radius: 24px;
+  padding: 20px 24px;
+  box-shadow: var(--shadow);
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 24px;
+  align-items: center;
+}
+.opt3-factory-text h4 {
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: var(--brand);
+  margin-bottom: 6px;
+}
+.opt3-factory-text p {
+  font-size: 0.86rem;
+  color: var(--ink-2);
+  text-align: justify;
+  line-height: 1.72;
+}
+.opt3-orbit-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-start;
+}
+.orbit-node {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  padding: 8px 13px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--ink);
+}
+.orbit-node-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--brand);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 0.7rem;
+}
+
+  </style>
+</head>
+<body>
+  
+  <header class="proto-bar">
+    <div class="proto-bar-title">
+      <span>پیش‌نمایش بخش «چرا آبادیس؟» — گزینه ۳: مدار مرکزی Q2 و دیاگرام شعاعی (Hub-and-Spoke Matrix)</span>
+    </div>
+    <div class="proto-bar-actions">
+      <a class="proto-btn" href="option-1.html">گزینه ۱: بنتو اینفوگرافیک</a><a class="proto-btn" href="option-2.html">گزینه ۲: پانورامای تعاملی (پاکشوما)</a><a class="proto-btn active" href="option-3.html">گزینه ۳: مدار مرکزی Q2 و رادار</a>
+      <span style="width:1px;height:18px;background:var(--line-strong);margin-inline:6px"></span>
+      <button type="button" class="proto-btn" data-set-theme="light">روشن (Light)</button>
+      <button type="button" class="proto-btn" data-set-theme="dark">تاریک (Dark)</button>
+      <button type="button" class="proto-btn" data-set-theme="noir">نوآر (Noir)</button>
+    </div>
+  </header>
+  <section class="why-sec" id="why">
+    <div class="wrap">
+      
+      <div class="sec-head">
+        <div class="sec-head-main">
+          <div class="q2-badge" title="نشان رسمی بخش چرا آبادیس (Q2)">
+            <svg class="q2-mark-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path class="q2-arc" d="M107.82 55.82A48 48 0 1 1 96.77 29.15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle class="q2-node q2-node--arc" cx="107.82" cy="55.82" r="2.4" fill="currentColor"/>
+  <circle class="q2-node q2-node--arc" cx="96.77" cy="29.15" r="2.4" fill="currentColor"/>
+  <path class="q2-circuit-1" d="M38 42L48 29L70 29L80 39L80 50L60 64L60 76" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle class="q2-node" cx="38.00" cy="42.00" r="2.4" fill="currentColor"/>
+  <circle class="q2-node" cx="60.00" cy="76.00" r="2.4" fill="currentColor"/>
+  <circle class="q2-node" cx="48.00" cy="29.00" r="2.0" fill="currentColor"/>
+  <circle class="q2-node" cx="70.00" cy="29.00" r="2.0" fill="currentColor"/>
+  <circle class="q2-node" cx="80.00" cy="39.00" r="2.0" fill="currentColor"/>
+  <circle class="q2-node" cx="80.00" cy="50.00" r="2.0" fill="currentColor"/>
+  <circle class="q2-node" cx="60.00" cy="64.00" r="2.0" fill="currentColor"/>
+  <path class="q2-circuit-2" d="M43.55 46.27L51.45 36.0L67.1 36.0L73.0 44.13L53.0 60.36L53.0 76.0" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle class="q2-node" cx="43.55" cy="46.27" r="2.4" fill="currentColor"/>
+  <circle class="q2-node" cx="53.00" cy="76.00" r="2.4" fill="currentColor"/>
+  <circle class="q2-node" cx="51.45" cy="36.00" r="2.0" fill="currentColor"/>
+  <circle class="q2-node" cx="67.10" cy="36.00" r="2.0" fill="currentColor"/>
+  <circle class="q2-node" cx="73.00" cy="44.13" r="2.0" fill="currentColor"/>
+  <circle class="q2-node" cx="53.00" cy="60.36" r="2.0" fill="currentColor"/>
+  <circle class="q2-dot-main" cx="56.50" cy="90.00" r="3.4" fill="currentColor"/>
+</svg>
+          </div>
+          <div>
+            <p class="eyebrow"><span class="eyebrow-dot"></span>چرا آبادیس؟</p>
+            <h2>ارزش افزوده‌های کیسه ساکشن یکبار مصرف</h2>
+            <p class="sec-head-sub">طراحی شعاعی (Hub-and-Spoke) الهام‌گرفته از مدار لوگوی Q2 آبادیس با خطوط جریان زنده به چهار ارزش کلیدی</p>
+          </div>
+        </div>
+        <div class="sec-head-kpi">
+          <div class="kpi-pill">
+            <strong>۵ میلیون</strong>
+            <span>ظرفیت تولید سالانه</span>
+          </div>
+          <div class="kpi-pill">
+            <strong>۱٬۲۳۲</strong>
+            <span>مرکز درمانی فعال</span>
+          </div>
+          <div class="kpi-pill">
+            <strong>۹۸.۹۹٪</strong>
+            <span>رضایت مشتریان</span>
+          </div>
+          <div class="kpi-pill">
+            <strong>۰.۰۰۱۸٪</strong>
+            <span>نرخ خرابی محصول</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="opt3-matrix">
+        <!-- Animated SVG Radial Circuit Lines connecting Center Hub to 4 Spoke Cards -->
+        <svg class="opt3-connectors" viewBox="0 0 1200 380" preserveAspectRatio="none" aria-hidden="true">
+          <g fill="none" stroke="var(--brand)" stroke-width="2" opacity="0.55">
+            <path d="M 600 190 C 700 190, 720 85, 810 85" class="flow-line"/>
+            <path d="M 600 190 C 700 190, 720 295, 810 295" class="flow-line"/>
+            <path d="M 600 190 C 500 190, 480 85, 390 85" class="flow-line"/>
+            <path d="M 600 190 C 500 190, 480 295, 390 295" class="flow-line"/>
+          </g>
+          <circle cx="810" cy="85" r="5" fill="var(--brand)"/>
+          <circle cx="810" cy="295" r="5" fill="var(--brand)"/>
+          <circle cx="390" cy="85" r="5" fill="var(--brand)"/>
+          <circle cx="390" cy="295" r="5" fill="var(--brand)"/>
+        </svg>
+
+        <!-- Right Column (Spokes 1 & 2) -->
+        <div class="opt3-col">
+          <article class="spoke-card">
+            <div class="spoke-head">
+              <span class="spoke-badge"><span class="spoke-node-dot"></span>شاخه ۰۱ · اقتصاد سلامت</span>
+              <span class="spoke-kpi">-۶۸٪ هزینه شست‌وشو</span>
+            </div>
+            <div class="spoke-body">
+              <div>
+                <h3>کاهش هزینه‌ها</h3>
+                <p>کاهش هزینه‌های مربوط به مواد شست‌و‌شو، مصرف آب، برق و منابع انسانی</p>
+              </div>
+              <div class="spoke-mini-svg">
+                <svg viewBox="0 0 64 64" width="100%" height="100%">
+                  <rect x="10" y="34" width="10" height="20" rx="3" fill="var(--line-strong)"/>
+                  <rect x="27" y="22" width="10" height="32" rx="3" fill="var(--brand)" opacity="0.6"/>
+                  <rect x="44" y="12" width="10" height="42" rx="3" fill="var(--brand)"/>
+                  <path d="M12 26 L30 16 L49 8" fill="none" stroke="var(--brand)" stroke-width="2.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+          </article>
+
+          <article class="spoke-card">
+            <div class="spoke-head">
+              <span class="spoke-badge"><span class="spoke-node-dot"></span>شاخه ۰۲ · ایمنی بیمارستانی</span>
+              <span class="spoke-kpi">۹۹.۹٪ مهار عفونت</span>
+            </div>
+            <div class="spoke-body">
+              <div>
+                <h3>مدیریت زباله‌های بیمارستانی و عفونی</h3>
+                <p>باعث جمع‌آوری بهتر زباله‌های مایع و عفونی می‌گردد.</p>
+              </div>
+              <div class="spoke-mini-svg">
+                <svg viewBox="0 0 64 64" width="100%" height="100%">
+                  <path d="M32 8 L52 16 V32 C52 45 43 53 32 58 C21 53 12 45 12 32 V16 Z" fill="var(--chip-bg)" stroke="var(--brand)" stroke-width="2.5"/>
+                  <path d="M24 33 L30 39 L42 26" fill="none" stroke="var(--brand)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Center Hub: Q2 Circuit Core -->
+        <div class="hub-core">
+          <span class="hub-live-pill">مدار هوشمند کنترل عفونت</span>
+          <div class="hub-rings">
+            <div class="hub-ring-outer"></div>
+            <div class="hub-ring-mid"></div>
+            <div class="hub-q2-wrap">
+              <svg class="q2-mark-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path class="q2-arc" d="M107.82 55.82A48 48 0 1 1 96.77 29.15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle class="q2-node q2-node--arc" cx="107.82" cy="55.82" r="2.4" fill="currentColor"/>
+  <circle class="q2-node q2-node--arc" cx="96.77" cy="29.15" r="2.4" fill="currentColor"/>
+  <path class="q2-circuit-1" d="M38 42L48 29L70 29L80 39L80 50L60 64L60 76" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle class="q2-node" cx="38.00" cy="42.00" r="2.4" fill="currentColor"/>
+  <circle class="q2-node" cx="60.00" cy="76.00" r="2.4" fill="currentColor"/>
+  <circle class="q2-node" cx="48.00" cy="29.00" r="2.0" fill="currentColor"/>
+  <circle class="q2-node" cx="70.00" cy="29.00" r="2.0" fill="currentColor"/>
+  <circle class="q2-node" cx="80.00" cy="39.00" r="2.0" fill="currentColor"/>
+  <circle class="q2-node" cx="80.00" cy="50.00" r="2.0" fill="currentColor"/>
+  <circle class="q2-node" cx="60.00" cy="64.00" r="2.0" fill="currentColor"/>
+  <path class="q2-circuit-2" d="M43.55 46.27L51.45 36.0L67.1 36.0L73.0 44.13L53.0 60.36L53.0 76.0" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle class="q2-node" cx="43.55" cy="46.27" r="2.4" fill="currentColor"/>
+  <circle class="q2-node" cx="53.00" cy="76.00" r="2.4" fill="currentColor"/>
+  <circle class="q2-node" cx="51.45" cy="36.00" r="2.0" fill="currentColor"/>
+  <circle class="q2-node" cx="67.10" cy="36.00" r="2.0" fill="currentColor"/>
+  <circle class="q2-node" cx="73.00" cy="44.13" r="2.0" fill="currentColor"/>
+  <circle class="q2-node" cx="53.00" cy="60.36" r="2.0" fill="currentColor"/>
+  <circle class="q2-dot-main" cx="56.50" cy="90.00" r="3.4" fill="currentColor"/>
+</svg>
+            </div>
+          </div>
+          <div>
+            <div class="hub-title">هسته فناوری آبادیس</div>
+            <div class="hub-sub">بزرگ‌ترین تولیدکننده کیسه ساکشن در خاورمیانه با ظرفیت ۵ میلیون در سال</div>
+          </div>
+        </div>
+
+        <!-- Left Column (Spokes 3 & 4) -->
+        <div class="opt3-col">
+          <article class="spoke-card">
+            <div class="spoke-head">
+              <span class="spoke-badge"><span class="spoke-node-dot"></span>شاخه ۰۳ · زیست‌بوم پایدار</span>
+              <span class="spoke-kpi">پلیمر سبز و سبک</span>
+            </div>
+            <div class="spoke-body">
+              <div>
+                <h3>بازیافت پذیر</h3>
+                <p>باعث کاهش حجم زباله‌های بیمارستانی و حفظ محیط‌زیست می‌گردد.</p>
+              </div>
+              <div class="spoke-mini-svg">
+                <svg viewBox="0 0 64 64" width="100%" height="100%">
+                  <circle cx="32" cy="32" r="22" fill="none" stroke="var(--brand)" stroke-width="2.5" stroke-dasharray="95 45" stroke-linecap="round"/>
+                  <path d="M32 44 V22 M32 32 C24 26 22 18 30 15 C35 18 32 32 32 32 Z M32 28 C40 22 42 16 34 13" fill="none" stroke="var(--brand)" stroke-width="2.4" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+          </article>
+
+          <article class="spoke-card">
+            <div class="spoke-head">
+              <span class="spoke-badge"><span class="spoke-node-dot"></span>شاخه ۰۴ · سرعت جراحی</span>
+              <span class="spoke-kpi">آماده‌سازی ۳۰ ثانیه‌ای</span>
+            </div>
+            <div class="spoke-body">
+              <div>
+                <h3>استفاده آسان</h3>
+                <p>حذف فعالیت‌های مربوط به شست‌و‌شوی مخازن و استفاده راحت برای جمع‌آوری ضایعات حین عمل</p>
+              </div>
+              <div class="spoke-mini-svg">
+                <svg viewBox="0 0 64 64" width="100%" height="100%">
+                  <circle cx="32" cy="34" r="20" fill="var(--chip-bg)" stroke="var(--brand)" stroke-width="2.5"/>
+                  <path d="M32 22 V34 L40 39" fill="none" stroke="var(--brand)" stroke-width="2.8" stroke-linecap="round"/>
+                  <line x1="25" y1="9" x2="39" y2="9" stroke="var(--brand)" stroke-width="3" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- Bottom Factory & 5 Orbiting Guarantee Nodes -->
+      <div class="opt3-bottom">
+        <div class="opt3-factory-text">
+          <h4>زیرساخت صنعتی و دانش‌بنیان آبادیس (تاسیس ۱۳۹۷ · ۵ میلیون کیسه در سال)</h4>
+          <p>کارخانه دانش‌بنیان تجهیزات پزشکی آبادیس در سال ۱۳۹۷ با بهره‌گیری از پیشرفته‌ترین تجهیزات و ماشین‌آلات و با همکاری نیروهای متخصص راه‌اندازی شد. این کارخانه با ظرفیت تولید سالانه ۵ میلیون کیسه ساکشن یکبارمصرف، به‌عنوان بزرگ‌ترین تولیدکننده این محصولات در منطقه خاورمیانه شناخته می‌شود.</p>
+        </div>
+        <div class="opt3-orbit-checks">
+          <span class="orbit-node"><span class="orbit-node-dot">✓</span>کاهش هزینه‌ها</span>
+          <span class="orbit-node"><span class="orbit-node-dot">✓</span>ارائه محصولات با کیفیت</span>
+          <span class="orbit-node"><span class="orbit-node-dot">✓</span>ارتباط مستمر آبادیس با مراکز درمانی</span>
+          <span class="orbit-node"><span class="orbit-node-dot">✓</span>ارسال رایگان</span>
+          <span class="orbit-node"><span class="orbit-node-dot">✓</span>تحویل در کوتاه‌ترین زمان ممکن</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <script>
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  const t = params.get('theme');
+  if (t === 'dark' || t === 'light' || t === 'noir') {
+    document.documentElement.setAttribute('data-theme', t);
+  }
+  if (params.get('shot') === '1') {
+    document.body.classList.add('shot-mode');
+  }
+  const btns = document.querySelectorAll('[data-set-theme]');
+  function syncBtns() {
+    const cur = document.documentElement.getAttribute('data-theme') || 'light';
+    btns.forEach(b => b.classList.toggle('active', b.getAttribute('data-set-theme') === cur));
+  }
+  btns.forEach(b => {
+    b.addEventListener('click', () => {
+      document.documentElement.setAttribute('data-theme', b.getAttribute('data-set-theme'));
+      syncBtns();
+    });
+  });
+  syncBtns();
+})();
+</script>
+</body>
+</html>
