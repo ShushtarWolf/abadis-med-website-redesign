@@ -486,7 +486,7 @@ body.home .zh-exit {
 
 /* ===== mobile-home-15 fixes (Designer, Oct 2026) ===== */
 
-/* #1 Slogan: keep all three lines (به شما / به طبیعت / به جهان) visible and cycle highlight */
+/* #1 Slogan rotator: only one rotating line visible at a time */
 .slogan.slogan-rotator {
   position: relative;
 }
@@ -496,25 +496,23 @@ body.home .zh-exit {
   transform: none;
 }
 .slogan.slogan-rotator .slogan-rotate {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.18em;
-  margin-top: 0.25em;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+  min-height: 1.7em;
+  margin-top: 0.15em;
 }
 .slogan.slogan-rotator .slogan-rotate .slogan-line {
-  display: block;
-  opacity: 0.74;
-  transform: none;
-  transition: opacity .45s ease, transform .45s ease, color .45s ease;
+  grid-area: 1 / 1;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .45s ease, transform .45s ease;
+  pointer-events: none;
 }
 .slogan.slogan-rotator .slogan-rotate .slogan-line.is-on {
   opacity: 1;
-  color: #5eead4;
-  transform: translateX(-4px);
-}
-[dir="ltr"] .slogan.slogan-rotator .slogan-rotate .slogan-line.is-on {
-  transform: translateX(4px);
+  transform: none;
+  pointer-events: auto;
 }
 @media (prefers-reduced-motion: reduce) {
   .slogan.slogan-rotator .slogan-rotate .slogan-line {

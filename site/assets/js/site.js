@@ -820,9 +820,6 @@
     var known = false;
     tabs.forEach(function (a) { if (a.getAttribute('data-ps-tab') === name) known = true; });
     if (!known) name = root.getAttribute('data-ps-default') || (tabs[0] && tabs[0].getAttribute('data-ps-tab')) || 'product';
-    root.classList.remove('is-tab-product', 'is-tab-solution', 'is-tab-news', 'is-tab-articles');
-    root.classList.add('is-tab-' + name);
-    root.setAttribute('data-ps-current', name);
     var home = root.hasAttribute('data-ps-home');
     tabs.forEach(function (a) {
       var on = a.getAttribute('data-ps-tab') === name;
@@ -1004,25 +1001,4 @@
       mail.href = 'mailto:info@abadis-med.com?subject=' + encodeURIComponent(sub) + '&body=' + encodeURIComponent(text);
     }
   });
-
-})();
-
-/* Auto-mount Abadis Sales & Academy Chatbot widget across site pages */
-(function () {
-  if (document.querySelector('script[src*="chatbot.js"]')) return;
-  var cur = document.querySelector('script[src*="assets/js/site.js"]');
-  var base = cur ? cur.getAttribute('src').replace(/assets\/js\/site\.js.*$/, '') : '/';
-  var css = document.createElement('link');
-  css.rel = 'stylesheet';
-  css.href = base + 'assets/chatbot/chatbot.css';
-  document.head.appendChild(css);
-  var fb = document.createElement('script');
-  fb.src = base + 'assets/chatbot/kb-fallback.js';
-  fb.defer = true;
-  document.head.appendChild(fb);
-  var cb = document.createElement('script');
-  cb.src = base + 'assets/chatbot/chatbot.js';
-  cb.defer = true;
-  cb.setAttribute('data-kb', base + 'assets/data/abadis-knowledge-base.json');
-  document.head.appendChild(cb);
 })();
