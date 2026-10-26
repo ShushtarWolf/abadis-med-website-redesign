@@ -1002,3 +1002,23 @@
     }
   });
 })();
+
+/* Auto-mount Abadis Sales & Academy Chatbot widget across site pages */
+(function () {
+  if (document.querySelector('script[src*="chatbot.js"]')) return;
+  var cur = document.querySelector('script[src*="assets/js/site.js"]');
+  var base = cur ? cur.getAttribute('src').replace(/assets\/js\/site\.js.*$/, '') : '/';
+  var css = document.createElement('link');
+  css.rel = 'stylesheet';
+  css.href = base + 'assets/chatbot/chatbot.css';
+  document.head.appendChild(css);
+  var fb = document.createElement('script');
+  fb.src = base + 'assets/chatbot/kb-fallback.js';
+  fb.defer = true;
+  document.head.appendChild(fb);
+  var cb = document.createElement('script');
+  cb.src = base + 'assets/chatbot/chatbot.js';
+  cb.defer = true;
+  cb.setAttribute('data-kb', base + 'assets/data/abadis-knowledge-base.json');
+  document.head.appendChild(cb);
+})();
