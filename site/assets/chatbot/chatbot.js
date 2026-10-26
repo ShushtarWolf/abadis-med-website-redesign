@@ -383,6 +383,8 @@
     var docLang = (document.documentElement.lang || '').toLowerCase();
     if (docLang.indexOf('en') === 0) state.lang = 'en';
     else if (docLang.indexOf('ar') === 0) state.lang = 'ar';
+    state.adminUser = loadAdminSession();
+    state.adminRules = loadAdminRules();
     setLang(state.lang);
     setMode('sales');
   }
@@ -734,6 +736,190 @@
     return extra;
   }
 
+  var ADMIN_RULES_KEY = 'abadis_chat_admin_rules_v1';
+  var ADMIN_SESSION_KEY = 'abadis_chat_admin_session_v1';
+  var ADMIN_ACCOUNTS = {
+    alireza: {
+      id: 'alireza',
+      nameFa: 'جناب آقای مهندس علیرضا حسنعلی (مدیرعامل)',
+      nameEn: 'Eng. Alireza Hassanali (CEO)',
+      hashes: { '1115f0b3': 1, '4ea96397': 1, 'b7d3d642': 1 }
+    },
+    navid: {
+      id: 'navid',
+      nameFa: 'جناب آقای مهندس نوید حسنعلی (معاونت بازرگانی و فروش)',
+      nameEn: 'Eng. Navid Hassanali (VP Commercial & Sales)',
+      hashes: { '410fb81f': 1, '413860af': 1, '00fa80be': 1 }
+    }
+  };
+
+  function fnv1aHex(str) {
+    var h = 0x811c9dc5;
+    for (var i = 0; i < str.length; i++) {
+      h ^= str.charCodeAt(i);
+      h = Math.imul ? Math.imul(h, 0x01000193) >>> 0 : ((h * 0x01000193) >>> 0);
+    }
+    return ('00000000' + h.toString(16)).slice(-8);
+  }
+
+  function normDigits(s) {
+    return String(s || '')
+      .replace(/[۰-۹]/g, function (d) { return '۰۱۲۳۴۵۶۷۸۹'.indexOf(d); })
+      .replace(/[٠-٩]/g, function (d) { return '٠١٢٣٤٥٦٧٨٩'.indexOf(d); });
+  }
+
+  function loadAdminSession() {
+    try {
+      var raw = sessionStorage.getItem(ADMIN_SESSION_KEY);
+      if (raw) {
+        var parsed = JSON.parse(raw);
+        if (parsed && ADMIN_ACCOUNTS[parsed.id]) return ADMIN_ACCOUNTS[parsed.id];
+      }
+    } catch (e) {}
+    return null;
+  }
+
+  function saveAdminSession(acc) {
+    state.adminUser = acc || null;
+    try {
+      if (acc) sessionStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({ id: acc.id }));
+      else sessionStorage.removeItem(ADMIN_SESSION_KEY);
+    } catch (e) {}
+  }
+
+  function loadAdminRules() {
+    try {
+      var raw = localStorage.getItem(ADMIN_RULES_KEY);
+      if (raw) {
+        var arr = JSON.parse(raw);
+        if (Array.isArray(arr)) return arr;
+      }
+    } catch (e) {}
+    return [];
+  }
+
+  function saveAdminRules(rules) {
+    state.adminRules = rules || [];
+    try {
+      localStorage.setItem(ADMIN_RULES_KEY, JSON.stringify(state.adminRules));
+    } catch (e) {}
+    buildIndex();
+  }
+
+  function detectAdminLogin(rawQuery) {
+    var clean = normDigits(rawQuery)
+      .replace(/\u200c/g, ' ')
+      .replace(/[يئ]/g, 'ی')
+      .replace(/ك/g, 'ک')
+      .replace(/[:|,،؛\-]+/g, ' ')
+      .replace(/^(admin|login|ورود|ادمین|کاربر)\s+/i, '')
+      .trim();
+    var parts = clean.split(/\s+/);
+    if (parts.length < 2 || parts.length > 4) return null;
+    var uRaw = parts[0].toLowerCase();
+    var pRaw = parts.slice(1).join('').toLowerCase();
+    var uid = null;
+    if (uRaw === 'alireza' || uRaw === 'علیرضا' || uRaw === 'alirezahassanali') uid = 'alireza';
+    else if (uRaw === 'navid' || uRaw === 'نوید' || uRaw === 'navidhassanali') uid = 'navid';
+    if (!uid) return null;
+    var acc = ADMIN_ACCOUNTS[uid];
+    var h = fnv1aHex(uid + ':' + pRaw);
+    if (acc && acc.hashes[h]) return acc;
+    return null;
+  }
+
+  function getAdminChunks() {
+    var rules = state.adminRules || loadAdminRules();
+    state.adminRules = rules;
+    return rules.map(function (r, idx) {
+      var textFa = 'اصلاحیه و قانون رسمی مدیریت ارشد آبادیس (' + (r.author || 'ادمین') + '): ' + r.fact + (r.topic ? (' | موضوع مرتبط: ' + r.topic) : '');
+      return {
+        id: 'admin-override-' + (r.id || idx),
+        section: 'admin-override',
+        url: { fa: '/about/', en: '/en/about/', ar: '/ar/about/' },
+        text: { fa: textFa, en: textFa, ar: textFa },
+        keywords: (r.topic || '') + ' ' + (r.fact || '')
+      };
+    });
+  }
+
+  function handleAdminCommand(rawQuery) {
+    if (!state.adminUser) return false;
+    var q = normDigits(rawQuery).replace(/\u200c/g, ' ').replace(/[يئ]/g, 'ی').replace(/ك/g, 'ک').trim();
+    var qLow = q.toLowerCase();
+
+    if (/^(خروج ادمین|خروج از ادمین|بستن ادمین|logout|admin logout|exit admin)$/i.test(qLow)) {
+      var prevName = state.adminUser.nameFa;
+      saveAdminSession(null);
+      addMsg('bot', fmtMd('🔒 **خروج از حالت ادمین انجام شد.** (' + prevName + ')\nچت‌بات اکنون در حالت عادی بازدیدکنندگان (فقط‌خواندنی و قفل‌شده روی اطلاعات رسمی) قرار دارد.'));
+      return true;
+    }
+
+    if (/^(لیست اصلاحات|لیست اموزش ها|لیست آموزش ها|اصلاحات ثبت شده|قوانین ادمین|admin list|list rules)$/i.test(qLow)) {
+      var rules = state.adminRules || loadAdminRules();
+      if (!rules.length) {
+        addMsg('bot', fmtMd('📋 **هنوز اصلاحیه جدیدی در این مرورگر ثبت نشده است.**\n(اصلاحات پایه سال ۱۴۰۵ شامل ۱۶ سال سابقه مدیریتی مهندس نوید حسنعلی و آمار ۱٬۲۳۲ مرکز درمانی از قبل در هسته اصلی دانش‌نامه قفل شده‌اند.)\nبرای ثبت نکته جدید کافی است بنویسید: `اصلاح: متن صحیح...`'));
+      } else {
+        var lines = ['📋 **فهرست اصلاحات و نکات ثبت‌شده توسط مدیران ارشد:**'];
+        rules.forEach(function (r, i) {
+          lines.push((i + 1) + '. **' + r.fact + '** *(ثبت توسط: ' + (r.author || 'ادمین') + (r.topic ? ' — در پاسخ به: «' + r.topic + '»' : '') + ')*');
+        });
+        lines.push('\nبرای حذف هر مورد بنویسید: `حذف اصلاح ۱` یا `حذف آخرین اصلاح`');
+        addMsg('bot', fmtMd(lines.join('\n')));
+      }
+      return true;
+    }
+
+    var delMatch = qLow.match(/^(?:حذف اصلاح|پاک کردن اصلاح|delete rule)\s*(\d+|اخر|آخر)?$/i) || qLow.match(/^(حذف اخرین اصلاح|حذف آخرین اصلاح)$/);
+    if (delMatch) {
+      var rulesDel = (state.adminRules || loadAdminRules()).slice();
+      if (!rulesDel.length) {
+        addMsg('bot', fmtMd('موردی برای حذف وجود ندارد.'));
+        return true;
+      }
+      var idxStr = delMatch[1];
+      var removed = null;
+      if (!idxStr || idxStr === 'اخر' || idxStr === 'آخر' || idxStr.indexOf('آخرین') !== -1 || idxStr.indexOf('اخرین') !== -1) {
+        removed = rulesDel.pop();
+      } else {
+        var rIdx = parseInt(idxStr, 10) - 1;
+        if (rIdx >= 0 && rIdx < rulesDel.length) removed = rulesDel.splice(rIdx, 1)[0];
+      }
+      if (removed) {
+        saveAdminRules(rulesDel);
+        addMsg('bot', fmtMd('🗑️ اصلاحیه زیر حذف شد:\n«' + removed.fact + '»'));
+      } else {
+        addMsg('bot', fmtMd('شماره اصلاحیه معتبر نیست. برای مشاهده شماره‌ها بنویسید: `لیست اصلاحات`'));
+      }
+      return true;
+    }
+
+    var explicitMatch = q.match(/^(?:اصلاح|اصلاحیه|یاد بگیر|یادبگیر|قانون|نکته|ثبت نکته|ثبت|درستش اینه|درستش|همیشه بگو|teach|correct)\s*[:：\-]?\s*(.+)$/i);
+    var isConversationalCorrection = !explicitMatch && state.lastUserQuery && (
+      /^(نه[،,\s]|خیر[،,\s]|اشتباه|غلط|درست نیست|اینطور نیست|برعکس)/.test(qLow) ||
+      /قبلا گفتی|قبلاً گفتی|چرا گفتی|ولی تو گفتی|سابقه.*داره ولی|نگو .* بگو|به جای .* بگو|اطلاعاتت قدیمی|بروز کن|به‌روز کن/.test(qLow)
+    ) && q.length >= 12;
+
+    if (explicitMatch || isConversationalCorrection) {
+      var factText = explicitMatch ? explicitMatch[1].trim() : q;
+      var topicText = state.lastUserQuery || '';
+      var currentRules = (state.adminRules || loadAdminRules()).slice();
+      var newRule = {
+        id: String(Date.now()),
+        author: state.adminUser.nameFa,
+        topic: topicText,
+        fact: factText,
+        ts: new Date().toISOString()
+      };
+      currentRules.push(newRule);
+      saveAdminRules(currentRules);
+      addMsg('bot', fmtMd('✅ **اصلاحیه رسمی شما ثبت و قفل شد** (' + state.adminUser.nameFa + '):\n«' + factText + '»\n\nاز این لحظه این قانون بالاترین اولویت را در پاسخگویی بات دارد. (برای مشاهده همه موارد: `لیست اصلاحات` | برای خروج: `خروج ادمین`)'));
+      return true;
+    }
+
+    return false;
+  }
+
   function collectDomChunks() {
     var extra = [];
     try {
@@ -778,9 +964,10 @@
   }
 
   function buildIndex() {
+    var adminChunks = getAdminChunks();
     var baseChunks = (state.kb && state.kb.chunks) || [];
     var domChunks = collectDomChunks();
-    var chunks = baseChunks.concat(domChunks);
+    var chunks = adminChunks.concat(baseChunks).concat(domChunks);
     var docs = [];
     var df = {};
     var total = 0;
@@ -833,6 +1020,8 @@
     var asksSalesTeam = /فروش|بازرگانی|مشتریان|پیش فاکتور|پیشفاکتور|پشتیبانی|seller|sales|commercial|account executive/.test(qRaw);
     var asksDealers = /نماینده|نمایندگان|نمایندگی|عامل فروش|پخش|توزیع|استان|نیک طب|نیک منش|پردیس طب|کاراطب|قنبریان|جام جم|نائل|پویا طب|مصلحی|بوشهر درمان|محبوسی|رادمان تجهیز|الاسوندی|بهپود|ترابی|جهان درمان|حاج غنی|آبیدر|طبرستان|رضازاده|پاکان طبیب|هگمتان طب|مجیدی|بهسان تجهیز|رفیعی|اصفهان|شیراز|فارس|اهواز|خوزستان|تبریز|آذربایجان|اردبیل|مشهد|خراسان|کرمان|یزد|همدان|مازندران|اراک|مرکزی|بوشهر|گیلان|زنجان|قزوین|کردستان|هرمزگان|سیستان|dealer|distributor|representative|province/.test(qRaw);
     var asksPartners = /شریک|شرکا|شرکای تجاری|عضویت|انجمن|اتحادیه|اتاق بازرگانی|پارک فناوری|آمدال|ویراکام|مهندسین مشاور فیلتر|ابزار درمان پرشیا|gulf innovation|تاریخچه|پیشینه|partner|membership/.test(qRaw);
+    var asksExplicitNews = /خبر|اخبار|مصاحبه|نمایشگاه|کنگره|ایران هلث|ایران کلین|ایران مد|تا ثریا|عصر خانواده|تمپا|فارس|رادیو|رویداد|وبینار|news|interview|exhibition|congress/.test(qRaw);
+    var asksFoundersOrStats = /نوید حسنعلی|علیرضا حسنعلی|ابوالفضل حسنعلی|میلاد پورحسن|سابقه مدیریتی|چند سال سابقه|۱۳ سال|13 سال|۱۶ سال|16 سال|بنیانگذار|هم بنیانگذار|چند بیمارستان|چند مرکز درمانی|تعداد بیمارستان|تعداد مراکز/.test(qRaw);
 
     var scored = [];
     index.docs.forEach(function (doc) {
@@ -890,6 +1079,16 @@
       }
       if (/بیمارستان های|مراکز درمانی|مراکز جراحی|کدام بیمارستان/.test(qRaw) && doc.chunk.id.indexOf('hospitals-province-') === 0) {
         score += 35;
+      }
+      if (doc.chunk.section === 'admin-override' && docHits >= 1) {
+        score += 160;
+      }
+      if (asksFoundersOrStats) {
+        if (doc.chunk.id === 'canonical-1405-facts-and-disambiguations') score += 85;
+        if (doc.chunk.id === 'executive-team-full') score += 75;
+      }
+      if (!asksExplicitNews && (doc.chunk.section === 'news' || doc.chunk.id.indexOf('news-item-') === 0)) {
+        score -= 18;
       }
       if (score > 0) {
         scored.push({ chunk: doc.chunk, score: score });
@@ -1041,6 +1240,51 @@
     var numNorm = q.replace(/[۰-۹]/g, function (d) { return '۰۱۲۳۴۵۶۷۸۹'.indexOf(d); })
       .replace(/[٠-٩]/g, function (d) { return '٠١٢٣٤٥٦٧٨٩'.indexOf(d); });
 
+    // 00. Check Admin Override rules first
+    var adminRulesNow = state.adminRules || loadAdminRules();
+    if (adminRulesNow && adminRulesNow.length) {
+      var qToks = tokens(raw);
+      for (var arIdx = adminRulesNow.length - 1; arIdx >= 0; arIdx--) {
+        var ar = adminRulesNow[arIdx];
+        var arToks = tokens((ar.topic || '') + ' ' + (ar.fact || ''));
+        var overlap = 0;
+        qToks.forEach(function (wt) { if (arToks.indexOf(wt) !== -1) overlap++; });
+        if (overlap >= 2 || (qToks.length === 1 && overlap === 1 && (ar.topic || '').indexOf(qToks[0]) !== -1)) {
+          if (state.cutoff) {
+            addMsg('bot', fmtMd(ar.fact) + linkLine('/about/', '/about/') + ctaLine());
+            showQuickPrompts();
+            return true;
+          }
+        }
+      }
+    }
+
+    // 0a-person. Direct canonical 1405 biographies for Founders & Senior Executives (prevents outdated 1401 news quotes)
+    if (/نوید حسنعلی/.test(q) && !/مقاله|کنگره|عمان|تمپا/.test(q)) {
+      var navidBio = state.lang === 'en'
+        ? '**Eng. Navid Hassanali — Co-Founder & VP of Commercial and Sales at Abadis Medical Canisters:**\n• **Role:** VP of Commercial & Sales, Board Member, and Co-Founder of the knowledge-based company Abadis Medical Canisters (`abadis-med.com`), leading all sales, marketing, provincial dealer networks, and customer relations.\n• **Education & Experience:** B.Sc. in Biomedical Engineering (Bioelectric) with **over 16 years of continuous management experience in the medical device industry** (since 1389 / 2010).\n• **Key Milestones:** Obtained exclusive representation of Daiken Japan disposable suction liners in 1389 (2010), pioneered the clinical culture of closed-system disposable suction liners across Iranian hospitals, and co-founded **Abadis Medical Canisters** in **1396 (2017)** to launch national production in Iran.\n*(Note on older news archives: the "13 years of management experience" figure appeared in a Khordad 1401 / June 2022 news interview 4 years ago, which corresponds to 16+ years today in 1405/2026.)*'
+        : '**مهندس نوید حسنعلی — معاونت بازرگانی و فروش و هم‌بنیان‌گذار شرکت دانش‌بنیان مخازن طبی آبادیس:**\n• **سمت:** معاونت بازرگانی و فروش، عضو هیئت‌مدیره و هم‌بنیان‌گذار شرکت دانش‌بنیان مخازن طبی آبادیس (`abadis-med.com`) و مسئول کل فعالیت‌های فروش، بازاریابی، شبکه نمایندگان و ارتباط با مشتریان.\n• **تحصیلات و سابقه مدیریتی:** کارشناس مهندسی پزشکی (گرایش بیوالکتریک) با **بیش از ۱۶ سال سابقه مدیریتی مستمر در حوزه تجهیزات پزشکی** (از سال ۱۳۸۹ تا ۱۴۰۵).\n• **دستاوردها و پیشینه:** اخذ نمایندگی انحصاری کیسه ساکشن یکبارمصرف از شرکت دایکن ژاپن در سال ۱۳۸۹، فرهنگ‌سازی گسترده استفاده از محصولات کنترل عفونت و کیسه‌های ساکشن یکبارمصرف در بیمارستان‌های کشور، و هم‌بنیان‌گذاری شرکت دانش‌بنیان «مخازن طبی آبادیس» در سال ۱۳۹۶ و راه‌اندازی خط تولید ملی کیسه ساکشن.\n• **توضیح درباره تفاوت عدد ۱۳ سال در آرشیو اخبار با ۱۶ سال فعلی:** عدد «۱۳ سال سابقه مدیریتی» مربوط به مصاحبه خبری خرداد سال ۱۴۰۱ (۴ سال پیش) در آرشیو اخبار سایت است که با گذشت زمان تا سال ۱۴۰۵ به **بیش از ۱۶ سال سابقه مدیریتی در حوزه تجهیزات پزشکی** (و حدود ۱۰ سال از تأسیس شرکت مخازن طبی آبادیس در سال ۱۳۹۶) رسیده است.';
+      addMsg('bot', fmtMd(navidBio) + linkLine('/about/#team', '/about/#team') + ctaLine());
+      showQuickPrompts();
+      return true;
+    }
+    if (/علیرضا حسنعلی/.test(q) && /کیه|کیست|بیوگرافی|معرفی|سابقه|سمت|مدیرعامل/.test(q)) {
+      var alirezaBio = state.lang === 'en'
+        ? '**Eng. Alireza Hassanali — CEO & Co-Founder of Abadis Medical Canisters:**\n• **Role:** Chief Executive Officer (CEO), Board Member, and Co-Founder of the knowledge-based company Abadis Medical Canisters (`abadis-med.com`).\n• **Background & Leadership:** Co-founded Abadis Medical Canisters in **1396 (2017)** building on the parent group Persia Medical Instruments (founded in **1385 / 2006**) and exclusive Daiken Japan representation (**1389 / 2010**).\n• **Research & Strategic Focus:** Author of scientific and international conference papers on Business Intelligence (BI) for liquidity and production planning in medical device manufacturing and Green Governance in hospital waste and water reduction; leads Abadis’s 3rd Five-Year Strategic Plan toward 1410.'
+        : '**مهندس علیرضا حسنعلی — مدیرعامل و هم‌بنیان‌گذار شرکت دانش‌بنیان مخازن طبی آبادیس:**\n• **سمت:** مدیرعامل، عضو هیئت‌مدیره و هم‌بنیان‌گذار شرکت دانش‌بنیان مخازن طبی آبادیس (`abadis-med.com`).\n• **پیشینه و راهبری:** هم‌بنیان‌گذاری شرکت دانش‌بنیان مخازن طبی آبادیس در سال ۱۳۹۶ (با پشتوانه دو دهه فعالیت مجموعه مادر «ابزار درمان پرشیا» از سال ۱۳۸۵ و فعالیت تخصصی در حوزه کیسه ساکشن از سال ۱۳۸۹) و هدایت شرکت به جایگاه بزرگ‌ترین تولیدکننده کیسه ساکشن یکبارمصرف و اولین تولیدکننده فیلترهای قطع‌کننده جریان در ایران (همراه با ۱٬۲۳۲ مرکز درمانی فعال در سراسر کشور).\n• **فعالیت‌های علمی و راهبردی:** پژوهشگر و نویسنده مقالات علمی و کنفرانسی در زمینه «طراحی سیستم‌های هوش تجاری (BI) برای مدیریت نقدینگی و تصمیم‌گیری تولید در شرکت‌های تجهیزات پزشکی» و «حکمرانی سبز و نوآوری پایدار در کاهش مصرف آب و پسماند بیمارستانی»، و طراح سند چشم‌انداز راهبردی ۱۴۱۰ آبادیس.';
+      addMsg('bot', fmtMd(alirezaBio) + linkLine('/about/#team', '/about/#team') + ctaLine());
+      showQuickPrompts();
+      return true;
+    }
+    if (/ابوالفضل حسنعلی/.test(q) && /کیه|کیست|بیوگرافی|معرفی|سمت|رئیس/.test(q)) {
+      var abolfazlBio = state.lang === 'en'
+        ? '**Mr. Abolfazl Hassanali — Chairman of the Board at Abadis Medical Canisters:**\n• **Role:** Chairman of the Board of Directors at the knowledge-based company Abadis Medical Canisters (`abadis-med.com`), overseeing corporate governance, sustainable development, and social responsibility initiatives including the Save Zagros campaign.'
+        : '**جناب آقای ابوالفضل حسنعلی — رئیس هیئت‌مدیره شرکت دانش‌بنیان مخازن طبی آبادیس:**\n• **سمت:** رئیس هیئت‌مدیره شرکت دانش‌بنیان مخازن طبی آبادیس (`abadis-med.com`).\n• **محور فعالیت‌ها:** راهبری کلان هیئت‌مدیره، توسعه پایدار، حمایت از تولید دانش‌بنیان و پیشبرد مسئولیت‌های اجتماعی و انسان‌دوستانه آبادیس (از جمله پویش «نجات زاگرس» و کاشت بیش از ۲٬۰۰۰ نهال بلوط به نام مراکز درمانی همراه).';
+      addMsg('bot', fmtMd(abolfazlBio) + linkLine('/about/#team', '/about/#team') + ctaLine());
+      showQuickPrompts();
+      return true;
+    }
+
     // 0a. Direct authoritative answers for Sales Experts, Executive Team & Provincial Dealers
     if (/کارشناس.*فروش|کارشناسان.*فروش|اسامی.*فروش|تیم فروش|نفرات فروش|همکاران فروش|بخش فروش کی|واحد فروش کی|sales expert|sales team|account executive/.test(q)) {
       var salesHit = findChunk('sales-experts-team');
@@ -1171,19 +1415,29 @@
   function topKbContext(query, hit) {
     var parts = [];
     var seen = {};
-    if (hit && hit.text) {
+    var qNorm = String(query || '').toLowerCase().replace(/\u200c/g, ' ').replace(/[يئ]/g, 'ی').replace(/ك/g, 'ک');
+    var wantsNews = /خبر|اخبار|مصاحبه|نمایشگاه|کنگره|ایران هلث|ایران کلین|ایران مد|تا ثریا|عصر خانواده|تمپا|فارس|رادیو|رویداد|وبینار|news|interview|exhibition|congress/.test(qNorm);
+    var canon = findChunk('canonical-1405-facts-and-disambiguations');
+    if (canon && canon.text && /نوید|علیرضا|ابوالفضل|حسنعلی|سابقه|بنیانگذار|چند سال|۱۳ سال|۱۶ سال|13|16|بیمارستان|مرکز درمانی|آمار|رضایت/.test(qNorm)) {
+      parts.push(textOf(canon.text));
+      seen[canon.id] = 1;
+    }
+    if (hit && hit.text && !seen[hit.id]) {
       parts.push(textOf(hit.text));
       seen[hit.id] = 1;
     }
-    var ranked = searchRanked(query, 5);
+    var ranked = searchRanked(query, 7);
     for (var i = 0; i < ranked.length && parts.length < 5; i++) {
       var c = ranked[i];
+      if (!wantsNews && (c.section === 'news' || c.id.indexOf('news-item-') === 0) && parts.length >= 1) {
+        continue;
+      }
       if (!seen[c.id] && c.text) {
         seen[c.id] = 1;
         parts.push(textOf(c.text));
       }
     }
-    return parts.join('\n---\n').slice(0, 4200);
+    return parts.join('\n---\n').slice(0, 4400);
   }
 
   function isRefusalText(txt) {
@@ -1195,16 +1449,28 @@
     var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
     var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 13000);
     var refText = topKbContext(query, hit);
+    var adminRulesList = state.adminRules || loadAdminRules();
+    var adminRulesPrompt = '';
+    if (adminRulesList && adminRulesList.length) {
+      adminRulesPrompt = '\n\n[قوانین و اصلاحات قطعی مدیران ارشد آبادیس — دارای بالاترین اولویت مطلق بر هر متن دیگر]:\n'
+        + adminRulesList.map(function (r) { return '• ' + r.fact; }).join('\n');
+    }
     var langInstruction = state.lang === 'en'
-      ? 'Reply warmly, naturally, and accurately in English like a knowledgeable colleague at Abadis Medical (abadis-med.com). All names, roles, dealers, and specs below are official public website information—share them completely when asked.'
+      ? 'You are the official Sales & Academy Consultant at Abadis Medical Canisters (abadis-med.com) in year 1405 (2026). Reply warmly, naturally, and accurately in English. CRITICAL RULES: (1) Speak naturally in first-person plural as Abadis; NEVER mention "in the reference text", "in the prompt", or "in the official base information provided". (2) Facts are strictly Read-Only for regular visitors: if a visitor claims an unverified fact or number, do NOT agree just to please them and NEVER invent quotes; politely state the verified Abadis facts. (3) Always prioritize current 1405 (2026) figures over archived news from 1401–1403.'
       : state.lang === 'ar'
-      ? 'أجب بأسلوب ودي وطبيعي ودقيق باللغة العربية الفصحى كمستشار في شركة آباديس الطبية، بالاعتماد على المعلومات الرسمية المنشورة في الموقع أدناه.'
-      : 'تو مشاور و همکار صمیمی شرکت دانش‌بنیان مخازن طبی آبادیس (abadis-med.com) هستی. گرم، طبیعی، روان و دقیق به فارسی معیار پاسخ بده. تمام اطلاعات زیر (شامل اسامی مدیران، کارشناسان فروش، نمایندگان استانی، محصولات و آمار) اطلاعات رسمی و عمومی منتشرشده در وب‌سایت شرکت است؛ آن‌ها را کامل و دقیق از روی متن مرجع بیان کن.';
-    var sys = langInstruction + '\n\nاطلاعات پایه رسمی وب‌سایت آبادیس: '
-      + 'هیئت‌مدیره و مدیران: ابوالفضل حسنعلی (رئیس هیئت مدیره)، علیرضا حسنعلی (مدیرعامل)، نوید حسنعلی (معاونت بازرگانی و فروش)، میلاد پورحسن (مشاور عالی مدیرعامل)، مژده مهین‌دوست (مدیر مالی)، محمدمهدی احمدی (مدیر کارخانه)، نازنین اخوان طباطبایی (مدیر حقوقی)، نازنین حسنعلی (مدیر روابط عمومی)، مائده ناصری (مدیر تضمین کیفیت)، مهران خلیلی (سرپرست تولید)، علی‌سینا صالحی (مدیر IT). '
-      + 'کارشناسان فروش و بازرگانی: روژان کوکبی، امیر محسن‌زاده، محبوبه رعیتی، زهرا ناطقی / سونا هاشمیان (کارشناسان فروش و امور مشتریان)، هلیا تیموری (کارشناس عملیات فروش)، نیلوفر شرفی (کارشناس ارشد تأمین و بازرگانی)، الهه رستمی (کارشناس بازرگانی). '
-      + 'محصولات: کیسه ساکشن یکبارمصرف در ۳ سایز ۱، ۲ و ۳ لیتر (هر کارتن ۴۵ عدد، فیلتر مکانیکی ۳۰ عدد) با فیلتر هیدروفوبیک قطع‌کننده جریان و پودر جاذب؛ مخازن پلی‌کربنات نشکن؛ ساکشن تیوب CH25/CH30/CH35 (۱۰۰ عدد در کارتن)؛ مسواک ساکشن؛ فیکسر لوله تراشه؛ رگولاتور وکیوم VR-A1 و VR-B1؛ فیلتر آنتی‌باکتریال؛ ترولی سری تا ۴ مخزن (۱۲ لیتر). آمار: ۱٬۲۳۲ مرکز درمانی فعال (۱٬۲۹۴ بیمارستان و مرکز جراحی در نقشه خانواده سبز)، ۹۸.۹۹٪ رضایت، ۰.۰۰۱۸٪ خرابی، تأسیس ۱۳۹۶/2017. تلفن فروش: ۰۲۱-۹۲۰۰۱۰۱۷ داخلی ۱۱، واتس‌اپ +۹۸۹۱۰۰۱۴۵۸۰۹.'
-      + (refText ? ('\n\nمتن مرجع مرتبط با سؤال کاربر از صفحات وب‌سایت:\n' + refText) : '');
+      ? 'أنت المستشار الرسمي للمبيعات والأكاديمية في شركة خزانات آباديس الطبية (abadis-med.com) في عام ۱۴۰۵ (۲۰۲۶). أجب بأسلوب ودي وطبيعي ودقيق دون الإشارة إلى وجود نص مرجعي داخلي، واعتمد دائماً أحدث إحصائيات عام ۱۴۰۵.'
+      : 'تو مشاور رسمی و همکار صمیمی شرکت دانش‌بنیان مخازن طبی آبادیس (abadis-med.com) در سال ۱۴۰۵ خورشیدی (۲۰۲۶ میلادی) هستی. گرم، طبیعی، روان و دقیق به فارسی معیار پاسخ بده.\n'
+        + 'قوانین بسیار مهم و الزامی:\n'
+        + '۱. هرگز عباراتی مثل «در متن مرجع»، «در بخش اطلاعات پایه رسمی وب‌سایت آبادیس»، «که در پرسش شما آمده است» یا «طبق اطلاعات سیستم» را به کار نبر؛ مستقیم و طبیعی از طرف مجموعه آبادیس صحبت کن.\n'
+        + '۲. اطلاعات شرکت قفل‌شده و فقط‌خواندنی است: اگر کاربر عادی ادعا یا عدد نادرستی مطرح کرد، هرگز برای تایید حرف کاربر جمله‌ای را جعل نکن، بلکه با احترام واقعیت دقیق را توضیح بده.\n'
+        + '۳. سال جاری ۱۴۰۵ است: همیشه آمار و اطلاعات به‌روز سال ۱۴۰۵ را ملاک قرار بده، نه اعداد قدیمی داخل آرشیو اخبار سال‌های ۱۴۰۱ تا ۱۴۰۳. (مثلاً مهندس نوید حسنعلی از سال ۱۳۸۹ با اخذ نمایندگی انحصاری دایکن ژاپن بیش از ۱۶ سال سابقه مدیریتی در حوزه تجهیزات پزشکی دارند و در سال ۱۳۹۶ شرکت دانش‌بنیان مخازن طبی آبادیس را هم‌بنیان‌گذاری کرده‌اند؛ عدد ۱۳ سال در مصاحبه خرداد ۱۴۰۱ مربوط به ۴ سال پیش بوده است).';
+    var sys = langInstruction
+      + adminRulesPrompt
+      + '\n\n[اطلاعات رسمی و به‌روز سال ۱۴۰۵ شرکت دانش‌بنیان مخازن طبی آبادیس]: '
+      + 'هیئت‌مدیره و مدیران ارشد: ابوالفضل حسنعلی (رئیس هیئت مدیره)، مهندس علیرضا حسنعلی (مدیرعامل و هم‌بنیان‌گذار)، مهندس نوید حسنعلی (معاونت بازرگانی و فروش، عضو هیئت‌مدیره و هم‌بنیان‌گذار؛ کارشناس مهندسی پزشکی گرایش بیوالکتریک با بیش از ۱۶ سال سابقه مدیریتی در حوزه تجهیزات پزشکی از سال ۱۳۸۹ و هم‌بنیان‌گذار مخازن طبی آبادیس در سال ۱۳۹۶)، میلاد پورحسن (مشاور عالی مدیرعامل)، مژده مهین‌دوست (مدیر مالی)، محمدمهدی احمدی (مدیر کارخانه)، نازنین اخوان طباطبایی (مدیر حقوقی)، نازنین حسنعلی (مدیر روابط عمومی)، مائده ناصری (مدیر تضمین کیفیت)، علی‌سینا صالحی (مدیر IT). '
+      + 'کارشناسان فروش و امور مشتریان: روژان کوکبی، نگین غفوری، الناز پورسخاوت، نگین پورمحمد، محدثه خزائی، حدیثه شجاعی، نسیم نصرتی. '
+      + 'محصولات: کیسه ساکشن یکبارمصرف در ۳ سایز ۱، ۲ و ۳ لیتر (هر کارتن ۴۵ عدد، فیلتر مکانیکی ۳۰ عدد) با فیلتر هیدروفوبیک قطع‌کننده جریان و پودر جاذب؛ مخازن پلی‌کربنات نشکن؛ ساکشن تیوب CH25/CH30/CH35 (۱۰۰ عدد در کارتن)؛ مسواک ساکشن؛ فیکسر لوله تراشه؛ رگولاتور وکیوم VR-A1 و VR-B1؛ فیلتر آنتی‌باکتریال؛ ترولی سری تا ۴ مخزن (۱۲ لیتر). آمار رسمی سال ۱۴۰۵: ۱٬۲۳۲ مرکز درمانی فعال در سراسر کشور (۱٬۲۹۴ بیمارستان و مرکز جراحی در ۳۱ استان روی نقشه خانواده سبز)، ۱۱٬۱۱۲ کاربر، ۹۸.۹۹٪ رضایت، ۰.۰۰۱۸٪ خرابی، تأسیس شرکت آبادیس ۱۳۹۶ (۲۰۱۷) و پیشینه گروه مادر ابزار درمان پرشیا از ۱۳۸۵ و نمایندگی دایکن ژاپن از ۱۳۸۹. تلفن فروش: ۰۲۱-۲۲۲۱۸۹۱۰ و ۰۲۱-۹۲۰۰۱۰۱۷ داخلی ۱۱، واتس‌اپ +۹۸۹۱۰۰۱۴۵۸۰۹.'
+      + (refText ? ('\n\n[جزئیات تکمیلی از صفحات وب‌سایت]:\n' + refText) : '');
 
     var msgs = [{ role: 'system', content: sys }];
     state.history = state.history || [];
@@ -1243,6 +1509,12 @@
             txt = String(j.choices[0].message.content).trim();
           }
         } catch (e) {}
+      }
+      if (txt) {
+        txt = txt
+          .replace(/در بخش «?اطلاعات پایه رسمی وب‌?سایت آبادیس»?(?: که در پرسش شما آمده است،?)?/g, 'بر اساس اطلاعات رسمی وب‌سایت آبادیس')
+          .replace(/که در پرسش شما آمده است،?/g, '')
+          .replace(/در متن مرجع(?: مرتبط با سؤال کاربر)?/g, 'در مستندات رسمی آبادیس');
       }
       if (txt && txt.length > 8 && txt.indexOf('<!DOCTYPE') === -1 && txt.indexOf('"error"') === -1 && !isRefusalText(txt)) {
         state.history.push({ role: 'user', content: query });
@@ -1355,7 +1627,23 @@
 
   function ask(query) {
     open();
+    var loginAcc = detectAdminLogin(query);
+    if (loginAcc) {
+      saveAdminSession(loginAcc);
+      addMsg('user', '🔒 [احراز هویت مدیر ارشد]');
+      addMsg('bot', fmtMd('✅ **خوش آمدید ' + loginAcc.nameFa + ' عزیز — حالت آموزش و اصلاح ادمین فعال شد.**\n'
+        + 'از این لحظه هر نکته یا اصلاحیه‌ای که بنویسید، در حافظه رسمی بات ثبت می‌شود و اولویت قطعی بر تمام متون قبلی خواهد داشت:\n'
+        + '• **ثبت اصلاحیه یا فکت جدید:** کافی است بنویسید `اصلاح: متن صحیح...` یا `یاد بگیر: ...` (یا مستقیماً به پاسخ قبلی بات اعتراض/اصلاحیه بنویسید).\n'
+        + '• **مشاهده قوانین ثبت‌شده:** بنویسید `لیست اصلاحات`\n'
+        + '• **حذف آخرین مورد:** بنویسید `حذف آخرین اصلاح`\n'
+        + '• **خروج از حالت ادمین:** بنویسید `خروج ادمین`'));
+      return;
+    }
     addMsg('user', esc(query));
+    if (handleAdminCommand(query)) {
+      return;
+    }
+    state.lastUserQuery = query;
     if (!state.kb) {
       if (window.ABADIS_KB && applyKb(window.ABADIS_KB, 'embedded', true)) {
         runQuery(query);
