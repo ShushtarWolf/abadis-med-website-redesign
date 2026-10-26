@@ -372,8 +372,13 @@ html[data-theme="noir"] .abadis-chat-choice {
   color: #9eceb4;
 }
 
-/* Mobile-specific clean full-sheet experience */
+/* Mobile-specific clean full-sheet experience (iOS Chrome & Safari keyboard-safe) */
 @media (max-width: 640px) {
+  html.abadis-chat-lock,
+  html.abadis-chat-lock body {
+    overflow: hidden !important;
+    overscroll-behavior: none;
+  }
   .abadis-chat-launcher {
     inset-inline-end: 14px;
     bottom: 16px;
@@ -382,12 +387,17 @@ html[data-theme="noir"] .abadis-chat-choice {
     padding: 0;
   }
   .abadis-chat-panel {
-    inset: 0;
+    position: fixed;
+    top: var(--ac-vvt, 0px);
+    bottom: auto;
+    left: 0;
+    right: 0;
     width: 100%;
     height: var(--ac-vvh, 100dvh);
     max-height: var(--ac-vvh, 100dvh);
     border-radius: 0;
     border: 0;
+    transform: translateZ(0);
   }
   .abadis-chat-langs {
     display: none; /* Site header already switches language; keeps mobile chat header clean */
@@ -400,10 +410,16 @@ html[data-theme="noir"] .abadis-chat-choice {
     height: 40px;
     font-size: 1.4rem;
   }
-  /* When user focuses input to type on mobile, hide suggestion rail so keyboard + chat log have full room */
+  /* When user focuses input to type on mobile, hide suggestion rail and tighten chrome so keyboard + chat log have full room */
   .abadis-chat.is-typing .abadis-chat-choices,
   .abadis-chat.is-typing .abadis-chat-chips {
     display: none;
+  }
+  .abadis-chat.is-typing .abadis-chat-tabs {
+    padding: 4px 10px;
+  }
+  .abadis-chat.is-typing .abadis-chat-form {
+    padding-bottom: 8px;
   }
 }
 

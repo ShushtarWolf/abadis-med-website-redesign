@@ -347,10 +347,17 @@
     });
     input.addEventListener('focus', function () {
       root.classList.add('is-typing');
-      setTimeout(function () { if (logEl) logEl.scrollTop = logEl.scrollHeight; }, 120);
+      syncViewport();
+      setTimeout(syncViewport, 60);
+      setTimeout(syncViewport, 180);
+      setTimeout(syncViewport, 360);
     });
     input.addEventListener('blur', function () {
-      setTimeout(function () { root.classList.remove('is-typing'); }, 180);
+      setTimeout(function () {
+        root.classList.remove('is-typing');
+        syncViewport();
+      }, 150);
+      setTimeout(syncViewport, 350);
     });
     form.addEventListener('submit', function (ev) {
       ev.preventDefault();
@@ -359,15 +366,15 @@
       input.value = '';
       input.style.height = '';
       root.classList.remove('is-typing');
+      if (document.activeElement === input) input.blur();
+      syncViewport();
       ask(q);
     });
     if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', function () {
-        if (!state.open) return;
-        root.style.setProperty('--ac-vvh', Math.round(window.visualViewport.height) + 'px');
-        if (logEl) logEl.scrollTop = logEl.scrollHeight;
-      });
+      window.visualViewport.addEventListener('resize', syncViewport);
+      window.visualViewport.addEventListener('scroll', syncViewport);
     }
+    window.addEventListener('resize', syncViewport);
     panel.appendChild(form);
 
     root.appendChild(launcher);
@@ -1034,6 +1041,16 @@
     var numNorm = q.replace(/[۰-۹]/g, function (d) { return '۰۱۲۳۴۵۶۷۸۹'.indexOf(d); })
       .replace(/[٠-٩]/g, function (d) { return '٠١٢٣٤٥٦٧٨٩'.indexOf(d); });
 
+    // 0a. Direct authoritative answers for Sales Experts, Executive Team & Provincial Dealers
+    if (/کارشناس.*فروش|کارشناسان.*فروش|اسامی.*فروش|تیم فروش|نفرات فروش|همکاران فروش|بخش فروش کی|واحد فروش کی|sales expert|sales team|account executive/.test(q)) {
+      var salesHit = findChunk('sales-experts-team');
+      if (salesHit) { addMsg('bot', synthesize(salesHit)); showQuickPrompts(); return true; }
+    }
+    if (/اعضای هیئت مدیره|تیم اجرایی|مدیران ابادیس|مدیران شرکت|اسامی مدیران|مدیرعامل کی|رئیس هیئت مدیره|معاون بازرگانی|executive team|board of directors|who is the ceo/.test(q)) {
+      var execHit = findChunk('executive-team-full');
+      if (execHit) { addMsg('bot', synthesize(execHit)); showQuickPrompts(); return true; }
+    }
+
     // 0. Multi-turn conversational follow-ups
     if (/^(بیشتر توضیح بده|بیشتر بگو|جزئیات بیشتر|توضیح بیشتر|ادامه بده|tell me more|more details|explain more)$/.test(q) && state.lastHit) {
       var fullBody = textOf(state.lastHit.text);
@@ -1170,7 +1187,7 @@
   }
 
   function isRefusalText(txt) {
-    return /نمی‌?توانم این اطلاعات|متأسفم،?\s*نمی‌?توانم|متاسفم،?\s*نمی‌?توانم|معذورم|اجازه ارائه|i cannot provide|i'm sorry, i can't|i am sorry, i cannot|unable to provide/i.test(txt || '');
+    return /نمی‌?توانم این اطلاعات|متأسفم،?\s*نمی‌?توانم|متاسفم،?\s*نمی‌?توانم|معذورم|اجازه ارائه|در متن مرجع اطلاعاتی|اطلاعاتی درباره.*وجود ندارد|در اطلاعات مرجع.*نیست|i cannot provide|i'm sorry, i can't|i am sorry, i cannot|unable to provide/i.test(txt || '');
   }
 
   function tryLiveAi(query, hit, fallbackHtml) {
@@ -1383,13 +1400,53 @@
     resetThread();
   }
 
+  function syncViewport() {
+    if (!state.open || !root) return;
+    var vv = window.visualViewport;
+    if (vv) {
+      root.style.setProperty('--ac-vvh', Math.round(vv.height) + 'px');
+      root.style.setProperty('--ac-vvt', Math.max(0, Math.round(vv.offsetTop)) + 'px');
+    } else {
+      root.style.setProperty('--ac-vvh', window.innerHeight + 'px');
+      root.style.setProperty('--ac-vvt', '0px');
+    }
+    if (logEl) logEl.scrollTop = logEl.scrollHeight;
+  }
+
+  function lockMobileBody() {
+    if (root.classList.contains('is-docked') || window.innerWidth > 640) return;
+    if (document.body.dataset.acLocked === '1') return;
+    state.savedScrollY = window.scrollY || window.pageYOffset || 0;
+    document.body.dataset.acLocked = '1';
+    document.body.style.position = 'fixed';
+    document.body.style.top = (-state.savedScrollY) + 'px';
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
+    document.body.style.overflow = 'hidden';
+    document.documentElement.classList.add('abadis-chat-lock');
+  }
+
+  function unlockMobileBody() {
+    if (document.body.dataset.acLocked !== '1') return;
+    var y = state.savedScrollY || 0;
+    delete document.body.dataset.acLocked;
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.width = '';
+    document.body.style.overflow = '';
+    document.documentElement.classList.remove('abadis-chat-lock');
+    window.scrollTo(0, y);
+  }
+
   function open() {
     state.open = true;
     panel.hidden = false;
     root.classList.add('is-open');
-    if (window.visualViewport) {
-      root.style.setProperty('--ac-vvh', Math.round(window.visualViewport.height) + 'px');
-    }
+    lockMobileBody();
+    syncViewport();
     root.querySelector('.abadis-chat-launcher').setAttribute('aria-expanded', 'true');
     if (logEl) logEl.scrollTop = logEl.scrollHeight;
   }
@@ -1398,6 +1455,7 @@
     state.open = false;
     panel.hidden = true;
     root.classList.remove('is-open', 'is-typing');
+    unlockMobileBody();
     root.querySelector('.abadis-chat-launcher').setAttribute('aria-expanded', 'false');
   }
 
