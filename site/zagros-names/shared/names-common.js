@@ -19,6 +19,22 @@
     });
     return namesP;
   }
+  var centersP = null;
+  function loadCenters() {
+    if (!centersP) {
+      var family = false;
+      try { family = new URLSearchParams(location.search).get('dataset') === 'family'; } catch (e) {}
+      var url = family ? (BASE + '../names.json') : (BASE + '../../assets/data/iran-hospitals-centers.json');
+      centersP = fetch(url).then(function (r) {
+        if (!r.ok) throw new Error('centers ' + r.status);
+        return r.json();
+      }).then(function (data) {
+        if (Array.isArray(data)) return data;
+        return (data.centers || []).map(function (c) { return c.name; });
+      });
+    }
+    return centersP;
+  }
   function fontsReady(specs) {
     if (!document.fonts || !document.fonts.load) return Promise.resolve();
     var all = specs.map(function (s) { return document.fonts.load(s).catch(function () {}); });
@@ -42,5 +58,5 @@
       .replace(/[\u200c\u200d\u200f\u200e]/g, ' ')
       .replace(/\s+/g, ' ').trim().toLowerCase();
   }
-  global.ZN = { fa: fa, loadNames: loadNames, fontsReady: fontsReady, counter: counter, clamp: clamp, seg: seg, smooth: smooth, norm: norm };
+  global.ZN = { fa: fa, loadNames: loadNames, loadCenters: loadCenters, fontsReady: fontsReady, counter: counter, clamp: clamp, seg: seg, smooth: smooth, norm: norm };
 })(window);
