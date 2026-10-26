@@ -1,6 +1,5 @@
-/* Slogan: main line stays; rotating lines cycle one-at-a-time.
-   Hamid: «به جهان» removed from FA; EN/AR drop the matching third rotator line.
-   Reduced motion / no JS: all remaining lines stay visible statically. */
+/* Slogan: main line stays; all three short lines («به شما», «به طبیعت», «به جهان») cycle smoothly.
+   Reduced motion / no JS: all lines stay visible statically. */
 (function () {
   var mode = document.documentElement.getAttribute('data-slogan');
   var p = document.querySelector('.impact .slogan');
@@ -19,7 +18,7 @@
     return;
   }
 
-  /* Build rotator stage for the short lines */
+  /* Build rotator stage for all three short lines: به شما / به طبیعت / به جهان */
   var stage = document.createElement('span');
   stage.className = 'slogan-rotate';
   stage.setAttribute('aria-hidden', 'true');
@@ -40,7 +39,7 @@
 
   function start() {
     if (timer || rest.length < 2) return;
-    timer = setInterval(tick, 2600);
+    timer = setInterval(tick, 1500);
   }
   function stop() {
     if (!timer) return;
@@ -54,7 +53,7 @@
         if (e.isIntersecting) start();
         else stop();
       });
-    }, { threshold: 0.35 });
+    }, { threshold: 0.25 });
     io.observe(p);
   } else {
     start();

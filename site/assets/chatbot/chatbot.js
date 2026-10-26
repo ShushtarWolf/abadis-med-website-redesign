@@ -15,8 +15,8 @@
 
   var I18N = {
     fa: {
-      launcher: 'دستیار هوشمند آبادیس',
-      title: 'دستیار هوشمند آبادیس',
+      launcher: 'گفتگو با آبادیس',
+      title: 'پشتیبانی و مشاور آبادیس',
       subSales: 'پاسخگوی فروش و راهکارهای بالینی',
       subAcademy: 'پرسش‌وپاسخ و آموزش آکادمی آبادیس',
       tabSales: 'مشاور فروش',
@@ -24,8 +24,8 @@
       placeholder: 'سؤال یا نیاز بخش درمانی را بنویسید…',
       send: 'ارسال',
       close: 'بستن',
-      welcomeSales: 'سلام و وقت بخیر! 👋 من دستیار هوشمند آبادیس هستم. درباره کیسه‌های ساکشن یکبارمصرف (۱، ۲ و ۳ لیتری)، راهکارهای بالینی، شرایط خرید و پیش‌فاکتور، یا محاسبه صرفه‌جویی بیمارستانتان هر سؤالی دارید به زبان طبیعی بپرسید.',
-      welcomeAcademy: 'سلام و وقت بخیر! 👋 به بخش آکادمی آبادیس خوش آمدید. می‌توانید درباره مزایای علمی ساکشن مدار بسته نسبت به شیشه‌های سنتی، عملکرد فیلتر هیدروفوبیک و پودر جاذب بپرسید یا «مصاحبه بالینی آکادمی» را شروع کنید.',
+      welcomeSales: 'سلام و وقت بخیر! 👋 خوش آمدید. درباره کیسه‌های ساکشن یکبارمصرف (۱، ۲ و ۳ لیتری)، راهکارهای بالینی هر بخش، دریافت پیش‌فاکتور یا محاسبه صرفه‌جویی بیمارستانتان هر سؤالی دارید بفرمایید.',
+      welcomeAcademy: 'سلام و وقت بخیر! 👋 به آکادمی آبادیس خوش آمدید. هر سؤالی درباره کنترل عفونت با ساکشن مدار بسته، عملکرد فیلتر هیدروفوبیک و پودر جاذب، یا مقالات علمی دارید بپرسید، یا «مصاحبه بالینی آکادمی» را شروع کنید.',
       bySolution: 'بر اساس راهکار',
       byProduct: 'بر اساس محصول',
       pickSolution: 'کدام راهکار؟',
@@ -232,7 +232,7 @@
     var launcher = el('button', 'abadis-chat-launcher');
     launcher.type = 'button';
     launcher.setAttribute('aria-expanded', 'false');
-    launcher.innerHTML = '<span class="abadis-chat-dot" aria-hidden="true"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg><span></span>';
+    launcher.innerHTML = '<span class="abadis-chat-dot" aria-hidden="true"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg><span class="abadis-chat-launcher-label"></span>';
     launcher.addEventListener('click', function () { state.open ? close() : open(); });
 
     panel = el('section', 'abadis-chat-panel');
@@ -353,7 +353,7 @@
     var L = t();
     root.lang = state.lang === 'en' ? 'en' : state.lang === 'ar' ? 'ar' : 'fa';
     root.dir = state.lang === 'en' ? 'ltr' : 'rtl';
-    root.querySelector('.abadis-chat-launcher span').textContent = L.launcher;
+    root.querySelector('.abadis-chat-launcher-label').textContent = L.launcher;
     root.querySelector('.abadis-chat-launcher').setAttribute('aria-label', L.launcher);
     root.querySelector('.abadis-chat-head h2').textContent = L.title;
     subEl.textContent = state.mode === 'academy' ? L.subAcademy : L.subSales;
@@ -763,6 +763,10 @@
         score += 8;
         if (doc.chunk.section === 'faq') score += 4;
       }
+      var qRaw = String(query || '').toLowerCase();
+      if ((qRaw.indexOf('اتاق عمل') !== -1 || qRaw.indexOf('مایعات بالا') !== -1 || qRaw.indexOf('حجم مایعات') !== -1 || qRaw.indexOf('جراحی') !== -1) && qRaw.indexOf('قیمت') === -1) {
+        if (doc.chunk.id === 'sol-fluid' || doc.chunk.id === 'cat-canisters-liners') score += 28;
+      }
       if (score > bestScore) { bestScore = score; best = doc.chunk; }
     });
     return bestScore > 0 ? best : null;
@@ -964,13 +968,13 @@
       if (/^(سلام|درود|وقت بخیر|صبح بخیر|عصر بخیر|شب بخیر|خسته نباشید|قوت اله|سلام علیکم|علیکم السلام|های|هلو|salam|salaam|hi|hello|hey|good morning|good afternoon|good evening|greetings|مرحبا|اهلا|أهلا|السلام علیکم|صباح الخیر|مساء الخیر)(\s|$)/.test(q)) {
         var greetTxt = state.lang === 'en'
           ? (state.mode === 'academy'
-            ? 'Hello and welcome to the Abadis Academy Assistant! 👋\nI run 100% on the website’s core engine (resilient on Iran’s National Information Network) and can help you with:\n• Clinical evidence for closed-system suction vs. traditional glass bottles\n• Interactive 3-step Clinical Assessment / Interview\n• Shutoff & antibacterial filter specifications and installation\n• Certificates (IMED, Patents, ISO 13485 / GMP) & Save Zagros CSR.\n\nAsk any question below or click one of the topics:'
-            : 'Hello and welcome to Abadis Medical! 👋\nI am your Sales & Clinical Solutions Assistant (running 100% on the on-site core engine with zero foreign internet dependency). I can help you right now with:\n• Choosing the right suction liner volume (1 L, 2 L, 3 L) and accessories for your ward\n• Pricing, carton counts (45 pcs), and instant Proforma Invoice (پیش‌فاکتور) guidance\n• Calculating your hospital’s annual water, cost, and nursing-hour savings (up to 15,000 surgeries)\n• Exploring our 5 Clinical Solutions & 1,232+ active healthcare centers.\n\nType your question or choose a quick action below:')
+            ? 'Hello and welcome to Abadis Academy! 👋 How can I help you today? You can ask me anything about closed-system suction infection control, hydrophobic filters, gelling powder, or start the 3-step Clinical Interview.'
+            : 'Hello and welcome to Abadis Medical! 👋 How can I help you today? Feel free to ask about choosing the right suction liner volume (1L, 2L, 3L) for your hospital ward, pricing and proforma invoices, or calculating your annual water and cost savings.')
           : state.lang === 'ar'
-          ? 'أهلاً ومرحباً بكم في شركة خزانات آباديس الطبية! 👋\nأنا المساعد الذكي للمبيعات والأكاديمية (يعمل بالكامل داخل نواة الموقع وبدون حاجة للإنترنت الدولي). يمكنني مساعدتكم في:\n• اختيار سعة أكياس الشفط (١، ٢، ٣ لتر) وملحقاتها حسب القسم السريري\n• الأسعار، الفاتورة الأولية، وحساب التوفير السنوي للمستشفى (حتى ١٥٬٠٠٠ عملية)\n• الشهادات المعتمدة (IMED، براءات الاختراع، ISO 13485) ومبادرة إنقاذ زاغروس.\n\nاكتب سؤالك أو اختر أحد المواضيع أدناه:'
+          ? 'أهلاً ومرحباً بكم في آباديس الطبية! 👋 كيف يمكنني مساعدتكم اليوم؟ اسألوا عن أكياس الشفط (١، ٢، ٣ لتر)، الحلول السريرية، الفاتورة الأولية، أو حساب التوفير السنوي للمستشفى.'
           : (state.mode === 'academy'
-            ? 'سلام و وقت بخیر! به دستیار هوشمند آکادمی آبادیس خوش آمدید 👋\nمن روی موتور بومی هسته سایت (۱۰۰٪ پایدار در شبکه ملی اطلاعات) اجرا می‌شوم و در این بخش می‌توانم در موارد زیر کمکتان کنم:\n• مقایسه علمی سیستم ساکشن مدار بسته یکبارمصرف با شیشه‌های سنتی و کنترل عفونت بیمارستانی\n• اجرای «مصاحبه و ارزیابی بالینی تعاملی آکادمی» (۳ مرحله‌ای)\n• عملکرد فیلتر قطع‌کننده جریان (هیدروفوبیک)، فیلتر آنتی‌باکتریال و پودر جاذب\n• گواهینامه‌ها (IMED، ثبت اختراع، ISO 13485 / GMP)، مقالات علمی و پویش نجات زاگرس.\n\nهر سؤالی دارید بپرسید یا یکی از گزینه‌های زیر را انتخاب کنید:'
-            : 'سلام و وقت بخیر! به دستیار هوشمند فروش و راهکارهای بالینی آبادیس خوش آمدید 👋\nمن روی موتور بومی هسته سایت (فعال در شبکه ملی اطلاعات و بدون نیاز به اینترنت بین‌الملل) کار می‌کنم و آماده راهنمایی شما هستم:\n• انتخاب حجم مناسب کیسه ساکشن (۱، ۲ و ۳ لیتر)، مخازن پلی‌کربنات، تیوب و رگولاتور بر اساس بخش بیمارستانی\n• اطلاع از شرایط خرید، تعداد در کارتن (۴۵ عدد) و دریافت پیش‌فاکتور رسمی\n• محاسبه آنی صرفه‌جویی سالانه بیمارستان شما در مصرف آب، هزینه ضدعفونی و زمان پرستاران (تا سقف ۱۵٬۰۰۰ عمل)\n• معرفی ۵ راهکار بالینی، گواهینامه‌ها و آمار ۱٬۲۳۲ مرکز درمانی فعال.\n\nسؤال خود را بنویسید یا یکی از گزینه‌های زیر را بزنید:');
+            ? 'سلام و وقت بخیر! خیلی خوش آمدید 🌱 در بخش آکادمی آبادیس چطور می‌توانم کمکتان کنم؟ درباره مقایسه علمی ساکشن مدار بسته با شیشه‌های سنتی، فیلتر هیدروفوبیک و پودر جاذب هر سؤالی دارید بپرسید، یا اگر مایلید «مصاحبه بالینی آکادمی» را شروع کنیم.'
+            : 'سلام و وقت بخیر! خیلی خوش آمدید 🌱 چطور می‌توانم کمکتان کنم؟ اگر درباره انتخاب سایز کیسه ساکشن (۱، ۲ یا ۳ لیتری) و تجهیزات مناسب بخش درمانی‌تان، شرایط خرید و پیش‌فاکتور، یا محاسبه صرفه‌جویی سالانه بیمارستان سؤالی دارید در خدمتم.');
         addMsg('bot', fmtMd(greetTxt) + ctaLine());
         showQuickPrompts();
         return true;
@@ -1012,49 +1016,99 @@
     return false;
   }
 
-  function tryLiveAiFallback(query, fallbackHtml) {
+  function topKbContext(query, hit) {
+    var parts = [];
+    if (hit && hit.text) parts.push(textOf(hit.text));
+    var list = (state.kb && state.kb.chunks) || [];
+    for (var i = 0; i < list.length && parts.length < 3; i++) {
+      var c = list[i];
+      if (hit && c.id === hit.id) continue;
+      if (c.id === 'company-overview' || c.id === 'products-overview') {
+        parts.push(textOf(c.text));
+      }
+    }
+    return parts.join('\n---\n');
+  }
+
+  function tryLiveAi(query, hit, fallbackHtml) {
     var bubble = addMsg('bot', '<span class="abadis-chat-typing">' + (state.lang === 'en' ? 'Typing…' : state.lang === 'ar' ? 'جاري الكتابة…' : 'در حال نوشتن…') + '</span>');
     var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
-    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 3500);
-    var sys = 'تو دستیار هوشمند شرکت دانش‌بنیان مخازن طبی آبادیس هستی. طبیعی، گرم، کوتاه و دقیق به فارسی پاسخ بده. اطلاعات مرجع: کیسه ساکشن یکبارمصرف آبادیس در ۳ سایز ۱، ۲ و ۳ لیتر (هر کارتن ۴۵ عدد) با فیلتر هیدروفوبیک قطع‌کننده جریان و پودر جاذب، مخازن پلی‌کربنات، تیوب ساکشن CH25/CH30/CH35، مسواک ساکشن، نگهدارنده لوله تراشه، رگولاتور وکیوم، ۱٬۲۳۲ مرکز درمانی فعال (۱٬۲۹۴ بیمارستان و مرکز جراحی در نقشه خانواده سبز)، ۹۸.۹۹٪ رضایت، ۰.۰۰۱۸٪ خرابی، سال تأسیس ۱۳۹۶/2017، تلفن فروش ۰۲۱-۹۲۰۰۱۰۱۷ داخلی ۱۱، واتس‌اپ +۹۸۹۱۰۰۱۴۵۸۰۹.';
-    var url = 'https://text.pollinations.ai/' + encodeURIComponent(query) + '?model=openai&system=' + encodeURIComponent(sys);
-    var opts = { method: 'GET' };
+    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 13000);
+    var refText = topKbContext(query, hit);
+    var langInstruction = state.lang === 'en'
+      ? 'Reply warmly, naturally, and concisely in English like a knowledgeable human colleague at Abadis Medical. Use ONLY the verified Abadis facts below; never invent specifications.'
+      : state.lang === 'ar'
+      ? 'أجب بأسلوب ودي وطبيعي ومختصر باللغة العربية الفصحى كمستشار بشري في شركة آباديس الطبية، بالاعتماد فقط على المعلومات المرجعية أدناه.'
+      : 'تو مشاور و همکار صمیمی شرکت دانش‌بنیان مخازن طبی آبادیس (abadis-med.com) هستی. بسیار گرم، طبیعی، روان و کوتاه (در ۲ تا ۴ جمله خوش‌خوان) به فارسی معیار پاسخ بده. فقط و فقط از اطلاعات و واژگان متن مرجع زیر استفاده کن و هیچ اصطلاح یا مشخصه فنی خارج از متن مرجع نساز.';
+    var sys = langInstruction + '\n\nاطلاعات پایه آبادیس: کیسه ساکشن یکبارمصرف در ۳ سایز ۱، ۲ و ۳ لیتر (هر کارتن ۴۵ عدد، فیلتر مکانیکی ۳۰ عدد) با فیلتر هیدروفوبیک قطع‌کننده جریان و پودر جاذب؛ مخازن پلی‌کربنات نشکن؛ ساکشن تیوب CH25/CH30/CH35 (۱۰۰ عدد در کارتن)؛ مسواک ساکشن یکبارمصرف؛ نگهدارنده لوله تراشه؛ رگولاتور وکیوم بزرگسال VR-A1 و اطفال VR-B1؛ فیلتر آنتی‌باکتریال؛ ترولی سری تا ۴ مخزن (۱۲ لیتر). آمار: ۱٬۲۳۲ مرکز درمانی فعال (۱٬۲۹۴ بیمارستان و مرکز جراحی در نقشه خانواده سبز)، ۹۸.۹۹٪ رضایت، ۰.۰۰۱۸٪ خرابی، سال تأسیس ۱۳۹۶/2017. پویش نجات زاگرس: کاشت ۲٬۰۰۰ نهال بلوط. تلفن فروش: ۰۲۱-۹۲۰۰۱۰۱۷ داخلی ۱۱، واتس‌اپ +۹۸۹۱۰۰۱۴۵۸۰۹.'
+      + (refText ? ('\n\nمتن مرجع مرتبط با سؤال کاربر:\n' + refText) : '');
+
+    var msgs = [{ role: 'system', content: sys }];
+    state.history = state.history || [];
+    var recent = state.history.slice(-4);
+    recent.forEach(function (m) { msgs.push(m); });
+    msgs.push({ role: 'user', content: query });
+
+    var customUrl = state.tier === 'domestic' && domesticEl && domesticEl.value.trim()
+      ? domesticEl.value.trim()
+      : state.tier === 'intl' && intlEl && intlEl.value.trim()
+      ? intlEl.value.trim()
+      : 'https://text.pollinations.ai/';
+
+    var payload = {
+      model: 'openai-fast',
+      reasoning_effort: 'low',
+      temperature: 0.25,
+      messages: msgs
+    };
+    var headers = { 'Content-Type': 'application/json' };
+    if (keyEl && keyEl.value.trim()) headers.Authorization = 'Bearer ' + keyEl.value.trim();
+
+    var opts = { method: 'POST', headers: headers, body: JSON.stringify(payload) };
     if (ctrl) opts.signal = ctrl.signal;
-    fetch(url, opts).then(function (r) {
+
+    fetch(customUrl, opts).then(function (r) {
       if (!r.ok) throw new Error('http');
       return r.text();
-    }).then(function (txt) {
+    }).then(function (raw) {
       clearTimeout(timer);
-      var clean = String(txt || '').trim();
-      if (clean && clean.length > 10 && clean.indexOf('<!DOCTYPE') === -1) {
-        bubble.innerHTML = fmtMd(clean) + ctaLine();
+      var txt = String(raw || '').trim();
+      if (txt.charAt(0) === '{') {
+        try {
+          var j = JSON.parse(txt);
+          if (j && j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content) {
+            txt = String(j.choices[0].message.content).trim();
+          }
+        } catch (e) {}
+      }
+      if (txt && txt.length > 8 && txt.indexOf('<!DOCTYPE') === -1 && txt.indexOf('"error"') === -1) {
+        state.history.push({ role: 'user', content: query });
+        state.history.push({ role: 'assistant', content: txt });
+        var srcHtml = hit && hit.url ? linkLine(urlOf(hit.url), urlOf(hit.url)) : '';
+        bubble.innerHTML = fmtMd(txt) + srcHtml + ctaLine();
       } else {
         bubble.innerHTML = fallbackHtml;
       }
+      if (logEl) logEl.scrollTop = logEl.scrollHeight;
       showQuickPrompts();
     }).catch(function () {
       clearTimeout(timer);
       bubble.innerHTML = fallbackHtml;
+      if (logEl) logEl.scrollTop = logEl.scrollHeight;
       showQuickPrompts();
     });
   }
 
   function answerSearch(query) {
     var hit = search(query);
-    if (!hit) {
-      var fallbackHtml = fmtMd(t().empty) + '<br>' + ctaLine();
-      if (!state.cutoff) {
-        tryLiveAiFallback(query, fallbackHtml);
-      } else {
-        addMsg('bot', fallbackHtml);
-        showQuickPrompts();
-      }
-      return;
+    if (hit) state.lastHit = hit;
+    var fallbackHtml = hit ? synthesize(hit) : (fmtMd(t().empty) + '<br>' + ctaLine());
+    if (!state.cutoff) {
+      tryLiveAi(query, hit, fallbackHtml);
+    } else {
+      addMsg('bot', fallbackHtml);
+      showQuickPrompts();
     }
-    var body = textOf(hit.text);
-    addMsg('bot', synthesize(hit));
-    showQuickPrompts();
-    maybeEnrich(query, body);
   }
 
   function maybeEnrich(query, context) {
