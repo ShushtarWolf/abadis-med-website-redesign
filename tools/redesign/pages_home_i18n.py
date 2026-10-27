@@ -99,7 +99,8 @@ def build_home(write, lang):
         <p class="slogan" aria-label="{esc(' '.join(t['slogan']))}">{lines}</p></div>
       <div class="impact-counter reveal" data-impact-counter data-counter="m2" data-locale="{'en-US' if lang == 'en' else 'ar-EG'}">
         {section_mark(p, 'impact', 'sec-mark--lg')}
-        <p class="eyebrow">{esc(t['imp_eb'])}</p><strong class="impact-num" aria-live="off">{zero}</strong>
+        {H.impact_title(lang)}
+        <p class="eyebrow impact-now">{esc(t['imp_eb'])}</p><strong class="impact-num" aria-live="off">{zero}</strong>
         <span class="impact-unit">{esc(t['imp_unit'])}</span></div>
       </div>
       {H.impact_stats(lang)}
@@ -167,7 +168,8 @@ def build_home(write, lang):
         <button type="button" class="logo-carousel-btn logo-carousel-next" aria-label="{esc(t['next'])}">›</button></div>
       <p class="home-logo-cta reveal"><a class="btn btn-ghost" href="{_h(t, p, t['cust_href'])}">{esc(t['cust_btn'])}</a></p>
     </div></section>'''
-    main = '\n'.join([hero, about, impact, why, products, quick, stories, mem, cust])
+    # Same order as the FA home: intro → about → products → impact → why → quick → stories → memberships → customers.
+    main = '\n'.join([hero, about, products, impact, why, quick, stories, mem, cust])
     if lang == 'en': main = main.replace('←', '→')
     extra_head = f'<link rel="preload" as="image" href="{p}assets/img/p/hero-bags.webp" type="image/webp">\n<link rel="stylesheet" href="{p}assets/css/home.css">\n{H.logo_scroll_css(p)}\n{H.counter_options_css(p)}'
     html = page(p, None, t['title'], t['desc'], main, lang=lang, fa_path='', canonical_path=t['root'],
