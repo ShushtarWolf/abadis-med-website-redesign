@@ -1,5 +1,5 @@
 /* Iran province map + searchable center table.
-   Default dataset is the full workbook (1,252 hospitals + 42 surgery centers). */
+   Default dataset is the cleaned workbook (1,242 hospitals + 42 surgery centers). */
 (function () {
   'use strict';
   var GEO = {
@@ -37,43 +37,51 @@
   };
   var COPY = {
     fa: {
-      search: 'جستجوی نام، شهر یا استان',
+      search: 'جستجوی نام، شهر، استان یا مالکیت',
       allProv: 'همه استان‌ها',
       allType: 'همه انواع',
+      allOwn: 'همه مالکیت‌ها',
       hospital: 'بیمارستان',
       surgery: 'مرکز جراحی',
       name: 'نام مرکز',
       city: 'شهر',
       prov: 'استان',
       type: 'نوع',
+      own: 'مالکیت',
       empty: 'موردی یافت نشد.',
       map: 'نقشه ایران؛ هر چراغ یک مرکز درمانی است',
       count: 'مرکز'
     },
     en: {
-      search: 'Search name, city or province',
+      search: 'Search name, city, province or ownership',
       allProv: 'All provinces',
       allType: 'All types',
+      allOwn: 'All ownership',
       hospital: 'Hospital',
       surgery: 'Surgery center',
+      hospitalStat: 'hospitals',
+      surgeryStat: 'surgery centers',
       name: 'Center',
       city: 'City',
       prov: 'Province',
       type: 'Type',
+      own: 'Ownership',
       empty: 'No match found.',
       map: 'Map of Iran; each light is a center',
       count: 'centers'
     },
     ar: {
-      search: 'ابحث بالاسم أو المدينة أو المحافظة',
+      search: 'ابحث بالاسم أو المدينة أو المحافظة أو الملكية',
       allProv: 'كل المحافظات',
       allType: 'كل الأنواع',
+      allOwn: 'كل الملكيات',
       hospital: 'مستشفى',
       surgery: 'مركز جراحة',
       name: 'المركز',
       city: 'المدينة',
       prov: 'المحافظة',
       type: 'النوع',
+      own: 'الملكية',
       empty: 'لا توجد نتائج.',
       map: 'خريطة إيران؛ كل ضوء مركز',
       count: 'مركزاً'
@@ -96,6 +104,15 @@
     return String(s || '')
       .replace(/[يى]/g, 'ی').replace(/ك/g, 'ک').replace(/[أإآ]/g, 'ا')
       .replace(/[\u200c\s]+/g, ' ').trim().toLowerCase();
+  }
+
+  function esc(s) {
+    return String(s || '')
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function cityLabel(c) {
+    return c.city_fa || c.city || '';
   }
 
   function solve3(A, b) {
@@ -167,75 +184,101 @@
     centers.forEach(function (c) { byProv[c.province] = (byProv[c.province] || 0) + 1; });
     var paths = Object.keys(provs).map(function (name) {
       var on = byProv[name] ? ' is-on' : '';
-      return '<path class="ir-prov' + on + '" data-prov="' + name.replace(/"/g, '') + '" d="' + provs[name].d + '"><title>' + name + '</title></path>';
+      var n = byProv[name] || 0;
+      return '<path class="ir-prov' + on + '" data-prov="' + esc(name) + '" data-n="' + n + '" d="' + provs[name].d + '"><title>' + esc(name) + ' — ' + digits(n, lang) + '</title></path>';
     }).join('');
     var lights = centers.map(function (c, i) {
       var p = project(c.lon, c.lat);
       var delay = (i % 18) * 0.12;
-      return '<circle class="ir-led ir-led--' + c.type + '" data-prov="' + c.province.replace(/"/g, '') + '" cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="2.4" style="animation-delay:' + delay.toFixed(2) + 's"><title>' + c.name + '</title></circle>';
+      return '<circle class="ir-led ir-led--' + c.type + '" data-prov="' + esc(c.province) + '" data-own="' + esc(c.ownership || '') + '" cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="2.4" style="animation-delay:' + delay.toFixed(2) + 's"><title>' + esc(c.name) + '</title></circle>';
     }).join('');
-    var provOpts = Object.keys(byProv).sort().map(function (name) {
-      return '<option value="' + name.replace(/"/g, '') + '">' + name + '</option>';
+    var provOpts = Object.keys(byProv).sort(function (a, b) { return a.localeCompare(b, 'fa'); }).map(function (name) {
+      return '<option value="' + esc(name) + '">' + esc(name) + '</option>';
     }).join('');
+    var ownSeen = {};
+    centers.forEach(function (c) { if (c.ownership) ownSeen[c.ownership] = 1; });
+    var ownOpts = Object.keys(ownSeen).sort(function (a, b) { return a.localeCompare(b, 'fa'); }).map(function (name) {
+      return '<option value="' + esc(name) + '">' + esc(name) + '</option>';
+    }).join('');
+    var counts = data.counts || {};
+    var nHospital = counts.hospital != null ? counts.hospital : centers.filter(function (c) { return c.type === 'hospital'; }).length;
+    var nSurgery = counts.surgery != null ? counts.surgery : centers.filter(function (c) { return c.type === 'surgery'; }).length;
+    var nTotal = counts.total != null ? counts.total : centers.length;
+    var stats = digits(nTotal, lang) + ' ' + T.count + ' · ' + digits(nHospital, lang) + ' ' + (T.hospitalStat || T.hospital) + ' · ' + digits(nSurgery, lang) + ' ' + (T.surgeryStat || T.surgery);
     root.innerHTML =
       '<div class="iran-layout">' +
         '<figure class="iran-map"><svg viewBox="0 0 ' + map.w + ' ' + map.h + '" role="img" aria-label="' + T.map + '">' +
           '<g class="ir-provs">' + paths + '</g><g class="ir-lights">' + lights + '</g></svg></figure>' +
         '<div class="iran-table-wrap">' +
+          '<p class="iran-stats" data-iran-stats>' + stats + '</p>' +
           '<div class="list-tools iran-tools">' +
             '<input class="search" type="search" data-iran-q placeholder="' + T.search + '" aria-label="' + T.search + '">' +
             '<select data-iran-prov aria-label="' + T.prov + '"><option value="">' + T.allProv + '</option>' + provOpts + '</select>' +
             '<select data-iran-type aria-label="' + T.type + '"><option value="">' + T.allType + '</option>' +
               '<option value="hospital">' + T.hospital + '</option><option value="surgery">' + T.surgery + '</option></select>' +
+            '<select data-iran-own aria-label="' + T.own + '"><option value="">' + T.allOwn + '</option>' + ownOpts + '</select>' +
             '<span class="count" data-iran-n aria-live="polite"></span>' +
           '</div>' +
-          '<div class="iran-scroll"><table class="iran-table"><thead><tr><th>' + T.name + '</th><th>' + T.city + '</th><th>' + T.prov + '</th><th>' + T.type + '</th></tr></thead><tbody data-iran-body></tbody></table></div>' +
+          '<div class="iran-scroll"><table class="iran-table"><thead><tr><th>' + T.name + '</th><th>' + T.city + '</th><th>' + T.prov + '</th><th>' + T.type + '</th><th>' + T.own + '</th></tr></thead><tbody data-iran-body></tbody></table></div>' +
           '<p class="empty-msg" data-iran-empty hidden>' + T.empty + '</p>' +
         '</div></div>';
     var q = root.querySelector('[data-iran-q]');
     var prov = root.querySelector('[data-iran-prov]');
     var type = root.querySelector('[data-iran-type]');
+    var own = root.querySelector('[data-iran-own]');
     var body = root.querySelector('[data-iran-body]');
     var count = root.querySelector('[data-iran-n]');
     var empty = root.querySelector('[data-iran-empty]');
     var svg = root.querySelector('svg');
     var rows = centers.map(function (c) {
-      return { c: c, n: norm(c.name + ' ' + c.city + ' ' + c.province) };
+      return { c: c, n: norm([c.name, c.city, c.city_fa, c.province, c.ownership].join(' ')) };
     });
     function typeLabel(t) { return t === 'surgery' ? T.surgery : T.hospital; }
+    function ownLabel(v) { return v ? v : '—'; }
     function paint() {
       var query = norm(q.value);
       var pv = prov.value;
       var tp = type.value;
+      var ow = own.value;
       var html = '';
       var n = 0;
+      var lit = {};
       for (var i = 0; i < rows.length; i++) {
         var c = rows[i].c;
+        var typeOk = !tp || c.type === tp;
+        var ownOk = !ow || (c.ownership || '') === ow;
+        if (typeOk && ownOk) lit[c.province] = (lit[c.province] || 0) + 1;
         if (pv && c.province !== pv) continue;
-        if (tp && c.type !== tp) continue;
+        if (!typeOk || !ownOk) continue;
         if (query && rows[i].n.indexOf(query) < 0) continue;
         n++;
         if (n <= 80) {
-          html += '<tr><td>' + c.name + '</td><td>' + c.city + '</td><td>' + c.province + '</td><td>' + typeLabel(c.type) + '</td></tr>';
+          html += '<tr><td>' + esc(c.name) + '</td><td>' + esc(cityLabel(c)) + '</td><td>' + esc(c.province) + '</td><td>' + typeLabel(c.type) + '</td><td>' + esc(ownLabel(c.ownership)) + '</td></tr>';
         }
       }
       body.innerHTML = html;
       var shown = digits(n, lang);
-      count.textContent = n > 80 ? shown + ' ' + T.count : shown + ' ' + T.count;
+      count.textContent = shown + ' ' + T.count;
       empty.hidden = n > 0;
       svg.querySelectorAll('.ir-prov').forEach(function (el) {
-        var on = !pv || el.getAttribute('data-prov') === pv;
+        var name = el.getAttribute('data-prov');
+        var provinceCount = lit[name] || 0;
+        var on = (!pv || name === pv) && provinceCount > 0;
         el.classList.toggle('is-dim', !on);
+        var title = el.querySelector('title');
+        if (title) title.textContent = name + ' — ' + digits(provinceCount, lang);
       });
       svg.querySelectorAll('.ir-led').forEach(function (el) {
         var on = !pv || el.getAttribute('data-prov') === pv;
         if (tp) on = on && el.classList.contains('ir-led--' + tp);
+        if (ow) on = on && el.getAttribute('data-own') === ow;
         el.classList.toggle('is-dim', !on);
       });
     }
     q.addEventListener('input', paint);
     prov.addEventListener('change', paint);
     type.addEventListener('change', paint);
+    own.addEventListener('change', paint);
     svg.addEventListener('click', function (e) {
       var path = e.target.closest('.ir-prov');
       if (!path) return;

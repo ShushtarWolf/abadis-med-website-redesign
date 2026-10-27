@@ -626,12 +626,12 @@ def contact(write):
     write('contact/index.html', s)
 
 CUST_T = {
- 'fa': dict(h='خانواده سبز آبادیس', lead='۱٬۲۵۲ بیمارستان و ۴۲ مرکز جراحی روی نقشه و در جدول.'),
- 'en': dict(h='Abadis green family', lead='1,252 hospitals and 42 surgery centers on the map and in the table.'),
- 'ar': dict(h='عائلة آباديس الخضراء', lead='١٬٢٥٢ مستشفى و٤٢ مركز جراحة على الخريطة وفي الجدول.'),
+ 'fa': dict(h='خانواده سبز آبادیس', lead='۱٬۲۴۲ بیمارستان و ۴۲ مرکز جراحی روی نقشه و در جدول.'),
+ 'en': dict(h='Abadis green family', lead='1,242 hospitals and 42 surgery centers on the map and in the table.'),
+ 'ar': dict(h='عائلة آباديس الخضراء', lead='١٬٢٤٢ مستشفى و٤٢ مركز جراحة على الخريطة وفي الجدول.'),
 }
 def iran_centers_section(p, lang):
-    """Live default: the full workbook (1,252 hospitals + 42 surgery centers)."""
+    """Live default: the cleaned workbook (1,242 hospitals + 42 surgery centers)."""
     T = CUST_T[lang]
     return f'''<section class="section" id="green-family">
   <div class="wrap">
