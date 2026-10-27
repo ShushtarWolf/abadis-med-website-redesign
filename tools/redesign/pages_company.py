@@ -124,14 +124,12 @@ def about_motion_tags(p):
 
 
 def about_hero(p, lang, h1_html, crumbs):
-    """About hero: poster/video, growing emblem, slogan in header type."""
-    from pages_home import IMPACT_MARK
+    """About hero: poster/video, slogan in header type with motions."""
     return f'''  <section class="page-hero about-hero">
     {about_hero_video(p)}
     <div class="wrap about-hero-grid">
       <div>{crumbs}
         <h1>{h1_html}</h1>
-        {IMPACT_MARK}
         {slogan_block(lang)}
       </div>
     </div>
