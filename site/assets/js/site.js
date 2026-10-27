@@ -1138,9 +1138,7 @@
   document.querySelectorAll('.impact .slogan, .about-hero .slogan, .page-hero .slogan').forEach(function (p) {
     if (p.dataset.sloganInit) return;
     p.dataset.sloganInit = '1';
-    var wait = (!reduce && p.closest('.about-hero')) ? 1500 : 0;
-    if (wait) setTimeout(function () { arm(p); }, wait);
-    else arm(p);
+    arm(p);
   });
 })();
 

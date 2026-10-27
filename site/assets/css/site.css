@@ -1499,23 +1499,15 @@ video:not([controls]):not(.wp-video-shortcode):not(.is-playing) {
 .slogan,
 .about-hero .slogan {
   margin: 14px 0 0;
-  font-size: clamp(1.4rem, 3.2vw, 2.25rem);
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
   font-weight: 900;
-  line-height: 1.5;
+  line-height: 1.7;
   color: #fff;
   letter-spacing: 0;
 }
-.about-hero .slogan .slogan-line:first-child,
 .slogan .slogan-line--main {
   color: #fff;
   font-weight: 900;
-}
-.about-hero .slogan .slogan-line:not(:first-child) {
-  color: #8fe3e4;
-  font-weight: 900;
-}
-[data-theme="noir"] .about-hero .slogan .slogan-line:not(:first-child) {
-  color: #c4b5fd;
 }
 .why-list { columns: 3 220px; column-gap: 26px; }
 .why-list li { break-inside: avoid; }
@@ -1536,11 +1528,12 @@ video:not([controls]):not(.wp-video-shortcode):not(.is-playing) {
 .slogan.slogan-rotator .slogan-line--main { display: block; opacity: 1; transform: none; transition: none; color: #fff; font-weight: 900; }
 .slogan.slogan-rotator .slogan-rotate { display: flex; flex-direction: column; align-items: flex-start; gap: 0.18em; margin-top: 0.25em; }
 .slogan.slogan-rotator .slogan-rotate .slogan-line { display: block; opacity: 0.74; color: #e8f3f3; font-weight: 900; transform: none; transition: opacity .45s ease, transform .45s ease, color .45s ease; }
-.about-hero .slogan.slogan-rotator .slogan-rotate .slogan-line { color: #8fe3e4; }
-.slogan.slogan-rotator .slogan-rotate .slogan-line.is-on { opacity: 1; color: #5eead4; transform: translateX(-4px); }
-[dir="ltr"] .slogan.slogan-rotator .slogan-rotate .slogan-line.is-on { transform: translateX(4px); }
+.slogan.slogan-rotator .slogan-rotate .slogan-line.is-on,
+.about-hero .slogan.slogan-rotator .slogan-rotate .slogan-line.is-on { opacity: 1; color: #5eead4; transform: translateX(-4px); }
+[dir="ltr"] .slogan.slogan-rotator .slogan-rotate .slogan-line.is-on,
+[dir="ltr"] .about-hero .slogan.slogan-rotator .slogan-rotate .slogan-line.is-on { transform: translateX(4px); }
 [data-theme="noir"] .slogan.slogan-rotator .slogan-rotate .slogan-line.is-on,
-[data-theme="noir"] .about-hero .slogan.slogan-rotator .slogan-rotate .slogan-line { color: #c4b5fd; }
+[data-theme="noir"] .about-hero .slogan.slogan-rotator .slogan-rotate .slogan-line.is-on { color: #c4b5fd; }
 @media (prefers-reduced-motion: reduce) {
   .slogan-line { opacity: 1; transform: none; transition: none; }
   .slogan.slogan-rotator .slogan-rotate .slogan-line { position: static; opacity: 1; transform: none; transition: none; display: block; }
