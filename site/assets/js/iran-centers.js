@@ -304,6 +304,9 @@
         '<title>' + esc(name) + ' — ' + digits(n, lang) + ' ' + T.count + '</title></path>';
     }).join('');
 
+    var textDir = (lang === 'fa' || lang === 'ar')
+      ? ' direction="rtl" style="direction:rtl;unicode-bidi:normal;letter-spacing:0"'
+      : ' style="letter-spacing:0"';
     // Non-overlapping province count badges for full-country overview (top 10 hubs, generous spacing)
     var provOrder = Object.keys(byProv).sort(function (a, b) { return byProv[b] - byProv[a]; });
     var placedProvBoxes = [];
@@ -320,17 +323,19 @@
       placedProvBoxes.push(box);
       return '<g class="ir-prov-badge" data-prov="' + esc(name) + '" transform="translate(' + cx.toFixed(1) + ' ' + cy.toFixed(1) + ')">' +
         '<rect x="' + (-bw / 2).toFixed(1) + '" y="' + (-bh / 2).toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + bh + '" rx="8"/>' +
-        '<text text-anchor="middle" y="3.2">' + esc(label) + '</text></g>';
+        '<text text-anchor="middle" y="3.2"' + textDir + '>' + esc(label) + '</text></g>';
     }).join('');
 
     var lights = centers.map(function (c, i) {
       var p = c._p;
       var kind = getKind(c);
+      var phase = ((i * 0.19) % 3.2).toFixed(2);
       var mark = kind === 'surgery'
         ? '<rect class="ir-dot" x="-2.2" y="-2.2" width="4.4" height="4.4" transform="rotate(45)"/>'
         : '<circle class="ir-dot" r="2.2"/>';
-      return '<g class="ir-pin ir-pin--' + kind + '" data-i="' + i + '" data-prov="' + esc(getProv(c)) + '" data-city="' + esc(cityLabel(c)) + '" data-own="' + esc(getOwn(c)) + '" transform="translate(' + p.x.toFixed(1) + ' ' + p.y.toFixed(1) + ')">' +
-        '<circle class="ir-hit" r="6"/>' + mark +
+      return '<g class="ir-pin ir-pin--' + kind + '" data-i="' + i + '" data-prov="' + esc(getProv(c)) + '" data-city="' + esc(cityLabel(c)) + '" data-own="' + esc(getOwn(c)) + '" style="--pulse-d:-' + phase + 's" transform="translate(' + p.x.toFixed(1) + ' ' + p.y.toFixed(1) + ')">' +
+        '<g class="ir-bulb"><circle class="ir-glow" r="4.8"/>' + mark + '</g>' +
+        '<circle class="ir-hit" r="7"/>' +
         '<title>' + esc(getName(c)) + ' (' + esc(getProv(c)) + ' · ' + esc(cityLabel(c)) + ')</title></g>';
     }).join('');
 
@@ -350,9 +355,9 @@
 
     var seaLabels =
       '<g class="ir-sea-layer" aria-hidden="true">' +
-        '<text class="ir-sea-label" x="418" y="92" text-anchor="middle">' + esc(T.caspian) + '</text>' +
-        '<text class="ir-sea-label" x="255" y="628" text-anchor="middle">' + esc(T.persianGulf) + '</text>' +
-        '<text class="ir-sea-label" x="555" y="688" text-anchor="middle">' + esc(T.omanSea) + '</text>' +
+        '<text class="ir-sea-label" x="418" y="92" text-anchor="middle"' + textDir + '>' + esc(T.caspian) + '</text>' +
+        '<text class="ir-sea-label" x="255" y="628" text-anchor="middle"' + textDir + '>' + esc(T.persianGulf) + '</text>' +
+        '<text class="ir-sea-label" x="555" y="688" text-anchor="middle"' + textDir + '>' + esc(T.omanSea) + '</text>' +
       '</g>';
 
     root.innerHTML =
@@ -458,40 +463,21 @@
 
     function updateVisualScale() {
       var zScale = cam.w / fullW;
+      svg.style.setProperty('--ir-z', zScale.toFixed(4));
       var isCountryView = !prov.value && zScale > 0.72;
       if (provBadgeGroup) {
         if (isCountryView) provBadgeGroup.removeAttribute('display');
         else provBadgeGroup.setAttribute('display', 'none');
       }
-      var rDot = isCountryView ? 1.85 : Math.max(1.1, Math.min(2.8, 2.5 * Math.pow(zScale, 0.72)));
-      var rSel = rDot * 1.85;
-      var sDot = isCountryView ? 3.6 : Math.max(2.2, Math.min(5.2, 4.6 * Math.pow(zScale, 0.72)));
-      var rHit = Math.max(3.5, 7.0 * zScale);
+    }
 
-      var pins = svg.querySelectorAll('.ir-pin');
-      for (var i = 0; i < pins.length; i++) {
-        var elPin = pins[i];
-        var isOn = elPin.classList.contains('is-on');
-        var dot = elPin.querySelector('.ir-dot');
-        var hit = elPin.querySelector('.ir-hit');
-        if (hit) hit.setAttribute('r', rHit.toFixed(2));
-        if (dot) {
-          if (dot.tagName === 'circle') {
-            dot.setAttribute('r', (isOn ? rSel : rDot).toFixed(2));
-          } else {
-            var sz = isOn ? sDot * 1.45 : sDot;
-            dot.setAttribute('x', (-sz / 2).toFixed(2));
-            dot.setAttribute('y', (-sz / 2).toFixed(2));
-            dot.setAttribute('width', sz.toFixed(2));
-            dot.setAttribute('height', sz.toFixed(2));
-          }
-        }
-      }
+    function setView(c) {
+      cam = c;
+      svg.setAttribute('viewBox', c.x.toFixed(2) + ' ' + c.y.toFixed(2) + ' ' + c.w.toFixed(2) + ' ' + c.h.toFixed(2));
     }
 
     function applyCam(c) {
-      cam = c;
-      svg.setAttribute('viewBox', c.x.toFixed(2) + ' ' + c.y.toFixed(2) + ' ' + c.w.toFixed(2) + ' ' + c.h.toFixed(2));
+      setView(c);
       updateVisualScale();
       paintCities();
     }
@@ -516,14 +502,19 @@
       function step(now) {
         var t = Math.min(1, (now - t0) / 380);
         var e = 1 - Math.pow(1 - t, 3);
-        applyCam({
+        var frame = {
           x: from.x + (to.x - from.x) * e,
           y: from.y + (to.y - from.y) * e,
           w: from.w + (to.w - from.w) * e,
           h: from.h + (to.h - from.h) * e
-        });
-        if (t < 1) anim = requestAnimationFrame(step);
-        else anim = 0;
+        };
+        if (t < 1) {
+          setView(frame);
+          anim = requestAnimationFrame(step);
+        } else {
+          applyCam(to);
+          anim = 0;
+        }
       }
       anim = requestAnimationFrame(step);
     }
@@ -545,12 +536,37 @@
       setCam(cx - need / 2, cy - (need * aspect) / 2, need, true);
     }
 
+    function boxFromPath(path) {
+      var b = null;
+      try { b = path.getBBox(); } catch (err) { b = null; }
+      if (b && b.width > 1 && b.height > 1) return { x: b.x, y: b.y, w: b.width, h: b.height };
+      var d = path.getAttribute('d') || '';
+      var nums = d.match(/-?\d*\.?\d+/g);
+      if (nums && nums.length >= 4) {
+        var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        for (var i = 0; i + 1 < nums.length; i += 2) {
+          var x = +nums[i], y = +nums[i + 1];
+          if (x < minX) minX = x;
+          if (y < minY) minY = y;
+          if (x > maxX) maxX = x;
+          if (y > maxY) maxY = y;
+        }
+        if (isFinite(minX) && maxX > minX && maxY > minY) {
+          return { x: minX, y: minY, w: maxX - minX, h: maxY - minY };
+        }
+      }
+      var c = provs[path.getAttribute('data-prov')];
+      if (c && c.c) return { x: c.c[0] - 36, y: c.c[1] - 36, w: 72, h: 72 };
+      return { x: fullX, y: fullY, w: fullW, h: fullH };
+    }
+
     function frameProvince(name) {
+      drag = null;
+      pointers = {};
       var path = svg.querySelector('.ir-prov[data-prov="' + CSS.escape(name) + '"]');
       if (!path) return;
-      var b = path.getBBox();
-      // Keep minimum regional width >= 225 so neighboring provinces remain clearly visible around the active province
-      frameBox({ x: b.x, y: b.y, w: b.width, h: b.height }, Math.max(b.width, b.height) * 0.45 + 32, 225);
+      var b = boxFromPath(path);
+      frameBox(b, Math.max(b.w, b.h) * 0.28 + 18, 175);
     }
 
     function frameIndexes(list) {
@@ -649,7 +665,7 @@
         badges.push(
           '<g class="ir-city' + (city === label ? ' is-on' : '') + '" data-city="' + esc(label) + '" transform="translate(' + x.toFixed(1) + ' ' + (y + yOff).toFixed(1) + ')">' +
             '<rect x="' + (-bw / 2).toFixed(2) + '" y="' + (-bh / 2).toFixed(2) + '" width="' + bw.toFixed(2) + '" height="' + bh.toFixed(2) + '" rx="' + rx + '" style="stroke-width:' + sWidth + 'px"/>' +
-            '<text text-anchor="middle" y="' + (3.2 * zScale).toFixed(2) + '" style="font-size:' + fSize + 'px">' + esc(text) + '</text>' +
+            '<text text-anchor="middle" y="' + (3.2 * zScale).toFixed(2) + '" style="font-size:' + fSize + 'px;letter-spacing:0;' + (lang === 'fa' || lang === 'ar' ? 'direction:rtl;unicode-bidi:normal;' : '') + '"' + (lang === 'fa' || lang === 'ar' ? ' direction="rtl"' : '') + '>' + esc(text) + '</text>' +
           '</g>'
         );
       }
@@ -838,7 +854,6 @@
         drag = { x: e.clientX, y: e.clientY, ox: cam.x, oy: cam.y, moved: false, pid: e.pointerId, target: e.target };
         if (anim) cancelAnimationFrame(anim);
       }
-      try { svg.setPointerCapture(e.pointerId); } catch (err) { /* capture is optional */ }
     });
     svg.addEventListener('pointermove', function (e) {
       if (!pointers[e.pointerId]) return;
@@ -849,26 +864,39 @@
         var dist = Math.hypot(a.x - b.x, a.y - b.y);
         if (!svg._pinch) svg._pinch = { dist: dist, w: cam.w };
         var w2 = svg._pinch.w * (svg._pinch.dist / Math.max(12, dist));
-        setCam(cam.x + (cam.w - w2) / 2, cam.y + (cam.h - w2 * aspect) / 2, w2, false);
+        setView(clampCam(cam.x + (cam.w - w2) / 2, cam.y + (cam.h - w2 * aspect) / 2, w2));
+        svg._pinch.moved = true;
         return;
       }
       if (!drag || drag.pid !== e.pointerId) return;
       var rect = svg.getBoundingClientRect();
       var dx = e.clientX - drag.x;
       var dy = e.clientY - drag.y;
-      if (Math.hypot(dx, dy) > 4) drag.moved = true;
+      if (!drag.moved && Math.hypot(dx, dy) > 9) {
+        drag.moved = true;
+        try { svg.setPointerCapture(e.pointerId); } catch (err) { /* capture is optional */ }
+      }
       if (!drag.moved) return;
       var vx = dx / rect.width * cam.w;
       var vy = dy / rect.height * cam.h;
-      applyCam(clampCam(drag.ox - vx, drag.oy - vy, cam.w));
+      setView(clampCam(drag.ox - vx, drag.oy - vy, cam.w));
     });
     function endPointer(e) {
       var was = drag && drag.pid === e.pointerId ? drag : null;
+      var pinchMoved = !!(svg._pinch && svg._pinch.moved);
       delete pointers[e.pointerId];
       if (Object.keys(pointers).length < 2) svg._pinch = null;
+      if (pinchMoved && Object.keys(pointers).length < 2) {
+        updateVisualScale();
+        paintCities();
+      }
       if (!was) return;
       drag = null;
-      if (was.moved) return;
+      if (was.moved) {
+        updateVisualScale();
+        paintCities();
+        return;
+      }
       var origin = was.target && was.target.closest ? was.target : e.target;
       var pin = origin.closest('.ir-pin');
       if (pin) { focusIndex(+pin.getAttribute('data-i'), false); return; }
