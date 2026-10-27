@@ -1,7 +1,7 @@
-"""About Us: fixed 118px goals orbit + N3 membership cards.
+"""About Us motion: N3 membership cards and partner cards.
 
-Approved 2026-10-27 (Hamid): N3 neon border with float/glow, and 10-node
-orbit circles at 118px so every FA / EN / AR label fits inside.
+The 10-node «اهداف و عضویت‌ها در حال حرکت» orbit is not approved and is
+stripped wherever it was previously injected. Partner cards stay.
 """
 import math
 import re
@@ -236,16 +236,24 @@ def sync_about_partners(html, lang, prefix):
     return html[:sec] + section + '\n' + html[sec2:]
 
 
+_ORBIT_FIG = re.compile(
+    r'<figure class="ab-orbit-fit" id="moving-targets">.*?</figure>',
+    re.S,
+)
+
+
+def strip_moving_targets(html):
+    """The 10-node orbit is not approved. Partner cards and membership logos stay."""
+    return _ORBIT_FIG.sub('', html)
+
+
 def inject_about_motion(html, lang, prefix):
-    """Idempotent: add the orbit, membership grid, partner cards, and N3 classes on EN/AR About."""
+    """Idempotent: partner cards, membership grid, and N3 classes. No moving-targets orbit."""
+    html = strip_moving_targets(html)
     if lang in ('en', 'ar'):
         html = sync_about_partners(html, lang, prefix)
-    if lang not in ('en', 'ar') or 'ab-orbit-fit' in html:
-        html = _n3_classes(html)
-        return html
-    why = '<h2>Why Abadis?</h2>' if lang == 'en' else '<h2>لماذا آباديس؟</h2>'
-    if why in html:
-        html = html.replace(why, why + goals_orbit(lang, prefix), 1)
+    if lang not in ('en', 'ar'):
+        return _n3_classes(html)
     team = '<h2>Our Team</h2>' if lang == 'en' else '<h2>التعرف على الفريق التنفيذي</h2>'
     if team in html and 'ab-member-grid' not in html:
         html = html.replace(team, membership_section(lang, prefix) + team, 1)

@@ -147,7 +147,7 @@ def build_home(write, lang):
         <div class="ps-panel" id="articles" role="tabpanel" aria-labelledby="tab-home-articles" data-ps-panel="articles" hidden>{art_rail}</div>
         <p class="h-all">
           <a class="btn btn-ghost" data-ps-cta="news" href="{_h(t, p, t['news_href'])}">{esc(news_all)}</a>
-          <a class="btn btn-ghost" data-ps-cta="articles" href="{_h(t, p, t['art_href'])}">{esc(art_all)}</a>
+          <a class="btn btn-ghost" data-ps-cta="articles" href="{_h(t, p, t['art_href'])}" hidden>{esc(art_all)}</a>
         </p>
       </div>
     </div></section>'''

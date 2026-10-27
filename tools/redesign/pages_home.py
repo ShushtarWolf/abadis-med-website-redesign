@@ -649,7 +649,7 @@ def posts_unified():
         <div class="ps-panel" id="articles" role="tabpanel" aria-labelledby="tab-home-articles" data-ps-panel="articles" hidden>{art_rail}</div>
         <p class="h-all">
           <a class="btn btn-ghost" data-ps-cta="news" href="news/">مشاهده همه اخبار ←</a>
-          <a class="btn btn-ghost" data-ps-cta="articles" href="articles/">مشاهده همه مقالات ←</a>
+          <a class="btn btn-ghost" data-ps-cta="articles" href="articles/" hidden>مشاهده همه مقالات ←</a>
         </p>
       </div>
     </div>

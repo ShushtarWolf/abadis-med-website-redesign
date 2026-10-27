@@ -412,7 +412,6 @@ def about(write):
   <section class="section section--alt" id="why"><div class="wrap">
     <h2 class="reveal sec-title" style="margin-bottom:20px">{section_mark(p, 'why')}چرا آبادیس؟</h2>
     <ul class="checks why-list reveal">{whys}</ul>
-    {__import__('about_motion').goals_orbit('fa', p)}
   </div></section>
   {__import__('about_motion').membership_section('fa', p)}
   <section class="section" id="certs"><div class="wrap">
@@ -543,24 +542,27 @@ def calculator(write):
     write('calculator/index.html', page(p, 'calculator', 'محاسبه گر', 'محاسبه‌گر صرفه جویی کیسه ساکشن یکبار مصرف آبادیس: مصرف آب، هزینه شست و شو و ضد عفونی و زمان کادر درمان.', main, scripts=js))
 
 # ------------------------------------------------------------------ SDGs / توسعه پایدار (full generated page)
-# Seven key goals, in live-page order. Titles are the short names from
-# abadis-med.com; figures stay in the verbatim goal prose, not a second strip.
-# Icons are brand-teal line marks (not the UN rainbow tiles).
-_SDG_GOALS = [
-    ('سلامت و تندرستی', 'Good Health and Well-Being',
-     '<path d="M12 20s-6.5-4.2-6.5-8.4A3.6 3.6 0 0 1 12 8.6a3.6 3.6 0 0 1 6.5 3C18.5 15.8 12 20 12 20z"/><path d="M12 10.2v3.2M10.4 11.8h3.2"/>'),
-    ('آب پاک و بهداشت', 'Clean Water and Sanitation',
-     '<path d="M12 3.2s5.6 5.8 5.6 9.2a5.6 5.6 0 0 1-11.2 0c0-3.4 5.6-9.2 5.6-9.2z"/>'),
-    ('انرژی پاک و مقرون‌به‌صرفه', 'Affordable and Clean Energy',
-     '<path d="M13 2.5 4.5 13.5h6.2L9.8 21.5 19.5 10h-6.2L13 2.5z"/>'),
-    ('کار شایسته و رشد اقتصادی', 'Decent Work and Economic Growth',
-     '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5.2A1.8 1.8 0 0 1 9.8 3.4h4.4A1.8 1.8 0 0 1 16 5.2V7M3 12.5h18"/>'),
-    ('صنعت، نوآوری و زیرساخت', 'Industry, Innovation, and Infrastructure',
-     '<path d="M3 21V10.5l5 2.8V10.5l5 2.8V8.2l8 3.6V21"/><path d="M3 21h18M7.2 21v-2.6h2.2V21M12.2 21v-2.6h2.2V21"/>'),
-    ('مصرف و تولید مسئولانه', 'Responsible Consumption and Production',
-     '<path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4.2V9h-4.8"/><path d="M4 12a8 8 0 0 0 2.3 5.6"/><path d="M4 19.8V15h4.8"/>'),
-    ('اقدام برای اقلیم', 'Climate Action',
-     '<path d="M12 21.5V11"/><path d="M12 13.2c-3.2-.6-5.4-3.4-4.2-6.6 3.2.2 5 2.4 4.2 6.6z"/><path d="M12 15.2c3-.8 5.6-2.8 4.6-6.2-3 .4-4.8 2.6-4.6 6.2z"/>'),
+# Seven key goals, in live-page order. The squares are the original UN tiles
+# from 9243ca72 (FA webps and the EN page's E-WEB / SDG pngs), recolored so the
+# field is #066163 → #0d9488 and the white pictogram, number, and title stay #fff.
+# Do not replace these with drawn SVG tiles.
+_SDG_FA = [
+    ('assets/img/c/a74f1583bbe3-240.webp', 'سلامت و تندرستی', 240),
+    ('assets/img/c/92ab4af0990c-240.webp', 'آب پاک و بهداشت', 240),
+    ('assets/img/c/15eb17f5c3ff-240.webp', 'انرژی پاک و مقرون‌به‌صرفه', 240),
+    ('assets/img/c/7b91c29f0cec-240.webp', 'کار شایسته و رشد اقتصادی', 240),
+    ('assets/img/c/c40a4113acaa-240.webp', 'صنعت، نوآوری و زیرساخت', 240),
+    ('assets/img/c/efac003f8971-240.webp', 'مصرف و تولید مسئولانه', 240),
+    ('assets/img/c/19c49c17129e-240.webp', 'اقدام برای اقلیم', 240),
+]
+_SDG_EN = [
+    ('assets/img/c/796ec2dc3c0f-480.webp', 'Good Health and Well-Being', 480),
+    ('assets/img/c/206b6ee4b941-480.webp', 'Clean Water and Sanitation', 480),
+    ('assets/img/c/6c9f35a323a6-480.webp', 'Affordable and Clean Energy', 480),
+    ('assets/img/c/9aa88d5db7e4-480.webp', 'Decent Work and Economic Growth', 480),
+    ('assets/img/c/7abbc7340733-480.webp', 'Industry, Innovation and Infrastructure', 480),
+    ('assets/img/c/989df7de169c-480.webp', 'Responsible Consumption and Production', 480),
+    ('assets/img/c/231b02bafa3f-480.webp', 'Climate Action', 480),
 ]
 
 _RAINBOW_GOAL_IMG = re.compile(
@@ -578,18 +580,15 @@ _GOAL_HEAD = re.compile(
 )
 
 
-def sdg_icons(lang):
-    """Seven teal goal tiles. Numbers run 1–7; names match the live page."""
+def sdg_icons(lang, prefix):
+    """Seven original UN tiles, teal-recolored. The 1–7 list stays in the prose below."""
+    rows = _SDG_EN if lang == 'en' else _SDG_FA
     bits = []
-    for i, (fa_title, en_title, paths) in enumerate(_SDG_GOALS, 1):
-        label = fa_title if lang == 'fa' else en_title
-        n = fa(i) if lang == 'fa' else str(i)
+    for i, (src, alt, wh) in enumerate(rows):
         bits.append(
-            f'<div class="sdg-tile">'
-            f'<span class="sdg-num">{n}</span>'
-            f'<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" '
-            f'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">{paths}</svg>'
-            f'<span class="sdg-name">{esc(label)}</span></div>'
+            f'<span class="sdg-logo" style="--sdg-i:{i}">'
+            f'<img src="{prefix}{src}" width="{wh}" height="{wh}" loading="lazy" decoding="async" alt="{esc(alt)}">'
+            f'</span>'
         )
     return f'<div class="sdg-icons">{"".join(bits)}</div>'
 
@@ -650,10 +649,10 @@ def _drop_sdg_icons(html):
     return html[:i] + html[j:]
 
 
-def finish_sdg_html(html, lang):
-    """Teal goal tiles + a single 1–7 list. Body copy stays verbatim."""
+def finish_sdg_html(html, lang, prefix='../'):
+    """Original UN tiles (teal field) + a single 1–7 list. Body copy stays verbatim."""
     html = _drop_sdg_icons(_merge_goal_lists(_strip_rainbow_goals(html)))
-    icons = sdg_icons(lang)
+    icons = sdg_icons(lang, prefix)
     m = _GOAL_HEAD.search(html)
     if m:
         return html[:m.end()] + icons + html[m.end():]
@@ -680,7 +679,7 @@ def _sdg_sections(p, bl):
         )
         first = False
         i += 1
-    return finish_sdg_html(''.join(parts), 'fa')
+    return finish_sdg_html(''.join(parts), 'fa', p)
 
 
 def sdgs(write):

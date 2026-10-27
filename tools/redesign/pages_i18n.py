@@ -175,7 +175,7 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
         desc = about_copy(lang)['intro'][0]
     if site_path == 'sdgs/' and lang == 'en':
         from pages_company import finish_sdg_html
-        body = finish_sdg_html(body, 'en')
+        body = finish_sdg_html(body, 'en', p)
         body = f'<div class="sdg-page"><div class="prose">{body}</div></div>'
         desc = ('Abadis Medical Technologies Co., as a pioneering knowledge-based company and the leading manufacturer of disposable suction bags in Iran, '
                 'is committed to aligning its operations with the United Nations Sustainable Development Goals (UN SDGs). '

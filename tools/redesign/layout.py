@@ -224,6 +224,7 @@ def footer(p, cur=None, lang='fa'):
     root = L['root']
     nav = nav_flat(I18N_NAV[lang], footer=True)
     sec = I18N_SECONDARY[lang]
+    # Text only. SDGs, calculator, and CSR (نجات زاگرس) do not get section icons.
     main = '\n        '.join(
         f'<a href="{_href(p, root, h)}">{_footer_label(lang, k, l)}</a>' for k, h, l in nav)
     secl = '\n        '.join(

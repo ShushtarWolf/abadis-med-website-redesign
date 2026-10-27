@@ -1042,26 +1042,8 @@ details.letter[open] summary { margin-bottom: 12px; }
 .sdg-icons { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; margin: 4px 0 22px; }
 @media (max-width: 900px) { .sdg-icons { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (max-width: 520px) { .sdg-icons { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.sdg-tile {
-  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-  gap: 8px; text-align: center; min-height: 128px; padding: 12px 8px 14px;
-  border-radius: 16px; color: #f3fafa;
-  background: linear-gradient(165deg, #0d9488 0%, #066163 100%);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .14);
-}
-.sdg-tile svg { width: 32px; height: 32px; display: block; flex: none; }
-.sdg-tile .sdg-num { font-weight: 800; font-size: .95rem; line-height: 1; font-variant-numeric: tabular-nums; }
-.sdg-tile .sdg-name { font-size: .74rem; line-height: 1.45; font-weight: 700; }
-[data-theme="dark"] .sdg-tile {
-  color: #5eead4;
-  background: linear-gradient(165deg, #0c3f42 0%, #062628 100%);
-  box-shadow: inset 0 0 0 1px rgba(94, 234, 212, .38);
-}
-[data-theme="noir"] .sdg-tile {
-  color: #c4b5fd;
-  background: linear-gradient(165deg, #2a1b4e 0%, #120a24 100%);
-  box-shadow: inset 0 0 0 1px rgba(196, 181, 253, .4);
-}
+.sdg-logo { display: block; border-radius: 14px; }
+.sdg-logo img { display: block; width: 100%; height: auto; border-radius: inherit; }
 .sdg-page .sdg-goals { list-style-position: inside; display: grid; gap: 12px; margin: 8px 0 18px; padding: 0; }
 html[lang|="fa"] .sdg-page .sdg-goals { list-style-type: persian; }
 .sdg-page .sdg-goals > li {
@@ -1606,7 +1588,7 @@ body.academy { background: #f3f8f8; }
   .section-head.has-mark { gap: 12px; }
 }
 
-/* Header nav: text-only top-level and dropdown links (no section-logo icons). Footer keeps icons below. */
+/* Header and footer nav links are text-only (no section-logo icons). */
 .nav .nav-caret { display: none; }
 .nav .nav-sub a::before { content: none !important; display: none !important; }
 .nav .nav-sub a:hover,
@@ -1621,21 +1603,6 @@ body.academy { background: #f3f8f8; }
 .site-footer .foot-links a:focus-visible {
   color: var(--deep-accent);
 }
-.site-footer .foot-links a[href$="sdgs/"],
-.site-footer .foot-links a[href$="calculator/"],
-.site-footer .foot-links a[href$="csr/"],
-.site-footer .foot-links a[href$="الحوسبة/"] { display: inline-flex; align-items: center; gap: 8px; }
-.site-footer .foot-links a[href$="sdgs/"]::before,
-.site-footer .foot-links a[href$="calculator/"]::before,
-.site-footer .foot-links a[href$="csr/"]::before,
-.site-footer .foot-links a[href$="الحوسبة/"]::before {
-  content: ""; width: 22px; height: 22px; flex: none; background: center / contain no-repeat;
-}
-.site-footer .foot-links a[href$="sdgs/"]::before { background-image: url("../../brand/section-logos/sustainable-icon-dark.svg"); }
-.site-footer .foot-links a[href$="calculator/"]::before,
-.site-footer .foot-links a[href$="الحوسبة/"]::before { background-image: url("../../brand/section-logos/calculator-icon-dark.svg"); }
-.site-footer .foot-links a[href$="csr/"]::before { background-image: url("../../brand/section-logos/zagros-icon-dark.svg"); }
-
 /* Sub-product tabs. No-JS uses :target; print shows every panel. */
 .ptab-nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
 .ptab-nav a {
