@@ -68,14 +68,19 @@ def excerpt(post):
         d = strip_tags(post.get('t') or post.get('title') or '')
     return d[:190] + ('…' if len(d) > 190 else '')
 
-def card(p, post, from_list=True, tag=''):
+def card(p, post, from_list=True, tag='', topic='', year=''):
     r = thumb(p, post)
     alt = esc(post['t'])
     ph = (f'<div class="ph"><img src="{p}{r["src"]}" width="{r["w"]}" height="{r["h"]}" alt="{alt}" loading="lazy" decoding="async"></div>' if r
           else f'<div class="ph txt"><img src="{p}{FALLBACK_THUMB}" width="1280" height="720" alt="{alt}" loading="lazy"></div>')
     href = (post['rel'].split('/', 1)[1] if from_list else p + post['rel'])
     tag_html = f'<span class="tag">{esc(tag)}</span>' if tag else ''
-    return (f'<a class="post-card reveal" href="{href}" data-name="{esc(post["t"])}">{ph}<div class="body">{tag_html}<time datetime="{post["date"][:10]}">{jdate(post["date"])}</time>'
+    attrs = ''
+    if topic:
+        attrs += f' data-topic="{esc(topic)}"'
+    if year:
+        attrs += f' data-year="{esc(year)}"'
+    return (f'<a class="post-card reveal" href="{href}" data-name="{esc(post["t"])}"{attrs}>{ph}<div class="body">{tag_html}<time datetime="{post["date"][:10]}">{jdate(post["date"])}</time>'
             f'<h3>{esc(post["t"])}</h3><p>{esc(excerpt(post))}</p><span class="go">ادامه مطلب ←</span></div></a>')
 
 def missing_card(p, m):
@@ -88,18 +93,36 @@ def build(write):
         p = '../'
         items = [x for x in POSTS if x['cat'] == cat]
         miss = [m for m in MISSING if m['cat'] == cat]
-        cards = ''.join(missing_card(p, m) for m in miss) + ''.join(card(p, x) for x in items)
         n = len(items) + len(miss)
         lead = ('اخبار، گزارش‌ها، مصاحبه‌ها و رویدادهای شرکت دانش‌بنیان مخازن طبی آبادیس' if cat == 'news'
                 else 'اگر به دنبال مطلب خاصی می گردید، از موتور جستجوگر زیر استفاده نمایید.')
         h1 = 'آخرین <em>اخبار</em>' if cat == 'news' else '<em>مقالات</em>'
-        main = f'''{page_hero(p, [(LABEL[cat], None)], h1, lead)}
+        if cat == 'news':
+            from news_topics import classify_text, year_bucket, jalali_year_of, news_shell, empty_html, tally, feature_from_card
+            from layout import crumbs
+            bits = []
+            pairs = []
+            for x in items:
+                topic = classify_text(x['t'] + ' ' + excerpt(x))
+                bucket = year_bucket(jalali_year_of(x.get('date')))
+                pairs.append((topic, bucket))
+                bits.append(card(p, x, topic=topic, year=bucket))
+            cards = ''.join(missing_card(p, m) for m in miss) + ''.join(bits)
+            stats = tally(pairs)
+            shell = news_shell('fa', p, crumbs(p, [(LABEL[cat], None)]), stats, feature_from_card(bits[0] if bits else '', 'fa'))
+            main = shell + f'\n    <div class="post-grid" id="postGrid" data-paged="12">{cards}</div>\n    {empty_html("fa")}\n  </div></section>'
+            extra = f'<link rel="stylesheet" href="{p}assets/css/news-finalist.css">\n'
+            scripts = f'<script src="{p}assets/js/news-finalist.js" defer></script>\n'
+            write(f'{cat}/index.html', page(p, cat, LABEL[cat], lead, main, fa_path=f'{cat}/', extra_head=extra, scripts=scripts))
+        else:
+            cards = ''.join(missing_card(p, m) for m in miss) + ''.join(card(p, x) for x in items)
+            main = f'''{page_hero(p, [(LABEL[cat], None)], h1, lead)}
   <section class="section"><div class="wrap">
     <div class="list-tools"><input class="search" type="search" placeholder="جست و جو" aria-label="جست و جو در {LABEL[cat]}" data-filter="#postGrid"><span class="count" data-count-for="#postGrid">{fa(n)} مطلب</span></div>
     <div class="post-grid" id="postGrid" data-paged="12">{cards}</div>
     <p class="empty-msg" hidden>موردی یافت نشد.</p>
   </div></section>'''
-        write(f'{cat}/index.html', page(p, cat, LABEL[cat], lead, main, fa_path=f'{cat}/'))
+            write(f'{cat}/index.html', page(p, cat, LABEL[cat], lead, main, fa_path=f'{cat}/'))
         # singles
         p = '../../'
         for i, x in enumerate(items):

@@ -278,7 +278,7 @@ def about(write):
         w, h = Image.open(f).size
         src = f'{p}assets/img/live/{c["file"]}.webp'
         grouped[g].append(
-            f'<a class="cert-tile" href="{src}" data-gallery="certs" data-w="{w}" data-h="{h}" aria-label="نمایش بزرگ‌تر: مجوز و گواهی {fa(n)}">'
+            f'<a class="cert-tile n3-card" href="{src}" data-gallery="certs" data-w="{w}" data-h="{h}" aria-label="نمایش بزرگ‌تر: مجوز و گواهی {fa(n)}">'
             f'<img src="{src}" width="{w}" height="{h}" alt="مجوز / گواهی‌نامه آبادیس {fa(n)}" loading="lazy" decoding="async"></a>'
         )
     cert_blocks = []
@@ -294,7 +294,7 @@ def about(write):
         im, tx, bt = pb[k:k + 3]
         logo = picture(p, im['src'], im.get('alt', ''), 600)
         link = f'<a class="more-link" href="{esc(bt["href"])}" target="_blank" rel="noopener">{esc(bt["text"])} ↗</a>' if bt.get('href') else ''
-        partners.append(f'<div class="card partner reveal"><div class="logo-box">{logo}</div>{tx["html"]}{link}</div>')
+        partners.append(f'<div class="card partner reveal n3-card"><div class="logo-box">{logo}</div>{tx["html"]}{link}</div>')
     slogan = ''.join(f'<span class="slogan-line" style="--i:{n}">{esc(x)}</span>' for n, x in enumerate(SLOGAN_ABOUT))
     hero = f'''  <section class="page-hero about-hero">
     <video class="about-hero-video" muted loop playsinline autoplay preload="metadata" poster="{p}assets/media/hero-or-zagros-poster.jpg" aria-hidden="true" tabindex="-1" disablepictureinpicture disableremoteplayback><source src="{p}assets/media/hero-or-zagros.mp4" type="video/mp4"></video>
@@ -307,7 +307,7 @@ def about(write):
     </div>
   </section>'''
     main = f'''{hero}
-  <nav class="anchors" aria-label="بخش‌های صفحه"><div class="wrap"><a href="#intro">درباره ما</a><a href="#history">تاریخچه</a><a href="#why">چرا آبادیس؟</a><a href="#certs">مجوزها و گواهینامه‌ها</a><a href="#partners">شرکای تجاری</a><a href="#team">تیم اجرایی</a></div></nav>
+  <nav class="anchors" aria-label="بخش‌های صفحه"><div class="wrap"><a href="#intro">درباره ما</a><a href="#history">تاریخچه</a><a href="#why">چرا آبادیس؟</a><a href="#memberships">عضویت‌ها</a><a href="#certs">مجوزها و گواهینامه‌ها</a><a href="#partners">شرکای تجاری</a><a href="#team">تیم اجرایی</a></div></nav>
   <section class="section" id="intro"><div class="wrap prose" style="max-width:1000px">
     <h2 class="reveal" style="margin-bottom:14px">درباره ما بیشتر بدانید...</h2>
     {intro}
@@ -319,8 +319,9 @@ def about(write):
   <section class="section section--alt" id="why"><div class="wrap">
     <h2 class="reveal sec-title" style="margin-bottom:20px">{section_mark(p, 'why')}چرا آبادیس؟</h2>
     <ul class="checks why-list reveal">{whys}</ul>
-    {__import__('pages_home').membership_orbit(p, 'عضویت آبادیس', 'اهداف در حال حرکت')}
+    {__import__('about_motion').goals_orbit('fa', p)}
   </div></section>
+  {__import__('about_motion').membership_section('fa', p)}
   <section class="section" id="certs"><div class="wrap">
     <h2 class="reveal" style="margin-bottom:8px">مجوزها و گواهینامه‌ها</h2>
     <p class="reveal" style="margin-bottom:18px">همهٔ {fa(n)} مجوز، گواهینامه و تقدیرنامهٔ منتشرشده در سایت آبادیس.</p>

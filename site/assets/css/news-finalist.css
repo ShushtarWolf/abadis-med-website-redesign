@@ -1,0 +1,62 @@
+/* Finalist D — topic tags, year pills, lead story. No search field. */
+.news-d {
+  background: linear-gradient(180deg, var(--bg-2), var(--bg) 280px);
+  padding: 28px 0 8px;
+}
+.news-d h1 { font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1.25; margin: 8px 0; }
+.news-d .lead { color: var(--muted); max-width: 46rem; margin-bottom: 16px; }
+.news-d-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(260px, .9fr);
+  gap: 14px;
+  align-items: stretch;
+}
+.news-feature {
+  display: flex; flex-direction: column; min-height: 420px; border-radius: 26px; overflow: hidden;
+  background: var(--surface); border: 1px solid var(--line); color: inherit; text-decoration: none;
+  box-shadow: var(--shadow);
+}
+.news-feature img { width: 100%; height: 250px; object-fit: cover; }
+.news-feature-body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 6px; }
+.news-feature h2 { font-size: clamp(1.25rem, 2vw, 1.7rem); line-height: 1.45; margin: 0; color: var(--ink); }
+.news-feature p { color: var(--ink-2); margin: 0; }
+.news-kicker {
+  display: inline-flex; align-self: flex-start; border-radius: 999px; padding: 2px 10px;
+  background: var(--chip-bg); color: var(--chip-ink); font-weight: 800; font-size: .82rem;
+}
+.news-panel {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 22px;
+  padding: 12px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 8px;
+}
+.news-dash { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0; padding: 0; }
+.news-dash li {
+  background: var(--bg-2); border-radius: 14px; padding: 8px 10px;
+}
+.news-dash b { display: block; font-size: 1.25rem; color: var(--brand); line-height: 1.2; }
+.news-dash span { color: var(--muted); font-size: .82rem; font-weight: 700; }
+.news-lab { margin: 4px 0 0; font-size: .78rem; font-weight: 800; color: var(--muted); }
+.news-topics, .news-years { display: flex; flex-wrap: wrap; gap: 6px; }
+.news-topics button, .news-years button, .news-empty button {
+  font: inherit; cursor: pointer; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--surface-2); color: var(--ink); padding: 4px 10px; font-weight: 700; font-size: .82rem;
+}
+.news-topics button b, .news-years button b { color: var(--brand); font-weight: 800; }
+.news-topics button[aria-pressed="true"], .news-years button[aria-pressed="true"] {
+  background: var(--btn-bg); color: var(--btn-ink); border-color: transparent;
+}
+.news-topics button[aria-pressed="true"] b, .news-years button[aria-pressed="true"] b { color: inherit; }
+.news-live { margin: 2px 0 0; font-weight: 800; color: var(--muted); }
+.news-live span { color: var(--brand); }
+.news-archive-title { margin: 0 0 12px; font-size: 1.25rem; }
+.news-empty { margin-top: 14px; padding: 16px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); }
+.news-empty button { margin-inline-start: 8px; background: var(--btn-bg); color: var(--btn-ink); border-color: transparent; }
+.news-d-page #postGrid > .post-card:first-child { grid-column: auto; }
+.post-card[hidden], .news-feature[hidden], .news-empty[hidden] { display: none !important; }
+@media (max-width: 860px) {
+  .news-d-stage { grid-template-columns: 1fr; }
+  .news-feature { min-height: 0; }
+  .news-feature img { height: 200px; }
+}
+[data-theme="dark"] .news-d, [data-theme="noir"] .news-d {
+  background: linear-gradient(180deg, var(--bg-2), var(--bg) 280px);
+}
