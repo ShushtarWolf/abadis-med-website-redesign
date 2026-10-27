@@ -623,12 +623,13 @@ def impact_section():
   </section>'''
 
 
-def why_block(p, eyebrow, title, values, factory, checks, metrics):
-    """Richer why section. Copy stays the live sentences; the anim slot is empty for the designer."""
+def why_block(p, eyebrow, title, values, factory, checks, metrics, lang='fa'):
+    """Why section: approved W2-2 orbit, then the live factory paragraph and checks."""
+    import w2_orbit
     metric_html = ''.join(
         f'<div class="why-metric"><strong>{esc(n)}</strong><span>{esc(label)}</span></div>' for n, label in metrics)
-    cards = ''.join(
-        f'<article class="why-card"><h3>{esc(t)}</h3><p>{esc(d)}</p></article>' for t, d in values)
+    del values, metric_html  # live value cards are the eight orbit nodes; metrics stay unused
+    orbit = w2_orbit.widget(lang, 'home', p)
     lis = ''.join(f'<li>{esc(c)}</li>' for c in checks)
     return f'''  <section class="section section--alt why-abadis" id="why" data-why-anim>
     <div class="wrap">
@@ -637,7 +638,7 @@ def why_block(p, eyebrow, title, values, factory, checks, metrics):
         <img class="why-logo why-logo-dark" src="{p}assets/img/icons/Q2-dark.svg" alt="" width="88" height="88">
         <div class="section-head has-mark"><div><p class="eyebrow">{esc(eyebrow)}</p><h2>{esc(title)}</h2></div></div>
       </div>
-      <div class="why-cards">{cards}</div>
+      {orbit}
       <div class="split" style="margin-top:28px">
         <div class="reveal"><p>{esc(factory)}</p></div>
         <ul class="checks reveal">{lis}</ul>
@@ -734,9 +735,10 @@ def build(write):
         memberships_section(),
         customers_section(),
     ])
+    import w2_orbit
     extra_head = '''<link rel="preload" as="image" href="assets/img/p/hero-bags.webp" type="image/webp">
 <link rel="stylesheet" href="assets/css/home.css">
-''' + logo_scroll_css('') + '\n' + counter_options_css('')
+''' + logo_scroll_css('') + '\n' + counter_options_css('') + '\n' + w2_orbit.assets('')
     scripts = logo_scroll_scripts('') + counter_options_script('')
     html = page(
         '', None, HOME_TITLE, HOME_DESC, main,

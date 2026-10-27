@@ -113,7 +113,7 @@ def build_home(write, lang):
     fail_l = 'Product Failure Rate' if lang == 'en' else 'نسبة عيوب المنتج'
     cost_l = t['values'][0][1]
     metrics = [(cap, cap_l), (sat, sat_l), (fail, fail_l), (t['values'][0][0], cost_l)]
-    why = H.why_block(p, t['why_eb'], t['why_h'], t['values'], t['factory'], t['checks'], metrics)
+    why = H.why_block(p, t['why_eb'], t['why_h'], t['values'], t['factory'], t['checks'], metrics, lang)
     import solutions_arch
     products = solutions_arch.home_section(p, lang)
     quick = f'''  <section class="section quick" id="quick" style="padding-block:28px"><div class="wrap quick-row">
@@ -171,7 +171,8 @@ def build_home(write, lang):
     # Same order as the FA home: intro → about → products → impact → why → quick → stories → memberships → customers.
     main = '\n'.join([hero, about, products, impact, why, quick, stories, mem, cust])
     if lang == 'en': main = main.replace('←', '→')
-    extra_head = f'<link rel="preload" as="image" href="{p}assets/img/p/hero-bags.webp" type="image/webp">\n<link rel="stylesheet" href="{p}assets/css/home.css">\n{H.logo_scroll_css(p)}\n{H.counter_options_css(p)}'
+    import w2_orbit
+    extra_head = f'<link rel="preload" as="image" href="{p}assets/img/p/hero-bags.webp" type="image/webp">\n<link rel="stylesheet" href="{p}assets/css/home.css">\n{H.logo_scroll_css(p)}\n{H.counter_options_css(p)}\n{w2_orbit.assets(p)}'
     html = page(p, None, t['title'], t['desc'], main, lang=lang, fa_path='', canonical_path=t['root'],
                 extra_head=extra_head, scripts=H.logo_scroll_scripts(p) + H.counter_options_script(p), main_class='home-page', body_class='home', lightbox=True,
                 html_attrs='data-slogan="t1"')
