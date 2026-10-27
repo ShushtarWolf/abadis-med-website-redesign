@@ -1479,6 +1479,22 @@ video:not([controls]):not(.wp-video-shortcode):not(.is-playing) {
   visibility: visible;
 }
 .about-hero .wrap { position: relative; z-index: 1; }
+.about-hero .impact-mark.logo-grow {
+  display: block;
+  width: 108px;
+  height: 108px;
+  aspect-ratio: 1;
+  color: #fff;
+  opacity: .94;
+  overflow: visible;
+  filter: none;
+  margin: 4px 0 2px;
+}
+.about-hero .logo-grow path,
+.about-hero .logo-grow circle { will-change: stroke-dashoffset, transform; }
+@media (max-width: 760px) {
+  .about-hero .impact-mark.logo-grow { width: 84px; height: 84px; }
+}
 .about-hero-grid { display: block; }
 .slogan,
 .about-hero .slogan {

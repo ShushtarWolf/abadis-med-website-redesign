@@ -113,14 +113,25 @@
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (e) { visible = e[0].isIntersecting; sync(); }).observe(svg);
     }
-    ScrollTrigger.create({
-      trigger: svg, start: 'top 85%', end: 'center 50%',
-      scrub: 0.4, animation: tl, invalidateOnRefresh: true
-    });
-    /* loop only when the scrubbed growth is actually complete */
-    tl.eventCallback('onUpdate', function () {
-      var g = tl.progress() >= 0.999;
-      if (g !== grown) { grown = g; sync(); }
-    });
+    /* About hero: the emblem is already in view, so play the growth on load
+       and start the living loop when that timeline finishes. Mid-page emblems
+       still scrub with scroll. */
+    if (svg.closest('.about-hero, .page-hero')) {
+      tl.pause(0);
+      tl.eventCallback('onComplete', function () {
+        grown = true;
+        sync();
+      });
+      tl.play();
+    } else {
+      ScrollTrigger.create({
+        trigger: svg, start: 'top 85%', end: 'center 50%',
+        scrub: 0.4, animation: tl, invalidateOnRefresh: true
+      });
+      tl.eventCallback('onUpdate', function () {
+        var g = tl.progress() >= 0.999;
+        if (g !== grown) { grown = g; sync(); }
+      });
+    }
   });
 })();

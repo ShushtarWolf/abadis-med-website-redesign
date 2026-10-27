@@ -226,7 +226,15 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
             main = f'''{hero}{sec}{after}'''
         else:
             main = f'''{page_hero(p, trail, esc(title), esc(desc), lang=lang, mark=_hero_mark)}{benefits}{sec}{after}'''
-    html = page(p, cur_key, title, desc, main, lang=lang, fa_path=fa_path, canonical_path=can, scripts=extra_js)
+    extra_head = ''
+    html_attrs = ''
+    if site_path in ('about-us/', 'من-نحن/'):
+        from pages_company import about_motion_tags
+        extra_head, motion_js = about_motion_tags(p)
+        extra_js = motion_js + extra_js
+        html_attrs = 'data-slogan="t1"'
+    html = page(p, cur_key, title, desc, main, lang=lang, fa_path=fa_path, canonical_path=can,
+                scripts=extra_js, extra_head=extra_head, html_attrs=html_attrs)
     write(rel if rel.endswith('.html') else rel + 'index.html', html)
     return rel
 

@@ -117,13 +117,21 @@ def about_hero_video(p):
     )
 
 
+def about_motion_tags(p):
+    """Homepage slogan + emblem scripts for the About hero."""
+    from pages_home import logo_scroll_css, logo_scroll_scripts
+    return logo_scroll_css(p), logo_scroll_scripts(p)
+
+
 def about_hero(p, lang, h1_html, crumbs):
-    """About hero: poster/video behind the teal filter, slogan in header type."""
+    """About hero: poster/video, growing emblem, slogan in header type."""
+    from pages_home import IMPACT_MARK
     return f'''  <section class="page-hero about-hero">
     {about_hero_video(p)}
     <div class="wrap about-hero-grid">
       <div>{crumbs}
         <h1>{h1_html}</h1>
+        {IMPACT_MARK}
         {slogan_block(lang)}
       </div>
     </div>
@@ -458,8 +466,10 @@ def about(write):
     {_team_html(p, d['team']['desktop'], 'team--desktop')}
     {_team_html(p, d['team']['mobile'], 'team--mobile')}
   </div></section>'''
+    head_css, motion_js = about_motion_tags(p)
     write('about/index.html', page(p, 'about', 'آشنایی با ما', lead[:160], main, lightbox=True,
-          scripts=f'<script src="{p}assets/js/motion.js" defer></script>\n'))
+          extra_head=head_css, html_attrs='data-slogan="t1"',
+          scripts=motion_js + f'<script src="{p}assets/js/motion.js" defer></script>\n'))
 
 
 def crumbs_html(p):

@@ -1,12 +1,11 @@
 /* Slogan: main line stays; the short lines cycle smoothly.
    Works on the homepage impact block and on About heroes, with or without
-   data-slogan on <html>. Reduced motion / no JS: every line stays visible.
+   data-slogan on <html>. About waits for the line-by-line fade, then cycles.
+   Reduced motion / no JS: every line stays visible.
    site.js carries the same init; dataset.sloganInit keeps a single timer. */
 (function () {
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  document.querySelectorAll('.impact .slogan, .about-hero .slogan, .page-hero .slogan').forEach(function (p) {
-    if (p.dataset.sloganInit) return;
-    p.dataset.sloganInit = '1';
+  function arm(p) {
     var lines = Array.prototype.slice.call(p.querySelectorAll('.slogan-line'));
     if (!lines.length) return;
     var main = lines[0];
@@ -56,5 +55,12 @@
       if (document.hidden) stop();
       else start();
     });
+  }
+  document.querySelectorAll('.impact .slogan, .about-hero .slogan, .page-hero .slogan').forEach(function (p) {
+    if (p.dataset.sloganInit) return;
+    p.dataset.sloganInit = '1';
+    var wait = (!reduce && p.closest('.about-hero')) ? 1500 : 0;
+    if (wait) setTimeout(function () { arm(p); }, wait);
+    else arm(p);
   });
 })();
