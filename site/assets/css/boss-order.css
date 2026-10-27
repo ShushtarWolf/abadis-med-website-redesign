@@ -73,8 +73,9 @@
 .ac-filters button[aria-pressed="true"] { background: var(--brand, #066163); color: #fff; }
 .ac-mod[hidden] { display: none; }
 
-.iran-layout { display: grid; grid-template-columns: minmax(260px, 42%) 1fr; gap: 18px; align-items: start; }
-.iran-map { margin: 0; background: var(--surface, #fff); border-radius: 20px; padding: 8px; border: 1px solid var(--line, #d5e8e8); }
+.iran-layout { display: grid; grid-template-columns: minmax(260px, 42%) minmax(0, 1fr); gap: 18px; align-items: start; }
+.iran-map { margin: 0; min-width: 0; background: var(--surface, #fff); border-radius: 20px; padding: 8px; border: 1px solid var(--line, #d5e8e8); }
+.iran-table-wrap { min-width: 0; }
 .iran-map svg { width: 100%; height: auto; display: block; }
 .ir-prov { fill: #e8f3f3; stroke: #066163; stroke-width: 1; cursor: pointer; }
 .ir-prov.is-on { fill: #d3ecec; }
@@ -83,14 +84,16 @@
 .ir-led--surgery { fill: #087673; }
 .ir-led.is-dim { opacity: .12; animation: none; }
 @keyframes ir-blink { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
+.iran-stats { margin: 0 0 10px; font-weight: 600; }
 .iran-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .iran-tools select, .iran-tools .search { min-height: 42px; border-radius: 12px; border: 1px solid var(--line, #d5e8e8); padding: 8px 10px; background: var(--surface, #fff); color: inherit; }
+.iran-tools select[data-iran-own] { max-width: 16rem; }
 .iran-scroll { max-height: 540px; overflow: auto; border: 1px solid var(--line, #d5e8e8); border-radius: 16px; }
 .iran-table { width: 100%; border-collapse: collapse; }
 .iran-table th, .iran-table td { text-align: start; padding: 8px 10px; border-bottom: 1px solid var(--line, #e5eeee); vertical-align: top; }
 .iran-table th { position: sticky; top: 0; background: #f3fafa; }
 .resume-intro { padding: 18px; border-radius: 18px; }
-@media (max-width: 860px) { .iran-layout { grid-template-columns: 1fr; } }
+@media (max-width: 860px) { .iran-layout { grid-template-columns: minmax(0, 1fr); } }
 @media (prefers-reduced-motion: reduce) { .ir-led { animation: none; opacity: 1; } }
 [data-theme="dark"] .ir-prov, [data-theme="noir"] .ir-prov { fill: #14383c; stroke: #9fd4d4; }
 [data-theme="dark"] .iran-table th, [data-theme="noir"] .iran-table th { background: #12383c; color: #e8f3f3; }
