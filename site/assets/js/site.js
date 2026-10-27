@@ -845,6 +845,9 @@
     root.querySelectorAll('[data-ps-panel]').forEach(function (p) {
       p.hidden = p.getAttribute('data-ps-panel') !== name;
     });
+    root.querySelectorAll('[data-ps-cta]').forEach(function (a) {
+      a.hidden = a.getAttribute('data-ps-cta') !== name;
+    });
     if (home) requestAnimationFrame(function () { paintRails(root); });
   }
 

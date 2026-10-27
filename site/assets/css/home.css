@@ -586,9 +586,11 @@ body.home .zh-exit {
 }
 @media (min-width: 560px) {
   .h-all {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 10px;
+    justify-items: center;
   }
+  .h-all .btn { width: min(100%, 420px); }
 }
 [dir="rtl"] .h-all .btn {
   flex-direction: row-reverse;
