@@ -905,3 +905,6 @@
   padding: 0.65rem 0.85rem !important;
   vertical-align: middle !important;
 }
+
+/* Removed per boss/user order: no duplicate why-metrics, empty why-anim-slot, or moving-targets orbit */
+.why-metrics, .why-anim-slot, .orbit, div.orbit#moving-targets { display: none !important; }

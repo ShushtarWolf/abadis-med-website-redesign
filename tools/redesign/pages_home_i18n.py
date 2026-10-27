@@ -153,7 +153,7 @@ def build_home(write, lang):
     </div></section>'''
     logos = ''.join(f'<li><img src="{img(n)}" alt="{esc(t["mem_alt"])}" loading="lazy" decoding="async"></li>' for n in H.MEMBERSHIPS if (SITE / H._live(n)).exists())
     core = 'Moving targets' if lang == 'en' else 'أهداف قيد الحركة'
-    mem = f'''  <section class="section" id="memberships"><div class="wrap"><div class="section-head reveal"><p class="eyebrow">{esc(t['mem_eb'])}</p><h2>{esc(t['mem_h'])}</h2></div>{H.membership_orbit(p, t['mem_alt'], core)}<ul class="member-logos reveal">{logos}</ul></div></section>'''
+    mem = f'''  <section class="section" id="memberships"><div class="wrap"><div class="section-head reveal"><p class="eyebrow">{esc(t['mem_eb'])}</p><h2>{esc(t['mem_h'])}</h2></div><ul class="member-logos reveal">{logos}</ul></div></section>'''
     bl = H._B('/مشتریان-ما/'); lg = []
     for it in bl[1]['items']:
         if len(lg) >= H.LOGO_STRIP_N: break

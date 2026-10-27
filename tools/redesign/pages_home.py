@@ -591,8 +591,6 @@ def why_block(p, eyebrow, title, values, factory, checks, metrics):
         <img class="why-logo why-logo-dark" src="{p}assets/img/icons/Q2-dark.svg" alt="" width="88" height="88">
         <div class="section-head has-mark"><div><p class="eyebrow">{esc(eyebrow)}</p><h2>{esc(title)}</h2></div></div>
       </div>
-      <div class="why-metrics">{metric_html}</div>
-      <div class="why-anim-slot" id="why-anim" data-why-anim aria-hidden="true"></div>
       <div class="why-cards">{cards}</div>
       <div class="split" style="margin-top:28px">
         <div class="reveal"><p>{esc(factory)}</p></div>
@@ -658,17 +656,8 @@ def posts_unified():
   </section>'''
 
 
-def membership_orbit(p, alt, core):
-    """Circular membership orbit. Positions are tokens a designer can restyle."""
-    logos = [n for n in MEMBERSHIPS if (SITE / _live(n)).exists()]
-    n = len(logos) or 1
-    items = []
-    for i, name in enumerate(logos):
-        deg = round(360 * i / n, 2)
-        items.append(
-            f'<span class="orbit-item" style="--a:{deg}deg"><img src="{p}{_live(name)}" alt="{esc(alt)}" loading="lazy" decoding="async"></span>')
-    return (f'<div class="orbit" id="moving-targets"><div class="orbit-spin">{"".join(items)}</div>'
-            f'<div class="orbit-core">{esc(core)}</div></div>')
+def membership_orbit(p='', alt='', core=''):
+    return '' 
 
 
 def memberships_section():
@@ -678,7 +667,6 @@ def memberships_section():
     return f'''  <section class="section" id="memberships">
     <div class="wrap">
       <div class="section-head reveal"><p class="eyebrow">نمایندگی‌ها و عضویت‌ها</p><h2>عضویت ها</h2></div>
-      {membership_orbit('', 'عضویت آبادیس', 'اهداف در حال حرکت')}
       <ul class="member-logos reveal">{logos}</ul>
     </div>
   </section>'''
