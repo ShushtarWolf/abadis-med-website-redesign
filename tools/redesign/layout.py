@@ -8,8 +8,10 @@ from i18n import (
 )
 from icons import (
     svg_phone, svg_mail, svg_whatsapp, svg_instagram, svg_pin,
-    svg_telegram, svg_youtube, svg_facebook, svg_twitter, svg_aparat, svg_linkedin, svg_pinterest,
-    WA_URL, IG_URL, TG_URL, YT_URL, FB_URL, TW_URL, AP_URL, LI_URL, PIN_NOTE, TEL_URL, MAIL_URL,
+    svg_telegram, svg_youtube, svg_facebook, svg_twitter, svg_aparat, svg_linkedin,
+    svg_threads, svg_medium, svg_virgool,
+    WA_URL, IG_URL, TG_URL, YT_URL, FB_URL, TW_URL, AP_URL, LI_URL,
+    TH_URL, MD_URL, VG_URL, TEL_URL, MAIL_URL,
 )
 
 # HQ pin already used on the FA contact page (and the EN map embed is the same place).
@@ -134,12 +136,21 @@ def _footer_label(lang, key, label):
     return label
 
 
+_PILL_VALUE = {
+    'tel': '021&nbsp;9200&nbsp;1017',
+    'mail': 'info@abadis-med.com',
+}
+
+
 def _foot_icon(kind, href, label, icon, extra='', value=''):
     aria = f'{label} {value}'.strip()
+    shown = _PILL_VALUE.get(kind, '')
+    val = f'<span class="foot-pill-val">{shown}</span>' if shown else ''
     return (
         f'<a class="foot-pill foot-pill--{kind}" href="{esc(href)}"{extra} '
         f'aria-label="{esc(aria)}">'
         f'<span class="foot-pill-ico" aria-hidden="true">{icon}</span>'
+        f'{val}'
         f'<span class="sr-only">{esc(aria)}</span></a>'
     )
 
@@ -158,7 +169,7 @@ def _foot_placeholder(kind, label, icon, note):
 
 
 def footer_pills_html(lang):
-    """Icon strip: phone, email, and every Abadis channel already linked on contact or the live footer."""
+    """Phone and email, then the 11 official channels from abadis-med.com, one color."""
     L = LANGS[lang]
     lab = lambda key: L[key].rstrip(':')
     ext = ' target="_blank" rel="noopener"'
@@ -166,18 +177,16 @@ def footer_pills_html(lang):
         _foot_icon('tel', TEL_URL, lab('contact_center'), svg_phone(), value='02192001017'),
         _foot_icon('mail', MAIL_URL, lab('email'), svg_mail(), value='info@abadis-med.com'),
         _foot_icon('wa', WA_URL, lab('whatsapp'), svg_whatsapp(), ext, '+989100145809'),
-        _foot_icon('ig', IG_URL, lab('instagram'), svg_instagram('foot-ig'), ext, 'abadismedical.co'),
+        _foot_icon('ig', IG_URL, lab('instagram'), svg_instagram('foot-ig'), ext, 'abadis.med'),
         _foot_icon('tg', TG_URL, lab('telegram'), svg_telegram(), ext),
         _foot_icon('ap', AP_URL, lab('aparat'), svg_aparat(), ext),
         _foot_icon('yt', YT_URL, lab('youtube'), svg_youtube(), ext),
+        _foot_icon('li', LI_URL, lab('linkedin'), svg_linkedin(), ext),
         _foot_icon('tw', TW_URL, lab('twitter'), svg_twitter(), ext),
         _foot_icon('fb', FB_URL, lab('facebook'), svg_facebook(), ext),
-        _foot_icon('li', LI_URL, lab('linkedin'), svg_linkedin(), ext),
-        _foot_placeholder('pi', lab('pinterest'), svg_pinterest(), {
-            'fa': 'نشانی رسمی پینترست در آبادیس منتشر نشده است',
-            'en': 'No official Pinterest URL on abadis-med.com',
-            'ar': 'لا يوجد رابط رسمي لبينترست على موقع آباديس',
-        }[lang]),
+        _foot_icon('th', TH_URL, lab('threads'), svg_threads(), ext),
+        _foot_icon('md', MD_URL, lab('medium'), svg_medium(), ext),
+        _foot_icon('vg', VG_URL, lab('virgool'), svg_virgool(), ext),
     ))
 
 

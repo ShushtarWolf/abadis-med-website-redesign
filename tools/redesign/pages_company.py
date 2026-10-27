@@ -453,83 +453,154 @@ def calculator(write):
     write('calculator/index.html', page(p, 'calculator', 'محاسبه گر', 'محاسبه‌گر صرفه جویی کیسه ساکشن یکبار مصرف آبادیس: مصرف آب، هزینه شست و شو و ضد عفونی و زمان کادر درمان.', main, scripts=js))
 
 # ------------------------------------------------------------------ SDGs / توسعه پایدار (full generated page)
+# Seven key goals, in live-page order. Titles are the short names from
+# abadis-med.com; figures stay in the verbatim goal prose, not a second strip.
+# Icons are brand-teal line marks (not the UN rainbow tiles).
+_SDG_GOALS = [
+    ('سلامت و تندرستی', 'Good Health and Well-Being',
+     '<path d="M12 20s-6.5-4.2-6.5-8.4A3.6 3.6 0 0 1 12 8.6a3.6 3.6 0 0 1 6.5 3C18.5 15.8 12 20 12 20z"/><path d="M12 10.2v3.2M10.4 11.8h3.2"/>'),
+    ('آب پاک و بهداشت', 'Clean Water and Sanitation',
+     '<path d="M12 3.2s5.6 5.8 5.6 9.2a5.6 5.6 0 0 1-11.2 0c0-3.4 5.6-9.2 5.6-9.2z"/>'),
+    ('انرژی پاک و مقرون‌به‌صرفه', 'Affordable and Clean Energy',
+     '<path d="M13 2.5 4.5 13.5h6.2L9.8 21.5 19.5 10h-6.2L13 2.5z"/>'),
+    ('کار شایسته و رشد اقتصادی', 'Decent Work and Economic Growth',
+     '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5.2A1.8 1.8 0 0 1 9.8 3.4h4.4A1.8 1.8 0 0 1 16 5.2V7M3 12.5h18"/>'),
+    ('صنعت، نوآوری و زیرساخت', 'Industry, Innovation, and Infrastructure',
+     '<path d="M3 21V10.5l5 2.8V10.5l5 2.8V8.2l8 3.6V21"/><path d="M3 21h18M7.2 21v-2.6h2.2V21M12.2 21v-2.6h2.2V21"/>'),
+    ('مصرف و تولید مسئولانه', 'Responsible Consumption and Production',
+     '<path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4.2V9h-4.8"/><path d="M4 12a8 8 0 0 0 2.3 5.6"/><path d="M4 19.8V15h4.8"/>'),
+    ('اقدام برای اقلیم', 'Climate Action',
+     '<path d="M12 21.5V11"/><path d="M12 13.2c-3.2-.6-5.4-3.4-4.2-6.6 3.2.2 5 2.4 4.2 6.6z"/><path d="M12 15.2c3-.8 5.6-2.8 4.6-6.2-3 .4-4.8 2.6-4.6 6.2z"/>'),
+]
+
+_RAINBOW_GOAL_IMG = re.compile(
+    r'<img\b[^>]*(?:E-WEB-Goal|Sustainable_Development_Goal|E_SDG-goals_icons|'
+    r'a74f1583bbe3|92ab4af0990c|15eb17f5c3ff|7b91c29f0cec|c40a4113acaa|efac003f8971|19c49c17129e)[^>]*>',
+    re.I,
+)
+_GOAL_OL = re.compile(
+    r'<ol(?:\s[^>]*)?>\s*<li>(.*?)</li>\s*</ol>(\s*<ul>.*?</ul>)?',
+    re.S | re.I,
+)
+_GOAL_HEAD = re.compile(
+    r'(<h[23][^>]*>[^<]*(?:اهداف کلیدی|Key Objectives)[^<]*</h[23]>)',
+    re.I,
+)
+
+
+def sdg_icons(lang):
+    """Seven teal goal tiles. Numbers run 1–7; names match the live page."""
+    bits = []
+    for i, (fa_title, en_title, paths) in enumerate(_SDG_GOALS, 1):
+        label = fa_title if lang == 'fa' else en_title
+        n = fa(i) if lang == 'fa' else str(i)
+        bits.append(
+            f'<div class="sdg-tile">'
+            f'<span class="sdg-num">{n}</span>'
+            f'<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" '
+            f'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">{paths}</svg>'
+            f'<span class="sdg-name">{esc(label)}</span></div>'
+        )
+    return f'<div class="sdg-icons">{"".join(bits)}</div>'
+
+
+def _strip_rainbow_goals(html):
+    """Drop the seven UN rainbow tiles. Leave every other image alone."""
+    def repl_section(m):
+        block = m.group(0)
+        if not _RAINBOW_GOAL_IMG.search(block):
+            return block
+        cleaned = _RAINBOW_GOAL_IMG.sub('', block)
+        text = re.sub(r'<[^>]+>', '', cleaned)
+        text = re.sub(r'&nbsp;|\s+', '', text)
+        return '' if not text else cleaned
+    html = re.sub(r'<section\b[^>]*>.*?</section>', repl_section, html, flags=re.S | re.I)
+    return _RAINBOW_GOAL_IMG.sub('', html)
+
+
+def _merge_goal_lists(html):
+    """One ordered list so the seven goals number 1–7, not 1, 1, 1…"""
+    matches = list(_GOAL_OL.finditer(html))
+    if len(matches) < 2:
+        return html
+    runs, run = [], [matches[0]]
+    for prev, cur in zip(matches, matches[1:]):
+        if html[prev.end():cur.start()].strip() == '':
+            run.append(cur)
+        else:
+            runs.append(run)
+            run = [cur]
+    runs.append(run)
+    run = max(runs, key=len)
+    if len(run) < 2:
+        return html
+    items = ''.join(f'<li>{m.group(1)}{m.group(2) or ""}</li>' for m in run)
+    start, end = run[0].start(), run[-1].end()
+    return html[:start] + f'<ol class="sdg-goals">{items}</ol>' + html[end:]
+
+
+def _drop_sdg_icons(html):
+    """Remove a previous .sdg-icons block, including its nested tiles."""
+    key = '<div class="sdg-icons">'
+    i = html.find(key)
+    if i < 0:
+        return html
+    j, depth = i + len(key), 1
+    while j < len(html) and depth:
+        nxt_o = html.find('<div', j)
+        nxt_c = html.find('</div>', j)
+        if nxt_c < 0:
+            return html
+        if nxt_o != -1 and nxt_o < nxt_c:
+            depth += 1
+            j = nxt_o + 4
+        else:
+            depth -= 1
+            j = nxt_c + len('</div>')
+    return html[:i] + html[j:]
+
+
+def finish_sdg_html(html, lang):
+    """Teal goal tiles + a single 1–7 list. Body copy stays verbatim."""
+    html = _drop_sdg_icons(_merge_goal_lists(_strip_rainbow_goals(html)))
+    icons = sdg_icons(lang)
+    m = _GOAL_HEAD.search(html)
+    if m:
+        return html[:m.end()] + icons + html[m.end():]
+    m = re.search(r'<ol class="sdg-goals">', html)
+    if m:
+        return html[:m.start()] + icons + html[m.start():]
+    return icons + html
+
+
 def _sdg_sections(p, bl):
     """Build section HTML fragments from /توسعه-پایدار/ blocks (verbatim)."""
-    icons = ''.join(picture(p, b['src'], '', 240) for b in bl if b['t'] == 'img')
     parts = []
     first = True
     i = 0
     for sid, bs in secs(bl):
         h = next((b['text'] for b in bs if b['t'] == 'h'), '')
         body = ''.join(rewrite_html(b['html'], p) for b in bs if b['t'] == 'html')
-        extra = f'<div class="sdg-icons">{icons}</div>' if any(b['t'] == 'img' for b in bs) and icons else ''
         tag = 'h2' if first else 'h3'
         size = '1.5rem' if first else '1.25rem'
         parts.append(
             f'<div class="reveal" style="margin-top:34px;--i:{i}">'
             f'<{tag} style="font-size:{size};line-height:1.35;margin-bottom:12px">{esc(h)}</{tag}>'
-            f'{extra}<div class="prose">{body}</div></div>'
+            f'<div class="prose">{body}</div></div>'
         )
         first = False
         i += 1
-    return ''.join(parts)
+    return finish_sdg_html(''.join(parts), 'fa')
 
-
-# Figures are the live /توسعه-پایدار/ page (and the EN SDGs page). ۲2 on the
-# live FA page is the broken digit for ۲۲, which the EN page states as 22 million.
-SDG_STATS = {
-    'fa': [
-        (2000000, 'لیتر', 'آب صرفه‌جویی‌شده'),
-        (1400, 'درخت بلوط', 'نهال بلوط'),
-        (25, 'لیتر', 'آب ذخیره به ازای هر کیسه'),
-        (28, 'میلیون لیتر', 'تا پایان سال ۱۴۰۲'),
-        (10, 'میلیون لیتر', 'میانگین صرفه‌جویی سالانه'),
-        (22, 'میلیون لیتر', 'صرفه‌جویی کل تا پایان ۱۴۰۲'),
-        (2, 'میلیون', 'کیسه ساکشن در سال ۱۴۰۲'),
-        (1000, 'اصله', 'درخت تا سال ۱۴۰۶'),
-        (50, 'شغل', 'شغل مستقیم تخصصی'),
-    ],
-    'en': [
-        (2000000, 'litres', 'of water saved'),
-        (1400, 'oak trees', 'oak seedlings'),
-        (25, 'litres', 'of water saved per bag'),
-        (28, 'million litres', 'saved by the end of 2023'),
-        (10, 'million litres', 'average saved each year'),
-        (22, 'million litres', 'total saved by the end of 2023'),
-        (2, 'million', 'suction bags in 2023'),
-        (1000, 'trees', 'a year through 2027'),
-        (50, 'jobs', 'specialised direct jobs'),
-    ],
-}
-
-def _sdg_shown(n, lang):
-    if n == 2000000:
-        return '۲٬۰۰۰٬۰۰۰' if lang == 'fa' else '2,000,000'
-    if n == 1400:
-        return '۱٬۴۰۰' if lang == 'fa' else '1,400'
-    return fa(n) if lang == 'fa' else str(n)
-
-
-def sdg_stats(lang):
-    bits = []
-    for i, (n, unit, label) in enumerate(SDG_STATS[lang]):
-        shown = _sdg_shown(n, lang)
-        bits.append(
-            f'<div class="sdg-stat reveal" style="--i:{i}">'
-            f'<strong><span data-sdg-count="{n}">{shown}</span> {esc(unit)}</strong>'
-            f'<span>{esc(label)}</span></div>'
-        )
-    return f'<div class="sdg-stats">{"".join(bits)}</div>'
 
 def sdgs(write):
-    """FA توسعه پایدار — UN SDG commitment page (old /توسعه-پایدار/)."""
+    """FA توسعه پایدار — commitment page (old /توسعه-پایدار/)."""
     p = '../'
     bl = B('/توسعه-پایدار/')
     body = _sdg_sections(p, bl)
     lead = next((strip_tags(b['html']) for b in bl if b['t'] == 'html'), '')
     main = f'''{page_hero(p, [('توسعه پایدار', None)], 'توسعه پایدار', esc(lead), mark='sustainable')}
   <section class="section sdg-page" id="sdg"><div class="wrap" style="max-width:980px">
-    {sdg_stats('fa')}
     {body}
   </div></section>'''
     write('sdgs/index.html', page(p, 'sdgs', 'توسعه پایدار',
@@ -594,21 +665,10 @@ def contact(write):
     office = [b['html'] for b in bl if b['t'] == 'html' and 'داخلی ها' in b['html']][0]
     ext = re.search(r'(<p><strong>داخلی ها:</strong></p>.*)', office, re.S).group(1)
     from icons import (
-        svg_clock, svg_pin, svg_postal, ch, iconize_extensions, brand_buttons,
-        WA_URL, IG_URL, TG_URL, AP_URL, YT_URL, TW_URL, FB_URL, LI_URL,
-        svg_whatsapp, svg_instagram, svg_telegram, svg_aparat, svg_youtube, svg_twitter, svg_facebook, svg_linkedin,
+        svg_clock, svg_pin, svg_postal, ch, iconize_extensions, brand_buttons, social_items,
     )
     ext = iconize_extensions(ext)
-    brands = brand_buttons([
-        (WA_URL, svg_whatsapp(), 'واتس‌اپ'),
-        (IG_URL, svg_instagram(), 'اینستاگرام'),
-        (TG_URL, svg_telegram(), 'تلگرام'),
-        (AP_URL, svg_aparat(), 'آپارات'),
-        (YT_URL, svg_youtube(), 'یوتیوب'),
-        (TW_URL, svg_twitter(), 'ایکس'),
-        (FB_URL, svg_facebook(), 'فیسبوک'),
-        (LI_URL, svg_linkedin(), 'لینکدین'),
-    ])
+    brands = brand_buttons([(url, fn(), label) for url, fn, label, _short in social_items('fa')])
     block = f'''<!-- phase2:contact -->
   <section class="section section--alt" id="hours"><div class="wrap grid g-2" style="gap:24px;align-items:start">
     <div class="reveal"><h2 class="with-ico" style="font-size:1.4rem;margin-bottom:14px">{ch(svg_clock())}ساعات کاری</h2><div class="hours">{boxes('ساعات کاری')}</div>

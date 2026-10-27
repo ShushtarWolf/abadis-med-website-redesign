@@ -1,8 +1,7 @@
 """Solutions philosophy (Alireza, Oct 2026).
 
-FA wording follows the boss PDF. EN and AR mirror the same structure on the
-existing shells. Hospital suction is folded under fluid management. The PDF's
-three themes land on the five solution pages already in the site.
+FA wording follows the boss PDF. EN and AR mirror the same structure.
+The three themes are the three solution pages.
 """
 from lib import esc
 
@@ -21,7 +20,23 @@ def _hub(lang):
 
 CALC = T('calculator/', 'calculator/', 'الحوسبة/')
 GREEN = T('customers/', 'our-customers/', 'customers/')
+SDGS = T('sdgs/', 'sdgs/', '~sdgs/')
 OTHER = T('products/other/', 'products/other-products/', 'منتجات-اخری/')
+ORAL = T('products/oral-hygiene/', 'products/oral-hygiene/', 'نظافة-الفم/')
+CAT_HREF = {
+    'fa': [
+        'products/suction-bag/', 'products/canister/', 'products/stand/', 'products/connectors/',
+        'products/filters/', 'products/suction-tube/', 'products/oral-hygiene/', 'products/other/',
+    ],
+    'en': [
+        'products/suction-bag/', 'products/canisters/', 'products/base-and-holder/', 'products/connections/',
+        'products/filters/', 'suction-tube/', 'products/oral-hygiene/', 'products/other-products/',
+    ],
+    'ar': [
+        'كيس-الشفط/', 'خزانات/', 'تثبیت/', 'الوصلات/',
+        'الفلتر/', 'أنبوب-الشفط/', 'نظافة-الفم/', 'منتجات-اخری/',
+    ],
+}
 
 PILLARS = [
     T('محصولات', 'Products', 'المنتجات'),
@@ -44,7 +59,8 @@ PILLAR_TEXT = [
       'على أي تقنيات تعمل آباديس لحل مسألة المستقبل؟'),
 ]
 
-PATHS_H = T('تفاوت دو مسیر', 'The difference between the two paths', 'الفرق بين المسارين')
+PATHS_H = T('تفاوت این دو بخش', 'The difference between these two sections', 'الفرق بين هذين القسمين')
+QUESTIONS_H = T('چهار پرسش کلیدی', 'Four key questions', 'أربعة أسئلة أساسية')
 PATHS_HEAD = [
     T('ویژگی', 'Aspect', 'البند'),
     T('محصولات', 'Products', 'المنتجات'),
@@ -97,16 +113,16 @@ MAP_COL = [
 MAP_H = T('گروه‌بندی راهکارها', 'How the solutions are grouped', 'تجميع الحلول')
 CAT_H = T('گروه‌بندی کلی محصولات', 'Overall product grouping', 'التجميع العام للمنتجات')
 MAP_NOTE = T(
-    'سیستم‌های ساکشن بیمارستانی زیر مدیریت مایعات و ترشحات قرار دارند. حفاظت از مدار ساکشن و مدیریت پسماند PVA هر دو در راهکار کنترل آلودگی و مدیریت پسماند خوانده می‌شوند.',
-    'Hospital suction systems sit under fluid and secretion management. Suction-circuit protection and PVA waste management are both read with contamination control and waste management.',
-    'أنظمة الشفط في المستشفى تندرج تحت إدارة السوائل والإفرازات. حماية دارة الشفط وإدارة نفايات PVA تُقرآن معاً مع السيطرة على التلوث وإدارة النفايات.')
+    'هر یک از سه راهکار صفحه خودش را دارد.',
+    'Each of the three solutions has its own page.',
+    'لكل حل من الحلول الثلاثة صفحته.')
 
-# theme key -> solution slugs
+# theme key -> solution slug
 THEME_PAGES = {
-    'fluid': ['fluid-management', 'hospital-suction-systems'],
+    'fluid': ['fluid-management'],
     'airway': ['airway-care'],
-    'waste': ['contamination-control', 'waste-management-pva'],
-    'other': ['airway-care', 'waste-management-pva'],
+    'waste': ['waste-management-pva'],
+    'other': ['waste-management-pva'],
 }
 
 THEMES = [
@@ -143,11 +159,9 @@ PRODUCT_ROWS = [
 PRODUCT_THEME = ['fluid', 'fluid', 'fluid', 'fluid', 'fluid', 'fluid', 'airway', 'other']
 
 PAGE_NAME = {
-    'fluid-management': T('مدیریت مایعات و ترشحات', 'Fluid management', 'إدارة السوائل والإفرازات'),
-    'hospital-suction-systems': T('سیستم‌های ساکشن بیمارستانی', 'Hospital suction systems', 'أنظمة الشفط في المستشفى'),
-    'contamination-control': T('کنترل آلودگی و حفاظت از سیستم ساکشن', 'Contamination control', 'السيطرة على التلوث'),
-    'airway-care': T('ایمنی و مراقبت از راه هوایی', 'Airway care', 'سلامة الطريق الهوائي'),
-    'waste-management-pva': T('کنترل آلودگی و مدیریت پسماند', 'Waste management and PVA', 'إدارة النفايات وPVA'),
+    'fluid-management': T('مدیریت مایعات و ترشحات بیمارستانی', 'Hospital Fluid & Secretion Management', 'إدارة السوائل والإفرازات في المستشفى'),
+    'airway-care': T('ایمنی و مراقبت از راه هوایی', 'Airway Safety & Care', 'سلامة الطريق الهوائي والعناية به'),
+    'waste-management-pva': T('کنترل آلودگی و مدیریت پسماند', 'Contamination Control & Waste Management', 'السيطرة على التلوث وإدارة النفايات'),
 }
 
 NOTES_H = T('نکات', 'Notes', 'ملاحظات')
@@ -379,9 +393,7 @@ WASTE = dict(
 
 BY_SLUG = {
     'fluid-management': FLUID,
-    'hospital-suction-systems': FLUID,
     'airway-care': AIRWAY,
-    'contamination-control': WASTE,
     'waste-management-pva': WASTE,
 }
 
@@ -463,11 +475,11 @@ def _cta(lang, url, kind, label):
     if kind == 'calc':
         href = url(CALC[lang])
     elif kind == 'other':
-        href = url(OTHER[lang])
+        href = url(ORAL[lang])
     elif kind == 'close':
         href = '#phil-close'
     else:
-        href = url(_hub(lang)) + '#by-solution'
+        href = url(_sol(lang, 'fluid-management'))
     return f'<a href="{href}">{esc(label[lang])}</a>'
 
 
@@ -477,14 +489,20 @@ def _green(lang, url, text):
         'en': 'Abadis green family',
         'ar': 'العائلة الخضراء لآباديس',
     }[lang]
+    sdg = {
+        'fa': 'توسعه پایدار',
+        'en': 'sustainable development',
+        'ar': 'التنمية المستدامة',
+    }[lang]
     safe = esc(text)
-    token = esc(name)
-    return safe.replace(token, f'<a href="{url(GREEN[lang])}">{token}</a>', 1)
+    safe = safe.replace(esc(name), f'<a href="{url(GREEN[lang])}">{esc(name)}</a>', 1)
+    safe = safe.replace(esc(sdg), f'<a href="{url(SDGS[lang])}">{esc(sdg)}</a>', 1)
+    return safe
 
 
 def closing_html(lang, url):
     body = _paras(CLOSE['body'], lang)
-    earth = _paras(CLOSE['earth_body'][:1], lang)
+    earth = f'<p>{_green(lang, url, CLOSE["earth_body"][0][lang])}</p>'
     green = f'<p>{_green(lang, url, CLOSE["earth_body"][1][lang])}</p>'
     rest = _paras(CLOSE['earth_body'][2:], lang)
     return (f'<div class="phil-close" id="phil-close">'
@@ -509,29 +527,27 @@ def hub_html(lang, url):
         for theme in THEMES)
     nums = '۱۲۳۴۵۶۷۸' if lang == 'fa' else ('12345678' if lang == 'en' else '١٢٣٤٥٦٧٨')
     catalog = ''.join(
-        f'<li><b>{nums[i]}</b> <span>{esc(PRODUCT_ROWS[i][lang])}</span> '
-        f'{_page_links(lang, url, THEME_PAGES[PRODUCT_THEME[i]])}</li>'
+        f'<li><b>{nums[i]}</b> <a href="{url(CAT_HREF[lang][i])}">{esc(PRODUCT_ROWS[i][lang])}</a></li>'
         for i in range(8))
     map_head = ''.join(f'<th scope="col">{esc(h[lang])}</th>' for h in MAP_COL)
     return f'''<section class="section phil-sec" id="phil">
   <div class="wrap">
-    <p class="phil-kicker">{esc(INTRO_KICK[lang])}</p>
-    <h2>{esc(INTRO_H[lang])}</h2>
-    <p class="phil-lead">{esc(INTRO_SUB[lang])}</p>
-    {_paras(INTRO, lang)}
-    <h3>{esc(PILLARS[0][lang])} · {esc(PILLARS[1][lang])} · {esc(PILLARS[2][lang])} · {esc(PILLARS[3][lang])}</h3>
+    <h2>{esc(PATHS_H[lang])}</h2>
+    <h3>{esc(QUESTIONS_H[lang])}</h3>
     <ol class="phil-pillars">{pillars}</ol>
-    <h3>{esc(PATHS_H[lang])}</h3>
     <div class="phil-table-wrap"><table class="phil-table">
       <thead><tr>{head}</tr></thead>
       <tbody>{rows}</tbody>
     </table></div>
+    <p class="phil-kicker">{esc(INTRO_KICK[lang])}</p>
+    <h2>{esc(INTRO_H[lang])}</h2>
+    <p class="phil-lead">{esc(INTRO_SUB[lang])}</p>
+    {_paras(INTRO, lang)}
     <h3>{esc(MAP_H[lang])}</h3>
     <div class="phil-table-wrap"><table class="phil-table">
       <thead><tr>{map_head}</tr></thead>
       <tbody>{theme_rows}</tbody>
     </table></div>
-    <p class="phil-note">{esc(MAP_NOTE[lang])}</p>
     <h3>{esc(CAT_H[lang])}</h3>
     <ol class="phil-catalog">{catalog}</ol>
     {closing_html(lang, url)}

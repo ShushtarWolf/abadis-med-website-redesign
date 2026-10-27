@@ -557,7 +557,12 @@ details.letter[open] summary { margin-bottom: 12px; }
 .ch-ico svg { width: 100%; height: 100%; display: block; }
 .with-ico { display: flex; align-items: center; gap: 8px; }
 .dept-row { display: flex; align-items: center; gap: 8px; }
-.brand-row, .soc-links { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 4px; }
+.brand-row, .soc-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  gap: 10px;
+  margin: 14px 0 4px;
+}
 .soc-links > span { display: flex; }
 .brand-btn, .soc-links a {
   display: inline-flex; align-items: center; gap: 8px;
@@ -1034,9 +1039,36 @@ details.letter[open] summary { margin-bottom: 12px; }
 .sdg-stat strong span { color: inherit; font-size: inherit; }
 .sdg-stat > span { display: block; margin-top: 6px; color: var(--muted); font-size: .82rem; line-height: 1.65; }
 .sdg-page .reveal { transition-delay: calc(var(--i, 0) * 70ms); }
-.sdg-icons { display: grid; grid-template-columns: repeat(7, minmax(0,1fr)); gap: 10px; margin: 18px 0 26px; }
-@media (max-width: 700px) { .sdg-icons { grid-template-columns: repeat(4, minmax(0,1fr)); } }
-.sdg-icons img { width: 100%; height: auto; border-radius: 10px; display: block; }
+.sdg-icons { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; margin: 4px 0 22px; }
+@media (max-width: 900px) { .sdg-icons { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .sdg-icons { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.sdg-tile {
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  gap: 8px; text-align: center; min-height: 128px; padding: 12px 8px 14px;
+  border-radius: 16px; color: #f3fafa;
+  background: linear-gradient(165deg, #0d9488 0%, #066163 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .14);
+}
+.sdg-tile svg { width: 32px; height: 32px; display: block; flex: none; }
+.sdg-tile .sdg-num { font-weight: 800; font-size: .95rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.sdg-tile .sdg-name { font-size: .74rem; line-height: 1.45; font-weight: 700; }
+[data-theme="dark"] .sdg-tile {
+  color: #5eead4;
+  background: linear-gradient(165deg, #0c3f42 0%, #062628 100%);
+  box-shadow: inset 0 0 0 1px rgba(94, 234, 212, .38);
+}
+[data-theme="noir"] .sdg-tile {
+  color: #c4b5fd;
+  background: linear-gradient(165deg, #2a1b4e 0%, #120a24 100%);
+  box-shadow: inset 0 0 0 1px rgba(196, 181, 253, .4);
+}
+.sdg-page .sdg-goals { list-style-position: inside; display: grid; gap: 12px; margin: 8px 0 18px; padding: 0; }
+html[lang|="fa"] .sdg-page .sdg-goals { list-style-type: persian; }
+.sdg-page .sdg-goals > li {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+  padding: 14px 16px 10px; margin: 0;
+}
+.sdg-page .sdg-goals > li > ul { margin-top: 8px; }
 .missing-note { border: 1px dashed var(--line); border-radius: 16px; padding: 14px 16px; color: var(--muted); font-size: .9rem; background: var(--surface); }
 .liner-box { border-radius: 24px; background: radial-gradient(circle at 50% 45%, #ffffff, #e8f3f3 72%); display: grid; place-items: center; padding: 28px; min-height: 320px; }
 .liner-box img { max-height: 420px; width: auto; max-width: 100%; }
@@ -1122,7 +1154,7 @@ html[dir="ltr"] .prose ul, html[dir="ltr"] .prose ol { padding-inline-start: 1.3
   body { overflow-x: clip; }
 }
 
-/* Footer social row: 2 full-width contact rows (tel + mail) above a 4x2 grid of 8 social icons. */
+/* Footer: full-width tel + mail, then 11 social icons in one color (4 + 4 + 3). */
 .site-footer .foot-contact-pills {
   display: grid;
   grid-template-columns: repeat(4, minmax(44px, 1fr));
@@ -1216,6 +1248,26 @@ dd:has(> .soc-placeholder) {
 .site-footer .foot-pill--mail .foot-pill-ico svg {
   width: 20px;
   height: 20px;
+}
+/* Social marks share one color. Tel and mail stay on the footer ink. */
+.site-footer .foot-contact-pills .foot-pill:not(.foot-pill--tel):not(.foot-pill--mail) {
+  color: var(--deep-accent, #a8d5d6);
+}
+.site-footer .foot-contact-pills .foot-pill:not(.foot-pill--tel):not(.foot-pill--mail) .foot-pill-ico,
+.site-footer .foot-contact-pills .foot-pill:not(.foot-pill--tel):not(.foot-pill--mail) .foot-pill-ico svg,
+.site-footer .foot-contact-pills .foot-pill:not(.foot-pill--tel):not(.foot-pill--mail) .foot-pill-ico svg * {
+  color: inherit;
+  fill: currentColor;
+  stroke: currentColor;
+}
+.site-footer .foot-contact-pills .foot-pill:not(.foot-pill--tel):not(.foot-pill--mail):hover,
+.site-footer .foot-contact-pills .foot-pill:not(.foot-pill--tel):not(.foot-pill--mail):focus-visible {
+  color: #ffffff;
+}
+.soc-links svg *,
+.brand-row svg *,
+.contact-dl .ch-ico svg * {
+  fill: currentColor;
 }
 .site-footer .foot-pill--tel .foot-pill-val,
 .site-footer .foot-pill--mail .foot-pill-val {

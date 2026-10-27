@@ -336,9 +336,9 @@ def solutions_block():
             for theme in phil.THEMES
         ],
         'areas': [
-            pack(phil.FLUID) | {'id': 'fluid', 'pages': ['fluid-management', 'hospital-suction-systems']},
+            pack(phil.FLUID) | {'id': 'fluid', 'pages': ['fluid-management']},
             pack(phil.AIRWAY) | {'id': 'airway', 'pages': ['airway-care']},
-            pack(phil.WASTE) | {'id': 'infection-waste', 'pages': ['contamination-control', 'waste-management-pva']},
+            pack(phil.WASTE) | {'id': 'infection-waste', 'pages': ['waste-management-pva']},
         ],
         'application_contexts_without_own_page': [
             {
@@ -363,7 +363,7 @@ def solutions_block():
             },
         ],
         'pages': pages,
-        'source': 'tools/redesign/solutions_philosophy.py (Alireza, Oct 2026) on the five solution pages',
+        'source': 'tools/redesign/solutions_philosophy.py (Alireza, Oct 2026) on the three solution pages',
     }
 
 
@@ -415,17 +415,17 @@ def categories(products):
             'status': 'in_current_catalog',
             'volumes': [],
             'summary': tri(
-                'مسواک ساکشن یکبارمصرف و نگهدارنده لوله تراشه روی صفحه سایر محصولات. سواب دهانی در متن راهکار آمده و صفحه محصول جدا ندارد.',
-                'Disposable suction toothbrush and endotracheal-tube holder are on the other-products page. An oral swab is named in the solution text and has no separate product page.',
-                'فرشاة الشفط ذات الاستعمال الواحد وحامل أنبوب القصبة في صفحة المنتجات الأخرى. المسحة الفموية مذكورة في نص الحل ومن دون صفحة منتج مستقلة.',
+                'مسواک ساکشن، سواب دهانی و فیکسر لوله تراشه روی صفحه بهداشت دهان. سواب دهانی صفحه مشخصات جدا ندارد و متناسب با وضعیت توسعه و عرضه معرفی شده است.',
+                'The suction toothbrush, oral swab and endotracheal-tube fixer are on the oral-hygiene page. The swab has no separate specification page; it is named according to its stage of development and supply.',
+                'فرشاة الشفط والمسحة الفموية ومثبّت أنبوب القصبة في صفحة نظافة الفم. المسحة بلا صفحة مواصفات مستقلة، وتُذكر بحسب مرحلة التطوير والعرض.',
             ),
             'applications': tri(
                 'مراقبت دهان و بیماران دارای لوله تراشه، مطابق دستورالعمل هر محصول.',
                 'Oral care and patients with an endotracheal tube, following each product’s instructions.',
                 'عناية الفم والمرضى ذوو أنبوب القصبة، وفق تعليمات كل منتج.',
             ),
-            'links': fam('other'),
-            'family_ids': ['other'],
+            'links': [tri('/products/oral-hygiene/', '/en/products/oral-hygiene/', '/arabic/نظافة-الفم/')],
+            'family_ids': ['oral'],
         },
         {
             'id': 'urology',
