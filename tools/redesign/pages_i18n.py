@@ -168,8 +168,10 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
                 '</article></div></section>') + body
     if site_path in ('about-us/', 'من-نحن/'):
         from pages_company import regroup_i18n_certs, apply_live_about, about_copy
+        from about_motion import inject_about_motion
         body = apply_live_about(body, lang)
         body = regroup_i18n_certs(body, lang)
+        body = inject_about_motion(body, lang, p)
         desc = about_copy(lang)['intro'][0]
     if site_path == 'sdgs/' and lang == 'en':
         from pages_company import sdg_stats
@@ -274,6 +276,10 @@ def _write_post_index(write, lang, site_path, cur, label, items):
     depth = _depth(rel)
     p = _prefix(depth)
     cards = []
+    pairs = []
+    news = cur == 'news'
+    if news:
+        from news_topics import classify_text, year_bucket, jalali_year_of
     for wp in items:
         slug = _slug_decode(wp.get('slug') or str(wp['id']))
         title = strip_tags(wp.get('title', {}).get('rendered', ''))
@@ -281,21 +287,38 @@ def _write_post_index(write, lang, site_path, cur, label, items):
         href = f'../{slug}/' if site_path else f'{slug}/'
         # from latest-news/ to /en/slug/ → ../slug/
         href = f'{p}{root}{slug}/'
+        attrs = ''
+        if news:
+            topic = classify_text(title + ' ' + desc)
+            bucket = year_bucket(jalali_year_of(wp.get('date')))
+            pairs.append((topic, bucket))
+            attrs = f' data-topic="{esc(topic)}" data-year="{esc(bucket)}"'
         cards.append(
-            f'<a class="post-card reveal" href="{href}" data-name="{esc(title)}">'
+            f'<a class="post-card reveal" href="{href}" data-name="{esc(title)}"{attrs}>'
             f'<div class="ph txt"><img src="{p}assets/img/post-thumb-fallback.webp" width="1280" height="720" alt="{esc(title)}" loading="lazy"></div>'
             f'<div class="body"><h3>{esc(title)}</h3><p>{esc(desc)}</p>'
             f'<span class="go">{esc(L["read_more"])}</span></div></a>'
         )
-    main = f'''{page_hero(p, [(label, None)], f'<em>{esc(label)}</em>', '', lang=lang)}
+    fa = 'news/' if 'news' in site_path or 'اخبار' in site_path or 'latest' in site_path else 'articles/'
+    extra_head = ''
+    scripts = ''
+    if news:
+        from news_topics import news_shell, empty_html, tally, feature_from_card
+        from layout import crumbs
+        stats = tally(pairs)
+        shell = news_shell(lang, p, crumbs(p, [(label, None)], lang=lang), stats, feature_from_card(cards[0] if cards else '', lang))
+        main = shell + f'\n    <div class="post-grid" id="postGrid" data-paged="12">{"".join(cards)}</div>\n    {empty_html(lang)}\n  </div></section>'
+        extra_head = f'<link rel="stylesheet" href="{p}assets/css/news-finalist.css">\n'
+        scripts = f'<script src="{p}assets/js/news-finalist.js" defer></script>\n'
+    else:
+        main = f'''{page_hero(p, [(label, None)], f'<em>{esc(label)}</em>', '', lang=lang)}
   <section class="section"><div class="wrap">
     <div class="list-tools"><input class="search" type="search" placeholder="{esc(L['search'])}" aria-label="{esc(L['search'])}" data-filter="#postGrid">
     <span class="count" data-count-for="#postGrid">{len(items)} {esc(L['count_unit'])}</span></div>
     <div class="post-grid" id="postGrid" data-paged="12">{''.join(cards)}</div>
     <p class="empty-msg" hidden>{esc(L['empty'])}</p>
   </div></section>'''
-    fa = 'news/' if 'news' in site_path or 'اخبار' in site_path or 'latest' in site_path else 'articles/'
-    html = page(p, cur, label, label, main, lang=lang, fa_path=fa, canonical_path=root + site_path)
+    html = page(p, cur, label, label, main, lang=lang, fa_path=fa, canonical_path=root + site_path, extra_head=extra_head, scripts=scripts)
     write(rel, html)
 
 
