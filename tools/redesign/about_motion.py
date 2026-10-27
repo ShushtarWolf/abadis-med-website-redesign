@@ -113,9 +113,9 @@ _MEMBERS = [
 ]
 
 _MEM_H = {
-    'fa': ('عضویت‌ها', 'نشان‌ها و عضویت‌های منتشرشدهٔ آبادیس'),
-    'en': ('Memberships', 'Membership marks published by Abadis'),
-    'ar': ('العضويات', 'شعارات العضوية المنشورة لآباديس'),
+    'fa': ('افتخارات و عضویت‌ها', 'نشان‌ها و عضویت‌های منتشرشدهٔ آبادیس'),
+    'en': ('Honors & Memberships', 'Membership marks published by Abadis'),
+    'ar': ('العضويات والاعتمادات', 'شعارات العضوية المنشورة لآباديس'),
 }
 
 
@@ -188,9 +188,11 @@ def goals_orbit(lang, prefix):
 
 
 def membership_section(lang, prefix):
-    """Nine membership logo cards with the N3 neon frame."""
+    """W2-2 honors orbit, then the nine membership logo cards. Partner logos stay elsewhere."""
+    import w2_orbit
     lang = lang if lang in _MEM_H else 'fa'
     heading, lead = _MEM_H[lang]
+    orbit = w2_orbit.widget(lang, 'about', prefix)
     cards = []
     for i, (file, dark, labels) in enumerate(_MEMBERS):
         name, sub = labels[lang]
@@ -203,8 +205,10 @@ def membership_section(lang, prefix):
         )
     return (
         f'<section class="section ab-members" id="memberships"><div class="wrap">'
+        f'{w2_orbit.assets(prefix)}'
         f'<h2 class="reveal" style="margin-bottom:8px">{esc(heading)}</h2>'
         f'<p class="reveal" style="margin-bottom:16px">{esc(lead)}</p>'
+        f'{orbit}'
         f'<div class="ab-member-grid">{"".join(cards)}</div>'
         f'</div></section>'
     )

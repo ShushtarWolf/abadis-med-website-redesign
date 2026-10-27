@@ -34,9 +34,9 @@ HOME_TITLE = 'درباره ما بیشتر بدانید — مخازن طبی آ
 CALC_TEASER = 'جهت محاسبه آنلاین میزان صرفه‌جویی در مصرف آب و زباله‌های عفونی مرکز خود می‌توانید روی دکمه زیر کلیک نمایید.'
 LOGO_STRIP_N = 24
 
-# Live home counters (abadis-med.com, read 2026-10-24). The active-customer
-# figure on that page is still 612; the redesign uses the full customers list
-# instead (site/zagros-names/names.json, #custAllN on /customers/).
+# Live home counters (abadis-med.com, read 2026-10-24) still showed 612
+# active customers. The redesign publishes the customers-map total: 1,284
+# hospitals and surgery centres (iran-hospitals-centers.json).
 _STAT_DIGITS = {
     'fa': str.maketrans('0123456789', '۰۱۲۳۴۵۶۷۸۹'),
     'ar': str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩'),
@@ -44,11 +44,22 @@ _STAT_DIGITS = {
 
 
 def active_centre_count():
-    """Unique names in the full customers list, the same set as #custAllN."""
-    import json
+    """Published active-centre figure on the homepage impact stat.
+
+    The customers map is 1,284 hospitals and surgery centres
+    (``site/assets/data/iran-hospitals-centers.json`` ``counts.total``:
+    1,242 hospitals + 42 surgery centres). Unique names in
+    ``site/zagros-names/names.json`` are the Zagros wall list (1,232) and
+    must not replace this figure: ``counter-options.js`` writes
+    ``data-impact-stat`` over the visible digits when the stat scrolls in.
+    """
+    import re
     from lib import SITE
-    names = json.loads((SITE / 'zagros-names/names.json').read_text(encoding='utf-8'))
-    return len({n.strip() for n in names if isinstance(n, str) and n.strip()})
+    head = (SITE / 'assets/data/iran-hospitals-centers.json').read_text(encoding='utf-8')[:240]
+    match = re.search(r'"total"\s*:\s*(\d+)', head)
+    if not match:
+        raise RuntimeError('iran-hospitals-centers.json is missing counts.total')
+    return int(match.group(1))
 
 
 def fmt_stat(n, lang, decimals=0):
@@ -112,6 +123,40 @@ def impact_stats(lang='fa'):
             f'<span class="impact-stat-label">{esc(label)}</span></div>'
         )
     return f'<div class="impact-stats">{"".join(bits)}</div>'
+
+
+# Boss order 2026-10-28: title beside the impact statistics, with the note verbatim.
+IMPACT_TITLES = {
+    'fa': 'اثرگذاری آبادیس',
+    'en': 'Abadis Impact',
+    'ar': 'أثر آباديس',
+}
+IMPACT_INFO = {
+    'fa': ('این آمار، نمایی از اثرگذاری آبادیس بر پایه داده‌های سامانه‌های MIS، BI و AI شرکت است. '
+           'صرفه‌جویی آب، برآوردی از حذف شست‌وشوی مخازن ساکشن است.'),
+    'en': ("These statistics represent Abadis's impact based on data from the company's MIS, BI, and AI systems. "
+           'Water savings are estimated from eliminating the washing of suction canisters.'),
+    'ar': ('تمثل هذه الإحصائيات أثر آباديس استناداً إلى بيانات أنظمة MIS وBI وAI في الشركة. '
+           'ويوفر استهلاك المياه تقديراً ناتجاً عن إلغاء غسيل عبوات الشفط.'),
+}
+IMPACT_INFO_LABEL = {
+    'fa': 'توضیح آمار اثرگذاری',
+    'en': 'About these impact statistics',
+    'ar': 'شرح إحصائيات الأثر',
+}
+
+
+def impact_title(lang):
+    """Eyebrow «اثرگذاری آبادیس» plus the ⓘ note. The popover sits outside the wave clip."""
+    return (
+        f'<div class="impact-title-wrap">'
+        f'<p class="eyebrow impact-title">{esc(IMPACT_TITLES[lang])}'
+        f'<button type="button" class="impact-info-btn" aria-expanded="false" '
+        f'aria-controls="impact-info-tip" aria-label="{esc(IMPACT_INFO_LABEL[lang])}">'
+        f'<span aria-hidden="true">ⓘ</span></button></p>'
+        f'<p class="impact-info-tip" id="impact-info-tip" role="tooltip" hidden>{esc(IMPACT_INFO[lang])}</p>'
+        f'</div>'
+    )
 
 
 def _B(path):
@@ -567,7 +612,8 @@ def impact_section():
       </div>
       <div class="impact-counter reveal" data-impact-counter data-counter="m2">
         {section_mark('', 'impact', 'sec-mark--lg')}
-        <p class="eyebrow">اثر آبادیس، همین حالا</p>
+        {impact_title('fa')}
+        <p class="eyebrow impact-now">اثر آبادیس، همین حالا</p>
         <strong class="impact-num" aria-live="off">۰</strong>
         <span class="impact-unit">لیتر آب صرفه‌جویی‌شده از ابتدای سال ۱۴۰۵ (تخمینی)</span>
       </div>
@@ -577,12 +623,13 @@ def impact_section():
   </section>'''
 
 
-def why_block(p, eyebrow, title, values, factory, checks, metrics):
-    """Richer why section. Copy stays the live sentences; the anim slot is empty for the designer."""
+def why_block(p, eyebrow, title, values, factory, checks, metrics, lang='fa'):
+    """Why section: approved W2-2 orbit, then the live factory paragraph and checks."""
+    import w2_orbit
     metric_html = ''.join(
         f'<div class="why-metric"><strong>{esc(n)}</strong><span>{esc(label)}</span></div>' for n, label in metrics)
-    cards = ''.join(
-        f'<article class="why-card"><h3>{esc(t)}</h3><p>{esc(d)}</p></article>' for t, d in values)
+    del values, metric_html  # live value cards are the eight orbit nodes; metrics stay unused
+    orbit = w2_orbit.widget(lang, 'home', p)
     lis = ''.join(f'<li>{esc(c)}</li>' for c in checks)
     return f'''  <section class="section section--alt why-abadis" id="why" data-why-anim>
     <div class="wrap">
@@ -591,7 +638,7 @@ def why_block(p, eyebrow, title, values, factory, checks, metrics):
         <img class="why-logo why-logo-dark" src="{p}assets/img/icons/Q2-dark.svg" alt="" width="88" height="88">
         <div class="section-head has-mark"><div><p class="eyebrow">{esc(eyebrow)}</p><h2>{esc(title)}</h2></div></div>
       </div>
-      <div class="why-cards">{cards}</div>
+      {orbit}
       <div class="split" style="margin-top:28px">
         <div class="reveal"><p>{esc(factory)}</p></div>
         <ul class="checks reveal">{lis}</ul>
@@ -674,22 +721,24 @@ def memberships_section():
 
 def build(write):
     pages_posts.prepare()
-    # Alireza review order (Oct 2026): hero → about (+video slot) → impact (slogan + live counter) → why →
-    # products → small calculator / Zagros buttons → news → articles → memberships → customers (UNDECIDED, kept)
+    # Boss order 2026-10-28: products before impact so visitors see what Abadis
+    # makes first. hero → about → products → impact → why →
+    # calculator / Zagros → news + articles → memberships → customers.
     main = '\n'.join([
         hero_v2(),
         about_v2(),
+        products_v2(),
         impact_section(),
         why_v2(),
-        products_v2(),
         quick_links(),
         posts_unified(),
         memberships_section(),
         customers_section(),
     ])
+    import w2_orbit
     extra_head = '''<link rel="preload" as="image" href="assets/img/p/hero-bags.webp" type="image/webp">
 <link rel="stylesheet" href="assets/css/home.css">
-''' + logo_scroll_css('') + '\n' + counter_options_css('')
+''' + logo_scroll_css('') + '\n' + counter_options_css('') + '\n' + w2_orbit.assets('')
     scripts = logo_scroll_scripts('') + counter_options_script('')
     html = page(
         '', None, HOME_TITLE, HOME_DESC, main,

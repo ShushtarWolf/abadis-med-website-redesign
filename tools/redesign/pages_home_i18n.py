@@ -99,7 +99,8 @@ def build_home(write, lang):
         <p class="slogan" aria-label="{esc(' '.join(t['slogan']))}">{lines}</p></div>
       <div class="impact-counter reveal" data-impact-counter data-counter="m2" data-locale="{'en-US' if lang == 'en' else 'ar-EG'}">
         {section_mark(p, 'impact', 'sec-mark--lg')}
-        <p class="eyebrow">{esc(t['imp_eb'])}</p><strong class="impact-num" aria-live="off">{zero}</strong>
+        {H.impact_title(lang)}
+        <p class="eyebrow impact-now">{esc(t['imp_eb'])}</p><strong class="impact-num" aria-live="off">{zero}</strong>
         <span class="impact-unit">{esc(t['imp_unit'])}</span></div>
       </div>
       {H.impact_stats(lang)}
@@ -112,7 +113,7 @@ def build_home(write, lang):
     fail_l = 'Product Failure Rate' if lang == 'en' else 'نسبة عيوب المنتج'
     cost_l = t['values'][0][1]
     metrics = [(cap, cap_l), (sat, sat_l), (fail, fail_l), (t['values'][0][0], cost_l)]
-    why = H.why_block(p, t['why_eb'], t['why_h'], t['values'], t['factory'], t['checks'], metrics)
+    why = H.why_block(p, t['why_eb'], t['why_h'], t['values'], t['factory'], t['checks'], metrics, lang)
     import solutions_arch
     products = solutions_arch.home_section(p, lang)
     quick = f'''  <section class="section quick" id="quick" style="padding-block:28px"><div class="wrap quick-row">
@@ -167,9 +168,11 @@ def build_home(write, lang):
         <button type="button" class="logo-carousel-btn logo-carousel-next" aria-label="{esc(t['next'])}">›</button></div>
       <p class="home-logo-cta reveal"><a class="btn btn-ghost" href="{_h(t, p, t['cust_href'])}">{esc(t['cust_btn'])}</a></p>
     </div></section>'''
-    main = '\n'.join([hero, about, impact, why, products, quick, stories, mem, cust])
+    # Same order as the FA home: intro → about → products → impact → why → quick → stories → memberships → customers.
+    main = '\n'.join([hero, about, products, impact, why, quick, stories, mem, cust])
     if lang == 'en': main = main.replace('←', '→')
-    extra_head = f'<link rel="preload" as="image" href="{p}assets/img/p/hero-bags.webp" type="image/webp">\n<link rel="stylesheet" href="{p}assets/css/home.css">\n{H.logo_scroll_css(p)}\n{H.counter_options_css(p)}'
+    import w2_orbit
+    extra_head = f'<link rel="preload" as="image" href="{p}assets/img/p/hero-bags.webp" type="image/webp">\n<link rel="stylesheet" href="{p}assets/css/home.css">\n{H.logo_scroll_css(p)}\n{H.counter_options_css(p)}\n{w2_orbit.assets(p)}'
     html = page(p, None, t['title'], t['desc'], main, lang=lang, fa_path='', canonical_path=t['root'],
                 extra_head=extra_head, scripts=H.logo_scroll_scripts(p) + H.counter_options_script(p), main_class='home-page', body_class='home', lightbox=True,
                 html_attrs='data-slogan="t1"')

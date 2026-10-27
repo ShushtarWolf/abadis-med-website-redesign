@@ -44,6 +44,92 @@
     io.observe(el.closest('.impact-stat') || el);
   });
 
+  /* ⓘ note beside the impact title. Hover, focus, and click/tap; Escape and outside press close. */
+  (function initImpactInfo() {
+    var wrap = document.querySelector('.impact-title-wrap');
+    var btn = wrap && wrap.querySelector('.impact-info-btn');
+    var tip = document.getElementById('impact-info-tip');
+    if (!wrap || !btn || !tip) return;
+    var pinned = false, hover = false, focus = false, suppress = false, openedAt = 0;
+    function shown() { return btn.getAttribute('aria-expanded') === 'true'; }
+    function place() {
+      tip.hidden = false;
+      tip.style.top = 'calc(100% + 10px)';
+      tip.style.bottom = 'auto';
+      tip.classList.remove('is-above');
+      tip.style.transform = 'none';
+      var pad = 12;
+      var vw = document.documentElement.clientWidth;
+      var r = tip.getBoundingClientRect();
+      var dx = 0;
+      if (r.left < pad) dx = pad - r.left;
+      else if (r.right > vw - pad) dx = (vw - pad) - r.right;
+      if (dx) tip.style.transform = 'translateX(' + dx + 'px)';
+      r = tip.getBoundingClientRect();
+      if (r.bottom > window.innerHeight - pad && r.top > r.height + pad) {
+        tip.style.top = 'auto';
+        tip.style.bottom = 'calc(100% + 10px)';
+        tip.classList.add('is-above');
+        r = tip.getBoundingClientRect();
+      }
+      var br = btn.getBoundingClientRect();
+      var cx = br.left + br.width / 2 - r.left - 6;
+      cx = Math.max(10, Math.min(Math.max(10, r.width - 22), cx));
+      tip.style.setProperty('--caret', cx + 'px');
+    }
+    function open() {
+      var was = shown();
+      tip.hidden = false;
+      btn.setAttribute('aria-expanded', 'true');
+      btn.setAttribute('aria-describedby', 'impact-info-tip');
+      if (!was) openedAt = Date.now();
+      place();
+    }
+    function close() {
+      pinned = false;
+      btn.setAttribute('aria-expanded', 'false');
+      btn.removeAttribute('aria-describedby');
+      tip.hidden = true;
+      tip.classList.remove('is-above');
+      tip.style.transform = 'none';
+    }
+    function sync() {
+      if (pinned || ((hover || focus) && !suppress)) open();
+      else close();
+    }
+    wrap.addEventListener('pointerenter', function () { hover = true; if (!suppress) sync(); });
+    wrap.addEventListener('pointerleave', function () { hover = false; suppress = false; sync(); });
+    btn.addEventListener('focus', function () { focus = true; suppress = false; sync(); });
+    btn.addEventListener('blur', function () { focus = false; sync(); });
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (shown() && (Date.now() - openedAt > 400)) {
+        pinned = false;
+        suppress = true;
+        close();
+      } else {
+        suppress = false;
+        pinned = true;
+        open();
+      }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape' || !shown()) return;
+      pinned = false;
+      suppress = true;
+      close();
+      btn.blur();
+    });
+    document.addEventListener('pointerdown', function (e) {
+      if (!shown() || wrap.contains(e.target)) return;
+      pinned = false;
+      suppress = true;
+      close();
+    });
+    window.addEventListener('resize', function () { if (shown()) place(); });
+  })();
+
   // PLACEHOLDER: day the counter read exactly 56,500,000 L (1 Farvardin 1405, Tehran). Change here only.
   var COUNTER_BASE_DATE = '2026-03-21T00:00:00+03:30';
 
@@ -131,10 +217,12 @@
 
   /* ---------- M2 flowing water ---------- */
   if (mode === 'm2') {
-    var water = document.createElement('div'); water.className = 'cnt-water'; water.setAttribute('aria-hidden', 'true');
+    var clip = document.createElement('div'); clip.className = 'cnt-water-clip'; clip.setAttribute('aria-hidden', 'true');
+    var water = document.createElement('div'); water.className = 'cnt-water';
     water.innerHTML = '<svg viewBox="0 0 400 20" preserveAspectRatio="none"><path d="M0 10 Q50 0 100 10 T200 10 T300 10 T400 10 V20 H0Z"/></svg><svg viewBox="0 0 400 20" preserveAspectRatio="none"><path d="M0 10 Q50 20 100 10 T200 10 T300 10 T400 10 V20 H0Z"/></svg>';
+    clip.appendChild(water);
     var drop = document.createElement('span'); drop.className = 'cnt-drop'; drop.setAttribute('aria-hidden', 'true');
-    root.insertBefore(water, root.firstChild); root.appendChild(drop);
+    root.insertBefore(clip, root.firstChild); root.appendChild(drop);
     // fraction of the current Persian year (from base date, one 365-day year)
     function frac() { return Math.min(1, Math.max(0, (Date.now() - Date.parse(COUNTER_BASE_DATE)) / 31536e6)); }
     num.textContent = fmt(56500000);

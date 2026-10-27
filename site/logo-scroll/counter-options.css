@@ -1,10 +1,13 @@
-.impact-counter{position:relative;overflow:hidden;isolation:isolate}
+/* Wave fill is clipped by .cnt-water-clip. The card itself stays overflow:visible
+   so the ⓘ note beside «اثرگذاری آبادیس» is not cut off. */
+.impact-counter{position:relative;overflow:visible;isolation:isolate}
+.cnt-water-clip{position:absolute;inset:0;overflow:hidden;border-radius:inherit;pointer-events:none;z-index:0}
 .impact-num{display:block;font-variant-numeric:tabular-nums;line-height:1.15}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 /* M1: uses site .odo styles (1.2em cells) */
 .cnt-m1 .odo-col{width:.62em;height:1.2em;overflow:hidden}
 /* M2 */
-.cnt-water{position:absolute;inset:auto 0 0 0;height:var(--fill,0%);background:color-mix(in srgb,currentColor 7%,transparent);z-index:-1;transition:height 2s cubic-bezier(.2,.7,.2,1);color:#7fdcdd}
+.cnt-water{position:absolute;inset:auto 0 0 0;height:var(--fill,0%);background:color-mix(in srgb,currentColor 7%,transparent);z-index:0;transition:height 2s cubic-bezier(.2,.7,.2,1);color:#7fdcdd}
 [data-theme="noir"] .cnt-water{color:#c4b5fd}
 .cnt-water svg{position:absolute;bottom:100%;left:0;width:200%;height:14px;fill:color-mix(in srgb,currentColor 7%,transparent);animation:cntwave 7s linear infinite}
 .cnt-water svg+svg{animation-duration:11s;animation-direction:reverse;opacity:.7}
@@ -24,3 +27,88 @@
 [data-theme="noir"] .cnt-bar i{background:#c4b5fd}
 .cnt-barlbl{margin:6px 0 0;font-size:.78rem;opacity:.65}
 @media (prefers-reduced-motion:reduce){.cnt-water svg,.cnt-drop,.cnt-m3 .chg{animation:none!important}}
+
+/* Title + ⓘ sit above the wave. Text stays above the clip layer. */
+.impact-counter>.sec-mark,
+.impact-counter>.eyebrow,
+.impact-counter>.impact-num,
+.impact-counter>.impact-unit,
+.impact-counter>.cnt-rate,
+.impact-counter>.cnt-bar,
+.impact-counter>.cnt-barlbl{position:relative;z-index:1}
+.impact-counter>.impact-title-wrap{position:relative;z-index:4}
+.cnt-drop{z-index:2}
+#impact .impact-inner{position:relative;z-index:2}
+#impact .impact-stats{position:relative;z-index:1}
+.impact-title-wrap{display:inline-block;max-width:100%}
+.impact-title{
+  display:inline-flex;align-items:center;gap:8px;margin:0 0 6px;
+  font-size:clamp(1.05rem,2vw,1.28rem);font-weight:900;line-height:1.35;letter-spacing:0;
+}
+.deep .impact-title{color:#fff}
+.impact-now{margin-bottom:4px}
+.impact-info-btn{
+  display:inline-grid;place-items:center;flex:0 0 auto;
+  width:1.75rem;height:1.75rem;padding:0;border-radius:999px;cursor:pointer;
+  border:1px solid color-mix(in srgb,var(--deep-accent) 55%,transparent);
+  background:color-mix(in srgb,var(--deep-accent) 14%,transparent);
+  color:var(--deep-accent);font:inherit;font-size:1rem;line-height:1;
+}
+.impact-info-btn:hover,
+.impact-info-btn:focus-visible,
+.impact-info-btn[aria-expanded="true"]{
+  background:color-mix(in srgb,var(--deep-accent) 28%,transparent);
+  outline:2px solid var(--deep-accent);outline-offset:2px;
+}
+@media (pointer:coarse){
+  .impact-info-btn{width:2.75rem;height:2.75rem;font-size:1.15rem}
+}
+.impact-info-tip{
+  position:absolute;z-index:6;inset-inline-start:0;top:calc(100% + 10px);
+  width:min(22.5rem,calc(100vw - 24px));margin:0;padding:12px 14px;
+  border-radius:16px;text-align:start;letter-spacing:0;
+  font-size:.95rem;font-weight:500;line-height:1.85;
+  color:#0a2e32;
+  background:color-mix(in srgb,#e8f3f3 92%,transparent);
+  border:1px solid rgba(6,97,99,.28);
+  box-shadow:0 18px 40px rgba(1,41,43,.28),inset 0 1px 0 rgba(255,255,255,.6);
+  backdrop-filter:blur(18px) saturate(1.35);
+  -webkit-backdrop-filter:blur(18px) saturate(1.35);
+}
+.impact-info-tip::before{
+  content:"";position:absolute;top:-6px;left:var(--caret,18px);
+  width:12px;height:12px;transform:rotate(45deg);
+  background:color-mix(in srgb,#e8f3f3 92%,transparent);
+  border-left:1px solid rgba(6,97,99,.28);
+  border-top:1px solid rgba(6,97,99,.28);
+}
+.impact-info-tip.is-above::before{
+  top:auto;bottom:-6px;
+  border-top:0;border-bottom:1px solid rgba(6,97,99,.28);
+}
+.deep .impact-info-tip{color:#0a2e32}
+[data-theme="dark"] .impact-info-tip,
+[data-theme="dark"] .deep .impact-info-tip{
+  color:#e8f3f3;
+  background:color-mix(in srgb,#0b2e32 82%,transparent);
+  border-color:rgba(95,208,209,.42);
+  box-shadow:0 18px 44px rgba(0,0,0,.45),inset 0 1px 0 rgba(127,220,221,.2);
+}
+[data-theme="dark"] .impact-info-tip::before,
+[data-theme="dark"] .impact-info-tip.is-above::before{
+  background:color-mix(in srgb,#0b2e32 92%,#5fd0d1);
+  border-color:rgba(95,208,209,.42);
+}
+[data-theme="noir"] .impact-info-tip,
+[data-theme="noir"] .deep .impact-info-tip{
+  color:#f1f0ff;
+  background:color-mix(in srgb,#1c1a2e 86%,transparent);
+  border-color:rgba(196,181,253,.48);
+  box-shadow:0 18px 44px rgba(0,0,0,.5),inset 0 1px 0 rgba(196,181,253,.22);
+}
+[data-theme="noir"] .impact-info-tip::before,
+[data-theme="noir"] .impact-info-tip.is-above::before{
+  background:color-mix(in srgb,#1c1a2e 90%,#c4b5fd);
+  border-color:rgba(196,181,253,.48);
+}
+.impact-info-tip[hidden]{display:none}

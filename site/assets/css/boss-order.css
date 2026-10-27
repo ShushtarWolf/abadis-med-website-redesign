@@ -380,9 +380,18 @@
   font-weight: 800;
   fill: #0d7476;
   opacity: 0.52;
-  letter-spacing: 0.03em;
+  letter-spacing: 0;
+  word-spacing: normal;
   pointer-events: none;
   user-select: none;
+}
+/* iOS Safari breaks Persian joining in SVG text when letter-spacing is not zero. */
+.iran-map svg text,
+.ir-sea-label,
+.ir-prov-badge text,
+.ir-city text {
+  letter-spacing: 0 !important;
+  word-spacing: normal;
 }
 
 /* High specificity (0,2,2) to beat site.css .iran-map path (0,1,1) */
@@ -434,6 +443,13 @@
   font-size: 9.2px;
   font-weight: 800;
   fill: #053b3d;
+  letter-spacing: 0;
+}
+.ir-prov-badge,
+.ir-city {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: irBadgePulse 2.8s ease-in-out infinite;
 }
 .ir-prov-badge:hover rect {
   fill: #05686b;
@@ -442,31 +458,70 @@
   fill: #fff;
 }
 
-/* Hospital & Surgery Center Pins */
+/* Hospital & surgery lights: brighten and dim. Zoom size is --ir-z, not per-frame attributes. */
+.iran-map svg { --ir-z: 1; }
 .ir-pin {
   cursor: pointer;
+  transform-box: fill-box;
+  transform-origin: center;
+  scale: calc(0.62 + 0.38 * var(--ir-z, 1));
 }
 .ir-hit {
   fill: transparent;
+  r: calc(4px + 4.5px * var(--ir-z, 1));
+}
+.ir-glow {
+  fill: #2dd4bf;
+  opacity: 0.9;
+  pointer-events: none;
+}
+.ir-pin--surgery .ir-glow { fill: #fbbf24; }
+.ir-bulb {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.ir-pin:not(.is-dim) .ir-bulb {
+  animation: irLightPulse 2.8s ease-in-out infinite;
+  animation-delay: var(--pulse-d, 0s);
 }
 .ir-dot {
-  fill: #0b7a75;
-  stroke: #ffffff;
-  stroke-width: 0.85px;
+  fill: #f0fdfa;
+  stroke: #0f766e;
+  stroke-width: 0.7px;
   vector-effect: non-scaling-stroke;
 }
 .ir-pin--surgery .ir-dot {
-  fill: #d97706;
-  stroke: #ffffff;
+  fill: #fffbeb;
+  stroke: #b45309;
 }
 .ir-pin.is-dim {
-  opacity: 0.14;
+  opacity: 0.16;
   pointer-events: none;
 }
+.ir-pin.is-dim .ir-bulb { animation: none; }
+.ir-pin.is-on .ir-bulb {
+  animation: none;
+  opacity: 1;
+  transform: scale(1.28);
+}
 .ir-pin.is-on .ir-dot {
-  fill: #f59e0b;
-  stroke: #033a3c;
-  stroke-width: 2px;
+  fill: #ffffff;
+  stroke: #042f2e;
+  stroke-width: 1.1px;
+}
+@keyframes irLightPulse {
+  0%, 100% { opacity: 1; transform: scale(1.28); }
+  50% { opacity: 0.24; transform: scale(0.66); }
+}
+@keyframes irBadgePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.72; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ir-pin:not(.is-dim) .ir-bulb,
+  .ir-prov-badge,
+  .ir-city { animation: none; }
+  .ir-pin:not(.is-dim) .ir-bulb { opacity: 1; transform: none; }
 }
 
 /* Zoomed-in City Cluster Badges (scaled dynamically in JS) */
@@ -873,14 +928,19 @@
 [data-theme="noir"] .ir-city.is-on rect {
   fill: #0d9488;
 }
+[data-theme="dark"] .ir-glow { fill: #5eead4; }
+[data-theme="noir"] .ir-glow { fill: #c4b5fd; }
+[data-theme="dark"] .ir-pin--surgery .ir-glow,
+[data-theme="noir"] .ir-pin--surgery .ir-glow { fill: #fbbf24; }
 [data-theme="dark"] .ir-dot,
 [data-theme="noir"] .ir-dot {
-  fill: #2dd4bf;
-  stroke: #062226;
+  fill: #ecfeff;
+  stroke: #042f2e;
 }
 [data-theme="dark"] .ir-pin--surgery .ir-dot,
 [data-theme="noir"] .ir-pin--surgery .ir-dot {
-  fill: #fbbf24;
+  fill: #fffbeb;
+  stroke: #78350f;
 }
 [data-theme="dark"] .ir-card,
 [data-theme="noir"] .ir-card {
