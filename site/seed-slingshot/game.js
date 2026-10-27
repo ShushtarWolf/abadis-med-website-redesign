@@ -56,7 +56,7 @@
       win: function () { [523, 659, 784, 1046].forEach(function (f, i) { setTimeout(function () { tone(f, 0.5, 'triangle', 0.05); }, i * 130); }); }
     };
   })();
-  function setSound(v) { soundOn = v; audio.on(v); var b = $('soundBtn'); b.textContent = v ? '🔊' : '🔇'; b.setAttribute('aria-pressed', v ? 'true' : 'false'); b.setAttribute('aria-label', t('sound')); try { localStorage.setItem('abadis-slingshot-sound', v ? '1' : '0'); } catch (e) {} }
+  function setSound(v) { soundOn = v; audio.on(v); var b = $('soundBtn'); b.textContent = v ? '●' : '○'; b.setAttribute('aria-pressed', v ? 'true' : 'false'); b.setAttribute('aria-label', t('sound')); try { localStorage.setItem('abadis-slingshot-sound', v ? '1' : '0'); } catch (e) {} }
   var firstTap = false;
   function onFirstTap() { if (firstTap) return; firstTap = true; var p = '1'; try { p = localStorage.getItem('abadis-slingshot-sound') || '1'; } catch (e) {} setSound(p === '1'); }
 
@@ -506,7 +506,7 @@
     prog.total.water += L.water; prog.total.hours += L.hours; prog.total.cost += L.cost; prog.total.oaks += L.oaks;
     saveProg();
     var st = $('eStars'); st.innerHTML = '';
-    for (var i = 0; i < 3; i++) { var s = document.createElement('span'); s.textContent = '★'; if (i < stars) s.className = 'on'; st.appendChild(s); }
+    for (var i = 0; i < 3; i++) { var s = document.createElement('span'); s.textContent = i < stars ? '●' : '○'; if (i < stars) s.className = 'on'; st.appendChild(s); }
     $('eTitle').textContent = win ? (L.idx === cfg.levels.length - 1 ? t('allDone') : t('win')) : t('lose');
     $('eOaksK').textContent = t('oaks'); $('eOaks').textContent = fmt(L.oaks);
     $('eWaterK').textContent = t('waterSaved'); $('eWater').textContent = litres(L.water);
@@ -524,7 +524,7 @@
       var b = document.createElement('button'); b.type = 'button'; b.className = 'lcard'; b.style.backgroundImage = 'url(img/bg' + L.bg + '.webp)';
       var lock = i + 1 > prog.unlocked; b.disabled = lock;
       var s = prog.stars[L.id] || 0;
-      b.innerHTML = '<em>' + (lock ? '🔒' : '★★★'.slice(0, s) + '<span style="opacity:.35;position:static;background:none;padding:0">' + '★★★'.slice(0, 3 - s) + '</span>') + '</em><span>' + fmt(i + 1) + ' · ' + t('l' + L.id) + '</span>';
+      b.innerHTML = '<em>' + (lock ? '○' : '●'.repeat(s) + '<span style="opacity:.35;position:static;background:none;padding:0">' + '○'.repeat(3 - s) + '</span>') + '</em><span>' + fmt(i + 1) + ' · ' + t('l' + L.id) + '</span>';
       b.setAttribute('aria-label', t('level', { n: i + 1 }) + ' ' + t('l' + L.id) + (lock ? ' ' + t('locked') : ''));
       b.addEventListener('click', function () { onFirstTap(); startLevel(i); });
       g.appendChild(b);

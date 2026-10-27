@@ -637,12 +637,13 @@ def _bag_table(lang, size, p):
     heads.append(ui['lid'])
     body = []
     for code, irc, sz, kind, powder, ster, lid in rows:
-        cells = [code, irc or '—', ui[sz], ui[kind], '✓' if powder else '×']
+        yes = '<span class="yn-yes"></span>'
+        cells = [code, irc or '—', ui[sz], ui[kind], yes if powder else '×']
         if sterile:
-            cells.append('—' if ster is None else ('✓' if ster else '×'))
+            cells.append('—' if ster is None else (yes if ster else '×'))
         alt = ui['lid_' + lid]
         cells.append(f'<img class="lid" src="{p}assets/img/p/lid-{lid}.webp" width="50" height="20" alt="{esc(alt)}">')
-        tds = ''.join(f'<td>{c if c.startswith("<img") else esc(c)}</td>' for c in cells)
+        tds = ''.join(f'<td>{c if c.startswith("<") else esc(c)}</td>' for c in cells)
         body.append(f'<tr>{tds}</tr>')
     th = ''.join(f'<th>{esc(h)}</th>' for h in heads)
     return f'<div class="table-wrap"><table><thead><tr>{th}</tr></thead><tbody>{"".join(body)}</tbody></table></div>'

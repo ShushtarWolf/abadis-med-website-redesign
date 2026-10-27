@@ -656,7 +656,7 @@ def nav_pair(prefix, lang, cur):
 
 
 def assert_nav_catalog_sync():
-    """Header dropdown slugs/paths must match CATALOG / SOLS (guards products↔solutions swap)."""
+    """Header dropdown slugs/paths must match CATALOG / SOLS (guards a products/solutions swap)."""
     future = {'fa': 'آینده', 'en': 'Future', 'ar': 'مستقبل'}
     sol_href = {
         'fa': lambda slug: f'solutions/{slug}/',

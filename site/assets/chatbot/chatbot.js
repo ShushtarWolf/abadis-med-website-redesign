@@ -24,8 +24,8 @@
       placeholder: 'سؤال یا نیاز بخش درمانی را بنویسید…',
       send: 'ارسال',
       close: 'بستن',
-      welcomeSales: 'سلام و وقت بخیر! 👋 خوش آمدید. درباره کیسه‌های ساکشن یکبارمصرف (۱، ۲ و ۳ لیتری)، راهکارهای بالینی هر بخش، دریافت پیش‌فاکتور یا محاسبه صرفه‌جویی بیمارستانتان هر سؤالی دارید بفرمایید.',
-      welcomeAcademy: 'سلام و وقت بخیر! 👋 به آکادمی آبادیس خوش آمدید. هر سؤالی درباره کنترل عفونت با ساکشن مدار بسته، عملکرد فیلتر هیدروفوبیک و پودر جاذب، یا مقالات علمی دارید بپرسید، یا «مصاحبه بالینی آکادمی» را شروع کنید.',
+      welcomeSales: 'سلام و وقت بخیر! خوش آمدید. درباره کیسه‌های ساکشن یکبارمصرف (۱، ۲ و ۳ لیتری)، راهکارهای بالینی هر بخش، دریافت پیش‌فاکتور یا محاسبه صرفه‌جویی بیمارستانتان هر سؤالی دارید بفرمایید.',
+      welcomeAcademy: 'سلام و وقت بخیر! به آکادمی آبادیس خوش آمدید. هر سؤالی درباره کنترل عفونت با ساکشن مدار بسته، عملکرد فیلتر هیدروفوبیک و پودر جاذب، یا مقالات علمی دارید بپرسید، یا «مصاحبه بالینی آکادمی» را شروع کنید.',
       bySolution: 'بر اساس راهکار',
       byProduct: 'بر اساس محصول',
       pickSolution: 'کدام راهکار؟',
@@ -69,8 +69,8 @@
       placeholder: 'Ask about a department, a volume, or a certificate…',
       send: 'Send',
       close: 'Close',
-      welcomeSales: 'Hello and welcome! 👋 I am the Abadis Medical AI Assistant. Ask me anything about our 1L/2L/3L disposable suction liners, clinical solutions, proforma quotes, or hospital savings calculations.',
-      welcomeAcademy: 'Hello and welcome to Abadis Academy! 👋 Ask about closed-system infection control vs. traditional glass bottles, shutoff filters, gelling powder, or start the interactive Clinical Interview.',
+      welcomeSales: 'Hello and welcome! I am the Abadis Medical AI Assistant. Ask me anything about our 1L/2L/3L disposable suction liners, clinical solutions, proforma quotes, or hospital savings calculations.',
+      welcomeAcademy: 'Hello and welcome to Abadis Academy! Ask about closed-system infection control vs. traditional glass bottles, shutoff filters, gelling powder, or start the interactive Clinical Interview.',
       bySolution: 'By solution',
       byProduct: 'By product',
       pickSolution: 'Which solution?',
@@ -849,16 +849,16 @@
     if (/^(خروج ادمین|خروج از ادمین|بستن ادمین|logout|admin logout|exit admin)$/i.test(qLow)) {
       var prevName = state.adminUser.nameFa;
       saveAdminSession(null);
-      addMsg('bot', fmtMd('🔒 **خروج از حالت ادمین انجام شد.** (' + prevName + ')\nچت‌بات اکنون در حالت عادی بازدیدکنندگان (فقط‌خواندنی و قفل‌شده روی اطلاعات رسمی) قرار دارد.'));
+      addMsg('bot', fmtMd(' **خروج از حالت ادمین انجام شد.** (' + prevName + ')\nچت‌بات اکنون در حالت عادی بازدیدکنندگان (فقط‌خواندنی و قفل‌شده روی اطلاعات رسمی) قرار دارد.'));
       return true;
     }
 
     if (/^(لیست اصلاحات|لیست اموزش ها|لیست آموزش ها|اصلاحات ثبت شده|قوانین ادمین|admin list|list rules)$/i.test(qLow)) {
       var rules = state.adminRules || loadAdminRules();
       if (!rules.length) {
-        addMsg('bot', fmtMd('📋 **هنوز اصلاحیه جدیدی در این مرورگر ثبت نشده است.**\n(اصلاحات پایه سال ۱۴۰۵ شامل ۱۶ سال سابقه مدیریتی مهندس نوید حسنعلی و آمار ۱٬۲۳۲ مرکز درمانی از قبل در هسته اصلی دانش‌نامه قفل شده‌اند.)\nبرای ثبت نکته جدید کافی است بنویسید: `اصلاح: متن صحیح...`'));
+        addMsg('bot', fmtMd(' **هنوز اصلاحیه جدیدی در این مرورگر ثبت نشده است.**\n(اصلاحات پایه سال ۱۴۰۵ شامل ۱۶ سال سابقه مدیریتی مهندس نوید حسنعلی و آمار ۱٬۲۳۲ مرکز درمانی از قبل در هسته اصلی دانش‌نامه قفل شده‌اند.)\nبرای ثبت نکته جدید کافی است بنویسید: `اصلاح: متن صحیح...`'));
       } else {
-        var lines = ['📋 **فهرست اصلاحات و نکات ثبت‌شده توسط مدیران ارشد:**'];
+        var lines = [' **فهرست اصلاحات و نکات ثبت‌شده توسط مدیران ارشد:**'];
         rules.forEach(function (r, i) {
           lines.push((i + 1) + '. **' + r.fact + '** *(ثبت توسط: ' + (r.author || 'ادمین') + (r.topic ? ' — در پاسخ به: «' + r.topic + '»' : '') + ')*');
         });
@@ -885,7 +885,7 @@
       }
       if (removed) {
         saveAdminRules(rulesDel);
-        addMsg('bot', fmtMd('🗑️ اصلاحیه زیر حذف شد:\n«' + removed.fact + '»'));
+        addMsg('bot', fmtMd(' اصلاحیه زیر حذف شد:\n«' + removed.fact + '»'));
       } else {
         addMsg('bot', fmtMd('شماره اصلاحیه معتبر نیست. برای مشاهده شماره‌ها بنویسید: `لیست اصلاحات`'));
       }
@@ -911,7 +911,7 @@
       };
       currentRules.push(newRule);
       saveAdminRules(currentRules);
-      addMsg('bot', fmtMd('✅ **اصلاحیه رسمی شما ثبت و قفل شد** (' + state.adminUser.nameFa + '):\n«' + factText + '»\n\nاز این لحظه این قانون بالاترین اولویت را در پاسخگویی بات دارد. (برای مشاهده همه موارد: `لیست اصلاحات` | برای خروج: `خروج ادمین`)'));
+      addMsg('bot', fmtMd(' **اصلاحیه رسمی شما ثبت و قفل شد** (' + state.adminUser.nameFa + '):\n«' + factText + '»\n\nاز این لحظه این قانون بالاترین اولویت را در پاسخگویی بات دارد. (برای مشاهده همه موارد: `لیست اصلاحات` | برای خروج: `خروج ادمین`)'));
       return true;
     }
 
@@ -1362,13 +1362,13 @@
       if (/^(سلام|درود|وقت بخیر|صبح بخیر|عصر بخیر|شب بخیر|خسته نباشید|قوت اله|سلام علیکم|علیکم السلام|های|هلو|salam|salaam|hi|hello|hey|good morning|good afternoon|good evening|greetings|مرحبا|اهلا|أهلا|السلام علیکم|صباح الخیر|مساء الخیر)(\s|$)/.test(q)) {
         var greetTxt = state.lang === 'en'
           ? (state.mode === 'academy'
-            ? 'Hello and welcome to Abadis Academy! 👋 How can I help you today? You can ask me anything about closed-system suction infection control, hydrophobic filters, gelling powder, or start the 3-step Clinical Interview.'
-            : 'Hello and welcome to Abadis Medical! 👋 How can I help you today? Feel free to ask about choosing the right suction liner volume (1L, 2L, 3L) for your hospital ward, pricing and proforma invoices, or calculating your annual water and cost savings.')
+            ? 'Hello and welcome to Abadis Academy! How can I help you today? You can ask me anything about closed-system suction infection control, hydrophobic filters, gelling powder, or start the 3-step Clinical Interview.'
+            : 'Hello and welcome to Abadis Medical! How can I help you today? Feel free to ask about choosing the right suction liner volume (1L, 2L, 3L) for your hospital ward, pricing and proforma invoices, or calculating your annual water and cost savings.')
           : state.lang === 'ar'
-          ? 'أهلاً ومرحباً بكم في آباديس الطبية! 👋 كيف يمكنني مساعدتكم اليوم؟ اسألوا عن أكياس الشفط (١، ٢، ٣ لتر)، الحلول السريرية، الفاتورة الأولية، أو حساب التوفير السنوي للمستشفى.'
+          ? 'أهلاً ومرحباً بكم في آباديس الطبية! كيف يمكنني مساعدتكم اليوم؟ اسألوا عن أكياس الشفط (١، ٢، ٣ لتر)، الحلول السريرية، الفاتورة الأولية، أو حساب التوفير السنوي للمستشفى.'
           : (state.mode === 'academy'
-            ? 'سلام و وقت بخیر! خیلی خوش آمدید 🌱 در بخش آکادمی آبادیس چطور می‌توانم کمکتان کنم؟ درباره مقایسه علمی ساکشن مدار بسته با شیشه‌های سنتی، فیلتر هیدروفوبیک و پودر جاذب هر سؤالی دارید بپرسید، یا اگر مایلید «مصاحبه بالینی آکادمی» را شروع کنیم.'
-            : 'سلام و وقت بخیر! خیلی خوش آمدید 🌱 چطور می‌توانم کمکتان کنم؟ اگر درباره انتخاب سایز کیسه ساکشن (۱، ۲ یا ۳ لیتری) و تجهیزات مناسب بخش درمانی‌تان، شرایط خرید و پیش‌فاکتور، یا محاسبه صرفه‌جویی سالانه بیمارستان سؤالی دارید در خدمتم.');
+            ? 'سلام و وقت بخیر! خیلی خوش آمدید در بخش آکادمی آبادیس چطور می‌توانم کمکتان کنم؟ درباره مقایسه علمی ساکشن مدار بسته با شیشه‌های سنتی، فیلتر هیدروفوبیک و پودر جاذب هر سؤالی دارید بپرسید، یا اگر مایلید «مصاحبه بالینی آکادمی» را شروع کنیم.'
+            : 'سلام و وقت بخیر! خیلی خوش آمدید چطور می‌توانم کمکتان کنم؟ اگر درباره انتخاب سایز کیسه ساکشن (۱، ۲ یا ۳ لیتری) و تجهیزات مناسب بخش درمانی‌تان، شرایط خرید و پیش‌فاکتور، یا محاسبه صرفه‌جویی سالانه بیمارستان سؤالی دارید در خدمتم.');
         addMsg('bot', fmtMd(greetTxt) + ctaLine());
         showQuickPrompts();
         return true;
@@ -1376,10 +1376,10 @@
 
       if (/^(چطوری|حالت چطوره|خوبی|احوالت چطوره|چه خبر|خوب هستی|چطورین|how are you|how is it going|how are things|whats up|کیف حالک|كيف حالك|اخبارک)/.test(q)) {
         var howTxt = state.lang === 'en'
-          ? 'I am doing great and ready to help! 😊 As Abadis Medical’s on-site assistant, I have the full product catalog, clinical solutions, calculator formulas, and FAQ loaded right here. What ward or product can I help you with today?'
+          ? 'I am doing great and ready to help! As Abadis Medical’s on-site assistant, I have the full product catalog, clinical solutions, calculator formulas, and FAQ loaded right here. What ward or product can I help you with today?'
           : state.lang === 'ar'
-          ? 'بخير والحمد لله، وجاهز لخدمتكم! 😊 قاعدة معرفة آباديس الكاملة متوفرة لدي هنا. كيف يمكنني مساعدتكم اليوم؟'
-          : 'ممنون از لطف شما، عالی هستم و آماده پاسخگویی! 😊 تمام اطلاعات محصولات، ۵ راهکار بالینی، محاسبه‌گر صرفه‌جویی و دانش‌نامه فنی آبادیس در هسته سایت آماده است. درباره کدام محصول یا بخش بیمارستانی سؤال دارید؟';
+          ? 'بخير والحمد لله، وجاهز لخدمتكم! قاعدة معرفة آباديس الكاملة متوفرة لدي هنا. كيف يمكنني مساعدتكم اليوم؟'
+          : 'ممنون از لطف شما، عالی هستم و آماده پاسخگویی! تمام اطلاعات محصولات، ۵ راهکار بالینی، محاسبه‌گر صرفه‌جویی و دانش‌نامه فنی آبادیس در هسته سایت آماده است. درباره کدام محصول یا بخش بیمارستانی سؤال دارید؟';
         addMsg('bot', fmtMd(howTxt));
         showQuickPrompts();
         return true;
@@ -1398,10 +1398,10 @@
 
       if (/^(ممنون|مرسی|دمت گرم|تشکر|سپاس|سپاسگزارم|عالی|خسته نباشی|خداحافظ|فعلا|بدرود|thanks|thank you|thx|great|awesome|bye|goodbye|شکرا|شكرا|مع السلامه|جزاك)/.test(q)) {
         var thxTxt = state.lang === 'en'
-          ? 'You’re very welcome! 🙏 Whenever you need a proforma invoice, sample request, or technical support, our team is available at 021-92001017 (Ext. 11) or on WhatsApp (+989100145809).'
+          ? 'You’re very welcome! Whenever you need a proforma invoice, sample request, or technical support, our team is available at 021-92001017 (Ext. 11) or on WhatsApp (+989100145809).'
           : state.lang === 'ar'
-          ? 'على الرحب والسعة! 🙏 يسعدنا تواصلكم مع قسم المبيعات على الرقم 02192001017 (تحويلة 11) أو عبر واتساب +989100145809.'
-          : 'خواهش می‌کنم، خوشحالم که توانستم کمکتان کنم! 🙏 هر زمان برای دریافت پیش‌فاکتور، درخواست نمونه یا مشاوره فنی نیاز به همراهی داشتید، کارشناسان فروش آبادیس با شماره ۰۲۱-۹۲۰۰۱۰۱۷ (داخلی ۱۱) و واتس‌اپ +۹۸۹۱۰۰۱۴۵۸۰۹ در کنار شما هستند.';
+          ? 'على الرحب والسعة! يسعدنا تواصلكم مع قسم المبيعات على الرقم 02192001017 (تحويلة 11) أو عبر واتساب +989100145809.'
+          : 'خواهش می‌کنم، خوشحالم که توانستم کمکتان کنم! هر زمان برای دریافت پیش‌فاکتور، درخواست نمونه یا مشاوره فنی نیاز به همراهی داشتید، کارشناسان فروش آبادیس با شماره ۰۲۱-۹۲۰۰۱۰۱۷ (داخلی ۱۱) و واتس‌اپ +۹۸۹۱۰۰۱۴۵۸۰۹ در کنار شما هستند.';
         addMsg('bot', fmtMd(thxTxt) + ctaLine());
         return true;
       }
@@ -1628,8 +1628,8 @@
     var loginAcc = detectAdminLogin(query);
     if (loginAcc) {
       saveAdminSession(loginAcc);
-      addMsg('user', '🔒 [احراز هویت مدیر ارشد]');
-      addMsg('bot', fmtMd('✅ **خوش آمدید ' + loginAcc.nameFa + ' عزیز — حالت آموزش و اصلاح ادمین فعال شد.**\n'
+      addMsg('user', ' [احراز هویت مدیر ارشد]');
+      addMsg('bot', fmtMd(' **خوش آمدید ' + loginAcc.nameFa + ' عزیز — حالت آموزش و اصلاح ادمین فعال شد.**\n'
         + 'از این لحظه هر نکته یا اصلاحیه‌ای که بنویسید، در حافظه رسمی بات ثبت می‌شود و اولویت قطعی بر تمام متون قبلی خواهد داشت:\n'
         + '• **ثبت اصلاحیه یا فکت جدید:** کافی است بنویسید `اصلاح: متن صحیح...` یا `یاد بگیر: ...` (یا مستقیماً به پاسخ قبلی بات اعتراض/اصلاحیه بنویسید).\n'
         + '• **مشاهده قوانین ثبت‌شده:** بنویسید `لیست اصلاحات`\n'

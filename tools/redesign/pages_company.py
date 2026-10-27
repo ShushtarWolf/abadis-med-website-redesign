@@ -8,15 +8,6 @@ def B(path): return PAGES[path]['blocks']
 def ext_attr(ext): return ' target="_blank" rel="noopener"' if ext else ''
 
 # ------------------------------------------------------------------ about
-BAG_ICON = '''<svg class="bag-icon" viewBox="0 0 120 160" role="img" aria-label="کیسه ساکشن آبادیس">
-  <defs><linearGradient id="bgi" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8f3f3"/><stop offset="1" stop-color="#c9e6e6"/></linearGradient></defs>
-  <rect x="22" y="38" width="76" height="110" rx="14" fill="url(#bgi)" stroke="#066163" stroke-width="4"/>
-  <path class="bag-fluid" d="M26 112q17-8 34 0t34 0V134a10 10 0 0 1-10 10H36a10 10 0 0 1-10-10z" fill="#0e7475" opacity=".55"/>
-  <rect x="14" y="22" width="92" height="20" rx="8" fill="#066163"/>
-  <rect x="30" y="8" width="16" height="16" rx="4" fill="#087673"/><rect x="74" y="8" width="16" height="16" rx="4" fill="#087673"/>
-  <path d="M38 60v34M82 60v34" stroke="#05686b" stroke-width="3" stroke-dasharray="3 6" stroke-linecap="round"/>
-  <circle cx="60" cy="78" r="13" fill="none" stroke="#015F61" stroke-width="3"/><path d="M60 70v16M52 78h16" stroke="#015F61" stroke-width="3" stroke-linecap="round"/>
-</svg>'''
 SLOGAN_ABOUT = ['ما به اندازه یک سرانگشت اثر می‌گذاریم،', 'به شما', 'به طبیعت', 'به جهان']   # Abadis-Sign (live)
 
 
@@ -89,12 +80,28 @@ def live_story_html(lang):
     )
 
 
+def _strip_liner_bag(body):
+    """Drop the old animated liner-bag image column beside History."""
+    body = re.sub(
+        r'<div data-element_type="widget">\s*<div>\s*<img\b[^>]*ANIMATED-LINER-BAG[^>]*>\s*</div>\s*</div>',
+        '',
+        body,
+    )
+    body = re.sub(
+        r'<div data-element_type="column">\s*<div>\s*</div>\s*</div>',
+        '',
+        body,
+    )
+    return body
+
+
 def apply_live_about(body, lang):
     """Swap the pre-20-Oct mission block and the history/goals block for the live page text.
 
     Certificate galleries, partners and the team stay in the existing markup so the
     IMED → ثبت اختراع → بهره‌برداری → جوایز و مقالات order is untouched.
     """
+    body = _strip_liner_bag(body)
     if lang not in ('en', 'ar'):
         return body
     intro, story = live_intro_html(lang), live_story_html(lang)
@@ -339,7 +346,7 @@ def partners_html(lang, prefix):
         cards.append(
             f'<div class="card partner reveal n3-card"><div class="logo-box">{logo}</div>'
             f'<p>{esc(text)}</p>'
-            f'<a class="more-link" href="{esc(href)}" target="_blank" rel="noopener">{esc(label)} ↗</a></div>'
+            f'<a class="more-link" href="{esc(href)}" target="_blank" rel="noopener">{esc(label)}</a></div>'
         )
     return ''.join(cards)
 
@@ -396,7 +403,6 @@ def about(write):
         <h1>آشنایی با <em>آبادیس</em></h1>
         <p class="slogan reveal" aria-label="{esc(' '.join(SLOGAN_ABOUT))}">{slogan}</p>
       </div>
-      <div class="about-hero-icon">{BAG_ICON}</div>
     </div>
   </section>'''
     main = f'''{hero}
@@ -405,9 +411,8 @@ def about(write):
     <h2 class="reveal" style="margin-bottom:14px">درباره ما بیشتر بدانید...</h2>
     {intro}
   </div></section>
-  <section class="section section--alt" id="history"><div class="wrap split">
-    <div class="prose reveal">{hist}</div>
-    <div class="liner-box reveal">{BAG_ICON}</div>
+  <section class="section section--alt" id="history"><div class="wrap prose" style="max-width:1000px">
+    <div class="reveal">{hist}</div>
   </div></section>
   <section class="section section--alt" id="why"><div class="wrap">
     <h2 class="reveal sec-title" style="margin-bottom:20px">{section_mark(p, 'why')}چرا آبادیس؟</h2>
