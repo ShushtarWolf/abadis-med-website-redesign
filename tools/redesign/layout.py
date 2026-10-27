@@ -324,7 +324,7 @@ def crumbs(p, trail, lang='fa'):
 def mosaic_hero(p, trail, chip, h1, lead='', label=None, lang='fa'):
     return f'''  <section class="hero hero--short" aria-label="{esc(label or chip)}">
     <div class="mosaic" data-tile="12" style="background-image:url('{p}assets/media/or-poster.jpg')" aria-hidden="true">
-      <video muted loop playsinline autoplay preload="auto" poster="{p}assets/media/or-poster.jpg" disablepictureinpicture disableremoteplayback tabindex="-1">
+      <video autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="{p}assets/media/or-poster.jpg">
         <source src="{p}assets/media/or-mosaic.mp4" type="video/mp4">
       </video>
     </div>

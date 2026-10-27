@@ -2,7 +2,7 @@
 from __future__ import annotations
 import json, pathlib, re, urllib.parse as u
 from lib import esc, best_img, SITE
-from layout import page, page_hero
+from layout import page, page_hero, crumbs
 import i18n as i18n_mod
 from i18n import (
     LANGS, NAV, nav_flat, clean_html, strip_tags, load_map, GAPS, DATA, meta_description,
@@ -220,8 +220,21 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
         if site_path in ('products/suction-bag/', 'كيس-الشفط/'):
             import pages_products
             benefits = '\n' + pages_products.bag_benefits(lang, p) + '\n'
-        main = f'''{page_hero(p, trail, esc(title), esc(desc), lang=lang, mark=_hero_mark)}{benefits}{sec}{after}'''
-    html = page(p, cur_key, title, desc, main, lang=lang, fa_path=fa_path, canonical_path=can, scripts=extra_js)
+        if site_path in ('about-us/', 'من-نحن/'):
+            from pages_company import about_hero
+            hero = about_hero(p, lang, esc(title), crumbs(p, trail, lang=lang))
+            main = f'''{hero}{sec}{after}'''
+        else:
+            main = f'''{page_hero(p, trail, esc(title), esc(desc), lang=lang, mark=_hero_mark)}{benefits}{sec}{after}'''
+    extra_head = ''
+    html_attrs = ''
+    if site_path in ('about-us/', 'من-نحن/'):
+        from pages_company import about_motion_tags
+        extra_head, motion_js = about_motion_tags(p)
+        extra_js = motion_js + extra_js
+        html_attrs = 'data-slogan="t1"'
+    html = page(p, cur_key, title, desc, main, lang=lang, fa_path=fa_path, canonical_path=can,
+                scripts=extra_js, extra_head=extra_head, html_attrs=html_attrs)
     write(rel if rel.endswith('.html') else rel + 'index.html', html)
     return rel
 

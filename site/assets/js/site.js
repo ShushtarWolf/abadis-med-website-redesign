@@ -301,6 +301,62 @@
   }
   document.querySelectorAll('.mosaic').forEach(mosaic);
 
+  /* Background <video>: iOS Low Power Mode rejects autoplay and paints a native
+     play button on the paused box. Hide that box until playback actually starts
+     (CSS .is-playing) and keep the poster on the parent. */
+  (function () {
+    var vids = Array.prototype.slice.call(document.querySelectorAll('video:not([controls])'));
+    function photoBg(el) {
+      return /url\(/i.test(getComputedStyle(el).backgroundImage || '');
+    }
+    function decorative(v) {
+      if (v.classList.contains('wp-video-shortcode')) return false;
+      if (v.closest('.wp-video, .mejs-mediaelement, .mejs-container')) return false;
+      return true;
+    }
+    function arm(v) {
+      function on() { v.classList.add('is-playing'); }
+      function off() { v.classList.remove('is-playing'); }
+      v.addEventListener('playing', on);
+      v.addEventListener('timeupdate', function () {
+        if (!v.paused && v.currentTime > 0) on();
+      });
+      v.addEventListener('pause', off);
+      v.addEventListener('ended', off);
+      v.addEventListener('emptied', off);
+      if (!v.paused && v.readyState >= 2) on();
+    }
+    function tryPlay(v) {
+      if (reduce || !decorative(v)) return;
+      if (!v.autoplay && !v.hasAttribute('autoplay')) return;
+      v.muted = true;
+      v.defaultMuted = true;
+      v.playsInline = true;
+      v.setAttribute('playsinline', '');
+      v.setAttribute('webkit-playsinline', '');
+      v.removeAttribute('controls');
+      var pending = v.play();
+      if (pending && pending.catch) pending.catch(function () { v.classList.remove('is-playing'); });
+    }
+    vids.forEach(function (v) {
+      var poster = v.getAttribute('poster');
+      var parent = v.parentElement;
+      if (poster && parent && !parent.closest('.about-hero') && !photoBg(parent)) {
+        parent.style.backgroundImage = 'url("' + poster.replace(/"/g, '') + '")';
+        parent.style.backgroundSize = 'cover';
+        parent.style.backgroundPosition = 'center';
+        parent.style.backgroundRepeat = 'no-repeat';
+      }
+      arm(v);
+      tryPlay(v);
+    });
+    if (reduce || !vids.length) return;
+    function kick() { vids.forEach(tryPlay); }
+    ['touchstart', 'click', 'scroll'].forEach(function (ev) {
+      document.addEventListener(ev, kick, { passive: true, once: true });
+    });
+  })();
+
   /* ---------- CSR background: fade in once the painting is decoded ---------- */
   const csr = document.querySelector('.csr-bg');
   if (csr) {
@@ -1021,6 +1077,71 @@
     }
   });
 
+})();
+
+/* Slogan rotator on home impact and About heroes. Guarded so slogan-options.js
+   can load too without starting a second timer. About lets the line-by-line
+   fade finish, then starts the highlight cycle. */
+(function () {
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function arm(p) {
+    var lines = Array.prototype.slice.call(p.querySelectorAll('.slogan-line'));
+    if (!lines.length) return;
+    var main = lines[0];
+    var rest = lines.slice(1);
+    main.classList.add('slogan-line--main');
+    if (reduce || !rest.length) {
+      p.classList.add('slogan-static');
+      return;
+    }
+    var stage = document.createElement('span');
+    stage.className = 'slogan-rotate';
+    stage.setAttribute('aria-hidden', 'true');
+    rest.forEach(function (line, i) {
+      stage.appendChild(line);
+      if (i === 0) line.classList.add('is-on');
+    });
+    p.appendChild(stage);
+    p.classList.add('slogan-rotator', 'slogan-anim');
+    var idx = 0;
+    var timer = null;
+    function tick() {
+      rest[idx].classList.remove('is-on');
+      idx = (idx + 1) % rest.length;
+      rest[idx].classList.add('is-on');
+    }
+    function start() {
+      if (timer || rest.length < 2) return;
+      timer = setInterval(tick, 1500);
+    }
+    function stop() {
+      if (!timer) return;
+      clearInterval(timer);
+      timer = null;
+    }
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) start();
+          else stop();
+        });
+      }, { threshold: 0.25 });
+      io.observe(p);
+    } else {
+      start();
+    }
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) stop();
+      else start();
+    });
+  }
+  document.querySelectorAll('.impact .slogan, .about-hero .slogan, .page-hero .slogan').forEach(function (p) {
+    if (p.dataset.sloganInit) return;
+    p.dataset.sloganInit = '1';
+    var wait = (!reduce && p.closest('.about-hero')) ? 1500 : 0;
+    if (wait) setTimeout(function () { arm(p); }, wait);
+    else arm(p);
+  });
 })();
 
 /* Auto-mount Abadis Sales & Academy Chatbot widget across site pages */

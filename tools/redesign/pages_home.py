@@ -216,7 +216,7 @@ def or_hero(media, zagros='csr/img/hero/'):
     return f'''  <section class="home-or home-or--product" id="intro" aria-label="معرفی محصول آبادیس">
     <div class="home-or-media" aria-hidden="true">
       <img class="home-or-fill" src="{m}hero-or-zagros-poster.jpg" alt="" width="640" height="1214" decoding="async" fetchpriority="high">
-      <video class="home-or-video" id="homeOrVideo" muted loop playsinline autoplay preload="metadata" poster="{m}hero-or-zagros-poster.jpg" disablepictureinpicture disableremoteplayback tabindex="-1">
+      <video class="home-or-video" id="homeOrVideo" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="{m}hero-or-zagros-poster.jpg">
         <source src="{m}hero-or-zagros.mp4" type="video/mp4">
       </video>
       <div class="home-or-veil"></div>
@@ -349,7 +349,7 @@ def why_section():
         <p style="margin-top:12px">{esc(FACTORY_LEAD)}</p>
         <ul class="checks" style="margin-top:22px">{checks}</ul>
       </div>
-      <div class="media-frame reveal"><video class="media-video" aria-hidden="true" muted loop playsinline autoplay preload="auto" poster="assets/media/or-poster.jpg" disablepictureinpicture disableremoteplayback tabindex="-1">
+      <div class="media-frame reveal"><video class="media-video" aria-hidden="true" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" poster="assets/media/or-poster.jpg">
         <source src="assets/media/or-mosaic.mp4" type="video/mp4">
       </video></div>
     </div>

@@ -540,6 +540,7 @@ def clean_html(html: str, lang: str = 'en', prefix: str = '../') -> str:
         return _ensure_img_alt(m.group(0), lang)
 
     h = re.sub(r'<img\b[^>]*>', img_sub, h, flags=re.I)
+    h = re.sub(r'<video\b[^>]*>\s*</video>', '', h, flags=re.I)
     return h.strip()
 
 
