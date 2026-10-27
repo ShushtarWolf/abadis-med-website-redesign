@@ -151,7 +151,7 @@ def build(write):
                      f'<a href="https://t.me/share/url?url={url}&amp;text={tt}" target="_blank" rel="noopener">تلگرام</a>'
                      f'<a href="https://wa.me/?text={tt}%20{url}" target="_blank" rel="noopener">واتس‌اپ</a>'
                      f'<a href="https://www.linkedin.com/sharing/share-offsite/?url={url}" target="_blank" rel="noopener">لینکدین</a>'
-                     f'<button type="button" onclick="navigator.clipboard&&navigator.clipboard.writeText(location.href);this.textContent=\'کپی شد ✓\'">کپی پیوند</button></div>')
+                     f'<button type="button" onclick="navigator.clipboard&&navigator.clipboard.writeText(location.href);this.textContent=\'کپی شد\'">کپی پیوند</button></div>')
             rel_html = (f'<section class="related"><h2>مطالب مرتبط</h2><div class="post-grid">{"".join(card(p, y, False) for y in related)}</div></section>') if related else ''
             main = f'''{page_hero(p, [(LABEL[cat], '../'), (x['t'][:60] + ('…' if len(x['t']) > 60 else ''), None)], esc(x['t']), '', meta)}
   <section class="section"><div class="wrap">

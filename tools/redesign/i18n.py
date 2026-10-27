@@ -317,7 +317,7 @@ def strip_tags(h):
     return re.sub(r'\s+', ' ', unescape(re.sub(r'<[^>]+>', ' ', h or ''))).strip()
 
 
-# Live WP paths that ship under a different local folder (products hub, skipped slugs, FA↔EN).
+# Live WP paths that ship under a different local folder (products hub, skipped slugs, FA/EN).
 _I18N_HREF_ALIASES = {
     '/en/suction-bag/': 'en/products/suction-bag/',
     '/en/base-and-holder/': 'en/products/base-and-holder/',
