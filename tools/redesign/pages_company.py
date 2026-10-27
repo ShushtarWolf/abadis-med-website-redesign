@@ -660,14 +660,15 @@ def customers(write):
         lg = f'<div class="lg">{pic}</div>' if pic else f'<div class="lg txt" aria-hidden="true">{esc(re.sub(r"^(بیمارستان|مرکز|درمانگاه|کلینیک)\s+", "", name)[:1])}</div>'
         link = f'<a href="{esc(bt["href"])}" target="_blank" rel="noopener">{esc(bt["text"])}</a>' if bt and bt.get('href') else ''
         cards.append(f'<div class="logo-card" data-name="{esc(name)}">{lg}<strong>{esc(name)}</strong>{link}</div>')
-    main = f'''{page_hero(p, [('مشتریان ما', None)], 'مشتریان ما', esc(head))}
-  <section class="section"><div class="wrap">
+    main = f'''{page_hero(p, [('خانواده سبز آبادیس', None)], 'خانواده سبز <em>آبادیس</em>', 'همراهی بیش از ۱٬۲۸۴ مرکز درمانی در سراسر ایران — ۱٬۲۴۲ بیمارستان و ۴۲ مرکز جراحی در ۳۱ استان کشور')}
+  {customers_all('fa', p)}
+  <section class="section section--alt" id="featured-logos"><div class="wrap">
+    <div class="section-head reveal"><h2>مراکز درمانی منتخب با نشان و پیوند مستقیم</h2><p>{esc(head)}</p></div>
     <div class="list-tools"><input class="search" type="search" placeholder="جستجوی نام مرکز درمانی..." aria-label="جستجوی مشتریان" data-filter="#custGrid"><span class="count" data-count-for="#custGrid">{fa(len(items))} مرکز درمانی</span></div>
-    <div class="logo-grid" id="custGrid" data-paged="30">{''.join(cards)}</div>
+    <div class="logo-grid" id="custGrid" data-paged="12">{''.join(cards)}</div>
     <p class="empty-msg" hidden>موردی یافت نشد.</p>
-  </div></section>
-  {customers_all('fa', p)}'''
-    write('customers/index.html', page(p, 'customers', 'مشتریان ما', head, main))
+  </div></section>'''
+    write('customers/index.html', page(p, 'customers', 'خانواده سبز آبادیس', head, main))
     for rel, prefix, lang, title, desc in (
         ('green-family-map/index.html', '../', 'fa', 'خانواده سبز آبادیس', 'نقشه و فهرست بیمارستان‌ها و مراکز جراحی.'),
         ('en/green-family-map/index.html', '../../', 'en', 'Abadis green family', 'Map and list of hospitals and surgery centers.'),

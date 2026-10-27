@@ -73,30 +73,6 @@
 .ac-filters button[aria-pressed="true"] { background: var(--brand, #066163); color: #fff; }
 .ac-mod[hidden] { display: none; }
 
-.iran-layout { display: grid; grid-template-columns: minmax(260px, 42%) minmax(0, 1fr); gap: 18px; align-items: start; }
-.iran-map { margin: 0; min-width: 0; background: var(--surface, #fff); border-radius: 20px; padding: 8px; border: 1px solid var(--line, #d5e8e8); }
-.iran-table-wrap { min-width: 0; }
-.iran-map svg { width: 100%; height: auto; display: block; }
-.ir-prov { fill: #e8f3f3; stroke: #066163; stroke-width: 1; cursor: pointer; }
-.ir-prov.is-on { fill: #d3ecec; }
-.ir-prov.is-dim { opacity: .35; }
-.ir-led { fill: #0e7475; stroke: #fff; stroke-width: .6; transform-box: fill-box; transform-origin: center; animation: ir-blink 1.8s ease-in-out infinite; }
-.ir-led--surgery { fill: #087673; }
-.ir-led.is-dim { opacity: .12; animation: none; }
-@keyframes ir-blink { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
-.iran-stats { margin: 0 0 10px; font-weight: 600; }
-.iran-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-.iran-tools select, .iran-tools .search { min-height: 42px; border-radius: 12px; border: 1px solid var(--line, #d5e8e8); padding: 8px 10px; background: var(--surface, #fff); color: inherit; }
-.iran-tools select[data-iran-own] { max-width: 16rem; }
-.iran-scroll { max-height: 540px; overflow: auto; border: 1px solid var(--line, #d5e8e8); border-radius: 16px; }
-.iran-table { width: 100%; border-collapse: collapse; }
-.iran-table th, .iran-table td { text-align: start; padding: 8px 10px; border-bottom: 1px solid var(--line, #e5eeee); vertical-align: top; }
-.iran-table th { position: sticky; top: 0; background: #f3fafa; }
-.resume-intro { padding: 18px; border-radius: 18px; }
-@media (max-width: 860px) { .iran-layout { grid-template-columns: minmax(0, 1fr); } }
-@media (prefers-reduced-motion: reduce) { .ir-led { animation: none; opacity: 1; } }
-[data-theme="dark"] .ir-prov, [data-theme="noir"] .ir-prov { fill: #14383c; stroke: #9fd4d4; }
-[data-theme="dark"] .iran-table th, [data-theme="noir"] .iran-table th { background: #12383c; color: #e8f3f3; }
 
 /* About — fixed 118px orbit (scales with the column, type stays inside the circle). */
 .ab-orbit-fit {
@@ -206,68 +182,726 @@
   #partners .card.partner::before, .ab-member-logo, .n3-partner-logo, #partners .logo-box { animation: none; }
 }
 
-/* Green-family map — Z1 zoom, Z2 pills, Z3 card. */
-.iran-map { position: relative; }
-.iran-map svg { touch-action: none; cursor: grab; background: transparent; }
-.iran-map svg:active { cursor: grabbing; }
-.ir-prov.is-hot { fill: #b7e0e0; }
-.ir-pin { cursor: pointer; }
-.ir-hit { fill: transparent; }
-.ir-dot { fill: #0e7475; stroke: #fff; stroke-width: .7; }
-.ir-pin--surgery .ir-dot { fill: #05686b; }
-.ir-pin.is-dim { opacity: .14; }
-.ir-pin.is-on .ir-dot { stroke: #015F61; stroke-width: 1.6; }
-.ir-led { display: none; }
+
+/* ==========================================================================
+   Green-family Iran Map & Searchable Table (Z3 — 1,284 Centers)
+   High-specificity selectors override legacy .iran-map path rules in site.css
+   ========================================================================== */
+
+.ir-stage-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--brand, #05686b) 6%, var(--surface, #fff));
+  border: 1px solid var(--line, #cde4e4);
+}
+.ir-stage {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--muted, #4e686b);
+  background: transparent;
+  transition: all 0.2s ease;
+}
+.ir-stage-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #94b8b8;
+}
+.ir-stage.is-active {
+  background: var(--brand, #05686b);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(5, 104, 107, 0.22);
+}
+.ir-stage.is-active .ir-stage-dot {
+  background: #5eead4;
+  box-shadow: 0 0 0 3px rgba(94, 234, 212, 0.32);
+}
+.ir-stage.is-done {
+  color: var(--brand, #05686b);
+  background: rgba(5, 104, 107, 0.1);
+}
+.ir-stage.is-done .ir-stage-dot {
+  background: #0d9488;
+}
+.ir-stage-sep {
+  color: var(--muted, #6c888a);
+  font-weight: 800;
+  font-size: 0.9rem;
+  user-select: none;
+}
+[dir="ltr"] .ir-stage-sep {
+  transform: scaleX(-1);
+}
+
+.iran-layout {
+  display: grid;
+  grid-template-columns: minmax(340px, 47%) minmax(0, 53%);
+  gap: 20px;
+  align-items: start;
+}
+.iran-map-col,
+.iran-table-wrap {
+  min-width: 0;
+}
+
+.iran-layout .iran-map {
+  position: relative;
+  margin: 0 !important;
+  max-width: none !important;
+  width: 100%;
+  background: var(--surface, #fff);
+  border-radius: 22px;
+  padding: 12px;
+  border: 1.5px solid var(--line, #cde4e4);
+  box-shadow: 0 12px 32px rgba(5, 68, 70, 0.07);
+}
+
+.ir-map-topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line, #e2f0f0);
+}
+.ir-region-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: #e6f5f5;
+  color: #044e50;
+  font-weight: 800;
+  font-size: 0.84rem;
+}
 .ir-zoom {
-  position: absolute; z-index: 4; top: 10px; inset-inline-end: 10px;
-  display: flex; gap: 6px; align-items: center;
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
 }
 .ir-zoom button {
-  font: inherit; font-weight: 800; min-width: 36px; min-height: 36px; border-radius: 12px;
-  border: 1px solid var(--line, #d5e8e8); background: var(--surface, #fff); color: var(--brand, #066163); cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+  font-size: 0.85rem;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: 1px solid var(--line, #c5e0e0);
+  background: var(--surface, #fff);
+  color: var(--brand, #05686b);
+  cursor: pointer;
+  transition: all 0.15s ease;
 }
-.ir-pills { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
-.ir-pills button {
-  font: inherit; font-weight: 700; font-size: .82rem; border-radius: 999px; cursor: pointer;
-  border: 1px solid var(--line, #d5e8e8); background: var(--surface, #fff); color: inherit; padding: 4px 10px;
+.ir-zoom button:hover {
+  background: #e6f5f5;
+  border-color: #05686b;
 }
-.ir-pills button[aria-pressed="true"] { background: var(--brand, #066163); color: #fff; border-color: transparent; }
-.ir-pills button b { font-weight: 800; }
-.ir-city { cursor: pointer; }
-.ir-city rect { fill: #fff; stroke: #05686b; stroke-width: 1; }
-.ir-city text { font-size: 10px; font-weight: 800; fill: #072a2d; font-family: Kalameh, Tahoma, sans-serif; }
-.ir-city.is-on rect { fill: #05686b; }
-.ir-city.is-on text { fill: #fff; }
+.ir-zoom button.ir-zoom-reset {
+  background: #05686b;
+  color: #fff;
+  border-color: #05686b;
+  font-size: 0.78rem;
+  padding: 0 11px;
+}
+.ir-zoom button.ir-zoom-reset:hover {
+  background: #044e50;
+}
+
+.ir-svg-wrap {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 45%, #eef8f8 0%, #d8eded 100%);
+  border: 1px solid #c7e2e2;
+}
+.iran-map svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  touch-action: none;
+  cursor: grab;
+  background: transparent;
+}
+.iran-map svg:active {
+  cursor: grabbing;
+}
+
+.ir-sea-label {
+  font-family: Kalameh, Tahoma, sans-serif;
+  font-size: 11.5px;
+  font-weight: 800;
+  fill: #0d7476;
+  opacity: 0.52;
+  letter-spacing: 0.03em;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* High specificity (0,2,2) to beat site.css .iran-map path (0,1,1) */
+.iran-map svg path.ir-prov {
+  fill: #d7eeee;
+  stroke: #05686b;
+  stroke-width: 1.25px;
+  vector-effect: non-scaling-stroke;
+  cursor: pointer;
+  transition: fill 0.18s ease, stroke 0.18s ease, opacity 0.18s ease;
+}
+.iran-map svg path.ir-prov.tier-1 { fill: #dff2f2; }
+.iran-map svg path.ir-prov.tier-2 { fill: #c6e8e8; }
+.iran-map svg path.ir-prov.tier-3 { fill: #a6dbdb; }
+.iran-map svg path.ir-prov.tier-4 { fill: #84cccc; }
+
+.iran-map svg path.ir-prov:hover {
+  fill: #5eead4;
+  stroke: #033a3c;
+  stroke-width: 1.9px;
+}
+.iran-map svg path.ir-prov.is-hot {
+  fill: #5eead4;
+  stroke: #033a3c;
+  stroke-width: 2.3px;
+}
+/* Keep neighboring provinces clearly visible when zoomed in so Iran's map borders never disappear */
+.iran-map svg path.ir-prov.is-dim {
+  fill: #e3f1f1;
+  stroke: #05686b;
+  stroke-width: 1.05px;
+  stroke-opacity: 0.58;
+  opacity: 0.84;
+}
+
+/* Country-view non-overlapping province count badges */
+.ir-prov-badge {
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+.ir-prov-badge rect {
+  fill: rgba(255, 255, 255, 0.92);
+  stroke: #05686b;
+  stroke-width: 1px;
+  filter: drop-shadow(0 2px 4px rgba(5, 68, 70, 0.14));
+}
+.ir-prov-badge text {
+  font-family: Kalameh, Tahoma, sans-serif;
+  font-size: 9.2px;
+  font-weight: 800;
+  fill: #053b3d;
+}
+.ir-prov-badge:hover rect {
+  fill: #05686b;
+}
+.ir-prov-badge:hover text {
+  fill: #fff;
+}
+
+/* Hospital & Surgery Center Pins */
+.ir-pin {
+  cursor: pointer;
+}
+.ir-hit {
+  fill: transparent;
+}
+.ir-dot {
+  fill: #0b7a75;
+  stroke: #ffffff;
+  stroke-width: 0.85px;
+  vector-effect: non-scaling-stroke;
+}
+.ir-pin--surgery .ir-dot {
+  fill: #d97706;
+  stroke: #ffffff;
+}
+.ir-pin.is-dim {
+  opacity: 0.14;
+  pointer-events: none;
+}
+.ir-pin.is-on .ir-dot {
+  fill: #f59e0b;
+  stroke: #033a3c;
+  stroke-width: 2px;
+}
+
+/* Zoomed-in City Cluster Badges (scaled dynamically in JS) */
+.ir-city {
+  cursor: pointer;
+}
+.ir-city rect {
+  fill: rgba(255, 255, 255, 0.95);
+  stroke: #05686b;
+}
+.ir-city text {
+  font-weight: 800;
+  fill: #062f31;
+  font-family: Kalameh, Tahoma, sans-serif;
+}
+.ir-city.is-on rect,
+.ir-city:hover rect {
+  fill: #05686b;
+  stroke: #033a3c;
+}
+.ir-city.is-on text,
+.ir-city:hover text {
+  fill: #ffffff;
+}
+
+/* Docked Facility ID Card inside .ir-svg-wrap */
 .ir-card {
-  position: absolute; z-index: 5; width: min(280px, calc(100% - 16px));
-  background: var(--surface, #fff); color: var(--ink, #0a2e32);
-  border: 1px solid var(--line, #d5e8e8); border-radius: 16px; padding: 12px 12px 10px;
-  box-shadow: 0 16px 36px rgba(6, 40, 42, .18);
+  position: absolute;
+  z-index: 6;
+  bottom: 10px;
+  inset-inline-start: 10px;
+  width: min(310px, calc(100% - 20px));
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(10px);
+  color: var(--ink, #072a2d);
+  border: 1.5px solid #05686b;
+  border-radius: 16px;
+  padding: 12px 14px;
+  box-shadow: 0 14px 32px rgba(4, 45, 47, 0.22);
 }
-.ir-card h3 { font-size: 1rem; line-height: 1.45; margin: 0 0 4px; }
-.ir-card-kicker, .ir-card-place { margin: 0 0 6px; color: var(--muted, #4e686b); font-size: .82rem; }
+.ir-card h3 {
+  font-size: 0.98rem;
+  line-height: 1.4;
+  margin: 0 0 4px;
+  padding-inline-end: 22px;
+  color: #04383a;
+}
+.ir-card-kicker {
+  margin: 0 0 2px;
+  color: #0d9488;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+.ir-card-place {
+  margin: 0 0 8px;
+  color: var(--muted, #4e686b);
+  font-size: 0.8rem;
+}
 .ir-card-x {
-  position: absolute; top: 6px; inset-inline-end: 6px; border: 0; background: transparent;
-  font-size: 1.3rem; line-height: 1; cursor: pointer; color: inherit;
+  position: absolute;
+  top: 8px;
+  inset-inline-end: 8px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid #cde4e4;
+  background: #f2f9f9;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #054a4d;
+  display: grid;
+  place-items: center;
 }
-.ir-badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; }
+.ir-card-x:hover {
+  background: #05686b;
+  color: #fff;
+}
+.ir-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 10px;
+}
 .ir-badge {
-  border-radius: 999px; padding: 2px 8px; font-size: .75rem; font-weight: 800;
-  background: #e8f3f3; color: #015F61;
+  border-radius: 999px;
+  padding: 2px 9px;
+  font-size: 0.74rem;
+  font-weight: 800;
+  background: #e2f5f5;
+  color: #044e50;
 }
-.ir-badge--own { background: #f3fafa; border: 1px solid #d5e8e8; }
-.ir-routes { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; font-weight: 800; font-size: .82rem; }
-.ir-legend { display: flex; gap: 14px; justify-content: center; margin-top: 6px; font-size: .82rem; font-weight: 700; }
-.ir-lg { display: inline-block; width: 10px; height: 10px; margin-inline-end: 4px; background: #0e7475; border-radius: 50%; vertical-align: -1px; }
-.ir-lg--s { border-radius: 2px; transform: rotate(45deg); background: #05686b; }
-.iran-table tr { cursor: pointer; }
-.iran-table tr.is-on { background: #e8f3f3; outline: 2px solid #05686b; }
-[data-theme="dark"] .ir-prov.is-hot, [data-theme="noir"] .ir-prov.is-hot { fill: #1d5558; }
-[data-theme="dark"] .ir-dot, [data-theme="noir"] .ir-dot { stroke: #062226; }
-[data-theme="dark"] .ir-city rect, [data-theme="noir"] .ir-city rect { fill: #0b2427; stroke: #5eead4; }
-[data-theme="dark"] .ir-city text, [data-theme="noir"] .ir-city text { fill: #e8f3f3; }
-[data-theme="dark"] .ir-city.is-on rect, [data-theme="noir"] .ir-city.is-on rect { fill: #0e7475; }
-[data-theme="dark"] .ir-badge, [data-theme="noir"] .ir-badge { background: #12383c; color: #d7f4f4; }
-[data-theme="dark"] .ir-badge--own, [data-theme="noir"] .ir-badge--own { background: #0b2427; border-color: rgba(127,220,221,.3); }
-[data-theme="dark"] .iran-table tr.is-on, [data-theme="noir"] .iran-table tr.is-on { background: #12383c; outline-color: #5eead4; }
-[data-theme="dark"] .ir-card, [data-theme="noir"] .ir-card { box-shadow: 0 16px 36px rgba(0,0,0,.45); }
+.ir-badge--own {
+  background: #f5fafa;
+  border: 1px solid #cde4e4;
+}
+.ir-routes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+}
+.ir-route-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 11px;
+  border-radius: 10px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-decoration: none;
+  border: 1px solid #05686b;
+  color: #05686b;
+  background: #fff;
+}
+.ir-route-btn--primary {
+  background: #05686b;
+  color: #fff !important;
+}
+.ir-route-btn:hover {
+  opacity: 0.92;
+}
+
+.ir-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line, #e2f0f0);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.ir-legend-hint {
+  color: var(--muted, #4e686b);
+  font-weight: 600;
+  font-size: 0.76rem;
+}
+.ir-lg {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-inline-end: 5px;
+  background: #0b7a75;
+  border-radius: 50%;
+  vertical-align: -1px;
+}
+.ir-lg--s {
+  border-radius: 2px;
+  transform: rotate(45deg);
+  background: #d97706;
+}
+
+/* Filter Toolbar & City Strip */
+.iran-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding: 12px;
+  border-radius: 16px;
+  background: var(--surface, #fff);
+  border: 1px solid var(--line, #d5e8e8);
+}
+.iran-tools-row1 {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.iran-tools-row1 .search {
+  flex: 1 1 auto;
+  max-width: none !important;
+  min-width: 0;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid var(--line, #c5e0e0);
+  padding: 0 12px;
+  background: var(--surface, #fff);
+  color: inherit;
+  font: inherit;
+}
+.iran-tools-row1 .count {
+  flex: none;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #e6f5f5;
+  color: #044e50;
+  font-weight: 800;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+.iran-tools-row2 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.iran-tools-row2 select {
+  width: 100%;
+  min-width: 0;
+  height: 40px;
+  border-radius: 11px;
+  border: 1px solid var(--line, #c5e0e0);
+  padding: 0 10px;
+  background: var(--surface, #fff);
+  color: inherit;
+  font: inherit;
+  font-size: 0.86rem;
+}
+
+.ir-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 10px;
+  padding: 8px 10px;
+  max-height: 82px;
+  overflow-y: auto;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--brand, #05686b) 5%, var(--surface, #fff));
+  border: 1px solid var(--line, #d5e8e8);
+}
+.ir-pills button {
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.78rem;
+  border-radius: 999px;
+  cursor: pointer;
+  border: 1px solid var(--line, #c5e0e0);
+  background: var(--surface, #fff);
+  color: inherit;
+  padding: 3px 10px;
+  transition: all 0.15s ease;
+}
+.ir-pills button[aria-pressed="true"] {
+  background: var(--brand, #05686b);
+  color: #fff;
+  border-color: transparent;
+}
+.ir-pills button b {
+  font-weight: 800;
+  opacity: 0.9;
+}
+
+/* Searchable Centers Table */
+.iran-scroll {
+  max-height: 540px;
+  overflow: auto;
+  border: 1px solid var(--line, #d5e8e8);
+  border-radius: 16px;
+  background: var(--surface, #fff);
+}
+.iran-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+.iran-table th,
+.iran-table td {
+  text-align: start;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line, #e5eeee);
+  vertical-align: middle;
+}
+.iran-table th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #eff8f8;
+  color: #044e50;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.iran-table tbody tr {
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+.iran-table tbody tr:hover {
+  background: #f3fafa;
+}
+.iran-table tbody tr.is-on {
+  background: #dff4f4;
+  outline: 2px solid #05686b;
+  outline-offset: -2px;
+}
+.ir-tbl-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.ir-tbl-badge--hospital {
+  background: #e3f5f5;
+  color: #05686b;
+}
+.ir-tbl-badge--surgery {
+  background: #fef3c7;
+  color: #b45309;
+}
+.ir-tbl-own {
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+.ir-tbl-own.is-muted {
+  color: var(--muted, #738c8e);
+  font-weight: 400;
+}
+.resume-intro {
+  padding: 18px;
+  border-radius: 18px;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 960px) {
+  .iran-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 640px) {
+  .iran-tools-row1 {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .iran-tools-row1 .count {
+    align-self: flex-start;
+  }
+  .iran-tools-row2 {
+    grid-template-columns: 1fr;
+  }
+  .ir-stage-sep {
+    display: none;
+  }
+}
+
+/* Dark / Noir Theme Support */
+[data-theme="dark"] .ir-stage-bar,
+[data-theme="noir"] .ir-stage-bar {
+  background: #0c262a;
+  border-color: rgba(94, 234, 212, 0.22);
+}
+[data-theme="dark"] .ir-region-pill,
+[data-theme="noir"] .ir-region-pill,
+[data-theme="dark"] .iran-tools-row1 .count,
+[data-theme="noir"] .iran-tools-row1 .count {
+  background: #12383c;
+  color: #5eead4;
+}
+[data-theme="dark"] .ir-svg-wrap,
+[data-theme="noir"] .ir-svg-wrap {
+  background: radial-gradient(circle at 50% 45%, #0d282c 0%, #07171a 100%);
+  border-color: rgba(94, 234, 212, 0.24);
+}
+[data-theme="dark"] .ir-sea-label,
+[data-theme="noir"] .ir-sea-label {
+  fill: #5eead4;
+  opacity: 0.45;
+}
+[data-theme="dark"] .iran-map svg path.ir-prov,
+[data-theme="noir"] .iran-map svg path.ir-prov {
+  fill: #112e33;
+  stroke: #2dd4bf;
+  stroke-width: 1.2px;
+}
+[data-theme="dark"] .iran-map svg path.ir-prov.tier-1,
+[data-theme="noir"] .iran-map svg path.ir-prov.tier-1 { fill: #0f292e; }
+[data-theme="dark"] .iran-map svg path.ir-prov.tier-2,
+[data-theme="noir"] .iran-map svg path.ir-prov.tier-2 { fill: #14363c; }
+[data-theme="dark"] .iran-map svg path.ir-prov.tier-3,
+[data-theme="noir"] .iran-map svg path.ir-prov.tier-3 { fill: #19454d; }
+[data-theme="dark"] .iran-map svg path.ir-prov.tier-4,
+[data-theme="noir"] .iran-map svg path.ir-prov.tier-4 { fill: #1f5761; }
+
+[data-theme="dark"] .iran-map svg path.ir-prov:hover,
+[data-theme="noir"] .iran-map svg path.ir-prov:hover,
+[data-theme="dark"] .iran-map svg path.ir-prov.is-hot,
+[data-theme="noir"] .iran-map svg path.ir-prov.is-hot {
+  fill: #0d9488;
+  stroke: #99f6e4;
+}
+[data-theme="dark"] .iran-map svg path.ir-prov.is-dim,
+[data-theme="noir"] .iran-map svg path.ir-prov.is-dim {
+  fill: #0b2024;
+  stroke: #2dd4bf;
+  stroke-opacity: 0.42;
+  opacity: 0.78;
+}
+[data-theme="dark"] .ir-prov-badge rect,
+[data-theme="noir"] .ir-prov-badge rect,
+[data-theme="dark"] .ir-city rect,
+[data-theme="noir"] .ir-city rect {
+  fill: rgba(11, 36, 39, 0.94);
+  stroke: #5eead4;
+}
+[data-theme="dark"] .ir-prov-badge text,
+[data-theme="noir"] .ir-prov-badge text,
+[data-theme="dark"] .ir-city text,
+[data-theme="noir"] .ir-city text {
+  fill: #e8f3f3;
+}
+[data-theme="dark"] .ir-city.is-on rect,
+[data-theme="noir"] .ir-city.is-on rect {
+  fill: #0d9488;
+}
+[data-theme="dark"] .ir-dot,
+[data-theme="noir"] .ir-dot {
+  fill: #2dd4bf;
+  stroke: #062226;
+}
+[data-theme="dark"] .ir-pin--surgery .ir-dot,
+[data-theme="noir"] .ir-pin--surgery .ir-dot {
+  fill: #fbbf24;
+}
+[data-theme="dark"] .ir-card,
+[data-theme="noir"] .ir-card {
+  background: rgba(11, 36, 39, 0.96);
+  border-color: #2dd4bf;
+  color: #e8f3f3;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+}
+[data-theme="dark"] .ir-card h3,
+[data-theme="noir"] .ir-card h3 {
+  color: #f0fdfa;
+}
+[data-theme="dark"] .ir-badge,
+[data-theme="noir"] .ir-badge {
+  background: #12383c;
+  color: #d7f4f4;
+}
+[data-theme="dark"] .ir-badge--own,
+[data-theme="noir"] .ir-badge--own {
+  background: #0b2427;
+  border-color: rgba(127, 220, 221, 0.3);
+}
+[data-theme="dark"] .iran-table th,
+[data-theme="noir"] .iran-table th {
+  background: #12383c;
+  color: #e8f3f3;
+}
+[data-theme="dark"] .iran-table tbody tr:hover,
+[data-theme="noir"] .iran-table tbody tr:hover {
+  background: rgba(45, 212, 191, 0.08);
+}
+[data-theme="dark"] .iran-table tbody tr.is-on,
+[data-theme="noir"] .iran-table tbody tr.is-on {
+  background: #12383c;
+  outline-color: #5eead4;
+}
+
+.ir-pills[hidden],
+.ir-card[hidden],
+.empty-msg[hidden] {
+  display: none !important;
+}
+
+.iran-tools .search input {
+  padding-inline-start: 2.35rem !important;
+  padding-inline-end: 0.9rem !important;
+}
+.iran-tools .select {
+  padding: 0.52rem 0.85rem !important;
+}
+.ir-pills {
+  margin-bottom: 0.75rem !important;
+}
+.iran-table th,
+.iran-table td {
+  padding: 0.65rem 0.85rem !important;
+  vertical-align: middle !important;
+}
