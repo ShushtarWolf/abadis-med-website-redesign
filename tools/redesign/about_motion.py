@@ -210,8 +210,36 @@ def membership_section(lang, prefix):
     )
 
 
+def sync_about_partners(html, lang, prefix):
+    """Replace the EN/AR partner dump with the four live n3 cards. Idempotent."""
+    if lang not in ('en', 'ar'):
+        return html
+    if ('id="partners"' in html and 'goharangostar.com' in html
+            and html.count('class="card partner reveal n3-card"') >= 4):
+        return html
+    from pages_company import partners_section
+    section = partners_section(lang, prefix)
+    if lang == 'en':
+        start_h, end_h = '<h2>Business Partners</h2>', '<h2>Membership</h2>'
+        i = html.find(start_h)
+        j = html.find(end_h, i + len(start_h)) if i >= 0 else -1
+    else:
+        img = html.find('Group-2.jpg')
+        i = html.rfind('<h2', 0, img) if img >= 0 else -1
+        j = html.find('<h2', img) if img >= 0 else -1
+    if i < 0 or j < 0:
+        return html
+    sec = html.rfind('<section', 0, i)
+    sec2 = html.rfind('<section', i, j)
+    if sec < 0 or sec2 <= sec:
+        return html
+    return html[:sec] + section + '\n' + html[sec2:]
+
+
 def inject_about_motion(html, lang, prefix):
-    """Idempotent: add the orbit, membership grid, and N3 classes on EN/AR About."""
+    """Idempotent: add the orbit, membership grid, partner cards, and N3 classes on EN/AR About."""
+    if lang in ('en', 'ar'):
+        html = sync_about_partners(html, lang, prefix)
     if lang not in ('en', 'ar') or 'ab-orbit-fit' in html:
         html = _n3_classes(html)
         return html

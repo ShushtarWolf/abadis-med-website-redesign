@@ -254,10 +254,110 @@ def _team_html(p, members, cls):
     return f'<div class="team-grid {cls}">{"".join(out)}</div>'
 
 
+# Live «شرکای تجاری» / Business Partners (abadis-med.com/درباره-ما/ and /en/about-us/, 2026-10-27).
+# Arabic has no separate live partner block; its cards use the English page's wording.
+_PARTNER_H = {'fa': 'شرکای تجاری', 'en': 'Business Partners', 'ar': 'الشركاء التجاريون'}
+_PARTNER_LINK = {'fa': 'وب سایت مجموعه', 'en': 'Visit Website', 'ar': 'زيارة الموقع'}
+PARTNERS = [
+    {
+        'img': {
+            'fa': 'https://abadis-med.com/wp-content/uploads/2022/12/gulf-innovation-gate-1030x510-1-1024x507.png',
+            'en': 'https://www.abadis-med.com/en/wp-content/uploads/2026/10/gulf-innovation-gate-logo.png',
+            'ar': 'https://www.abadis-med.com/en/wp-content/uploads/2026/10/gulf-innovation-gate-logo.png',
+        },
+        'href': 'https://gulfinnovationgate.com/',
+        'alt': 'Gulf Innovation Gate',
+        'text': {
+            'fa': 'شرکت Gulf Innovation Gate، مستقر در مسقط عمان، در زمینه تأمین و توزیع تجهیزات پزشکی یک‌بارمصرف در کشورهای حوزه خلیج فارس فعالیت می‌کند. این شرکت با تمرکز بر کیفیت، ایمنی و نوآوری، به نیازهای مراکز درمانی پاسخ می‌دهد و ارتقای خدمات سلامت و توجه به محیط‌زیست را از محورهای اصلی فعالیت خود می‌داند.',
+            'en': 'Based in Muscat, Oman, Gulf Innovation Gate specializes in supplying and distributing disposable medical equipment across the Gulf Cooperation Council (GCC) countries. With a focus on quality, safety, and innovation, the company serves the needs of healthcare facilities while supporting better healthcare and environmental responsibility.',
+            'ar': 'تتخذ شركة Gulf Innovation Gate من مسقط في سلطنة عُمان مقرًا لها، وتتخصص في توريد وتوزيع المعدات الطبية ذات الاستخدام الواحد في دول مجلس التعاون الخليجي. وتركّز على الجودة والسلامة والابتكار لتلبية احتياجات المنشآت الصحية، ودعم رعاية صحية أفضل والمسؤولية تجاه البيئة.',
+        },
+    },
+    {
+        'img': {
+            'fa': 'https://abadis-med.com/wp-content/uploads/2022/12/Group-2.jpg',
+            'en': 'https://abadis-med.com/wp-content/uploads/2022/12/Group-2.jpg',
+            'ar': 'https://abadis-med.com/wp-content/uploads/2022/12/Group-2.jpg',
+        },
+        'href': {'fa': 'https://goharangostar.com/fa/', 'en': 'https://goharangostar.com/', 'ar': 'https://goharangostar.com/'},
+        'alt': {'fa': 'گوهران گستر نادین', 'en': 'Goharan Gostar Nadin', 'ar': 'گوهران گستر نادین'},
+        'text': {
+            'fa': 'شرکت دانش‌بنیان گوهران گستر نادین در زمینه توسعه و تولید فیلترهای متخلخل و محصولات پلیمری فعالیت می‌کند. این شرکت با تکیه بر دانش فنی و نوآوری، بر ارائه راهکارهای فیلتراسیون متناسب با نیاز صنایع تمرکز دارد و ارتقای کیفیت و عملکرد محصولات را محور فعالیت خود قرار داده است.',
+            'en': 'Goharan Gostar Nadin is a knowledge-based company specializing in the development and manufacture of porous filters and polymer products. Drawing on technical expertise and innovation, the company provides filtration solutions tailored to industrial needs, with a focus on improving product quality and performance.',
+            'ar': 'شركة گوهران گستر نادین (Goharan Gostar Nadin) شركة قائمة على المعرفة، تعمل في تطوير وإنتاج الفلاتر المسامية والمنتجات البوليمرية. وتعتمد على الخبرة الفنية والابتكار لتقديم حلول ترشيح تناسب احتياجات الصناعات، وتجعل رفع جودة المنتجات وأدائها محور عملها.',
+        },
+    },
+    {
+        'img': {
+            'fa': 'https://abadis-med.com/wp-content/uploads/2023/12/v-mn-02-1.webp',
+            'en': 'https://abadis-med.com/wp-content/uploads/2023/12/v-mn-02-1.webp',
+            'ar': 'https://abadis-med.com/wp-content/uploads/2023/12/v-mn-02-1.webp',
+        },
+        'href': 'https://virakam.com/',
+        'alt': {'fa': 'ویراکام', 'en': 'Virakam', 'ar': 'ویراکام'},
+        'text': {
+            'fa': 'ویراکام در حوزه هوش تجاری و تحلیل داده فعالیت می‌کند و به کسب‌وکارها کمک می‌کند داده‌های خود را به شناخت دقیق و تصمیم‌های مؤثر تبدیل کنند. ما با طراحی داشبوردهای مدیریتی و راهکارهای تحلیلی، مسیر پایش عملکرد، شناسایی فرصت‌ها و بهبود فرایندهای سازمان را هموار می‌کنیم.',
+            'en': 'Virakam specializes in business intelligence and data analytics, helping businesses turn their data into clear insights and informed decisions. Through management dashboards and analytical solutions, we help organizations monitor performance, identify opportunities, and improve their processes.',
+            'ar': 'تعمل ويراكام (Virakam) في مجال ذكاء الأعمال وتحليل البيانات، وتساعد المؤسسات على تحويل بياناتها إلى معرفة دقيقة وقرارات فعّالة. ومن خلال لوحات المعلومات الإدارية والحلول التحليلية، تيسّر متابعة الأداء واكتشاف الفرص وتحسين عمليات المؤسسة.',
+        },
+    },
+    {
+        'img': {
+            'fa': 'https://abadis-med.com/wp-content/uploads/2026/10/logo-ADPmed.jpg',
+            'en': 'https://www.abadis-med.com/en/wp-content/uploads/2026/10/logo-adp.png',
+            'ar': 'https://www.abadis-med.com/en/wp-content/uploads/2026/10/logo-adp.png',
+        },
+        'href': {'fa': 'https://abadis-med.com/', 'en': 'https://www.abadis-med.com/en/', 'ar': 'https://abadis-med.com/'},
+        'alt': {'fa': 'شرکت ابزار درمان پرشیا', 'en': 'Abzar Darman Persia', 'ar': 'شركة ابزار درمان پرشيا'},
+        'text': {
+            'fa': 'شرکت ابزار درمان پرشیا در زمینه بازرگانی و تأمین تجهیزات پزشکی فعالیت می‌کند و هدف خود را پاسخ‌گویی به نیازهای مراکز درمانی و فعالان حوزه سلامت قرار داده است. ما با تمرکز بر کیفیت محصولات، تأمین مطمئن و ارتباط مسئولانه با مشتریان، در مسیر ایجاد همکاری‌های پایدار و ارتقای خدمات سلامت گام برمی‌داریم.',
+            'en': 'Abzar Darman Persia specializes in trading and supplying medical equipment to meet the needs of healthcare facilities and professionals. With a focus on product quality, reliable supply, and responsive customer service, we strive to build lasting partnerships and support better healthcare.',
+            'ar': 'تتخصص شركة ابزار درمان پرشيا (Abzar Darman Persia) في تجارة وتوريد المعدات الطبية، وتهدف إلى تلبية احتياجات المنشآت الصحية والعاملين في القطاع الصحي. ومع التركيز على جودة المنتجات والتوريد الموثوق والتواصل المسؤول مع العملاء، تمضي في بناء شراكات مستدامة والارتقاء بخدمات الصحة.',
+        },
+    },
+]
+
+
+def _partner_field(spec, key, lang):
+    val = spec[key]
+    if isinstance(val, dict):
+        return val.get(lang) or val.get('fa') or ''
+    return val
+
+
+def partners_html(lang, prefix):
+    """Four n3 partner cards. Logos and «وب سایت مجموعه» both open the live site."""
+    cards = []
+    for spec in PARTNERS:
+        href = _partner_field(spec, 'href', lang)
+        alt = _partner_field(spec, 'alt', lang)
+        url = _partner_field(spec, 'img', lang)
+        pic = picture(prefix, url, alt, 600) or picture(prefix, _partner_field(spec, 'img', 'fa'), alt, 600)
+        logo = f'<a href="{esc(href)}" target="_blank" rel="noopener">{pic}</a>' if pic else ''
+        text = _partner_field(spec, 'text', lang)
+        label = _PARTNER_LINK.get(lang, _PARTNER_LINK['en'])
+        cards.append(
+            f'<div class="card partner reveal n3-card"><div class="logo-box">{logo}</div>'
+            f'<p>{esc(text)}</p>'
+            f'<a class="more-link" href="{esc(href)}" target="_blank" rel="noopener">{esc(label)} ↗</a></div>'
+        )
+    return ''.join(cards)
+
+
+def partners_section(lang, prefix):
+    h = _PARTNER_H.get(lang, _PARTNER_H['en'])
+    return (
+        f'<section class="section section--alt" id="partners"><div class="wrap">'
+        f'<h2 class="reveal" style="margin-bottom:20px">{esc(h)}</h2>'
+        f'<div class="grid g-4">{partners_html(lang, prefix)}</div>'
+        f'</div></section>'
+    )
+
+
 def about(write):
     """About page from the LIVE abadis-med.com/درباره-ما/ (data/about_live.json, fetched 2026-10-14).
     Team order is exactly live: desktop list on desktop, mobile list on mobile (the live site has two)."""
-    p = '../'; d = load('about_live.json'); bl = B('/درباره-ما/')
+    p = '../'; d = load('about_live.json')
     copy = about_copy('fa')
     lead = copy['intro'][0]
     intro = live_intro_html('fa')
@@ -288,13 +388,6 @@ def about(write):
         h3 = f'<h3 lang="en">{esc(label)}</h3>' if key == 'imed' else f'<h3>{esc(label)}</h3>'
         cert_blocks.append(f'<div class="cert-group reveal" id="certs-{key}">{h3}<div class="cert-wall">{"".join(grouped[key])}</div></div>')
     certs_html = f'<div class="cert-groups">{"".join(cert_blocks)}</div>'
-    pb = [b for b in bl if b.get('sec') == '70f87b0' and b['t'] in ('img', 'html', 'btn')]
-    partners = []
-    for k in range(0, len(pb) - 2, 3):
-        im, tx, bt = pb[k:k + 3]
-        logo = picture(p, im['src'], im.get('alt', ''), 600)
-        link = f'<a class="more-link" href="{esc(bt["href"])}" target="_blank" rel="noopener">{esc(bt["text"])} ↗</a>' if bt.get('href') else ''
-        partners.append(f'<div class="card partner reveal n3-card"><div class="logo-box">{logo}</div>{tx["html"]}{link}</div>')
     slogan = ''.join(f'<span class="slogan-line" style="--i:{n}">{esc(x)}</span>' for n, x in enumerate(SLOGAN_ABOUT))
     hero = f'''  <section class="page-hero about-hero">
     <video class="about-hero-video" muted loop playsinline autoplay preload="metadata" poster="{p}assets/media/hero-or-zagros-poster.jpg" aria-hidden="true" tabindex="-1" disablepictureinpicture disableremoteplayback><source src="{p}assets/media/hero-or-zagros.mp4" type="video/mp4"></video>
@@ -327,10 +420,7 @@ def about(write):
     <p class="reveal" style="margin-bottom:18px">همهٔ {fa(n)} مجوز، گواهینامه و تقدیرنامهٔ منتشرشده در سایت آبادیس.</p>
     {certs_html}
   </div></section>
-  <section class="section section--alt" id="partners"><div class="wrap">
-    <h2 class="reveal" style="margin-bottom:20px">شرکای تجاری</h2>
-    <div class="grid g-3">{''.join(partners)}</div>
-  </div></section>
+  {partners_section('fa', p)}
   <section class="section" id="team"><div class="wrap">
     <h2 class="reveal" style="margin-bottom:20px">آشنایی با تیم اجرایی</h2>
     {_team_html(p, d['team']['desktop'], 'team--desktop')}
