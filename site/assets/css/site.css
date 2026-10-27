@@ -1426,12 +1426,81 @@ html[lang="en"] input, html[lang="en"] select, html[lang="en"] textarea, html[la
 .job-facts dd { margin: 0; }
 @media (max-width: 760px) { .job-layout { grid-template-columns: 1fr; } .job-facts { position: static; } }
 
+/* Background videos: iOS Low Power Mode paints a native play glyph on a visible
+   paused <video>. Hide WebKit controls, and keep the element invisible until it
+   is actually playing. The poster stays on the container. */
+video:not([controls])::-webkit-media-controls,
+video:not([controls])::-webkit-media-controls-panel,
+video:not([controls])::-webkit-media-controls-play-button,
+video:not([controls])::-webkit-media-controls-start-playback-button,
+video:not([controls])::-webkit-media-controls-overlay-play-button,
+video:not([controls])::-webkit-media-controls-enclosure,
+video:not([controls])::-webkit-media-controls-overlay-enclosure,
+video:not([controls])::-internal-media-controls-overlay-cast-button {
+  display: none !important;
+  -webkit-appearance: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+video:not([controls]):not(.wp-video-shortcode):not(.is-playing) {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 /* about (live 2026-10): hero video + slogan, cert wall, two live team orders */
 .about-hero { position: relative; overflow: hidden; }
-.about-hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .18; z-index: 0; pointer-events: none; }
+.about-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("../media/hero-or-zagros-poster.jpg") center / cover no-repeat;
+  opacity: .18;
+  z-index: 0;
+  pointer-events: none;
+}
+.about-hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 0;
+  pointer-events: none;
+  transition: opacity .35s ease;
+}
+.about-hero-video.is-playing {
+  opacity: .18;
+  visibility: visible;
+}
 .about-hero .wrap { position: relative; z-index: 1; }
 .about-hero-grid { display: block; }
-.about-hero .slogan { color: #e8f3f3; font-size: clamp(1.15rem, 2.6vw, 1.7rem); }
+.slogan,
+.about-hero .slogan {
+  margin: 14px 0 0;
+  font-size: clamp(1.4rem, 3.2vw, 2.25rem);
+  font-weight: 900;
+  line-height: 1.5;
+  color: #fff;
+  letter-spacing: 0;
+}
+.about-hero .slogan .slogan-line:first-child,
+.slogan .slogan-line--main {
+  color: #fff;
+  font-weight: 900;
+}
+.about-hero .slogan .slogan-line:not(:first-child) {
+  color: #8fe3e4;
+  font-weight: 900;
+}
+[data-theme="noir"] .about-hero .slogan .slogan-line:not(:first-child) {
+  color: #c4b5fd;
+}
 .why-list { columns: 3 220px; column-gap: 26px; }
 .why-list li { break-inside: avoid; }
 .cert-groups { display: flex; flex-direction: column; gap: 32px; }
@@ -1447,7 +1516,20 @@ html[lang="en"] input, html[lang="en"] select, html[lang="en"] textarea, html[la
 .member .av img, .member .av video { width: 100%; height: 100%; object-fit: cover; }
 .slogan-line { display: block; opacity: 0; transform: translateY(14px); transition: opacity .7s ease, transform .7s ease; transition-delay: calc(var(--i) * .25s); }
 .reveal.in .slogan-line, .reveal.is-in .slogan-line, .reveal.visible .slogan-line, .slogan.in .slogan-line { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) { .slogan-line { opacity: 1; transform: none; transition: none; } }
+.slogan.slogan-rotator { position: relative; }
+.slogan.slogan-rotator .slogan-line--main { display: block; opacity: 1; transform: none; transition: none; color: #fff; font-weight: 900; }
+.slogan.slogan-rotator .slogan-rotate { display: flex; flex-direction: column; align-items: flex-start; gap: 0.18em; margin-top: 0.25em; }
+.slogan.slogan-rotator .slogan-rotate .slogan-line { display: block; opacity: 0.74; color: #e8f3f3; font-weight: 900; transform: none; transition: opacity .45s ease, transform .45s ease, color .45s ease; }
+.about-hero .slogan.slogan-rotator .slogan-rotate .slogan-line { color: #8fe3e4; }
+.slogan.slogan-rotator .slogan-rotate .slogan-line.is-on { opacity: 1; color: #5eead4; transform: translateX(-4px); }
+[dir="ltr"] .slogan.slogan-rotator .slogan-rotate .slogan-line.is-on { transform: translateX(4px); }
+[data-theme="noir"] .slogan.slogan-rotator .slogan-rotate .slogan-line.is-on,
+[data-theme="noir"] .about-hero .slogan.slogan-rotator .slogan-rotate .slogan-line { color: #c4b5fd; }
+@media (prefers-reduced-motion: reduce) {
+  .slogan-line { opacity: 1; transform: none; transition: none; }
+  .slogan.slogan-rotator .slogan-rotate .slogan-line { position: static; opacity: 1; transform: none; transition: none; display: block; }
+  .slogan.slogan-rotator .slogan-rotate { display: block; min-height: 0; }
+}
 /* maps: responsive on every viewport (live EN/AR iframes ship width=1920) */
 .map-embed { border-radius: 18px; overflow: hidden; border: 1px solid var(--line, #d7e4e4); }
 .map-embed iframe, iframe[src*="google.com/maps"], iframe[src*="neshan.org/maps"] { display: block; width: 100% !important; max-width: 100%; height: 360px; border: 0; border-radius: 18px; }

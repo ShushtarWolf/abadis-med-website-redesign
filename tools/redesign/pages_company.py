@@ -9,6 +9,11 @@ def ext_attr(ext): return ' target="_blank" rel="noopener"' if ext else ''
 
 # ------------------------------------------------------------------ about
 SLOGAN_ABOUT = ['ما به اندازه یک سرانگشت اثر می‌گذاریم،', 'به شما', 'به طبیعت', 'به جهان']   # Abadis-Sign (live)
+SLOGAN_ABOUT_I18N = {
+    'fa': SLOGAN_ABOUT,
+    'en': ['We affect as much as a fingertip', 'To You', 'To Nature', 'To World'],
+    'ar': ['نحن نؤثر بقدر طرف إصبع', 'عليك', 'على الطبيعة', 'على العالم'],
+}
 
 
 def _pva(text):
@@ -81,7 +86,7 @@ def live_story_html(lang):
 
 
 def _strip_liner_bag(body):
-    """Drop the old animated liner-bag image column beside History."""
+    """Drop the old animated liner-bag image column beside History, and empty videos."""
     body = re.sub(
         r'<div data-element_type="widget">\s*<div>\s*<img\b[^>]*ANIMATED-LINER-BAG[^>]*>\s*</div>\s*</div>',
         '',
@@ -92,7 +97,37 @@ def _strip_liner_bag(body):
         '',
         body,
     )
+    body = re.sub(r'<video\b[^>]*>\s*</video>', '', body, flags=re.I)
     return body
+
+
+def slogan_block(lang):
+    lines = SLOGAN_ABOUT_I18N[lang]
+    spans = ''.join(
+        f'<span class="slogan-line" style="--i:{n}">{esc(x)}</span>' for n, x in enumerate(lines))
+    return f'<p class="slogan reveal" aria-label="{esc(" ".join(lines))}">{spans}</p>'
+
+
+def about_hero_video(p):
+    return (
+        f'<video class="about-hero-video" autoplay muted loop playsinline webkit-playsinline '
+        f'disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" '
+        f'poster="{p}assets/media/hero-or-zagros-poster.jpg">'
+        f'<source src="{p}assets/media/hero-or-zagros.mp4" type="video/mp4"></video>'
+    )
+
+
+def about_hero(p, lang, h1_html, crumbs):
+    """About hero: poster/video behind the teal filter, slogan in header type."""
+    return f'''  <section class="page-hero about-hero">
+    {about_hero_video(p)}
+    <div class="wrap about-hero-grid">
+      <div>{crumbs}
+        <h1>{h1_html}</h1>
+        {slogan_block(lang)}
+      </div>
+    </div>
+  </section>'''
 
 
 def apply_live_about(body, lang):
@@ -255,8 +290,10 @@ def _team_html(p, members, cls):
         ph = f'<img src="{img}" alt="{esc(m["name"])} — {esc(m["role"])}" loading="lazy" decoding="async">'
         if m['name'] in TEAM_VIDEOS:   # subtle clip: muted loop autoplay, no controls / play button
             d, n = TEAM_VIDEOS[m['name']]; v = f'{p}assets/team-videos/{d}/{n}'
-            ph = (f'<video class="team-clip" muted loop playsinline autoplay preload="metadata" disablepictureinpicture disableremoteplayback '
-                  f'poster="{v}-poster.webp" aria-label="{esc(m["name"])}" tabindex="-1"><source src="{v}.webm" type="video/webm"><source src="{v}.mp4" type="video/mp4"></video>')
+            ph = (f'<video class="team-clip" autoplay muted loop playsinline webkit-playsinline '
+                  f'disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" '
+                  f'poster="{v}-poster.webp" aria-label="{esc(m["name"])}">'
+                  f'<source src="{v}.webm" type="video/webm"><source src="{v}.mp4" type="video/mp4"></video>')
         out.append(f'<div class="member"><div class="av">{ph}</div><strong>{esc(m["name"])}</strong><span>{esc(m["role"])}</span></div>')
     return f'<div class="team-grid {cls}">{"".join(out)}</div>'
 
@@ -395,16 +432,7 @@ def about(write):
         h3 = f'<h3 lang="en">{esc(label)}</h3>' if key == 'imed' else f'<h3>{esc(label)}</h3>'
         cert_blocks.append(f'<div class="cert-group reveal" id="certs-{key}">{h3}<div class="cert-wall">{"".join(grouped[key])}</div></div>')
     certs_html = f'<div class="cert-groups">{"".join(cert_blocks)}</div>'
-    slogan = ''.join(f'<span class="slogan-line" style="--i:{n}">{esc(x)}</span>' for n, x in enumerate(SLOGAN_ABOUT))
-    hero = f'''  <section class="page-hero about-hero">
-    <video class="about-hero-video" muted loop playsinline autoplay preload="metadata" poster="{p}assets/media/hero-or-zagros-poster.jpg" aria-hidden="true" tabindex="-1" disablepictureinpicture disableremoteplayback><source src="{p}assets/media/hero-or-zagros.mp4" type="video/mp4"></video>
-    <div class="wrap about-hero-grid">
-      <div>{crumbs_html(p)}
-        <h1>آشنایی با <em>آبادیس</em></h1>
-        <p class="slogan reveal" aria-label="{esc(' '.join(SLOGAN_ABOUT))}">{slogan}</p>
-      </div>
-    </div>
-  </section>'''
+    hero = about_hero(p, 'fa', 'آشنایی با <em>آبادیس</em>', crumbs_html(p))
     main = f'''{hero}
   <nav class="anchors" aria-label="بخش‌های صفحه"><div class="wrap"><a href="#intro">درباره ما</a><a href="#history">تاریخچه</a><a href="#why">چرا آبادیس؟</a><a href="#memberships">عضویت‌ها</a><a href="#certs">مجوزها و گواهینامه‌ها</a><a href="#partners">شرکای تجاری</a><a href="#team">تیم اجرایی</a></div></nav>
   <section class="section" id="intro"><div class="wrap prose" style="max-width:1000px">
