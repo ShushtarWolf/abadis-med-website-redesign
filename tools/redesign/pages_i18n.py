@@ -174,8 +174,9 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
         body = inject_about_motion(body, lang, p)
         desc = about_copy(lang)['intro'][0]
     if site_path == 'sdgs/' and lang == 'en':
-        from pages_company import sdg_stats
-        body = f'<div class="sdg-page">{sdg_stats("en")}<div class="prose">{body}</div></div>'
+        from pages_company import finish_sdg_html
+        body = finish_sdg_html(body, 'en')
+        body = f'<div class="sdg-page"><div class="prose">{body}</div></div>'
         desc = ('Abadis Medical Technologies Co., as a pioneering knowledge-based company and the leading manufacturer of disposable suction bags in Iran, '
                 'is committed to aligning its operations with the United Nations Sustainable Development Goals (UN SDGs). '
                 'We believe that industrial development holds true value only when it promotes public health, contributes to the conservation of natural resources, reduces environmental impacts, and encourages a culture of responsible consumption.')
@@ -206,7 +207,7 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
   <section class="section"><div class="wrap prose reveal">{body}</div></section>'''
     else:
         trail = [(chip, None)]
-        wrap = '' if ('id="dealerList"' in body or 'class="sdg-stats"' in body) else ' prose reveal'
+        wrap = '' if ('id="dealerList"' in body or 'class="sdg-page"' in body) else ' prose reveal'
         sec = f'''
   <section class="section"><div class="wrap{wrap}">{body}</div></section>''' if body.strip() else ''
         _hero_mark = {
