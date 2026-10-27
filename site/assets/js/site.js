@@ -116,7 +116,20 @@
     let ticking = false;
     const on = () => {
       if (ticking) return; ticking = true;
-      requestAnimationFrame(() => { ticking = false; header.classList.toggle('scrolled', scrollY > 24); tone(); });
+      requestAnimationFrame(() => {
+        ticking = false;
+        header.classList.toggle('scrolled', scrollY > 24);
+        if (!header.classList.contains('open')) {
+          header.querySelectorAll('.nav-item.open').forEach((el) => {
+            el.classList.remove('open');
+            const t = el.querySelector('.nav-parent');
+            if (t) t.setAttribute('aria-expanded', 'false');
+          });
+          const ae = document.activeElement;
+          if (ae && header.contains(ae) && ae.closest('.nav-item')) ae.blur();
+        }
+        tone();
+      });
     };
     addEventListener('scroll', on, { passive: true });
     addEventListener('resize', on);

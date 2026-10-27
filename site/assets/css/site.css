@@ -155,13 +155,13 @@ a { color: var(--brand); }
   border: 1px solid var(--line); border-top: 1px solid rgba(6,97,99,.45); border-radius: 14px;
   box-shadow: 0 14px 40px rgba(6,46,50,.11);
   backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-  opacity: 0; visibility: hidden; transform: translateY(-6px);
+  opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(-6px);
   transition: opacity .18s ease, transform .18s ease, visibility 0s linear .18s;
 }
 .nav-item.open > .nav-sub,
 .nav-item:hover > .nav-sub,
-.nav-item:focus-within > .nav-sub {
-  opacity: 1; visibility: visible; transform: none;
+.nav-item:has(:focus-visible) > .nav-sub {
+  opacity: 1; visibility: visible; pointer-events: auto; transform: none;
   transition: opacity .18s ease, transform .18s ease;
 }
 .nav-sub a {
@@ -173,17 +173,17 @@ a { color: var(--brand); }
 .nav-sub a[aria-current="page"] { background: var(--chip-bg); color: var(--chip-ink); }
 /* Transparent header: glass panel over hero */
 .header:not(.open) .nav-sub {
-  background: rgba(255,255,255,.78); color: #0a2e32;
-  border-color: rgba(6,97,99,.12); border-top-color: rgba(6,97,99,.55);
-  box-shadow: 0 14px 40px rgba(6,46,50,.11);
+  background: rgba(255,255,255,.95); color: #0a2e32;
+  border-color: rgba(6,97,99,.16); border-top-color: rgba(6,97,99,.55);
+  box-shadow: 0 14px 40px rgba(6,46,50,.16);
 }
 .header:not(.open) .nav-sub a { color: #0a2e32; }
 .header:not(.open) .nav-sub a:hover { background: rgba(6,97,99,.08); color: #0a2e32; }
-.header:not(.open) .nav-sub a[aria-current="page"] { background: rgba(232,243,243,.72); color: #05686b; }
+.header:not(.open) .nav-sub a[aria-current="page"] { background: rgba(232,243,243,.85); color: #05686b; }
 [data-theme="dark"] .header:not(.open) .nav-sub {
-  background: rgba(11,36,39,.72); color: #e8f3f3;
-  border-color: rgba(127,220,221,.14); border-top-color: rgba(14,116,117,.65);
-  box-shadow: 0 14px 40px rgba(0,0,0,.22);
+  background: rgba(11,36,39,.95); color: #e8f3f3;
+  border-color: rgba(127,220,221,.22); border-top-color: rgba(14,116,117,.75);
+  box-shadow: 0 14px 40px rgba(0,0,0,.38);
 }
 [data-theme="dark"] .header:not(.open) .nav-sub a { color: #e8f3f3; }
 [data-theme="dark"] .header:not(.open) .nav-sub a:hover { background: rgba(127,220,221,.1); }
@@ -758,7 +758,7 @@ details.letter[open] summary { margin-bottom: 12px; }
     justify-content: center;
   }
   .site-footer .foot-contact-pills {
-    grid-template-columns: repeat(5, minmax(44px, 1fr));
+    grid-template-columns: repeat(4, minmax(44px, 1fr));
   }
   .site-footer .foot-pill {
     padding: 6px 10px;
@@ -1122,10 +1122,10 @@ html[dir="ltr"] .prose ul, html[dir="ltr"] .prose ol { padding-inline-start: 1.3
   body { overflow-x: clip; }
 }
 
-/* Footer social row: equal icon buttons filling the column. Names stay in aria-label / .sr-only. */
+/* Footer social row: 2 full-width contact rows (tel + mail) above a 4x2 grid of 8 social icons. */
 .site-footer .foot-contact-pills {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
+  grid-template-columns: repeat(4, minmax(44px, 1fr));
   gap: 8px;
   width: 100%;
   max-width: none;
@@ -1194,14 +1194,17 @@ dd:has(> .soc-placeholder) {
   white-space: nowrap !important;
   border: 0 !important;
 }
-/* FAIL 14: tel/mail values must stay readable (override icon-only !important clip).
-   Social pills keep icon-only; maps (Neshan/Google) untouched. */
+/* FAIL 14: tel/mail values stay readable on their own full-width rows across ALL breakpoints
+   (desktop, tablet, mobile) above the 4x2 social icon grid so text never spills into icons. */
 .site-footer .foot-pill--tel,
 .site-footer .foot-pill--mail {
-  justify-content: flex-start;
-  gap: 8px;
-  padding-inline: 12px;
+  grid-column: 1 / -1;
+  justify-content: center;
+  gap: 10px;
+  padding-inline: 14px;
   width: 100%;
+  min-width: 0;
+  overflow: hidden;
 }
 .site-footer .foot-pill--tel .foot-pill-ico,
 .site-footer .foot-pill--mail .foot-pill-ico {
@@ -1221,26 +1224,22 @@ dd:has(> .soc-placeholder) {
   height: auto !important;
   margin: 0 !important;
   padding: 0 !important;
-  overflow: visible !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
   clip: auto !important;
   -webkit-clip-path: none !important;
   clip-path: none !important;
   white-space: nowrap !important;
   border: 0 !important;
-  display: inline !important;
+  display: inline-block !important;
+  max-width: 100%;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
   color: var(--on-deep);
   direction: ltr;
   unicode-bidi: isolate;
-  font-size: inherit;
+  font-size: .84rem;
   line-height: 1.25;
-}
-@media (max-width: 560px) {
-  .site-footer .foot-pill--tel,
-  .site-footer .foot-pill--mail {
-    grid-column: 1 / -1;
-  }
 }
 .site-footer a.foot-addr-link {
   display: flex;
@@ -1561,6 +1560,15 @@ body.academy { background: #f3f8f8; }
 .nav .nav-sub a:hover,
 .nav .nav-sub a:focus-visible,
 .nav .nav-sub a[aria-current="page"] { padding-inline-start: 14px; }
+.site-footer .foot-links a {
+  border-bottom: 0;
+  padding-block: 2px;
+  transition: color .18s ease;
+}
+.site-footer .foot-links a:hover,
+.site-footer .foot-links a:focus-visible {
+  color: var(--deep-accent);
+}
 .site-footer .foot-links a[href$="sdgs/"],
 .site-footer .foot-links a[href$="calculator/"],
 .site-footer .foot-links a[href$="csr/"],
