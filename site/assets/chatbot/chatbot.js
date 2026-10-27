@@ -167,11 +167,9 @@
   };
 
   var SOLUTIONS = [
-    { id: 'fluid', fa: 'مدیریت مایعات', en: 'Fluid management', ar: 'إدارة السوائل' },
-    { id: 'airway', fa: 'راه هوایی', en: 'Airway safety', ar: 'الطريق الهوائي' },
-    { id: 'infection-waste', fa: 'کنترل آلودگی', en: 'Infection control', ar: 'السيطرة على التلوث' },
-    { id: 'or-efficiency', fa: 'اتاق عمل', en: 'Operating room', ar: 'غرفة العمليات' },
-    { id: 'icu-care', fa: 'مراقبت ICU', en: 'ICU care', ar: 'رعاية ICU' }
+    { id: 'fluid', fa: 'مدیریت مایعات و ترشحات بیمارستانی', en: 'Hospital Fluid & Secretion Management', ar: 'إدارة السوائل والإفرازات في المستشفى' },
+    { id: 'airway', fa: 'ایمنی و مراقبت از راه هوایی', en: 'Airway Safety & Care', ar: 'سلامة الطريق الهوائي والعناية به' },
+    { id: 'infection-waste', fa: 'کنترل آلودگی و مدیریت پسماند', en: 'Contamination Control & Waste Management', ar: 'السيطرة على التلوث وإدارة النفايات' }
   ];
   var PRODUCTS = [
     { id: 'canisters-liners', fa: 'کیسه و مخزن', en: 'Liners & canisters', ar: 'الأكياس والخزانات' },
@@ -1349,10 +1347,10 @@
     // 3. Broad "What products does Abadis have?" overview
     if (/^(محصولات|محصولات ابادیس|محصولات شرکت|لیست محصولات|سبد محصولات|چه محصولاتی دارید|چه تولید میکنید|تولیدات ابادیس|all products|what products|product list|your products|ما هي منتجات|منتجات اباديس)$/.test(q) || (/محصولات/.test(q) && q.split(' ').length <= 4 && !/کد|قیمت|گارانتی|کارتن/.test(q))) {
       var prodText = state.lang === 'en'
-        ? 'Abadis Medical manufactures a complete closed-system hospital fluid & airway management portfolio:\n1. Disposable Suction Liners (1 L, 2 L, 3 L — with hydrophobic shutoff filter & optional solidifying powder) and unbreakable Polycarbonate Canisters\n2. Suction Tubes (CH25, CH30, CH35 — clear & ribbed, with or without fingertip control)\n3. Respiratory & Airway Care (disposable suction toothbrush, endotracheal-tube holder)\n4. Vacuum & ICU Accessories (VR-A1 adult & VR-B1 pediatric vacuum regulators, antibacterial & shutoff filters)\n5. Connectors & Stands (600 ml polypropylene receiver, T-connector, silicone tubing, ON/OFF valve, wall/portable clamps, cascade trolley for up to 4 canisters / 12 L).'
+        ? 'Abadis groups its catalogue in eight categories:\n1. Disposable Suction Bag\n2. Suction Canister\n3. Stands & Holders\n4. Connectors\n5. Filter\n6. Suction Tube\n7. Oral Hygiene (suction toothbrush, oral swab, endotracheal-tube fixer)\n8. Other Products (regulator, PVA waste bag, disposable receiver)'
         : state.lang === 'ar'
-        ? 'تنتج شركة خزانات آباديس الطبية منظومة متكاملة لإدارة السوائل والطريق الهوائي في المستشفيات:\n١. أكياس الشفط ذات الاستعمال الواحد (١ و٢ و٣ لتر مع فلتر قطع التدفق ومسحوق التصلب) وخزانات البولي كربونات\n٢. أنابيب الشفط (CH25، CH30، CH35)\n٣. منتجات العناية بالطريق الهوائي (فرشاة الشفط وحامل أنبوب القصبة)\n٤. منظمات الفراغ للكبار والأطفال (VR-A1 / VR-B1) والفلاتر المضادة للبكتيريا\n٥. الملحقات والوصلات وحوامل الترولي (حتى ٤ خزانات على التسلسل).'
-        : 'سبد محصولات تخصصی شرکت دانش‌بنیان مخازن طبی آبادیس شامل ۵ گروه اصلی است:\n۱. کیسه‌های ساکشن یکبارمصرف (در سه سایز ۱، ۲ و ۳ لیتری مجهز به فیلتر قطع‌کننده جریان و پودر جاذب) و مخازن ثابت پلی‌کربنات نشکن\n۲. ابزار ساکشن (ساکشن تیوب شفاف و شیاردار در سایزهای CH25، CH30 و CH35 با و بدون فینگرتیپ)\n۳. مراقبت تنفسی و راه هوایی (مسواک ساکشن یکبارمصرف و نگهدارنده لوله تراشه)\n۴. ملزومات بیهوشی، ICU و مدار وکیوم (رگولاتور ساکشن بزرگسال VR-A1 و اطفال VR-B1، فیلتر آنتی‌باکتریال و فیلتر هیدروفوبیک)\n۵. ملزومات عمومی، اتصالات و پایه‌ها (رسیور ۶۰۰ میلی‌لیتر، اتصال T، کانکتور، شلنگ سیلیکونی، شیر ON/OFF، گیره دیواری و ترولی سری تا ۴ مخزن / ۱۲ لیتر).';
+        ? 'تجمع آباديس كتالوجها في ثماني فئات:\n١. أكياس الشفط ذات الاستخدام الواحد\n٢. علبة الشفط\n٣. الحوامل والمثبتات\n٤. الوصلات\n٥. الفلاتر\n٦. أنبوب الشفط\n٧. نظافة الفم (فرشاة الشفط، المسحة الفموية، مثبّت أنبوب القصبة)\n٨. منتجات أخرى (المنظّم، كيس نفايات PVA، وعاء التجميع)'
+        : 'محصولات آبادیس در هشت گروه است:\n۱. کیسه ساکشن یکبار مصرف\n۲. مخزن ساکشن\n۳. پایه و نگهدارنده‌ها\n۴. اتصالات\n۵. فیلتر\n۶. ساکشن تیوب\n۷. بهداشت دهان (مسواک ساکشن، سواب دهانی، فیکسر لوله تراشه)\n۸. سایر محصولات (رگولاتور، کیسه زباله PVA، رسیور یکبار مصرف)';
       addMsg('bot', fmtMd(prodText) + linkLine('/products/', '/products/') + ctaLine());
       showQuickPrompts();
       return true;

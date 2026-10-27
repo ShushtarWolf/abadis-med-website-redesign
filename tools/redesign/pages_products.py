@@ -4,15 +4,16 @@ from lib import PAGES, esc, strip_tags, best_img, rewrite_html
 from layout import page, page_hero, section_mark
 from render import table, gallery_link, secs
 
-FAMILIES = [  # slug, live path, hub title (verbatim from live hub), hub image, local fallback image
-    ('suction-bag', '/محصولات/کیسه-ساکشن/', 'کیسه های ساکشن', 'https://abadis-med.com/wp-content/uploads/2022/12/کیسه-ساکشن.jpg', 'assets/img/p/p2-main.webp'),
-    ('stand', '/محصولات/پایه/', 'پایه و نگهدارنده', 'https://abadis-med.com/wp-content/uploads/2022/12/پایه-ترولی.jpg', 'assets/img/p/p1-g3-t.webp'),
+FAMILIES = [  # slug, live path, title, hub image, local fallback image
+    ('suction-bag', '/محصولات/کیسه-ساکشن/', 'کیسه ساکشن یکبار مصرف', 'https://abadis-med.com/wp-content/uploads/2022/12/کیسه-ساکشن.jpg', 'assets/img/p/p2-main.webp'),
+    ('canister', '/محصولات/مخزن/', 'مخزن ساکشن', 'https://abadis-med.com/wp-content/uploads/2022/12/AMR_4901.jpg', 'assets/img/p/p3-g1-t.webp'),
+    ('stand', '/محصولات/پایه/', 'پایه و نگهدارنده‌ها', 'https://abadis-med.com/wp-content/uploads/2022/12/پایه-ترولی.jpg', 'assets/img/p/p1-g3-t.webp'),
+    ('connectors', '/محصولات/اتصالات/', 'اتصالات', 'https://abadis-med.com/wp-content/uploads/2022/12/اتصالات-845x684-1.jpg', 'assets/img/p/p2-g3-t.webp'),
     ('filters', '/محصولات/فیلترها/', 'فیلتر', 'https://abadis-med.com/wp-content/uploads/2022/12/فیلتر1-2-845x684-1.jpg', 'assets/img/filters/anti-1-t.webp'),
     ('suction-tube', '/محصولات/ساکشن-تیوب/', 'ساکشن تیوب', 'https://abadis-med.com/wp-content/uploads/2023/02/7e83722522e8aeb7512b7075311316b7__m8ULku2SAG__1-1-300x300.jpg', None),
-    ('canister', '/محصولات/مخزن/', 'مخزن', 'https://abadis-med.com/wp-content/uploads/2022/12/AMR_4901.jpg', 'assets/img/p/p3-g1-t.webp'),
-    ('connectors', '/محصولات/اتصالات/', 'اتصالات', 'https://abadis-med.com/wp-content/uploads/2022/12/اتصالات-845x684-1.jpg', 'assets/img/p/p2-g3-t.webp'),
+    ('oral', None, 'بهداشت دهان', 'https://abadis-med.com/wp-content/uploads/2022/12/19-1024x880.jpg', None),
     ('other', '/محصولات/سایر-محصولات/', 'سایر محصولات',
-     'https://abadis-med.com/wp-content/uploads/2022/12/19-1024x880.jpg', None),
+     'https://abadis-med.com/wp-content/uploads/2022/12/26.jpg', None),
 ]
 # Fallback photos when the item's own image was never archived by the Wayback Machine.
 # Only images that verifiably show that exact product are used (family hub photo / phase-1 asset).
@@ -153,7 +154,8 @@ def related(p, here):
         r = best_img(im, 480) if im else None
         src = (p + r['src']) if r else (p + fb if fb else None)
         ph = f'<div class="ph"><img src="{src}" alt="" loading="lazy" decoding="async"></div>' if src else '<div class="ph txt">آبادیس</div>'
-        cards.append(f'<a class="mini-card" href="../{slug}/">{ph}<strong>{esc(title)}</strong></a>')
+        folder = 'oral-hygiene' if slug == 'oral' else slug
+        cards.append(f'<a class="mini-card" href="../{folder}/">{ph}<strong>{esc(title)}</strong></a>')
     return f'''  <section class="section section--alt" id="more"><div class="wrap">
     <h2 class="reveal" style="margin-bottom:20px">سایر محصولات آبادیس</h2>
     <div class="mini-grid">{''.join(cards)}</div>
@@ -176,7 +178,8 @@ DOCS = {  # real files linked from the live download centre
               (UP + '2024/02/راهنمای-نصب-مخازن-بر-روی-پایه-پرتابل.pdf', 'راهنمای نصب روی پایه پرتابل (PDF)'),
               (UP + '2024/02/راهنمای-نصب-مخازن-بر-روی-کنسول.pdf', 'راهنمای نصب روی کنسول (PDF)'), CAT_ALL],
     'canister': [CAT_ALL], 'connectors': [CAT_ALL],
-    'other': [(UP + '2022/12/endotracheal-tube-holder-catalog-Fa.pdf', 'کاتالوگ نگهدارنده لوله تراشه (PDF)'), CAT_ALL],
+    'oral': [(UP + '2022/12/endotracheal-tube-holder-catalog-Fa.pdf', 'کاتالوگ نگهدارنده لوله تراشه (PDF)'), CAT_ALL],
+    'other': [CAT_ALL],
 }
 def doc_bar(slug, lang='fa'):
     docs = DOCS.get(slug) or []
@@ -224,31 +227,34 @@ HUB_UI = {
 # slug, href from the hub page, title, subtitle (FA subtitle is filled from the family pages)
 HUB_FAMILIES = {
     'fa': [
-        ('suction-bag', 'suction-bag/', 'کیسه های ساکشن'),
-        ('stand', 'stand/', 'پایه و نگهدارنده'),
+        ('suction-bag', 'suction-bag/', 'کیسه ساکشن یکبار مصرف'),
+        ('canister', 'canister/', 'مخزن ساکشن'),
+        ('stand', 'stand/', 'پایه و نگهدارنده‌ها'),
+        ('connectors', 'connectors/', 'اتصالات'),
         ('filters', 'filters/', 'فیلتر'),
         ('suction-tube', 'suction-tube/', 'ساکشن تیوب'),
-        ('canister', 'canister/', 'مخزن'),
-        ('connectors', 'connectors/', 'اتصالات'),
+        ('oral', 'oral-hygiene/', 'بهداشت دهان'),
         ('other', 'other/', 'سایر محصولات'),
     ],
     'en': [
-        ('suction-bag', 'suction-bag/', 'Suction Bag', '1 Liter, 2 Liter, 3 Liter'),
-        ('stand', 'base-and-holder/', 'Base and Holder', 'Trolley, wall clamp, rear part of the portable clamp'),
+        ('suction-bag', 'suction-bag/', 'Disposable Suction Bag', '1 Liter, 2 Liter, 3 Liter'),
+        ('canister', 'canisters/', 'Suction Canister', 'Suction Canisters, Wall Suction, Collection Cup, Fat Collection Canister System'),
+        ('stand', 'base-and-holder/', 'Stands & Holders', 'Trolley, wall clamp, rear part of the portable clamp'),
+        ('connectors', 'connections/', 'Connectors', 'T connector, Connector, Silicone Slang, ON/OFF valve, Accessories'),
         ('filters', 'filters/', 'Filter', 'Antibacterial Filter(Viral Filter), Flow stopper filter, Sintered Filter'),
-        ('suction-tube', '../suction-tube/', 'Suction tube', 'Suction Tube, Fingertip'),
-        ('canister', 'canisters/', 'Canister', 'Suction Canisters, Wall Suction, Collection Cup, Fat Collection Canister System'),
-        ('connectors', 'connections/', 'Connections', 'T connector, Connector, Silicone Slang, Regulator, ON/OFF valve, Accessories'),
-        ('other', 'other-products/', 'Other Products', 'Suction Brush, Endotracheal Tube Holder, Disposable Kidney Dish, Splash-Vac'),
+        ('suction-tube', '../suction-tube/', 'Suction Tube', 'Suction Tube, Fingertip'),
+        ('oral', 'oral-hygiene/', 'Oral Hygiene', 'Suction toothbrush, oral swab, endotracheal-tube fixer'),
+        ('other', 'other-products/', 'Other Products', 'Regulator, PVA waste bag, disposable receiver, Splash-Vac'),
     ],
     'ar': [
-        ('suction-bag', '../كيس-الشفط/', 'كيس الشفط', ''),
-        ('stand', '../تثبیت/', 'تثبیت', 'قاعدة تثبيت شفط آباديس المحمولة (ترولي)، مشابك خزان الحائط، مشابك الخزان المحمول'),
-        ('filters', '../الفلتر/', 'الفلتر', ''),
-        ('suction-tube', '../أنبوب-الشفط/', 'أنبوب الشفط', ''),
-        ('canister', '../خزانات/', 'خزانات', 'خزانات الشفط، الشفط الجداري، كوب جمع العينة، جهاز جمع الدهون'),
+        ('suction-bag', '../كيس-الشفط/', 'أكياس الشفط ذات الاستخدام الواحد', ''),
+        ('canister', '../خزانات/', 'علبة الشفط', 'خزانات الشفط، الشفط الجداري، كوب جمع العينة، جهاز جمع الدهون'),
+        ('stand', '../تثبیت/', 'الحوامل والمثبتات', 'قاعدة تثبيت شفط آباديس المحمولة (ترولي)، مشابك خزان الحائط، مشابك الخزان المحمول'),
         ('connectors', '../الوصلات/', 'الوصلات', ''),
-        ('other', '../منتجات-اخری/', 'منتجات اخری', 'فرشاة الشفط، حامل أنبوب القصبة، الوعاء الكلوي، Splash-Vac'),
+        ('filters', '../الفلتر/', 'الفلاتر', ''),
+        ('suction-tube', '../أنبوب-الشفط/', 'أنبوب الشفط', ''),
+        ('oral', '../نظافة-الفم/', 'نظافة الفم', 'فرشاة الشفط، المسحة الفموية، مثبّت أنبوب القصبة'),
+        ('other', '../منتجات-اخری/', 'منتجات أخرى', 'المنظّم، كيس نفايات PVA، وعاء التجميع، Splash-Vac'),
     ],
 }
 # photo id, href from the hub, title, parent family
@@ -267,8 +273,8 @@ SOLUTIONS = {
         ('wallp', 'stand/#wallp', 'پشت گیره مخزن پرتابل', 'پایه و نگهدارنده'),
         ('sdv', 'canister/#sdv', 'ساکشن دیواری', 'مخزن'),
         ('wallg', 'stand/#wallg', 'گیره و مخزن دیواری', 'پایه و نگهدارنده'),
-        ('mesvak', 'other/#mesvak', 'مسواک ساکشن یکبارمصرف', 'سایر محصولات'),
-        ('negahdarande', 'other/#negahdarande', 'نگهدارنده لوله تراشه', 'سایر محصولات'),
+        ('mesvak', 'oral-hygiene/#mesvak', 'مسواک ساکشن یکبارمصرف', 'بهداشت دهان'),
+        ('negahdarande', 'oral-hygiene/#negahdarande', 'نگهدارنده لوله تراشه', 'بهداشت دهان'),
         ('receiver', 'other/#receiver', 'رسیور پزشکی یکبارمصرف', 'سایر محصولات'),
         ('splashvac', 'other/#splashvac', 'مکش سطحی چند منظوره (Splash-Vac)', 'سایر محصولات'),
     ],
@@ -277,8 +283,8 @@ SOLUTIONS = {
         ('wallp', 'base-and-holder/#wallp', 'Rear part of the portable canister clamp', 'Base and Holder'),
         ('sdv', 'canisters/#sdv', 'Wall Suction', 'Canister'),
         ('wallg', 'base-and-holder/#wallg', 'Wall bracket', 'Base and Holder'),
-        ('mesvak', 'other-products/#mesvak', 'Suction Brush', 'Other Products'),
-        ('negahdarande', 'other-products/#negahdarande', 'Endotracheal Tube Holder', 'Other Products'),
+        ('mesvak', 'oral-hygiene/#mesvak', 'Suction Brush', 'Oral Hygiene'),
+        ('negahdarande', 'oral-hygiene/#negahdarande', 'Endotracheal Tube Holder', 'Oral Hygiene'),
         ('receiver', 'other-products/#receiver', 'Disposable Kidney Dish', 'Other Products'),
         ('splashvac', 'other-products/#splashvac', 'Splash-Vac', 'Other Products'),
     ],
@@ -287,8 +293,8 @@ SOLUTIONS = {
         ('wallp', '../تثبیت/#wallp', 'الجزء الخلفي لمشبك الخزان المحمول', 'تثبیت'),
         ('sdv', '../خزانات/#sdv', 'الشفط الجداري', 'خزانات'),
         ('wallg', '../تثبیت/#wallg', 'مشابك خزان الحائط', 'تثبیت'),
-        ('mesvak', '../منتجات-اخری/#mesvak', 'فرشاة أسنان الشفط ذات الاستعمال الواحد', 'منتجات اخری'),
-        ('negahdarande', '../منتجات-اخری/#negahdarande', 'حامل أنبوب القصبة الهوائية', 'منتجات اخری'),
+        ('mesvak', '../نظافة-الفم/#mesvak', 'فرشاة أسنان الشفط ذات الاستعمال الواحد', 'نظافة الفم'),
+        ('negahdarande', '../نظافة-الفم/#negahdarande', 'حامل أنبوب القصبة الهوائية', 'نظافة الفم'),
         ('receiver', '../منتجات-اخری/#receiver', 'وعاء كلوي للاستعمال الواحد', 'منتجات اخری'),
         ('splashvac', '../منتجات-اخری/#splashvac', 'Splash-Vac', 'منتجات اخری'),
     ],
@@ -322,7 +328,7 @@ def fa_summaries():
         if slug == 'suction-bag':
             out[slug] = list(SUCTION_BAG_ITEMS)
             continue
-        _, items = family(path)
+        _, items = prepare_family(slug) if not path else family(path)
         out[slug] = [i['title'] for i in items]
     return out
 
@@ -412,14 +418,14 @@ IMG_REPLACE = {
 # rel, prefix, canonical, products-crumb href, h1 override (None = Persian page title)
 OUT = {
     'stand': {
-        'fa': ('products/stand/index.html', '../../', 'products/stand/', '../', None),
-        'en': ('en/products/base-and-holder/index.html', '../../../', 'en/products/base-and-holder/', '../', 'Base and Holder'),
-        'ar': ('arabic/تثبیت/index.html', '../../', 'arabic/تثبیت/', '../منتجات/', 'تثبیت'),
+        'fa': ('products/stand/index.html', '../../', 'products/stand/', '../', 'پایه و نگهدارنده‌ها'),
+        'en': ('en/products/base-and-holder/index.html', '../../../', 'en/products/base-and-holder/', '../', 'Stands & Holders'),
+        'ar': ('arabic/تثبیت/index.html', '../../', 'arabic/تثبیت/', '../منتجات/', 'الحوامل والمثبتات'),
     },
     'filters': {
-        'fa': ('products/filters/index.html', '../../', 'products/filters/', '../', None),
-        'en': ('en/products/filters/index.html', '../../../', 'en/products/filters/', '../', 'Filters'),
-        'ar': ('arabic/الفلتر/index.html', '../../', 'arabic/الفلتر/', '../منتجات/', 'الفلتر'),
+        'fa': ('products/filters/index.html', '../../', 'products/filters/', '../', 'فیلتر'),
+        'en': ('en/products/filters/index.html', '../../../', 'en/products/filters/', '../', 'Filter'),
+        'ar': ('arabic/الفلتر/index.html', '../../', 'arabic/الفلتر/', '../منتجات/', 'الفلاتر'),
     },
     'suction-tube': {
         'fa': ('products/suction-tube/index.html', '../../', 'products/suction-tube/', '../', None),
@@ -427,23 +433,28 @@ OUT = {
         'ar': ('arabic/أنبوب-الشفط/index.html', '../../', 'arabic/أنبوب-الشفط/', '../منتجات/', 'أنبوب الشفط'),
     },
     'canister': {
-        'fa': ('products/canister/index.html', '../../', 'products/canister/', '../', None),
-        'en': ('en/products/canisters/index.html', '../../../', 'en/products/canisters/', '../', 'Canisters'),
+        'fa': ('products/canister/index.html', '../../', 'products/canister/', '../', 'مخزن ساکشن'),
+        'en': ('en/products/canisters/index.html', '../../../', 'en/products/canisters/', '../', 'Suction Canister'),
         'ar': ('arabic/خزانات/index.html', '../../', 'arabic/خزانات/', '../منتجات/', 'خزانات'),
     },
     'connectors': {
-        'fa': ('products/connectors/index.html', '../../', 'products/connectors/', '../', None),
-        'en': ('en/products/connections/index.html', '../../../', 'en/products/connections/', '../', 'Connections'),
+        'fa': ('products/connectors/index.html', '../../', 'products/connectors/', '../', 'اتصالات'),
+        'en': ('en/products/connections/index.html', '../../../', 'en/products/connections/', '../', 'Connectors'),
         'ar': ('arabic/الوصلات/index.html', '../../', 'arabic/الوصلات/', '../منتجات/', 'الوصلات'),
     },
     'other': {
-        'fa': ('products/other/index.html', '../../', 'products/other/', '../', None),
+        'fa': ('products/other/index.html', '../../', 'products/other/', '../', 'سایر محصولات'),
         'en': ('en/products/other-products/index.html', '../../../', 'en/products/other-products/', '../', 'Other Products'),
         'ar': ('arabic/منتجات-اخری/index.html', '../../', 'arabic/منتجات-اخری/', '../منتجات/', 'منتجات أخرى'),
     },
+    'oral': {
+        'fa': ('products/oral-hygiene/index.html', '../../', 'products/oral-hygiene/', '../', 'بهداشت دهان'),
+        'en': ('en/products/oral-hygiene/index.html', '../../../', 'en/products/oral-hygiene/', '../', 'Oral Hygiene'),
+        'ar': ('arabic/نظافة-الفم/index.html', '../../', 'arabic/نظافة-الفم/', '../منتجات/', 'نظافة الفم'),
+    },
     'suction-bag': {
-        'en': ('en/products/suction-bag/index.html', '../../../', 'en/products/suction-bag/', '../', 'Suction Bag'),
-        'ar': ('arabic/كيس-الشفط/index.html', '../../', 'arabic/كيس-الشفط/', '../منتجات/', 'كيس الشفط'),
+        'en': ('en/products/suction-bag/index.html', '../../../', 'en/products/suction-bag/', '../', 'Disposable Suction Bag'),
+        'ar': ('arabic/كيس-الشفط/index.html', '../../', 'arabic/كيس-الشفط/', '../منتجات/', 'أكياس الشفط ذات الاستخدام الواحد'),
     },
 }
 I18N_PATH = {
@@ -452,6 +463,7 @@ I18N_PATH = {
     ('en', 'products/canisters/'): 'canister',
     ('en', 'products/connections/'): 'connectors',
     ('en', 'products/other-products/'): 'other',
+    ('en', 'products/oral-hygiene/'): 'oral',
     ('en', 'suction-tube/'): 'suction-tube',
     ('en', 'products/suction-bag/'): 'suction-bag',
     ('ar', 'تثبیت/'): 'stand',
@@ -459,6 +471,7 @@ I18N_PATH = {
     ('ar', 'خزانات/'): 'canister',
     ('ar', 'الوصلات/'): 'connectors',
     ('ar', 'منتجات-اخری/'): 'other',
+    ('ar', 'نظافة-الفم/'): 'oral',
     ('ar', 'أنبوب-الشفط/'): 'suction-tube',
     ('ar', 'كيس-الشفط/'): 'suction-bag',
 }
@@ -466,9 +479,33 @@ _FA_UI = dict(products='محصولات', specs='کاتالوگ', more_a='سای�
               sep='، ', missing_note='')
 
 
+_SWAB_HTML = (
+    '<p>سواب دهانی در اجزای راهکار ایمنی و مراقبت از راه هوایی آمده است و متناسب با وضعیت توسعه و عرضه، '
+    'صفحه محصول جداگانه‌ای ندارد.</p>'
+)
+
+
+def _swab_item():
+    return {
+        'id': 'swab', 'title': 'سواب دهانی', 'html': _SWAB_HTML,
+        'imgs': [], 'tables': [], 'force_missing': True,
+    }
+
+
 def prepare_family(slug):
+    if slug == 'oral':
+        _h, items = family('/محصولات/سایر-محصولات/')
+        by = {it['id']: it for it in items}
+        return 'بهداشت دهان', [by['mesvak'], _swab_item(), by['negahdarande']]
     path = next(p for s, p, *_rest in FAMILIES if s == slug)
     h1, items = family(path)
+    if slug == 'connectors':
+        items = [it for it in items if it['id'] != 'rgl']
+    if slug == 'other':
+        _h, conn = family('/محصولات/اتصالات/')
+        rgl = next(it for it in conn if it['id'] == 'rgl')
+        items = [rgl] + [it for it in items if it['id'] not in ('mesvak', 'negahdarande')]
+        h1 = 'سایر محصولات'
     if slug == 'stand':
         for it in items:
             if it['id'] == 'wallp':
@@ -583,8 +620,9 @@ def write_family_page(write, slug, lang):
             + S.related_section(p, lang, slug)
             + more + '\n' + _inquiry(p, lang))
     desc = f'{h1} — {lead}'
+    fa_path = OUT[slug]['fa'][2] if 'fa' in OUT.get(slug, {}) else f'products/{slug}/'
     write(rel, page(p, 'products', h1, desc, main, lightbox=True, lang=lang,
-                    fa_path=f'products/{slug}/', canonical_path=can))
+                    fa_path=fa_path, canonical_path=can))
     return rel
 
 

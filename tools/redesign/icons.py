@@ -1,8 +1,7 @@
 """Official contact and social icons for the footer and Contact Us pages.
 
-WhatsApp and Instagram use their original brand marks (green speech-bubble,
-camera glyph with the Instagram gradient). Tone icons use currentColor so the
-footer and the contact page can tint them.
+Every social mark uses currentColor so the footer can paint one unified color.
+Tone icons (phone, mail, pin) use currentColor as well.
 """
 from __future__ import annotations
 import re
@@ -72,65 +71,74 @@ def svg_calendar() -> str:
 
 
 def svg_whatsapp() -> str:
-    """Original WhatsApp speech-bubble + handset, brand green #25D366."""
-    return _svg(f'<path fill="#25D366" fill-rule="evenodd" d="{_WA_PATH}"/>')
+    """WhatsApp speech-bubble, one color."""
+    return _svg(f'<path fill="currentColor" fill-rule="evenodd" d="{_WA_PATH}"/>')
 
 
 def svg_instagram(uid: str = 'abadis-ig') -> str:
-    """Original Instagram camera glyph. Radial stops plus the linear brand colors.
-
-    uid keeps gradient ids unique when the footer and a contact page both draw the mark.
-    """
-    radial, linear = f'{uid}-r', f'{uid}-l'
-    return _svg(
-        '<defs>'
-        f'<radialGradient id="{radial}" cx="30%" cy="107%" r="150%">'
-        '<stop offset="0" stop-color="#f09433"/>'
-        '<stop offset="0.25" stop-color="#e6683c"/>'
-        '<stop offset="0.5" stop-color="#dc2743"/>'
-        '<stop offset="0.75" stop-color="#cc2366"/>'
-        '<stop offset="1" stop-color="#bc1888"/>'
-        '</radialGradient>'
-        f'<linearGradient id="{linear}" x1="0" y1="24" x2="24" y2="0" gradientUnits="userSpaceOnUse">'
-        '<stop offset="0" stop-color="#F58529"/>'
-        '<stop offset="0.3" stop-color="#DD2A7B"/>'
-        '<stop offset="0.65" stop-color="#8134AF"/>'
-        '<stop offset="1" stop-color="#515BD4"/>'
-        '</linearGradient>'
-        '</defs>'
-        f'<path fill="url(#{radial})" fill-rule="evenodd" d="{_IG_PATH}"/>'
-        f'<path fill="url(#{linear})" fill-opacity="0.72" fill-rule="evenodd" d="{_IG_PATH}"/>'
-    )
+    """Instagram camera glyph in currentColor. uid is unused; kept for call sites."""
+    return _svg(f'<path fill="currentColor" fill-rule="evenodd" d="{_IG_PATH}"/>')
 
 
 def svg_telegram() -> str:
-    return _svg('<path fill="#26A5E4" d="M21.8 4.3 18.7 20c-.2 1-.8 1.3-1.7.8l-4.6-3.4-2.2 2.1c-.2.3-.5.5-.9.5l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2L6.5 13.1 2 11.7c-1-.3-1-1 .2-1.5L20.3 3.2c.8-.3 1.6.2 1.5 1.1z"/>')
+    return _svg('<path fill="currentColor" d="M21.8 4.3 18.7 20c-.2 1-.8 1.3-1.7.8l-4.6-3.4-2.2 2.1c-.2.3-.5.5-.9.5l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2L6.5 13.1 2 11.7c-1-.3-1-1 .2-1.5L20.3 3.2c.8-.3 1.6.2 1.5 1.1z"/>')
 
 
 def svg_youtube() -> str:
-    return _svg('<path fill="#FF0000" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.8z"/><path fill="#fff" d="M9.75 15.02V8.98L15.5 12l-5.75 3.02z"/>')
+    """Play-button silhouette. The triangle is a hole so the mark stays one color."""
+    return _svg('<path fill="currentColor" fill-rule="evenodd" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.8zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"/>')
 
 
 def svg_facebook() -> str:
-    return _svg('<path fill="#0866FF" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.7 4.53-4.7 1.31 0 2.68.24 2.68.24v2.96h-1.51c-1.49 0-1.95.93-1.95 1.89v2.27h3.32l-.53 3.49h-2.79V24C19.61 23.09 24 18.1 24 12.07z"/>')
+    return _svg('<path fill="currentColor" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.7 4.53-4.7 1.31 0 2.68.24 2.68.24v2.96h-1.51c-1.49 0-1.95.93-1.95 1.89v2.27h3.32l-.53 3.49h-2.79V24C19.61 23.09 24 18.1 24 12.07z"/>')
 
 
 def svg_twitter() -> str:
-    return _svg('<path fill="#1D9BF0" d="M22.46 6a8.3 8.3 0 0 1-2.36.65 4.1 4.1 0 0 0 1.8-2.27 8.2 8.2 0 0 1-2.6 1 4.1 4.1 0 0 0-7 3.74A11.65 11.65 0 0 1 3.15 4.6a4.1 4.1 0 0 0 1.27 5.48 4.07 4.07 0 0 1-1.86-.51v.05a4.1 4.1 0 0 0 3.29 4.02 4.1 4.1 0 0 1-1.85.07 4.1 4.1 0 0 0 3.83 2.85A8.23 8.23 0 0 1 2 18.41a11.62 11.62 0 0 0 6.29 1.84c7.55 0 11.68-6.25 11.68-11.67v-.53A8.18 8.18 0 0 0 22.46 6z"/>')
+    """X mark."""
+    return _svg('<path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L6.2 21.75H2.88l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>')
 
 
 def svg_aparat() -> str:
-    return _svg('<rect width="24" height="24" rx="6" fill="#ED145B"/><path fill="#fff" d="M9.6 7.8v8.4l6.8-4.2-6.8-4.2z"/>')
+    """Aparat camera-reel: four circles, one color. Not a play triangle."""
+    return _svg(
+        '<g fill="currentColor">'
+        '<circle cx="7.2" cy="7.2" r="4.15"/>'
+        '<circle cx="16.8" cy="7.2" r="4.15"/>'
+        '<circle cx="7.2" cy="16.8" r="4.15"/>'
+        '<circle cx="16.8" cy="16.8" r="4.15"/>'
+        '</g>'
+    )
 
 
 def svg_linkedin() -> str:
-    """Official LinkedIn “in” mark, brand blue #0A66C2."""
-    return _svg('<path fill="#0A66C2" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.73V1.73C24 .77 23.21 0 22.23 0z"/>')
+    """LinkedIn “in” mark in currentColor."""
+    return _svg('<path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.73V1.73C24 .77 23.21 0 22.23 0z"/>')
+
+
+def svg_threads() -> str:
+    """Threads @ glyph."""
+    return _svg('<path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10h5v-2h-5c-4.34 0-8-3.66-8-8s3.66-8 8-8 8 3.66 8 8v1.43c0 .79-.71 1.57-1.5 1.57s-1.5-.78-1.5-1.57V12c0-2.76-2.24-5-5-5s-5 2.24-5 5 2.24 5 5 5c1.38 0 2.64-.56 3.54-1.47.65.89 1.77 1.47 2.96 1.47 1.93 0 3.5-1.68 3.5-3.75V12c0-5.52-4.48-10-10-10zm0 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"/>')
+
+
+def svg_medium() -> str:
+    """Medium monogram: three ellipses."""
+    return _svg(
+        '<g fill="currentColor">'
+        '<ellipse cx="6.4" cy="12" rx="6.15" ry="6.2"/>'
+        '<ellipse cx="16.35" cy="12" rx="3.05" ry="6.2"/>'
+        '<ellipse cx="22.55" cy="12" rx="1.15" ry="6.2"/>'
+        '</g>'
+    )
+
+
+def svg_virgool() -> str:
+    """Virgool comma mark."""
+    return _svg('<path fill="currentColor" d="M14.6 3.2c-3.3 0-5.8 2.7-5.8 6.8 0 5 2.8 8 6.8 9.1l1.25-2.35c-2.45-.75-3.85-2.6-4.05-4.8.55.32 1.15.48 1.75.48 2.7 0 4.7-2 4.7-4.7S17.3 3.2 14.6 3.2z"/>')
 
 
 def svg_pinterest() -> str:
-    """Pinterest “P” mark, brand red #E60023. Used only as a documented placeholder."""
-    return _svg('<path fill="#E60023" d="M12 0C5.37 0 0 5.37 0 12c0 5.08 3.16 9.43 7.63 11.17-.1-.95-.2-2.4.04-3.44.22-.94 1.41-5.97 1.41-5.97s-.36-.72-.36-1.78c0-1.67.97-2.91 2.17-2.91 1.02 0 1.52.77 1.52 1.69 0 1.03-.66 2.57-.99 4 .28 1.19.6 2.17 1.78 2.17 2.13 0 3.77-2.25 3.77-5.5 0-2.87-2.06-4.88-5.01-4.88-3.41 0-5.42 2.56-5.42 5.21 0 1.03.4 2.14.89 2.74.1.12.11.22.08.34-.09.38-.29 1.2-.33 1.36-.05.22-.17.27-.4.16-1.5-.7-2.44-2.89-2.44-4.65 0-3.79 2.75-7.26 7.93-7.26 4.16 0 7.4 2.97 7.4 6.93 0 4.14-2.61 7.46-6.23 7.46-1.22 0-2.36-.63-2.75-1.38l-.75 2.85c-.27 1.04-1 2.35-1.49 3.15A12 12 0 0 0 12 24c6.63 0 12-5.37 12-12S18.63 0 12 0z"/>')
+    """Kept for old placeholders. Not shown: abadis-med.com has no Pinterest profile."""
+    return _svg('<path fill="currentColor" d="M12 0C5.37 0 0 5.37 0 12c0 5.08 3.16 9.43 7.63 11.17-.1-.95-.2-2.4.04-3.44.22-.94 1.41-5.97 1.41-5.97s-.36-.72-.36-1.78c0-1.67.97-2.91 2.17-2.91 1.02 0 1.52.77 1.52 1.69 0 1.03-.66 2.57-.99 4 .28 1.19.6 2.17 1.78 2.17 2.13 0 3.77-2.25 3.77-5.5 0-2.87-2.06-4.88-5.01-4.88-3.41 0-5.42 2.56-5.42 5.21 0 1.03.4 2.14.89 2.74.1.12.11.22.08.34-.09.38-.29 1.2-.33 1.36-.05.22-.17.27-.4.16-1.5-.7-2.44-2.89-2.44-4.65 0-3.79 2.75-7.26 7.93-7.26 4.16 0 7.4 2.97 7.4 6.93 0 4.14-2.61 7.46-6.23 7.46-1.22 0-2.36-.63-2.75-1.38l-.75 2.85c-.27 1.04-1 2.35-1.49 3.15A12 12 0 0 0 12 24c6.63 0 12-5.37 12-12S18.63 0 12 0z"/>')
 
 
 def ch(svg: str, sm: bool = False) -> str:
@@ -148,8 +156,8 @@ def brand_buttons(items: list[tuple[str, str, str]]) -> str:
     return '<div class="brand-row">' + ''.join(bits) + '</div>'
 
 
-WA_URL = 'https://wa.me/989100145809'
-IG_URL = 'https://www.instagram.com/abadismedical.co'
+WA_URL = 'https://wa.me/+989100145809'
+IG_URL = 'https://www.instagram.com/abadis.med/'
 # Channels already linked on the EN/AR contact pages or the live footer icon row.
 TG_URL = 'https://t.me/abadis_med'
 YT_URL = 'https://www.youtube.com/channel/UC2J9yTFmf6fHLhKQ6y3gdCw/featured?view_as=subscriber'
@@ -157,6 +165,9 @@ FB_URL = 'https://fb.com/AbadisMedCo'
 TW_URL = 'https://twitter.com/abadismed'
 AP_URL = 'https://www.aparat.com/abadismed'
 LI_URL = 'https://www.linkedin.com/company/abadis-medical-co/'
+TH_URL = 'https://www.threads.net/@abadis.med?igshid=MzRlODBiNWFlZA=='
+MD_URL = 'https://medium.com/@abadismedical'
+VG_URL = 'https://virgool.io/@m_13865698'
 # Live abadis-med.com (FA/EN/AR, fetched 2026-10-26) has no Pinterest profile href.
 # Elementor only ships a .elementor-social-icon-pinterest color rule and a share-button
 # config key. Do not invent a pinterest.com handle.
@@ -209,13 +220,27 @@ def _iconize_tel_mail(html: str) -> str:
 
 
 def _swap(html: str, old: str, new: str) -> str:
-    if old in html and 'ch-ico' not in old:
-        return html.replace(old, new, 1)
-    return html
+    if old not in html or 'ch-ico' in old:
+        return html
+    idx = html.find(old)
+    if 'ch-ico' in html[max(0, idx - 120):idx]:
+        return html
+    return html.replace(old, new, 1)
+
+
+def _dedupe_icons(html: str) -> str:
+    """Drop an icon that was prepended again on a later stamp."""
+    return re.sub(
+        r'(<span class="ch-ico"[^>]*>.*?</span>)(?:\s*\1)+',
+        r'\1',
+        html,
+        flags=re.S,
+    )
 
 
 def decorate_contact_html(html: str) -> str:
     """Iconize an EN/AR contact body (WP dump). Idempotent."""
+    html = _dedupe_icons(html)
     html = re.sub(
         r'<a\s+target="_blank">(\s*<span>Whatsapp</span>)',
         r'<a href="https://wa.me/989100145809" target="_blank" rel="noopener">\1',
@@ -257,7 +282,28 @@ def decorate_contact_html(html: str) -> str:
         html = _swap(html, old, new)
     html = _iconize_tel_mail(html)
     html = _ensure_contact_network_links(html)
-    return html
+    lang = 'ar' if ('العنوان' in html or 'لينكدإن' in html or 'شبكات' in html) else 'en'
+    return _dedupe_icons(refresh_soc_links(html, lang))
+
+
+def social_items(lang: str):
+    """Official channels, boss order: WhatsApp through Virgool."""
+    labels = {
+        'fa': ['واتس‌اپ', 'اینستاگرام', 'تلگرام', 'آپارات', 'یوتیوب', 'لینکدین', 'ایکس', 'فیسبوک', 'تردز', 'مدیوم', 'ویرگول'],
+        'en': ['WhatsApp', 'Instagram', 'Telegram', 'Aparat', 'YouTube', 'LinkedIn', 'X', 'Facebook', 'Threads', 'Medium', 'Virgool'],
+        'ar': ['واتساب', 'إنستغرام', 'تلغرام', 'آپارات', 'يوتيوب', 'لينكدإن', 'إكس', 'فيسبوك', 'ثريدز', 'ميديوم', 'ويرگول'],
+    }[lang if lang in ('fa', 'en', 'ar') else 'fa']
+    fns = (
+        svg_whatsapp, svg_instagram, svg_telegram, svg_aparat, svg_youtube,
+        svg_linkedin, svg_twitter, svg_facebook, svg_threads, svg_medium, svg_virgool,
+    )
+    urls = (WA_URL, IG_URL, TG_URL, AP_URL, YT_URL, LI_URL, TW_URL, FB_URL, TH_URL, MD_URL, VG_URL)
+    shorts = (
+        '+989100145809', 'abadis.med', 't.me/abadis_med', 'aparat.com/abadismed',
+        'youtube.com/abadis', 'abadis-medical-co', 'twitter.com/abadismed', 'fb.com/AbadisMedCo',
+        'threads.net/@abadis.med', 'medium.com/@abadismedical', 'virgool.io/@m_13865698',
+    )
+    return list(zip(urls, fns, labels, shorts))
 
 
 def _soc_span(url, label, icon, extra=''):
@@ -265,6 +311,60 @@ def _soc_span(url, label, icon, extra=''):
         f'\n\t\t\t\t\t\t\t<span{extra}>\n\t\t\t\t\t<a href="{url}" target="_blank" rel="noopener">'
         f'\n\t\t\t\t\t\t<span>{label}</span>\n\t\t\t\t\t\t{ch(icon)}\t\t\t</a>\n\t\t\t\t</span>'
     )
+
+
+def _soc_links_html(lang: str) -> str:
+    return ''.join(_soc_span(url, label, fn()) for url, fn, label, _short in social_items(lang))
+
+
+def refresh_soc_links(html: str, lang: str) -> str:
+    block = _soc_links_html(lang)
+    html2, n = re.subn(
+        r'(<div class="soc-links">).*?(</div>)',
+        lambda m: m.group(1) + block + '\n\t\t\t\t\t' + m.group(2),
+        html,
+        count=1,
+        flags=re.S,
+    )
+    return html2 if n else html
+
+
+def _fa_social_rows() -> str:
+    rows = []
+    for url, fn, label, short in social_items('fa'):
+        rows.append(
+            f'<dt>{ch(fn())}{label}:</dt><dd><a href="{url}" target="_blank" rel="noopener" dir="ltr">{short}</a></dd>'
+        )
+    return '\n        '.join(rows)
+
+
+def _fa_direct_rows() -> str:
+    """Phone, fax and email on the FA contact list. Verbatim from the live page."""
+    return '\n        '.join((
+        f'<dt>{ch(svg_phone())}مرکز تماس:</dt><dd><a href="tel:+982192001017" dir="ltr">02192001017</a></dd>',
+        f'<dt>{ch(svg_phone())}تلفن تماس:</dt><dd><a href="tel:+982122671845" dir="ltr">02122671845</a> | <a href="tel:+982122205502" dir="ltr">02122205502</a><br><a href="tel:+982122215503" dir="ltr">02122215503</a> | <a href="tel:+982122218910" dir="ltr">02122218910</a></dd>',
+        f'<dt>{ch(svg_fax())}فکس:</dt><dd><span dir="ltr">02141425555</span> | داخلی 28544</dd>',
+        f'<dt>{ch(svg_mail())}پست الکترونیک:</dt><dd><a href="mailto:info@abadis-med.com">info@abadis-med.com</a></dd>',
+    ))
+
+
+def refresh_fa_social(html: str) -> str:
+    rows = _fa_social_rows()
+    # Limit the search to the contact list so a later footer label is not the anchor.
+    dl = html.find('class="contact-dl"')
+    mark = html.find('واتس‌اپ:', dl if dl >= 0 else 0)
+    office = html.find('دفتر مرکزی:', mark if mark >= 0 else 0)
+    if dl >= 0 and mark > dl and office > mark:
+        start = html.rfind('<dt', dl, mark)
+        end = html.rfind('<dt', start, office)
+        if start >= 0 and end > start:
+            direct = '' if 'مرکز تماس:' in html[dl:start] else _fa_direct_rows() + '\n        '
+            html = html[:start] + direct + rows + '\n        ' + html[end:]
+    buttons = brand_buttons([(url, fn(), label) for url, fn, label, _short in social_items('fa')])
+    html2, n = re.subn(r'<div class="brand-row">.*?</div>', buttons, html, count=1, flags=re.S)
+    if n:
+        html = html2
+    return html
 
 
 def _ensure_contact_network_links(html: str) -> str:
@@ -308,6 +408,7 @@ def _ensure_contact_network_links(html: str) -> str:
 
 def decorate_fa_contact_main(html: str) -> str:
     """Icons on the hand-built FA contact list and the phase-2 block. Idempotent."""
+    html = _dedupe_icons(html)
     if 'contact-dl' in html and 't.me/abadis_med' not in html.split('contact-dl', 1)[-1][:4000]:
         dl = f'''<dl class="contact-dl">
         <dt>{ch(svg_phone())}مرکز تماس:</dt><dd><a href="tel:+982192001017" dir="ltr">02192001017</a></dd>
@@ -357,7 +458,7 @@ def decorate_fa_contact_main(html: str) -> str:
             f'\n        <dt class="soc-placeholder-row" hidden>{ch(svg_pinterest())}پینترست:</dt><dd class="soc-placeholder-row" hidden><span class="soc-placeholder" data-social="pinterest" data-status="placeholder" data-official-url="" title="{PIN_NOTE}">{PIN_NOTE}</span></dd>'
         )
         html = html.replace(ig_dd, ig_dd + extra, 1)
-    return html
+    return _dedupe_icons(refresh_fa_social(html))
 
 
 def iconize_extensions(ext_html: str) -> str:

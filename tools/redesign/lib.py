@@ -136,7 +136,7 @@ PAGE_MAP = {
     '/پرسش-های-متداول/': 'faq/', '/فرصت-های-همکاری/': 'careers/', '/موقعیت-های-شغلی/': 'jobs/',
     '/_joboffers/': 'jobs/',
     # legacy URLs still linked from old posts
-    '/محصولات/بهداشت-دهان/': 'products/other/', '/مخزن/': 'products/canister/', '/ساکشن-تیوب/': 'products/suction-tube/',
+    '/محصولات/بهداشت-دهان/': 'products/oral-hygiene/', '/مخزن/': 'products/canister/', '/ساکشن-تیوب/': 'products/suction-tube/',
     '/کیسه-ساکشن/': 'products/suction-bag/', '/کیسه-ساکشن-یکبار-مصرف/': 'products/suction-bag/', '/فیلترها/': 'products/filters/',
     '/محصولات/دیگر-محصولات/': 'products/other/', '/محصولات/اتصالات-2/': 'products/connectors/', '/محصولات/فیلتر/': 'products/filters/', '/محصولات/اکسسوری/': 'products/connectors/',
 }
