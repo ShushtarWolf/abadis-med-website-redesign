@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="light">
+<html lang="ar" dir="rtl" data-theme="light" data-slogan="t1">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,10 +24,11 @@
 <meta property="og:image" content="../../assets/img/og-image.jpg">
 <link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/css/site.css">
+<link rel="stylesheet" href="../../assets/css/site.css?v=20261028d">
 <link rel="stylesheet" href="../../assets/css/boss-order.css">
 <link rel="stylesheet" href="../../assets/css/consent.css">
 <link rel="stylesheet" href="../../assets/css/footer-motion.css">
+  <link rel="stylesheet" href="../../assets/css/slogan-options.css?v=20261028d">
 </head>
 <body>
 <a class="skip" href="#main">تخطي إلى المحتوى</a>
@@ -49,12 +50,13 @@
   </button>
 </header>
 <main id="main">
-  <section class="page-hero">
-    <div class="wrap">
-      <p class="crumbs"><a href="../../arabic/">الرئيسية</a> › خزانات طبي آباديس</p>
-      <h1>عائلة آباديس الخضراء · عملاؤنا</h1>
-      <p class="lead">المراكز الصحية التي تستخدم منتجات آباديس الطبية في أنحاء إيران.</p>
-      
+  <section class="page-hero about-hero customers-hero">
+    <video class="about-hero-video customers-hero-video" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="../../assets/media/hero-customers-poster.jpg"><source src="../../assets/media/hero-customers.mp4" type="video/mp4"></video>
+    <div class="wrap about-hero-grid">
+      <div><p class="crumbs"><a href="../../arabic/">الرئيسية</a> › خزانات طبي آباديس</p>
+        <h1>عائلة آباديس الخضراء · <em>عملاؤنا</em></h1>
+        <p class="slogan reveal" aria-label="برفقة أكثر من ١٬٢٨٤ مركزاً علاجياً في جميع أنحاء إيران، ١٬٢٤٢ مستشفى ٤٢ مركز جراحة في ٣١ محافظة"><span class="slogan-line" style="--i:0">برفقة أكثر من ١٬٢٨٤ مركزاً علاجياً في جميع أنحاء إيران،</span><span class="slogan-line" style="--i:1">١٬٢٤٢ مستشفى</span><span class="slogan-line" style="--i:2">٤٢ مركز جراحة</span><span class="slogan-line" style="--i:3">في ٣١ محافظة</span></p>
+      </div>
     </div>
   </section><section class="section" id="green-family">
   <div class="wrap">
@@ -128,8 +130,13 @@
   </div>
   <div class="wrap foot-copy">جميع الحقوق محفوظة: خزانات طبي آباديس · معاينة إعادة التصميم</div>
 </footer>
-<script src="../../assets/js/site.js" defer></script>
+<script src="../../assets/js/site.js?v=20261028d" defer></script>
 <script src="../../assets/js/consent.js" defer></script>
 <script src="../../assets/js/footer-motion.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script src="../../assets/js/logo-scroll.js?v=20261028d" defer></script>
+<script src="../../assets/js/slogan-options.js?v=20261028d" defer></script>
+
 </body>
 </html>

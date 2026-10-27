@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" data-theme="light">
+<html lang="en" dir="ltr" data-theme="light" data-slogan="t1">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,10 +23,11 @@
 <meta property="og:image" content="../../assets/img/og-image.jpg">
 <link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/css/site.css">
+<link rel="stylesheet" href="../../assets/css/site.css?v=20261028d">
 <link rel="stylesheet" href="../../assets/css/boss-order.css">
 <link rel="stylesheet" href="../../assets/css/consent.css">
 <link rel="stylesheet" href="../../assets/css/footer-motion.css">
+  <link rel="stylesheet" href="../../assets/css/slogan-options.css?v=20261028d">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -48,12 +49,13 @@
   </button>
 </header>
 <main id="main">
-  <section class="page-hero">
-    <div class="wrap">
-      <p class="crumbs"><a href="../../en/">Home</a> › Abadis green family</p>
-      <h1>Abadis green family</h1>
-      <p class="lead">Map and list of hospitals and surgery centers.</p>
-      
+  <section class="page-hero about-hero customers-hero">
+    <video class="about-hero-video customers-hero-video" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="../../assets/media/hero-customers-poster.jpg"><source src="../../assets/media/hero-customers.mp4" type="video/mp4"></video>
+    <div class="wrap about-hero-grid">
+      <div><p class="crumbs"><a href="../../en/">Home</a> › Abadis green family</p>
+        <h1>Abadis Green Family · <em>Our Customers</em></h1>
+        <p class="slogan reveal" aria-label="Trusted by over 1,284 healthcare centers across Iran, 1,242 Hospitals 42 Surgery Centers Across All 31 Provinces"><span class="slogan-line" style="--i:0">Trusted by over 1,284 healthcare centers across Iran,</span><span class="slogan-line" style="--i:1">1,242 Hospitals</span><span class="slogan-line" style="--i:2">42 Surgery Centers</span><span class="slogan-line" style="--i:3">Across All 31 Provinces</span></p>
+      </div>
     </div>
   </section>
   <section class="section" id="green-family">
@@ -127,8 +129,13 @@
   </div>
   <div class="wrap foot-copy">All rights reserved: Abadis Medical Reservoirs · redesign preview</div>
 </footer>
-<script src="../../assets/js/site.js" defer></script>
+<script src="../../assets/js/site.js?v=20261028d" defer></script>
 <script src="../../assets/js/consent.js" defer></script>
 <script src="../../assets/js/footer-motion.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script src="../../assets/js/logo-scroll.js?v=20261028d" defer></script>
+<script src="../../assets/js/slogan-options.js?v=20261028d" defer></script>
+
 </body>
 </html>

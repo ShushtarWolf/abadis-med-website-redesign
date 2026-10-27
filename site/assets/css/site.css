@@ -1462,6 +1462,9 @@ video:not([controls]):not(.wp-video-shortcode):not(.is-playing) {
   z-index: 0;
   pointer-events: none;
 }
+.customers-hero::before {
+  background-image: url("../media/hero-customers-poster.jpg");
+}
 .about-hero-video {
   position: absolute;
   inset: 0;

@@ -224,11 +224,16 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
             from pages_company import about_hero
             hero = about_hero(p, lang, esc(title), crumbs(p, trail, lang=lang))
             main = f'''{hero}{sec}{after}'''
+        elif site_path in ('our-customers/', 'customers/'):
+            from pages_company import customers_hero
+            cust_h1 = 'Abadis Green Family · <em>Our Customers</em>' if lang == 'en' else 'عائلة آباديس الخضراء · <em>عملاؤنا</em>'
+            hero = customers_hero(p, lang, cust_h1, crumbs(p, trail, lang=lang))
+            main = f'''{hero}{sec}{after}'''
         else:
             main = f'''{page_hero(p, trail, esc(title), esc(desc), lang=lang, mark=_hero_mark)}{benefits}{sec}{after}'''
     extra_head = ''
     html_attrs = ''
-    if site_path in ('about-us/', 'من-نحن/'):
+    if site_path in ('about-us/', 'من-نحن/', 'our-customers/', 'customers/'):
         from pages_company import about_motion_tags
         extra_head, motion_js = about_motion_tags(p)
         extra_js = motion_js + extra_js

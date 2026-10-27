@@ -572,7 +572,7 @@ SCROLL_SRC = 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js
 
 def logo_scroll_css(prefix=''):
     """Slogan T1 overrides. Load after home.css."""
-    return f'<link rel="stylesheet" href="{prefix}assets/css/slogan-options.css?v=20261028c">'
+    return f'<link rel="stylesheet" href="{prefix}assets/css/slogan-options.css?v=20261028d">'
 
 
 def counter_options_css(prefix=''):
@@ -595,9 +595,9 @@ def logo_scroll_scripts(prefix='', existing=''):
     if 'scrolltrigger' not in low:
         tags.append(f'<script src="{SCROLL_SRC}" defer></script>')
     if 'logo-scroll.js' not in existing:
-        tags.append(f'<script src="{prefix}assets/js/logo-scroll.js?v=20261028c" defer></script>')
+        tags.append(f'<script src="{prefix}assets/js/logo-scroll.js?v=20261028d" defer></script>')
     if 'slogan-options.js' not in existing:
-        tags.append(f'<script src="{prefix}assets/js/slogan-options.js?v=20261028c" defer></script>')
+        tags.append(f'<script src="{prefix}assets/js/slogan-options.js?v=20261028d" defer></script>')
     return ('\n'.join(tags) + '\n') if tags else ''
 
 

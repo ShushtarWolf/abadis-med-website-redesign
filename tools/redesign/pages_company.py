@@ -136,6 +136,42 @@ def about_hero(p, lang, h1_html, crumbs):
   </section>'''
 
 
+SLOGAN_CUSTOMERS_I18N = {
+    'fa': ['همراهی بیش از ۱٬۲۸۴ مرکز درمانی در سراسر ایران،', '۱٬۲۴۲ بیمارستان', '۴۲ مرکز جراحی', 'در ۳۱ استان کشور'],
+    'en': ['Trusted by over 1,284 healthcare centers across Iran,', '1,242 Hospitals', '42 Surgery Centers', 'Across All 31 Provinces'],
+    'ar': ['برفقة أكثر من ١٬٢٨٤ مركزاً علاجياً في جميع أنحاء إيران،', '١٬٢٤٢ مستشفى', '٤٢ مركز جراحة', 'في ٣١ محافظة'],
+}
+
+
+def customers_slogan_block(lang):
+    lines = SLOGAN_CUSTOMERS_I18N[lang]
+    spans = ''.join(
+        f'<span class="slogan-line" style="--i:{n}">{esc(x)}</span>' for n, x in enumerate(lines))
+    return f'<p class="slogan reveal" aria-label="{esc(" ".join(lines))}">{spans}</p>'
+
+
+def customers_hero_video(p):
+    return (
+        f'<video class="about-hero-video customers-hero-video" autoplay muted loop playsinline webkit-playsinline '
+        f'disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" '
+        f'poster="{p}assets/media/hero-customers-poster.jpg">'
+        f'<source src="{p}assets/media/hero-customers.mp4" type="video/mp4"></video>'
+    )
+
+
+def customers_hero(p, lang, h1_html, crumbs):
+    """Customers hero: hospital/canister video, slogan in header type with motions."""
+    return f'''  <section class="page-hero about-hero customers-hero">
+    {customers_hero_video(p)}
+    <div class="wrap about-hero-grid">
+      <div>{crumbs}
+        <h1>{h1_html}</h1>
+        {customers_slogan_block(lang)}
+      </div>
+    </div>
+  </section>'''
+
+
 def apply_live_about(body, lang):
     """Swap the pre-20-Oct mission block and the history/goals block for the live page text.
 
@@ -850,7 +886,10 @@ def customers(write):
         lg = f'<div class="lg">{pic}</div>' if pic else f'<div class="lg txt" aria-hidden="true">{esc(re.sub(r"^(بیمارستان|مرکز|درمانگاه|کلینیک)\s+", "", name)[:1])}</div>'
         link = f'<a href="{esc(bt["href"])}" target="_blank" rel="noopener">{esc(bt["text"])}</a>' if bt and bt.get('href') else ''
         cards.append(f'<div class="logo-card" data-name="{esc(name)}">{lg}<strong>{esc(name)}</strong>{link}</div>')
-    main = f'''{page_hero(p, [('خانواده سبز آبادیس', None)], 'خانواده سبز <em>آبادیس</em>', 'همراهی بیش از ۱٬۲۸۴ مرکز درمانی در سراسر ایران — ۱٬۲۴۲ بیمارستان و ۴۲ مرکز جراحی در ۳۱ استان کشور')}
+    from layout import crumbs
+    head_css, motion_js = about_motion_tags(p)
+    hero = customers_hero(p, 'fa', 'خانواده سبز <em>آبادیس</em>', crumbs(p, [('خانواده سبز آبادیس (مشتریان ما)', None)]))
+    main = f'''{hero}
   {customers_all('fa', p)}
   <section class="section section--alt" id="featured-logos"><div class="wrap">
     <div class="section-head reveal"><h2>مراکز درمانی منتخب با نشان و پیوند مستقیم</h2><p>{esc(head)}</p></div>
@@ -858,15 +897,18 @@ def customers(write):
     <div class="logo-grid" id="custGrid" data-paged="12">{''.join(cards)}</div>
     <p class="empty-msg" hidden>موردی یافت نشد.</p>
   </div></section>'''
-    write('customers/index.html', page(p, 'customers', 'خانواده سبز آبادیس', head, main))
-    for rel, prefix, lang, title, desc in (
-        ('green-family-map/index.html', '../', 'fa', 'خانواده سبز آبادیس', 'نقشه و فهرست بیمارستان‌ها و مراکز جراحی.'),
-        ('en/green-family-map/index.html', '../../', 'en', 'Abadis green family', 'Map and list of hospitals and surgery centers.'),
-        ('arabic/green-family-map/index.html', '../../', 'ar', 'عائلة آباديس الخضراء', 'خريطة وقائمة المستشفيات ومراكز الجراحة.'),
+    write('customers/index.html', page(p, 'customers', 'خانواده سبز آبادیس', head, main,
+          extra_head=head_css, html_attrs='data-slogan="t1"', scripts=motion_js))
+    for rel, prefix, lang, title, h1_h, desc in (
+        ('green-family-map/index.html', '../', 'fa', 'خانواده سبز آبادیس', 'خانواده سبز <em>آبادیس</em>', 'نقشه و فهرست بیمارستان‌ها و مراکز جراحی.'),
+        ('en/green-family-map/index.html', '../../', 'en', 'Abadis green family', 'Abadis Green Family · <em>Our Customers</em>', 'Map and list of hospitals and surgery centers.'),
+        ('arabic/green-family-map/index.html', '../../', 'ar', 'عائلة آباديس الخضراء', 'عائلة آباديس الخضراء · <em>عملاؤنا</em>', 'خريطة وقائمة المستشفيات ومراكز الجراحة.'),
     ):
-        body = f'''{page_hero(prefix, [(title, None)], title, esc(desc), lang=lang)}
+        h_css, m_js = about_motion_tags(prefix)
+        body = f'''{customers_hero(prefix, lang, h1_h, crumbs(prefix, [(title, None)], lang=lang))}
   {iran_centers_section(prefix, lang)}'''
-        write(rel, page(prefix, 'customers', title, desc, body, lang=lang, fa_path='customers/'))
+        write(rel, page(prefix, 'customers', title, desc, body, lang=lang, fa_path='customers/',
+              extra_head=h_css, html_attrs='data-slogan="t1"', scripts=m_js))
     return len(items), nimg
 
 # ------------------------------------------------------------------ academy (was «تجارب ما»)
