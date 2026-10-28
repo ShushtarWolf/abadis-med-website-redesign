@@ -826,31 +826,59 @@ SHARED_JS = f'''
 }})();
 '''
 
-def hero_block(subtitle_badge, kpis):
-    kpi_html = ''.join(f'''
+HERO_CARDS_BOSS = [
+    (
+        'آکادمی آبادیس',
+        'آموزش‌های تخصصی و توسعه مهارت‌ها، همراه با مسیر پیشرفت شغلی',
+        '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>',
+    ),
+    (
+        'فرصت برای اثرگذاری',
+        'فضایی برای شنیده‌شدن ایده‌ها، مشارکت و قدردانی از تلاش شما',
+        '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1v.2h6v-.2c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg>',
+    ),
+    (
+        'فرهنگ سازمانی جوان و چابک',
+        'با روحیه‌ای پویا، همکاری نزدیک و آمادگی برای تغییر و تجربه‌های تازه',
+        '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+    ),
+]
+
+def hero_block(subtitle_badge, kpis=None):
+    if kpis is None:
+        kpis = HERO_CARDS_BOSS
+    default_svg = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+    kpi_items = []
+    for item in kpis:
+        t = item[0]
+        s = item[1]
+        svg_ico = item[2] if len(item) > 2 else default_svg
+        kpi_items.append(f"""
       <div class="co-kpi-pill">
         <div class="co-kpi-ico">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          {svg_ico}
         </div>
         <div class="co-kpi-txt"><strong>{t}</strong><span>{s}</span></div>
-      </div>''' for t, s in kpis)
+      </div>""")
+    kpi_html = ''.join(kpi_items)
     return f'''
-  <section class="co-hero has-playing-video">
-    <video class="co-hero-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="../assets/media/hero-careers-poster.jpg?v=20261028j">
-      <source src="../assets/media/hero-careers.mp4?v=20261028j" type="video/mp4">
+  <section class="page-hero about-hero careers-hero co-hero has-playing-video">
+    <video class="co-hero-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="../assets/media/hero-careers-poster.jpg?v=20261028l">
+      <source src="../assets/media/hero-careers.mp4?v=20261028l" type="video/mp4">
     </video>
     <div class="co-wrap co-hero-grid">
       <div>
         <p class="co-crumbs"><a href="../">خانه</a> / <a href="../careers/">فرصت‌های همکاری</a> / {subtitle_badge}</p>
         <h1>فرصت‌های <em>همکاری</em></h1>
-        <p class="co-slogan" aria-label="جای شما در خانواده بزرگ آبادیس خالیست">
-          <span class="co-slogan-main">جای شما در خانواده بزرگ آبادیس خالیست،</span>
+        <p class="co-slogan" aria-label="جای اثر شما در خانواده سبز آبادیس خالی است در محیطی علمی، نوآور و دانش‌بنیان، با فرصت یادگیری مستمر و رشد حرفه‌ای، برای ارتقای سلامت و بهبود کیفیت زندگی.">
+          <span class="co-slogan-main">جای اثر شما در خانواده سبز آبادیس خالی است</span>
           <span class="co-slogan-rotate" aria-hidden="true">
-            <span class="co-slogan-line is-on">محیطی علمی، نوآور و دانش‌بنیان</span>
-            <span class="co-slogan-line">فرصت رشد حرفه‌ای و یادگیری مستمر</span>
-            <span class="co-slogan-line">همراهی در ارتقای سلامت و محیط زیست</span>
+            <span class="co-slogan-line is-on">در محیطی علمی، نوآور و دانش‌بنیان،</span>
+            <span class="co-slogan-line">با فرصت یادگیری مستمر و رشد حرفه‌ای،</span>
+            <span class="co-slogan-line">برای ارتقای سلامت و بهبود کیفیت زندگی.</span>
           </span>
         </p>
+        <p class="co-slogan-motto">با هم یاد می‌گیریم، با هم رشد می‌کنیم و کنار هم اثر می‌گذاریم.</p>
       </div>
       <div class="co-hero-kpis">
         {kpi_html}
@@ -1094,14 +1122,7 @@ def topbar_html(active_opt):
   </header>'''
 
 def build_c1_body():
-    hero = hero_block(
-        'پیشنهاد C1 — داشبورد تعاملی دپارتمان‌ها و مسیر شغلی',
-        [
-            ('۹ ردیف همکار تخصصی', 'پوشش کامل ردیف‌های شغلی رسمی آبادیس'),
-            ('۴ واحد کلیدی سازمانی', 'R&D و فنی، تضمین کیفیت، فروش و بازرگانی، مالی و اداری'),
-            ('آکادمی آبادیس', 'آموزش تخصصی بدو استخدام و مسیر ارتقای شفاف'),
-        ]
-    )
+    hero = hero_block('پیشنهاد C1 — داشبورد تعاملی دپارتمان‌ها و مسیر شغلی', HERO_CARDS_BOSS)
     return f'''
     {hero}
     <section class="co-sec" id="jobs">
@@ -1156,14 +1177,7 @@ def build_c1_body():
     </section>'''
 
 def build_c2_body():
-    hero = hero_block(
-        'پیشنهاد C2 (پیشنهادی) — ویترین فرهنگ سازمانی + کاوشگر هوشمند فرصت‌های همکاری',
-        [
-            ('محیط دانش‌بنیان و پیشرو', 'بزرگ‌ترین تولیدکننده کیسه ساکشن یکبار مصرف در خاورمیانه'),
-            ('۱٬۲۸۴ مرکز درمانی همراه', 'اثرگذاری مستقیم بر سلامت بیماران و احیای بلوط زاگرس'),
-            ('فرم هوشمند ۴ مرحله‌ای', 'انتخاب خودکار فرصت همکاری و تکمیل گام‌به‌گام'),
-        ]
-    )
+    hero = hero_block('پیشنهاد C2 (پیشنهادی) — ویترین فرهنگ سازمانی + کاوشگر هوشمند فرصت‌های همکاری', HERO_CARDS_BOSS)
     j0 = JOBS[0]
     duties0 = ''.join(f'<li>{x}</li>' for x in j0['duties'])
     reqs0 = ''.join(f'<li>{x}</li>' for x in j0['reqs'])
@@ -1292,14 +1306,7 @@ def build_c2_body():
     </section>'''
 
 def build_c3_body():
-    hero = hero_block(
-        'پیشنهاد C3 — معماری مینیمال اجرایی (جدول جامع فرصت‌های همکاری + کارت‌های شبکه)',
-        [
-            ('نمای دوگانه جدول / شبکه', 'مقایسه سریع هر ۹ فرصت همکاری در یک نگاه'),
-            ('فیلتر آنی واحدها و وضعیت', 'تفکیک سریع فرصت‌های فعال و بانک رزومه'),
-            ('مسیر مستقیم ثبت درخواست', 'اتصال مستقیم هر ردیف جدول به فرم رسمی استخدام'),
-        ]
-    )
+    hero = hero_block('پیشنهاد C3 — معماری مینیمال اجرایی (جدول جامع فرصت‌های همکاری + کارت‌های شبکه)', HERO_CARDS_BOSS)
     rows = []
     for j in JOBS:
         is_act = j['status'] == 'active'

@@ -225,22 +225,22 @@ def sdgs_hero(p, lang, h1_html, crumbs):
 
 SLOGAN_CAREERS_I18N = {
     'fa': [
-        'فرصت‌های همکاری در خانواده بزرگ آبادیس،',
-        'رشد حرفه‌ای در محیط دانش‌بنیان',
-        'تیم جوان، پویا و اثرگذار',
-        'ساختن آینده سلامت و طبیعت ایران',
+        'جای اثر شما در خانواده سبز آبادیس خالی است',
+        'در محیطی علمی، نوآور و دانش‌بنیان،',
+        'با فرصت یادگیری مستمر و رشد حرفه‌ای،',
+        'برای ارتقای سلامت و بهبود کیفیت زندگی.',
     ],
     'en': [
-        'Your place is waiting in the Abadis family,',
-        'A Scientific, Knowledge-Based Environment',
-        'Continuous Learning & Career Growth',
-        'Advancing Healthcare & Environmental Care',
+        'Your impact is waiting in the Abadis Green Family',
+        'In a scientific, innovative, knowledge-based environment,',
+        'With continuous learning and professional growth,',
+        'To advance healthcare and improve quality of life.',
     ],
     'ar': [
-        'مكانك بانتظارك في عائلة آباديس الكبيرة،',
-        'بيئة علمية مبتكرة وقائمة على المعرفة',
-        'فرص للنمو المهني والتعلم المستمر',
-        'المساهمة في الارتقاء بالصحة والبيئة',
+        'مكان أثرك بانتظارك في عائلة آباديس الخضراء',
+        'في بيئة علمية مبتكرة وقائمة على المعرفة،',
+        'مع فرص التعلم المستمر والنمو المهني،',
+        'للارتقاء بالصحة وتحسين جودة الحياة.',
     ],
 }
 

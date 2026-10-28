@@ -1250,6 +1250,15 @@
 .co-slogan-line.is-on {
   opacity: 1; color: #5eead4; transform: translateX(-4px);
 }
+.co-slogan-motto {
+  margin: 14px 0 0;
+  font-size: clamp(0.98rem, 1.75vw, 1.18rem);
+  font-weight: 700;
+  line-height: 1.7;
+  color: rgba(232, 243, 243, 0.94);
+  border-inline-start: 3px solid #5eead4;
+  padding-inline-start: 12px;
+}
 
 /* Split Hero KPIs / Quick Bar */
 .co-hero-grid {
