@@ -20,7 +20,7 @@ T = {
   more='Read more →', about_href='about-us/', video_alt='Abadis Med knowledge-based factory', video_cap='Placeholder for the Abadis introduction video (video file pending)',
   slogan=['We affect as much as a fingertip', 'To You', 'To Nature', 'To World'],
   imp_eb='Abadis impact, right now', imp_unit='litres of water saved since 21 March 2026 (estimate)',
-  why_eb='Why Abadis?', why_h='The added value obtained from the production of disposable suction liner bags',
+  why_eb='', why_h='Why Is Abadis Impactful?', why_sub='From product design and manufacturing to training and support, we strive to enhance safety, improve efficiency, and meet the real needs of healthcare centers.',
   values=[('Cost Reduction', 'Reduce costs related to cleanser, water consumption, electricity and manpower'), ('Hospital and Infectious Waste Management', 'Better collection of liquid and infectious waste'), ('Recycling', 'Reduces medical waste and preserves the environment'), ('Easy To Use', 'Eliminating activities related to tank cleaning and convenient use for collecting waste during surgery')],
   factory='Established in 2018, the Abadis Medical Equipment Knowledge-Based Factory operates with state-of-the-art machinery and highly skilled experts. With an annual production capacity of 5 million disposable suction bags, Abadis is recognized as the largest manufacturer of these products in the Middle East.',
   checks=['Product Warranty and Guarantee', 'Quality Assurance', 'Provide high quality products', 'Communication of Sales and Technical Team with Medical Centers and Hospital', 'Delivery Products in the Shortest Time'],
@@ -44,7 +44,7 @@ T = {
   more='اقرأ أكثر ←', about_href='من-نحن/', video_alt='مصنع آباديس المعرفي', video_cap='مكان فيديو التعريف بآباديس (ملف الفيديو قيد الانتظار)',
   slogan=['نحن نؤثر بقدر طرف إصبع', 'عليك', 'على الطبيعة', 'على العالم'],
   imp_eb='أثر آباديس، الآن', imp_unit='لتر من الماء تم توفيره منذ ٢١ مارس ٢٠٢٦ (تقديري)',
-  why_eb='لماذا آباديس؟', why_h='القيم المضافة لأكياس الشفط ذات الاستعمال الواحد',
+  why_eb='', why_h='لماذا تُحدث آباديس أثراً؟', why_sub='من تصميم وتصنيع المنتجات إلى التدريب والدعم، نسعى للارتقاء بالسلامة وتحسين الكفاءة وتلبية الاحتياجات الفعلية للمراكز العلاجية.',
   values=[('تقليص التكاليف', 'تقليص التكاليف المتعلقة بالمنظّفات واستهلاك المياه والكهرباء واستخدام الموارد البشرية'), ('إدارة مخلفات المستشفيات والنفايات المعدية', 'تؤدي إلى تجميع النفايات السائلة والمعدية بشكل أفضل'), ('قابلة لإعادة التدوير', 'تؤدي إلى تقليل كميّة مخلفات المستشفيات والحفاظ على البيئة'), ('الاستخدام البسيط', 'التخلص من عملية غسيل الخزانات والاستخدام المريح لتجميع النفايات أثناء العمل')],
   factory='تأسست شركة مخازن طبية آباديس المعرفية في عام 2018 باستخدام أحدث المعدات والآلات وبالتعاون مع القوى المتخصصة. تُعدّ هذه الشركة أكبر منتج للحقائب السائلة ذات الاستخدام الواحد في منطقة الشرق الأوسط، بطاقة إنتاجية سنوية تصل إلى 5 مليون حقيبة سحب.',
   checks=['الضمان والكفالة', 'ضمان الجودة', 'التواصل المستمر بين قسم المبيعات والفريق الفني مع المراكز الطبية', 'التوصيل السريع للمنتج'],
@@ -113,7 +113,7 @@ def build_home(write, lang):
     fail_l = 'Product Failure Rate' if lang == 'en' else 'نسبة عيوب المنتج'
     cost_l = t['values'][0][1]
     metrics = [(cap, cap_l), (sat, sat_l), (fail, fail_l), (t['values'][0][0], cost_l)]
-    why = H.why_block(p, t['why_eb'], t['why_h'], t['values'], t['factory'], t['checks'], metrics, lang)
+    why = H.why_block(p, t['why_eb'], t['why_h'], t['values'], t['factory'], t['checks'], metrics, lang, subtitle=t.get('why_sub', ''))
     import solutions_arch
     products = solutions_arch.home_section(p, lang)
     quick = f'''  <section class="section quick" id="quick" style="padding-block:28px"><div class="wrap quick-row">

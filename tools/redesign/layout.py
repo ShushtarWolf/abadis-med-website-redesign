@@ -67,7 +67,7 @@ def head(p, title, desc, og=None, lang='fa', fa_path='', canonical_path=None, ht
 <link rel="preload" href="{p}assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{p}assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{p}assets/css/site.css?v=20261028j">
-<link rel="stylesheet" href="{p}assets/css/boss-order.css?v=20261028l">
+<link rel="stylesheet" href="{p}assets/css/boss-order.css?v=20261028m">
 <link rel="stylesheet" href="{p}assets/css/consent.css">
 <link rel="stylesheet" href="{p}assets/css/footer-motion.css">
 </head>

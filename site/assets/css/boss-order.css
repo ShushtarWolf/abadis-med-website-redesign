@@ -1541,3 +1541,12 @@
   .cf-card { padding: 16px 14px; }
   .co-resume-banner { padding: 18px; }
 }
+
+.why-abadis .why-lead {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: clamp(0.95rem, 1.5vw, 1.06rem);
+  line-height: 1.75;
+  text-align: start;
+  max-width: 48rem;
+}

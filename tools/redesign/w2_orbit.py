@@ -14,9 +14,9 @@ _I18N = Path(__file__).resolve().parent / 'data' / 'w2_i18n.json'
 
 _HUB = {
     'home': {
-        'fa': ('چرا آبادیس؟', 'ارزش افزوده‌های کلیدی'),
-        'en': ('Why Abadis?', 'Key Added Values'),
-        'ar': ('لماذا آباديس؟', 'القيم المضافة الرئيسية'),
+        'fa': ('چرا آبادیس؟', ''),
+        'en': ('Why Abadis?', ''),
+        'ar': ('لماذا آباديس؟', ''),
     },
     'about': {
         'fa': ('آبادیس مد', 'عضویت‌ها و مجوزها'),
@@ -58,8 +58,8 @@ _UI = {
 
 def assets(prefix=''):
     return (
-        f'<link rel="stylesheet" href="{prefix}assets/css/w2-orbit.css?v=20261028f">\n'
-        f'<script src="{prefix}assets/js/w2-orbit.js?v=20261028f" defer></script>\n'
+        f'<link rel="stylesheet" href="{prefix}assets/css/w2-orbit.css?v=20261028m">\n'
+        f'<script src="{prefix}assets/js/w2-orbit.js?v=20261028m" defer></script>\n'
     )
 
 
@@ -185,8 +185,7 @@ def widget(lang, mode, prefix=''):
 <div class="orb-hub" style="{parts["hub_style"]}">
 <span class="orb-hub-pulse"></span>
 <div class="orb-hub-q2">{parts["q2"]}</div>
-<div class="orb-hub-title">{esc(hub_title)}</div>
-<div class="orb-hub-sub">{esc(hub_sub)}</div>
+<div class="orb-hub-title">{esc(hub_title)}</div>{f'\n<div class="orb-hub-sub">{esc(hub_sub)}</div>' if hub_sub else ''}
 </div>
 {''.join(buttons)}
 </div>

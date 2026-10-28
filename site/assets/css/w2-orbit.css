@@ -198,6 +198,7 @@ html[dir="ltr"] .w2-live .w2-detail-panel { direction: ltr; }
 .w2-live .orb-hub-q2 { width: 46px; height: 46px; color: #5eead4; margin-bottom: 2px; flex-shrink: 0; }
 .w2-live .orb-hub-q2 svg { width: 100%; height: 100%; display: block; }
 .w2-live .orb-hub-title { font-size: 15px; font-weight: 900; line-height: 1.15; color: #ffffff; max-width: 112px; }
+.w2-live[data-w2="home"] .orb-hub-title { font-size: 16px; margin-top: 4px; }
 .w2-live .orb-hub-sub { font-size: 10px; color: #ccfbf1; margin-top: 2px; font-weight: 700; line-height: 1.15; max-width: 112px; }
 html[lang="en"] .w2-live .orb-hub-title { font-size: 13.5px; }
 html[lang="en"] .w2-live .orb-hub-sub { font-size: 9px; }

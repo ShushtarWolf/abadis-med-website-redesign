@@ -623,7 +623,7 @@ def impact_section():
   </section>'''
 
 
-def why_block(p, eyebrow, title, values, factory, checks, metrics, lang='fa'):
+def why_block(p, eyebrow, title, values, factory, checks, metrics, lang='fa', subtitle=''):
     """Why section: approved W2-2 orbit, then the live factory paragraph and checks."""
     import w2_orbit
     metric_html = ''.join(
@@ -631,12 +631,14 @@ def why_block(p, eyebrow, title, values, factory, checks, metrics, lang='fa'):
     del values, metric_html  # live value cards are the eight orbit nodes; metrics stay unused
     orbit = w2_orbit.widget(lang, 'home', p)
     lis = ''.join(f'<li>{esc(c)}</li>' for c in checks)
+    eb_html = f'<p class="eyebrow">{esc(eyebrow)}</p>' if eyebrow else ''
+    sub_html = f'<p class="why-lead">{esc(subtitle)}</p>' if subtitle else ''
     return f'''  <section class="section section--alt why-abadis" id="why" data-why-anim>
     <div class="wrap">
       <div class="why-head reveal">
         <img class="why-logo why-logo-light" src="{p}assets/img/icons/Q2-teal.svg" alt="" width="88" height="88">
         <img class="why-logo why-logo-dark" src="{p}assets/img/icons/Q2-dark.svg" alt="" width="88" height="88">
-        <div class="section-head has-mark"><div><p class="eyebrow">{esc(eyebrow)}</p><h2>{esc(title)}</h2></div></div>
+        <div class="section-head has-mark"><div>{eb_html}<h2>{esc(title)}</h2>{sub_html}</div></div>
       </div>
       {orbit}
       <div class="split" style="margin-top:28px">
@@ -654,7 +656,17 @@ def why_v2():
         (fmt_stat(0.0018, 'fa', 4) + '٪', 'میزان خرابی محصول'),
         ('کاهش هزینه‌ها', LIVE_VALUES[0][1]),
     ]
-    return why_block('', 'چرا آبادیس؟', 'ارزش افزوده‌های کیسه ساکشن یکبار مصرف', LIVE_VALUES, FACTORY_LEAD, WHY_CHECKS, metrics)
+    return why_block(
+        '',
+        '',
+        'چرا آبادیس اثرگذار است؟',
+        LIVE_VALUES,
+        FACTORY_LEAD,
+        WHY_CHECKS,
+        metrics,
+        lang='fa',
+        subtitle='از طراحی و تولید محصولات تا آموزش و پشتیبانی، برای ارتقای ایمنی، بهبود کارایی و پاسخ‌گویی به نیازهای واقعی مراکز درمانی تلاش می‌کنیم.',
+    )
 
 
 def products_v2():
