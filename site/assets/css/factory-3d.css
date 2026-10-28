@@ -6,6 +6,7 @@ html[data-theme="dark"] .f3d,html[data-theme="noir"] .f3d{--f3d-ink:#e6f4f4;--f3
   --f3d-bg:radial-gradient(90% 80% at 50% 40%,#0d2a2e 0%,#061719 70%,#03100f 100%)}
 html[data-theme="noir"] .f3d{--f3d-bg:radial-gradient(90% 80% at 50% 40%,#151527 0%,#0a0a12 75%)}
 .f3d-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.f3d.is-ex .f3d-stage{position:fixed;inset:0;z-index:20;background:var(--f3d-bg)}
 .f3d-gl{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
 .f3d.is-ex .f3d-gl{pointer-events:auto;touch-action:none;cursor:grab}
 .f3d-glass{background:var(--f3d-glass);border:1px solid var(--f3d-line);-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);border-radius:20px;box-shadow:0 24px 60px -30px rgba(6,70,70,.45)}
@@ -61,32 +62,45 @@ html[data-theme="dark"] .f3d-intro,html[data-theme="noir"] .f3d-intro{background
 .f3d-subspec{margin:8px 0 0;font-size:13.5px;line-height:1.75;color:var(--f3d-ink);opacity:.92}
 .f3d-dots{display:flex;gap:6px;margin-top:9px}.f3d-dots i{height:3.5px;flex:1;border-radius:4px;background:color-mix(in srgb,var(--f3d-teal) 22%,transparent)}.f3d-dots i.a{background:var(--f3d-teal)}
 
-/* 3D Floating Hall Labels & Interactive 3D Machine Sub-Node Pins (Option 3) */
-.f3d-labels,.f3d-subpins{position:absolute;inset:0;pointer-events:none;z-index:3}
-.f3d-lbl{position:absolute;top:0;left:0;padding:5px 11px;font-size:12px;font-weight:700;color:var(--f3d-deep);white-space:nowrap;border-radius:999px;background:rgba(255,255,255,.88);border:1px solid rgba(14,140,140,.3);opacity:0;transition:opacity .3s,background .25s,color .25s;will-change:transform;font-family:inherit;pointer-events:none}
-html[data-theme="dark"] .f3d-lbl,html[data-theme="noir"] .f3d-lbl{background:rgba(6,30,34,.86);color:#9fe3e3;border-color:rgba(120,210,210,.32)}
-.f3d-lbl.show{opacity:.95;pointer-events:auto;cursor:pointer}.f3d-lbl.act{background:var(--f3d-teal)!important;color:#fff!important;opacity:1}
-
-.f3d-subpin{position:absolute;top:0;left:0;display:inline-flex;align-items:center;gap:6px;padding:5px 11px;font-size:12px;font-weight:700;color:var(--f3d-ink);white-space:nowrap;
-  border-radius:999px;background:rgba(255,255,255,.92);border:1.5px solid var(--f3d-teal);box-shadow:0 8px 22px -8px rgba(6,70,70,.45);
-  opacity:0;visibility:hidden;transition:opacity .25s,background .2s,color .2s,border-color .2s;will-change:transform;font-family:inherit;cursor:pointer;pointer-events:auto}
-html[data-theme="dark"] .f3d-subpin,html[data-theme="noir"] .f3d-subpin{background:rgba(7,26,32,.92);color:#e6f4f4;border-color:#3fb3b3}
-.f3d-subpin.show{opacity:1;visibility:visible}
-.f3d-subpin i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--f3d-teal);box-shadow:0 0 0 3px rgba(14,140,140,.22)}
-.f3d-subpin.act{background:var(--f3d-coral)!important;color:#fff!important;border-color:#fff!important;box-shadow:0 10px 26px -6px rgba(255,122,89,.85);z-index:5}
-.f3d-subpin.act i{background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.35)}
+/* Engineering-drawing callouts: glowing dot + thin leader line + plain text (no boxes) */
+.f3d{--f3d-co:#083b3e;--f3d-co-line:rgba(8,59,62,.55);--f3d-halo:#eef6f6}
+html[data-theme="dark"] .f3d,html[data-theme="noir"] .f3d{--f3d-co:#d7f2f2;--f3d-co-line:rgba(160,225,225,.6);--f3d-halo:#061719}
+html[data-theme="noir"] .f3d{--f3d-halo:#0a0a12}
+.f3d-labels,.f3d-subpins,.f3d-leads{position:absolute;inset:0;pointer-events:none;z-index:3}
+.f3d-leads{width:100%;height:100%;overflow:visible}
+.f3d-co-ln{fill:none;stroke:var(--f3d-co-line);stroke-width:1.2;stroke-linecap:round;opacity:0;transition:opacity .3s,stroke .25s}
+.f3d-co-ln.show{opacity:1}.f3d-co-ln.act{stroke:var(--f3d-coral);stroke-width:1.5}
+.f3d-co-dot{position:absolute;top:0;left:0;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:var(--f3d-teal);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--f3d-teal) 22%,transparent),0 0 10px 2px color-mix(in srgb,var(--f3d-teal) 55%,transparent);
+  opacity:0;visibility:hidden;transition:opacity .3s,background .25s;will-change:transform;cursor:pointer;pointer-events:auto}
+.f3d-co-dot.f3d-lbl{width:7px;height:7px;margin:-3.5px 0 0 -3.5px}
+.f3d-co-dot.show{opacity:1;visibility:visible}
+.f3d-co-dot.act{background:var(--f3d-coral);box-shadow:0 0 0 4px rgba(255,122,89,.25),0 0 14px 3px rgba(255,122,89,.65)}
+.f3d-co{position:absolute;top:0;left:0;padding:2px 3px;margin:0;border:0;background:none;box-shadow:none;border-radius:0;font:inherit;font-family:inherit;
+  font-size:12.5px;font-weight:700;line-height:1.35;white-space:nowrap;color:var(--f3d-co);cursor:pointer;
+  text-shadow:0 0 3px var(--f3d-halo),0 0 3px var(--f3d-halo),0 0 6px var(--f3d-halo),0 0 10px var(--f3d-halo);
+  opacity:0;visibility:hidden;transition:opacity .3s,color .25s;will-change:transform;pointer-events:auto}
+.f3d-co.f3d-lbl{font-size:12px;font-weight:600;opacity:0}
+.f3d-co.show{opacity:1;visibility:visible}.f3d-co.f3d-lbl.show{opacity:.92}
+.f3d-co.act{color:var(--f3d-coral);font-weight:800;z-index:5}
+.f3d-co:hover{color:var(--f3d-coral)}
+.f3d-co:focus-visible{outline:1.5px dashed var(--f3d-coral);outline-offset:2px}
+.f3d-dock-drawer.f3d-swap{animation:f3dSwap .45s ease}
+@keyframes f3dSwap{from{opacity:.25}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.f3d-co,.f3d-co-dot,.f3d-co-ln{transition:none}.f3d-dock-drawer.f3d-swap{animation:none}}
 
 /* Vertical progress bar & bottom tools */
 .f3d-prog{position:absolute;inset-inline-end:clamp(14px,2.4vw,28px);top:54%;transform:translateY(-50%);height:34vh;width:3px;border-radius:3px;background:color-mix(in srgb,var(--f3d-teal) 18%,transparent);overflow:hidden;z-index:4}
 .f3d-prog i{display:block;width:100%;height:0;background:linear-gradient(var(--f3d-teal),var(--f3d-coral))}
 .f3d-tools{position:absolute;bottom:clamp(16px,3vh,28px);left:50%;transform:translateX(-50%);display:flex;gap:10px;flex-wrap:nowrap;justify-content:center;max-width:calc(100% - 170px);z-index:5}
-.f3d-btn{font:inherit;font-size:13.5px;font-weight:700;display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:999px;cursor:pointer;text-decoration:none;border:1px solid var(--f3d-line);background:var(--f3d-glass);color:var(--f3d-ink);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);white-space:nowrap}
+.f3d-btn{font:inherit;touch-action:manipulation;-webkit-tap-highlight-color:transparent;font-size:13.5px;font-weight:700;display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:999px;cursor:pointer;text-decoration:none;border:1px solid var(--f3d-line);background:var(--f3d-glass);color:var(--f3d-ink);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);white-space:nowrap}
 .f3d-ex{background:var(--f3d-teal);color:#fff;border-color:transparent;box-shadow:0 10px 30px -10px rgba(14,140,140,.7)}
 .f3d-btn:hover{filter:brightness(1.07)}
 .f3d-hint{position:absolute;left:50%;bottom:74px;transform:translateX(-50%);padding:7px 15px;font-size:12.5px;color:var(--f3d-ink);opacity:0;visibility:hidden;transition:opacity .35s;white-space:nowrap;max-width:calc(100% - 24px);overflow:hidden;text-overflow:ellipsis;z-index:5}
 .f3d.is-ex .f3d-hint{opacity:1;visibility:visible}
 .f3d.is-ex .f3d-prog{opacity:0!important}
-html.f3d-lock,html.f3d-lock body{overflow:hidden}
+body:has(.consent-bar) .f3d-tools{bottom:calc(98px + env(safe-area-inset-bottom,0px))}
+body:has(.consent-bar) .f3d-hint{bottom:calc(148px + env(safe-area-inset-bottom,0px))}
 
 @media(max-width:760px){
   .f3d-prog{display:none}
@@ -98,8 +112,10 @@ html.f3d-lock,html.f3d-lock body{overflow:hidden}
   .f3d-subchips{flex-wrap:wrap;gap:5px;overflow:visible;padding-bottom:0}
   .f3d-subchip{font-size:11px;padding:4px 9px}
   .f3d-subspec{font-size:12px;line-height:1.6;margin-top:6px}
-  .f3d-subpin{font-size:11px;padding:4px 9px}
+  .f3d-co{font-size:11.5px}.f3d-co.f3d-lbl{font-size:11px}
   .f3d-tools{bottom:18px;max-width:none;width:calc(100% - 24px);padding-inline:0 68px;justify-content:center;left:12px;transform:none}
   .f3d-btn{padding:9px 12px;font-size:12px}
   .f3d-hint{bottom:68px;font-size:11.5px;white-space:normal;text-align:center;width:calc(100% - 24px)}
+  body:has(.consent-bar) .f3d-tools{bottom:calc(112px + env(safe-area-inset-bottom,0px))}
+  body:has(.consent-bar) .f3d-hint{bottom:calc(162px + env(safe-area-inset-bottom,0px))}
 }

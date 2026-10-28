@@ -247,7 +247,7 @@ function init(sec) {
     { p: V3(-31, 12, 8), t: V3(-12.5, 1.5, -11) },
     { p: V3(-30, 17, 16), t: V3(-14, 6.5, -0.5) },
     { p: V3(13, 9, 21), t: V3(0, 1.5, 6.5) },
-    { p: V3(19, 15, -2), t: V3(0, 4, -14) },
+    { p: V3(23, 17, -1), t: V3(0, 6.2, -13.5) },
     { p: V3(26, 10, 26), t: V3(10.5, 2, 4) },
   ];
   const LBL = [V3(-12.5, 6, -17), V3(-14, 11.6, 2), V3(0, 11.2, 6.5), V3(0, 11.2, -14), V3(10.5, 8.2, 4), V3(0, 8.2, 20.5)];
@@ -263,6 +263,20 @@ function init(sec) {
   const dots = [...sec.querySelectorAll('.f3d-dots i')], bar = $('.f3d-prog i');
   const pills = [...sec.querySelectorAll('.f3d-pill')], exBtn = $('.f3d-ex'), exLabel = exBtn.querySelector('span');
   const labelsEl = $('.f3d-labels'), subPinsEl = $('.f3d-subpins');
+  // Engineering-drawing callouts: one SVG holds every leader line
+  const SVGNS = 'http://www.w3.org/2000/svg';
+  const leadSvg = document.createElementNS(SVGNS, 'svg'); leadSvg.setAttribute('class', 'f3d-leads'); leadSvg.setAttribute('aria-hidden', 'true');
+  labelsEl.parentNode.insertBefore(leadSvg, labelsEl);
+  function makeCallout(cls, text, host, onClick) {
+    const el = document.createElement('button'); el.type = 'button'; el.className = 'f3d-co ' + cls;
+    el.innerHTML = '<span></span>'; el.firstChild.textContent = text;
+    const dot = document.createElement('i'); dot.className = 'f3d-co-dot ' + cls;
+    const path = document.createElementNS(SVGNS, 'path'); path.setAttribute('class', 'f3d-co-ln');
+    leadSvg.appendChild(path); host.appendChild(dot); host.appendChild(el);
+    el.addEventListener('click', onClick); dot.addEventListener('click', onClick);
+    return { el, dot, path, side: 0 };
+  }
+  function removeCallout(c) { c.el.remove(); c.dot.remove(); c.path.remove(); }
 
   let sT = 0, sS = 0, explore = false, tween = null, lastIdx = -2, activeStation = 0, activeSubIdx = 0, visible = true;
   const subFocusOffset = new THREE.Vector3();
@@ -286,16 +300,12 @@ function init(sec) {
   });
 
   // Hall labels
-  const lbls = cfg.labels.map((txt, i) => {
-    const d = document.createElement('button'); d.type = 'button'; d.className = 'f3d-lbl'; d.textContent = txt;
-    d.addEventListener('click', () => {
-      if (i < 5) {
-        if (explore) flyTo(i, 0);
-        else scrollTo({ top: stationScroll(i), behavior: reduce ? 'auto' : 'smooth' });
-      }
-    });
-    labelsEl.appendChild(d); return d;
-  });
+  const lbls = cfg.labels.map((txt, i) => makeCallout('f3d-lbl', txt, labelsEl, () => {
+    if (i < 5) {
+      if (explore) flyTo(i, 0);
+      else scrollTo({ top: stationScroll(i), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }));
 
   // Build 3D floating sub-node pins for active station
   let currentPinEls = [];
@@ -314,7 +324,7 @@ function init(sec) {
       c.setAttribute('aria-selected', String(k === subIdx));
     });
     // Update 3D floating pins active state
-    currentPinEls.forEach((p, k) => p.el.classList.toggle('act', k === subIdx));
+    currentPinEls.forEach((p, k) => { p.el.classList.toggle('act', k === subIdx); p.dot.classList.toggle('act', k === subIdx); p.path.classList.toggle('act', k === subIdx); });
 
     // Position 3D beacon ring at machine coordinates
     beaconGroup.position.set(sub.pos[0], sub.pos[1] - 0.8, sub.pos[2]);
@@ -348,19 +358,24 @@ function init(sec) {
       uniforms.uActiveSub.value = 0;
       beaconGroup.visible = false;
       targetSubFocus.set(0, 0, 0);
-      currentPinEls.forEach((p) => p.el.remove());
+      currentPinEls.forEach(removeCallout);
       currentPinEls = [];
       return;
     }
     const st = cfg.stations[stIdx];
+    const drawer = $('.f3d-dock-drawer');
+    if (drawer && !reduce) { drawer.classList.remove('f3d-swap'); void drawer.offsetWidth; drawer.classList.add('f3d-swap'); }
     pStep.textContent = fmtStep(stIdx);
     pTitle.textContent = st.n;
     dots.forEach((d, k) => (d.className = k <= stIdx ? 'a' : ''));
-    pills.forEach((p, k) => p.classList.toggle('act', k === stIdx));
+    pills.forEach((p, k) => {
+      const act = k === stIdx; p.classList.toggle('act', act);
+      if (act) { const nav = p.parentElement; if (nav) nav.scrollTo({ left: p.offsetLeft - nav.clientWidth / 2 + p.offsetWidth / 2, behavior: reduce ? 'auto' : 'smooth' }); }
+    });
 
     // Render top dock machine chips
     subChipsEl.innerHTML = '';
-    currentPinEls.forEach((p) => p.el.remove());
+    currentPinEls.forEach(removeCallout);
     currentPinEls = [];
 
     st.subs.forEach((sub, k) => {
@@ -372,13 +387,9 @@ function init(sec) {
       chip.addEventListener('click', () => selectSubNode(stIdx, k, true));
       subChipsEl.appendChild(chip);
 
-      const pin = document.createElement('button');
-      pin.type = 'button';
-      pin.className = 'f3d-subpin' + (k === 0 ? ' act' : '');
-      pin.innerHTML = `<i></i><span>${sub.pin}</span>`;
-      pin.addEventListener('click', () => selectSubNode(stIdx, k, true));
-      subPinsEl.appendChild(pin);
-      currentPinEls.push({ el: pin, pos: V3(sub.pos[0], sub.pos[1], sub.pos[2]) });
+      const co = makeCallout('f3d-subpin', sub.pin, subPinsEl, () => selectSubNode(stIdx, k, true));
+      co.pos = V3(sub.pos[0], sub.pos[1], sub.pos[2]);
+      currentPinEls.push(co);
     });
 
     selectSubNode(stIdx, 0, false);
@@ -391,20 +402,38 @@ function init(sec) {
   addEventListener('scroll', readScroll, { passive: true }); readScroll(); sS = sT;
   const stationScroll = (i) => { const m = sec.offsetHeight - innerHeight; return sec.getBoundingClientRect().top + scrollY + m * (0.25 + 0.15 * i + 0.08); };
 
+  // Lock page scroll during free explore. iOS Safari ignores overflow:hidden on <html>,
+  // so touches on the 3D view would scroll the page instead of orbiting the model.
+  stage.addEventListener('touchmove', (e) => {
+    if (explore && !e.target.closest('.f3d-dock,.f3d-tools')) e.preventDefault();
+  }, { passive: false });
   function setExplore(on) {
     explore = on;
+    tween = null;
     sec.classList.toggle('is-ex', on);
-    document.documentElement.classList.toggle('f3d-lock', on);
+    resize();
     controls.enabled = on; exLabel.textContent = on ? cfg.back : cfg.explore;
     if (on) {
       const stI = lastIdx >= 0 ? lastIdx : 0;
       if (lastIdx < 0) { lastIdx = 0; renderStationUI(0); }
-      controls.target.copy(VIEWS[stI].t);
+      // Visible feedback: glide from the current camera to an orbit view of the active hall
+      activeStation = stI;
+      const tgt = VIEWS[stI].t.clone().add(subFocusOffset);
+      controls.target.copy(look);
+      const dir = tmp.copy(camera.position).sub(look).normalize();
+      tween = { t: 0, fp: camera.position.clone(), tp: tgt.clone().add(dir.multiplyScalar(camera.aspect < 1 ? 46 : 34)).setY(Math.max(14, camera.position.y)), ft: look.clone(), tt: tgt, i: stI };
     } else {
       readScroll();
     }
   }
-  exBtn.addEventListener('click', () => setExplore(!explore));
+  let lastExToggle = 0;
+  function toggleExplore(e) {
+    if (performance.now() - lastExToggle < 280) return;
+    lastExToggle = performance.now();
+    e.preventDefault(); e.stopPropagation(); setExplore(!explore);
+  }
+  exBtn.addEventListener('pointerup', (e) => { if (e.pointerType === 'touch' || e.pointerType === 'pen') toggleExplore(e); });
+  exBtn.addEventListener('click', toggleExplore);
   $('.f3d-skip').addEventListener('click', () => { if (explore) setExplore(false); });
   pills.forEach((b) => b.addEventListener('click', () => {
     const i = +b.dataset.i;
@@ -426,7 +455,7 @@ function init(sec) {
   resize(); addEventListener('resize', resize);
   new IntersectionObserver((en) => { visible = en[0].isIntersecting; }).observe(sec);
 
-  const pos = new THREE.Vector3(), look = new THREE.Vector3(), tmp = new THREE.Vector3();
+  const pos = new THREE.Vector3(), look = new THREE.Vector3(), tmp = new THREE.Vector3(), fromP = new THREE.Vector3(), fromT = new THREE.Vector3();
   const clock = new THREE.Clock();
   function aerial(s, out, tgt) {
     const k = Math.min(1, s / 0.25), a = -0.75 + 0.9 * k, R = (camera.aspect < 1 ? 118 : 82) - 10 * k;
@@ -435,8 +464,13 @@ function init(sec) {
   function frame() {
     requestAnimationFrame(frame);
     if (!visible) return;
-    const time = clock.getElapsedTime();
-    sS += (sT - sS) * (reduce ? 1 : 0.12);
+    const dt = Math.min(0.1, clock.getDelta());
+    const time = clock.elapsedTime;
+    // Framerate-independent damping, time constant ~0.6 s
+    const kS = reduce ? 1 : 1 - Math.exp(-dt / 0.6);
+    const kF = reduce ? 1 : 1 - Math.exp(-dt / 0.45);
+    sS += (sT - sS) * kS;
+    if (Math.abs(sT - sS) < 1e-5) sS = sT;
     const s = sS;
     const autoProg = Math.min(1.1, (time / 1.4) * 1.1);
     const prog = (explore || reduce) ? 1.1 : Math.max(autoProg, Math.min(1.1, (s / 0.17) * 1.1));
@@ -456,7 +490,7 @@ function init(sec) {
     filter.position.set(out * 2.9, 1.75 + Math.sin(out * Math.PI) * 1.6 * (1 - place) + lift * 0.2 * (1 - out) - place * 0.5, 5.4 + out * 3.7);
     filter.visible = c < 0.95 && c > 0.05;
 
-    subFocusOffset.lerp(targetSubFocus, reduce ? 1 : 0.12);
+    subFocusOffset.lerp(targetSubFocus, kF);
 
     let idx = -1;
     if (!explore) {
@@ -467,11 +501,16 @@ function init(sec) {
       } else {
         idx = Math.min(4, Math.floor(t));
         uniforms.uInStation.value = 1;
-        const f = smooth((t - idx) / 0.45);
-        const fromP = new THREE.Vector3(), fromT = new THREE.Vector3();
-        if (idx === 0) aerial(0.25, fromP, fromT); else { fromP.copy(VIEWS[idx - 1].p); fromT.copy(VIEWS[idx - 1].t); }
-        pos.lerpVectors(fromP, VIEWS[idx].p, f);
-        look.lerpVectors(fromT, VIEWS[idx].t, f).add(subFocusOffset);
+        // Keyframes: aerial at t=0, station i centred at t=i+0.5; ease across the whole gap
+        const u = t - 0.5;
+        if (u < 0) {
+          aerial(0.25, fromP, fromT); const f = smooth(t / 0.5);
+          pos.lerpVectors(fromP, VIEWS[0].p, f); look.lerpVectors(fromT, VIEWS[0].t, f);
+        } else {
+          const a = Math.min(4, Math.floor(u)), b = Math.min(4, a + 1), f = smooth(u - a);
+          pos.lerpVectors(VIEWS[a].p, VIEWS[b].p, f); look.lerpVectors(VIEWS[a].t, VIEWS[b].t, f);
+        }
+        look.add(subFocusOffset);
         if (camera.aspect < 1) { pos.add(tmp.copy(pos).sub(look).multiplyScalar(0.95)); pos.y += 6; }
       }
       camera.position.copy(pos); camera.lookAt(look);
@@ -486,7 +525,7 @@ function init(sec) {
     } else {
       uniforms.uInStation.value = 1;
       if (tween) {
-        tween.t = reduce ? 1 : Math.min(1, tween.t + 0.03); const e = smooth(tween.t);
+        tween.t = reduce ? 1 : Math.min(1, tween.t + dt / 1.1); const e = smooth(tween.t);
         camera.position.lerpVectors(tween.fp, tween.tp, e); controls.target.lerpVectors(tween.ft, tween.tt, e);
         if (tween.t >= 1) tween = null;
       }
@@ -497,32 +536,44 @@ function init(sec) {
 
     const w = stage.clientWidth, h = stage.clientHeight;
     const narrow = w < 768;
-
-    // Show hall overview labels during aerial (idx < 0) or Free Explore, keeping clear of top card & bottom bar
+    const sr = stage.getBoundingClientRect();
+    const dockBot = dock.classList.contains('on') ? dock.getBoundingClientRect().bottom - sr.top + 4 : (narrow ? 110 : 130);
+    const introBot = (idx < 0 && s < 0.22 && !explore) ? intro.getBoundingClientRect().bottom - sr.top + 8 : 0;
+    const topSafe = Math.max(dockBot, introBot, narrow ? 64 : 80), botSafe = h - (narrow ? 84 : 90);
     const showHallLabels = (explore || idx < 0) && prog > 0.75;
-    const hallTopSafe = (idx < 0 && s < 0.22) ? (narrow ? 225 : 230) : (narrow ? 120 : 140);
-    const hallBotSafe = h - (narrow ? 78 : 84);
-    lbls.forEach((l, i) => {
-      tmp.copy(LBL[i]).project(camera);
-      const py = (-tmp.y * 0.5 + 0.5) * h;
-      const vis = showHallLabels && (explore || i < 5) && tmp.z < 1 && Math.abs(tmp.x) < 0.92 && py > hallTopSafe && py < hallBotSafe;
-      l.classList.toggle('show', vis);
-      l.classList.toggle('act', i === idx);
-      if (vis) l.style.transform = `translate(${(tmp.x * 0.5 + 0.5) * w - l.offsetWidth / 2}px,${py - l.offsetHeight / 2}px)`;
+    const items = [];
+    lbls.forEach((c, i) => {
+      const act = i === idx;
+      c.el.classList.toggle('act', act); c.dot.classList.toggle('act', act); c.path.classList.toggle('act', act);
+      items.push({ c, p: LBL[i], on: showHallLabels && (explore || i < 5), pri: act ? 3 : 1 });
     });
-
-    // Project 3D machine sub-node pins for the active station
-    const showSubPins = idx >= 0;
-    currentPinEls.forEach((item) => {
-      tmp.copy(item.pos).project(camera);
-      const py = (-tmp.y * 0.5 + 0.5) * h;
-      const topSafe = dock.classList.contains('is-collapsed') ? (narrow ? 120 : 140) : (narrow ? 215 : 225);
-      const botSafe = h - (narrow ? 78 : 84);
-      const vis = showSubPins && tmp.z < 1 && Math.abs(tmp.x) < 0.92 && py > topSafe && py < botSafe;
-      item.el.classList.toggle('show', vis);
-      if (vis) {
-        item.el.style.transform = `translate(${(tmp.x * 0.5 + 0.5) * w - item.el.offsetWidth / 2}px,${py - item.el.offsetHeight / 2}px)`;
+    currentPinEls.forEach((c, k) => items.push({ c, p: c.pos, on: idx >= 0, pri: k === activeSubIdx ? 4 : 2 }));
+    items.sort((x, y) => y.pri - x.pri);
+    const placed = [];
+    const hit = (r) => placed.some((q) => r.x < q.x + q.w && r.x + r.w > q.x && r.y < q.y + q.h && r.y + r.h > q.y);
+    const LX = narrow ? 18 : 26, LY = narrow ? 26 : 34, LH = narrow ? 10 : 14;
+    items.forEach(({ c, p, on }) => {
+      let vis = false;
+      if (on) {
+        tmp.copy(p).project(camera);
+        const ax = (tmp.x * 0.5 + 0.5) * w, ay = (-tmp.y * 0.5 + 0.5) * h;
+        if (tmp.z < 1 && ax > 8 && ax < w - 8 && ay > topSafe && ay < botSafe) {
+          const tw = c.el.offsetWidth, th = c.el.offsetHeight;
+          const pref = ax > w / 2 ? -1 : 1;
+          const tries = [[pref, 1], [-pref, 1], [pref, 1.9], [-pref, 1.9], [pref, -0.9], [-pref, -0.9]];
+          for (const [sd, up] of tries) {
+            const ex = ax + sd * LX, ey = ay - LY * up, tx = sd > 0 ? ex + LH : ex - LH - tw;
+            const r = { x: tx - 4, y: ey - th / 2 - 2, w: tw + 8, h: th + 4 };
+            if (r.x < 4 || r.x + r.w > w - 4 || r.y < topSafe - 6 || r.y + r.h > botSafe + 30 || hit(r)) continue;
+            placed.push(r, { x: ax - 7, y: ay - 7, w: 14, h: 14 });
+            c.el.style.transform = `translate(${tx}px,${ey - th / 2}px)`;
+            c.dot.style.transform = `translate(${ax}px,${ay}px)`;
+            c.path.setAttribute('d', `M${ax.toFixed(1)} ${ay.toFixed(1)}L${ex.toFixed(1)} ${ey.toFixed(1)}H${(ex + sd * (LH - 3)).toFixed(1)}`);
+            vis = true; break;
+          }
+        }
       }
+      c.el.classList.toggle('show', vis); c.dot.classList.toggle('show', vis); c.path.classList.toggle('show', vis);
     });
 
     renderer.render(scene, camera);
