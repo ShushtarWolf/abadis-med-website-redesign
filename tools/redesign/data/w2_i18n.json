@@ -419,16 +419,16 @@
               "Exporters Union"
             ],
             [
-              "Knowledge-Based Association",
-              "Health Sector Companies"
+              "Health Knowledge-Based Association",
+              "Association of Health Knowledge-Based Companies"
             ]
           ],
-          "bar_a_label": "Guild participation and infection-control training",
-          "bar_a_val": "96%",
-          "bar_a_pct": 96,
-          "bar_b_label": "Average training activity of consumable-device companies",
-          "bar_b_val": "50%",
-          "bar_b_pct": 50
+          "bar_a_label": "Participation in specialized meetings and working groups",
+          "bar_a_val": "78%",
+          "bar_a_pct": 78,
+          "bar_b_label": "Fulfillment of joint programs with associations",
+          "bar_b_val": "63%",
+          "bar_b_pct": 63
         },
         {
           "num": "06",
@@ -949,16 +949,16 @@
               "اتحاد المصدرين"
             ],
             [
-              "جمعية الشركات المعرفية",
-              "قطاع الصحة"
+              "جمعية الشركات المعرفية الصحية",
+              "الشركات المعرفية في قطاع الصحة"
             ]
           ],
-          "bar_a_label": "المشاركة المهنية وتدريب معايير مكافحة العدوى",
-          "bar_a_val": "٩٦٪",
-          "bar_a_pct": 96,
-          "bar_b_label": "متوسط النشاط التدريبي لشركات المستهلكات",
-          "bar_b_val": "٥٠٪",
-          "bar_b_pct": 50
+          "bar_a_label": "المشاركة في الاجتماعات وفرق العمل التخصصية",
+          "bar_a_val": "٧٨٪",
+          "bar_a_pct": 78,
+          "bar_b_label": "تحقيق البرامج المشتركة مع التكتلات والهيئات",
+          "bar_b_val": "٦٣٪",
+          "bar_b_pct": 63
         },
         {
           "num": "٠٦",
