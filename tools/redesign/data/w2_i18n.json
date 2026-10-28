@@ -408,23 +408,19 @@
           "kpis": [
             [
               "AMEDAL",
-              "Medical Equipment Manufacturers Association"
+              "Manufacturers’ Association"
             ],
             [
               "Youth Industry House",
-              "Iran Youth Industry & Mine"
+              "Youth Industry & Mine"
             ],
             [
               "ISOMEE",
-              "Society of Medical Equipment Experts"
+              "Exporters Union"
             ],
             [
-              "Exporters Union",
-              "Medical Equipment Exporters Union"
-            ],
-            [
-              "Health Knowledge-Based Association",
-              "Association of Health Knowledge-Based Companies"
+              "Knowledge-Based Association",
+              "Health Sector Companies"
             ]
           ],
           "bar_a_label": "Guild participation and infection-control training",
@@ -942,7 +938,7 @@
           "kpis": [
             [
               "AMEDAL",
-              "جمعية منتجي المعدات الطبية"
+              "جمعية المنتجين"
             ],
             [
               "بيت الصناعة",
@@ -950,15 +946,11 @@
             ],
             [
               "ISOMEE",
-              "جمعية مهندسي المعدات الطبية"
+              "اتحاد المصدرين"
             ],
             [
-              "اتحاد المصدرين",
-              "اتحاد مصدري المعدات الطبية"
-            ],
-            [
-              "جمعية الشركات المعرفية الصحية",
-              "الشركات المعرفية في قطاع الصحة"
+              "جمعية الشركات المعرفية",
+              "قطاع الصحة"
             ]
           ],
           "bar_a_label": "المشاركة المهنية وتدريب معايير مكافحة العدوى",
