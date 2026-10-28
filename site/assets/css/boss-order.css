@@ -1550,3 +1550,26 @@
   text-align: start;
   max-width: 48rem;
 }
+
+/* Fix #why section header logo alignment & sticky-header scroll offset ([t252u]) */
+#why { scroll-margin-top: 84px; }
+.why-abadis .why-head {
+  display: flex;
+  align-items: center !important;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.why-abadis .why-head .section-head {
+  margin-bottom: 0 !important;
+}
+.why-abadis .why-logo {
+  flex: 0 0 68px;
+  width: 68px;
+  height: 68px;
+  border-width: 2px;
+  box-shadow: 0 10px 24px -10px rgba(5, 104, 107, 0.35);
+}
+.why-abadis .why-logo img {
+  width: 50px;
+  height: 50px;
+}

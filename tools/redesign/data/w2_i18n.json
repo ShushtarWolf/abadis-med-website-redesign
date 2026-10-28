@@ -4,12 +4,29 @@
       "nodes": [
         {
           "num": "01",
-          "title": "Infection control",
+          "title": "Safety & Infection Control",
           "stat": "99.9% bacterial barrier",
-          "tag": "Key value 01 · Hospital infection control",
-          "h3": "Closed suction system with a 99.99% antibacterial hydrophobic filter",
-          "p": "Abadis disposable suction bags remove manual emptying and the washing of traditional canisters, break the chain of hospital-acquired infections (HAI) in the operating room and critical-care wards, and protect the central suction pump.",
-          "kpis": [["99.99%", "Bacterial and viral barrier"], ["0%", "Leak of infectious fluids"], ["100%", "Closed safe system"], ["ISO 13485", "Cleanroom production"]],
+          "tag": "Key value 01 · Safety & Infection Control",
+          "h3": "Safety and Infection Control",
+          "p": "With disposable suction liners, protective filters, and suction tubing, alongside guidance for proper use, Abadis helps reduce exposure to contamination, protect patients, clinical staff, and equipment, and lower hospital-acquired infections.",
+          "kpis": [
+            [
+              "99.99%",
+              "Bacterial and viral barrier"
+            ],
+            [
+              "0%",
+              "Leak of infectious fluids"
+            ],
+            [
+              "100%",
+              "Closed safe system"
+            ],
+            [
+              "ISO 13485",
+              "Cleanroom production"
+            ]
+          ],
           "bar_a_label": "Infection-control factor with the Abadis closed system",
           "bar_a_val": "99.9%",
           "bar_a_pct": 99,
@@ -24,7 +41,24 @@
           "tag": "Key value 02 · Hospital budget",
           "h3": "45% lower total cost of liquid-waste handling and sterilization",
           "p": "By removing detergents and disinfectants, cutting service-staff workload, eliminating repair costs when central pumps are damaged by overflow, and reducing equipment wear, the hospital’s final cost falls by up to 45 percent.",
-          "kpis": [["45%", "Lower total cost"], ["100%", "Disinfectants removed"], ["0 rial", "Pump-overflow damage"], ["5 million", "Annual production capacity"]],
+          "kpis": [
+            [
+              "45%",
+              "Lower total cost"
+            ],
+            [
+              "100%",
+              "Disinfectants removed"
+            ],
+            [
+              "0 rial",
+              "Pump-overflow damage"
+            ],
+            [
+              "5 million",
+              "Annual production capacity"
+            ]
+          ],
           "bar_a_label": "Economic efficiency and fewer hidden hospital costs",
           "bar_a_val": "94%",
           "bar_a_pct": 94,
@@ -39,7 +73,24 @@
           "tag": "Key value 03 · Protecting the country’s water",
           "h3": "9.3 litres of clean water saved for every suction bag used",
           "p": "Washing one traditional suction jar uses more than 9.3 litres of tap water on average and turns it into infectious wastewater. Since 1395, Abadis has saved more than 63 million litres of water.",
-          "kpis": [["9.3 L", "Water saved per bag"], ["63.5+ million", "Litres of water saved"], ["100%", "Wash wastewater removed"], ["1395", "Continuous monitoring began"]],
+          "kpis": [
+            [
+              "9.3 L",
+              "Water saved per bag"
+            ],
+            [
+              "63.5+ million",
+              "Litres of water saved"
+            ],
+            [
+              "100%",
+              "Wash wastewater removed"
+            ],
+            [
+              "1395",
+              "Continuous monitoring began"
+            ]
+          ],
           "bar_a_label": "Protecting water and removing hospital chemical wastewater",
           "bar_a_val": "98%",
           "bar_a_pct": 98,
@@ -54,7 +105,24 @@
           "tag": "Key value 04 · Operating room and ICU agility",
           "h3": "Surgical-bed turnover prepared 3 times faster between cases",
           "p": "A full bag is replaced with a new one in a few seconds, with no heavy canisters to carry, empty, wash, or hold for a sterile cycle, which markedly improves operating-room turnover.",
-          "kpis": [["3×", "Faster preparation"], ["< 10 s", "Safe bag change"], ["11,112", "Active specialist users"], ["98.99%", "Clinician satisfaction"]],
+          "kpis": [
+            [
+              "3×",
+              "Faster preparation"
+            ],
+            [
+              "< 10 s",
+              "Safe bag change"
+            ],
+            [
+              "11,112",
+              "Active specialist users"
+            ],
+            [
+              "98.99%",
+              "Clinician satisfaction"
+            ]
+          ],
           "bar_a_label": "Operating-room setup speed with the Abadis disposable bag",
           "bar_a_val": "96%",
           "bar_a_pct": 96,
@@ -69,7 +137,24 @@
           "tag": "Key value 05 · Polymer engineering and durability",
           "h3": "Medical-grade polymer resistant to negative pressure and impact",
           "p": "Abadis canister bodies and flexible liners are made from pure medical polymers with ultrasonic welding and 100% leak testing, and their recorded failure rate is only 0.0018 percent.",
-          "kpis": [["0.0018%", "Recorded failure rate"], ["100%", "Quality-control testing"], ["Medical grade", "Pure raw materials"], ["CE / ISO", "Standards compliance"]],
+          "kpis": [
+            [
+              "0.0018%",
+              "Recorded failure rate"
+            ],
+            [
+              "100%",
+              "Quality-control testing"
+            ],
+            [
+              "Medical grade",
+              "Pure raw materials"
+            ],
+            [
+              "CE / ISO",
+              "Standards compliance"
+            ]
+          ],
           "bar_a_label": "Resistance to high vacuum and polymer stability",
           "bar_a_val": "99.8%",
           "bar_a_pct": 99,
@@ -84,7 +169,24 @@
           "tag": "Key value 06 · Usability in critical care",
           "h3": "Standard ports, a locking cap, and tandem connection",
           "p": "The ergonomic cap, with standard hospital ports, tandem connection for high-volume surgery, a precise volume scale, and a solidifier, provides complete safety.",
-          "kpis": [["1 to 3 L", "Canister size range"], ["Tandem", "Series connection"], ["Safety lock", "Full cap seal"], ["24/7", "Technical support"]],
+          "kpis": [
+            [
+              "1 to 3 L",
+              "Canister size range"
+            ],
+            [
+              "Tandem",
+              "Series connection"
+            ],
+            [
+              "Safety lock",
+              "Full cap seal"
+            ],
+            [
+              "24/7",
+              "Technical support"
+            ]
+          ],
           "bar_a_label": "Ease of use, graduated accuracy, and safe waste handling",
           "bar_a_val": "97%",
           "bar_a_pct": 97,
@@ -99,7 +201,24 @@
           "tag": "Live figure 07 · Wide hospital network",
           "h3": "Trusted by more than 1,284 hospitals and surgery centres across Iran",
           "p": "Abadis products, together with 29 exclusive provincial representatives, supply the daily needs of more than 1,284 public, university, and private treatment centres in all 31 provinces without interruption.",
-          "kpis": [["1,284+", "Active treatment centres"], ["31 provinces", "Nationwide coverage"], ["29 reps", "Provincial distribution"], ["Free shipping", "Delivery in the shortest time"]],
+          "kpis": [
+            [
+              "1,284+",
+              "Active treatment centres"
+            ],
+            [
+              "31 provinces",
+              "Nationwide coverage"
+            ],
+            [
+              "29 reps",
+              "Provincial distribution"
+            ],
+            [
+              "Free shipping",
+              "Delivery in the shortest time"
+            ]
+          ],
           "bar_a_label": "Supply-chain stability and nationwide access for treatment centres",
           "bar_a_val": "98%",
           "bar_a_pct": 98,
@@ -114,7 +233,24 @@
           "tag": "Live figure 08 · A decade of medical engineering",
           "h3": "10 years of research, development, and knowledge-based infection-control production",
           "p": "From the start of Abadis’s advanced production line to new oral-hygiene and airway-care products, the focus has been localizing critical hospital technologies to the highest global standard.",
-          "kpis": [["10 years", "Continuous innovation"], ["Knowledge-based", "Advanced medical technology"], ["98.99%", "Recorded satisfaction"], ["2,000+", "Zagros oak saplings"]],
+          "kpis": [
+            [
+              "10 years",
+              "Continuous innovation"
+            ],
+            [
+              "Knowledge-based",
+              "Advanced medical technology"
+            ],
+            [
+              "98.99%",
+              "Recorded satisfaction"
+            ],
+            [
+              "2,000+",
+              "Zagros oak saplings"
+            ]
+          ],
           "bar_a_label": "Innovation, centre satisfaction, and a complete infection-control range",
           "bar_a_val": "99%",
           "bar_a_pct": 99,
@@ -133,7 +269,24 @@
           "tag": "Official credential 01 · Vice-presidency for Science and Technology",
           "h3": "Official knowledge-based company approval in advanced medical devices",
           "p": "By localizing the design and production of closed hospital suction systems and ICU infection-control products, Abadis Med earned and holds knowledge-based company status from the Vice-presidency for Science and Technology.",
-          "kpis": [["Knowledge-based", "Advanced-technology rank"], ["100%", "Local design and tooling"], ["R&D", "Research and development"], ["10+ products", "Specialized infection control"]],
+          "kpis": [
+            [
+              "Knowledge-based",
+              "Advanced-technology rank"
+            ],
+            [
+              "100%",
+              "Local design and tooling"
+            ],
+            [
+              "R&D",
+              "Research and development"
+            ],
+            [
+              "10+ products",
+              "Specialized infection control"
+            ]
+          ],
           "bar_a_label": "Depth of local technology and a self-sufficient knowledge-based line",
           "bar_a_val": "98%",
           "bar_a_pct": 98,
@@ -148,7 +301,24 @@
           "tag": "Official credential 02 · Medical Device Directorate (IMED)",
           "h3": "Manufacturing licence and official Food and Drug Administration (IFDA) approval",
           "p": "Every Abadis product carries an IRC code, a valid manufacturing licence from the Ministry of Health’s Medical Device Directorate, and biocompatibility and microbiology approvals from reference laboratories.",
-          "kpis": [["IFDA", "Official manufacturing licence"], ["IMED", "Device-registry entry"], ["Cleanroom", "Controlled production"], ["100%", "Batch traceability"]],
+          "kpis": [
+            [
+              "IFDA",
+              "Official manufacturing licence"
+            ],
+            [
+              "IMED",
+              "Device-registry entry"
+            ],
+            [
+              "Cleanroom",
+              "Controlled production"
+            ],
+            [
+              "100%",
+              "Batch traceability"
+            ]
+          ],
           "bar_a_label": "Full compliance with Ministry of Health regulatory rules",
           "bar_a_val": "100%",
           "bar_a_pct": 100,
@@ -163,7 +333,24 @@
           "tag": "Official credential 03 · International quality management",
           "h3": "ISO 13485 certificate and compliance with the European CE standard",
           "p": "A full quality-management system for medical devices (ISO 13485) and product-safety requirements aligned with the European Union (CE) underpin Abadis export capability and stable quality.",
-          "kpis": [["ISO 13485", "Medical quality management"], ["CE", "European safety requirements"], ["0.0018%", "Product failure rate"], ["QC / QA", "Quality-control laboratory"]],
+          "kpis": [
+            [
+              "ISO 13485",
+              "Medical quality management"
+            ],
+            [
+              "CE",
+              "European safety requirements"
+            ],
+            [
+              "0.0018%",
+              "Product failure rate"
+            ],
+            [
+              "QC / QA",
+              "Quality-control laboratory"
+            ]
+          ],
           "bar_a_label": "Quality-audit score and stability of production processes",
           "bar_a_val": "99.2%",
           "bar_a_pct": 99,
@@ -178,7 +365,24 @@
           "tag": "Official membership 04 · Commercial diplomacy and exports",
           "h3": "Member of the Iran, Iran–Switzerland, and Iran–Oman chambers",
           "p": "Active membership of the Tehran Chamber of Commerce, Industries, Mines and Agriculture and the joint Iran–Switzerland and Iran–Oman chambers has opened international cooperation and the export of Iranian medical devices.",
-          "kpis": [["Tehran Chamber", "Official commercial membership"], ["Iran–Switzerland", "Joint chamber"], ["Iran–Oman", "Regional market development"], ["Export", "Supply to centres abroad"]],
+          "kpis": [
+            [
+              "Tehran Chamber",
+              "Official commercial membership"
+            ],
+            [
+              "Iran–Switzerland",
+              "Joint chamber"
+            ],
+            [
+              "Iran–Oman",
+              "Regional market development"
+            ],
+            [
+              "Export",
+              "Supply to centres abroad"
+            ]
+          ],
           "bar_a_label": "Commercial-network readiness and export packaging standard",
           "bar_a_val": "95%",
           "bar_a_pct": 95,
@@ -193,7 +397,24 @@
           "tag": "Official membership 05 · Medical-device industry associations",
           "h3": "Member of the medical-device manufacturers’ association and the youth industry-and-mine house",
           "p": "Ongoing cooperation with the association of medical, dental, and laboratory equipment manufacturers and the Iran Youth House of Industry, Mine and Trade raises national hospital infection-control standards.",
-          "kpis": [["AMEDAL", "Manufacturers’ association"], ["Industry house", "Youth industry and mine"], ["Academy", "Specialist centre training"], ["Synergy", "National standards"]],
+          "kpis": [
+            [
+              "AMEDAL",
+              "Manufacturers’ association"
+            ],
+            [
+              "Industry house",
+              "Youth industry and mine"
+            ],
+            [
+              "Academy",
+              "Specialist centre training"
+            ],
+            [
+              "Synergy",
+              "National standards"
+            ]
+          ],
           "bar_a_label": "Guild participation and infection-control training",
           "bar_a_val": "96%",
           "bar_a_pct": 96,
@@ -208,7 +429,24 @@
           "tag": "Social responsibility 06 · Zagros forest rescue",
           "h3": "The Abadis green family and more than 2,000 registered oak saplings",
           "p": "Alongside saving millions of litres of hospital water, Abadis has planted more than 2,000 registered oak saplings in the Zagros forests in the name of partner treatment centres and monitors them continuously.",
-          "kpis": [["2,000+", "Oak saplings planted"], ["63.5+ million", "Litres of water saved"], ["1,284", "Centres in the green family"], ["Zagros", "Restoring a native ecosystem"]],
+          "kpis": [
+            [
+              "2,000+",
+              "Oak saplings planted"
+            ],
+            [
+              "63.5+ million",
+              "Litres of water saved"
+            ],
+            [
+              "1,284",
+              "Centres in the green family"
+            ],
+            [
+              "Zagros",
+              "Restoring a native ecosystem"
+            ]
+          ],
           "bar_a_label": "Documented environmental impact and social commitment",
           "bar_a_val": "99%",
           "bar_a_pct": 99,
@@ -223,7 +461,24 @@
           "tag": "Reach 07 · Distribution and engineering support",
           "h3": "Full coverage of 31 provinces with 29 exclusive, experienced representatives",
           "p": "Official Abadis representatives across the country, from major cities to treatment centres in less-served regions, guarantee timely suction-bag supply, canister installation, and operating-room staff training.",
-          "kpis": [["31 provinces", "100% national coverage"], ["29 reps", "Exclusive and trained"], ["1,284", "Hospitals and surgery centres"], ["24/7", "Technical support"]],
+          "kpis": [
+            [
+              "31 provinces",
+              "100% national coverage"
+            ],
+            [
+              "29 reps",
+              "Exclusive and trained"
+            ],
+            [
+              "1,284",
+              "Hospitals and surgery centres"
+            ],
+            [
+              "24/7",
+              "Technical support"
+            ]
+          ],
           "bar_a_label": "How fast provincial centres reach products and technical service",
           "bar_a_val": "98%",
           "bar_a_pct": 98,
@@ -238,7 +493,24 @@
           "tag": "Strategic outlook 08 · Regional market leadership",
           "h3": "Becoming a regional hub for infection-control equipment",
           "p": "With the new factory, capacity above 5 million pieces a year, and a specialist oral and airway-care range for the ICU, Abadis is moving toward regional reference status.",
-          "kpis": [["Horizon 1410", "Regional outlook"], ["5+ million", "Annual production capacity"], ["New factory", "Fully automatic lines"], ["Export", "Presence in target markets"]],
+          "kpis": [
+            [
+              "Horizon 1410",
+              "Regional outlook"
+            ],
+            [
+              "5+ million",
+              "Annual production capacity"
+            ],
+            [
+              "New factory",
+              "Fully automatic lines"
+            ],
+            [
+              "Export",
+              "Presence in target markets"
+            ]
+          ],
           "bar_a_label": "Progress on product development and modern production",
           "bar_a_val": "94%",
           "bar_a_pct": 94,
@@ -256,10 +528,27 @@
           "num": "٠١",
           "title": "السلامة ومكافحة العدوى",
           "stat": "حاجز بكتيري ٩٩٫٩٪",
-          "tag": "قيمة رئيسية ٠١ · مكافحة عدوى المستشفيات",
-          "h3": "نظام شفط مغلق بمرشح كاره للماء مضاد للبكتيريا بنسبة ٩٩٫٩٩٪",
-          "p": "تزيل أكياس الشفط أحادية الاستخدام من آباديس التفريغ اليدوي وغسيل العبوات التقليدية، وتقطع سلسلة انتقال عدوى المستشفيات (HAI) في غرفة العمليات والأقسام الحرجة، وتحمي مضخة الشفط المركزية.",
-          "kpis": [["٩٩٫٩٩٪", "حاجز بكتيري وفيروسي"], ["٠٪", "تسرب السوائل المعدية"], ["١٠٠٪", "نظام مغلق آمن"], ["ISO 13485", "إنتاج في غرفة نظيفة"]],
+          "tag": "قيمة رئيسية ٠١ · السلامة ومكافحة العدوى",
+          "h3": "السلامة ومكافحة العدوى",
+          "p": "من خلال أكياس الشفط أحادية الاستخدام والفلاتر الواقية وأنابيب الشفط، إلى جانب الإرشادات للاستخدام الصحيح، تساعد آباديس في تقليل التعرض للتلوث وحماية المرضى والكادر الطبي والمعدات والحد من عدوى المستشفيات.",
+          "kpis": [
+            [
+              "٩٩٫٩٩٪",
+              "حاجز بكتيري وفيروسي"
+            ],
+            [
+              "٠٪",
+              "تسرب السوائل المعدية"
+            ],
+            [
+              "١٠٠٪",
+              "نظام مغلق آمن"
+            ],
+            [
+              "ISO 13485",
+              "إنتاج في غرفة نظيفة"
+            ]
+          ],
           "bar_a_label": "معامل السلامة ومكافحة العدوى بالنظام المغلق من آباديس",
           "bar_a_val": "٩٩٫٩٪",
           "bar_a_pct": 99,
@@ -274,7 +563,24 @@
           "tag": "قيمة رئيسية ٠٢ · ميزانية المستشفى",
           "h3": "خفض ٤٥٪ من التكلفة الكلية لإدارة النفايات السائلة والتعقيم",
           "p": "بإلغاء المنظفات والمطهرات، وتخفيف عبء عمال الخدمات، وإزالة كلفة إصلاح المضخات المركزية المتضررة من الفيض، وتقليل اهتراء المعدات، تنخفض التكلفة النهائية للمستشفى حتى ٤٥ بالمئة.",
-          "kpis": [["٤٥٪", "خفض التكلفة الكلية"], ["١٠٠٪", "إلغاء مواد التعقيم"], ["٠ ريال", "ضرر فيض المضخة"], ["٥ ملايين", "طاقة الإنتاج السنوية"]],
+          "kpis": [
+            [
+              "٤٥٪",
+              "خفض التكلفة الكلية"
+            ],
+            [
+              "١٠٠٪",
+              "إلغاء مواد التعقيم"
+            ],
+            [
+              "٠ ريال",
+              "ضرر فيض المضخة"
+            ],
+            [
+              "٥ ملايين",
+              "طاقة الإنتاج السنوية"
+            ]
+          ],
           "bar_a_label": "الكفاءة الاقتصادية وخفض التكاليف الخفية للمستشفى",
           "bar_a_val": "٩٤٪",
           "bar_a_pct": 94,
@@ -289,7 +595,24 @@
           "tag": "قيمة رئيسية ٠٣ · حماية موارد المياه",
           "h3": "توفير ٩٫٣ لتر من الماء النظيف مقابل كل كيس شفط مستخدم",
           "p": "يستهلك غسيل عبوة الشفط التقليدية في المتوسط أكثر من ٩٫٣ لتر من ماء الشبكة ويحوّله إلى مياه صرف معدية. ومنذ عام ١٣٩٥ وفّرت آباديس أكثر من ٦٣ مليون لتر من الماء.",
-          "kpis": [["٩٫٣ لتر", "ماء موفَّر لكل كيس"], ["٦٣٫٥+ مليون", "لتر ماء موفَّر"], ["١٠٠٪", "إلغاء مياه غسيل الصرف"], ["١٣٩٥", "بداية الرصد المستمر"]],
+          "kpis": [
+            [
+              "٩٫٣ لتر",
+              "ماء موفَّر لكل كيس"
+            ],
+            [
+              "٦٣٫٥+ مليون",
+              "لتر ماء موفَّر"
+            ],
+            [
+              "١٠٠٪",
+              "إلغاء مياه غسيل الصرف"
+            ],
+            [
+              "١٣٩٥",
+              "بداية الرصد المستمر"
+            ]
+          ],
           "bar_a_label": "حماية موارد المياه وإلغاء مياه الصرف الكيميائية للمستشفى",
           "bar_a_val": "٩٨٪",
           "bar_a_pct": 98,
@@ -304,7 +627,24 @@
           "tag": "قيمة رئيسية ٠٤ · خفة غرفة العمليات والعناية",
           "h3": "تجهيز سرير الجراحة بين عمليتين أسرع بثلاثة أضعاف",
           "p": "يُستبدل الكيس الممتلئ بكيس جديد خلال ثوانٍ، من دون حمل عبوات ثقيلة أو تفريغها أو غسلها أو انتظار دورة التعقيم، فيتحسّن دوران غرفة العمليات بشكل ملحوظ.",
-          "kpis": [["٣ أضعاف", "تجهيز أسرع"], ["< ١٠ ثوانٍ", "استبدال آمن للكيس"], ["١١٬١١٢", "مستخدم متخصص نشط"], ["٩٨٫٩٩٪", "رضا الكادر الطبي"]],
+          "kpis": [
+            [
+              "٣ أضعاف",
+              "تجهيز أسرع"
+            ],
+            [
+              "< ١٠ ثوانٍ",
+              "استبدال آمن للكيس"
+            ],
+            [
+              "١١٬١١٢",
+              "مستخدم متخصص نشط"
+            ],
+            [
+              "٩٨٫٩٩٪",
+              "رضا الكادر الطبي"
+            ]
+          ],
           "bar_a_label": "سرعة تجهيز غرفة العمليات بكيس آباديس أحادي الاستخدام",
           "bar_a_val": "٩٦٪",
           "bar_a_pct": 96,
@@ -319,7 +659,24 @@
           "tag": "قيمة رئيسية ٠٥ · هندسة البوليمر والمتانة",
           "h3": "بوليمر من الدرجة الطبية مقاوم للضغط السالب والصدم",
           "p": "تُصنع أجسام العبوات والبطانات المرنة من آباديس من بوليمرات طبية نقية بلحام فوق صوتي واختبار تسرّب بنسبة ١٠٠٪، ونسبة العطل المسجّلة ٠٫٠٠١٨ بالمئة فقط.",
-          "kpis": [["٠٫٠٠١٨٪", "نسبة العطل المسجّلة"], ["١٠٠٪", "اختبار ضبط الجودة"], ["درجة طبية", "مواد أولية نقية"], ["CE / ISO", "مطابقة المعايير"]],
+          "kpis": [
+            [
+              "٠٫٠٠١٨٪",
+              "نسبة العطل المسجّلة"
+            ],
+            [
+              "١٠٠٪",
+              "اختبار ضبط الجودة"
+            ],
+            [
+              "درجة طبية",
+              "مواد أولية نقية"
+            ],
+            [
+              "CE / ISO",
+              "مطابقة المعايير"
+            ]
+          ],
           "bar_a_label": "مقاومة الفراغ العالي وثبات بنية البوليمر",
           "bar_a_val": "٩٩٫٨٪",
           "bar_a_pct": 99,
@@ -334,7 +691,24 @@
           "tag": "قيمة رئيسية ٠٦ · هندسة الاستخدام في الأقسام الحرجة",
           "h3": "منافذ قياسية وغطاء بقفل ووصل ترادفي",
           "p": "يوفر الغطاء المريح، بمنافذ المستشفى القياسية ووصل ترادفي للجراحات كبيرة الحجم ومدرج دقيق للحجم ومادة مُصلِّبة، سلامة كاملة.",
-          "kpis": [["١ إلى ٣ لتر", "تنوع سعة العبوة"], ["ترادفي", "وصل متسلسل"], ["قفل آمن", "إحكام كامل للغطاء"], ["٢٤/٧", "دعم فني"]],
+          "kpis": [
+            [
+              "١ إلى ٣ لتر",
+              "تنوع سعة العبوة"
+            ],
+            [
+              "ترادفي",
+              "وصل متسلسل"
+            ],
+            [
+              "قفل آمن",
+              "إحكام كامل للغطاء"
+            ],
+            [
+              "٢٤/٧",
+              "دعم فني"
+            ]
+          ],
           "bar_a_label": "سهولة الاستخدام ودقة التدريج وسلامة نقل النفايات",
           "bar_a_val": "٩٧٪",
           "bar_a_pct": 97,
@@ -349,7 +723,24 @@
           "tag": "رقم حي ٠٧ · شبكة مستشفيات واسعة",
           "h3": "ثقة أكثر من ١٬٢٨٤ مستشفى ومركز جراحة في أنحاء إيران",
           "p": "تلبّي منتجات آباديس، مع شبكة من ٢٩ وكيلاً حصرياً على مستوى المحافظات، الاحتياج اليومي لأكثر من ١٬٢٨٤ مركزاً علاجياً حكومياً وجامعياً وخاصاً في المحافظات الـ٣١ من دون انقطاع.",
-          "kpis": [["١٬٢٨٤+", "مركز علاجي نشط"], ["٣١ محافظة", "تغطية شاملة"], ["٢٩ وكيلاً", "توزيع على المحافظات"], ["شحن مجاني", "تسليم في أقصر وقت"]],
+          "kpis": [
+            [
+              "١٬٢٨٤+",
+              "مركز علاجي نشط"
+            ],
+            [
+              "٣١ محافظة",
+              "تغطية شاملة"
+            ],
+            [
+              "٢٩ وكيلاً",
+              "توزيع على المحافظات"
+            ],
+            [
+              "شحن مجاني",
+              "تسليم في أقصر وقت"
+            ]
+          ],
           "bar_a_label": "استقرار سلسلة الإمداد ووصول المراكز العلاجية في كل البلاد",
           "bar_a_val": "٩٨٪",
           "bar_a_pct": 98,
@@ -364,7 +755,24 @@
           "tag": "رقم حي ٠٨ · عقد من الريادة الهندسية الطبية",
           "h3": "١٠ سنوات من البحث والتطوير والإنتاج المعرفي لمعدات مكافحة العدوى",
           "p": "منذ انطلاق خط الإنتاج المتقدم لآباديس حتى منتجات العناية بالفم والمجرى الهوائي الجديدة، ينصبّ التركيز على توطين التقنيات الحرجة للمستشفيات بأعلى معيار عالمي.",
-          "kpis": [["١٠ سنوات", "ابتكار متواصل"], ["قائم على المعرفة", "تقنية طبية متقدمة"], ["٩٨٫٩٩٪", "رضا مسجّل"], ["٢٬٠٠٠+", "شتلة بلوط في زاغروس"]],
+          "kpis": [
+            [
+              "١٠ سنوات",
+              "ابتكار متواصل"
+            ],
+            [
+              "قائم على المعرفة",
+              "تقنية طبية متقدمة"
+            ],
+            [
+              "٩٨٫٩٩٪",
+              "رضا مسجّل"
+            ],
+            [
+              "٢٬٠٠٠+",
+              "شتلة بلوط في زاغروس"
+            ]
+          ],
           "bar_a_label": "مؤشر الابتكار ورضا المراكز واكتمال سلة مكافحة العدوى",
           "bar_a_val": "٩٩٪",
           "bar_a_pct": 99,
@@ -383,7 +791,24 @@
           "tag": "اعتماد رسمي ٠١ · نيابة العلوم والتقنية",
           "h3": "اعتماد رسمي كشركة قائمة على المعرفة في المعدات الطبية المتقدمة",
           "p": "بتوطين تصميم وإنتاج أنظمة الشفط المغلقة للمستشفيات ومنتجات مكافحة العدوى في العناية المركزة، حصلت آباديس مد على صفة الشركة القائمة على المعرفة من نيابة العلوم والتقنية وثبّتتها.",
-          "kpis": [["قائم على المعرفة", "رتبة تقنية متقدمة"], ["١٠٠٪", "تصميم وقوالب محلية"], ["R&D", "وحدة البحث والتطوير"], ["+١٠ منتجات", "مكافحة عدوى متخصصة"]],
+          "kpis": [
+            [
+              "قائم على المعرفة",
+              "رتبة تقنية متقدمة"
+            ],
+            [
+              "١٠٠٪",
+              "تصميم وقوالب محلية"
+            ],
+            [
+              "R&D",
+              "وحدة البحث والتطوير"
+            ],
+            [
+              "+١٠ منتجات",
+              "مكافحة عدوى متخصصة"
+            ]
+          ],
           "bar_a_label": "عمق التقنية المحلية والاكتفاء الذاتي لخط الإنتاج المعرفي",
           "bar_a_val": "٩٨٪",
           "bar_a_pct": 98,
@@ -398,7 +823,24 @@
           "tag": "اعتماد رسمي ٠٢ · المديرية العامة للمعدات الطبية (IMED)",
           "h3": "رخصة تصنيع واعتماد رسمي من منظمة الغذاء والدواء (IFDA)",
           "p": "تحمل كل منتجات آباديس رمز IRC ورخصة تصنيع سارية من المديرية العامة للمعدات والمستلزمات الطبية في وزارة الصحة، وموافقات التوافق الحيوي والميكروبيولوجيا من المختبرات المرجعية.",
-          "kpis": [["IFDA", "رخصة تصنيع رسمية"], ["IMED", "قيد منظومة المعدات"], ["غرفة نظيفة", "إنتاج مضبوط"], ["١٠٠٪", "تتبّع دفعة الصنع"]],
+          "kpis": [
+            [
+              "IFDA",
+              "رخصة تصنيع رسمية"
+            ],
+            [
+              "IMED",
+              "قيد منظومة المعدات"
+            ],
+            [
+              "غرفة نظيفة",
+              "إنتاج مضبوط"
+            ],
+            [
+              "١٠٠٪",
+              "تتبّع دفعة الصنع"
+            ]
+          ],
           "bar_a_label": "مطابقة كاملة لضوابط وزارة الصحة",
           "bar_a_val": "١٠٠٪",
           "bar_a_pct": 100,
@@ -413,7 +855,24 @@
           "tag": "اعتماد رسمي ٠٣ · نظام إدارة الجودة الدولي",
           "h3": "شهادة ISO 13485 الدولية والمطابقة لمعيار أوروبا CE",
           "p": "تطبيق نظام إدارة الجودة الخاص بالمعدات الطبية (ISO 13485) ومتطلبات سلامة المنتج وفق الاتحاد الأوروبي (CE) يوفّران بنية التصدير وضمان جودة آباديس.",
-          "kpis": [["ISO 13485", "إدارة جودة طبية"], ["CE", "متطلبات السلامة الأوروبية"], ["٠٫٠٠١٨٪", "نسبة عطل المنتج"], ["QC / QA", "مختبر ضبط الجودة"]],
+          "kpis": [
+            [
+              "ISO 13485",
+              "إدارة جودة طبية"
+            ],
+            [
+              "CE",
+              "متطلبات السلامة الأوروبية"
+            ],
+            [
+              "٠٫٠٠١٨٪",
+              "نسبة عطل المنتج"
+            ],
+            [
+              "QC / QA",
+              "مختبر ضبط الجودة"
+            ]
+          ],
           "bar_a_label": "درجة تدقيق الجودة وثبات عمليات الإنتاج",
           "bar_a_val": "٩٩٫٢٪",
           "bar_a_pct": 99,
@@ -428,7 +887,24 @@
           "tag": "عضوية رسمية ٠٤ · الدبلوماسية التجارية والتصدير",
           "h3": "عضوية غرفة تجارة إيران وغرفة إيران-سويسرا وغرفة إيران-عُمان",
           "p": "الحضور في غرفة تجارة وصناعات ومناجم وزراعة طهران والغرف المشتركة مع سويسرا وعُمان يفتح طريق التعاون الدولي وتصدير المعدات الطبية الإيرانية.",
-          "kpis": [["غرفة طهران", "عضوية تجارية رسمية"], ["إيران-سويسرا", "غرفة مشتركة"], ["إيران-عُمان", "تطوير سوق المنطقة"], ["تصدير", "توريد مراكز خارج الحدود"]],
+          "kpis": [
+            [
+              "غرفة طهران",
+              "عضوية تجارية رسمية"
+            ],
+            [
+              "إيران-سويسرا",
+              "غرفة مشتركة"
+            ],
+            [
+              "إيران-عُمان",
+              "تطوير سوق المنطقة"
+            ],
+            [
+              "تصدير",
+              "توريد مراكز خارج الحدود"
+            ]
+          ],
           "bar_a_label": "جاهزية الشبكة التجارية ومعيار التغليف التصديري",
           "bar_a_val": "٩٥٪",
           "bar_a_pct": 95,
@@ -443,7 +919,24 @@
           "tag": "عضوية رسمية ٠٥ · تجمعات صناعة المعدات الطبية",
           "h3": "عضو جمعية منتجي المعدات الطبية وبيت الصناعة والتعدين للشباب",
           "p": "تعاون مستمر مع الجمعية المهنية لمنتجي معدات الطب وطب الأسنان والمختبرات وبيت الصناعة والتعدين والتجارة للشباب في إيران لرفع معايير مكافحة عدوى المستشفيات.",
-          "kpis": [["AMEDAL", "جمعية المنتجين"], ["بيت الصناعة", "صناعة وتعدين الشباب"], ["أكاديمية", "تدريب متخصص للمراكز"], ["تكامل", "تطوير المعايير الوطنية"]],
+          "kpis": [
+            [
+              "AMEDAL",
+              "جمعية المنتجين"
+            ],
+            [
+              "بيت الصناعة",
+              "صناعة وتعدين الشباب"
+            ],
+            [
+              "أكاديمية",
+              "تدريب متخصص للمراكز"
+            ],
+            [
+              "تكامل",
+              "تطوير المعايير الوطنية"
+            ]
+          ],
           "bar_a_label": "المشاركة المهنية وتدريب معايير مكافحة العدوى",
           "bar_a_val": "٩٦٪",
           "bar_a_pct": 96,
@@ -458,7 +951,24 @@
           "tag": "مسؤولية اجتماعية ٠٦ · حملة إنقاذ غابات زاغروس",
           "h3": "العائلة الخضراء لآباديس وغرس أكثر من ٢٬٠٠٠ شتلة بلوط موثّقة",
           "p": "إلى جانب توفير ملايين اللترات من ماء المستشفيات، غرست آباديس باسم المراكز العلاجية الشريكة أكثر من ٢٬٠٠٠ شتلة بلوط موثّقة في غابات زاغروس وتتابع رصدها.",
-          "kpis": [["٢٬٠٠٠+", "شتلة بلوط مغروسة"], ["٦٣٫٥+ مليون", "لتر ماء موفَّر"], ["١٬٢٨٤", "مركز في العائلة الخضراء"], ["زاغروس", "إحياء نظام بيئي محلي"]],
+          "kpis": [
+            [
+              "٢٬٠٠٠+",
+              "شتلة بلوط مغروسة"
+            ],
+            [
+              "٦٣٫٥+ مليون",
+              "لتر ماء موفَّر"
+            ],
+            [
+              "١٬٢٨٤",
+              "مركز في العائلة الخضراء"
+            ],
+            [
+              "زاغروس",
+              "إحياء نظام بيئي محلي"
+            ]
+          ],
           "bar_a_label": "أثر بيئي موثّق والتزام اجتماعي مرصود",
           "bar_a_val": "٩٩٪",
           "bar_a_pct": 99,
@@ -473,7 +983,24 @@
           "tag": "نطاق العمل ٠٧ · توزيع ودعم هندسي",
           "h3": "تغطية كاملة لـ٣١ محافظة بـ٢٩ وكيلاً حصرياً من ذوي الخبرة",
           "p": "يضمن وكلاء آباديس الرسميون في أنحاء البلاد، من المدن الكبرى إلى المراكز العلاجية في المناطق الأقل حظاً، توريد كيس الشفط في الوقت وتركيب العبوة وتدريب طاقم غرفة العمليات.",
-          "kpis": [["٣١ محافظة", "تغطية ١٠٠٪ للبلاد"], ["٢٩ وكيلاً", "حصريون ومدرَّبون"], ["١٬٢٨٤", "مستشفى ومركز جراحة"], ["٢٤/٧", "دعم فني للمراكز"]],
+          "kpis": [
+            [
+              "٣١ محافظة",
+              "تغطية ١٠٠٪ للبلاد"
+            ],
+            [
+              "٢٩ وكيلاً",
+              "حصريون ومدرَّبون"
+            ],
+            [
+              "١٬٢٨٤",
+              "مستشفى ومركز جراحة"
+            ],
+            [
+              "٢٤/٧",
+              "دعم فني للمراكز"
+            ]
+          ],
           "bar_a_label": "سرعة وصول المراكز في المحافظات إلى المنتج والخدمة الفنية",
           "bar_a_val": "٩٨٪",
           "bar_a_pct": 98,
@@ -488,7 +1015,24 @@
           "tag": "رؤية استراتيجية ٠٨ · ريادة سوق المنطقة",
           "h3": "أن تصبح قطباً لإنتاج معدات مكافحة العدوى في المنطقة",
           "p": "مع المصنع الجديد ورفع الطاقة إلى أكثر من ٥ ملايين قطعة في السنة وإضافة سلة العناية بالفم والمجرى الهوائي في العناية المركزة، تتقدّم آباديس نحو المرجعية الإقليمية.",
-          "kpis": [["أفق ١٤١٠", "رؤية إقليمية"], ["٥+ ملايين", "طاقة إنتاج سنوية"], ["مصنع جديد", "خطوط مؤتمتة بالكامل"], ["تصدير", "حضور في الأسواق المستهدفة"]],
+          "kpis": [
+            [
+              "أفق ١٤١٠",
+              "رؤية إقليمية"
+            ],
+            [
+              "٥+ ملايين",
+              "طاقة إنتاج سنوية"
+            ],
+            [
+              "مصنع جديد",
+              "خطوط مؤتمتة بالكامل"
+            ],
+            [
+              "تصدير",
+              "حضور في الأسواق المستهدفة"
+            ]
+          ],
           "bar_a_label": "تقدّم خطة تطوير المنتج وبنية الإنتاج الحديثة",
           "bar_a_val": "٩٤٪",
           "bar_a_pct": 94,

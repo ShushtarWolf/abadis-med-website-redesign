@@ -9,6 +9,7 @@
   <url><loc>https://abadis-med.com/arabic/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/"/></url>
   <url><loc>https://abadis-med.com/arabic/academy/</loc></url>
   <url><loc>https://abadis-med.com/arabic/academy/login/</loc></url>
+  <url><loc>https://abadis-med.com/arabic/articles/</loc></url>
   <url><loc>https://abadis-med.com/arabic/customers/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/customers/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/our-customers/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/customers/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/customers/"/></url>
   <url><loc>https://abadis-med.com/arabic/export/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/export/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/export/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/export/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/export/"/></url>
   <url><loc>https://abadis-med.com/arabic/green-family-map/</loc></url>
@@ -66,6 +67,7 @@
   <url><loc>https://abadis-med.com/arabic/%D9%86%D8%B8%D8%A7%D9%81%D8%A9-%D8%A7%D9%84%D9%81%D9%85/</loc></url>
   <url><loc>https://abadis-med.com/arabic/%D9%8A%D8%A7%D9%86%D8%B5%D9%8A%D8%A8-%D8%A2%D8%A8%D8%A7%D8%AF%D9%8A%D8%B3-%D8%A7%D9%84%D9%83%D8%A8%D9%8A%D8%B1-2020-%D8%A8%D9%85%D9%86%D8%A7%D8%B3%D8%A8%D8%A9-%D8%B9%D9%8A%D8%AF-%D8%A7%D9%84%D8%AA/</loc></url>
   <url><loc>https://abadis-med.com/arabic/%D9%BE%D8%B1%D8%B3%D8%B4-%D9%87%D8%A7%DB%8C-%D9%85%D8%AA%D8%AF%D8%A7%D9%88%D9%84/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/faq/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/faqs/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/%D9%BE%D8%B1%D8%B3%D8%B4-%D9%87%D8%A7%DB%8C-%D9%85%D8%AA%D8%AF%D8%A7%D9%88%D9%84/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/faq/"/></url>
+  <url><loc>https://abadis-med.com/articles-options/</loc></url>
   <url><loc>https://abadis-med.com/articles/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/articles/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/blog/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/articles/"/></url>
   <url><loc>https://abadis-med.com/articles/1041/</loc></url>
   <url><loc>https://abadis-med.com/articles/1050/</loc></url>
@@ -186,11 +188,15 @@
   <url><loc>https://abadis-med.com/calculator/hospital/</loc></url>
   <url><loc>https://abadis-med.com/calculator/receipt/</loc></url>
   <url><loc>https://abadis-med.com/calculator/scale/</loc></url>
+  <url><loc>https://abadis-med.com/careers-options/</loc></url>
   <url><loc>https://abadis-med.com/careers/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/careers/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/collaboration-opportunities/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/careers/"/></url>
+  <url><loc>https://abadis-med.com/careers/jobs/accountant/</loc></url>
+  <url><loc>https://abadis-med.com/careers/jobs/collections-officer/</loc></url>
   <url><loc>https://abadis-med.com/careers/jobs/export-specialist/</loc></url>
   <url><loc>https://abadis-med.com/careers/jobs/market-research/</loc></url>
   <url><loc>https://abadis-med.com/careers/jobs/quality-assurance/</loc></url>
   <url><loc>https://abadis-med.com/careers/jobs/rnd-specialist/</loc></url>
+  <url><loc>https://abadis-med.com/careers/jobs/sales-manager/</loc></url>
   <url><loc>https://abadis-med.com/careers/jobs/sales-specialist/</loc></url>
   <url><loc>https://abadis-med.com/careers/jobs/secretary/</loc></url>
   <url><loc>https://abadis-med.com/chatbot-demo/</loc></url>
@@ -215,6 +221,7 @@
   <url><loc>https://abadis-med.com/en/academy/</loc></url>
   <url><loc>https://abadis-med.com/en/academy/login/</loc></url>
   <url><loc>https://abadis-med.com/en/achievements-of-abadis-med-company-in-developing-disposable-suction-bags/</loc></url>
+  <url><loc>https://abadis-med.com/en/articles/</loc></url>
   <url><loc>https://abadis-med.com/en/assessment-of-hand-hygiene-compliance-among-healthcare-workers-in-zahedan-social-security-hospital-in-2023/</loc></url>
   <url><loc>https://abadis-med.com/en/blog/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/articles/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/blog/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/articles/"/></url>
   <url><loc>https://abadis-med.com/en/calculator/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/calculator/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/calculator/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/%D8%A7%D9%84%D8%AD%D9%88%D8%B3%D8%A8%D8%A9/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/calculator/"/></url>

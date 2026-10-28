@@ -51,7 +51,7 @@
       var panel = root.querySelector('.w2-detail-panel');
       if (!panel) return;
       panel.querySelector('[data-role="tag"]').textContent = info.tag;
-      panel.querySelector('[data-role="stem-pill"]').textContent = stems[activeStem] || stems.long || '';
+      var stemEl = panel.querySelector('[data-role="stem-pill"]'); if (stemEl) stemEl.textContent = stems[activeStem] || stems.long || '';
       panel.querySelector('[data-role="h3"]').textContent = info.h3;
       panel.querySelector('[data-role="p"]').textContent = info.p;
       panel.querySelector('[data-role="kpis"]').innerHTML = (info.kpis || []).map(function (k) {

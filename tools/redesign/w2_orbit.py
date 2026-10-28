@@ -58,8 +58,8 @@ _UI = {
 
 def assets(prefix=''):
     return (
-        f'<link rel="stylesheet" href="{prefix}assets/css/w2-orbit.css?v=20261028m">\n'
-        f'<script src="{prefix}assets/js/w2-orbit.js?v=20261028m" defer></script>\n'
+        f'<link rel="stylesheet" href="{prefix}assets/css/w2-orbit.css?v=20261028n">\n'
+        f'<script src="{prefix}assets/js/w2-orbit.js?v=20261028n" defer></script>\n'
     )
 
 
@@ -193,7 +193,6 @@ def widget(lang, mode, prefix=''):
 <div class="w2-detail-panel" data-panel="w2">
 <div class="w2-panel-top">
 <span class="w2-active-tag" data-role="tag">{esc(first["tag"])}</span>
-<span class="w2-stem-pill" data-role="stem-pill">{esc(stem0)}</span>
 </div>
 <h3 data-role="h3">{esc(first["h3"])}</h3>
 <p data-role="p">{esc(first["p"])}</p>
