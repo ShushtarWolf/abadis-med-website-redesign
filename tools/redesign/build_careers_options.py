@@ -1208,7 +1208,7 @@ def build_c2_body():
               <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             </div>
             <h3>امنیت شغلی و اثرگذاری ماندگار</h3>
-            <p>مشارکت در حفظ بیش از ۲۸ میلیون لیتر آب و احیای جنگل‌های بلوط زاگرس سبز.</p>
+            <p>مشارکت در صرفه‌جویی سالانه بیش از ۱۲ میلیون لیتر در مصرف آب و احیای جنگل‌های بلوط زاگرس سبز.</p>
           </article>
           <article class="co-perk-card">
             <div class="co-perk-ico">

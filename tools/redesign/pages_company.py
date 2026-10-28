@@ -175,19 +175,19 @@ def customers_hero(p, lang, h1_html, crumbs):
 SLOGAN_SDGS_I18N = {
     'fa': [
         'هم‌سویی با ۷ هدف توسعه پایدار سازمان ملل (UN SDGs)،',
-        'صرفه‌جویی بیش از ۲۸ میلیون لیتر آب',
+        'صرفه‌جویی سالانه بیش از ۱۲ میلیون لیتر در مصرف آب',
         'کاهش مصرف انرژی و ردپای کربنی',
         'احیای جنگل‌های بلوط زاگرس سبز',
     ],
     'en': [
         'Aligned with 7 UN Sustainable Development Goals (SDGs),',
-        'Over 28 Million Liters of Water Saved',
+        'Annual Water Savings of Over 12 Million Liters',
         'Reduced Energy Use & Carbon Footprint',
         'Green Zagros Oak Reforestation',
     ],
     'ar': [
         'التوافق مع ٧ من أهداف التنمية المستدامة للأمم المتحدة (UN SDGs)،',
-        'توفير أكثر من ٢٨ مليون لتر من المياه',
+        'توفير أكثر من ١٢ مليون لتر في استهلاك المياه سنوياً',
         'خفض استهلاك الطاقة والبصمة الكربونية',
         'إحياء غابات بلوط زاغروس الخضراء',
     ],
