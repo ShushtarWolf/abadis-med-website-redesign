@@ -234,11 +234,16 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
             sdgs_h1 = 'Sustainable <em>Development</em>' if lang == 'en' else 'التنمية <em>المستدامة</em>'
             hero = sdgs_hero(p, lang, sdgs_h1, crumbs(p, trail, lang=lang))
             main = f'''{hero}{sec}{after}'''
+        elif site_path == 'collaboration-opportunities/':
+            from pages_company import careers_hero
+            car_h1 = 'Collaboration <em>Opportunities</em>'
+            hero = careers_hero(p, lang, car_h1, crumbs(p, trail, lang=lang))
+            main = f'''{hero}{sec}{after}'''
         else:
             main = f'''{page_hero(p, trail, esc(title), esc(desc), lang=lang, mark=_hero_mark)}{benefits}{sec}{after}'''
     extra_head = ''
     html_attrs = ''
-    if site_path in ('about-us/', 'من-نحن/', 'our-customers/', 'customers/', 'sdgs/'):
+    if site_path in ('about-us/', 'من-نحن/', 'our-customers/', 'customers/', 'sdgs/', 'collaboration-opportunities/'):
         from pages_company import about_motion_tags
         extra_head, motion_js = about_motion_tags(p)
         extra_js = motion_js + extra_js

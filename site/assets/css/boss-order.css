@@ -1,14 +1,18 @@
 /* Boss-order batch: why cards, tab CTAs, orbit, about boxes, academy, Iran map. */
 
-.ps-root .h-all [data-ps-cta] { display: none; }
-.ps-root:not(.js-ps)[data-ps-default="product"] .h-all [data-ps-cta="product"],
-.ps-root:not(.js-ps)[data-ps-default="solution"] .h-all [data-ps-cta="solution"],
-.ps-root:not(.js-ps)[data-ps-default="news"] .h-all [data-ps-cta="news"],
-.ps-root:not(.js-ps)[data-ps-default="articles"] .h-all [data-ps-cta="articles"],
-.ps-root.is-tab-product .h-all [data-ps-cta="product"],
-.ps-root.is-tab-solution .h-all [data-ps-cta="solution"],
-.ps-root.is-tab-news .h-all [data-ps-cta="news"],
-.ps-root.is-tab-articles .h-all [data-ps-cta="articles"] { display: inline-flex; }
+.ps-root .h-all { grid-template-columns: 1fr !important; justify-items: center; }
+.ps-root .h-all [data-ps-cta] { display: none !important; }
+.ps-root .h-all [data-ps-cta][hidden] { display: none !important; }
+.ps-root:not(.js-ps)[data-ps-default="product"] .h-all [data-ps-cta="product"]:not([hidden]),
+.ps-root:not(.js-ps)[data-ps-default="solution"] .h-all [data-ps-cta="solution"]:not([hidden]),
+.ps-root:not(.js-ps)[data-ps-default="news"] .h-all [data-ps-cta="news"]:not([hidden]),
+.ps-root:not(.js-ps)[data-ps-default="articles"] .h-all [data-ps-cta="articles"]:not([hidden]),
+.ps-root.is-tab-product .h-all [data-ps-cta="product"]:not([hidden]),
+.ps-root.is-tab-solution .h-all [data-ps-cta="solution"]:not([hidden]),
+.ps-root.is-tab-news .h-all [data-ps-cta="news"]:not([hidden]),
+.ps-root.is-tab-articles .h-all [data-ps-cta="articles"]:not([hidden]) {
+  display: inline-flex !important;
+}
 .h-all [hidden] { display: none !important; }
 
 /* Original UN SDG tiles: staggered float, neon ring, hover lift. */

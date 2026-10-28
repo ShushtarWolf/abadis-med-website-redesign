@@ -135,8 +135,8 @@ def build_home(write, lang):
     news_rail = S.carousel(''.join(pc(x, t['read'], t['news_eb']) for x in news_items), len(news_items), t['prev'], t['next'], t['news_eb'])
     art_rail = S.carousel(''.join(pc(x, art_go, t['art_eb']) for x in art_items), len(art_items), t['prev'], t['next'], t['art_eb'])
     box_h = 'Articles & News' if lang == 'en' else 'المقالات والأخبار'
-    news_all = 'View all news →' if lang == 'en' else 'عرض كل الأخبار ←'
-    art_all = 'View all articles →' if lang == 'en' else 'عرض كل المقالات ←'
+    news_all = 'View all news' if lang == 'en' else 'عرض كل الأخبار'
+    art_all = 'View all articles' if lang == 'en' else 'عرض كل المقالات'
     stories = f'''  <section class="section" id="stories"><div class="wrap">
       <div class="section-head reveal"><h2>{esc(box_h)}</h2></div>
       <div class="h-box ps-root" data-ps data-ps-home data-ps-default="news">
@@ -148,7 +148,7 @@ def build_home(write, lang):
         <div class="ps-panel" id="articles" role="tabpanel" aria-labelledby="tab-home-articles" data-ps-panel="articles" hidden>{art_rail}</div>
         <p class="h-all">
           <a class="btn btn-ghost" data-ps-cta="news" href="{_h(t, p, t['news_href'])}">{esc(news_all)}</a>
-          <a class="btn btn-ghost" data-ps-cta="articles" href="{_h(t, p, t['art_href'])}" hidden>{esc(art_all)}</a>
+          <a class="btn btn-ghost" data-ps-cta="articles" href="{_h(t, p, t['art_href'])}" hidden style="display:none">{esc(art_all)}</a>
         </p>
       </div>
     </div></section>'''
@@ -172,7 +172,7 @@ def build_home(write, lang):
     main = '\n'.join([hero, about, products, impact, why, quick, stories, mem, cust])
     if lang == 'en': main = main.replace('←', '→')
     import w2_orbit
-    extra_head = f'<link rel="preload" as="image" href="{p}assets/img/p/hero-bags.webp" type="image/webp">\n<link rel="stylesheet" href="{p}assets/css/home.css">\n{H.logo_scroll_css(p)}\n{H.counter_options_css(p)}\n{w2_orbit.assets(p)}'
+    extra_head = f'<link rel="preload" as="image" href="{p}assets/img/p/hero-bags.webp" type="image/webp">\n<link rel="stylesheet" href="{p}assets/css/home.css?v=20261028f">\n{H.logo_scroll_css(p)}\n{H.counter_options_css(p)}\n{w2_orbit.assets(p)}'
     html = page(p, None, t['title'], t['desc'], main, lang=lang, fa_path='', canonical_path=t['root'],
                 extra_head=extra_head, scripts=H.logo_scroll_scripts(p) + H.counter_options_script(p), main_class='home-page', body_class='home', lightbox=True,
                 html_attrs='data-slogan="t1"')

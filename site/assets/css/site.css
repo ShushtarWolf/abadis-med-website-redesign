@@ -1459,20 +1459,20 @@ video:not([controls]):not(.wp-video-shortcode):not(.is-playing) {
   content: "";
   position: absolute;
   inset: 0;
-  background: url("../media/hero-or-zagros-poster.jpg?v=20261028e") center / cover no-repeat;
+  background: url("../media/hero-or-zagros-poster.jpg?v=20261028f") center / cover no-repeat;
   opacity: .18;
   z-index: 0;
   pointer-events: none;
   transition: opacity 0.35s ease, visibility 0.35s ease;
 }
 .customers-hero::before {
-  background-image: url("../media/hero-customers-poster.jpg?v=20261028e");
+  background-image: url("../media/hero-customers-poster.jpg?v=20261028f");
 }
 .sdgs-hero::before {
-  background-image: url("../media/hero-sdgs-poster.jpg?v=20261028e");
+  background-image: url("../media/hero-sdgs-poster.jpg?v=20261028f");
 }
 .careers-hero::before {
-  background-image: url("../media/hero-careers-poster.jpg?v=20261028e");
+  background-image: url("../media/hero-careers-poster.jpg?v=20261028f");
 }
 .about-hero.has-playing-video::before,
 .about-hero:has(.about-hero-video.is-playing)::before,

@@ -617,6 +617,20 @@ video.home-or-fill:not(.is-playing) {
 [dir="rtl"] .h-all .btn {
   flex-direction: row-reverse;
 }
+.ps-root .h-all { grid-template-columns: 1fr !important; justify-items: center; }
+.ps-root .h-all [data-ps-cta] { display: none !important; }
+.ps-root .h-all [data-ps-cta][hidden] { display: none !important; }
+.ps-root:not(.js-ps)[data-ps-default="product"] .h-all [data-ps-cta="product"]:not([hidden]),
+.ps-root:not(.js-ps)[data-ps-default="solution"] .h-all [data-ps-cta="solution"]:not([hidden]),
+.ps-root:not(.js-ps)[data-ps-default="news"] .h-all [data-ps-cta="news"]:not([hidden]),
+.ps-root:not(.js-ps)[data-ps-default="articles"] .h-all [data-ps-cta="articles"]:not([hidden]),
+.ps-root.is-tab-product .h-all [data-ps-cta="product"]:not([hidden]),
+.ps-root.is-tab-solution .h-all [data-ps-cta="solution"]:not([hidden]),
+.ps-root.is-tab-news .h-all [data-ps-cta="news"]:not([hidden]),
+.ps-root.is-tab-articles .h-all [data-ps-cta="articles"]:not([hidden]) {
+  display: inline-flex !important;
+}
+.h-all [hidden] { display: none !important; }
 
 /* #6 Cookie bar must not cover hero CTAs */
 @media (max-width: 760px) {

@@ -112,8 +112,8 @@ def about_hero_video(p):
     return (
         f'<video class="about-hero-video" autoplay muted loop playsinline webkit-playsinline '
         f'disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" '
-        f'poster="{p}assets/media/hero-or-zagros-poster.jpg?v=20261028e">'
-        f'<source src="{p}assets/media/hero-or-zagros.mp4?v=20261028e" type="video/mp4"></video>'
+        f'poster="{p}assets/media/hero-or-zagros-poster.jpg?v=20261028f">'
+        f'<source src="{p}assets/media/hero-or-zagros.mp4?v=20261028f" type="video/mp4"></video>'
     )
 
 
@@ -154,8 +154,8 @@ def customers_hero_video(p):
     return (
         f'<video class="about-hero-video customers-hero-video" autoplay muted loop playsinline webkit-playsinline '
         f'disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" '
-        f'poster="{p}assets/media/hero-customers-poster.jpg?v=20261028e">'
-        f'<source src="{p}assets/media/hero-customers.mp4?v=20261028e" type="video/mp4"></video>'
+        f'poster="{p}assets/media/hero-customers-poster.jpg?v=20261028f">'
+        f'<source src="{p}assets/media/hero-customers.mp4?v=20261028f" type="video/mp4"></video>'
     )
 
 
@@ -205,8 +205,8 @@ def sdgs_hero_video(p):
     return (
         f'<video class="about-hero-video sdgs-hero-video" autoplay muted loop playsinline webkit-playsinline '
         f'disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" '
-        f'poster="{p}assets/media/hero-sdgs-poster.jpg?v=20261028e">'
-        f'<source src="{p}assets/media/hero-sdgs.mp4?v=20261028e" type="video/mp4"></video>'
+        f'poster="{p}assets/media/hero-sdgs-poster.jpg?v=20261028f">'
+        f'<source src="{p}assets/media/hero-sdgs.mp4?v=20261028f" type="video/mp4"></video>'
     )
 
 
@@ -218,6 +218,57 @@ def sdgs_hero(p, lang, h1_html, crumbs):
       <div>{crumbs}
         <h1>{h1_html}</h1>
         {sdgs_slogan_block(lang)}
+      </div>
+    </div>
+  </section>'''
+
+
+SLOGAN_CAREERS_I18N = {
+    'fa': [
+        'جای شما در خانواده بزرگ آبادیس خالیست،',
+        'محیطی علمی، نوآور و دانش‌بنیان',
+        'فرصت رشد حرفه‌ای و یادگیری مستمر',
+        'همراهی در ارتقای سلامت و محیط زیست',
+    ],
+    'en': [
+        'Your place is waiting in the Abadis family,',
+        'A Scientific, Knowledge-Based Environment',
+        'Continuous Learning & Career Growth',
+        'Advancing Healthcare & Environmental Care',
+    ],
+    'ar': [
+        'مكانك بانتظارك في عائلة آباديس الكبيرة،',
+        'بيئة علمية مبتكرة وقائمة على المعرفة',
+        'فرص للنمو المهني والتعلم المستمر',
+        'المساهمة في الارتقاء بالصحة والبيئة',
+    ],
+}
+
+
+def careers_slogan_block(lang):
+    lines = SLOGAN_CAREERS_I18N[lang]
+    spans = ''.join(
+        f'<span class="slogan-line" style="--i:{n}">{esc(x)}</span>' for n, x in enumerate(lines))
+    return f'<p class="slogan reveal" aria-label="{esc(" ".join(lines))}">{spans}</p>'
+
+
+def careers_hero_video(p):
+    return (
+        f'<video class="about-hero-video careers-hero-video" autoplay muted loop playsinline webkit-playsinline '
+        f'disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" '
+        f'poster="{p}assets/media/hero-careers-poster.jpg?v=20261028f">'
+        f'<source src="{p}assets/media/hero-careers.mp4?v=20261028f" type="video/mp4"></video>'
+    )
+
+
+def careers_hero(p, lang, h1_html, crumbs):
+    """Careers hero: R&D / cleanroom video, slogan in header type with motions."""
+    return f'''  <section class="page-hero about-hero careers-hero">
+    {careers_hero_video(p)}
+    <div class="wrap about-hero-grid">
+      <div>{crumbs}
+        <h1>{h1_html}</h1>
+        {careers_slogan_block(lang)}
       </div>
     </div>
   </section>'''
@@ -1225,7 +1276,7 @@ def _job_cards(p_jobs_prefix, jobs):
         out.append(
             f'''<article class="card job{' job--active' if act else ''} reveal"><div class="job-top"><h3>{esc(j["title"])}</h3>{badge}</div>'''
             f'''<span class="dates">تاریخ انتشار: {fa(j["pub"])} · تاریخ انقضاء: {fa(j["exp"])}</span>'''
-            f'''<a class="more-link" href="{p_jobs_prefix}{JOB_SLUGS[j["title"]]}/">مشاهده موقعیت ←</a></article>''')
+            f'''<a class="more-link" href="{p_jobs_prefix}{JOB_SLUGS[j["title"]]}/">مشاهده جزئیات همکاری</a></article>''')
     return ''.join(out)
 
 
@@ -1274,10 +1325,13 @@ def careers(write):
                           'چنانچه در حال حاضر مشاغل دیگری دارید نسبت به تکمیل این بخش اقدام نمایید.')
     computer = _list_field('آشنایی با کامپیوتر', 'آشنایی با کامپیوتر', COMPUTER_COLS, True,
                            'برای اضافه کردن ردیف روی «افزودن ردیف» کلیک کنید.')
+    from layout import crumbs
+    head_css, motion_js = about_motion_tags(p)
+    hero = careers_hero(p, 'fa', 'فرصت‌های <em>همکاری</em>', crumbs(p, [('فرصت‌های همکاری', None)]))
     opts = '<option>ارسال رزومه عمومی / خارج از ردیف‌های شغلی فعلی</option>' + opts
-    main = f'''{page_hero(p, [('فرصت‌های شغلی / همکاری با ما', None)], 'فرصت‌های شغلی / همکاری با ما', 'جای شما در آبادیس خالیست...', CAREERS_ART)}
+    main = f'''{hero}
   <section class="section" id="jobs"><div class="wrap">
-    <h2 class="reveal" style="margin-bottom:18px">موقعیت‌های شغلی</h2>
+    <h2 class="reveal" style="margin-bottom:18px">فرصت‌های همکاری</h2>
     <div class="grid g-3">{cards}</div>
   </div></section>
   <section class="section" id="general-resume"><div class="wrap" style="max-width:860px">
@@ -1334,7 +1388,7 @@ def careers(write):
       </form>
     </div>
   </div></section>'''
-    html = page(p, 'careers', 'فرصت‌های شغلی / همکاری با ما', 'فرصت های همکاری و موقعیت های شغلی شرکت دانش‌بنیان مخازن طبی آبادیس', main, fa_path='careers/')
+    html = page(p, 'careers', 'فرصت‌های همکاری', 'فرصت‌های همکاری شرکت دانش‌بنیان مخازن طبی آبادیس', main, fa_path='careers/', extra_head=head_css, html_attrs='data-slogan="t1"', scripts=motion_js)
     html = html.replace('</body>', '<script>document.getElementById("generalResumeCta")&&document.getElementById("generalResumeCta").addEventListener("click",function(){var s=document.querySelector(\'[name="عنوان شغلی"]\');if(s)s.value="ارسال رزومه عمومی / خارج از ردیف‌های شغلی فعلی";});</script>\n</body>', 1)
     write('careers/index.html', html)
     en_path = SITE / 'en/collaboration-opportunities/index.html'
@@ -1360,7 +1414,7 @@ def careers(write):
     <div class="job-body card reveal">{_job_sections(rewrite_html(j['html'], p))}</div>
     {facts}
   </div>
-  <div class="wrap"><div class="cta-actions" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:22px"><a class="btn btn-primary" href="../../#apply">ثبت درخواست</a><a class="btn btn-ghost" href="../../#jobs">مشاهده کلیه موقعیت‌های شغلی</a></div></div></section>'''
+  <div class="wrap"><div class="cta-actions" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:22px"><a class="btn btn-primary" href="../../#apply">ثبت درخواست</a><a class="btn btn-ghost" href="../../#jobs">مشاهده کلیه فرصت‌های همکاری</a></div></div></section>'''
         write(f'careers/jobs/{slug}/index.html', page(p, 'careers', j['title'], strip_tags(j['html'])[:150], main))
 
 from lib import JOB_MAP

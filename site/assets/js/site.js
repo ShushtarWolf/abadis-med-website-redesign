@@ -913,7 +913,9 @@
       p.hidden = p.getAttribute('data-ps-panel') !== name;
     });
     root.querySelectorAll('[data-ps-cta]').forEach(function (a) {
-      a.hidden = a.getAttribute('data-ps-cta') !== name;
+      var match = a.getAttribute('data-ps-cta') === name;
+      a.hidden = !match;
+      a.style.display = match ? '' : 'none';
     });
     if (home) requestAnimationFrame(function () { paintRails(root); });
   }

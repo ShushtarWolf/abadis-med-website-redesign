@@ -215,9 +215,9 @@ def or_hero(media, zagros='csr/img/hero/'):
     m = media.rstrip('/') + '/'
     return f'''  <section class="home-or home-or--product" id="intro" aria-label="معرفی محصول آبادیس">
     <div class="home-or-media" aria-hidden="true">
-      <img class="home-or-fill" src="{m}hero-or-zagros-poster.jpg?v=20261028e" alt="" width="640" height="1214" decoding="async" fetchpriority="high">
-      <video class="home-or-video" id="homeOrVideo" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="{m}hero-or-zagros-poster.jpg?v=20261028e">
-        <source src="{m}hero-or-zagros.mp4?v=20261028e" type="video/mp4">
+      <img class="home-or-fill" src="{m}hero-or-zagros-poster.jpg?v=20261028f" alt="" width="640" height="1214" decoding="async" fetchpriority="high">
+      <video class="home-or-video" id="homeOrVideo" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="{m}hero-or-zagros-poster.jpg?v=20261028f">
+        <source src="{m}hero-or-zagros.mp4?v=20261028f" type="video/mp4">
       </video>
       <div class="home-or-veil"></div>
     </div>
@@ -572,7 +572,7 @@ SCROLL_SRC = 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js
 
 def logo_scroll_css(prefix=''):
     """Slogan T1 overrides. Load after home.css."""
-    return f'<link rel="stylesheet" href="{prefix}assets/css/slogan-options.css?v=20261028e">'
+    return f'<link rel="stylesheet" href="{prefix}assets/css/slogan-options.css?v=20261028f">'
 
 
 def counter_options_css(prefix=''):
@@ -595,9 +595,9 @@ def logo_scroll_scripts(prefix='', existing=''):
     if 'scrolltrigger' not in low:
         tags.append(f'<script src="{SCROLL_SRC}" defer></script>')
     if 'logo-scroll.js' not in existing:
-        tags.append(f'<script src="{prefix}assets/js/logo-scroll.js?v=20261028e" defer></script>')
+        tags.append(f'<script src="{prefix}assets/js/logo-scroll.js?v=20261028f" defer></script>')
     if 'slogan-options.js' not in existing:
-        tags.append(f'<script src="{prefix}assets/js/slogan-options.js?v=20261028e" defer></script>')
+        tags.append(f'<script src="{prefix}assets/js/slogan-options.js?v=20261028f" defer></script>')
     return ('\n'.join(tags) + '\n') if tags else ''
 
 
@@ -695,8 +695,8 @@ def posts_unified():
         <div class="ps-panel is-default" id="news" role="tabpanel" aria-labelledby="tab-home-news" data-ps-panel="news">{news_rail}</div>
         <div class="ps-panel" id="articles" role="tabpanel" aria-labelledby="tab-home-articles" data-ps-panel="articles" hidden>{art_rail}</div>
         <p class="h-all">
-          <a class="btn btn-ghost" data-ps-cta="news" href="news/">مشاهده همه اخبار ←</a>
-          <a class="btn btn-ghost" data-ps-cta="articles" href="articles/" hidden>مشاهده همه مقالات ←</a>
+          <a class="btn btn-ghost" data-ps-cta="news" href="news/">مشاهده همه اخبار</a>
+          <a class="btn btn-ghost" data-ps-cta="articles" href="articles/" hidden style="display:none">مشاهده همه مقالات</a>
         </p>
       </div>
     </div>
@@ -737,7 +737,7 @@ def build(write):
     ])
     import w2_orbit
     extra_head = '''<link rel="preload" as="image" href="assets/img/p/hero-bags.webp" type="image/webp">
-<link rel="stylesheet" href="assets/css/home.css">
+<link rel="stylesheet" href="assets/css/home.css?v=20261028f">
 ''' + logo_scroll_css('') + '\n' + counter_options_css('') + '\n' + w2_orbit.assets('')
     scripts = logo_scroll_scripts('') + counter_options_script('')
     html = page(

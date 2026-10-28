@@ -62,8 +62,8 @@ UI = {
         subject='درخواست راهکار آبادیس',
         home='خانه',
         box='راهکار و محصول',
-        all_p='مشاهده همه محصولات ←',
-        all_s='مشاهده همه راهکارها ←',
+        all_p='مشاهده همه محصولات',
+        all_s='مشاهده همه راهکارها',
         prev='قبلی',
         next='بعدی',
         rail_p='محصولات',
@@ -110,8 +110,8 @@ UI = {
         subject='Abadis solution request',
         home='Home',
         box='Solutions & Products',
-        all_p='View all products →',
-        all_s='View all solutions →',
+        all_p='View all products',
+        all_s='View all solutions',
         prev='Previous',
         next='Next',
         rail_p='Products',
@@ -158,8 +158,8 @@ UI = {
         subject='طلب حل آباديس',
         home='الرئيسية',
         box='الحلول والمنتجات',
-        all_p='عرض جميع المنتجات ←',
-        all_s='عرض جميع الحلول ←',
+        all_p='عرض جميع المنتجات',
+        all_s='عرض جميع الحلول',
         prev='السابق',
         next='التالي',
         rail_p='المنتجات',
@@ -543,7 +543,7 @@ def home_section(p, lang):
         {carousel(sol_cards, len(SOLS), ui["prev"], ui["next"], ui["rail_s"])}</div>
       <p class="h-all">
         <a class="btn btn-ghost" data-ps-cta="product" href="{prod_hub}">{esc(ui["all_p"])}</a>
-        <a class="btn btn-ghost" data-ps-cta="solution" href="{sol_hub}" hidden>{esc(ui["all_s"])}</a>
+        <a class="btn btn-ghost" data-ps-cta="solution" href="{sol_hub}" hidden style="display:none">{esc(ui["all_s"])}</a>
       </p>
     </div>'''
     return (f'  <section class="section ps-block" id="products"><div class="wrap">'
