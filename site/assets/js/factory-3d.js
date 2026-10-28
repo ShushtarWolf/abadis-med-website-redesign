@@ -268,6 +268,15 @@ function init(sec) {
   const subFocusOffset = new THREE.Vector3();
   const targetSubFocus = new THREE.Vector3();
 
+  // Mobile: dock starts collapsed so the 3D machines stay visible
+  const isNarrow = () => stage.clientWidth < 768;
+  function setCollapsed(v) {
+    dock.classList.toggle('is-collapsed', v);
+    dockToggle.setAttribute('aria-expanded', String(!v));
+    dockToggle.title = v ? cfg.expand : cfg.collapse;
+    if (dockToggleLbl) dockToggleLbl.textContent = v ? cfg.expand : cfg.collapse;
+  }
+  if (isNarrow()) setCollapsed(true);
   // Dock collapse / expand toggle
   dockToggle.addEventListener('click', () => {
     const collapsed = dock.classList.toggle('is-collapsed');
@@ -320,9 +329,7 @@ function init(sec) {
     );
 
     if (userClicked) {
-      dock.classList.remove('is-collapsed');
-      dockToggle.setAttribute('aria-expanded', 'true');
-      if (dockToggleLbl) dockToggleLbl.textContent = cfg.collapse;
+      if (!isNarrow()) setCollapsed(false);
       if (explore) {
         tween = {
           t: 0,
@@ -401,9 +408,7 @@ function init(sec) {
   $('.f3d-skip').addEventListener('click', () => { if (explore) setExplore(false); });
   pills.forEach((b) => b.addEventListener('click', () => {
     const i = +b.dataset.i;
-    dock.classList.remove('is-collapsed');
-    dockToggle.setAttribute('aria-expanded', 'true');
-    if (dockToggleLbl) dockToggleLbl.textContent = cfg.collapse;
+    if (!isNarrow()) setCollapsed(false);
     if (explore) flyTo(i, 0);
     else scrollTo({ top: stationScroll(i), behavior: reduce ? 'auto' : 'smooth' });
   }));
@@ -467,7 +472,7 @@ function init(sec) {
         if (idx === 0) aerial(0.25, fromP, fromT); else { fromP.copy(VIEWS[idx - 1].p); fromT.copy(VIEWS[idx - 1].t); }
         pos.lerpVectors(fromP, VIEWS[idx].p, f);
         look.lerpVectors(fromT, VIEWS[idx].t, f).add(subFocusOffset);
-        if (camera.aspect < 1) pos.add(tmp.copy(pos).sub(look).multiplyScalar(0.42));
+        if (camera.aspect < 1) { pos.add(tmp.copy(pos).sub(look).multiplyScalar(0.95)); pos.y += 6; }
       }
       camera.position.copy(pos); camera.lookAt(look);
       intro.style.opacity = String(Math.max(0, 1 - Math.max(0, s - 0.19) / 0.045));
