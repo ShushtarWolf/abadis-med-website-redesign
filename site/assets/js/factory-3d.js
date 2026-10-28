@@ -199,7 +199,7 @@ function init(sec) {
   const clock = new THREE.Clock();
   function aerial(s, out, tgt) {
     const k = Math.min(1, s / 0.25), a = -0.75 + 0.9 * k, R = (camera.aspect < 1 ? 118 : 82) - 10 * k;
-    out.set(Math.sin(a) * R, 52 - 8 * k, Math.cos(a) * R); tgt.set(0, camera.aspect < 1 ? -4 : 5 - 9 * (1 - k), 0);
+    out.set(Math.sin(a) * R, 52 - 8 * k, Math.cos(a) * R); tgt.set(0, camera.aspect < 1 ? 16 - 8 * k : 19 - 6 * k, 0);
   }
   function frame() {
     requestAnimationFrame(frame);
@@ -231,8 +231,8 @@ function init(sec) {
         if (camera.aspect < 1) pos.add(tmp.copy(pos).sub(look).multiplyScalar(0.45));
       }
       camera.position.copy(pos); camera.lookAt(look);
-      intro.style.opacity = String(Math.max(0, 1 - Math.max(0, s - 0.2) / 0.05));
-      intro.style.visibility = s > 0.25 ? 'hidden' : 'visible';
+      intro.style.opacity = String(Math.max(0, 1 - Math.max(0, s - 0.195) / 0.045));
+      intro.style.visibility = s > 0.24 ? 'hidden' : 'visible';
       bar.style.height = (s * 100) + '%';
       panel.classList.toggle('on', idx >= 0);
       pillsNav.classList.toggle('on', s > 0.22);
@@ -251,11 +251,11 @@ function init(sec) {
       }
       controls.update(); pillsNav.classList.add('on');
     }
-    const showL = explore || (s > 0.14);
     const w = stage.clientWidth, h = stage.clientHeight;
+    const showL = explore || (s >= 0.215); const narrow = w < 768;
     lbls.forEach((l, i) => {
       tmp.copy(LBL[i]).project(camera);
-      const vis = showL && tmp.z < 1 && Math.abs(tmp.x) < 1.05 && Math.abs(tmp.y) < 1.05 && (explore || idx < 0 || i === idx);
+      const vis = showL && tmp.z < 1 && Math.abs(tmp.x) < 1.05 && Math.abs(tmp.y) < 1.05 && (explore ? true : (narrow ? i === idx : (idx < 0 || i === idx)));
       l.classList.toggle('show', vis); l.classList.toggle('act', !explore && i === idx);
       if (vis) l.style.transform = `translate(${(tmp.x * 0.5 + 0.5) * w - l.offsetWidth / 2}px,${(-tmp.y * 0.5 + 0.5) * h - l.offsetHeight / 2}px)`;
     });

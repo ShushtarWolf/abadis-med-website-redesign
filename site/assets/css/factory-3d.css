@@ -54,3 +54,25 @@ html.f3d-lock,html.f3d-lock body{overflow:hidden}
   .f3d-tools{inset-inline-end:12px;bottom:76px}.f3d-btn{padding:9px 14px;font-size:13px}.f3d-badge{inset-inline-start:12px;bottom:14px;font-size:11px;border-radius:14px}
   .f3d-pills{top:72px}.f3d-hint{top:124px;white-space:normal;text-align:center;width:calc(100% - 24px)}.f3d-intro{padding-bottom:150px}}
 @media(prefers-reduced-motion:reduce){.f3d-cue::after{animation:none}}
+
+/* [t315u] Hamid iPhone fixes: top title card, legible header, clear bottom bar */
+.f3d-intro{inset:auto;top:96px;left:50%;transform:translateX(-50%);width:min(900px,calc(100% - 32px));padding:20px 28px;justify-content:flex-start;border-radius:22px;
+  background:rgba(255,255,255,.88);border:1px solid rgba(14,140,140,.24);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 24px 60px -34px rgba(6,70,70,.5)}
+html[data-theme="dark"] .f3d-intro,html[data-theme="noir"] .f3d-intro{background:rgba(7,24,30,.86);border-color:rgba(120,210,210,.22)}
+.f3d-intro h1{font-weight:800;font-size:clamp(24px,3.4vw,46px);line-height:1.35;margin-top:8px}
+.f3d-intro h1 b{font-weight:900}
+.f3d-sub{font-size:clamp(13.5px,1.2vw,16px);line-height:1.8;color:var(--f3d-ink);opacity:.85}
+.f3d-panel{background:rgba(255,255,255,.94);border-color:rgba(14,140,140,.24)}
+html[data-theme="dark"] .f3d-panel,html[data-theme="noir"] .f3d-panel{background:rgba(7,24,30,.92);border-color:rgba(120,210,210,.22)}
+.f3d-title{color:var(--f3d-ink)}.f3d-text{color:var(--f3d-ink);opacity:.85}
+html:not([data-theme="dark"]):not([data-theme="noir"]) .header:has(+ main .f3d){background:rgba(255,255,255,.82);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid rgba(14,140,140,.18)}
+html:not([data-theme="dark"]):not([data-theme="noir"]) .header:has(+ main .f3d) :is(.nav a,.nav-parent,.menu-btn,.lang-link,.theme-toggle){color:#083b3e}
+html:not([data-theme="dark"]):not([data-theme="noir"]) .header:has(+ main .f3d) :is(.menu-btn,.theme-toggle,.lang-switch){border-color:rgba(14,140,140,.28)}
+html:not([data-theme="dark"]):not([data-theme="noir"]) .header:has(+ main .f3d) .mb-bars i{background:#083b3e}
+.f3d-tools{inset-inline:auto;left:50%;transform:translateX(-50%);justify-content:center;flex-wrap:nowrap;max-width:calc(100% - 170px)}
+.f3d-btn{white-space:nowrap}
+@media(max-width:760px){.f3d-intro{top:78px;padding:16px 18px;width:calc(100% - 24px)}
+  .f3d-tools{bottom:24px;max-width:none;width:calc(100% - 24px);padding-inline:76px 0;justify-content:flex-end;left:12px;transform:none}
+  html[dir="ltr"] .f3d-tools{padding-inline:0 76px}
+  .f3d-btn{padding:9px 12px;font-size:12.5px}
+  .f3d-panel{bottom:86px}.f3d-pills{top:68px}}

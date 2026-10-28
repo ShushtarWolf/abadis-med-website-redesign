@@ -6,16 +6,15 @@ three.js r170 + OrbitControls are self-hosted in assets/vendor/three/ (no CDN).
 import json
 from html import escape as esc
 
-V = '20261029g'
+V = '20261029i'
 CATALOGUE = 'https://abadis-med.com/wp-content/uploads/2024/12/کاتالوگ-جامع-آبادیس.pdf'
 
 T = {
   'fa': dict(
     root='', quote_href='export/#quote',
-    kicker='پیشرو در کنترل عفونت و مدیریت مایعات بیمارستانی',
-    h1a='کارخانه‌ای که ', h1b='ردش', h1c=' را می‌کشیم',
-    motto='آبادیس: مهندسی دقیق، برای مراقبتی ایمن‌تر',
-    sub='اسکرول کنید تا ساختمان ترسیم شود و وارد خط تولید شوید.',
+    kicker='شرکت دانش‌بنیان مخازن طبی آبادیس',
+    h1a='آبادیس؛ ', h1b='مهندسی دقیق', h1c='، برای مراقبتی ایمن‌تر',
+    sub='پیشرو در کنترل عفونت و مدیریت مایعات بیمارستانی — اسکرول کنید تا وارد خط تولید شوید.',
     badge='طرح سه‌بعدی منطبق بر معماری واقعی کارخانه آبادیس (شمس‌آباد — ۲۰۰۰ متر مربع)',
     cat='دریافت کاتالوگ', quote='درخواست قیمت',
     skip='رد کردن و ادامه صفحه', explore='حالت کاوش آزاد', back='بازگشت به مسیر اسکرول',
@@ -32,10 +31,9 @@ T = {
     digits='fa'),
   'en': dict(
     root='en/', quote_href='export/#quote',
-    kicker='A leader in infection control and hospital fluid management',
-    h1a='The factory ', h1b='we draw', h1c=', line by line',
-    motto='Abadis: precise engineering for safer care',
-    sub='Scroll to draw the building and step inside the production line.',
+    kicker='Abadis Medical Canisters Knowledge-Based Co.',
+    h1a='Abadis: ', h1b='Precision Engineering', h1c=' for Safer Care',
+    sub='Pioneer in Hospital Infection Control & Fluid Management — Scroll to enter the production line.',
     badge='3D model matched to the real Abadis plant layout (Shams-Abad, 2,000 m²)',
     cat='Download catalogue', quote='Request a quote',
     skip='Skip & Continue', explore='Free Exploration Mode', back='Back to scroll tour',
@@ -52,10 +50,9 @@ T = {
     digits='en'),
   'ar': dict(
     root='arabic/', quote_href='export/#quote',
-    kicker='رائدة في مكافحة العدوى وإدارة السوائل في المستشفيات',
-    h1a='المصنع الذي ', h1b='نرسمه', h1c=' خطًا بخط',
-    motto='آباديس: هندسة دقيقة من أجل رعاية أكثر أمانًا',
-    sub='مرّر للأسفل ليُرسم المبنى وادخل إلى خط الإنتاج.',
+    kicker='شركة أباديس المعرفية للخزانات الطبية',
+    h1a='أباديس؛ ', h1b='هندسة دقيقة', h1c=' لرعاية أكثر أماناً',
+    sub='الرائدة في مكافحة العدوى وإدارة السوائل بالمستشفيات — مرّر للدخول إلى خط الإنتاج.',
     badge='نموذج ثلاثي الأبعاد مطابق للتصميم المعماري الحقيقي لمصنع آباديس (شمس آباد — ٢٠٠٠ متر مربع)',
     cat='تحميل الكتالوج', quote='طلب سعر',
     skip='تخطي والمتابعة', explore='وضع الاستكشاف الحر', back='العودة إلى جولة التمرير',
@@ -111,7 +108,7 @@ def hero(p, lang='fa', quote_href=None, skip_to='#about'):
     pills = ''.join(
         f'<button type="button" class="f3d-pill" data-i="{i}"><b>{num(i + 1, lang)}</b><span>{esc(lb)}</span></button>'
         for i, lb in enumerate(t['labels'][:5]))
-    return f'''  <section class="f3d" id="intro" data-tone="dark" aria-label="{esc(t['h1a'] + t['h1b'] + t['h1c'])}">
+    return f'''  <section class="f3d" id="intro" aria-label="{esc(t['h1a'] + t['h1b'] + t['h1c'])}">
     <script type="application/json" class="f3d-cfg">{json.dumps(cfg, ensure_ascii=False)}</script>
     <div class="f3d-stage">
       <canvas class="f3d-gl" aria-hidden="true"></canvas>
@@ -119,13 +116,7 @@ def hero(p, lang='fa', quote_href=None, skip_to='#about'):
       <div class="f3d-intro">
         <p class="f3d-kicker">{esc(t['kicker'])}</p>
         <h1>{esc(t['h1a'])}<b>{esc(t['h1b'])}</b>{esc(t['h1c'])}</h1>
-        <p class="f3d-motto">{esc(t['motto'])}</p>
         <p class="f3d-sub">{esc(t['sub'])}</p>
-        <div class="f3d-cta">
-          <a class="btn btn-primary" href="{esc(CATALOGUE)}" target="_blank" rel="noopener" data-track="catalogue_download" data-track-label="home_f3d_catalogue_{lang}">{ICO_DL}<span>{esc(t['cat'])}</span></a>
-          <a class="btn btn-ghost f3d-ghost" href="{esc(qh)}" data-track="contact_click" data-track-label="home_f3d_quote_{lang}">{ICO_TAG}<span>{esc(t['quote'])}</span></a>
-        </div>
-        <span class="f3d-cue" aria-hidden="true"></span>
       </div>
       <div class="f3d-panel f3d-glass" aria-live="polite">
         <small class="f3d-step"></small><h2 class="f3d-title"></h2><p class="f3d-text"></p>
@@ -138,6 +129,5 @@ def hero(p, lang='fa', quote_href=None, skip_to='#about'):
         <a class="f3d-btn f3d-skip" href="{skip_to}">{ICO_SKIP}<span>{esc(t['skip'])}</span></a>
       </div>
       <div class="f3d-hint f3d-glass">{esc(t['hint'])}</div>
-      <p class="f3d-badge f3d-glass">{ICO_PIN}<span>{esc(t['badge'])}</span></p>
     </div>
   </section>'''
