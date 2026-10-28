@@ -58,8 +58,8 @@ _UI = {
 
 def assets(prefix=''):
     return (
-        f'<link rel="stylesheet" href="{prefix}assets/css/w2-orbit.css?v=20261028s">\n'
-        f'<script src="{prefix}assets/js/w2-orbit.js?v=20261028s" defer></script>\n'
+        f'<link rel="stylesheet" href="{prefix}assets/css/w2-orbit.css?v=20261028t">\n'
+        f'<script src="{prefix}assets/js/w2-orbit.js?v=20261028t" defer></script>\n'
     )
 
 
@@ -208,7 +208,6 @@ def widget(lang, mode, prefix=''):
 </div>
 </div>
 <div class="w2-node-Strip">
-<span class="strip-hint">{esc(ui["strip"])}</span>
 <div class="strip-pills">{pills}<button type="button" class="replay-btn" data-w2-replay aria-label="{esc(ui["replay"])}">↻</button></div>
 </div>
 </div>

@@ -475,3 +475,40 @@ html[lang="en"] .w2-live .orb-node.is-satellite .orb-node-title { font-size: 9px
   .w2-live .orb-hub-pulse,
   .w2-live .orb-node.is-active .orb-node-halo { animation: none !important; }
 }
+
+/* Hide stem-pill and strip-hint across all sections per boss order ([t270u]) */
+.w2-live .w2-stem-pill,
+.w2-live .strip-hint {
+  display: none !important;
+}
+.w2-live .w2-node-Strip {
+  justify-content: center !important;
+}
+
+/* Support 5 and 6 KPI cards cleanly ([t267u], [t269u]) */
+.w2-live .w2-kpi-grid[data-kpi-count="6"] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.w2-live .w2-kpi-grid[data-kpi-count="5"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.w2-live .w2-kpi-grid .w2-kpi:nth-child(5):last-child {
+  grid-column: 1 / -1;
+}
+@media (max-width: 720px) {
+  .w2-live .w2-kpi-grid[data-kpi-count="6"],
+  .w2-live .w2-kpi-grid[data-kpi-count="5"] {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Ensure multi-word orbital circle subtitles fit comfortably inside 118px circles ([t268u]) */
+.w2-live .orb-node-inner {
+  padding: 6px 8px;
+}
+.w2-live .orb-node-stat {
+  font-size: 9.5px;
+  line-height: 1.25;
+  max-width: 98px;
+  text-align: center;
+}

@@ -54,7 +54,10 @@
       var stemEl = panel.querySelector('[data-role="stem-pill"]'); if (stemEl) stemEl.textContent = stems[activeStem] || stems.long || '';
       panel.querySelector('[data-role="h3"]').textContent = info.h3;
       panel.querySelector('[data-role="p"]').textContent = info.p;
-      panel.querySelector('[data-role="kpis"]').innerHTML = (info.kpis || []).map(function (k) {
+      var kpisEl = panel.querySelector('[data-role="kpis"]');
+      var kpisArr = info.kpis || [];
+      kpisEl.setAttribute('data-kpi-count', String(kpisArr.length));
+      kpisEl.innerHTML = kpisArr.map(function (k) {
         return k[1] ? '<div class="w2-kpi"><b>' + esc(k[0]) + '</b><span>' + esc(k[1]) + '</span></div>' : '<div class="w2-kpi w2-kpi--single"><b>' + esc(k[0]) + '</b></div>';
       }).join('');
       panel.querySelector('[data-role="bar-a-label"]').textContent = info.bar_a_label;

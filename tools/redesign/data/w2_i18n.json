@@ -296,19 +296,19 @@
         },
         {
           "num": "02",
-          "title": "Food and Drug Org.",
-          "stat": "Official IFDA licence",
+          "title": "IMED",
+          "stat": "Medical Device Directorate",
           "tag": "Official credential 02 · Medical Device Directorate (IMED)",
           "h3": "Manufacturing licence and official Food and Drug Administration (IFDA) approval",
           "p": "Every Abadis product carries an IRC code, a valid manufacturing licence from the Ministry of Health’s Medical Device Directorate, and biocompatibility and microbiology approvals from reference laboratories.",
           "kpis": [
             [
               "IFDA",
-              "Official manufacturing licence"
+              "Food and Drug Organization"
             ],
             [
               "IMED",
-              "Device-registry entry"
+              "Manufacturing License"
             ],
             [
               "Cleanroom",
@@ -360,11 +360,11 @@
         },
         {
           "num": "04",
-          "title": "Chambers of commerce",
-          "stat": "Iran, Switzerland, Oman",
+          "title": "Chamber of Commerce",
+          "stat": "Oman, Switzerland, Russia, Iraq",
           "tag": "Official membership 04 · Commercial diplomacy and exports",
-          "h3": "Member of the Iran, Iran–Switzerland, and Iran–Oman chambers",
-          "p": "Active membership of the Tehran Chamber of Commerce, Industries, Mines and Agriculture and the joint Iran–Switzerland and Iran–Oman chambers has opened international cooperation and the export of Iranian medical devices.",
+          "h3": "Member of the Iran, Iran–Switzerland, Iran–Oman, Iran–Iraq, and Iran–Russia Chambers",
+          "p": "Active membership in the Iran (Tehran) Chamber of Commerce, Industries, Mines and Agriculture and the joint Iran–Switzerland, Iran–Oman, Iran–Iraq, and Iran–Russia chambers facilitates international cooperation and the export of Iranian medical devices.",
           "kpis": [
             [
               "Tehran Chamber",
@@ -372,15 +372,23 @@
             ],
             [
               "Iran–Switzerland",
-              "Joint chamber"
+              "Joint chamber of commerce"
             ],
             [
               "Iran–Oman",
-              "Regional market development"
+              "Joint chamber of commerce"
+            ],
+            [
+              "Iran–Iraq",
+              "Joint chamber of commerce"
+            ],
+            [
+              "Iran–Russia",
+              "Joint chamber of commerce"
             ],
             [
               "Export",
-              "Supply to centres abroad"
+              "Supply to international centers"
             ]
           ],
           "bar_a_label": "Commercial-network readiness and export packaging standard",
@@ -392,27 +400,31 @@
         },
         {
           "num": "05",
-          "title": "Manufacturers’ association",
-          "stat": "AMEDAL and industry",
+          "title": "Associations",
+          "stat": "Association & Union",
           "tag": "Official membership 05 · Medical-device industry associations",
-          "h3": "Member of the medical-device manufacturers’ association and the youth industry-and-mine house",
-          "p": "Ongoing cooperation with the association of medical, dental, and laboratory equipment manufacturers and the Iran Youth House of Industry, Mine and Trade raises national hospital infection-control standards.",
+          "h3": "Collaboration to Advance the Medical Equipment Industry",
+          "p": "Through membership in specialized and trade associations, Abadis participates in exchanging knowledge and experience, strengthening cooperation among manufacturers, and pursuing shared industry priorities—with the goal of advancing domestic production and enhancing the quality of products and services.",
           "kpis": [
             [
               "AMEDAL",
-              "Manufacturers’ association"
+              "Medical Equipment Manufacturers Association"
             ],
             [
-              "Industry house",
-              "Youth industry and mine"
+              "Youth Industry House",
+              "Iran Youth Industry & Mine"
             ],
             [
-              "Academy",
-              "Specialist centre training"
+              "ISOMEE",
+              "Society of Medical Equipment Experts"
             ],
             [
-              "Synergy",
-              "National standards"
+              "Exporters Union",
+              "Medical Equipment Exporters Union"
+            ],
+            [
+              "Health Knowledge-Based Association",
+              "Association of Health Knowledge-Based Companies"
             ]
           ],
           "bar_a_label": "Guild participation and infection-control training",
@@ -818,19 +830,19 @@
         },
         {
           "num": "٠٢",
-          "title": "منظمة الغذاء والدواء",
-          "stat": "ترخيص رسمي IFDA",
+          "title": "IMED",
+          "stat": "المديرية العامة للمعدات الطبية",
           "tag": "اعتماد رسمي ٠٢ · المديرية العامة للمعدات الطبية (IMED)",
           "h3": "رخصة تصنيع واعتماد رسمي من منظمة الغذاء والدواء (IFDA)",
           "p": "تحمل كل منتجات آباديس رمز IRC ورخصة تصنيع سارية من المديرية العامة للمعدات والمستلزمات الطبية في وزارة الصحة، وموافقات التوافق الحيوي والميكروبيولوجيا من المختبرات المرجعية.",
           "kpis": [
             [
               "IFDA",
-              "رخصة تصنيع رسمية"
+              "منظمة الغذاء والدواء"
             ],
             [
               "IMED",
-              "قيد منظومة المعدات"
+              "رخصة التصنيع"
             ],
             [
               "غرفة نظيفة",
@@ -882,11 +894,11 @@
         },
         {
           "num": "٠٤",
-          "title": "غرف التجارة",
-          "stat": "إيران، سويسرا، عُمان",
+          "title": "غرفة التجارة",
+          "stat": "عُمان، سويسرا، روسيا، العراق",
           "tag": "عضوية رسمية ٠٤ · الدبلوماسية التجارية والتصدير",
-          "h3": "عضوية غرفة تجارة إيران وغرفة إيران-سويسرا وغرفة إيران-عُمان",
-          "p": "الحضور في غرفة تجارة وصناعات ومناجم وزراعة طهران والغرف المشتركة مع سويسرا وعُمان يفتح طريق التعاون الدولي وتصدير المعدات الطبية الإيرانية.",
+          "h3": "عضوية غرفة تجارة إيران والغرف المشتركة إيران-سويسرا وإيران-عُمان وإيران-العراق وإيران-روسيا",
+          "p": "الحضور الفعّال في غرفة تجارة وصناعات ومناجم وزراعة إيران (طهران) والغرف التجارية المشتركة مع سويسرا وعُمان والعراق وروسيا يمهّد طريق التعاون الدولي وتصدير المعدات الطبية الإيرانية.",
           "kpis": [
             [
               "غرفة طهران",
@@ -894,15 +906,23 @@
             ],
             [
               "إيران-سويسرا",
-              "غرفة مشتركة"
+              "غرفة تجارية مشتركة"
             ],
             [
               "إيران-عُمان",
-              "تطوير سوق المنطقة"
+              "غرفة تجارية مشتركة"
+            ],
+            [
+              "إيران-العراق",
+              "غرفة تجارية مشتركة"
+            ],
+            [
+              "إيران-روسيا",
+              "غرفة تجارية مشتركة"
             ],
             [
               "تصدير",
-              "توريد مراكز خارج الحدود"
+              "توريد للمراكز الدولية"
             ]
           ],
           "bar_a_label": "جاهزية الشبكة التجارية ومعيار التغليف التصديري",
@@ -914,27 +934,31 @@
         },
         {
           "num": "٠٥",
-          "title": "جمعية المنتجين",
-          "stat": "AMEDAL والصناعة",
+          "title": "التكتلات والهيئات",
+          "stat": "الجمعية والاتحاد",
           "tag": "عضوية رسمية ٠٥ · تجمعات صناعة المعدات الطبية",
-          "h3": "عضو جمعية منتجي المعدات الطبية وبيت الصناعة والتعدين للشباب",
-          "p": "تعاون مستمر مع الجمعية المهنية لمنتجي معدات الطب وطب الأسنان والمختبرات وبيت الصناعة والتعدين والتجارة للشباب في إيران لرفع معايير مكافحة عدوى المستشفيات.",
+          "h3": "التعاون لتطوير صناعة المعدات الطبية",
+          "p": "من خلال العضوية في الهيئات التخصصية والنقابية، تشارك آباديس في تبادل المعرفة والخبرة وتعزيز التعاون بين المصنّعين ومتابعة القضايا المشتركة للصناعة؛ بهدف تطوير الإنتاج المحلي والارتقاء بجودة المنتجات والخدمات.",
           "kpis": [
             [
               "AMEDAL",
-              "جمعية المنتجين"
+              "جمعية منتجي المعدات الطبية"
             ],
             [
               "بيت الصناعة",
               "صناعة وتعدين الشباب"
             ],
             [
-              "أكاديمية",
-              "تدريب متخصص للمراكز"
+              "ISOMEE",
+              "جمعية مهندسي المعدات الطبية"
             ],
             [
-              "تكامل",
-              "تطوير المعايير الوطنية"
+              "اتحاد المصدرين",
+              "اتحاد مصدري المعدات الطبية"
+            ],
+            [
+              "جمعية الشركات المعرفية الصحية",
+              "الشركات المعرفية في قطاع الصحة"
             ]
           ],
           "bar_a_label": "المشاركة المهنية وتدريب معايير مكافحة العدوى",
