@@ -118,6 +118,8 @@ def build_home(write, lang):
       </div>
     </div>
   </section>'''
+    import factory_hero
+    hero = factory_hero.hero(p, lang, quote_href=_h(t, p, t['quote_href']))
     goals = ''.join(f'<li>{esc(g)}</li>' for g in t['goals'])
     about = f'''  <section class="section" id="about"><div class="wrap split">
       <div class="reveal"><p class="eyebrow">{esc(t['about_eb'])}</p><h2>{esc(t['about_h'])}</h2>
@@ -207,9 +209,9 @@ def build_home(write, lang):
     main = '\n'.join([hero, about, products, impact, why, quick, stories, mem, cust])
     if lang == 'en': main = main.replace('←', '→')
     import w2_orbit
-    extra_head = f'<link rel="preload" as="image" href="{p}assets/img/p/hero-bags.webp" type="image/webp">\n<link rel="stylesheet" href="{p}assets/css/home.css?v=20261028f">\n{H.logo_scroll_css(p)}\n{H.counter_options_css(p)}\n{w2_orbit.assets(p)}'
+    extra_head = f'<link rel="preload" as="image" href="{p}assets/img/p/hero-bags.webp" type="image/webp">\n<link rel="stylesheet" href="{p}assets/css/home.css?v=20261028f">\n{H.logo_scroll_css(p)}\n{H.counter_options_css(p)}\n{w2_orbit.assets(p)}\n{factory_hero.head(p)}'
     html = page(p, None, t['title'], t['desc'], main, lang=lang, fa_path='', canonical_path=t['root'],
-                extra_head=extra_head, scripts=H.logo_scroll_scripts(p) + H.counter_options_script(p), main_class='home-page', body_class='home', lightbox=True,
+                extra_head=extra_head, scripts=factory_hero.scripts(p) + H.logo_scroll_scripts(p) + H.counter_options_script(p), main_class='home-page', body_class='home', lightbox=True,
                 html_attrs='data-slogan="t1"')
     write(t['root'] + 'index.html', html)
     return t['root'] + 'index.html'

@@ -10,6 +10,7 @@ sys.path.insert(0, str(ROOT / 'tools/redesign'))
 
 import pages_home as PH
 import w2_orbit
+import factory_hero
 from layout import page
 
 OUT = ROOT / 'site/home-hero-options'
@@ -228,6 +229,12 @@ def build_index(p='../'):
       <h1>مقایسه ۳ پیشنهاد هیروی تمام‌صفحه ویدیوی پرستاران برای صفحه اصلی (Main Page Hero Proposals)</h1>
       <p>در هر سه گزینه، ویدیوی پرستاران و کادر درمان به‌صورت تمام‌صفحه (Full-Bleed لبه به لبه در کل پس‌زمینه هیرو و بدون هیچ کادر یا باکس مستطیلی) اجرا شده است.</p>
     </div>
+    <a class="f3d-hubcard" href="factory-3d.html">
+      <span class="f3d-hubcard-tag">F-3D — پیشنهاد ویژه</span>
+      <h2>هیروی تعاملی سه‌بعدی کارخانه آبادیس (اسکرولی‌تلینگ)</h2>
+      <p>ترسیم خط‌به‌خط کارخانه واقعی شمس‌آباد (۲۰۰۰ متر مربع) با Three.js: نمای هوایی، ۵ ایستگاه تولید (تزریق، مونتاژ و کارتن، فیلتر، اکسترودر و کلین‌روم، انبار)، حالت کاوش آزاد و برچسب‌های قابل کلیک. نسخه فعال روی صفحه اصلی FA/EN/AR.</p>
+      <span class="btn btn-primary">مشاهده زنده هیروی سه‌بعدی</span>
+    </a>
     <div class="sol-hero-trio" style="margin-top:18px">
       <article class="sol-hcard">
         <div>
@@ -257,6 +264,21 @@ def build_index(p='../'):
   </div></section>'''
 
 
+def build_factory3d(p='../'):
+    about = f'''  <section class="section" id="about"><div class="wrap">
+    <div class="section-head">
+      <h2>ادامه صفحه اصلی</h2>
+      <p>این صفحه نسخه مستقل هیروی سه‌بعدی کارخانه است. همین هیرو اکنون در بالای صفحه اصلی فارسی، انگلیسی و عربی فعال است.</p>
+    </div>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="{p}">صفحه اصلی فارسی</a>
+      <a class="btn btn-ghost" href="{p}en/">English home</a>
+      <a class="btn btn-ghost" href="{p}arabic/">الصفحة الرئيسية العربية</a>
+      <a class="btn btn-ghost" href="index.html">بازگشت به مقایسه گزینه‌ها</a>
+    </div>
+  </div></section>'''
+    return factory_hero.hero(p, 'fa') + '\n' + about
+
 def main():
     p = '../'
     extra_head = (
@@ -267,16 +289,18 @@ def main():
         + EXTRA_CSS
     )
     scripts = PH.logo_scroll_scripts(p) + PH.counter_options_script(p)
+    extra_head += '\n' + factory_hero.head(p) + '\n<style>.f3d-hubcard{display:block;margin-top:18px;padding:24px 26px;border-radius:22px;text-decoration:none;color:#fff;background:linear-gradient(120deg,#066565,#0e8c8c 60%,#ff7a59);box-shadow:0 24px 60px -30px rgba(6,70,70,.6)}.f3d-hubcard h2{color:#fff;margin:8px 0 6px}.f3d-hubcard p{color:rgba(255,255,255,.9);max-width:820px}.f3d-hubcard-tag{font-weight:700;font-size:13px;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px}.f3d-hubcard .btn{margin-top:12px;background:#fff;color:#066565}</style>'
     for fname, title, builder in (
         ('option-1.html', 'گزینه M-H1 هیروی تمام‌صفحه ویدیوی پرستاران (صفحه اصلی)', build_mh1),
         ('option-2.html', 'گزینه M-H2 هیروی تمام‌صفحه ویدیوی پرستاران (صفحه اصلی)', build_mh2),
         ('option-3.html', 'گزینه M-H3 هیروی تمام‌صفحه ویدیوی پرستاران (صفحه اصلی)', build_mh3),
+        ('factory-3d.html', 'هیروی تعاملی سه‌بعدی کارخانه آبادیس (اسکرولی‌تلینگ)', build_factory3d),
         ('index.html', 'مقایسه ۳ گزینه هیروی تمام‌صفحه ویدیوی پرستاران (صفحه اصلی)', build_index),
     ):
         html = page(
             p, None, title, PH.HOME_DESC, builder(p),
             lang='fa', fa_path='',
-            extra_head=extra_head, scripts=scripts,
+            extra_head=extra_head, scripts=(factory_hero.scripts(p) + scripts) if fname == 'factory-3d.html' else scripts,
             main_class='home-page', body_class='home', lightbox=True,
             html_attrs='data-slogan="t1"',
         )
