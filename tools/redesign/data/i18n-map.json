@@ -85,29 +85,24 @@
     "ar": "arabic/الاخبار/"
   },
   "articles/": {
-    "fa": "articles/",
     "en": "en/blog/",
-    "ar": null
+    "ar": "arabic/articles/"
   },
   "csr/": {
-    "fa": "csr/",
     "en": "en/csr/",
-    "ar": null
+    "ar": "arabic/csr/"
   },
   "sdgs/": {
-    "fa": "sdgs/",
     "en": "en/sdgs/",
-    "ar": null
+    "ar": "arabic/sdgs/"
   },
   "customers/": {
-    "fa": "customers/",
     "en": "en/our-customers/",
     "ar": "arabic/customers/"
   },
   "careers/": {
-    "fa": "careers/",
     "en": "en/collaboration-opportunities/",
-    "ar": null
+    "ar": "arabic/careers/"
   },
   "jobs/": {
     "fa": "jobs/",
@@ -120,7 +115,6 @@
     "ar": null
   },
   "export/": {
-    "fa": "export/",
     "en": "en/export/",
     "ar": "arabic/export/"
   },

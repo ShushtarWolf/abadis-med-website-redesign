@@ -24,7 +24,7 @@
     var finalText = formatStat(to, lang, decimals);
     var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduceMotion || !('IntersectionObserver' in window)) { el.textContent = finalText; return; }
-    el.textContent = formatStat(0, lang, decimals);
+    el.textContent = finalText;
     var dur = 1100, started = false;
     function run(t0) {
       function frame(now) {

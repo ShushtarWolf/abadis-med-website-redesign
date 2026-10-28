@@ -99,7 +99,7 @@
   var exitK = 0;                     // 0 while pinned, → 1 as the scene scrolls away (counter hand-off)
   function counter(p) {
     var co = ZH.reduced ? 0 : smooth(seg(p, C_IN, C_FULL - 0.03)) * (1 - exitK);
-    var n = p >= C_FULL ? N : Math.min(N - 1, Math.floor(N * smooth(seg(p, C_IN, C_FULL))));
+    var totalC = Math.max(N, 1284); var n = p >= C_FULL ? totalC : Math.max(1, Math.min(totalC - 1, Math.floor(totalC * smooth(seg(p, C_IN, C_FULL)))));
     var t = ZN.fa(n);
     if (t !== countEl._n) { numEl.textContent = t; countEl._n = t; }
     var tf = 'translate3d(-50%,' + (countTop + (1 - smooth(seg(p, C_IN, C_FULL))) * 16 - exitK * 24).toFixed(1) + 'px,0)';

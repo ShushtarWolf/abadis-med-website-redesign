@@ -9,9 +9,9 @@
   <url><loc>https://abadis-med.com/arabic/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/"/></url>
   <url><loc>https://abadis-med.com/arabic/academy/</loc></url>
   <url><loc>https://abadis-med.com/arabic/academy/login/</loc></url>
-  <url><loc>https://abadis-med.com/arabic/articles/</loc></url>
-  <url><loc>https://abadis-med.com/arabic/customers/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/customers/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/our-customers/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/customers/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/customers/"/></url>
-  <url><loc>https://abadis-med.com/arabic/export/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/export/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/export/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/export/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/export/"/></url>
+  <url><loc>https://abadis-med.com/arabic/articles/</loc><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/blog/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/articles/"/></url>
+  <url><loc>https://abadis-med.com/arabic/customers/</loc><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/our-customers/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/customers/"/></url>
+  <url><loc>https://abadis-med.com/arabic/export/</loc><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/export/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/export/"/></url>
   <url><loc>https://abadis-med.com/arabic/green-family-map/</loc></url>
   <url><loc>https://abadis-med.com/arabic/sustainability/</loc></url>
   <url><loc>https://abadis-med.com/arabic/%D8%A3%D8%AE%D8%A8%D8%A7%D8%B1-%D8%A3%D9%83%D8%AB%D8%B1-%D8%B9%D9%86-%D9%85%D8%B3%D8%A7%D8%A8%D9%82%D8%A9-%D8%A2%D8%A8%D8%A7%D8%AF%D9%8A%D8%B3-%D8%A7%D9%84%D9%83%D8%A8%D9%8A%D8%B1%D8%A9/</loc></url>
@@ -68,7 +68,7 @@
   <url><loc>https://abadis-med.com/arabic/%D9%8A%D8%A7%D9%86%D8%B5%D9%8A%D8%A8-%D8%A2%D8%A8%D8%A7%D8%AF%D9%8A%D8%B3-%D8%A7%D9%84%D9%83%D8%A8%D9%8A%D8%B1-2020-%D8%A8%D9%85%D9%86%D8%A7%D8%B3%D8%A8%D8%A9-%D8%B9%D9%8A%D8%AF-%D8%A7%D9%84%D8%AA/</loc></url>
   <url><loc>https://abadis-med.com/arabic/%D9%BE%D8%B1%D8%B3%D8%B4-%D9%87%D8%A7%DB%8C-%D9%85%D8%AA%D8%AF%D8%A7%D9%88%D9%84/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/faq/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/faqs/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/%D9%BE%D8%B1%D8%B3%D8%B4-%D9%87%D8%A7%DB%8C-%D9%85%D8%AA%D8%AF%D8%A7%D9%88%D9%84/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/faq/"/></url>
   <url><loc>https://abadis-med.com/articles-options/</loc></url>
-  <url><loc>https://abadis-med.com/articles/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/articles/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/blog/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/articles/"/></url>
+  <url><loc>https://abadis-med.com/articles/</loc></url>
   <url><loc>https://abadis-med.com/articles/1041/</loc></url>
   <url><loc>https://abadis-med.com/articles/1050/</loc></url>
   <url><loc>https://abadis-med.com/articles/1133/</loc></url>
@@ -153,6 +153,13 @@
   <url><loc>https://abadis-med.com/articles/18814/</loc></url>
   <url><loc>https://abadis-med.com/articles/18824/</loc></url>
   <url><loc>https://abadis-med.com/articles/18883/</loc></url>
+  <url><loc>https://abadis-med.com/articles/19391/</loc></url>
+  <url><loc>https://abadis-med.com/articles/19689/</loc></url>
+  <url><loc>https://abadis-med.com/articles/19696/</loc></url>
+  <url><loc>https://abadis-med.com/articles/19701/</loc></url>
+  <url><loc>https://abadis-med.com/articles/19716/</loc></url>
+  <url><loc>https://abadis-med.com/articles/19761/</loc></url>
+  <url><loc>https://abadis-med.com/articles/19793/</loc></url>
   <url><loc>https://abadis-med.com/articles/2615/</loc></url>
   <url><loc>https://abadis-med.com/articles/3341/</loc></url>
   <url><loc>https://abadis-med.com/articles/3404/</loc></url>
@@ -189,7 +196,7 @@
   <url><loc>https://abadis-med.com/calculator/receipt/</loc></url>
   <url><loc>https://abadis-med.com/calculator/scale/</loc></url>
   <url><loc>https://abadis-med.com/careers-options/</loc></url>
-  <url><loc>https://abadis-med.com/careers/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/careers/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/collaboration-opportunities/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/careers/"/></url>
+  <url><loc>https://abadis-med.com/careers/</loc></url>
   <url><loc>https://abadis-med.com/careers/jobs/accountant/</loc></url>
   <url><loc>https://abadis-med.com/careers/jobs/collections-officer/</loc></url>
   <url><loc>https://abadis-med.com/careers/jobs/export-specialist/</loc></url>
@@ -201,8 +208,8 @@
   <url><loc>https://abadis-med.com/careers/jobs/secretary/</loc></url>
   <url><loc>https://abadis-med.com/chatbot-demo/</loc></url>
   <url><loc>https://abadis-med.com/contact/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/contact/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/contact-us/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/%D8%A7%D8%AA%D8%B5%D9%84-%D8%A8%D9%86%D8%A7/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/contact/"/></url>
-  <url><loc>https://abadis-med.com/csr/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/csr/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/csr/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/csr/"/></url>
-  <url><loc>https://abadis-med.com/customers/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/customers/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/our-customers/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/customers/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/customers/"/></url>
+  <url><loc>https://abadis-med.com/csr/</loc></url>
+  <url><loc>https://abadis-med.com/customers/</loc></url>
   <url><loc>https://abadis-med.com/dealers/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/dealers/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/representatives/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/%D9%82%D8%A7%D8%A6%D9%85%D8%A9-%D8%A7%D9%84%D9%85%D9%85%D8%AB%D9%84%D9%8A%D9%86/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/dealers/"/></url>
   <url><loc>https://abadis-med.com/downloads/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/downloads/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/center-download/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/%D9%85%D8%B1%D9%83%D8%B2-%D8%A7%D9%84%D8%AA%D9%86%D8%B2%D9%8A%D9%84/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/downloads/"/></url>
   <url><loc>https://abadis-med.com/en/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/"/></url>
@@ -223,13 +230,13 @@
   <url><loc>https://abadis-med.com/en/achievements-of-abadis-med-company-in-developing-disposable-suction-bags/</loc></url>
   <url><loc>https://abadis-med.com/en/articles/</loc></url>
   <url><loc>https://abadis-med.com/en/assessment-of-hand-hygiene-compliance-among-healthcare-workers-in-zahedan-social-security-hospital-in-2023/</loc></url>
-  <url><loc>https://abadis-med.com/en/blog/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/articles/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/blog/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/articles/"/></url>
+  <url><loc>https://abadis-med.com/en/blog/</loc><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/blog/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/articles/"/></url>
   <url><loc>https://abadis-med.com/en/calculator/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/calculator/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/calculator/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/%D8%A7%D9%84%D8%AD%D9%88%D8%B3%D8%A8%D8%A9/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/calculator/"/></url>
   <url><loc>https://abadis-med.com/en/center-download/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/downloads/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/center-download/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/%D9%85%D8%B1%D9%83%D8%B2-%D8%A7%D9%84%D8%AA%D9%86%D8%B2%D9%8A%D9%84/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/downloads/"/></url>
-  <url><loc>https://abadis-med.com/en/collaboration-opportunities/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/careers/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/collaboration-opportunities/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/careers/"/></url>
+  <url><loc>https://abadis-med.com/en/collaboration-opportunities/</loc><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/collaboration-opportunities/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/careers/"/></url>
   <url><loc>https://abadis-med.com/en/contact-us/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/contact/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/contact-us/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/%D8%A7%D8%AA%D8%B5%D9%84-%D8%A8%D9%86%D8%A7/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/contact/"/></url>
   <url><loc>https://abadis-med.com/en/control-of-corona-virus/</loc></url>
-  <url><loc>https://abadis-med.com/en/csr/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/csr/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/csr/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/csr/"/></url>
+  <url><loc>https://abadis-med.com/en/csr/</loc><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/csr/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/csr/"/></url>
   <url><loc>https://abadis-med.com/en/definition-of-hospital-infections/</loc></url>
   <url><loc>https://abadis-med.com/en/disposable-suction-bags/</loc></url>
   <url><loc>https://abadis-med.com/en/disposable-suction-bottle-is-cost-effective-in-iran-or-not/</loc></url>
@@ -240,7 +247,7 @@
   <url><loc>https://abadis-med.com/en/executive-guideline-for-the-disinfection-of-medical-tools-and-equipment/</loc></url>
   <url><loc>https://abadis-med.com/en/existing-standards-for-the-production-of-disposable-suction-liner-bags/</loc></url>
   <url><loc>https://abadis-med.com/en/existing-standards-in-the-production-of-medical-suction-tubes/</loc></url>
-  <url><loc>https://abadis-med.com/en/export/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/export/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/export/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/export/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/export/"/></url>
+  <url><loc>https://abadis-med.com/en/export/</loc><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/export/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/export/"/></url>
   <url><loc>https://abadis-med.com/en/faqs/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/faq/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/faqs/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/%D9%BE%D8%B1%D8%B3%D8%B4-%D9%87%D8%A7%DB%8C-%D9%85%D8%AA%D8%AF%D8%A7%D9%88%D9%84/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/faq/"/></url>
   <url><loc>https://abadis-med.com/en/fixture/</loc></url>
   <url><loc>https://abadis-med.com/en/full-interview-with-the-ceo-of-abadis-on-radio-salamats-program-ta-soraya/</loc></url>
@@ -264,7 +271,7 @@
   <url><loc>https://abadis-med.com/en/medical-engineering-monthly-interview-with-abadis-medical-reservoirs-strategic-consultant/</loc></url>
   <url><loc>https://abadis-med.com/en/new-products-makhazen-tebi-abadis/</loc></url>
   <url><loc>https://abadis-med.com/en/obtaining-europe-ce-certification/</loc></url>
-  <url><loc>https://abadis-med.com/en/our-customers/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/customers/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/our-customers/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/customers/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/customers/"/></url>
+  <url><loc>https://abadis-med.com/en/our-customers/</loc><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/our-customers/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/customers/"/></url>
   <url><loc>https://abadis-med.com/en/participation-of-abadis-medical-reservoirs-in-the-fourth-shiraz-medical-equipment-exhibition/</loc></url>
   <url><loc>https://abadis-med.com/en/photo-story-from-the-22nd-iran-health-international-exhibition-first-day/</loc></url>
   <url><loc>https://abadis-med.com/en/photo-story-of-abadis-participation-in-iran-health-international-exhibition-part-3/</loc></url>
@@ -285,7 +292,8 @@
   <url><loc>https://abadis-med.com/en/report-on-the-10th-infection-control-congress/</loc></url>
   <url><loc>https://abadis-med.com/en/report-on-the-2018-infection-control-congress/</loc></url>
   <url><loc>https://abadis-med.com/en/representatives/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/dealers/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/representatives/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/%D9%82%D8%A7%D8%A6%D9%85%D8%A9-%D8%A7%D9%84%D9%85%D9%85%D8%AB%D9%84%D9%8A%D9%86/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/dealers/"/></url>
-  <url><loc>https://abadis-med.com/en/sdgs/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/sdgs/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/sdgs/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/sdgs/"/></url>
+  <url><loc>https://abadis-med.com/en/reusable-suction-canisters-an-economical-choice-or-a-hidden-cost-for-hospitals/</loc></url>
+  <url><loc>https://abadis-med.com/en/sdgs/</loc><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/sdgs/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/sdgs/"/></url>
   <url><loc>https://abadis-med.com/en/solutions/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/solutions/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/solutions/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/%D8%A7%D9%84%D8%AD%D9%84%D9%88%D9%84/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/solutions/"/></url>
   <url><loc>https://abadis-med.com/en/solutions/airway-care/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/solutions/airway-care/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/solutions/airway-care/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/%D8%A7%D9%84%D8%AD%D9%84%D9%88%D9%84/airway-care/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/solutions/airway-care/"/></url>
   <url><loc>https://abadis-med.com/en/solutions/contamination-control/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/solutions/contamination-control/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/solutions/contamination-control/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/%D8%A7%D9%84%D8%AD%D9%84%D9%88%D9%84/contamination-control/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/solutions/contamination-control/"/></url>
@@ -300,6 +308,7 @@
   <url><loc>https://abadis-med.com/en/sustainability/</loc></url>
   <url><loc>https://abadis-med.com/en/the-critical-role-of-medical-grade-pvc-in-suction-tube-products/</loc></url>
   <url><loc>https://abadis-med.com/en/the-first-sustainability-report-of-abadis-medical-knowledge-based-company-up-to-the-end-of-2024/</loc></url>
+  <url><loc>https://abadis-med.com/en/the-future-of-medical-devices-with-artificial-intelligence-technologies-transforming-healthcare/</loc></url>
   <url><loc>https://abadis-med.com/en/the-most-common-pathogens/</loc></url>
   <url><loc>https://abadis-med.com/en/the-presence-of-abadis-at-uzmedexpo/</loc></url>
   <url><loc>https://abadis-med.com/en/the-presence-of-makhazen-tebi-abadis-at-the-tabriz-medical-equipment-exhibition/</loc></url>
@@ -312,8 +321,10 @@
   <url><loc>https://abadis-med.com/en/types-of-hospital-infections/</loc></url>
   <url><loc>https://abadis-med.com/en/types-of-suction-devices/</loc></url>
   <url><loc>https://abadis-med.com/en/unveiling-of-abadis-fixture-product/</loc></url>
+  <url><loc>https://abadis-med.com/en/urine-bag-buying-guide-types-features-and-selection-tips/</loc></url>
   <url><loc>https://abadis-med.com/en/water-conservation-through-abadis-disposable-suction-bags/</loc></url>
   <url><loc>https://abadis-med.com/en/what-are-antibacterial-filters-and-hydrophobic-filters/</loc></url>
+  <url><loc>https://abadis-med.com/en/what-are-pva-film-bags-applications-benefits-and-their-role-in-infection-control/</loc></url>
   <url><loc>https://abadis-med.com/en/what-is-a-chest-tube/</loc></url>
   <url><loc>https://abadis-med.com/en/what-is-a-nelaton-catheter/</loc></url>
   <url><loc>https://abadis-med.com/en/what-is-a-sterile-disposable-suction-bag/</loc></url>
@@ -327,7 +338,7 @@
   <url><loc>https://abadis-med.com/en/why-disposable-suction-liner-bags-can-save-patients-lives/</loc></url>
   <url><loc>https://abadis-med.com/en/%DA%AF%DB%8C%D8%B1%D9%87-t-%D8%B4%DA%A9%D9%84/</loc></url>
   <url><loc>https://abadis-med.com/experiences/</loc></url>
-  <url><loc>https://abadis-med.com/export/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/export/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/export/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/export/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/export/"/></url>
+  <url><loc>https://abadis-med.com/export/</loc></url>
   <url><loc>https://abadis-med.com/faq/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/faq/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/faqs/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/%D9%BE%D8%B1%D8%B3%D8%B4-%D9%87%D8%A7%DB%8C-%D9%85%D8%AA%D8%AF%D8%A7%D9%88%D9%84/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/faq/"/></url>
   <url><loc>https://abadis-med.com/green-family-map/</loc></url>
   <url><loc>https://abadis-med.com/install-guide/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/install-guide/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/installation-manual/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/%D8%AF%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D8%AA%D8%B1%D9%83%D9%8A%D8%A8/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/install-guide/"/></url>
@@ -460,7 +471,7 @@
   <url><loc>https://abadis-med.com/products/stand/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/products/stand/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/products/base-and-holder/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/%D8%AA%D8%AB%D8%A8%DB%8C%D8%AA/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/products/stand/"/></url>
   <url><loc>https://abadis-med.com/products/suction-bag/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/products/suction-bag/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/products/suction-bag/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/%D9%83%D9%8A%D8%B3-%D8%A7%D9%84%D8%B4%D9%81%D8%B7/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/products/suction-bag/"/></url>
   <url><loc>https://abadis-med.com/products/suction-tube/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/products/suction-tube/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/suction-tube/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/%D8%A3%D9%86%D8%A8%D9%88%D8%A8-%D8%A7%D9%84%D8%B4%D9%81%D8%B7/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/products/suction-tube/"/></url>
-  <url><loc>https://abadis-med.com/sdgs/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/sdgs/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/sdgs/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/sdgs/"/></url>
+  <url><loc>https://abadis-med.com/sdgs/</loc></url>
   <url><loc>https://abadis-med.com/seed-slingshot/</loc></url>
   <url><loc>https://abadis-med.com/solutions-hero-options/</loc></url>
   <url><loc>https://abadis-med.com/solutions/</loc><xhtml:link rel="alternate" hreflang="fa-IR" href="https://abadis-med.com/solutions/"/><xhtml:link rel="alternate" hreflang="en" href="https://abadis-med.com/en/solutions/"/><xhtml:link rel="alternate" hreflang="ar" href="https://abadis-med.com/arabic/%D8%A7%D9%84%D8%AD%D9%84%D9%88%D9%84/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://abadis-med.com/solutions/"/></url>

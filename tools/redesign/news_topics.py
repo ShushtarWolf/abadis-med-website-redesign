@@ -377,11 +377,22 @@ def news_shell(lang, prefix, crumbs, stats, feature_html):
         f'<li><b>{year_label(stats["latest"], lang) if stats["latest"] else "—"}</b><span>{esc(T["stat_latest"])}</span></li>'
         f'</ul>'
     )
-    return f'''<section class="news-d" data-news-finalist>
+    news_slogan = {
+        'fa': ('تازه‌ترین اخبار، گزارش‌ها و رویدادهای آبادیس،', 'پوشش نمایشگاه‌ها، کنگره‌ها و مجامع تخصصی', 'رونمایی از محصولات و دستاوردهای دانش‌بنیان', 'مسئولیت اجتماعی، نجات زاگرس و توسعه بازار.'),
+        'en': ('Latest News, Reports & Events at Abadis Med,', 'Medical Exhibitions, Congresses & Industry Forums', 'Product Unveilings & Knowledge-Based Milestones', 'Social Responsibility, Save Zagros & Global Growth.'),
+        'ar': ('آخر أخبار وتقارير وفعاليات شركة آباديس،', 'تغطية المعارض والمؤتمرات والملتقيات التخصصية', 'الكشف عن المنتجات والإنجازات المعرفية', 'المسؤولية الاجتماعية وإنقاذ زاغروس وتطوير السوق.'),
+    }[lang]
+    return f'''<section class="page-hero about-hero articles-hero">
+  <video class="about-hero-video articles-hero-video" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="{prefix}assets/media/hero-or-zagros-poster.jpg?v=20261028p"><source src="{prefix}assets/media/hero-or-zagros.mp4?v=20261028p" type="video/mp4"></video>
+  <div class="wrap about-hero-grid">
+    <div>{crumbs}
+      <h1>{T["h1"]}</h1>
+      <p class="slogan reveal" aria-label="{esc(' '.join(news_slogan))}"><span class="slogan-line" style="--i:0">{esc(news_slogan[0])}</span><span class="slogan-line" style="--i:1">{esc(news_slogan[1])}</span><span class="slogan-line" style="--i:2">{esc(news_slogan[2])}</span><span class="slogan-line" style="--i:3">{esc(news_slogan[3])}</span></p>
+    </div>
+  </div>
+</section>
+<section class="news-d articles-d" data-news-finalist>
   <div class="wrap">
-    {crumbs}
-    <h1>{T["h1"]}</h1>
-    <p class="lead">{esc(T["lead"])}</p>
     <div class="news-d-stage">
       {feature_html}
       <aside class="news-panel">

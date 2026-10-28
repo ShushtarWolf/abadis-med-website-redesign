@@ -30,7 +30,7 @@ HOME_DESC = ('شرکت دانش‌بنیان مخازن طبی آبادیس؛ ت
              'راهکارهای مدیریت سیالات و زباله‌های عفونی بیمارستانی.')
 # Ends with brand so layout.head does not double-suffix.
 # Hero positioning: Alireza, 17 Oct 2026.
-HOME_TITLE = 'درباره ما بیشتر بدانید — مخازن طبی آبادیس'
+HOME_TITLE = 'پیشرو در کنترل عفونت و مدیریت مایعات بیمارستانی — مخازن طبی آبادیس'
 CALC_TEASER = 'جهت محاسبه آنلاین میزان صرفه‌جویی در مصرف آب و زباله‌های عفونی مرکز خود می‌توانید روی دکمه زیر کلیک نمایید.'
 LOGO_STRIP_N = 24
 
@@ -202,8 +202,8 @@ def zagros_hero(img_base):
 LIVE_HERO_H1 = 'شرکت دانش بنیان مخازن طبی آبادیس'
 
 
-HERO_H1 = 'درباره ما بیشتر بدانید...'
-HERO_SUB_LIVE = ABOUT_P
+HERO_H1 = 'پیشرو در کنترل عفونت و مدیریت مایعات بیمارستانی'
+HERO_SUB_LIVE = 'نخستین و بزرگ‌ترین تولیدکننده دانش‌بنیان کیسه‌های ساکشن یکبارمصرف مدار بسته و فیلترهای قطع‌کننده جریان در ایران؛ حذف عفونت متقاطع، شست‌وشوی مخازن و سرریز مایعات در ۱٬۲۸۴ مرکز درمانی در سراسر ۳۱ استان کشور.'
 # Provable from abadis-med.com: certificates (hero slider) + sizes/filters (product page)
 HERO_SUB = 'دارای گواهی‌های IMED، ISO و CE؛ کیسه ساکشن در حجم‌های ۱، ۲ و ۳ لیتری با فیلتر هیدروفوبیک، دوئال و مکانیکی.'
 CATALOGUE = 'https://abadis-med.com/wp-content/uploads/2024/12/کاتالوگ-جامع-آبادیس.pdf'
@@ -618,7 +618,7 @@ def impact_section():
         {section_mark('', 'impact', 'sec-mark--lg')}
         {impact_title('fa')}
         <p class="eyebrow impact-now">اثر آبادیس، همین حالا</p>
-        <strong class="impact-num" aria-live="off">۰</strong>
+        <strong class="impact-num" aria-live="off">۵۶٬۵۰۰٬۰۰۰</strong>
         <span class="impact-unit">لیتر آب صرفه‌جویی‌شده از ابتدای سال ۱۴۰۵ (تخمینی)</span>
       </div>
       </div>

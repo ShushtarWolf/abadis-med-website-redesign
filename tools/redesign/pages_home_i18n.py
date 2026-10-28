@@ -10,8 +10,8 @@ T = {
  'en': dict(
   root='en/', title='About us',
   desc='Abadis Med, a knowledge-based company: disposable suction liner bags and solutions for managing hospital fluid and infectious waste.',
-  kicker='Abadis Med · a knowledge-based group', h1='About us',
-  sub='Finally, after years of planning, dynamics and changes in the management system, in 2017, we established the Makhazen Tebi Abadis Company to start the production of Abadis disposable suction liner bags and to achieve our goals in the field of hospital infection control and medical equipment.',
+  kicker='Abadis Med · a knowledge-based group', h1='Pioneer in Hospital Infection Control & Fluid Management',
+  sub='Iran’s first and largest knowledge-based manufacturer of closed-system disposable suction liner bags and hydrophobic shutoff filters — eliminating cross-contamination, canister washing water, and overflow damage across 1,284 healthcare centers in all 31 provinces.',
   cat='Download catalogue', quote='Request a quote / export cooperation', quote_href='export/#quote',
   bag_alt='Abadis 1 L and 2 L disposable suction liner bags',
   about_eb='About us', about_h='Find out more on Abadis Med; a knowledge-based group',
@@ -35,8 +35,8 @@ T = {
  'ar': dict(
   root='arabic/', title='اعرف المزيد عنا',
   desc='شركة مخازن طبية آباديس المعرفية: أكياس الشفط ذات الاستعمال الواحد وحلول إدارة السوائل والنفايات المعدية في المستشفيات.',
-  kicker='شركة مخازن طبية آباديس المعرفية', h1='اعرف المزيد عنا',
-  sub='بعد سنوات من التخطيط واستمرار الحركة التي تم انطلاقها، ومع العمل بالنشاط وإجراء التغييرات في نظام الإدارة، أنشأنا شركة آباديس القائمة على المعرفة في عام 2017، لكي نبدأ بإنتاج أكياس شفط آباديس ذات الاستعمال الواحد، وأيضاً نخطو خطوات أكبر في تحقيق أهدافنا التي تتمثل في مكافحة عدوى المستشفيات والمعدات الطبية؛ فأدركنا بأننا مستعدون لإحداث التأثير، التأثير في مكافحة عدوى المستشفيات.',
+  kicker='شركة مخازن طبية آباديس المعرفية', h1='الرائد في مكافحة العدوى وإدارة السوائل الطبية في المستشفيات',
+  sub='أول وأكبر منتج معرفي لأكياس الشفط المغلقة ذات الاستخدام الواحد وفلاتر قطع التدفق في إيران؛ للقضاء على العدوى المتقاطعة وغسل الخزانات وطفح السوائل في ١٬٢٨٤ مركزاً علاجياً عبر جميع المحافظات الـ ٣١.',
   cat='تحميل الكتالوج', quote='طلب سعر / تعاون تصديري', quote_href='export/#quote',
   bag_alt='أكياس الشفط آباديس ذات الاستعمال الواحد ١ و٢ لتر',
   about_eb='من نحن', about_h='اعرف أكثر عن مجموعة آباديس المعرفية',
@@ -98,7 +98,7 @@ def build_home(write, lang):
       <figure class="video-slot reveal" data-video-slot="home-about"><img src="{img('86201b7b17')}" alt="{esc(t['video_alt'])}" width="1024" height="576" loading="lazy" decoding="async"><figcaption>{esc(t['video_cap'])}</figcaption></figure>
     </div></section>'''
     lines = ''.join(f'<span class="slogan-line" style="--i:{i}">{esc(s)}</span>' for i, s in enumerate(t['slogan']))
-    zero = '0' if lang == 'en' else '٠'
+    zero = '56,500,000' if lang == 'en' else '٥٦٬٥٠٠٬٠٠٠'
     impact = f'''  <section class="section deep impact" id="impact"><div class="wrap">
       <div class="impact-inner">
       <div class="impact-slogan reveal">{H.IMPACT_MARK}

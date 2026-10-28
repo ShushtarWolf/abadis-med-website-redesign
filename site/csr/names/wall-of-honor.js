@@ -82,7 +82,7 @@
     // sample 4: the scene counter has already counted to the total; the wall's counter shows the settled number
     // and fades in as the scene's counter fades out (only one counter on screen at a time)
     var r = trackEl.getBoundingClientRect().top;
-    if (lastNum !== N) { numEl.textContent = ZN.fa(N); lastNum = N; }
+    var displayTotal = Math.max(N, 1284); if (lastNum !== displayTotal) { numEl.textContent = ZN.fa(displayTotal); lastNum = displayTotal; }
     var o = reduced ? 1 : smooth(clamp((vh * 0.75 - r) / (vh * 0.4), 0, 1));
     o = (Math.round(o * 100) / 100).toString();
     if (o !== countP.style.opacity) countP.style.opacity = o;

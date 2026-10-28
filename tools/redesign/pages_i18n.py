@@ -387,8 +387,10 @@ def _write_post_index(write, lang, site_path, cur, label, items):
             shell = article_shell(lang, p, crumbs(p, [(label, None)], lang=lang), stats, article_feature_from_card(cards[0] if cards else '', lang))
             emp = article_empty_html(lang)
         main = shell + f'\n    <div class="post-grid" id="postGrid" data-paged="12">{"".join(cards)}</div>\n    {emp}\n  </div></section>'
-        extra_head = f'<link rel="stylesheet" href="{p}assets/css/news-finalist.css?v=20261028p">\n'
-        scripts = f'<script src="{p}assets/js/news-finalist.js?v=20261028p" defer></script>\n'
+        from pages_company import about_motion_tags
+        h_css, m_js = about_motion_tags(p)
+        extra_head = h_css + f'\n<link rel="stylesheet" href="{p}assets/css/news-finalist.css?v=20261028p">\n'
+        scripts = m_js + f'\n<script src="{p}assets/js/news-finalist.js?v=20261028p" defer></script>\n'
     else:
         main = f'''{page_hero(p, [(label, None)], f'<em>{esc(label)}</em>', '', lang=lang)}
   <section class="section"><div class="wrap">
@@ -397,7 +399,7 @@ def _write_post_index(write, lang, site_path, cur, label, items):
     <div class="post-grid" id="postGrid" data-paged="12">{''.join(cards)}</div>
     <p class="empty-msg" hidden>{esc(L['empty'])}</p>
   </div></section>'''
-    html = page(p, cur, label, label, main, lang=lang, fa_path=fa, canonical_path=root + site_path, extra_head=extra_head, scripts=scripts)
+    html = page(p, cur, label, label, main, lang=lang, fa_path=fa, canonical_path=root + site_path, extra_head=extra_head, scripts=scripts, html_attrs='data-slogan="t1"' if news else '')
     write(rel, html)
 
 

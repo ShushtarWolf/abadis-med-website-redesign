@@ -291,7 +291,7 @@ def page(p, cur, title, desc, main, og=None, lightbox=False, scripts='', lang='f
             'dealers': 'dealers/', 'csr': 'csr/', 'sdgs': 'sdgs/', 'contact': 'contact/',
             'calculator': 'calculator/', 'customers': 'customers/', 'experiences': 'academy/',
             'downloads': 'downloads/', 'install': 'install-guide/', 'faq': 'faq/',
-            'careers': 'careers/', 'jobs': 'jobs/',
+            'careers': 'careers/', 'jobs': 'jobs/', 'export': 'export/',
         }.get(cur, '')
         fa_path = fa_path or guess
     if lang == 'fa' and canonical_path is None:

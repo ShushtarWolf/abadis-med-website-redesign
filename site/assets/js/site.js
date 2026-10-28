@@ -194,7 +194,7 @@
     const loc = lang.startsWith('en') ? 'en' : (lang.startsWith('ar') ? 'ar-EG' : 'fa-IR');
     const fmt = (n) => n.toLocaleString(loc, { maximumFractionDigits: 0, useGrouping: false });
     if (reduce) { el.textContent = fmt(to); return; }
-    el.textContent = fmt(0);
+    el.textContent = fmt(to);
     const dur = 1100;
     const tick = (t0) => (now) => {
       const p = Math.min(1, (now - t0) / dur);

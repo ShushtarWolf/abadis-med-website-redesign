@@ -826,8 +826,12 @@ def _drop_sdg_icons(html):
 
 
 def finish_sdg_html(html, lang, prefix='../'):
-    """Original UN tiles (teal field) + a single 1–7 list. Body copy stays verbatim."""
+    """Original UN tiles (teal field) + a single 1–7 list. Unifies annual water savings to 12M liters."""
     html = _drop_sdg_icons(_merge_goal_lists(_strip_rainbow_goals(html)))
+    html = html.replace('میانگین صرفه‌جویی سالانه حدود </strong><strong>۱۰</strong><strong> میلیون لیتر', 'میانگین صرفه‌جویی سالانه بیش از </strong><strong>۱۲</strong><strong> میلیون لیتر')
+    html = html.replace('نرخ سالانه ۱۰ میلیون لیتر', 'نرخ سالانه بیش از ۱۲ میلیون لیتر')
+    html = html.replace('10 million liters annually', 'over 12 million liters annually')
+    html = html.replace('10 million liters per year', 'over 12 million liters per year')
     icons = sdg_icons(lang, prefix)
     m = _GOAL_HEAD.search(html)
     if m:
@@ -885,8 +889,7 @@ def sdgs(write):
         lang='fa', direction='rtl', canon='https://abadis-med.com/sdgs/', url='../sdgs/', title='توسعه پایدار'))
     write('en/sustainability/index.html', redir.format(
         lang='en', direction='ltr', canon='https://abadis-med.com/en/sdgs/', url='../sdgs/', title='SDGs'))
-    write('arabic/sustainability/index.html', redir.format(
-        lang='ar', direction='rtl', canon='https://abadis-med.com/sdgs/', url='../../sdgs/', title='التنمية المستدامة'))
+
 
 
 # ------------------------------------------------------------------ CSR (Zagros hand-built + مسئولیت اجتماعی / SDG summary blocks)
@@ -920,7 +923,73 @@ def csr(write):
         s = s.replace('</main>\n', '</main>\n' + LIGHTBOX + '\n', 1)
     write('csr/index.html', s)
 
-# ------------------------------------------------------------------ contact extras ([t284u])
+
+_SVG_PHONE_HERO = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>'
+_SVG_WA_HERO = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>'
+_SVG_PIN_HERO = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>'
+
+
+def contact_video_hero(p, lang='fa'):
+    from layout import crumbs
+    copy = {
+        'fa': dict(
+            crumb='ارتباط با ما',
+            h1='با ما در ارتباط <em>باشید…</em>',
+            lead='برای استعلام قیمت، دریافت نمونه، خدمات نصب و پشتیبانی یا همکاری تجاری، با ما در تماس باشید.',
+            call='تماس با آبادیس',
+            wa='پیام در واتس‌اپ',
+            c1=('مرکز تماس و فروش', '۰۲۱-۹۲۰۰۱۰۱۷ (داخلی ۱۱)'),
+            c2=('پشتیبانی واتس‌اپ', '+۹۸ ۹۱۰ ۰۱۴ ۵۸۰۹'),
+            c3=('دفتر مرکزی و کارخانه', 'تهران (قیطریه) · شهرک صنعتی شمس‌آباد'),
+        ),
+        'en': dict(
+            crumb='Contact Us',
+            h1='Get in Touch <em>With Us…</em>',
+            lead='Contact us for price quotes, product samples, installation & support services, or commercial partnership.',
+            call='Call Abadis',
+            wa='Message on WhatsApp',
+            c1=('Call Center & Sales', '+98 21 9200 1017 (Ext. 11)'),
+            c2=('WhatsApp Support', '+98 910 014 5809'),
+            c3=('Head Office & Factory', 'Tehran (Qeytarieh) · Shamsabad Industrial Town'),
+        ),
+        'ar': dict(
+            crumb='اتصل بنا',
+            h1='تواصلوا <em>معنا…</em>',
+            lead='للاستفسار عن الأسعار، طلب العينات، خدمات التركيب والدعم الفني، أو التعاون التجاري، تواصلوا معنا.',
+            call='اتصل بآبادیس',
+            wa='راسلنا عبر واتساب',
+            c1=('مركز الاتصال والمبيعات', '021-92001017 (داخلي ١١)'),
+            c2=('دعم واتساب المباشر', '+98 910 014 5809'),
+            c3=('المكتب المركزي والمصنع', 'طهران (قيطريه) · مدينة شمس آباد الصناعية'),
+        ),
+    }[lang]
+    cr = crumbs(p, [(copy['crumb'], None)], lang=lang)
+    tel_href = 'tel:02192001017' if lang == 'fa' else 'tel:+982192001017'
+    return (
+        f'  <section class="page-hero about-hero contact-hero has-playing-video">\n'
+        f'    <video class="about-hero-video contact-hero-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="{p}assets/media/hero-careers-poster.jpg?v=20261028p">\n'
+        f'      <source src="{p}assets/media/hero-careers.mp4?v=20261028p" type="video/mp4">\n'
+        f'    </video>\n'
+        f'    <div class="wrap about-hero-grid">\n'
+        f'      <div>\n'
+        f'        {cr}\n'
+        f'        <h1>{copy["h1"]}</h1>\n'
+        f'        <p class="lead">{esc(copy["lead"])}</p>\n'
+        f'        <div class="contact-hero-ctas">\n'
+        f'          <a class="ch-btn-call" href="{tel_href}">{_SVG_PHONE_HERO}<span>{esc(copy["call"])}</span></a>\n'
+        f'          <a class="ch-btn-wa" href="https://wa.me/989100145809" target="_blank" rel="noopener">{_SVG_WA_HERO}<span>{esc(copy["wa"])}</span></a>\n'
+        f'        </div>\n'
+        f'        <div class="contact-hero-cards">\n'
+        f'          <a class="ch-glass-card" href="{tel_href}"><span class="ch-glass-ico">{_SVG_PHONE_HERO}</span><div><strong>{esc(copy["c1"][0])}</strong><span dir="ltr">{esc(copy["c1"][1])}</span></div></a>\n'
+        f'          <a class="ch-glass-card" href="https://wa.me/989100145809" target="_blank" rel="noopener"><span class="ch-glass-ico">{_SVG_WA_HERO}</span><div><strong>{esc(copy["c2"][0])}</strong><span dir="ltr">{esc(copy["c2"][1])}</span></div></a>\n'
+        f'          <a class="ch-glass-card" href="#map"><span class="ch-glass-ico">{_SVG_PIN_HERO}</span><div><strong>{esc(copy["c3"][0])}</strong><span>{esc(copy["c3"][1])}</span></div></a>\n'
+        f'        </div>\n'
+        f'      </div>\n'
+        f'    </div>\n'
+        f'  </section>'
+    )
+
+# ------------------------------------------------------------------ contact extras ([t284u], [t285u])
 def contact(write):
     bl = B('/ارتباط-با-ما/')
     def boxes(after):
@@ -949,6 +1018,9 @@ def contact(write):
     if '<!-- phase2:contact -->' in s: s = re.sub(r'<!-- phase2:contact -->.*?<!-- /phase2:contact -->\n', lambda m: block, s, flags=re.S)
     else: s = s.replace('</main>', block + '</main>', 1)
     s = re.sub(r'(<main id="main">)(.*?)(</main>)', lambda m: m.group(1) + decorate_fa_contact_main(m.group(2)) + m.group(3), s, count=1, flags=re.S)
+    s = re.sub(r'<section class="page-hero(?:[^"]*)">.*?</section>', lambda m: contact_video_hero('../', 'fa'), s, count=1, flags=re.S)
+    if 'boss-order.css' not in s:
+        s = s.replace('site.css?v=20261028p">', 'site.css?v=20261028p">\n<link rel="stylesheet" href="../assets/css/boss-order.css?v=20261028p">', 1)
     write('contact/index.html', s)
 
 
@@ -959,10 +1031,7 @@ def contact_i18n_main(lang, p):
     )
     from layout import page_hero
     is_en = (lang == 'en')
-    h1 = 'Contact <em>Us</em>' if is_en else 'اتصل <em>بنا</em>'
-    lead = ('For price lists, samples, dealership inquiries, and installation support, get in touch with the Abadis Med team.'
-            if is_en else 'للحصول على قائمة الأسعار والعينات والوكالات ودعم التركيب، تواصلوا مع فريق مخازن آباديس الطبية.')
-    hero = page_hero(p, [('Contact Us' if is_en else 'اتصل بنا', None)], h1, lead, lang=lang)
+    hero = contact_video_hero(p, lang)
     ways_h = 'Contact Channels' if is_en else 'طرق التواصل'
     cc_lbl = 'Call Center:' if is_en else 'مركز الاتصال:'
     tel_lbl = 'Phone Lines:' if is_en else 'أرقام الهاتف:'

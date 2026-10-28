@@ -183,6 +183,7 @@ NAV = {
         ('news', 'news/', 'آخرین اخبار'),
         ('articles', 'articles/', 'مقالات'),
         ('csr', 'csr/', 'مسئولیت اجتماعی'),
+        ('export', 'export/', 'صادرات'),
         ('contact', 'contact/', 'ارتباط با ما'),
     ],
     'en': [
@@ -211,6 +212,7 @@ NAV = {
         ('news', 'latest-news/', 'News'),
         ('articles', 'blog/', 'Articles'),
         ('csr', 'csr/', 'Social Responsibility'),
+        ('export', 'export/', 'Export'),
         ('contact', 'contact-us/', 'Contact Us'),
     ],
     'ar': [
@@ -219,8 +221,8 @@ NAV = {
             ('about', 'من-نحن/', 'من نحن'),
             ('customers', 'customers/', 'عملاؤنا'),
             ('dealers', 'قائمة-الممثلين/', 'قائمة الممثلين'),
-            ('sdgs', '~sdgs/', 'التنمية المستدامة'),
-            ('careers', '~careers/', 'فرص التعاون'),
+            ('sdgs', 'sdgs/', 'التنمية المستدامة'),
+            ('careers', 'careers/', 'فرص التعاون'),
         ]),
         ('products', 'منتجات/#by-product', 'المنتجات', [
             ('suction-bag', 'كيس-الشفط/', 'أكياس الشفط ذات الاستخدام الواحد'),
@@ -238,8 +240,9 @@ NAV = {
             ('waste-management-pva', 'الحلول/waste-management-pva/', 'السيطرة على التلوث وإدارة النفايات', 'مستقبل'),
         ]),
         ('news', 'الاخبار/', 'الاخبار'),
-        ('articles', '~articles/', 'المقالات'),
-        ('csr', '~csr/', 'المسؤولية الاجتماعية'),
+        ('articles', 'articles/', 'المقالات'),
+        ('csr', 'csr/', 'المسؤولية الاجتماعية'),
+        ('export', 'export/', 'التصدير'),
         ('contact', 'اتصل-بنا/', 'اتصل بنا'),
     ],
 }
