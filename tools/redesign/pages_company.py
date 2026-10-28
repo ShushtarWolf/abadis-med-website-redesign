@@ -225,10 +225,10 @@ def sdgs_hero(p, lang, h1_html, crumbs):
 
 SLOGAN_CAREERS_I18N = {
     'fa': [
-        'جای شما در خانواده بزرگ آبادیس خالیست،',
-        'محیطی علمی، نوآور و دانش‌بنیان',
-        'فرصت رشد حرفه‌ای و یادگیری مستمر',
-        'همراهی در ارتقای سلامت و محیط زیست',
+        'فرصت‌های همکاری در خانواده بزرگ آبادیس،',
+        'رشد حرفه‌ای در محیط دانش‌بنیان',
+        'تیم جوان، پویا و اثرگذار',
+        'ساختن آینده سلامت و طبیعت ایران',
     ],
     'en': [
         'Your place is waiting in the Abadis family,',
@@ -248,7 +248,7 @@ SLOGAN_CAREERS_I18N = {
 def careers_slogan_block(lang):
     lines = SLOGAN_CAREERS_I18N[lang]
     spans = ''.join(
-        f'<span class="slogan-line" style="--i:{n}">{esc(x)}</span>' for n, x in enumerate(lines))
+        f'<span class="slogan-line"{" data-rot" if n > 0 else ""} style="--i:{n}">{esc(x)}</span>' for n, x in enumerate(lines))
     return f'<p class="slogan reveal" aria-label="{esc(" ".join(lines))}">{spans}</p>'
 
 
@@ -1293,7 +1293,7 @@ def _job_sections(h):
 
 
 def jobs_page(write):
-    """Old موقعیت‌های شغلی URL → merged into فرصت‌های همکاری (static redirect stub)."""
+    """Legacy jobs URL -> merged into فرصت‌های همکاری (static redirect stub)."""
     html = ('''<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8">
 <title>فرصت‌های همکاری — مخازن طبی آبادیس</title><meta name="robots" content="noindex">
 <link rel="canonical" href="https://abadis-med.com/careers/"><meta http-equiv="refresh" content="0; url=../careers/#jobs">
@@ -1418,6 +1418,7 @@ from lib import JOB_MAP
 import urllib.parse as _u
 for _j in load('jobs.json'):
     JOB_MAP[_u.unquote(_u.urlsplit(_j['url']).path)] = f"careers/jobs/{JOB_SLUGS[_j['title']]}/"
+build_careers = careers
 GROUPS = {'about': about, 'dealers': dealers, 'calculator': calculator, 'csr': csr, 'sdgs': sdgs,
           'contact': contact, 'customers': customers, 'experiences': experiences, 'downloads': downloads,
           'install': install, 'faq': faq, 'careers': careers, 'jobs': jobs_page}

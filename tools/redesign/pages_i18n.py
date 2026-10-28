@@ -261,14 +261,15 @@ def build_posts(write, lang):
     # indexes
     if lang == 'en':
         news_path, blog_path = 'latest-news/', 'blog/'
-        # treat all as news list + blog list (WP often uses categories; put all in both indexes sorted)
         items = sorted(posts, key=lambda x: x.get('date') or '', reverse=True)
         _write_post_index(write, lang, news_path, 'news', L['news_tag'] if False else 'News', items)
         _write_post_index(write, lang, blog_path, 'articles', 'Blog', items)
+        _write_post_index(write, lang, 'articles/', 'articles', 'Articles', items)
     else:
         news_path = 'الاخبار/'
         items = sorted(posts, key=lambda x: x.get('date') or '', reverse=True)
         _write_post_index(write, lang, news_path, 'news', 'الاخبار', items)
+        _write_post_index(write, lang, 'articles/', 'articles', 'المقالات', items)
 
     for wp in posts:
         slug = _slug_decode(wp.get('slug') or str(wp['id']))
@@ -306,9 +307,9 @@ def _write_post_index(write, lang, site_path, cur, label, items):
     p = _prefix(depth)
     cards = []
     pairs = []
-    news = cur == 'news'
+    news = cur in ('news', 'articles')
     if news:
-        from news_topics import classify_text, year_bucket, jalali_year_of
+        from news_topics import classify_text, classify_article_text, year_bucket, jalali_year_of
     for wp in items:
         slug = _slug_decode(wp.get('slug') or str(wp['id']))
         title = strip_tags(wp.get('title', {}).get('rendered', ''))
@@ -318,7 +319,7 @@ def _write_post_index(write, lang, site_path, cur, label, items):
         href = f'{p}{root}{slug}/'
         attrs = ''
         if news:
-            topic = classify_text(title + ' ' + desc)
+            topic = (classify_text if cur == 'news' else classify_article_text)(title + ' ' + desc)
             bucket = year_bucket(jalali_year_of(wp.get('date')))
             pairs.append((topic, bucket))
             attrs = f' data-topic="{esc(topic)}" data-year="{esc(bucket)}"'
@@ -332,11 +333,17 @@ def _write_post_index(write, lang, site_path, cur, label, items):
     extra_head = ''
     scripts = ''
     if news:
-        from news_topics import news_shell, empty_html, tally, feature_from_card
+        from news_topics import news_shell, empty_html, tally, feature_from_card, article_shell, article_empty_html, article_tally, article_feature_from_card
         from layout import crumbs
-        stats = tally(pairs)
-        shell = news_shell(lang, p, crumbs(p, [(label, None)], lang=lang), stats, feature_from_card(cards[0] if cards else '', lang))
-        main = shell + f'\n    <div class="post-grid" id="postGrid" data-paged="12">{"".join(cards)}</div>\n    {empty_html(lang)}\n  </div></section>'
+        if cur == 'news':
+            stats = tally(pairs)
+            shell = news_shell(lang, p, crumbs(p, [(label, None)], lang=lang), stats, feature_from_card(cards[0] if cards else '', lang))
+            emp = empty_html(lang)
+        else:
+            stats = article_tally(pairs)
+            shell = article_shell(lang, p, crumbs(p, [(label, None)], lang=lang), stats, article_feature_from_card(cards[0] if cards else '', lang))
+            emp = article_empty_html(lang)
+        main = shell + f'\n    <div class="post-grid" id="postGrid" data-paged="12">{"".join(cards)}</div>\n    {emp}\n  </div></section>'
         extra_head = f'<link rel="stylesheet" href="{p}assets/css/news-finalist.css">\n'
         scripts = f'<script src="{p}assets/js/news-finalist.js" defer></script>\n'
     else:

@@ -244,3 +244,174 @@ def feature_from_card(card_html, lang):
         f'{img_html}<div class="news-feature-body"><span class="news-kicker" data-news-kicker>{esc(kicker)}</span>'
         f'{time_html}<h2>{title}</h2><p>{excerpt.group(1) if excerpt else ""}</p></div></a>'
     )
+
+
+# ------------------------------------------------------------------ Articles Finalist D
+ARTICLE_TOPICS = (
+    ('suction', 'ساکشن', 'کیسه و سیستم‌های ساکشن', 'Suction Bags & Systems', 'أكياس وأنظمة الشفط'),
+    ('infection', 'عفونت', 'کنترل عفونت و فیلتراسیون', 'Infection Control & Filtration', 'مكافحة العدوى والترشيح'),
+    ('airway', 'راه هوایی', 'مراقبت از راه هوایی و ICU', 'Airway Care & ICU', 'رعاية مجرى الهواء والعناية المركزة'),
+    ('guide', 'راهنما', 'استانداردها و راهنمای خرید', 'Standards & Buying Guides', 'المعايير وأدلة الشراء'),
+    ('env', 'محیط‌زیست', 'حکمرانی سبز و پسماند پزشکی', 'Green Governance & Medical Waste', 'الحوكمة الخضراء والنفايات الطبية'),
+    ('surgery', 'جراحی', 'تجهیزات جراحی و بالینی', 'Surgical & Clinical Equipment', 'المعدات الجراحية والسريرية'),
+)
+
+_ARTICLE_COPY = {
+    'fa': {
+        'all': 'همه مقالات', 'years': 'همه سال‌ها', 'before': '۱۴۰۰ و قبل',
+        'h1': 'دانشنامه و <em>مقالات</em>',
+        'lead': 'مقالات علمی، راهنماهای بالینی، استانداردهای کنترل عفونت و بررسی تخصصی تجهیزات پزشکی آبادیس',
+        'topics_label': 'محور علمی و تخصصی', 'years_label': 'سال انتشار',
+        'stat_news': 'مقاله تخصصی', 'stat_topics': 'محور علمی', 'stat_years': 'سال پوشش', 'stat_latest': 'تازه‌ترین سال',
+        'shown': 'مقاله', 'empty': 'مقاله‌ای با این ترکیب پیدا نشد.', 'reset': 'نمایش همه مقالات',
+        'archive': 'آرشیو مقالات علمی و تخصصی', 'feature': 'تازه‌ترین مقاله علمی',
+    },
+    'en': {
+        'all': 'All articles', 'years': 'All years', 'before': '1400 and earlier',
+        'h1': 'Clinical <em>Articles</em>',
+        'lead': 'Scientific articles, clinical guides, infection-control standards and medical equipment insights from Abadis.',
+        'topics_label': 'Scientific Topic', 'years_label': 'Publication Year',
+        'stat_news': 'articles', 'stat_topics': 'scientific topics', 'stat_years': 'years covered', 'stat_latest': 'Latest year',
+        'shown': 'articles shown', 'empty': 'No articles match this combination.', 'reset': 'Show all articles',
+        'archive': 'Scientific Articles Archive', 'feature': 'Latest Article',
+    },
+    'ar': {
+        'all': 'كل المقالات', 'years': 'كل السنوات', 'before': '١٤٠٠ وما قبل',
+        'h1': 'المقالات <em>العلمية</em>',
+        'lead': 'مقالات علمية وأدلة سريرية ومعايير مكافحة العدوى والمعدات الطبية من آباديس.',
+        'topics_label': 'المحور العلمي', 'years_label': 'سنة النشر',
+        'stat_news': 'مقالة علمية', 'stat_topics': 'محاور علمية', 'stat_years': 'سنوات التغطية', 'stat_latest': 'أحدث سنة',
+        'shown': 'مقالة', 'empty': 'لا توجد مقالات لهذا التوليف.', 'reset': 'عرض كل المقالات',
+        'archive': 'أرشيف المقالات العلمية', 'feature': 'أحدث مقالة علمية',
+    },
+}
+
+
+def article_topic_label(key, lang):
+    if key in ('', 'all', None):
+        return _ARTICLE_COPY[lang]['all']
+    for row in ARTICLE_TOPICS:
+        if row[0] == key or row[1] == key:
+            return row[{'fa': 2, 'en': 3, 'ar': 4}[lang]]
+    return key
+
+
+def classify_article_text(text):
+    """Classify an article into one of the 6 scientific topics."""
+    t = (text or '').replace('\u200c', ' ').replace('\u0640', '').lower()
+    t = t.replace('ي', 'ی').replace('ك', 'ک').replace('أ', 'ا').replace('إ', 'ا').replace('آ', 'ا').replace('ة', 'ه')
+    if re.search(r'راهنمای خرید|قیمت|مقایسه|استاندارد|ایزو|iso|ce|مدیریت خرید|نکات خرید|چک لیست|راهنمای انتخاب|buying guide|price|standard', t):
+        return 'guide'
+    if re.search(r'پسماند|پساب|محیط زیست|سبز|زاگرس|توسعه پایدار|کربن|صرفه جویی|بازیافت|waste|environment|green|sustainab', t):
+        return 'env'
+    if re.search(r'فیلتر|عفونت|استریل|آنتی باکتریال|هیدروفوبیک|ضدعفونی|پاتوژن|باکتری|ویروس|infection|filter|steril|antibacterial', t):
+        return 'infection'
+    if re.search(r'راه هوایی|ایروی|تراشه|لوله تراشه|فیکسر|دهان|مسواک|ونتیلاتور|تنفس|اکسیژن|icu|airway|trachea|oral|intubat', t):
+        return 'airway'
+    if re.search(r'ساکشن|مخزن|کیسه ساکشن|لاينر|لاینر|بهمن گیر|ترشحات|وکیوم|suction|canister|liner', t):
+        return 'suction'
+    return 'surgery'
+
+
+def _article_topic_buttons(lang, counts, total):
+    T = _ARTICLE_COPY[lang]
+    bits = [
+        f'<button type="button" data-news-topic="all" aria-pressed="true">{esc(T["all"])} <b>{digits(total, lang)}</b></button>'
+    ]
+    for key, _short, _fa, _en, _ar in ARTICLE_TOPICS:
+        bits.append(
+            f'<button type="button" data-news-topic="{key}" aria-pressed="false">{esc(article_topic_label(key, lang))} <b>{digits(counts.get(key, 0), lang)}</b></button>'
+        )
+    return ''.join(bits)
+
+
+def _article_year_pills(lang, counts):
+    T = _ARTICLE_COPY[lang]
+    order = []
+    newer = sorted((int(k) for k in counts if str(k).isdigit() and int(k) > 1405), reverse=True)
+    order.extend(str(y) for y in newer)
+    order.extend(['1405', '1404', '1403', '1402', '1401', 'before'])
+    buttons = [f'<button type="button" data-news-year="all" aria-pressed="true">{esc(T["years"])}</button>']
+    for key in order:
+        n = counts.get(key, 0)
+        label = T['before'] if key == 'before' else year_label(int(key), lang)
+        buttons.append(
+            f'<button type="button" data-news-year="{esc(key)}" aria-pressed="false">{label} <b>{digits(n, lang)}</b></button>'
+        )
+    return ''.join(buttons)
+
+
+def article_tally(pairs):
+    topics, years = {}, {}
+    distinct = set()
+    total = 0
+    for topic, bucket in pairs:
+        total += 1
+        if topic:
+            topics[topic] = topics.get(topic, 0) + 1
+        years[bucket] = years.get(bucket, 0) + 1
+        if str(bucket).isdigit():
+            distinct.add(int(bucket))
+        else:
+            distinct.add(1400)
+    latest = max(distinct) if distinct else 0
+    return {'total': total, 'topics': topics, 'years': years, 'n_years': len(distinct), 'latest': latest, 'n_topics': len(ARTICLE_TOPICS)}
+
+
+def article_shell(lang, prefix, crumbs, stats, feature_html):
+    lang = lang if lang in _ARTICLE_COPY else 'fa'
+    T = _ARTICLE_COPY[lang]
+    dash = (
+        f'<ul class="news-dash">'
+        f'<li><b>{digits(stats["total"], lang)}</b><span>{esc(T["stat_news"])}</span></li>'
+        f'<li><b>{digits(stats["n_topics"], lang)}</b><span>{esc(T["stat_topics"])}</span></li>'
+        f'<li><b>{digits(stats["n_years"], lang)}</b><span>{esc(T["stat_years"])}</span></li>'
+        f'<li><b>{year_label(stats["latest"], lang) if stats["latest"] else "—"}</b><span>{esc(T["stat_latest"])}</span></li>'
+        f'</ul>'
+    )
+    return f"""<section class="news-d articles-d" data-news-finalist>
+  <div class="wrap">
+    {crumbs}
+    <h1>{T["h1"]}</h1>
+    <p class="lead">{esc(T["lead"])}</p>
+    <div class="news-d-stage">
+      {feature_html}
+      <aside class="news-panel">
+        {dash}
+        <p class="news-lab">{esc(T["topics_label"])}</p>
+        <div class="news-topics" role="group" aria-label="{esc(T["topics_label"])}">{_article_topic_buttons(lang, stats["topics"], stats["total"])}</div>
+        <p class="news-lab">{esc(T["years_label"])}</p>
+        <div class="news-years" role="group" aria-label="{esc(T["years_label"])}">{_article_year_pills(lang, stats["years"])}</div>
+        <p class="news-live"><span data-news-count>{digits(stats["total"], lang)}</span> {esc(T["shown"])}</p>
+      </aside>
+    </div>
+  </div>
+</section>
+<section class="section news-d-page"><div class="wrap">
+    <h2 class="news-archive-title">{esc(T["archive"])}</h2>"""
+
+
+def article_empty_html(lang):
+    T = _ARTICLE_COPY[lang if lang in _ARTICLE_COPY else 'fa']
+    return (
+        f'<p class="news-empty" data-news-empty hidden>{esc(T["empty"])} '
+        f'<button type="button" data-news-reset>{esc(T["reset"])}</button></p>'
+    )
+
+
+def article_feature_from_card(card_html, lang):
+    href = re.search(r'href="([^"]+)"', card_html)
+    img = re.search(r'<img[^>]*src="([^"]+)"', card_html)
+    alt = re.search(r'<h3>(.*?)</h3>', card_html)
+    excerpt = re.search(r'<p>(.*?)</p>', card_html)
+    time_m = re.search(r'<time([^>]*)>(.*?)</time>', card_html)
+    title = alt.group(1) if alt else ''
+    src = img.group(1) if img else ''
+    time_html = f'<time{time_m.group(1)}>{time_m.group(2)}</time>' if time_m else ''
+    kicker = _ARTICLE_COPY[lang if lang in _ARTICLE_COPY else 'fa']['feature']
+    img_html = f'<img src="{src}" alt="{esc(re.sub(r"<[^>]+>", "", title))}" decoding="async">' if src else ''
+    return (
+        f'<a class="news-feature" data-news-feature href="{href.group(1) if href else "#"}">'
+        f'{img_html}<div class="news-feature-body"><span class="news-kicker" data-news-kicker>{esc(kicker)}</span>'
+        f'{time_html}<h2>{title}</h2><p>{excerpt.group(1) if excerpt else ""}</p></div></a>'
+    )

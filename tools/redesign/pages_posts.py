@@ -115,14 +115,22 @@ def build(write):
             scripts = f'<script src="{p}assets/js/news-finalist.js" defer></script>\n'
             write(f'{cat}/index.html', page(p, cat, LABEL[cat], lead, main, fa_path=f'{cat}/', extra_head=extra, scripts=scripts))
         else:
-            cards = ''.join(missing_card(p, m) for m in miss) + ''.join(card(p, x) for x in items)
-            main = f'''{page_hero(p, [(LABEL[cat], None)], h1, lead)}
-  <section class="section"><div class="wrap">
-    <div class="list-tools"><input class="search" type="search" placeholder="جست و جو" aria-label="جست و جو در {LABEL[cat]}" data-filter="#postGrid"><span class="count" data-count-for="#postGrid">{fa(n)} مطلب</span></div>
-    <div class="post-grid" id="postGrid" data-paged="12">{cards}</div>
-    <p class="empty-msg" hidden>موردی یافت نشد.</p>
-  </div></section>'''
-            write(f'{cat}/index.html', page(p, cat, LABEL[cat], lead, main, fa_path=f'{cat}/'))
+            from news_topics import classify_article_text, year_bucket, jalali_year_of, article_shell, article_empty_html, article_tally, article_feature_from_card
+            from layout import crumbs
+            bits = []
+            pairs = []
+            for x in items:
+                topic = classify_article_text(x['t'] + ' ' + excerpt(x))
+                bucket = year_bucket(jalali_year_of(x.get('date')))
+                pairs.append((topic, bucket))
+                bits.append(card(p, x, topic=topic, year=bucket))
+            cards = ''.join(missing_card(p, m) for m in miss) + ''.join(bits)
+            stats = article_tally(pairs)
+            shell = article_shell('fa', p, crumbs(p, [(LABEL[cat], None)]), stats, article_feature_from_card(bits[0] if bits else '', 'fa'))
+            main = shell + f'\n    <div class="post-grid" id="postGrid" data-paged="12">{cards}</div>\n    {article_empty_html("fa")}\n  </div></section>'
+            extra = f'<link rel="stylesheet" href="{p}assets/css/news-finalist.css">\n'
+            scripts = f'<script src="{p}assets/js/news-finalist.js" defer></script>\n'
+            write(f'{cat}/index.html', page(p, cat, LABEL[cat], lead, main, fa_path=f'{cat}/', extra_head=extra, scripts=scripts))
         # singles
         p = '../../'
         for i, x in enumerate(items):

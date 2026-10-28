@@ -1,0 +1,1543 @@
+"""Generate site/careers-options/ (index.html, option-1.html, option-2.html, option-3.html)
+for Task 4 [t226u] — 3 complete interactive redesign proposals for «فرصت‌های همکاری» (careers/).
+Strictly ZERO emojis anywhere (SVG icons and clean Persian typography only).
+"""
+import json
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+OUT = ROOT / 'site' / 'careers-options'
+OUT.mkdir(parents=True, exist_ok=True)
+
+JOBS = [
+    {
+        'id': 'sales-specialist',
+        'num': '۰۱',
+        'title': 'کارشناس فروش',
+        'dept': 'sales',
+        'dept_label': 'فروش و بازرگانی',
+        'status': 'active',
+        'status_label': 'فعال',
+        'pub': '۱۴۰۵/۰۷/۰۱',
+        'exp': '۱۴۰۵/۰۷/۳۰',
+        'exp_years': '۲+ سال سابقه B2B / تجهیزات پزشکی',
+        'degree': 'کارشناسی کلیه رشته‌ها',
+        'summary': 'شناسایی و جذب مراکز درمانی جدید، مذاکره با بیمارستان‌ها و پیگیری سفارش‌ها در CRM.',
+        'duties': [
+            'شناسایی و جذب مشتریان و مراکز درمانی جدید در سراسر کشور',
+            'برقراری ارتباط و مذاکره حرفه‌ای با بیمارستان‌ها و شرکت‌های تجهیزات پزشکی',
+            'پیگیری مستمر مشتریان از مرحله معرفی محصول تا ثبت سفارش و وصول مطالبات',
+            'ثبت منظم تماس‌ها و اطلاعات مشتریان در سامانه CRM و ارائه گزارش ماهانه',
+        ],
+        'reqs': [
+            'روابط عمومی، فن بیان قوی و مهارت مذاکره و متقاعدسازی',
+            'تسلط به نرم‌افزارهای Office و سامانه CRM',
+            'منظم، مسئولیت‌پذیر، هدف‌گرا و دارای روحیه کار تیمی',
+        ],
+        'perks': ['حقوق ثابت + پورسانت و پاداش عملکرد', 'آموزش تخصصی محصولات در آکادمی آبادیس', 'بیمه و مزایای قانونی کامل'],
+    },
+    {
+        'id': 'rnd-specialist',
+        'num': '۰۲',
+        'title': 'کارشناس تحقیق و توسعه',
+        'dept': 'rnd',
+        'dept_label': 'تحقیق و توسعه و فنی',
+        'status': 'archive',
+        'status_label': 'بانک رزومه فعال',
+        'pub': '۱۴۰۳/۰۳/۱۹',
+        'exp': '۱۴۰۳/۰۵/۳۱',
+        'exp_years': 'حداقل ۴ سال سابقه مرتبط',
+        'degree': 'کارشناسی مهندسی پزشکی / صنایع / MBA',
+        'summary': 'توسعه محصولات نوین کنترل عفونت، مدیریت پروژه‌های دانش‌بنیان و تجاری‌سازی.',
+        'duties': [
+            'مشارکت در طراحی و توسعه نسل جدید کیسه‌های ساکشن، فیلترها و محصولات پلیمری',
+            'تدوین مستندات فنی، مدیریت پروژه‌های توسعه محصول و تجاری‌سازی',
+            'همکاری با واحد تضمین کیفیت جهت انطباق با استانداردهای ISO 13485 و CE',
+        ],
+        'reqs': [
+            'حداقل ۴ سال سابقه کار مرتبط در تحقیق و توسعه صنعتی یا تجهیزات پزشکی',
+            'مدرک کارشناسی مهندسی پزشکی، مهندسی صنایع، مدیریت صنعتی یا MBA',
+            'تسلط به مدیریت پروژه، استانداردهای ISO و نرم‌افزارهای Office',
+        ],
+        'perks': ['محیط علمی و پژوهشی دانش‌بنیان', 'حمایت از ثبت اختراع و ایده‌های نوآورانه', 'فرصت ارتقای شغلی'],
+    },
+    {
+        'id': 'quality-assurance',
+        'num': '۰۳',
+        'title': 'کارشناس تضمین کیفیت',
+        'dept': 'qa',
+        'dept_label': 'تضمین کیفیت',
+        'status': 'archive',
+        'status_label': 'بانک رزومه فعال',
+        'pub': '۱۴۰۲/۰۴/۰۱',
+        'exp': '۱۴۰۲/۰۵/۳۱',
+        'exp_years': 'حداقل ۲ سال سابقه مرتبط',
+        'degree': 'مهندسی پلیمر / پزشکی / صنایع / شیمی',
+        'summary': 'پایش استانداردهای ISO 13485، کنترل کیفی مستمر خط تولید و مستندسازی رگولاتوری.',
+        'duties': [
+            'نظارت بر اجرای دقیق الزامات استاندارد ISO 13485 و ضوابط سازمان غذا و دارو (IMED)',
+            'پایش شاخص‌های کیفی محصولات، ممیزی داخلی و ثبت گزارش‌های اقدام اصلاحی',
+            'همکاری نزدیک با آزمایشگاه کنترل کیفیت و واحد فنی مهندسی',
+        ],
+        'reqs': [
+            'حداقل ۲ سال سابقه کار مرتبط در تضمین کیفیت تجهیزات پزشکی یا پلیمر',
+            'مدرک کارشناسی مهندسی صنایع، پلیمر، پزشکی، شیمی یا فیزیک',
+            'آشنایی کامل با استاندارد ISO 13485 و تسلط به Excel',
+        ],
+        'perks': ['آموزش‌های تخصصی استانداردهای بین‌المللی', 'محیط کاری استاندارد و ساختاریافته', 'امنیت شغلی بالا'],
+    },
+    {
+        'id': 'sales-manager',
+        'num': '۰۴',
+        'title': 'مدیر فروش',
+        'dept': 'sales',
+        'dept_label': 'فروش و بازرگانی',
+        'status': 'archive',
+        'status_label': 'بانک رزومه فعال',
+        'pub': '۱۴۰۱/۱۰/۰۴',
+        'exp': '۱۴۰۱/۱۱/۳۰',
+        'exp_years': 'حداقل ۱۰ سال سابقه تجهیزات پزشکی',
+        'degree': 'کارشناسی مدیریت / تجهیزات پزشکی',
+        'summary': 'راهبری شبکه فروش سراسری و نمایندگان در ۳۱ استان و تدوین استراتژی جامع بازاریابی.',
+        'duties': [
+            'تدوین و اجرای برنامه جامع فروش در شبکه بیمارستانی و مراکز جراحی سراسر کشور',
+            'هدایت تیم کارشناسان فروش و ارزیابی عملکرد نمایندگان استانی',
+            'مدیریت چرخه کامل CRM و توسعه سهم بازار محصولات کنترل عفونت',
+        ],
+        'reqs': [
+            'حداقل ۱۰ سال سابقه کار مرتبط در فروش تجهیزات و ملزومات مصرفی پزشکی',
+            'تسلط به برنامه جامع بازاریابی، فرآیندهای CRM و مدیریت تیم فروش',
+            'مدرک کارشناسی یا کارشناسی ارشد مدیریت یا مهندسی پزشکی',
+        ],
+        'perks': ['بسته جبران خدمات مدیریتی و پاداش عملکرد', 'همکاری مستقیم با هیئت‌مدیره', 'شبکه گسترده ۱٬۲۸۴ مرکز درمانی'],
+    },
+    {
+        'id': 'export-specialist',
+        'num': '۰۵',
+        'title': 'کارشناس صادرات',
+        'dept': 'sales',
+        'dept_label': 'فروش و بازرگانی',
+        'status': 'archive',
+        'status_label': 'بانک رزومه فعال',
+        'pub': '۱۴۰۲/۱۰/۰۴',
+        'exp': '۱۴۰۲/۱۱/۳۰',
+        'exp_years': 'حداقل ۳ سال سابقه بازرگانی خارجی',
+        'degree': 'کارشناسی بازرگانی / مدیریت / زبان',
+        'summary': 'توسعه بازارهای صادراتی منطقه (عمان، عراق و آسیای میانه) و امور گمرکی و اینکوترمز.',
+        'duties': [
+            'شناسایی و مذاکره با شرکای تجاری و توزیع‌کنندگان تجهیزات پزشکی در بازارهای هدف صادراتی',
+            'انجام امور سامانه جامع تجارت، اسناد حمل بین‌المللی و رویه‌های گمرکی',
+            'مشارکت در نمایشگاه‌های بین‌المللی سلامت و پیگیری قراردادهای برون‌مرزی',
+        ],
+        'reqs': [
+            'حداقل ۳ سال سابقه کار مرتبط در صادرات و بازاریابی بین‌الملل',
+            'تسلط کامل به قوانین اینکوترمز (Incoterms) و سامانه جامع تجارت',
+            'تسلط به زبان انگلیسی (مکاتبات و مذاکرات تجاری)',
+        ],
+        'perks': ['حضور در پروژه‌های صادراتی منطقه‌ای و بین‌المللی', 'پاداش توسعه بازارهای صادراتی', 'محیط حرفه‌ای و پویا'],
+    },
+    {
+        'id': 'market-research',
+        'num': '۰۶',
+        'title': 'کارشناس تحقیقات بازار',
+        'dept': 'sales',
+        'dept_label': 'فروش و بازرگانی',
+        'status': 'archive',
+        'status_label': 'بانک رزومه فعال',
+        'pub': '۱۴۰۲/۰۸/۰۱',
+        'exp': '۱۴۰۲/۱۰/۳۰',
+        'exp_years': 'حداقل ۵ سال سابقه تحلیل بازار',
+        'degree': 'کارشناسی ارشد بازرگانی یا بازاریابی',
+        'summary': 'تحلیل آماری بازار تجهیزات پزشکی، نیازسنجی مراکز درمانی و پایش رقبا.',
+        'duties': [
+            'طراحی و اجرای پیمایش‌های بازار و تحلیل داده‌های مصرف بیمارستانی در استان‌ها',
+            'پایش روندهای بازار تجهیزات کنترل عفونت و تهیه گزارش‌های تحلیلی مدیریتی',
+            'همکاری با واحدهای فروش و تحقیق و توسعه در تعریف محصولات جدید',
+        ],
+        'reqs': [
+            'حداقل ۵ سال سابقه کار مرتبط در تحقیقات بازار و تحلیل آماری',
+            'مدرک کارشناسی ارشد مدیریت بازرگانی یا بازاریابی',
+            'تسلط پیشرفته به Excel و نرم‌افزارهای آماری',
+        ],
+        'perks': ['دسترسی به داده‌های جامع بازار سلامت کشور', 'همکاری نزدیک با تیم هوش تجاری (BI)', 'فرصت رشد تخصصی'],
+    },
+    {
+        'id': 'accountant',
+        'num': '۰۷',
+        'title': 'کارشناس حسابداری',
+        'dept': 'finance',
+        'dept_label': 'مالی و اداری',
+        'status': 'archive',
+        'status_label': 'بانک رزومه فعال',
+        'pub': '۱۴۰۱/۱۰/۰۴',
+        'exp': '۱۴۰۱/۱۱/۳۰',
+        'exp_years': 'حداقل ۲ سال سابقه مرتبط',
+        'degree': 'کارشناسی حسابداری / مالی',
+        'summary': 'ثبت اسناد مالی، حسابداری فروش و خزانه‌داری در نرم‌افزار سپیدار و Excel.',
+        'duties': [
+            'ثبت و کنترل اسناد حسابداری، صورت‌حساب‌های فروش و مغایرت‌گیری بانکی',
+            'تهیه گزارش‌های مالی دوره‌ای و همکاری در امور مالیاتی و بیمه',
+            'کار با سیستم حسابداری سپیدار و اکسل پیشرفته',
+        ],
+        'reqs': [
+            'حداقل ۲ سال سابقه کاری مرتبط در حسابداری شرکت‌های تولیدی یا بازرگانی',
+            'تسلط کامل به نرم‌افزار حسابداری سپیدار و Microsoft Excel',
+            'دقت بالا، نظم سازمانی و امانت‌داری حرفه‌ای',
+        ],
+        'perks': ['محیط کاری آرام، منظم و ساختاریافته', 'پرداخت منظم حقوق و مزایا', 'فرصت ارتقا به حسابداری ارشد'],
+    },
+    {
+        'id': 'collections-officer',
+        'num': '۰۸',
+        'title': 'کارمند وصول مطالبات',
+        'dept': 'finance',
+        'dept_label': 'مالی و اداری',
+        'status': 'archive',
+        'status_label': 'بانک رزومه فعال',
+        'pub': '۱۴۰۱/۰۶/۰۱',
+        'exp': '۱۴۰۱/۰۸/۰۱',
+        'exp_years': 'حداقل ۲ سال سابقه پیگیری مالی',
+        'degree': 'کاردانی یا کارشناسی کلیه رشته‌ها',
+        'summary': 'پیگیری صورت‌حساب‌های مراکز درمانی و نمایندگان و هماهنگی مالی با واحد فروش.',
+        'duties': [
+            'پیگیری مستمر و محترمانه مطالبات و تسویه‌حساب‌های بیمارستان‌ها و مراکز طرف قرارداد',
+            'ثبت وضعیت وصولی‌ها در اکسل و سیستم مالی و ارائه گزارش به مدیریت مالی',
+            'هماهنگی مستمر با تیم فروش و حسابداری فروش',
+        ],
+        'reqs': [
+            'حداقل مدرک فوق دیپلم یا کارشناسی',
+            'روابط عمومی بالا، فن بیان قوی و توانایی پیگیری مؤثر',
+            'آشنایی مناسب با نرم‌افزار Excel',
+        ],
+        'perks': ['پاداش عملکرد بر اساس تحقق اهداف وصول', 'بیمه و مزایای کامل قانونی', 'محیط کاری محترمانه و حرفه‌ای'],
+    },
+    {
+        'id': 'secretary',
+        'num': '۰۹',
+        'title': 'منشی',
+        'dept': 'finance',
+        'dept_label': 'مالی و اداری',
+        'status': 'archive',
+        'status_label': 'بانک رزومه فعال',
+        'pub': '۱۴۰۳/۰۴/۱۳',
+        'exp': '۱۴۰۳/۰۴/۳۱',
+        'exp_years': 'آشنا به امور دفتری و CRM پیام‌گستر',
+        'degree': 'کارشناسی کلیه رشته‌ها',
+        'summary': 'مدیریت ارتباطات دفتر مرکزی، هماهنگی جلسات، مکاتبات اداری و ثبت اطلاعات در CRM پیام‌گستر.',
+        'duties': [
+            'پاسخگویی حرفه‌ای به تماس‌های تلفنی و مراجعین دفتر مرکزی آبادیس',
+            'تنظیم برنامه جلسات، نامه‌نگاری اداری و بایگانی مستندات',
+            'ثبت و به‌روزرسانی اطلاعات در نرم‌افزار CRM پیام‌گستر و اکسل',
+        ],
+        'reqs': [
+            'دارای مدرک کارشناسی و محدوده سنی ۲۲ تا ۳۵ سال',
+            'مسلط به مجموعه Office به‌ویژه Excel و آشنا با CRM پیام‌گستر',
+            'متعهد به فرهنگ سازمانی، منظم، مسئولیت‌پذیر و دارای روحیه کار تیمی',
+        ],
+        'perks': ['محیط کاری آرام و حرفه‌ای در دفتر مرکزی تهران (میرداماد)', 'بیمه و مزایای کامل', 'فرصت یادگیری و رشد اداری'],
+    },
+]
+
+FORM_OPTS = [
+    'ارسال رزومه عمومی / خارج از ردیف‌های شغلی فعلی',
+    'مدیرعامل', 'مدیر فروش', 'مدیر بازرگانی', 'مدیر حسابداری', 'مدیر مالی',
+    'مدیر منابع انسانی', 'مدیر محصول', 'مدیر کارخانه', 'سرپرست فنی کارخانه',
+    'حسابداری ارشد', 'حسابداری فروش', 'کارشناس فروش', 'کارشناس تحقیق و توسعه',
+    'کارشناس تضمین کیفیت', 'کارشناس صادرات', 'کارشناس تحقیقات بازار',
+    'انباردار', 'اپراتور دستگاه تزریق', 'کارشناس دستگاه تزریق', 'تحصیلدار',
+    'کارشناس نصب و راه اندازی', 'کارشناس پشتیبان فروش', 'مسئول دفتر', 'منشی', 'کارمند وصول'
+]
+
+EDU_COLS = ['مقطع تحصیلی', 'نام موسسه آموزشی', 'نوع مدرک آموزشی', 'نام گرایش یا رشته', 'زمان آموزش (شروع - خاتمه)', 'معدل']
+WORK_COLS = ['نام سازمان', 'عنوان شغل', 'مدت همکاری(شروع-خاتمه)', 'آخرین دریافتی', 'نام مدیر', 'تلفن تماس', 'علت قطع همکاری']
+EXPECT_COLS = ['امنیت شغلی', 'محیط آرام', 'همکاران', 'نزدیکی محل', 'پیشرفت شغلی', 'مرتبط با تحصیلات', 'درآمد', 'پرستیژ']
+COMPUTER_COLS = ['نوع نرم افزار', 'میزان آشنایی (متوسط-خوب-عالی)', 'توضیحات']
+LANG_OPTS = ['انگلیسی', 'آلمانی', 'اسپانیایی', 'سایر زبان ها']
+
+SHARED_CSS = '''
+@font-face { font-family: "Kalameh"; src: url("../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Kalameh"; src: url("../assets/fonts/kalameh/KalamehWeb-FaNum-Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Kalameh"; src: url("../assets/fonts/kalameh/KalamehWeb-FaNum-SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Kalameh"; src: url("../assets/fonts/kalameh/KalamehWeb-FaNum-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Kalameh"; src: url("../assets/fonts/kalameh/KalamehWeb-FaNum-ExtraBold.woff2") format("woff2"); font-weight: 800; font-display: swap; }
+@font-face { font-family: "Kalameh"; src: url("../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2") format("woff2"); font-weight: 900; font-display: swap; }
+
+:root, [data-theme="light"] {
+  --c-bg: #f2f8f8;
+  --c-bg-alt: #e6f2f2;
+  --c-surface: #ffffff;
+  --c-surface-2: #edf7f7;
+  --c-ink: #07282b;
+  --c-ink-2: #21484c;
+  --c-muted: #4d6c70;
+  --c-brand: #05686b;
+  --c-brand-2: #0d9488;
+  --c-neon: #5eead4;
+  --c-line: rgba(5, 104, 107, 0.16);
+  --c-shadow: 0 12px 32px rgba(5, 104, 107, 0.10);
+}
+[data-theme="dark"] {
+  --c-bg: #051518;
+  --c-bg-alt: #081f24;
+  --c-surface: #0b262c;
+  --c-surface-2: #10333b;
+  --c-ink: #ecfeff;
+  --c-ink-2: #bce3e6;
+  --c-muted: #84b2b6;
+  --c-brand: #2dd4bf;
+  --c-brand-2: #14b8a6;
+  --c-neon: #5eead4;
+  --c-line: rgba(45, 212, 191, 0.22);
+  --c-shadow: 0 14px 36px rgba(0, 0, 0, 0.42);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  font-family: "Kalameh", Tahoma, sans-serif;
+  background: var(--c-bg); color: var(--c-ink);
+  overflow-x: hidden; overflow-x: clip;
+  letter-spacing: 0;
+}
+
+/* Sticky Top Proposal Bar */
+.co-topbar {
+  position: sticky; top: 0; z-index: 220;
+  background: rgba(5, 43, 47, 0.94);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(94, 234, 212, 0.24);
+  color: #fff;
+  padding: 10px 18px;
+}
+.co-topbar-inner {
+  max-width: 1240px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap;
+}
+.co-topbar-brand {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 800; font-size: .95rem; color: #fff; text-decoration: none;
+}
+.co-topbar-brand img { height: 30px; width: auto; }
+.co-topbar-nav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.co-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 13px; border-radius: 999px;
+  font-size: .84rem; font-weight: 700;
+  color: #d9f3f3; text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.06);
+  transition: all .2s ease;
+  cursor: pointer; font-family: inherit;
+}
+.co-pill:hover { background: rgba(94, 234, 212, 0.16); border-color: #5eead4; color: #fff; }
+.co-pill.is-active {
+  background: linear-gradient(135deg, #0d9488 0%, #05686b 100%);
+  border-color: #5eead4; color: #fff;
+  box-shadow: 0 0 16px rgba(94, 234, 212, 0.32);
+}
+.co-badge-rec {
+  background: #5eead4; color: #042f2e;
+  font-size: .72rem; font-weight: 900;
+  padding: 1px 7px; border-radius: 999px;
+}
+
+/* Video Hero Family Style (matching about / customers / sdgs) */
+.co-hero {
+  position: relative; overflow: hidden;
+  background: linear-gradient(135deg, #066163 0%, #0b2e32 100%);
+  color: #fff;
+  padding: 46px 0 44px;
+}
+.co-hero::before {
+  content: ""; position: absolute; inset: 0;
+  background: url("../assets/media/hero-careers-poster.jpg?v=20261028f") center / cover no-repeat;
+  opacity: .18; z-index: 0; pointer-events: none;
+  transition: opacity .35s ease, visibility .35s ease;
+}
+.co-hero.has-playing-video::before,
+.co-hero:has(.co-hero-video.is-playing)::before {
+  opacity: 0 !important; visibility: hidden !important;
+}
+.co-hero-video {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; opacity: 0; visibility: hidden;
+  z-index: 0; pointer-events: none;
+  transition: opacity .35s ease;
+}
+.co-hero-video.is-playing { opacity: .20; visibility: visible; }
+.co-wrap { width: min(1180px, 100%); margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+.co-crumbs { font-size: .86rem; color: rgba(255,255,255,.78); margin: 0 0 8px; }
+.co-crumbs a { color: rgba(255,255,255,.86); text-decoration: none; }
+.co-hero h1 {
+  font-size: clamp(1.75rem, 4.2vw, 2.75rem);
+  font-weight: 900; line-height: 1.32; margin: 4px 0 10px;
+}
+.co-hero h1 em { font-style: normal; color: #8fe3e4; }
+
+/* 4-Line Kalameh Black Slogan Rotator */
+.co-slogan {
+  margin: 10px 0 0;
+  font-size: clamp(1.25rem, 2.7vw, 2.0rem);
+  font-weight: 900; line-height: 1.68; color: #fff;
+}
+.co-slogan-main { display: block; color: #fff; font-weight: 900; }
+.co-slogan-rotate {
+  display: flex; flex-direction: column; align-items: flex-start;
+  gap: 0.14em; margin-top: 0.2em;
+}
+.co-slogan-line {
+  display: block; opacity: 0.72; color: #e8f3f3; font-weight: 900;
+  transition: opacity .42s ease, transform .42s ease, color .42s ease;
+}
+.co-slogan-line.is-on {
+  opacity: 1; color: #5eead4; transform: translateX(-4px);
+}
+
+/* Split Hero KPIs / Quick Bar */
+.co-hero-grid {
+  display: grid; grid-template-columns: 1.35fr 1fr; gap: 24px; align-items: center;
+}
+.co-hero-kpis {
+  display: grid; grid-template-columns: 1fr; gap: 10px;
+}
+.co-kpi-pill {
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(94, 234, 212, 0.30);
+  backdrop-filter: blur(8px);
+  border-radius: 16px; padding: 12px 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.co-kpi-ico {
+  width: 42px; height: 42px; border-radius: 12px;
+  background: rgba(94, 234, 212, 0.18); color: #5eead4;
+  display: grid; place-items: center; flex-shrink: 0;
+}
+.co-kpi-txt strong { display: block; font-size: .96rem; font-weight: 800; color: #fff; }
+.co-kpi-txt span { display: block; font-size: .82rem; color: rgba(255,255,255,.80); }
+
+/* Anchor Strip */
+.co-anchors {
+  background: var(--c-surface);
+  border-bottom: 1px solid var(--c-line);
+  padding: 10px 0;
+}
+.co-anchors-list {
+  display: flex; align-items: center; gap: 8px; overflow-x: auto;
+  scrollbar-width: none;
+}
+.co-anchors-list a {
+  white-space: nowrap; padding: 6px 14px; border-radius: 999px;
+  font-size: .86rem; font-weight: 700; color: var(--c-ink-2);
+  text-decoration: none; background: var(--c-surface-2);
+  border: 1px solid var(--c-line);
+}
+.co-anchors-list a:hover { border-color: var(--c-brand); color: var(--c-brand); }
+
+/* Sections & Headings */
+.co-sec { padding: 44px 0; }
+.co-sec--alt { background: var(--c-bg-alt); }
+.co-sec-head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap; margin-bottom: 22px;
+}
+.co-sec-head h2 { margin: 0 0 6px; font-size: clamp(1.35rem, 2.5vw, 1.85rem); font-weight: 900; color: var(--c-ink); }
+.co-sec-head p { margin: 0; color: var(--c-muted); font-size: .95rem; }
+
+/* Department Filter Bar */
+.co-filters {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.co-filter-btn {
+  padding: 8px 15px; border-radius: 999px;
+  border: 1px solid var(--c-line); background: var(--c-surface);
+  color: var(--c-ink-2); font-family: inherit; font-size: .86rem; font-weight: 700;
+  cursor: pointer; transition: all .2s ease;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.co-filter-btn.is-active, .co-filter-btn:hover {
+  background: var(--c-brand); color: #fff; border-color: var(--c-brand);
+}
+.co-filter-count {
+  background: rgba(255,255,255,0.22); padding: 1px 7px; border-radius: 999px; font-size: .76rem;
+}
+.co-filter-btn:not(.is-active) .co-filter-count {
+  background: var(--c-surface-2); color: var(--c-brand);
+}
+
+/* Job Cards Grid */
+.co-jobs-grid {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;
+}
+.co-job-card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: 18px; padding: 18px;
+  box-shadow: var(--c-shadow);
+  display: flex; flex-direction: column; justify-content: space-between; gap: 12px;
+  position: relative; overflow: hidden;
+  transition: transform .22s ease, border-color .22s ease;
+}
+.co-job-card:hover { transform: translateY(-4px); border-color: var(--c-brand); }
+.co-job-card.is-active-job { border: 2px solid var(--c-brand-2); }
+.co-job-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.co-dept-tag {
+  font-size: .76rem; font-weight: 800; padding: 3px 10px; border-radius: 999px;
+  background: var(--c-surface-2); color: var(--c-brand);
+}
+.co-status-badge {
+  font-size: .75rem; font-weight: 800; padding: 3px 10px; border-radius: 999px;
+}
+.co-status-badge.is-act { background: #d1fae5; color: #065f46; }
+[data-theme="dark"] .co-status-badge.is-act { background: rgba(16, 185, 129, 0.22); color: #6ee7b7; }
+.co-status-badge.is-arc { background: var(--c-surface-2); color: var(--c-muted); }
+.co-job-card h3 { margin: 4px 0; font-size: 1.12rem; font-weight: 800; color: var(--c-ink); }
+.co-job-summary { margin: 0; font-size: .88rem; color: var(--c-ink-2); line-height: 1.65; }
+.co-job-meta {
+  display: flex; flex-wrap: wrap; gap: 8px; font-size: .78rem; color: var(--c-muted);
+  border-top: 1px dashed var(--c-line); padding-top: 10px;
+}
+.co-job-actions { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+.co-btn-apply, .co-btn-detail {
+  flex: 1; text-align: center; padding: 8px 10px; border-radius: 10px;
+  font-size: .82rem; font-weight: 800; font-family: inherit;
+  cursor: pointer; text-decoration: none; border: 1px solid transparent;
+  transition: all .2s ease;
+}
+.co-btn-apply { background: var(--c-brand); color: #fff; }
+.co-btn-apply:hover { background: var(--c-brand-2); }
+.co-btn-detail { background: var(--c-surface-2); color: var(--c-ink); border-color: var(--c-line); }
+.co-btn-detail:hover { border-color: var(--c-brand); color: var(--c-brand); }
+
+/* Culture & Perks 4-Card Grid (C2) */
+.co-perks-grid {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px;
+}
+.co-perk-card {
+  background: var(--c-surface); border: 1px solid var(--c-line);
+  border-radius: 18px; padding: 18px 16px;
+  box-shadow: var(--c-shadow);
+}
+.co-perk-ico {
+  width: 48px; height: 48px; border-radius: 14px;
+  background: var(--c-surface-2); color: var(--c-brand);
+  display: grid; place-items: center; margin-bottom: 12px;
+}
+.co-perk-card h3 { margin: 0 0 6px; font-size: 1.0rem; font-weight: 800; }
+.co-perk-card p { margin: 0; font-size: .86rem; color: var(--c-muted); line-height: 1.65; }
+
+/* Master-Detail Split Explorer (C2) */
+.co-explorer {
+  display: grid; grid-template-columns: 1.15fr 1fr; gap: 20px; align-items: start;
+}
+.co-detail-drawer {
+  position: sticky; top: 74px;
+  background: var(--c-surface); border: 2px solid var(--c-brand);
+  border-radius: 20px; padding: 22px; box-shadow: var(--c-shadow);
+}
+.co-detail-drawer h3 { margin: 6px 0 8px; font-size: 1.28rem; font-weight: 900; }
+.co-detail-drawer h4 { margin: 14px 0 6px; font-size: .94rem; font-weight: 800; color: var(--c-brand); }
+.co-detail-drawer ul { margin: 0; padding-right: 18px; font-size: .88rem; line-height: 1.7; color: var(--c-ink-2); }
+
+/* 4-Stage Recruitment Roadmap */
+.co-roadmap {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px;
+}
+.co-step-card {
+  background: var(--c-surface); border: 1px solid var(--c-line);
+  border-radius: 16px; padding: 16px; position: relative;
+}
+.co-step-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 10px;
+  background: var(--c-brand); color: #fff; font-weight: 900; font-size: .95rem;
+  margin-bottom: 10px;
+}
+.co-step-card h3 { margin: 0 0 6px; font-size: .98rem; font-weight: 800; }
+.co-step-card p { margin: 0; font-size: .84rem; color: var(--c-muted); line-height: 1.6; }
+
+/* General Resume Banner */
+.co-resume-banner {
+  background: linear-gradient(135deg, #05686b 0%, #0b2e32 100%);
+  color: #fff; border-radius: 20px; padding: 24px 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 18px; flex-wrap: wrap;
+  border: 1px solid rgba(94, 234, 212, 0.35);
+}
+.co-resume-banner h3 { margin: 0 0 6px; font-size: 1.22rem; font-weight: 900; color: #fff; }
+.co-resume-banner p { margin: 0; font-size: .92rem; color: rgba(255,255,255,.85); }
+.co-resume-cta {
+  background: #5eead4; color: #042f2e; font-weight: 900; font-size: .92rem;
+  padding: 11px 20px; border-radius: 12px; border: 0; cursor: pointer;
+  font-family: inherit; text-decoration: none; white-space: nowrap;
+}
+
+/* Compact Table View (C3) */
+.co-table-wrap {
+  background: var(--c-surface); border: 1px solid var(--c-line);
+  border-radius: 18px; overflow-x: auto; box-shadow: var(--c-shadow);
+}
+.co-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+.co-table th, .co-table td {
+  padding: 13px 14px; text-align: right; border-bottom: 1px solid var(--c-line);
+}
+.co-table th { background: var(--c-surface-2); font-weight: 800; color: var(--c-ink); white-space: nowrap; }
+.co-table tr:last-child td { border-bottom: 0; }
+.co-table tr:hover td { background: var(--c-surface-2); }
+
+/* Multi-Step Wizard Form */
+.cf-card {
+  background: var(--c-surface); border: 1px solid var(--c-line);
+  border-radius: 22px; padding: 26px; box-shadow: var(--c-shadow);
+}
+.cf-stepper {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px;
+  margin-bottom: 22px;
+}
+.cf-step-tab {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 12px; border-radius: 12px;
+  border: 1px solid var(--c-line); background: var(--c-surface-2);
+  color: var(--c-ink-2); font-family: inherit; font-size: .84rem; font-weight: 800;
+  cursor: pointer; text-align: right;
+}
+.cf-step-tab.is-active {
+  background: var(--c-brand); color: #fff; border-color: var(--c-brand);
+}
+.cf-step-num {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: rgba(255,255,255,0.2); display: grid; place-items: center;
+  font-weight: 900; flex-shrink: 0;
+}
+.cf-step-tab:not(.is-active) .cf-step-num { background: var(--c-surface); color: var(--c-brand); }
+.cf-step-pane { display: none; }
+.cf-step-pane.is-active { display: block; }
+.cf-pane-head { margin-bottom: 16px; border-bottom: 1px solid var(--c-line); padding-bottom: 10px; }
+.cf-pane-head h3 { margin: 0 0 4px; font-size: 1.12rem; font-weight: 800; color: var(--c-brand); }
+.cf-pane-head p { margin: 0; font-size: .86rem; color: var(--c-muted); }
+.cf-grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.cf-col-span-2 { grid-column: span 2; }
+.cf-lbl { display: flex; flex-direction: column; gap: 5px; font-size: .85rem; font-weight: 700; color: var(--c-ink); }
+.cf-lbl input, .cf-lbl select, .cf-lbl textarea {
+  padding: 10px 12px; border-radius: 10px; border: 1px solid var(--c-line);
+  background: var(--c-bg); color: var(--c-ink); font-family: inherit; font-size: .9rem;
+}
+.cf-list-block {
+  margin-top: 16px; padding: 14px; border-radius: 14px;
+  background: var(--c-surface-2); border: 1px solid var(--c-line);
+}
+.cf-list-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+.cf-list-head h4 { margin: 0; font-size: .95rem; font-weight: 800; }
+.cf-btn-add {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 12px; border-radius: 8px; border: 1px solid var(--c-brand);
+  background: var(--c-surface); color: var(--c-brand); font-family: inherit; font-size: .8rem; font-weight: 800;
+  cursor: pointer;
+}
+.cf-list-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 8px; }
+.cf-expect-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.cf-fieldset { border: 1px solid var(--c-line); border-radius: 14px; padding: 14px; margin-bottom: 14px; }
+.cf-fieldset legend { font-weight: 800; padding: 0 8px; }
+.cf-checks { display: flex; flex-wrap: wrap; gap: 16px; }
+.cf-check { display: inline-flex; align-items: center; gap: 6px; font-size: .9rem; font-weight: 700; cursor: pointer; }
+.cf-step-nav {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--c-line);
+}
+.cf-btn-primary, .cf-btn-submit {
+  background: var(--c-brand); color: #fff; border: 0; border-radius: 11px;
+  padding: 10px 20px; font-family: inherit; font-size: .9rem; font-weight: 800; cursor: pointer;
+}
+.cf-btn-submit { background: #0d9488; }
+.cf-btn-ghost {
+  background: var(--c-surface-2); color: var(--c-ink); border: 1px solid var(--c-line);
+  border-radius: 11px; padding: 10px 18px; font-family: inherit; font-size: .88rem; font-weight: 700; cursor: pointer;
+}
+.cf-note, .cf-submit-note { font-size: .8rem; color: var(--c-muted); margin: 4px 0 8px; }
+
+@media (max-width: 980px) {
+  .co-hero-grid, .co-explorer { grid-template-columns: 1fr; }
+  .co-jobs-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .co-perks-grid, .co-roadmap { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cf-stepper { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .co-detail-drawer { position: static; }
+}
+@media (max-width: 640px) {
+  .co-topbar { padding: 8px 12px; }
+  .co-pill { font-size: .76rem; padding: 5px 10px; }
+  .co-hero { padding: 32px 0 30px; }
+  .co-jobs-grid, .co-perks-grid, .co-roadmap, .cf-stepper, .cf-grid-2, .cf-list-row, .cf-expect-grid {
+    grid-template-columns: 1fr;
+  }
+  .cf-col-span-2 { grid-column: span 1; }
+  .cf-card { padding: 16px 14px; }
+  .co-resume-banner { padding: 18px; }
+}
+'''
+
+SHARED_JS = f'''
+(function () {{
+  const JOBS = {json.dumps(JOBS, ensure_ascii=False)};
+
+  // 1. Hero Video Playback & Hide ::before Double-Exposure
+  document.querySelectorAll('video.co-hero-video').forEach(function (v) {{
+    var hero = v.closest('.co-hero');
+    function on() {{
+      v.classList.add('is-playing');
+      if (hero) hero.classList.add('has-playing-video');
+    }}
+    v.addEventListener('playing', on);
+    v.addEventListener('timeupdate', function () {{
+      if (!v.paused && v.currentTime > 0) on();
+    }});
+    v.muted = true;
+    v.defaultMuted = true;
+    v.playsInline = true;
+    var p = v.play();
+    if (p && p.catch) p.catch(function () {{}});
+  }});
+
+  // 2. 4-Line Kalameh Black Slogan Rotator (1.5s #5eead4)
+  document.querySelectorAll('.co-slogan').forEach(function (el) {{
+    var lines = Array.prototype.slice.call(el.querySelectorAll('.co-slogan-line'));
+    if (lines.length < 2) return;
+    var idx = 0;
+    setInterval(function () {{
+      lines[idx].classList.remove('is-on');
+      idx = (idx + 1) % lines.length;
+      lines[idx].classList.add('is-on');
+    }}, 1500);
+  }});
+
+  // 3. Theme Toggle
+  document.querySelectorAll('[data-co-theme]').forEach(function (btn) {{
+    btn.addEventListener('click', function () {{
+      var d = document.documentElement;
+      d.dataset.theme = d.dataset.theme === 'dark' ? 'light' : 'dark';
+    }});
+  }});
+
+  // 4. Department Filtering
+  document.querySelectorAll('[data-dept-filter]').forEach(function (bar) {{
+    var scope = bar.closest('section, .co-proposal-view') || document;
+    bar.querySelectorAll('.co-filter-btn').forEach(function (btn) {{
+      btn.addEventListener('click', function () {{
+        bar.querySelectorAll('.co-filter-btn').forEach(function (b) {{ b.classList.remove('is-active'); }});
+        btn.classList.add('is-active');
+        var f = btn.getAttribute('data-filter');
+        scope.querySelectorAll('[data-job-item]').forEach(function (item) {{
+          var dept = item.getAttribute('data-dept');
+          var st = item.getAttribute('data-status');
+          var show = (f === 'all') || (f === 'active' && st === 'active') || (dept === f);
+          item.style.display = show ? '' : 'none';
+        }});
+      }});
+    }});
+  }});
+
+  // 5. Select Job into Application Form
+  function selectRoleInForm(roleTitle, scope) {{
+    var root = scope || document;
+    var sel = root.querySelector('.cf-role-select') || document.querySelector('.cf-role-select');
+    if (sel) {{
+      sel.value = roleTitle;
+      var formSec = sel.closest('#apply, .co-apply-sec') || sel;
+      formSec.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
+    }}
+  }}
+
+  document.addEventListener('click', function (e) {{
+    var applyBtn = e.target.closest('[data-select-role]');
+    if (applyBtn) {{
+      e.preventDefault();
+      var role = applyBtn.getAttribute('data-select-role');
+      selectRoleInForm(role, applyBtn.closest('.co-proposal-view'));
+    }}
+    var previewBtn = e.target.closest('[data-preview-job]');
+    if (previewBtn) {{
+      e.preventDefault();
+      var jid = previewBtn.getAttribute('data-preview-job');
+      var job = JOBS.find(function (x) {{ return x.id === jid; }}) || JOBS[0];
+      var scope = previewBtn.closest('.co-proposal-view') || document;
+      var drawer = scope.querySelector('[data-job-drawer]');
+      if (drawer && job) {{
+        drawer.querySelector('[data-d-dept]').textContent = job.dept_label + ' · کد ' + job.num;
+        drawer.querySelector('[data-d-title]').textContent = job.title;
+        drawer.querySelector('[data-d-meta]').textContent = job.exp_years + ' | ' + job.degree;
+        drawer.querySelector('[data-d-duties]').innerHTML = job.duties.map(function (d) {{ return '<li>' + d + '</li>'; }}).join('');
+        drawer.querySelector('[data-d-reqs]').innerHTML = job.reqs.map(function (r) {{ return '<li>' + r + '</li>'; }}).join('');
+        drawer.querySelector('[data-d-perks]').innerHTML = job.perks.map(function (p) {{ return '<li>' + p + '</li>'; }}).join('');
+        var cta = drawer.querySelector('[data-select-role]');
+        if (cta) cta.setAttribute('data-select-role', job.title);
+      }}
+    }}
+  }});
+
+  // 6. Wizard Form Step Navigation & Dynamic Row Add
+  document.querySelectorAll('.cf-form').forEach(function (form) {{
+    function showStep(n) {{
+      form.querySelectorAll('.cf-step-tab').forEach(function (t) {{
+        var on = t.getAttribute('data-step-btn') === String(n);
+        t.classList.toggle('is-active', on);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+      }});
+      form.querySelectorAll('.cf-step-pane').forEach(function (p) {{
+        p.classList.toggle('is-active', p.getAttribute('data-step-pane') === String(n));
+      }});
+    }}
+    form.querySelectorAll('[data-step-btn]').forEach(function (t) {{
+      t.addEventListener('click', function () {{ showStep(t.getAttribute('data-step-btn')); }});
+    }});
+    form.querySelectorAll('[data-step-go]').forEach(function (b) {{
+      b.addEventListener('click', function () {{ showStep(b.getAttribute('data-step-go')); }});
+    }});
+    form.querySelectorAll('[data-cf-list]').forEach(function (block) {{
+      var addBtn = block.querySelector('[data-cf-add]');
+      var rowsWrap = block.querySelector('.cf-list-rows');
+      if (addBtn && rowsWrap) {{
+        addBtn.addEventListener('click', function () {{
+          var first = rowsWrap.querySelector('.cf-list-row');
+          if (!first) return;
+          var clone = first.cloneNode(true);
+          clone.querySelectorAll('input').forEach(function (inp) {{ inp.value = ''; }});
+          rowsWrap.appendChild(clone);
+        }});
+      }}
+    }});
+  }});
+
+  // 7. C3 View Mode Toggle (Grid vs Table)
+  document.querySelectorAll('[data-view-toggle]').forEach(function (btn) {{
+    btn.addEventListener('click', function () {{
+      var mode = btn.getAttribute('data-view-toggle');
+      var scope = btn.closest('section') || document;
+      scope.querySelectorAll('[data-view-toggle]').forEach(function (b) {{
+        b.classList.toggle('is-active', b === btn);
+      }});
+      var grid = scope.querySelector('[data-c3-grid]');
+      var tbl = scope.querySelector('[data-c3-table]');
+      if (grid && tbl) {{
+        grid.style.display = mode === 'grid' ? '' : 'none';
+        tbl.style.display = mode === 'table' ? '' : 'none';
+      }}
+    }});
+  }});
+}})();
+'''
+
+def hero_block(subtitle_badge, kpis):
+    kpi_html = ''.join(f'''
+      <div class="co-kpi-pill">
+        <div class="co-kpi-ico">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="co-kpi-txt"><strong>{t}</strong><span>{s}</span></div>
+      </div>''' for t, s in kpis)
+    return f'''
+  <section class="co-hero has-playing-video">
+    <video class="co-hero-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="../assets/media/hero-careers-poster.jpg?v=20261028f">
+      <source src="../assets/media/hero-careers.mp4?v=20261028f" type="video/mp4">
+    </video>
+    <div class="co-wrap co-hero-grid">
+      <div>
+        <p class="co-crumbs"><a href="../">خانه</a> / <a href="../careers/">فرصت‌های همکاری</a> / {subtitle_badge}</p>
+        <h1>فرصت‌های <em>همکاری</em></h1>
+        <p class="co-slogan" aria-label="جای شما در خانواده بزرگ آبادیس خالیست">
+          <span class="co-slogan-main">جای شما در خانواده بزرگ آبادیس خالیست،</span>
+          <span class="co-slogan-rotate" aria-hidden="true">
+            <span class="co-slogan-line is-on">محیطی علمی، نوآور و دانش‌بنیان</span>
+            <span class="co-slogan-line">فرصت رشد حرفه‌ای و یادگیری مستمر</span>
+            <span class="co-slogan-line">همراهی در ارتقای سلامت و محیط زیست</span>
+          </span>
+        </p>
+      </div>
+      <div class="co-hero-kpis">
+        {kpi_html}
+      </div>
+    </div>
+  </section>'''
+
+def filter_bar_html():
+    return '''
+    <div class="co-filters" data-dept-filter role="tablist" aria-label="فیلتر دپارتمان‌های همکاری">
+      <button type="button" class="co-filter-btn is-active" data-filter="all">همه فرصت‌ها <span class="co-filter-count">۹</span></button>
+      <button type="button" class="co-filter-btn" data-filter="active">فرصت‌های فعال <span class="co-filter-count">۱</span></button>
+      <button type="button" class="co-filter-btn" data-filter="rnd">تحقیق و توسعه و فنی <span class="co-filter-count">۱</span></button>
+      <button type="button" class="co-filter-btn" data-filter="qa">تضمین کیفیت <span class="co-filter-count">۱</span></button>
+      <button type="button" class="co-filter-btn" data-filter="sales">فروش و بازرگانی <span class="co-filter-count">۴</span></button>
+      <button type="button" class="co-filter-btn" data-filter="finance">مالی و اداری <span class="co-filter-count">۳</span></button>
+    </div>'''
+
+def job_cards_html(with_preview=False):
+    cards = []
+    for j in JOBS:
+        is_act = j['status'] == 'active'
+        st_cls = 'is-act' if is_act else 'is-arc'
+        card_cls = ' is-active-job' if is_act else ''
+        if with_preview:
+            sec_btn = f'<button type="button" class="co-btn-detail" data-preview-job="{j["id"]}">پیش‌نمایش شرایط</button>'
+        else:
+            sec_btn = f'<a class="co-btn-detail" href="../careers/jobs/{j["id"]}/">مشاهده جزئیات همکاری</a>'
+        cards.append(f'''
+        <article class="co-job-card{card_cls}" data-job-item data-dept="{j["dept"]}" data-status="{j["status"]}">
+          <div>
+            <div class="co-job-top">
+              <span class="co-dept-tag">{j["dept_label"]}</span>
+              <span class="co-status-badge {st_cls}">{j["status_label"]}</span>
+            </div>
+            <h3>{j["title"]}</h3>
+            <p class="co-job-summary">{j["summary"]}</p>
+          </div>
+          <div>
+            <div class="co-job-meta">
+              <span>سابقه: {j["exp_years"]}</span>
+              <span>انتشار: {j["pub"]}</span>
+            </div>
+            <div class="co-job-actions">
+              <button type="button" class="co-btn-apply" data-select-role="{j["title"]}">انتخاب این فرصت در فرم</button>
+              {sec_btn}
+            </div>
+          </div>
+        </article>''')
+    return f'<div class="co-jobs-grid">{"".join(cards)}</div>'
+
+def roadmap_html():
+    steps = [
+        ('۱', 'ثبت درخواست همکاری', 'انتخاب ردیف همکاری یا ارسال رزومه عمومی و تکمیل مشخصات در فرم رسمی.'),
+        ('۲', 'بررسی تخصصی و فنی', 'ارزیابی سوابق تحصیلی و تجربیات حرفه‌ای توسط مدیر واحد مربوطه و منابع انسانی.'),
+        ('۳', 'مصاحبه حضوری و تخصصی', 'جلسه آشنایی، ارزیابی مهارت‌های تخصصی و هم‌سویی با فرهنگ سازمانی آبادیس.'),
+        ('۴', 'آغاز همکاری در خانواده آبادیس', 'ورود به تیم، آموزش در آکادمی آبادیس و شروع مسیر رشد حرفه‌ای.'),
+    ]
+    cards = ''.join(f'''
+      <article class="co-step-card">
+        <span class="co-step-badge">{num}</span>
+        <h3>{title}</h3>
+        <p>{desc}</p>
+      </article>''' for num, title, desc in steps)
+    return f'<div class="co-roadmap">{cards}</div>'
+
+
+
+def render_list_field(title, prefix, cols, note=''):
+    inputs = ''.join(f'<label class="cf-lbl"><span>{c}</span><input type="text" name="{prefix} — {c}" required autocomplete="off"></label>' for c in cols)
+    note_html = f'<p class="cf-note">{note}</p>' if note else ''
+    return f'''<div class="cf-list-block" data-cf-list>
+      <div class="cf-list-head">
+        <h4>{title} *</h4>
+        <button type="button" class="cf-btn-add" data-cf-add>
+          <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 4v12M4 10h12" stroke-linecap="round"/></svg>
+          افزودن ردیف
+        </button>
+      </div>
+      {note_html}
+      <div class="cf-list-rows">
+        <div class="cf-list-row">{inputs}</div>
+      </div>
+    </div>'''
+
+def render_wizard_form(form_id_prefix):
+    opts_html = ''.join(f'<option value="{o}">{o}</option>' for o in FORM_OPTS)
+    expect_html = ''.join(
+        f'<label class="cf-lbl cf-expect-item"><span>{c}</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — {c}" placeholder="۱ تا ۸" required></label>'
+        for c in EXPECT_COLS
+    )
+    langs_html = ''.join(
+        f'<label class="cf-check"><input type="checkbox" name="زبان‌های خارجی" value="{x}"><span>{x}</span></label>'
+        for x in LANG_OPTS
+    )
+    edu_html = render_list_field('سوابق تحصیلی', 'سوابق تحصیلی', EDU_COLS)
+    work_html = render_list_field('سوابق کاری', 'سوابق کاری', WORK_COLS, 'برای اضافه کردن سابقه جدید روی «افزودن ردیف» کلیک کنید.')
+    curr_html = render_list_field('شغل فعلی', 'شغل فعلی', WORK_COLS, 'چنانچه در حال حاضر شاغل هستید این بخش را تکمیل فرمایید.')
+    comp_html = render_list_field('آشنایی با کامپیوتر و نرم‌افزار', 'آشنایی با کامپیوتر', COMPUTER_COLS, 'نرم‌افزارهای تخصصی یا عمومی مورد تسلط خود را وارد نمایید.')
+
+    return f'''
+    <form class="cf-form" id="{form_id_prefix}-form" data-abadis-form="careers" data-mailto-form="info@abadis-med.com" data-subject="ثبت درخواست همکاری">
+      <input type="hidden" name="form_name" value="careers">
+      <div class="cf-stepper" role="tablist" aria-label="مراحل فرم درخواست همکاری">
+        <button type="button" class="cf-step-tab is-active" data-step-btn="1" role="tab" aria-selected="true">
+          <span class="cf-step-num">۱</span>
+          <span class="cf-step-txt">انتخاب فرصت و مشخصات فردی</span>
+        </button>
+        <button type="button" class="cf-step-tab" data-step-btn="2" role="tab" aria-selected="false">
+          <span class="cf-step-num">۲</span>
+          <span class="cf-step-txt">سوابق تحصیلی و شغلی</span>
+        </button>
+        <button type="button" class="cf-step-tab" data-step-btn="3" role="tab" aria-selected="false">
+          <span class="cf-step-num">۳</span>
+          <span class="cf-step-txt">اولویت‌های محیط کار (۱ تا ۸)</span>
+        </button>
+        <button type="button" class="cf-step-tab" data-step-btn="4" role="tab" aria-selected="false">
+          <span class="cf-step-num">۴</span>
+          <span class="cf-step-txt">زبان، کامپیوتر و مهارت‌ها</span>
+        </button>
+      </div>
+
+      <!-- STEP 1 -->
+      <div class="cf-step-pane is-active" data-step-pane="1">
+        <div class="cf-pane-head">
+          <h3>گام اول: انتخاب فرصت همکاری و مشخصات فردی</h3>
+          <p>ردیف همکاری مورد نظر یا گزینه «ارسال رزومه عمومی» را انتخاب کرده و اطلاعات فردی را وارد فرمایید.</p>
+        </div>
+        <div class="cf-grid-2">
+          <label class="cf-lbl cf-col-span-2">
+            <span>عنوان فرصت همکاری مورد تقاضا *</span>
+            <select name="عنوان شغلی" class="cf-role-select" required>
+              <option value="">انتخاب کنید...</option>
+              {opts_html}
+            </select>
+          </label>
+          <label class="cf-lbl"><span>نام *</span><input type="text" name="نام" required autocomplete="given-name"></label>
+          <label class="cf-lbl"><span>نام خانوادگی *</span><input type="text" name="نام خانوادگی" required autocomplete="family-name"></label>
+          <label class="cf-lbl"><span>نام پدر *</span><input type="text" name="نام پدر" required></label>
+          <label class="cf-lbl"><span>وضعیت نظام وظیفه *</span><input type="text" name="وضعیت نظام وظیفه" required></label>
+          <label class="cf-lbl"><span>تاریخ تولد *</span><input type="text" name="تاریخ تولد" placeholder="۱۳۷۰/۰۱/۰۱" inputmode="numeric" required></label>
+          <label class="cf-lbl"><span>محل تولد *</span><input type="text" name="محل تولد" required></label>
+          <label class="cf-lbl"><span>شماره شناسنامه *</span><input type="text" name="شماره شناسنامه" inputmode="numeric" required></label>
+          <label class="cf-lbl"><span>محل صدور *</span><input type="text" name="محل صدور" required></label>
+          <label class="cf-lbl">
+            <span>وضعیت تاهل *</span>
+            <select name="وضعیت تاهل" required><option value="">انتخاب کنید</option><option>مجرد</option><option>متاهل</option></select>
+          </label>
+          <label class="cf-lbl">
+            <span>سابقه بیماری خاص یا بستری در بیمارستان *</span>
+            <select name="بیماری خاص یا سابقه بستری" required><option value="">انتخاب کنید</option><option>خیر</option><option>بلی</option></select>
+          </label>
+          <label class="cf-lbl"><span>تلفن ثابت *</span><input type="tel" dir="ltr" name="تلفن ثابت" required inputmode="tel"></label>
+          <label class="cf-lbl"><span>تلفن همراه *</span><input type="tel" dir="ltr" name="تلفن همراه" required inputmode="tel"></label>
+          <label class="cf-lbl cf-col-span-2"><span>آدرس کامل محل سکونت *</span><input type="text" name="آدرس محل سکونت" placeholder="استان، شهر، خیابان، پلاک، واحد" required></label>
+        </div>
+        <div class="cf-step-nav">
+          <span>گام ۱ از ۴</span>
+          <button type="button" class="cf-btn-primary" data-step-go="2">ادامه به گام دوم: سوابق تحصیلی و شغلی</button>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="cf-step-pane" data-step-pane="2">
+        <div class="cf-pane-head">
+          <h3>گام دوم: سوابق تحصیلی، سوابق کاری و حقوق درخواستی</h3>
+          <p>مقاطع تحصیلی، سوابق کاری پیشین و شغل فعلی خود را ثبت نمایید.</p>
+        </div>
+        {edu_html}
+        {work_html}
+        {curr_html}
+        <div class="cf-grid-2" style="margin-top:16px">
+          <label class="cf-lbl"><span>آخرین حقوق دریافتی (تومان) *</span><input type="text" name="آخرین حقوق دریافتی" inputmode="numeric" required></label>
+          <label class="cf-lbl"><span>حقوق درخواستی (تومان) *</span><input type="text" name="حقوق درخواستی" inputmode="numeric" required></label>
+          <label class="cf-lbl cf-col-span-2"><span>نحوه آشنایی و مراجعه به شرکت جهت همکاری *</span><input type="text" name="طریق مراجعه به شرکت جهت استخدام" placeholder="وب‌سایت رسمی آبادیس، لینکدین، معرفی همکاران، نمایشگاه ایران‌هلث و..." required></label>
+        </div>
+        <div class="cf-step-nav">
+          <button type="button" class="cf-btn-ghost" data-step-go="1">بازگشت به گام اول</button>
+          <button type="button" class="cf-btn-primary" data-step-go="3">ادامه به گام سوم: اولویت‌های محیط کار</button>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="cf-step-pane" data-step-pane="3">
+        <div class="cf-pane-head">
+          <h3>گام سوم: اولویت‌بندی انتظارات شما از محیط کار (۱ تا ۸)</h3>
+          <p>به هر یک از ۸ معیار زیر بر اساس اولویت ذهنی خود عددی بین ۱ تا ۸ اختصاص دهید.</p>
+        </div>
+        <div class="cf-expect-grid">
+          {expect_html}
+        </div>
+        <div class="cf-step-nav">
+          <button type="button" class="cf-btn-ghost" data-step-go="2">بازگشت به گام دوم</button>
+          <button type="button" class="cf-btn-primary" data-step-go="4">ادامه به گام چهارم: زبان و مهارت‌ها</button>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="cf-step-pane" data-step-pane="4">
+        <div class="cf-pane-head">
+          <h3>گام چهارم: زبان‌های خارجی، نرم‌افزارها و معرفی توانمندی‌ها</h3>
+          <p>مهارت‌های نرم‌افزاری، زبان‌های خارجی و خلاصه توانمندی‌های حرفه‌ای خود را تکمیل و ارسال فرمایید.</p>
+        </div>
+        <fieldset class="cf-fieldset">
+          <legend>آشنایی با زبان‌های خارجی</legend>
+          <div class="cf-checks">{langs_html}</div>
+        </fieldset>
+        {comp_html}
+        <label class="cf-lbl" style="margin-top:16px">
+          <span>در مورد توانایی‌ها، مهارت‌ها و فرصت همکاری ایده‌آل خود در یک پاراگراف توضیح دهید:</span>
+          <textarea name="توانایی و مهارت و شغل ایده‌آل" rows="4" placeholder="خلاصه‌ای از دستاوردها، علایق تخصصی و ارزش افزوده‌ای که به تیم آبادیس می‌آورید..."></textarea>
+        </label>
+        <div class="cf-step-nav">
+          <button type="button" class="cf-btn-ghost" data-step-go="3">بازگشت به گام سوم</button>
+          <button type="submit" class="cf-btn-submit">ثبت نهایی درخواست همکاری</button>
+        </div>
+        <p class="cf-submit-note">پس از ثبت، خلاصه ساختاریافته فرم به واحد منابع انسانی (info@abadis-med.com) ارسال می‌گردد.</p>
+      </div>
+    </form>'''
+
+def topbar_html(active_opt):
+    c1_act = ' is-active' if active_opt == 'c1' else ''
+    c2_act = ' is-active' if active_opt == 'c2' else ''
+    c3_act = ' is-active' if active_opt == 'c3' else ''
+    hub_act = ' is-active' if active_opt == 'hub' else ''
+    return f'''
+  <header class="co-topbar">
+    <div class="co-topbar-inner">
+      <a class="co-topbar-brand" href="../careers/">
+        <img src="../assets/img/abadis-logo-white.svg" alt="مخازن طبی آبادیس">
+        <span>پیشنهادهای بازطراحی صفحه «فرصت‌های همکاری»</span>
+      </a>
+      <nav class="co-topbar-nav" aria-label="انتخاب طرح پیشنهادی">
+        <a class="co-pill{hub_act}" href="index.html">مقایسه هر ۳ طرح</a>
+        <a class="co-pill{c1_act}" href="option-1.html">پیشنهاد C1 · داشبورد دپارتمان‌ها</a>
+        <a class="co-pill{c2_act}" href="option-2.html">پیشنهاد C2 · ویترین فرهنگ و کاوشگر هوشمند <span class="co-badge-rec">پیشنهاد ویژه</span></a>
+        <a class="co-pill{c3_act}" href="option-3.html">پیشنهاد C3 · معماری مینیمال و جدول اجرایی</a>
+        <button type="button" class="co-pill" data-co-theme>تغییر حالت روشن / تاریک</button>
+      </nav>
+    </div>
+  </header>'''
+
+def build_c1_body():
+    hero = hero_block(
+        'پیشنهاد C1 — داشبورد تعاملی دپارتمان‌ها و مسیر شغلی',
+        [
+            ('۹ ردیف همکار تخصصی', 'پوشش کامل ردیف‌های شغلی رسمی آبادیس'),
+            ('۴ واحد کلیدی سازمانی', 'R&D و فنی، تضمین کیفیت، فروش و بازرگانی، مالی و اداری'),
+            ('آکادمی آبادیس', 'آموزش تخصصی بدو استخدام و مسیر ارتقای شفاف'),
+        ]
+    )
+    return f'''
+    {hero}
+    <section class="co-sec" id="jobs">
+      <div class="co-wrap">
+        <div class="co-sec-head">
+          <div>
+            <h2>فرصت‌های همکاری بر اساس واحد سازمانی</h2>
+            <p>واحد تخصصی مورد نظر خود را انتخاب کنید یا در بانک رزومه عمومی آبادیس ثبت‌نام نمایید.</p>
+          </div>
+        </div>
+        {filter_bar_html()}
+        {job_cards_html(with_preview=False)}
+      </div>
+    </section>
+
+    <section class="co-sec co-sec--alt" id="roadmap">
+      <div class="co-wrap">
+        <div class="co-sec-head">
+          <div>
+            <h2>فرآیند جذب و آغاز همکاری در آبادیس</h2>
+            <p>چهار گام شفاف از ثبت درخواست تا ورود به خانواده بزرگ مخازن طبی آبادیس</p>
+          </div>
+        </div>
+        {roadmap_html()}
+      </div>
+    </section>
+
+    <section class="co-sec" id="general-resume">
+      <div class="co-wrap">
+        <div class="co-resume-banner">
+          <div>
+            <h3>ارسال رزومه عمومی / خارج از ردیف‌های شغلی فعلی</h3>
+            <p>اگر تخصص شما در فهرست فعلی نیست، درخواست خود را در بانک استعدادهای آبادیس ثبت کنید.</p>
+          </div>
+          <button type="button" class="co-resume-cta" data-select-role="ارسال رزومه عمومی / خارج از ردیف‌های شغلی فعلی">انتخاب ارسال رزومه عمومی در فرم</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="co-sec co-sec--alt co-apply-sec" id="apply">
+      <div class="co-wrap">
+        <div class="co-sec-head">
+          <div>
+            <h2>فرم رسمی ثبت درخواست همکاری</h2>
+            <p>فرم ۴ مرحله‌ای منطبق با تمامی فیلدهای رسمی کارگزینی و منابع انسانی آبادیس</p>
+          </div>
+        </div>
+        <div class="cf-card">
+          {render_wizard_form('c1')}
+        </div>
+      </div>
+    </section>'''
+
+def build_c2_body():
+    hero = hero_block(
+        'پیشنهاد C2 (پیشنهادی) — ویترین فرهنگ سازمانی + کاوشگر هوشمند فرصت‌های همکاری',
+        [
+            ('محیط دانش‌بنیان و پیشرو', 'بزرگ‌ترین تولیدکننده کیسه ساکشن یکبار مصرف در خاورمیانه'),
+            ('۱٬۲۸۴ مرکز درمانی همراه', 'اثرگذاری مستقیم بر سلامت بیماران و احیای بلوط زاگرس'),
+            ('فرم هوشمند ۴ مرحله‌ای', 'انتخاب خودکار فرصت همکاری و تکمیل گام‌به‌گام'),
+        ]
+    )
+    j0 = JOBS[0]
+    duties0 = ''.join(f'<li>{x}</li>' for x in j0['duties'])
+    reqs0 = ''.join(f'<li>{x}</li>' for x in j0['reqs'])
+    perks0 = ''.join(f'<li>{x}</li>' for x in j0['perks'])
+    return f'''
+    {hero}
+    <nav class="co-anchors" aria-label="دسترسی سریع بخش‌های صفحه">
+      <div class="co-wrap co-anchors-list">
+        <a href="#culture">چرا همکاری با آبادیس؟</a>
+        <a href="#jobs">فرصت‌های همکاری (۹ ردیف)</a>
+        <a href="#roadmap">مسیر جذب</a>
+        <a href="#general-resume">ارسال رزومه عمومی</a>
+        <a href="#apply">فرم ثبت درخواست</a>
+      </div>
+    </nav>
+
+    <section class="co-sec" id="culture">
+      <div class="co-wrap">
+        <div class="co-sec-head">
+          <div>
+            <h2>چرا همکاری با مخازن طبی آبادیس؟</h2>
+            <p>ارزش‌هایی که محیط کار ما را به بستری برای رشد علمی و حرفه‌ای تبدیل کرده است</p>
+          </div>
+        </div>
+        <div class="co-perks-grid">
+          <article class="co-perk-card">
+            <div class="co-perk-ico">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h3>رشد در محیط دانش‌بنیان</h3>
+            <p>فعالیت در خط مقدم فناوری تجهیزات پزشکی، پلیمرهای پیشرفته و کنترل عفونت بیمارستانی.</p>
+          </article>
+          <article class="co-perk-card">
+            <div class="co-perk-ico">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            </div>
+            <h3>آکادمی آبادیس و یادگیری مستمر</h3>
+            <p>برگزاری دوره‌های آموزشی تخصصی مدیریت، فروش پزشکی و استانداردهای ISO 13485.</p>
+          </article>
+          <article class="co-perk-card">
+            <div class="co-perk-ico">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3>امنیت شغلی و اثرگذاری ماندگار</h3>
+            <p>مشارکت در حفظ بیش از ۲۸ میلیون لیتر آب و احیای جنگل‌های بلوط زاگرس سبز.</p>
+          </article>
+          <article class="co-perk-card">
+            <div class="co-perk-ico">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a6.5 6.5 0 0 1 13 0"/></svg>
+            </div>
+            <h3>تیم جوان، همدل و پویا</h3>
+            <p>فرهنگ سازمانی محترمانه، شایسته‌سالار و مبتنی بر کار تیمی و نوآوری.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="co-sec co-sec--alt" id="jobs">
+      <div class="co-wrap">
+        <div class="co-sec-head">
+          <div>
+            <h2>فرصت‌های همکاری و پیش‌نمایش هوشمند شرایط</h2>
+            <p>روی «پیش‌نمایش شرایط» هر کارت کلیک کنید تا شرح وظایف و شرایط احراز در پنل کناری نمایش داده شود.</p>
+          </div>
+        </div>
+        {filter_bar_html()}
+        <div class="co-explorer">
+          <div>
+            {job_cards_html(with_preview=True)}
+          </div>
+          <aside class="co-detail-drawer" data-job-drawer aria-live="polite">
+            <span class="co-dept-tag" data-d-dept>{j0["dept_label"]} · کد {j0["num"]}</span>
+            <h3 data-d-title>{j0["title"]}</h3>
+            <p class="co-job-meta" data-d-meta style="border:0;padding:0;margin-bottom:10px">{j0["exp_years"]} | {j0["degree"]}</p>
+            <h4>شرح وظایف و مسئولیت‌ها</h4>
+            <ul data-d-duties>{duties0}</ul>
+            <h4>شرایط احراز و مهارت‌های مورد نیاز</h4>
+            <ul data-d-reqs>{reqs0}</ul>
+            <h4>مزایای همکاری</h4>
+            <ul data-d-perks>{perks0}</ul>
+            <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+              <button type="button" class="co-btn-apply" data-select-role="{j0["title"]}">انتخاب این فرصت در فرم ثبت درخواست</button>
+              <a class="co-btn-detail" href="../careers/jobs/{j0["id"]}/">صفحه اختصاصی این فرصت</a>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="co-sec" id="roadmap">
+      <div class="co-wrap">
+        <div class="co-sec-head">
+          <div>
+            <h2>مسیر جذب و همسفر شدن با آبادیس</h2>
+            <p>فرآیند چهارمرحله‌ای ارزیابی و پذیرش همکاران جدید</p>
+          </div>
+        </div>
+        {roadmap_html()}
+      </div>
+    </section>
+
+    <section class="co-sec" id="general-resume" style="padding-top:0">
+      <div class="co-wrap">
+        <div class="co-resume-banner">
+          <div>
+            <h3>ارسال رزومه عمومی / خارج از ردیف‌های شغلی فعلی</h3>
+            <p>همواره پذیرای متخصصان باانگیزه در حوزه‌های مهندسی پزشکی، پلیمر، فروش و مدیریت هستیم.</p>
+          </div>
+          <button type="button" class="co-resume-cta" data-select-role="ارسال رزومه عمومی / خارج از ردیف‌های شغلی فعلی">ثبت رزومه عمومی در فرم</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="co-sec co-sec--alt co-apply-sec" id="apply">
+      <div class="co-wrap">
+        <div class="co-sec-head">
+          <div>
+            <h2>فرم مرحله‌ای ثبت درخواست همکاری</h2>
+            <p>کلیه فیلدهای رسمی استخدامی آبادیس در ۴ گام منظم و کاربرپسند</p>
+          </div>
+        </div>
+        <div class="cf-card">
+          {render_wizard_form('c2')}
+        </div>
+      </div>
+    </section>'''
+
+def build_c3_body():
+    hero = hero_block(
+        'پیشنهاد C3 — معماری مینیمال اجرایی (جدول جامع فرصت‌های همکاری + کارت‌های شبکه)',
+        [
+            ('نمای دوگانه جدول / شبکه', 'مقایسه سریع هر ۹ فرصت همکاری در یک نگاه'),
+            ('فیلتر آنی واحدها و وضعیت', 'تفکیک سریع فرصت‌های فعال و بانک رزومه'),
+            ('مسیر مستقیم ثبت درخواست', 'اتصال مستقیم هر ردیف جدول به فرم رسمی استخدام'),
+        ]
+    )
+    rows = []
+    for j in JOBS:
+        is_act = j['status'] == 'active'
+        st_cls = 'is-act' if is_act else 'is-arc'
+        rows.append(f'''
+          <tr data-job-item data-dept="{j["dept"]}" data-status="{j["status"]}">
+            <td><strong>{j["num"]}</strong></td>
+            <td><strong>{j["title"]}</strong></td>
+            <td><span class="co-dept-tag">{j["dept_label"]}</span></td>
+            <td>{j["exp_years"]}</td>
+            <td>{j["degree"]}</td>
+            <td><span class="co-status-badge {st_cls}">{j["status_label"]}</span></td>
+            <td>
+              <div style="display:flex;gap:6px">
+                <button type="button" class="co-btn-apply" style="padding:6px 10px" data-select-role="{j["title"]}">ثبت درخواست</button>
+                <a class="co-btn-detail" style="padding:6px 10px" href="../careers/jobs/{j["id"]}/">جزئیات</a>
+              </div>
+            </td>
+          </tr>''')
+    table_html = f'''
+      <div class="co-table-wrap" data-c3-table>
+        <table class="co-table">
+          <thead>
+            <tr>
+              <th>کد</th>
+              <th>عنوان فرصت همکاری</th>
+              <th>واحد سازمانی</th>
+              <th>سابقه مورد نیاز</th>
+              <th>مدرک تحصیلی</th>
+              <th>وضعیت</th>
+              <th>اقدام</th>
+            </tr>
+          </thead>
+          <tbody>
+            {''.join(rows)}
+          </tbody>
+        </table>
+      </div>'''
+
+    return f'''
+    {hero}
+    <section class="co-sec" id="jobs">
+      <div class="co-wrap">
+        <div class="co-sec-head">
+          <div>
+            <h2>فهرست جامع فرصت‌های همکاری</h2>
+            <p>امکان جابه‌جایی بین نمای جدول مدیریتی و نمای کارت‌های شبکه‌ای</p>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button type="button" class="co-filter-btn is-active" data-view-toggle="table">نمای جدول اجرایی</button>
+            <button type="button" class="co-filter-btn" data-view-toggle="grid">نمای کارت‌های شبکه‌ای</button>
+          </div>
+        </div>
+        {filter_bar_html()}
+        {table_html}
+        <div data-c3-grid style="display:none;margin-top:16px">
+          {job_cards_html(with_preview=False)}
+        </div>
+      </div>
+    </section>
+
+    <section class="co-sec co-sec--alt" id="roadmap">
+      <div class="co-wrap">
+        <div class="co-sec-head">
+          <div>
+            <h2>نقشه راه جذب و استخدام در آبادیس</h2>
+            <p>چهار مرحله استاندارد ارزیابی و شروع همکاری</p>
+          </div>
+        </div>
+        {roadmap_html()}
+      </div>
+    </section>
+
+    <section class="co-sec" id="general-resume">
+      <div class="co-wrap">
+        <div class="co-resume-banner">
+          <div>
+            <h3>ارسال رزومه عمومی / خارج از ردیف‌های شغلی فعلی</h3>
+            <p>ثبت مشخصات در بانک استعدادهای شرکت دانش‌بنیان مخازن طبی آبادیس</p>
+          </div>
+          <button type="button" class="co-resume-cta" data-select-role="ارسال رزومه عمومی / خارج از ردیف‌های شغلی فعلی">انتخاب ارسال رزومه عمومی</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="co-sec co-sec--alt co-apply-sec" id="apply">
+      <div class="co-wrap">
+        <div class="co-sec-head">
+          <div>
+            <h2>فرم رسمی ثبت درخواست همکاری</h2>
+            <p>تکمیل اطلاعات فردی، تحصیلی، سوابق شغلی و مهارت‌ها در ۴ گام</p>
+          </div>
+        </div>
+        <div class="cf-card">
+          {render_wizard_form('c3')}
+        </div>
+      </div>
+    </section>'''
+
+def wrap_page(title, active_opt, body_html):
+    return f'''<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title}</title>
+<meta name="robots" content="noindex, nofollow">
+<style>{SHARED_CSS}</style>
+</head>
+<body>
+{topbar_html(active_opt)}
+<main>
+{body_html}
+</main>
+<script>{SHARED_JS}</script>
+</body>
+</html>
+'''
+
+def build_hub():
+    hub_body = f'''
+    <section class="co-hero has-playing-video">
+      <video class="co-hero-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="../assets/media/hero-careers-poster.jpg?v=20261028f">
+        <source src="../assets/media/hero-careers.mp4?v=20261028f" type="video/mp4">
+      </video>
+      <div class="co-wrap co-hero-grid">
+        <div>
+          <p class="co-crumbs"><a href="../">خانه</a> / <a href="../careers/">فرصت‌های همکاری</a> / مقایسه ۳ پیشنهاد بازطراحی</p>
+          <h1>پیشنهادهای بازطراحی <em>فرصت‌های همکاری</em></h1>
+          <p class="co-slogan" aria-label="جای شما در خانواده بزرگ آبادیس خالیست">
+            <span class="co-slogan-main">جای شما در خانواده بزرگ آبادیس خالیست،</span>
+            <span class="co-slogan-rotate" aria-hidden="true">
+              <span class="co-slogan-line is-on">محیطی علمی، نوآور و دانش‌بنیان</span>
+              <span class="co-slogan-line">فرصت رشد حرفه‌ای و یادگیری مستمر</span>
+              <span class="co-slogan-line">همراهی در ارتقای سلامت و محیط زیست</span>
+            </span>
+          </p>
+        </div>
+        <div class="co-hero-kpis">
+          <div class="co-kpi-pill">
+            <div class="co-kpi-ico"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+            <div class="co-kpi-txt"><strong>تغییر نام سراسری به «فرصت‌های همکاری»</strong><span>حذف کامل عبارت «موقعیت‌های شغلی» در تمام صفحات</span></div>
+          </div>
+          <div class="co-kpi-pill">
+            <div class="co-kpi-ico"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4V8z"/></svg></div>
+            <div class="co-kpi-txt"><strong>هیرو ویدیویی هماهنگ با خانواده صفحات</strong><span>ویدیوی تک‌شات آزمایشگاه R&D + تایپوگرافی Kalameh Black</span></div>
+          </div>
+          <div class="co-kpi-pill">
+            <div class="co-kpi-ico"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+            <div class="co-kpi-txt"><strong>پوشش هر ۹ ردیف همکاری + فرم ۴ مرحله‌ای</strong><span>حفظ کامل تمامی فیلدهای رسمی فرم استخدام آبادیس</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="co-sec">
+      <div class="co-wrap">
+        <div class="co-sec-head">
+          <div>
+            <h2>مقایسه ۳ طرح پیشنهادی برای صفحه «فرصت‌های همکاری»</h2>
+            <p>بررسی ویژگی‌ها، مزایا و لینک مشاهده زنده هر پیشنهاد برای تصمیم‌گیری مدیریت</p>
+          </div>
+        </div>
+        <div class="co-jobs-grid">
+          <article class="co-job-card">
+            <div>
+              <div class="co-job-top">
+                <span class="co-dept-tag">پیشنهاد اول · C1</span>
+                <span class="co-status-badge is-arc">داشبورد دپارتمان‌ها</span>
+              </div>
+              <h3>پیشنهاد C1 — داشبورد تعاملی دپارتمان‌ها و مسیر شغلی</h3>
+              <p class="co-job-summary">تمرکز بر دسته‌بندی شفاف ۹ ردیف همکاری در ۴ واحد سازمانی (تحقیق و توسعه، تضمین کیفیت، فروش و بازرگانی، مالی و اداری) به همراه خط زمانی ۴ مرحله‌ای جذب و فرم تب‌بندی‌شده.</p>
+              <ul style="padding-right:18px;font-size:.84rem;line-height:1.7;color:var(--c-ink-2);margin:10px 0">
+                <li><strong>نقطه قوت:</strong> دسترسی بسیار سریع متقاضیان به واحد تخصصی خود</li>
+                <li><strong>ساختار فرم:</strong> ویزارد ۴ مرحله‌ای تب‌بندی‌شده</li>
+              </ul>
+            </div>
+            <div class="co-job-actions">
+              <a class="co-btn-apply" href="option-1.html">مشاهده زنده پیشنهاد C1</a>
+            </div>
+          </article>
+
+          <article class="co-job-card is-active-job">
+            <div>
+              <div class="co-job-top">
+                <span class="co-dept-tag">پیشنهاد دوم · C2</span>
+                <span class="co-status-badge is-act">پیشنهاد ویژه</span>
+              </div>
+              <h3>پیشنهاد C2 — ویترین فرهنگ سازمانی + کاوشگر هوشمند (Master-Detail)</h3>
+              <p class="co-job-summary">معرفی ۴ مزیت رقابتی همکاری با آبادیس (رشد دانش‌بنیان، آکادمی، امنیت شغلی، تیم پویا) + کاوشگر دوستونه با پیش‌نمایش آنی شرح وظایف و شرایط احراز بدون خروج از صفحه + فرم ۴ مرحله‌ای.</p>
+              <ul style="padding-right:18px;font-size:.84rem;line-height:1.7;color:var(--c-ink-2);margin:10px 0">
+                <li><strong>نقطه قوت:</strong> تقویت برند کارفرمایی آبادیس + مشاهده سریع جزئیات هر ردیف</li>
+                <li><strong>ساختار فرم:</strong> اتصال یک‌کلیکی هر ردیف به فرم ۴ مرحله‌ای</li>
+              </ul>
+            </div>
+            <div class="co-job-actions">
+              <a class="co-btn-apply" href="option-2.html">مشاهده زنده پیشنهاد C2</a>
+            </div>
+          </article>
+
+          <article class="co-job-card">
+            <div>
+              <div class="co-job-top">
+                <span class="co-dept-tag">پیشنهاد سوم · C3</span>
+                <span class="co-status-badge is-arc">جدول اجرایی + کارت</span>
+              </div>
+              <h3>پیشنهاد C3 — معماری مینیمال اجرایی (سوییچ جدول / شبکه)</h3>
+              <p class="co-job-summary">ارائه نمای جدول مقایسه‌ای مدیریتی برای هر ۹ ردیف همکاری (کد، واحد، سابقه، مدرک، وضعیت) با قابلیت تغییر به نمای کارت‌های شبکه‌ای + نقشه راه جذب و فرم ۴ مرحله‌ای.</p>
+              <ul style="padding-right:18px;font-size:.84rem;line-height:1.7;color:var(--c-ink-2);margin:10px 0">
+                <li><strong>نقطه قوت:</strong> اسکن بسیار سریع تمامی ۹ فرصت همکاری در یک جدول واحد</li>
+                <li><strong>ساختار فرم:</strong> فرم ساختاریافته ۴ مرحله‌ای رسمی</li>
+              </ul>
+            </div>
+            <div class="co-job-actions">
+              <a class="co-btn-apply" href="option-3.html">مشاهده زنده پیشنهاد C3</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+    '''
+    return wrap_page('مقایسه ۳ پیشنهاد بازطراحی «فرصت‌های همکاری» — مخازن طبی آبادیس', 'hub', hub_body)
+
+def main():
+    (OUT / 'option-1.html').write_text(
+        wrap_page('پیشنهاد C1 — داشبورد تعاملی دپارتمان‌ها | فرصت‌های همکاری آبادیس', 'c1', build_c1_body()),
+        encoding='utf-8'
+    )
+    (OUT / 'option-2.html').write_text(
+        wrap_page('پیشنهاد C2 (پیشنهاد ویژه) — ویترین فرهنگ سازمانی و کاوشگر هوشمند | فرصت‌های همکاری آبادیس', 'c2', build_c2_body()),
+        encoding='utf-8'
+    )
+    (OUT / 'option-3.html').write_text(
+        wrap_page('پیشنهاد C3 — معماری مینیمال اجرایی و جدول فرصت‌های همکاری | آبادیس', 'c3', build_c3_body()),
+        encoding='utf-8'
+    )
+    (OUT / 'index.html').write_text(build_hub(), encoding='utf-8')
+    print("Generated site/careers-options/{index,option-1,option-2,option-3}.html")
+
+if __name__ == '__main__':
+    main()
