@@ -1,31 +1,93 @@
 """Interactive 3D factory scrollytelling hero (Abadis Shams-Abad plant, 1 unit = 1 m).
 
 Shared by the live FA/EN/AR home #intro and the standalone option page.
-three.js r170 + OrbitControls are self-hosted in assets/vendor/three/ (no CDN).
+Implements the Option 2 + Option 3 Hybrid:
+- Option 2: Unified Top Interactive Station Dock under the 1-5 stepper bar (no bottom-right corner box!)
+- Option 3: Clickable 3D Machine Sub-Nodes on the wireframe equipment with coral (#ff7a59) highlighting & two-way sync.
+three.js r170 + OrbitControls are self-hosted in assets/js/ (no CDN).
 """
 import json
 from html import escape as esc
 
-V = '20261029i'
-CATALOGUE = 'https://abadis-med.com/wp-content/uploads/2024/12/کاتالوگ-جامع-آبادیس.pdf'
+V = '20261029j'
 
 T = {
   'fa': dict(
     root='', quote_href='export/#quote',
     kicker='شرکت دانش‌بنیان مخازن طبی آبادیس',
     h1a='آبادیس؛ ', h1b='مهندسی دقیق', h1c='، برای مراقبتی ایمن‌تر',
-    sub='پیشرو در کنترل عفونت و مدیریت مایعات بیمارستانی — اسکرول کنید تا وارد خط تولید شوید.',
-    badge='طرح سه‌بعدی منطبق بر معماری واقعی کارخانه آبادیس (شمس‌آباد — ۲۰۰۰ متر مربع)',
-    cat='دریافت کاتالوگ', quote='درخواست قیمت',
+    sub='پیشرو در کنترل عفونت و مدیریت مایعات بیمارستانی — اسکرول کنید یا روی ایستگاه‌ها بزنید تا وارد خط تولید شوید.',
     skip='رد کردن و ادامه صفحه', explore='حالت کاوش آزاد', back='بازگشت به مسیر اسکرول',
-    hint='بکشید تا بچرخد، دو انگشت یا چرخ موس برای زوم، روی نام بخش‌ها بزنید',
+    collapse='بستن جزئیات', expand='نمایش جزئیات',
+    hint='بکشید تا بچرخد • دو انگشت یا چرخ موس برای زوم • روی دستگاه‌ها یا دکمه‌های بالا بزنید',
     step='ایستگاه {n} از {t}', aerial='نمای هوایی کارخانه',
     stations=[
-      ('سالن ۱ — تزریق پلاستیک', 'سه دستگاه تزریق ۲۲۰ تن، دو دستگاه بادی و یک تزریق ۱۲۰ تن در سالن ۵ متری همکف؛ بدنه، درب و اجزای کیسه‌ها از همین‌جا شکل می‌گیرند.'),
-      ('سالن ۱ طبقه بالا — مونتاژ و کارتن‌گذاری', 'سالن ۱۰ در ۱۰ متری مونتاژ پلی‌اورتان با سه ردیف میز، و راهروی ۱۰ در ۳ متری کارتن‌گذاری متصل به آسانسور بار.'),
-      ('سالن ۲ — جداسازی فیلتر از قالب', 'فیلتر نهایی از قالب جدا می‌شود. سایر مراحل این اتاق به دلیل حفظ مالکیت فکری نمایش داده نمی‌شود.'),
-      ('سالن ۲ — اکسترودر و کلین‌روم', 'دو اکسترودر در طبقه همکف و کلین‌روم کلاس ۱۰۰٬۰۰۰ با دو خط مونتاژ در طبقه بالا، مطابق الزامات تجهیزات پزشکی.'),
-      ('سالن ۳ — انبار محصول و ارسال', 'بسته‌بندی ۴۵ عددی در کارتن، ظرفیت تولید ۵ میلیون کیسه در سال و ارسال رایگان به مراکز درمانی از درب سمت راست.'),
+      dict(
+        n='سوله ۱ (همکف) — سالن تزریق پلاستیک و قالب‌گیری',
+        t='ورود از دهانه ۱۴ متری و رختکن‌ها به سالن تزریق با سقف ۵ متر؛ تولید بدنه، درب و قطعات کیسه ساکشن.',
+        subs=[
+          dict(id=11, code='۱.۱', pin='۱.۱ تزریق ۲۲۰ تن (۳ دستگاه)', chip='۱.۱ سه دستگاه تزریق ۲۲۰ تن',
+               spec='قالب‌گیری دقیق بدنه کیسه‌های ساکشن یک‌بارمصرف در ردیف شمالی سالن همکف (سقف ۵ متر).',
+               pos=[-12.5, 2.8, -17.0]),
+          dict(id=12, code='۱.۲', pin='۱.۲ بادی (۲ دستگاه)', chip='۱.۲ دو دستگاه بادی',
+               spec='تولید قطعات بادی و مخازن جانبی پزشکی در بخش جنوب‌غربی سالن تزریق.',
+               pos=[-16.5, 3.2, -1.0]),
+          dict(id=13, code='۱.۳', pin='۱.۳ تزریق ۱۲۰ تن', chip='۱.۳ دستگاه تزریق ۱۲۰ تن',
+               spec='تزریق درب، اتصالات و قطعات ظریف کیسه ساکشن با دقت میکرونی در بخش جنوب‌شرقی.',
+               pos=[-9.0, 2.4, -0.5]),
+        ]
+      ),
+      dict(
+        n='سوله ۱ (طبقه اول) — مونتاژ کیسه ساکشن و کارتنینگ',
+        t='سالن ایزوله ساندویچ‌پنل پلی‌اورتان ۱۰×۱۰ متر با ۳ خط مونتاژ و راهروی کارتنینگ ۱۰×۳ متر متصل به بالابر.',
+        subs=[
+          dict(id=21, code='۲.۱', pin='۲.۱ سالن مونتاژ (۱۰×۱۰م)', chip='۲.۱ سالن مونتاژ پلی‌اورتان (۱۰×۱۰م)',
+               spec='۳ خط موازی مونتاژ و تست نشتی کیسه ساکشن در اتاق ایزوله با دیوار و سقف پلی‌اورتان.',
+               pos=[-14.0, 7.2, 2.0]),
+          dict(id=22, code='۲.۲', pin='۲.۲ کارتنینگ و بالابر', chip='۲.۲ راهروی کارتنینگ و بالابر (۱۰×۳م)',
+               spec='بسته‌بندی در راهروی ۱۰×۳ متری و انتقال مستقیم به همکف با بالابر اختصاصی (انبار میانی بسته).',
+               pos=[-11.5, 7.2, -4.5]),
+        ]
+      ),
+      dict(
+        n='سوله ۲ — سالن تولید فیلتر متخلخل (خروج از قالب)',
+        t='نمایش صرفاً مرحله خروج فیلتر متخلخل نهایی از قالب در سالن ۱۰×۱۴ متر با حفظ کامل محرمانگی دانش فنی.',
+        subs=[
+          dict(id=31, code='۳.۱', pin='۳.۱ خروج فیلتر از قالب', chip='۳.۱ خروج فیلتر متخلخل از قالب',
+               spec='جداسازی فیلتر متخلخل نهایی از قالب پرس؛ سایر مراحل تولید به دلیل محرمانگی دانش فنی نمایش داده نمی‌شود.',
+               pos=[0.0, 3.2, 5.4]),
+          dict(id=32, code='۳.۲', pin='۳.۲ سینی کنترل کیفیت فیلتر', chip='۳.۲ سینی کنترل کیفیت فیلتر قطع جریان',
+               spec='آماده‌سازی فیلترهای هیدروفوبیک، دوئال و مکانیکی با راندمان ۹۹.۹۹۹٪ جهت نصب در درب کیسه.',
+               pos=[2.9, 1.8, 9.1]),
+        ]
+      ),
+      dict(
+        n='سوله ۲ — سالن اکسترودر و کلین‌روم کلاس ۱۰۰٬۰۰۰',
+        t='تولید تیوب پزشکی در همکف و انتقال بهداشتی با باکس و بالابر مخصوص به کلین‌روم طبقه اول.',
+        subs=[
+          dict(id=41, code='۴.۱', pin='۴.۱ اکسترودر تیوب (۲ خط)', chip='۴.۱ دو خط اکسترودر تیوب (همکف)',
+               spec='تولید پیوسته تیوب‌های ساکشن پزشکی ضدپیچ‌خوردگی در سالن ۱۰×۱۸ متری طبقه همکف سوله ۲.',
+               pos=[0.0, 2.2, -15.5]),
+          dict(id=42, code='۴.۲', pin='۴.۲ باکس کلین‌رومی و بالابر', chip='۴.۲ باکس کلین‌رومی و بالابر مخصوص',
+               spec='انتقال ایزوله کلاف‌های تیوب از سالن اکسترودر به طبقه بالا بدون تماس با هوای محیط.',
+               pos=[0.5, 4.5, -7.0]),
+          dict(id=43, code='۴.۳', pin='۴.۳ کلین‌روم ۱۰۰٬۰۰۰ (طبقه اول)', chip='۴.۳ کلین‌روم کلاس ۱۰۰٬۰۰۰ (طبقه اول)',
+               spec='مونتاژ کانکتور و بسته‌بندی ساکشن تیوب در ۲ خط مجزا تحت فشار مثبت اتاق تمیز کلاس ۱۰۰٬۰۰۰.',
+               pos=[0.0, 7.5, -14.5]),
+        ]
+      ),
+      dict(
+        n='سوله ۳ — انبار محصول نهایی و ارسال سراسری',
+        t='نگهداری پالت‌های کارتن ۴۵ عددی در سوله ۱۸×۷ متر و ارسال مستقیم به ۱٬۲۸۴ مرکز درمانی در ۳۱ استان.',
+        subs=[
+          dict(id=51, code='۵.۱', pin='۵.۱ پالت‌های کارتن ۴۵ عددی', chip='۵.۱ پالت‌های کارتن ۴۵ عددی (ظرفیت ۵ میلیون)',
+               spec='چیدمان استاندارد کارتن‌های ۴۵ عددی در قفسه‌های سوله ۳ با ظرفیت تولید سالانه ۵ میلیون کیسه ساکشن.',
+               pos=[10.5, 3.8, 2.0]),
+          dict(id=52, code='۵.۲', pin='۵.۲ لیفتراک و درب ارسال', chip='۵.۲ راهروی لیفتراک و ارسال به ۱٬۲۸۴ مرکز',
+               spec='بارگیری از درب پارکینگ راست و ارسال رایگان به ۱٬۲۸۴ بیمارستان و مرکز جراحی در سراسر کشور.',
+               pos=[12.0, 2.5, 9.5]),
+        ]
+      ),
     ],
     labels=['تزریق','مونتاژ و کارتن','فیلتر','اکسترودر و کلین‌روم','انبار و ارسال','دفتر مرکزی'],
     digits='fa'),
@@ -33,18 +95,78 @@ T = {
     root='en/', quote_href='export/#quote',
     kicker='Abadis Medical Canisters Knowledge-Based Co.',
     h1a='Abadis: ', h1b='Precision Engineering', h1c=' for Safer Care',
-    sub='Pioneer in Hospital Infection Control & Fluid Management — Scroll to enter the production line.',
-    badge='3D model matched to the real Abadis plant layout (Shams-Abad, 2,000 m²)',
-    cat='Download catalogue', quote='Request a quote',
+    sub='Pioneer in Hospital Infection Control & Fluid Management — Scroll or tap any station to inspect the plant.',
     skip='Skip & Continue', explore='Free Exploration Mode', back='Back to scroll tour',
-    hint='Drag to rotate, pinch or wheel to zoom, tap a section name',
+    collapse='Hide details', expand='Show details',
+    hint='Drag to rotate • Pinch or wheel to zoom • Tap 3D machine nodes or top chips to inspect',
     step='Station {n} of {t}', aerial='Aerial view of the plant',
     stations=[
-      ('Hall 1: injection molding', 'Three 220-ton injection machines, two blow-molding machines and one 120-ton machine on a 5 m ground floor. Bag bodies, lids and parts start here.'),
-      ('Hall 1 upper floor: assembly and cartoning', 'A 10 x 10 m polyurethane assembly hall with three table rows, plus a 10 x 3 m cartoning corridor linked to the goods lift.'),
-      ('Hall 2: filter demolding', 'The finished filter is removed from its mold. Other steps in this room are not shown to protect our intellectual property.'),
-      ('Hall 2: extrusion and cleanroom', 'Two extruders on the ground floor and a Class 100,000 cleanroom with two assembly lines upstairs, built for medical-device requirements.'),
-      ('Hall 3: finished goods and dispatch', 'Cartons of 45, capacity of 5 million bags a year, and free shipping to healthcare centers through the right-hand gate.'),
+      dict(
+        n='Hall 1 (Ground) — Plastic Injection & Blow Molding',
+        t='Entering past the 14m front bay and locker rooms into the 5m ground hall where canister bodies and lids are molded.',
+        subs=[
+          dict(id=11, code='1.1', pin='1.1 220t Injection (×3)', chip='1.1 3× 220-Ton Injection',
+               spec='Precision molding of disposable suction canister bodies along the north row of the 5m ground hall.',
+               pos=[-12.5, 2.8, -17.0]),
+          dict(id=12, code='1.2', pin='1.2 Blow-Molding (×2)', chip='1.2 2× Blow-Molding',
+               spec='Blow-molding of specialized medical fluid containers in the southwest bay of Hall 1.',
+               pos=[-16.5, 3.2, -1.0]),
+          dict(id=13, code='1.3', pin='1.3 120t Injection', chip='1.3 1× 120-Ton Injection',
+               spec='High-precision injection molding of lids, ports, and fine canister fittings in the southeast bay.',
+               pos=[-9.0, 2.4, -0.5]),
+        ]
+      ),
+      dict(
+        n='Hall 1 (Upper Floor) — Canister Assembly & Cartoning',
+        t='10×10m isolated polyurethane panel room with 3 assembly lines and a 10×3m cartoning corridor linked to the lift.',
+        subs=[
+          dict(id=21, code='2.1', pin='2.1 PU Assembly (10×10m)', chip='2.1 Polyurethane Assembly (10×10m)',
+               spec='3 parallel suction canister assembly & leak-testing lines inside an isolated polyurethane panel room.',
+               pos=[-14.0, 7.2, 2.0]),
+          dict(id=22, code='2.2', pin='2.2 Cartoning & Lift', chip='2.2 Cartoning Corridor & Lift (10×3m)',
+               spec='Cartoning in the 10×3m corridor with direct vertical lift transfer to the ground floor (WIP room closed).',
+               pos=[-11.5, 7.2, -4.5]),
+        ]
+      ),
+      dict(
+        n='Hall 2 — Porous Filter Demolding (IP Protected)',
+        t='Exclusively showing finished porous filter demolding in the 10×14m wing to protect proprietary manufacturing IP.',
+        subs=[
+          dict(id=31, code='3.1', pin='3.1 Filter Demolding', chip='3.1 Porous Filter Demolding',
+               spec='Finished porous filter exiting the mold press; upstream process is hidden to protect trade secrets.',
+               pos=[0.0, 3.2, 5.4]),
+          dict(id=32, code='3.2', pin='3.2 Shut-Off Filter QC', chip='3.2 Shut-Off Filter QC Tray',
+               spec='Inspection of 99.999% efficiency hydrophobic, dual, and mechanical shut-off filters for lid integration.',
+               pos=[2.9, 1.8, 9.1]),
+        ]
+      ),
+      dict(
+        n='Hall 2 — Tube Extrusion & Class 100,000 Cleanroom',
+        t='Two medical tube extrusion lines downstairs with sealed pass-box & lift transfer to the upstairs Class 100k cleanroom.',
+        subs=[
+          dict(id=41, code='4.1', pin='4.1 Tube Extruders (×2)', chip='4.1 2× Medical Tube Extruders',
+               spec='Continuous extrusion of kink-resistant medical suction tubing in the 10×18m ground-floor hall.',
+               pos=[0.0, 2.2, -15.5]),
+          dict(id=42, code='4.2', pin='4.2 Pass-Box & Lift', chip='4.2 Cleanroom Pass-Box & Lift',
+               spec='Sealed vertical transfer of extruded tubing coils from ground floor into the upstairs cleanroom.',
+               pos=[0.5, 4.5, -7.0]),
+          dict(id=43, code='4.3', pin='4.3 Class 100k Cleanroom', chip='4.3 Class 100,000 Cleanroom (Upper)',
+               spec='Suction tube connector assembly and sterile-grade packaging across 2 lines under positive pressure.',
+               pos=[0.0, 7.5, -14.5]),
+        ]
+      ),
+      dict(
+        n='Hall 3 — Finished Goods Warehouse & Nationwide Dispatch',
+        t='Organized 45-count carton pallet racks in the 7×18m hall dispatching to 1,284 medical centers across 31 provinces.',
+        subs=[
+          dict(id=51, code='5.1', pin='5.1 45-Count Pallets', chip='5.1 45-Count Carton Pallets (5M/yr)',
+               spec='Standardized pallet racks of 45-unit cartons supporting a 5-million-unit annual production capacity.',
+               pos=[10.5, 3.8, 2.0]),
+          dict(id=52, code='5.2', pin='5.2 Forklift & Dispatch', chip='5.2 Forklift Aisle & Dispatch (1,284 Centers)',
+               spec='Loading via the east dispatch gate for free delivery to 1,284 hospitals and surgical centers nationwide.',
+               pos=[12.0, 2.5, 9.5]),
+        ]
+      ),
     ],
     labels=['Injection','Assembly & cartoning','Filter','Extrusion & cleanroom','Warehouse & dispatch','Head office'],
     digits='en'),
@@ -52,29 +174,87 @@ T = {
     root='arabic/', quote_href='export/#quote',
     kicker='شركة أباديس المعرفية للخزانات الطبية',
     h1a='أباديس؛ ', h1b='هندسة دقيقة', h1c=' لرعاية أكثر أماناً',
-    sub='الرائدة في مكافحة العدوى وإدارة السوائل بالمستشفيات — مرّر للدخول إلى خط الإنتاج.',
-    badge='نموذج ثلاثي الأبعاد مطابق للتصميم المعماري الحقيقي لمصنع آباديس (شمس آباد — ٢٠٠٠ متر مربع)',
-    cat='تحميل الكتالوج', quote='طلب سعر',
+    sub='الرائدة في مكافحة العدوى وإدارة السوائل بالمستشفيات — مرّر أو اضغط على المحطات لاستكشاف خط الإنتاج.',
     skip='تخطي والمتابعة', explore='وضع الاستكشاف الحر', back='العودة إلى جولة التمرير',
-    hint='اسحب للتدوير، واستخدم إصبعين أو عجلة الفأرة للتكبير، واضغط على اسم القسم',
+    collapse='إخفاء التفاصيل', expand='عرض التفاصيل',
+    hint='اسحب للتدوير • قرّب للتكبير • اضغط على نقاط الماكينات ثلاثية الأبعاد أو الأزرار العلوية',
     step='المحطة {n} من {t}', aerial='منظر جوي للمصنع',
     stations=[
-      ('القاعة ١: الحقن البلاستيكي', 'ثلاث آلات حقن بقوة ٢٢٠ طنًا وآلتا نفخ وآلة حقن ١٢٠ طنًا في الطابق الأرضي بارتفاع ٥ أمتار؛ هنا تبدأ أجسام الأكياس وأغطيتها.'),
-      ('القاعة ١ الطابق العلوي: التجميع والتعبئة', 'قاعة تجميع البولي يوريثان بمساحة ١٠ × ١٠ م مع ثلاثة صفوف من الطاولات، وممر تعبئة الكراتين ١٠ × ٣ م متصل بمصعد البضائع.'),
-      ('القاعة ٢: فصل الفلتر من القالب', 'يُفصل الفلتر النهائي عن القالب. لا تُعرض بقية مراحل هذه الغرفة حفاظًا على الملكية الفكرية.'),
-      ('القاعة ٢: البثق والغرفة النظيفة', 'آلتا بثق في الطابق الأرضي وغرفة نظيفة من الفئة ١٠٠٬٠٠٠ مع خطَّي تجميع في الطابق العلوي، وفق متطلبات الأجهزة الطبية.'),
-      ('القاعة ٣: مستودع المنتجات والشحن', 'كراتين من ٤٥ وحدة، وطاقة إنتاجية ٥ ملايين كيس سنويًا، وشحن مجاني إلى المراكز الصحية عبر البوابة اليمنى.'),
+      dict(
+        n='القاعة ١ (الأرضي) — حقن البلاستيك وتشكيل القوالب',
+        t='الدخول عبر البهو الأمامي بارتفاع ١٤ م وغرف تبديل الملابس إلى قاعة الحقن بارتفاع ٥ م لتشكيل أجسام وأغطية الأكياس.',
+        subs=[
+          dict(id=11, code='١.١', pin='١.١ حقن ٢٢٠ طن (×٣)', chip='١.١ ٣ ماكينات حقن ٢٢٠ طن',
+               spec='قولبة دقيقة لأجسام عبوات الشفط أحادية الاستخدام في الصف الشمالي من القاعة الأرضية (٥ م).',
+               pos=[-12.5, 2.8, -17.0]),
+          dict(id=12, code='١.٢', pin='١.٢ نفخ القوالب (×٢)', chip='١.٢ ماكينتا نفخ القوالب',
+               spec='تشكيل العبوات والخزانات الطبية بالنفخ في الجناح الجنوبي الغربي من قاعة الحقن.',
+               pos=[-16.5, 3.2, -1.0]),
+          dict(id=13, code='١.٣', pin='١.٣ حقن ١٢٠ طن', chip='١.٣ ماكينة حقن ١٢٠ طن',
+               spec='حقن الأغطية والوصلات والأجزاء الدقيقة لعبوات الشفط بدقة ميكرونية عالية.',
+               pos=[-9.0, 2.4, -0.5]),
+        ]
+      ),
+      dict(
+        n='القاعة ١ (الطابق الأول) — تجميع أكياس الشفط والكرتنة',
+        t='قاعة معزولة بألواح البولي يوريثان ١٠×١٠ م بـ ٣ خطوط تجميع وممر كرتنة ١٠×٣ م متصل بالمصعد.',
+        subs=[
+          dict(id=21, code='٢.١', pin='٢.١ قاعة التجميع (١٠×١٠م)', chip='٢.١ قاعة التجميع المعزولة (١٠×١٠م)',
+               spec='٣ خطوط متوازية لتجميع واختبار عدم التسرب داخل غرفة معزولة بألواح البولي يوريثان.',
+               pos=[-14.0, 7.2, 2.0]),
+          dict(id=22, code='٢.٢', pin='٢.٢ الكرتنة والمصعد', chip='٢.٢ ممر الكرتنة والمصعد (١٠×٣م)',
+               spec='التعبئة في ممر ١٠×٣ م والنقل المباشر إلى الطابق الأرضي عبر المصعد المخصص (المخزن الوسيط مغلق).',
+               pos=[-11.5, 7.2, -4.5]),
+        ]
+      ),
+      dict(
+        n='القاعة ٢ — فصل الفلتر المسامي من القالب',
+        t='عرض مرحلة إخراج الفلتر المسامي النهائي من القالب فقط في قاعة ١٠×١٤ م حفاظاً على سرية تقنية التصنيع.',
+        subs=[
+          dict(id=31, code='٣.١', pin='٣.١ إخراج الفلتر من القالب', chip='٣.١ إخراج الفلتر المسامي من القالب',
+               spec='فصل الفلتر المسامي النهائي عن القالب؛ لا تُعرض المراحل السابقة حفاظاً على الملكية الفكرية.',
+               pos=[0.0, 3.2, 5.4]),
+          dict(id=32, code='٣.٢', pin='٣.٢ فحص فلاتر الإيقاف', chip='٣.٢ صينية فحص فلاتر إيقاف التدفق',
+               spec='تجهيز وفحص الفلاتر الهيدروفوبية والمزدوجة والميكانيكية بكفاءة ٩٩.٩۹٩٪ للتركيب في الأغطية.',
+               pos=[2.9, 1.8, 9.1]),
+        ]
+      ),
+      dict(
+        n='القاعة ٢ — البثق والغرفة النظيفة فئة ١٠٠٬٠٠٠',
+        t='خطّا بثق الأنابيب في الطابق الأرضي والنقل المعقم عبر الصندوق والمصعد إلى الغرفة النظيفة بالطابق الأول.',
+        subs=[
+          dict(id=41, code='٤.١', pin='٤.١ بثق الأنابيب (×٢)', chip='٤.١ خطّا بثق الأنابيب الطبية',
+               spec='إنتاج مستمر لأنابيب الشفط الطبية المقاومة للالتواء في قاعة ١٠×١٨ م بالطابق الأرضي.',
+               pos=[0.0, 2.2, -15.5]),
+          dict(id=42, code='٤.٢', pin='٤.٢ صندوق التمرير والمصعد', chip='٤.٢ صندوق التمرير والمصعد المعقم',
+               spec='نقل معقم لملفات الأنابيب من قاعة البثق إلى الطابق العلوي دون تلامس مع الهواء الخارجي.',
+               pos=[0.5, 4.5, -7.0]),
+          dict(id=43, code='٤.٣', pin='٤.٣ الغرفة النظيفة ١٠٠٬٠٠٠', chip='٤.٣ الغرفة النظيفة فئة ١٠٠٬٠٠٠ (الطابق الأول)',
+               spec='تجميع وصلات أنابيب الشفط وتغليفها في خطين مستقلين تحت ضغط إيجابي داخل الغرفة النظيفة.',
+               pos=[0.0, 7.5, -14.5]),
+        ]
+      ),
+      dict(
+        n='القاعة ٣ — مستودع المنتجات النهائية والشحن',
+        t='تخزين منصات الكراتين (٤٥ عبوة) في القاعة ٣ (٧×١٨ م) والشحن المباشر إلى ١٬٢٨٤ مركزاً علاجياً.',
+        subs=[
+          dict(id=51, code='٥.١', pin='٥.١ منصات الكراتين (٤٥ عبوة)', chip='٥.١ منصات الكراتين (٥ ملايين سنوياً)',
+               spec='تخزين منظم لكراتين سعة ٤٥ عبوة بطاقة إنتاجية سنوية تبلغ ٥ ملايين كيس شفط.',
+               pos=[10.5, 3.8, 2.0]),
+          dict(id=52, code='٥.٢', pin='٥.٢ الرافعة الشوكية والشحن', chip='٥.٢ ممر الرافعة الشوكية والشحن (١٬٢٨٤ مركزاً)',
+               spec='التحميل عبر البوابة الشرقية للشحن المجاني إلى ١٬٢٨٤ مستشفى ومركزاً جراحياً في ٣١ محافظة.',
+               pos=[12.0, 2.5, 9.5]),
+        ]
+      ),
     ],
     labels=['الحقن','التجميع والتعبئة','الفلتر','البثق والغرفة النظيفة','المستودع والشحن','المكتب الرئيسي'],
     digits='ar'),
 }
 
 _SVG = 'viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"'
-ICO_DL = f'<svg {_SVG}><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>'
-ICO_TAG = f'<svg {_SVG}><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>'
 ICO_SKIP = f'<svg {_SVG}><path d="M12 5v14"/><path d="m6 13 6 6 6-6"/></svg>'
 ICO_ORBIT = f'<svg {_SVG}><circle cx="12" cy="12" r="3"/><ellipse cx="12" cy="12" rx="10" ry="4.5"/></svg>'
-ICO_PIN = f'<svg {_SVG}><path d="M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>'
+ICO_CHEV = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg>'
 
 
 def num(n, lang):
@@ -97,13 +277,14 @@ def scripts(p):
 
 def hero(p, lang='fa', quote_href=None, skip_to='#about'):
     t = T[lang]
-    qh = quote_href or (p + t['root'] + t['quote_href'])
     cfg = {
         'lang': lang,
         'step': t['step'], 'total': num(5, lang),
         'nums': [num(i, lang) for i in range(1, 6)],
-        'stations': [{'n': a, 't': b} for a, b in t['stations']],
-        'labels': t['labels'], 'explore': t['explore'], 'back': t['back'],
+        'stations': t['stations'],
+        'labels': t['labels'],
+        'explore': t['explore'], 'back': t['back'],
+        'collapse': t['collapse'], 'expand': t['expand'],
     }
     pills = ''.join(
         f'<button type="button" class="f3d-pill" data-i="{i}"><b>{num(i + 1, lang)}</b><span>{esc(lb)}</span></button>'
@@ -112,17 +293,28 @@ def hero(p, lang='fa', quote_href=None, skip_to='#about'):
     <script type="application/json" class="f3d-cfg">{json.dumps(cfg, ensure_ascii=False)}</script>
     <div class="f3d-stage">
       <canvas class="f3d-gl" aria-hidden="true"></canvas>
-      <div class="f3d-labels" aria-hidden="true"></div>
+      <div class="f3d-labels"></div>
+      <div class="f3d-subpins"></div>
       <div class="f3d-intro">
         <p class="f3d-kicker">{esc(t['kicker'])}</p>
         <h1>{esc(t['h1a'])}<b>{esc(t['h1b'])}</b>{esc(t['h1c'])}</h1>
         <p class="f3d-sub">{esc(t['sub'])}</p>
       </div>
-      <div class="f3d-panel f3d-glass" aria-live="polite">
-        <small class="f3d-step"></small><h2 class="f3d-title"></h2><p class="f3d-text"></p>
-        <div class="f3d-dots"><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="f3d-dock f3d-glass" aria-live="polite">
+        <div class="f3d-dock-top">
+          <nav class="f3d-pills" aria-label="{esc(t['aerial'])}">{pills}</nav>
+          <button type="button" class="f3d-dock-toggle" aria-expanded="true" title="{esc(t['collapse'])}">{ICO_CHEV}<span class="f3d-dock-toggle-lbl">{esc(t['collapse'])}</span></button>
+        </div>
+        <div class="f3d-dock-drawer">
+          <div class="f3d-dock-head">
+            <span class="f3d-step"></span>
+            <h2 class="f3d-title"></h2>
+          </div>
+          <div class="f3d-subchips" role="tablist"></div>
+          <p class="f3d-subspec"></p>
+          <div class="f3d-dots"><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
       </div>
-      <nav class="f3d-pills f3d-glass" aria-label="{esc(t['aerial'])}">{pills}</nav>
       <div class="f3d-prog" aria-hidden="true"><i></i></div>
       <div class="f3d-tools">
         <button type="button" class="f3d-btn f3d-ex">{ICO_ORBIT}<span>{esc(t['explore'])}</span></button>

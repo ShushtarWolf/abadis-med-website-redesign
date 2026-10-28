@@ -1,78 +1,105 @@
-/* Interactive 3D factory scrollytelling hero (.f3d) */
+/* Interactive 3D factory scrollytelling hero (.f3d) — Option 2 + Option 3 Hybrid */
 .f3d{--f3d-teal:#0e8c8c;--f3d-deep:#066565;--f3d-coral:#ff7a59;--f3d-ink:#0b2f30;--f3d-mute:#355d5e;
-  --f3d-glass:rgba(255,255,255,.66);--f3d-line:rgba(255,255,255,.9);--f3d-bg:radial-gradient(90% 80% at 50% 40%,#fff 0%,#e8f3f3 70%,#d3e8e8 100%);
+  --f3d-glass:rgba(255,255,255,.92);--f3d-line:rgba(14,140,140,.25);--f3d-bg:radial-gradient(90% 80% at 50% 40%,#fff 0%,#e8f3f3 70%,#d3e8e8 100%);
   position:relative;height:500vh;color:var(--f3d-ink);font-family:Kalameh,Tahoma,sans-serif;background:var(--f3d-bg)}
-html[data-theme="dark"] .f3d,html[data-theme="noir"] .f3d{--f3d-ink:#e6f4f4;--f3d-mute:#a9c9c9;--f3d-glass:rgba(8,32,36,.62);--f3d-line:rgba(120,210,210,.22);
+html[data-theme="dark"] .f3d,html[data-theme="noir"] .f3d{--f3d-ink:#e6f4f4;--f3d-mute:#a9c9c9;--f3d-glass:rgba(7,24,30,.90);--f3d-line:rgba(120,210,210,.26);
   --f3d-bg:radial-gradient(90% 80% at 50% 40%,#0d2a2e 0%,#061719 70%,#03100f 100%)}
 html[data-theme="noir"] .f3d{--f3d-bg:radial-gradient(90% 80% at 50% 40%,#151527 0%,#0a0a12 75%)}
 .f3d-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
 .f3d-gl{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
 .f3d.is-ex .f3d-gl{pointer-events:auto;touch-action:none;cursor:grab}
 .f3d-glass{background:var(--f3d-glass);border:1px solid var(--f3d-line);-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);border-radius:20px;box-shadow:0 24px 60px -30px rgba(6,70,70,.45)}
-.f3d-intro{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:96px 20px 120px;transition:opacity .4s;pointer-events:none}
-.f3d-intro a{pointer-events:auto}
-.f3d-kicker{font-size:clamp(13px,1.2vw,16px);font-weight:600;color:var(--f3d-teal);letter-spacing:.01em;margin:0}
-.f3d-intro h1{font-weight:300;font-size:clamp(34px,5.6vw,80px);line-height:1.2;margin:12px 0 0;color:var(--f3d-ink)}
-.f3d-intro h1 b{font-weight:900;color:var(--f3d-teal)}
-.f3d-motto{margin:14px 0 0;font-weight:700;font-size:clamp(16px,1.7vw,22px);color:var(--f3d-ink)}
-.f3d-sub{margin:8px 0 0;font-size:clamp(14px,1.3vw,17px);color:var(--f3d-mute)}
-.f3d-cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:22px}
-.f3d-cta .btn{display:inline-flex;align-items:center;gap:8px}
-.f3d-ghost{background:var(--f3d-glass)!important;color:var(--f3d-ink)!important;border:1px solid var(--f3d-line)!important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
-.f3d-cue{margin-top:26px;width:24px;height:40px;border:1.5px solid color-mix(in srgb,var(--f3d-teal) 60%,transparent);border-radius:20px;position:relative}
-.f3d-cue::after{content:"";position:absolute;top:7px;left:50%;width:4px;height:8px;margin-left:-2px;border-radius:4px;background:var(--f3d-teal);animation:f3dcue 2s infinite}
-@keyframes f3dcue{0%{opacity:0;transform:translateY(0)}30%{opacity:1}100%{opacity:0;transform:translateY(15px)}}
-.f3d-panel{position:absolute;bottom:clamp(84px,12vh,120px);inset-inline-start:clamp(16px,4vw,48px);width:min(420px,calc(100% - 32px));padding:20px 22px;opacity:0;transform:translateY(16px);transition:opacity .4s,transform .4s;pointer-events:none}
-.f3d-panel.on{opacity:1;transform:none}
-.f3d-step{color:var(--f3d-coral);font-weight:700;font-size:13px}
-.f3d-title{margin:6px 0 0;font-weight:700;font-size:clamp(18px,1.7vw,22px);color:var(--f3d-ink)}
-.f3d-text{margin:8px 0 0;font-size:15px;line-height:1.9;color:var(--f3d-mute)}
-.f3d-dots{display:flex;gap:6px;margin-top:14px}.f3d-dots i{height:4px;flex:1;border-radius:4px;background:color-mix(in srgb,var(--f3d-teal) 22%,transparent)}.f3d-dots i.a{background:var(--f3d-teal)}
-.f3d-pills{position:absolute;top:84px;left:50%;transform:translate(-50%,-8px);display:flex;gap:4px;padding:5px;border-radius:999px;opacity:0;visibility:hidden;transition:opacity .4s,transform .4s,visibility .4s;max-width:calc(100% - 24px);overflow-x:auto;scrollbar-width:none}
-.f3d-pills.on{opacity:1;visibility:visible;transform:translate(-50%,0)}
-.f3d-pill{font:inherit;font-size:13px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;border:0;border-radius:999px;padding:7px 12px;background:transparent;color:var(--f3d-ink);cursor:pointer}
-.f3d-pill b{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:color-mix(in srgb,var(--f3d-teal) 16%,transparent);color:var(--f3d-teal);font-size:12px}
-.f3d-pill.act{background:var(--f3d-teal);color:#fff}.f3d-pill.act b{background:#fff;color:var(--f3d-teal)}
-.f3d-prog{position:absolute;inset-inline-end:clamp(14px,2.6vw,32px);top:50%;transform:translateY(-50%);height:38vh;width:3px;border-radius:3px;background:color-mix(in srgb,var(--f3d-teal) 18%,transparent);overflow:hidden}
-.f3d-prog i{display:block;width:100%;height:0;background:linear-gradient(var(--f3d-teal),var(--f3d-coral))}
-.f3d-tools{position:absolute;bottom:clamp(16px,3.4vh,32px);inset-inline-end:clamp(16px,4vw,48px);display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
-.f3d-btn{font:inherit;font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;cursor:pointer;text-decoration:none;border:1px solid var(--f3d-line);background:var(--f3d-glass);color:var(--f3d-ink);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
-.f3d-ex{background:var(--f3d-teal);color:#fff;border-color:transparent;box-shadow:0 10px 30px -10px rgba(14,140,140,.7)}
-.f3d-btn:hover{filter:brightness(1.07)}
-.f3d-hint{position:absolute;left:50%;top:140px;transform:translateX(-50%);padding:8px 16px;font-size:13px;color:var(--f3d-ink);opacity:0;visibility:hidden;transition:opacity .4s;white-space:nowrap;max-width:calc(100% - 24px);overflow:hidden;text-overflow:ellipsis}
-.f3d.is-ex .f3d-hint{opacity:1;visibility:visible}
-.f3d.is-ex .f3d-panel,.f3d.is-ex .f3d-intro,.f3d.is-ex .f3d-prog{opacity:0!important}
-.f3d-badge{position:absolute;bottom:clamp(16px,3.4vh,32px);inset-inline-start:clamp(16px,4vw,48px);display:flex;align-items:center;gap:8px;margin:0;padding:9px 14px;font-size:12.5px;color:var(--f3d-ink);border-radius:999px;max-width:min(560px,calc(100% - 32px))}
-.f3d-badge svg{color:var(--f3d-coral);flex:none}
-.f3d-labels{position:absolute;inset:0;pointer-events:none}
-.f3d-lbl{position:absolute;top:0;left:0;padding:5px 11px;font-size:12.5px;font-weight:600;color:var(--f3d-deep);white-space:nowrap;border-radius:999px;background:rgba(255,255,255,.84);border:1px solid rgba(14,140,140,.25);opacity:0;transition:opacity .35s,background .25s,color .25s;will-change:transform;font-family:inherit}
-html[data-theme="dark"] .f3d-lbl,html[data-theme="noir"] .f3d-lbl{background:rgba(6,30,34,.82);color:#9fe3e3;border-color:rgba(120,210,210,.3)}
-.f3d-lbl.show{opacity:.95}.f3d-lbl.act{background:var(--f3d-coral)!important;color:#fff!important;opacity:1}
-.f3d.is-ex .f3d-lbl{pointer-events:auto;cursor:pointer}
-html.f3d-lock,html.f3d-lock body{overflow:hidden}
-@media(max-width:760px){.f3d-prog{display:none}.f3d-panel{bottom:132px;inset-inline-start:12px;width:calc(100% - 24px);padding:16px}.f3d-text{font-size:14px;line-height:1.8}
-  .f3d-tools{inset-inline-end:12px;bottom:76px}.f3d-btn{padding:9px 14px;font-size:13px}.f3d-badge{inset-inline-start:12px;bottom:14px;font-size:11px;border-radius:14px}
-  .f3d-pills{top:72px}.f3d-hint{top:124px;white-space:normal;text-align:center;width:calc(100% - 24px)}.f3d-intro{padding-bottom:150px}}
-@media(prefers-reduced-motion:reduce){.f3d-cue::after{animation:none}}
 
-/* [t315u] Hamid iPhone fixes: top title card, legible header, clear bottom bar */
-.f3d-intro{inset:auto;top:96px;left:50%;transform:translateX(-50%);width:min(900px,calc(100% - 32px));padding:20px 28px;justify-content:flex-start;border-radius:22px;
-  background:rgba(255,255,255,.88);border:1px solid rgba(14,140,140,.24);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 24px 60px -34px rgba(6,70,70,.5)}
-html[data-theme="dark"] .f3d-intro,html[data-theme="noir"] .f3d-intro{background:rgba(7,24,30,.86);border-color:rgba(120,210,210,.22)}
-.f3d-intro h1{font-weight:800;font-size:clamp(24px,3.4vw,46px);line-height:1.35;margin-top:8px}
-.f3d-intro h1 b{font-weight:900}
-.f3d-sub{font-size:clamp(13.5px,1.2vw,16px);line-height:1.8;color:var(--f3d-ink);opacity:.85}
-.f3d-panel{background:rgba(255,255,255,.94);border-color:rgba(14,140,140,.24)}
-html[data-theme="dark"] .f3d-panel,html[data-theme="noir"] .f3d-panel{background:rgba(7,24,30,.92);border-color:rgba(120,210,210,.22)}
-.f3d-title{color:var(--f3d-ink)}.f3d-text{color:var(--f3d-ink);opacity:.85}
-html:not([data-theme="dark"]):not([data-theme="noir"]) .header:has(+ main .f3d){background:rgba(255,255,255,.82);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid rgba(14,140,140,.18)}
+/* Light mode site header contrast over .f3d */
+html:not([data-theme="dark"]):not([data-theme="noir"]) .header:has(+ main .f3d){background:rgba(255,255,255,.85);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid rgba(14,140,140,.18)}
 html:not([data-theme="dark"]):not([data-theme="noir"]) .header:has(+ main .f3d) :is(.nav a,.nav-parent,.menu-btn,.lang-link,.theme-toggle){color:#083b3e}
 html:not([data-theme="dark"]):not([data-theme="noir"]) .header:has(+ main .f3d) :is(.menu-btn,.theme-toggle,.lang-switch){border-color:rgba(14,140,140,.28)}
 html:not([data-theme="dark"]):not([data-theme="noir"]) .header:has(+ main .f3d) .mb-bars i{background:#083b3e}
-.f3d-tools{inset-inline:auto;left:50%;transform:translateX(-50%);justify-content:center;flex-wrap:nowrap;max-width:calc(100% - 170px)}
-.f3d-btn{white-space:nowrap}
-@media(max-width:760px){.f3d-intro{top:78px;padding:16px 18px;width:calc(100% - 24px)}
-  .f3d-tools{bottom:24px;max-width:none;width:calc(100% - 24px);padding-inline:76px 0;justify-content:flex-end;left:12px;transform:none}
-  html[dir="ltr"] .f3d-tools{padding-inline:0 76px}
-  .f3d-btn{padding:9px 12px;font-size:12.5px}
-  .f3d-panel{bottom:86px}.f3d-pills{top:68px}}
+
+/* Opening aerial title card at top */
+.f3d-intro{position:absolute;top:92px;left:50%;transform:translateX(-50%);width:min(880px,calc(100% - 32px));padding:18px 26px;text-align:center;border-radius:22px;
+  background:rgba(255,255,255,.90);border:1px solid rgba(14,140,140,.24);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 24px 60px -34px rgba(6,70,70,.48);
+  transition:opacity .35s,visibility .35s;pointer-events:none;z-index:4}
+html[data-theme="dark"] .f3d-intro,html[data-theme="noir"] .f3d-intro{background:rgba(7,24,30,.88);border-color:rgba(120,210,210,.24)}
+.f3d-kicker{font-size:clamp(12.5px,1.1vw,15px);font-weight:700;color:var(--f3d-teal);margin:0}
+.f3d-intro h1{font-weight:800;font-size:clamp(22px,3.2vw,42px);line-height:1.32;margin:6px 0 0;color:var(--f3d-ink)}
+.f3d-intro h1 b{font-weight:900;color:var(--f3d-teal)}
+.f3d-sub{margin:6px 0 0;font-size:clamp(13px,1.15vw,15.5px);line-height:1.75;color:var(--f3d-ink);opacity:.86}
+.f3d.is-ex .f3d-intro{opacity:0!important;visibility:hidden!important}
+
+/* Unified Top Interactive Station Dock (Option 2) */
+.f3d-dock{position:absolute;top:82px;left:50%;transform:translate(-50%,-10px);width:min(880px,calc(100% - 28px));padding:10px 14px;border-radius:20px;
+  opacity:0;visibility:hidden;transition:opacity .35s,transform .35s,visibility .35s;z-index:6}
+.f3d-dock.on{opacity:1;visibility:visible;transform:translate(-50%,0)}
+.f3d-dock-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.f3d-pills{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;flex:1}
+.f3d-pills::-webkit-scrollbar{display:none}
+.f3d-pill{font:inherit;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;border:1px solid transparent;border-radius:999px;padding:6px 12px;background:transparent;color:var(--f3d-ink);cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.f3d-pill:hover{border-color:rgba(14,140,140,.28)}
+.f3d-pill b{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:color-mix(in srgb,var(--f3d-teal) 16%,transparent);color:var(--f3d-teal);font-size:12px}
+.f3d-pill.act{background:var(--f3d-teal);color:#fff}.f3d-pill.act b{background:#fff;color:var(--f3d-teal)}
+
+.f3d-dock-toggle{font:inherit;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:999px;border:1px solid var(--f3d-line);background:color-mix(in srgb,var(--f3d-teal) 10%,transparent);color:var(--f3d-ink);cursor:pointer;white-space:nowrap;flex:none}
+.f3d-dock-toggle svg{transition:transform .25s}
+.f3d-dock.is-collapsed .f3d-dock-toggle svg{transform:rotate(180deg)}
+
+.f3d-dock-drawer{margin-top:10px;padding-top:10px;border-top:1px solid var(--f3d-line);transition:max-height .3s ease,opacity .25s ease;overflow:hidden}
+.f3d-dock.is-collapsed .f3d-dock-drawer{display:none}
+.f3d-dock-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.f3d-step{color:var(--f3d-coral);font-weight:800;font-size:12.5px;white-space:nowrap;background:rgba(255,122,89,.12);padding:2px 9px;border-radius:999px;border:1px solid rgba(255,122,89,.35)}
+.f3d-title{margin:0;font-weight:800;font-size:clamp(15px,1.4vw,18.5px);color:var(--f3d-ink)}
+
+/* Interactive Machine Sub-Node Chips inside Top Dock */
+.f3d-subchips{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+.f3d-subchip{font:inherit;font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;border:1px solid rgba(14,140,140,.28);
+  background:color-mix(in srgb,var(--f3d-teal) 8%,transparent);color:var(--f3d-ink);cursor:pointer;transition:all .2s;white-space:nowrap}
+.f3d-subchip i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--f3d-teal);transition:background .2s,transform .2s}
+.f3d-subchip:hover{border-color:var(--f3d-coral)}
+.f3d-subchip.act{background:var(--f3d-coral);color:#fff;border-color:var(--f3d-coral);box-shadow:0 6px 18px -6px rgba(255,122,89,.75)}
+.f3d-subchip.act i{background:#fff;transform:scale(1.2)}
+
+.f3d-subspec{margin:8px 0 0;font-size:13.5px;line-height:1.75;color:var(--f3d-ink);opacity:.92}
+.f3d-dots{display:flex;gap:6px;margin-top:9px}.f3d-dots i{height:3.5px;flex:1;border-radius:4px;background:color-mix(in srgb,var(--f3d-teal) 22%,transparent)}.f3d-dots i.a{background:var(--f3d-teal)}
+
+/* 3D Floating Hall Labels & Interactive 3D Machine Sub-Node Pins (Option 3) */
+.f3d-labels,.f3d-subpins{position:absolute;inset:0;pointer-events:none;z-index:3}
+.f3d-lbl{position:absolute;top:0;left:0;padding:5px 11px;font-size:12px;font-weight:700;color:var(--f3d-deep);white-space:nowrap;border-radius:999px;background:rgba(255,255,255,.88);border:1px solid rgba(14,140,140,.3);opacity:0;transition:opacity .3s,background .25s,color .25s;will-change:transform;font-family:inherit;pointer-events:none}
+html[data-theme="dark"] .f3d-lbl,html[data-theme="noir"] .f3d-lbl{background:rgba(6,30,34,.86);color:#9fe3e3;border-color:rgba(120,210,210,.32)}
+.f3d-lbl.show{opacity:.95;pointer-events:auto;cursor:pointer}.f3d-lbl.act{background:var(--f3d-teal)!important;color:#fff!important;opacity:1}
+
+.f3d-subpin{position:absolute;top:0;left:0;display:inline-flex;align-items:center;gap:6px;padding:5px 11px;font-size:12px;font-weight:700;color:var(--f3d-ink);white-space:nowrap;
+  border-radius:999px;background:rgba(255,255,255,.92);border:1.5px solid var(--f3d-teal);box-shadow:0 8px 22px -8px rgba(6,70,70,.45);
+  opacity:0;visibility:hidden;transition:opacity .25s,background .2s,color .2s,border-color .2s;will-change:transform;font-family:inherit;cursor:pointer;pointer-events:auto}
+html[data-theme="dark"] .f3d-subpin,html[data-theme="noir"] .f3d-subpin{background:rgba(7,26,32,.92);color:#e6f4f4;border-color:#3fb3b3}
+.f3d-subpin.show{opacity:1;visibility:visible}
+.f3d-subpin i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--f3d-teal);box-shadow:0 0 0 3px rgba(14,140,140,.22)}
+.f3d-subpin.act{background:var(--f3d-coral)!important;color:#fff!important;border-color:#fff!important;box-shadow:0 10px 26px -6px rgba(255,122,89,.85);z-index:5}
+.f3d-subpin.act i{background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.35)}
+
+/* Vertical progress bar & bottom tools */
+.f3d-prog{position:absolute;inset-inline-end:clamp(14px,2.4vw,28px);top:54%;transform:translateY(-50%);height:34vh;width:3px;border-radius:3px;background:color-mix(in srgb,var(--f3d-teal) 18%,transparent);overflow:hidden;z-index:4}
+.f3d-prog i{display:block;width:100%;height:0;background:linear-gradient(var(--f3d-teal),var(--f3d-coral))}
+.f3d-tools{position:absolute;bottom:clamp(16px,3vh,28px);left:50%;transform:translateX(-50%);display:flex;gap:10px;flex-wrap:nowrap;justify-content:center;max-width:calc(100% - 170px);z-index:5}
+.f3d-btn{font:inherit;font-size:13.5px;font-weight:700;display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:999px;cursor:pointer;text-decoration:none;border:1px solid var(--f3d-line);background:var(--f3d-glass);color:var(--f3d-ink);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);white-space:nowrap}
+.f3d-ex{background:var(--f3d-teal);color:#fff;border-color:transparent;box-shadow:0 10px 30px -10px rgba(14,140,140,.7)}
+.f3d-btn:hover{filter:brightness(1.07)}
+.f3d-hint{position:absolute;left:50%;bottom:74px;transform:translateX(-50%);padding:7px 15px;font-size:12.5px;color:var(--f3d-ink);opacity:0;visibility:hidden;transition:opacity .35s;white-space:nowrap;max-width:calc(100% - 24px);overflow:hidden;text-overflow:ellipsis;z-index:5}
+.f3d.is-ex .f3d-hint{opacity:1;visibility:visible}
+.f3d.is-ex .f3d-prog{opacity:0!important}
+html.f3d-lock,html.f3d-lock body{overflow:hidden}
+
+@media(max-width:760px){
+  .f3d-prog{display:none}
+  .f3d-intro{top:74px;padding:14px 16px;width:calc(100% - 24px)}
+  .f3d-dock{top:68px;width:calc(100% - 20px);padding:8px 11px;border-radius:16px}
+  .f3d-dock-toggle-lbl{display:none}
+  .f3d-pill{padding:5px 10px;font-size:12px}
+  .f3d-title{font-size:14px}
+  .f3d-subchips{flex-wrap:wrap;gap:5px;overflow:visible;padding-bottom:0}
+  .f3d-subchip{font-size:11px;padding:4px 9px}
+  .f3d-subspec{font-size:12px;line-height:1.6;margin-top:6px}
+  .f3d-subpin{font-size:11px;padding:4px 9px}
+  .f3d-tools{bottom:18px;max-width:none;width:calc(100% - 24px);padding-inline:0 68px;justify-content:center;left:12px;transform:none}
+  .f3d-btn{padding:9px 12px;font-size:12px}
+  .f3d-hint{bottom:68px;font-size:11.5px;white-space:normal;text-align:center;width:calc(100% - 24px)}
+}
