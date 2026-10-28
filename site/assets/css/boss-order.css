@@ -1193,13 +1193,22 @@
 /* Video Hero Family Style (matching about / customers / sdgs) */
 .co-hero {
   position: relative; overflow: hidden;
-  background: linear-gradient(135deg, #066163 0%, #0b2e32 100%);
+  background: linear-gradient(135deg, #066163 0%, #0b2e32 100%) !important;
   color: #fff;
+  padding: 128px 0 52px;
+}
+[data-theme="dark"] .co-hero {
+  background: linear-gradient(135deg, #087673 0%, #041113 100%) !important;
+}
+[data-theme="noir"] .co-hero {
+  background: linear-gradient(135deg, #3b1d7a 0%, #0a0a12 100%) !important;
+}
+.co-page .co-hero {
   padding: 46px 0 44px;
 }
 .co-hero::before {
   content: ""; position: absolute; inset: 0;
-  background: url("../assets/media/hero-careers-poster.jpg?v=20261028h") center / cover no-repeat;
+  background: url("../media/hero-careers-poster.jpg?v=20261028i") center / cover no-repeat;
   opacity: .18; z-index: 0; pointer-events: none;
   transition: opacity .35s ease, visibility .35s ease;
 }
@@ -1207,13 +1216,19 @@
 .co-hero:has(.co-hero-video.is-playing)::before {
   opacity: 0 !important; visibility: hidden !important;
 }
+.co-hero::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(5, 74, 76, 0.52) 0%, rgba(6, 30, 34, 0.68) 100%);
+  z-index: 0; pointer-events: none;
+}
 .co-hero-video {
   position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: cover; opacity: 0; visibility: hidden;
+  filter: brightness(0.72) saturate(0.92) contrast(1.05);
   z-index: 0; pointer-events: none;
   transition: opacity .35s ease;
 }
-.co-hero-video.is-playing { opacity: .20; visibility: visible; }
+.co-hero-video.is-playing { opacity: .16 !important; visibility: visible !important; }
 .co-wrap { width: min(1180px, 100%); margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
 .co-crumbs { font-size: .86rem; color: rgba(255,255,255,.78); margin: 0 0 8px; }
 .co-crumbs a { color: rgba(255,255,255,.86); text-decoration: none; }
@@ -1514,7 +1529,8 @@
 @media (max-width: 640px) {
   .co-topbar { padding: 8px 12px; }
   .co-pill { font-size: .76rem; padding: 5px 10px; }
-  .co-hero { padding: 32px 0 30px; }
+  .co-hero { padding: 100px 0 34px; }
+  .co-page .co-hero { padding: 32px 0 30px; }
   .co-jobs-grid, .co-perks-grid, .co-roadmap, .cf-stepper, .cf-grid-2, .cf-list-row, .cf-expect-grid {
     grid-template-columns: 1fr;
   }

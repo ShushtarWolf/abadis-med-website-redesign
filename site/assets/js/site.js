@@ -315,7 +315,7 @@
       return true;
     }
     function arm(v) {
-      var hero = v.closest('.about-hero, .page-hero');
+      var hero = v.closest('.about-hero, .page-hero, .co-hero, .careers-hero');
       function on() {
         v.classList.add('is-playing');
         if (hero) hero.classList.add('has-playing-video');
@@ -345,14 +345,14 @@
       var pending = v.play();
       if (pending && pending.catch) pending.catch(function () {
         v.classList.remove('is-playing');
-        var hero = v.closest('.about-hero, .page-hero');
+        var hero = v.closest('.about-hero, .page-hero, .co-hero, .careers-hero');
         if (hero) hero.classList.remove('has-playing-video');
       });
     }
     vids.forEach(function (v) {
       var poster = v.getAttribute('poster');
       var parent = v.parentElement;
-      if (poster && parent && !parent.closest('.about-hero') && !photoBg(parent)) {
+      if (poster && parent && !parent.closest('.about-hero, .page-hero, .co-hero, .careers-hero') && !photoBg(parent)) {
         parent.style.backgroundImage = 'url("' + poster.replace(/"/g, '') + '")';
         parent.style.backgroundSize = 'cover';
         parent.style.backgroundPosition = 'center';
