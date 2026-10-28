@@ -189,7 +189,7 @@ def build_h3(p='../'):
         '<circle cx="265" cy="75" r="6" fill="#2dd4bf"/>'
         '<text x="95" y="108" fill="#ecfeff" font-size="11" font-weight="800" text-anchor="middle" font-family="Kalameh,Tahoma">دفتر مرکزی (قیطریه)</text>'
         '<text x="265" y="108" fill="#ecfeff" font-size="11" font-weight="800" text-anchor="middle" font-family="Kalameh,Tahoma">کارخانه (شمس‌آباد)</text>'
-        '<text x="180" y="42" fill="#5eead4" font-size="10" font-weight="800" text-anchor="middle" font-family="Kalameh,Tahoma">پوشش ۳۱ استان · ۱٬۲۸۴ مرکز</text>'
+        '<text x="180" y="42" fill="#5eead4" font-size="10" font-weight="800" text-anchor="middle" font-family="Kalameh,Tahoma">پوشش ۳۱ استان، ۱٬۲۸۴ مرکز</text>'
         '</svg>'
     )
     hero = f'''{topbar("h3")}

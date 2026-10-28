@@ -533,17 +533,17 @@ def hub_html(lang, url):
     return f'''<section class="section phil-sec" id="phil">
   <div class="wrap">
     <h2>{esc(PATHS_H[lang])}</h2>
-    <h3>{esc(QUESTIONS_H[lang])}</h3>
+    <h3 id="abadis-at-a-glance">{esc(QUESTIONS_H[lang])}</h3>
     <ol class="phil-pillars">{pillars}</ol>
     <div class="phil-table-wrap"><table class="phil-table">
       <thead><tr>{head}</tr></thead>
       <tbody>{rows}</tbody>
     </table></div>
     <p class="phil-kicker">{esc(INTRO_KICK[lang])}</p>
-    <h2>{esc(INTRO_H[lang])}</h2>
+    <h2 id="core-problems">{esc(INTRO_H[lang])}</h2>
     <p class="phil-lead">{esc(INTRO_SUB[lang])}</p>
     {_paras(INTRO, lang)}
-    <h3>{esc(MAP_H[lang])}</h3>
+    <h3 id="where-used">{esc(MAP_H[lang])}</h3>
     <div class="phil-table-wrap"><table class="phil-table">
       <thead><tr>{map_head}</tr></thead>
       <tbody>{theme_rows}</tbody>

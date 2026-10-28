@@ -69,24 +69,53 @@ def build_home(write, lang):
     t = T[lang]; p = '../'
     live = load('home_live_i18n.json')[lang]
     img = lambda n: f'{p}assets/img/live/{n}.webp'
-    hero = f'''  <section class="hx" data-tone="dark" id="intro" aria-label="{esc(t['bag_alt'])}">
-    <div class="hx-bg" aria-hidden="true"><span class="hx-grid"></span><span class="hx-ring hx-ring--a"></span><span class="hx-ring hx-ring--b"></span><span class="hx-scan"></span></div>
-    <div class="wrap hx-inner">
-      <div class="hx-copy">
-        <p class="hx-kicker">{esc(t['kicker'])}</p>
+    rot_lines = (
+        ['Reliable Protection for Nurses & Clinical Staff',
+         'Sustainable Safety in the OR & ICU',
+         'Eliminating Cross-Contamination & Canister Washing',
+         'Trusted by 1,284 Healthcare Centers in 31 Provinces']
+        if lang == 'en' else
+        ['حماية موثوقة للممرضين والكادر الطبي',
+         'سلامة مستدامة لغرف العمليات والعناية المركزة',
+         'القضاء على العدوى المتقاطعة وغسل الخزانات',
+         'في ١٬٢٨٤ مركزاً علاجياً عبر ٣١ محافظة']
+    )
+    kpis = (
+        [('1,284 Active Centers', 'Nationwide coverage across all 31 provinces'),
+         ('99.999% Filtration Efficiency', 'Complete protection for staff & central vacuum'),
+         ('Over 12M Litres Saved', 'Annual hospital water consumption savings')]
+        if lang == 'en' else
+        [('١٬٢٨٤ مركزاً علاجياً نشطاً', 'تغطية شاملة في جميع المحافظات الـ ٣١'),
+         ('٩٩.٩٩٩٪ كفاءة الفلترة', 'حماية كاملة للكادر الطبي وشبكة الشفط المركزي'),
+         ('أكثر من ١٢ مليون لتر', 'توفير سنوي في استهلاك المياه بالمستشفيات')]
+    )
+    ico_hosp = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>'
+    ico_shld = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>'
+    ico_drop = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>'
+    rot_spans = ''.join(f'<span class="slogan-line" style="--i:{idx}">{esc(rl)}</span>' for idx, rl in enumerate(rot_lines))
+    hero = f'''  <section class="hx hx--fullbleed" data-tone="dark" id="intro" aria-label="{esc(t['h1'])}">
+    <div class="mh-bg-media" aria-hidden="true" style="background-image:url('{p}assets/media/hero-nurse-main-1-poster.jpg?v=20261029a')">
+      <video class="mh-bg-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="auto" tabindex="-1" aria-hidden="true" poster="{p}assets/media/hero-nurse-main-1-poster.jpg?v=20261029a">
+        <source src="{p}assets/media/hero-nurse-main-1.mp4?v=20261029a" type="video/mp4">
+      </video>
+      <div class="mh-bg-veil"></div>
+    </div>
+    <div class="wrap mh-hero-inner">
+      <div class="mh-copy">
+        <p class="mh-eyebrow">{esc(t['kicker'])}</p>
         <h1>{esc(t['h1'])}</h1>
+        <p class="slogan" aria-label="{esc(' '.join(rot_lines))}">{rot_spans}</p>
         <p class="hx-sub">{esc(t['sub'])}</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="{esc(H.CATALOGUE)}" target="_blank" rel="noopener" data-track="catalogue_download" data-track-label="home_hero_catalogue_{lang}">{esc(t['cat'])}</a>
           <a class="btn btn-ghost" href="{_h(t, p, t['quote_href'])}" data-track="contact_click" data-track-label="home_hero_quote_{lang}">{esc(t['quote'])}</a>
         </div>
       </div>
-      <figure class="hx-product hx-product--video"><span class="hx-glow" aria-hidden="true"></span>
-        <div class="hx-video-frame" style="background-image:url('{p}assets/media/hero-nurse-poster.jpg?v=20261028p')">
-          <video class="hx-nurse-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="auto" tabindex="-1" aria-hidden="true" poster="{p}assets/media/hero-nurse-poster.jpg?v=20261028p">
-            <source src="{p}assets/media/hero-nurse.mp4?v=20261028p" type="video/mp4">
-          </video>
-        </div></figure>
+      <div class="mh-kpi-row">
+        <div class="mh-kpi-card"><span class="mh-kpi-ico">{ico_hosp}</span><div><strong>{esc(kpis[0][0])}</strong><span>{esc(kpis[0][1])}</span></div></div>
+        <div class="mh-kpi-card"><span class="mh-kpi-ico">{ico_shld}</span><div><strong>{esc(kpis[1][0])}</strong><span>{esc(kpis[1][1])}</span></div></div>
+        <div class="mh-kpi-card"><span class="mh-kpi-ico">{ico_drop}</span><div><strong>{esc(kpis[2][0])}</strong><span>{esc(kpis[2][1])}</span></div></div>
+      </div>
     </div>
   </section>'''
     goals = ''.join(f'<li>{esc(g)}</li>' for g in t['goals'])

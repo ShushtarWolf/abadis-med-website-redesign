@@ -481,27 +481,40 @@ def _live(name):
     return f'assets/img/live/{name}.webp'
 
 
-def hero_v2():
-    return f'''  <section class="hx" data-tone="dark" id="intro" aria-label="کیسه ساکشن یکبار مصرف آبادیس">
-    <div class="hx-bg" aria-hidden="true"><span class="hx-grid"></span><span class="hx-ring hx-ring--a"></span><span class="hx-ring hx-ring--b"></span><span class="hx-scan"></span></div>
-    <div class="wrap hx-inner">
-      <div class="hx-copy">
-        <p class="hx-kicker">شرکت دانش‌بنیان مخازن طبی آبادیس</p>
+def hero_v2(prefix=''):
+    """Full-bleed clinical nurse video hero (Option M-H1 — NO boxed frame around video)."""
+    p = prefix
+    ico_hosp = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>'
+    ico_shld = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>'
+    ico_drop = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>'
+    return f'''  <section class="hx hx--fullbleed" data-tone="dark" id="intro" aria-label="پیشرو در کنترل عفونت و مدیریت مایعات بیمارستانی">
+    <div class="mh-bg-media" aria-hidden="true" style="background-image:url('{p}assets/media/hero-nurse-main-1-poster.jpg?v=20261029a')">
+      <video class="mh-bg-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="auto" tabindex="-1" aria-hidden="true" poster="{p}assets/media/hero-nurse-main-1-poster.jpg?v=20261029a">
+        <source src="{p}assets/media/hero-nurse-main-1.mp4?v=20261029a" type="video/mp4">
+      </video>
+      <div class="mh-bg-veil"></div>
+    </div>
+    <div class="wrap mh-hero-inner">
+      <div class="mh-copy">
+        <p class="mh-eyebrow">شرکت دانش‌بنیان مخازن طبی آبادیس</p>
         <h1>{esc(HERO_H1)}</h1>
+        <p class="slogan" aria-label="حفاظت مطمئن از پرستاران و کادر درمان، ایمنی پایدار اتاق عمل و بخش‌های ویژه در ۱٬۲۸۴ مرکز درمانی در ۳۱ استان کشور">
+          <span class="slogan-line" style="--i:0">حفاظت مطمئن از پرستاران و کادر درمان</span>
+          <span class="slogan-line" style="--i:1">ایمنی پایدار اتاق عمل و بخش‌های ویژه</span>
+          <span class="slogan-line" style="--i:2">حذف عفونت متقاطع و شست‌وشوی مخازن</span>
+          <span class="slogan-line" style="--i:3">در ۱٬۲۸۴ مرکز درمانی در ۳۱ استان کشور</span>
+        </p>
         <p class="hx-sub">{esc(HERO_SUB_LIVE)}</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="{esc(CATALOGUE)}" target="_blank" rel="noopener" data-track="catalogue_download" data-track-label="home_hero_catalogue">دریافت کاتالوگ</a>
-          <a class="btn btn-ghost" href="export/#quote" data-track="contact_click" data-track-label="home_hero_quote">درخواست قیمت / همکاری صادراتی</a>
+          <a class="btn btn-ghost" href="{p}export/#quote" data-track="contact_click" data-track-label="home_hero_quote">درخواست قیمت / همکاری صادراتی</a>
         </div>
       </div>
-      <figure class="hx-product hx-product--video">
-        <span class="hx-glow" aria-hidden="true"></span>
-        <div class="hx-video-frame" style="background-image:url('assets/media/hero-nurse-poster.jpg?v=20261028p')">
-          <video class="hx-nurse-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="auto" tabindex="-1" aria-hidden="true" poster="assets/media/hero-nurse-poster.jpg?v=20261028p">
-            <source src="assets/media/hero-nurse.mp4?v=20261028p" type="video/mp4">
-          </video>
-        </div>
-      </figure>
+      <div class="mh-kpi-row">
+        <div class="mh-kpi-card"><span class="mh-kpi-ico">{ico_hosp}</span><div><strong>۱٬۲۸۴ مرکز درمانی فعال</strong><span>پوشش سراسری در تمام ۳۱ استان کشور</span></div></div>
+        <div class="mh-kpi-card"><span class="mh-kpi-ico">{ico_shld}</span><div><strong>۹۹.۹۹۹٪ راندمان فیلتراسیون</strong><span>حفاظت کامل از کادر درمان و وکیوم مرکزی</span></div></div>
+        <div class="mh-kpi-card"><span class="mh-kpi-ico">{ico_drop}</span><div><strong>بیش از ۱۲ میلیون لیتر</strong><span>صرفه‌جویی سالانه در مصرف آب بیمارستانی</span></div></div>
+      </div>
     </div>
   </section>'''
 

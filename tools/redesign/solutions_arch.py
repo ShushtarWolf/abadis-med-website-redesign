@@ -532,6 +532,74 @@ def _sol_slogan_html(lines):
     return f'<p class="slogan reveal" aria-label="{esc(" ".join(lines))}">{spans}</p>'
 
 
+def _hero_quad_questions_html(p, lang):
+    """Approved Hybrid H1 visual design + H3 4 Strategic Questions ([t308u])."""
+    items = {
+        'fa': [
+            ('۰۱', 'محصولات', 'آبادیس در یک نگاه',
+             'ما چه چیزی تولید و عرضه می‌کنیم؟ — ۸ خانواده محصول تخصصی ساکشن مدار بسته، فیلتراسیون، بهداشت دهان و کنترل آلودگی بیمارستانی',
+             'مشاهده در یک نگاه', '#abadis-at-a-glance', _SVG_CUBE),
+            ('۰۲', 'راهکارها', 'آبادیس در چه حوزه‌هایی راهکار دارد؟',
+             'این محصولات در کنار هم چه مسئله‌ای را حل می‌کنند؟ — ۳ راهکار یکپارچه مدیریت مایعات، ایمنی راه هوایی و مدیریت پسماند',
+             'کاوش در راهکارها', '#sol-showcase', _SVG_DROPLET),
+            ('۰۳', 'کاربردها', 'راهکارهای آبادیس در کجا کاربرد دارند؟',
+             'در کدام بخش‌های بیمارستان استفاده می‌شوند؟ — اتاق عمل (OR)، مراقبت‌های ویژه (ICU/CCU)، اورژانس، CSR و بخش‌های بستری',
+             'مشاهده کاربردها', '#where-used', _SVG_COMPASS),
+            ('۰۴', 'نوآوری و تمرکز', 'راهکارهای آبادیس روی چه مسائلی تمرکز دارند؟',
+             'برای حل مسئله آینده روی چه فناوری‌هایی کار می‌کنیم؟ — کنترل عفونت، ایمنی کادر درمان، صرفه‌جویی آب و فیلم‌های محلول در آب PVA',
+             'مشاهده تمرکز و نوآوری', '#core-problems', _SVG_SHIELD),
+        ],
+        'en': [
+            ('01', 'Products', 'Abadis at a Glance',
+             'What do we manufacture and supply? — 8 specialized product families in closed-system suction, filtration, oral hygiene & contamination control',
+             'Explore Overview', '#abadis-at-a-glance', _SVG_CUBE),
+            ('02', 'Solutions', 'In Which Areas Does Abadis Offer Solutions?',
+             'What problem do these products solve together? — 3 integrated solutions for fluid management, airway care & hospital waste management',
+             'Explore Solutions', '#sol-showcase', _SVG_DROPLET),
+            ('03', 'Applications', 'Where Are Abadis Solutions Used?',
+             'Which hospital departments use these solutions? — Operating Rooms (OR), ICU/CCU, Emergency (ER), CSR & inpatient wards',
+             'View Applications', '#where-used', _SVG_COMPASS),
+            ('04', 'Focus & Innovation', 'What Challenges Do Abadis Solutions Focus On?',
+             'Which technologies are we developing for the future? — Infection control, staff safety, saving 12M+ L water & water-soluble PVA',
+             'View Focus & Innovation', '#core-problems', _SVG_SHIELD),
+        ],
+        'ar': [
+            ('٠١', 'المنتجات', 'آباديس في لمحة',
+             'ماذا ننتج ونعرض؟ — ٨ عائلات منتجات تخصصية في الشفط المغلق والفلترة ونظافة الفم والسيطرة على التلوث',
+             'استعراض النظرة العامة', '#abadis-at-a-glance', _SVG_CUBE),
+            ('٠٢', 'الحلول', 'في أي مجالات تقدّم آباديس حلولاً؟',
+             'أي مسألة تحلّها هذه المنتجات معاً؟ — ٣ حلول متكاملة لإدارة السوائل وسلامة الطريق الهوائي وإدارة النفايات',
+             'استكشاف الحلول', '#sol-showcase', _SVG_DROPLET),
+            ('٠٣', 'الاستخدامات', 'أين تُستخدم حلول آباديس؟',
+             'في أي أقسام المستشفى تُستخدم؟ — غرف العمليات (OR) والعناية المركزة (ICU/CCU) والطوارئ وCSR وأقسام التنويم',
+             'عرض الاستخدامات', '#where-used', _SVG_COMPASS),
+            ('٠٤', 'التركيز والابتكار', 'على أي مسائل تركّز حلول آباديس؟',
+             'على أي تقنيات نعمل للمستقبل؟ — مكافحة العدوى وسلامة الكادر وتوفير المياه وبوليمرات PVA القابلة للذوبان',
+             'عرض التركيز والابتكار', '#core-problems', _SVG_SHIELD),
+        ],
+    }[lang]
+    cards = []
+    for idx, (num, badge_txt, title, desc, cta_txt, anchor, ico) in enumerate(items):
+        act_cls = ' is-active' if idx == 0 else ''
+        cards.append(
+            f'<article class="sol-hcard{act_cls}">'
+            f'{SOL_WAVE_SVG}'
+            f'<div>'
+            f'<div class="sol-hcard-top"><span class="sol-hcard-num">{num}</span><span class="sol-hcard-badge">{esc(badge_txt)}</span></div>'
+            f'<div style="display:flex;align-items:center;gap:12px;margin:12px 0 8px">'
+            f'<span class="sol-hcard-ico">{ico}</span>'
+            f'<h3>{esc(title)}</h3>'
+            f'</div>'
+            f'<p>{esc(desc)}</p>'
+            f'</div>'
+            f'<div class="sol-hcard-foot">'
+            f'<a class="sol-hcard-cta" href="{anchor}"><span>{esc(cta_txt)}</span>{_SVG_ARROW}</a>'
+            f'</div>'
+            f'</article>'
+        )
+    return f'<div class="sol-hero-quad">{"".join(cards)}</div>'
+
+
 def _hero_trio_html(p, lang, active_slug='fluid-management'):
     nums = {'fa': ('۰۱', '۰۲', '۰۳'), 'en': ('01', '02', '03'), 'ar': ('٠١', '٠٢', '٠٣')}[lang]
     discover = {'fa': 'کشف راهکار', 'en': 'Discover solution', 'ar': 'اكتشاف الحل'}[lang]
@@ -737,7 +805,7 @@ def solutions_video_hero(p, lang):
         f'        <h1>{SOL_HERO_H1[lang]}</h1>\n'
         f'        {_sol_slogan_html(SOL_SLOGAN_I18N[lang])}\n'
         f'        <p class="sol-hero-lead">{esc(SOL_HERO_LEAD[lang])}</p>\n'
-        f'        {_hero_trio_html(p, lang, "fluid-management")}\n'
+        f'        {_hero_quad_questions_html(p, lang)}\n'
         f'      </div>\n'
         f'    </div>\n'
         f'  </section>'

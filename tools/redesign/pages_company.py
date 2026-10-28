@@ -930,6 +930,7 @@ _SVG_PIN_HERO = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" str
 
 
 def contact_video_hero(p, lang='fa'):
+    """Approved Option C-H3 ([t307u]): Tehran–Shamsabad Connection Radar & Video Hero."""
     from layout import crumbs
     copy = {
         'fa': dict(
@@ -938,9 +939,12 @@ def contact_video_hero(p, lang='fa'):
             lead='برای استعلام قیمت، دریافت نمونه، خدمات نصب و پشتیبانی یا همکاری تجاری، با ما در تماس باشید.',
             call='تماس با آبادیس',
             wa='پیام در واتس‌اپ',
-            c1=('مرکز تماس و فروش', '۰۲۱-۹۲۰۰۱۰۱۷ (داخلی ۱۱)'),
-            c2=('پشتیبانی واتس‌اپ', '+۹۸ ۹۱۰ ۰۱۴ ۵۸۰۹'),
-            c3=('دفتر مرکزی و کارخانه', 'تهران (قیطریه) · شهرک صنعتی شمس‌آباد'),
+            hq_node='دفتر مرکزی (قیطریه)',
+            fac_node='کارخانه (شمس‌آباد)',
+            cov_badge='پوشش ۳۱ استان، ۱٬۲۸۴ مرکز',
+            s1=('مرکز تماس و فروش', '021-92001017'),
+            s2=('پشتیبانی مستقیم واتس‌اپ', '+98 910 014 5809'),
+            s3=('پست الکترونیک رسمی', 'info@abadis-med.com'),
         ),
         'en': dict(
             crumb='Contact Us',
@@ -948,41 +952,62 @@ def contact_video_hero(p, lang='fa'):
             lead='Contact us for price quotes, product samples, installation & support services, or commercial partnership.',
             call='Call Abadis',
             wa='Message on WhatsApp',
-            c1=('Call Center & Sales', '+98 21 9200 1017 (Ext. 11)'),
-            c2=('WhatsApp Support', '+98 910 014 5809'),
-            c3=('Head Office & Factory', 'Tehran (Qeytarieh) · Shamsabad Industrial Town'),
+            hq_node='Head Office (Qeytarieh)',
+            fac_node='Factory (Shamsabad)',
+            cov_badge='31 Provinces, 1,284 Centers',
+            s1=('Call Center & Sales', '+98 21 9200 1017'),
+            s2=('Direct WhatsApp Support', '+98 910 014 5809'),
+            s3=('Official Email', 'info@abadis-med.com'),
         ),
         'ar': dict(
             crumb='اتصل بنا',
             h1='تواصلوا <em>معنا…</em>',
             lead='للاستفسار عن الأسعار، طلب العينات، خدمات التركيب والدعم الفني، أو التعاون التجاري، تواصلوا معنا.',
-            call='اتصل بآبادیس',
+            call='اتصل بآباديس',
             wa='راسلنا عبر واتساب',
-            c1=('مركز الاتصال والمبيعات', '021-92001017 (داخلي ١١)'),
-            c2=('دعم واتساب المباشر', '+98 910 014 5809'),
-            c3=('المكتب المركزي والمصنع', 'طهران (قيطريه) · مدينة شمس آباد الصناعية'),
+            hq_node='المكتب المركزي (قيطريه)',
+            fac_node='المصنع (شمس آباد)',
+            cov_badge='تغطية ٣١ محافظة، ١٬٢٨٤ مركزاً',
+            s1=('مركز الاتصال والمبيعات', '+98 21 9200 1017'),
+            s2=('دعم واتساب المباشر', '+98 910 014 5809'),
+            s3=('البريد الإلكتروني الرسمي', 'info@abadis-med.com'),
         ),
     }[lang]
     cr = crumbs(p, [(copy['crumb'], None)], lang=lang)
     tel_href = 'tel:02192001017' if lang == 'fa' else 'tel:+982192001017'
+    radar_svg = (
+        '<svg viewBox="0 0 360 150" width="100%" height="135" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'
+        '<rect width="360" height="150" rx="16" fill="#06282c"/>'
+        '<circle cx="95" cy="78" r="46" stroke="#14b8a6" stroke-opacity="0.28" stroke-dasharray="4 4"/>'
+        '<circle cx="95" cy="78" r="26" stroke="#5eead4" stroke-opacity="0.45"/>'
+        '<path d="M95 78 Q180 30 265 78" stroke="#5eead4" stroke-width="2.2" stroke-dasharray="5 4"/>'
+        '<circle cx="95" cy="78" r="6" fill="#5eead4"/>'
+        '<circle cx="265" cy="78" r="6" fill="#2dd4bf"/>'
+        '<rect x="92" y="16" width="176" height="24" rx="12" fill="#0b3b40" stroke="#5eead4" stroke-opacity="0.55"/>'
+        f'<text x="180" y="32" fill="#5eead4" font-size="11" font-weight="900" text-anchor="middle" font-family="Kalameh,Tahoma">{esc(copy["cov_badge"])}</text>'
+        f'<text x="95" y="114" fill="#ecfeff" font-size="11" font-weight="800" text-anchor="middle" font-family="Kalameh,Tahoma">{esc(copy["hq_node"])}</text>'
+        f'<text x="265" y="114" fill="#ecfeff" font-size="11" font-weight="800" text-anchor="middle" font-family="Kalameh,Tahoma">{esc(copy["fac_node"])}</text>'
+        '</svg>'
+    )
     return (
         f'  <section class="page-hero about-hero contact-hero has-playing-video">\n'
-        f'    <video class="about-hero-video contact-hero-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="{p}assets/media/hero-careers-poster.jpg?v=20261028p">\n'
-        f'      <source src="{p}assets/media/hero-careers.mp4?v=20261028p" type="video/mp4">\n'
+        f'    <video class="about-hero-video contact-hero-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="{p}assets/media/hero-or-zagros-poster.jpg?v=20261028p">\n'
+        f'      <source src="{p}assets/media/hero-or-zagros.mp4?v=20261028p" type="video/mp4">\n'
         f'    </video>\n'
-        f'    <div class="wrap about-hero-grid">\n'
-        f'      <div>\n'
-        f'        {cr}\n'
-        f'        <h1>{copy["h1"]}</h1>\n'
-        f'        <p class="lead">{esc(copy["lead"])}</p>\n'
-        f'        <div class="contact-hero-ctas">\n'
-        f'          <a class="ch-btn-call" href="{tel_href}">{_SVG_PHONE_HERO}<span>{esc(copy["call"])}</span></a>\n'
-        f'          <a class="ch-btn-wa" href="https://wa.me/989100145809" target="_blank" rel="noopener">{_SVG_WA_HERO}<span>{esc(copy["wa"])}</span></a>\n'
-        f'        </div>\n'
-        f'        <div class="contact-hero-cards">\n'
-        f'          <a class="ch-glass-card" href="{tel_href}"><span class="ch-glass-ico">{_SVG_PHONE_HERO}</span><div><strong>{esc(copy["c1"][0])}</strong><span dir="ltr">{esc(copy["c1"][1])}</span></div></a>\n'
-        f'          <a class="ch-glass-card" href="https://wa.me/989100145809" target="_blank" rel="noopener"><span class="ch-glass-ico">{_SVG_WA_HERO}</span><div><strong>{esc(copy["c2"][0])}</strong><span dir="ltr">{esc(copy["c2"][1])}</span></div></a>\n'
-        f'          <a class="ch-glass-card" href="#map"><span class="ch-glass-ico">{_SVG_PIN_HERO}</span><div><strong>{esc(copy["c3"][0])}</strong><span>{esc(copy["c3"][1])}</span></div></a>\n'
+        f'    <div class="wrap cho-h3-center">\n'
+        f'      {cr}\n'
+        f'      <h1>{copy["h1"]}</h1>\n'
+        f'      <p class="lead">{esc(copy["lead"])}</p>\n'
+        f'      <div class="contact-hero-ctas">\n'
+        f'        <a class="ch-btn-call" href="{tel_href}">{_SVG_PHONE_HERO}<span>{esc(copy["call"])}</span></a>\n'
+        f'        <a class="ch-btn-wa" href="https://wa.me/989100145809" target="_blank" rel="noopener">{_SVG_WA_HERO}<span>{esc(copy["wa"])}</span></a>\n'
+        f'      </div>\n'
+        f'      <div class="cho-radar-wrap">\n'
+        f'        <div>{radar_svg}</div>\n'
+        f'        <div class="cho-sla-pills">\n'
+        f'          <div class="cho-sla-pill"><span>{esc(copy["s1"][0])}</span><b dir="ltr">{esc(copy["s1"][1])}</b></div>\n'
+        f'          <div class="cho-sla-pill"><span>{esc(copy["s2"][0])}</span><b dir="ltr">{esc(copy["s2"][1])}</b></div>\n'
+        f'          <div class="cho-sla-pill"><span>{esc(copy["s3"][0])}</span><b dir="ltr">{esc(copy["s3"][1])}</b></div>\n'
         f'        </div>\n'
         f'      </div>\n'
         f'    </div>\n'
