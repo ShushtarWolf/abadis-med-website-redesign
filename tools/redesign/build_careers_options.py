@@ -351,7 +351,7 @@ html, body {
 }
 .co-hero::before {
   content: ""; position: absolute; inset: 0;
-  background: url("../assets/media/hero-careers-poster.jpg?v=20261028f") center / cover no-repeat;
+  background: url("../assets/media/hero-careers-poster.jpg?v=20261028h") center / cover no-repeat;
   opacity: .18; z-index: 0; pointer-events: none;
   transition: opacity .35s ease, visibility .35s ease;
 }
@@ -836,8 +836,8 @@ def hero_block(subtitle_badge, kpis):
       </div>''' for t, s in kpis)
     return f'''
   <section class="co-hero has-playing-video">
-    <video class="co-hero-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="../assets/media/hero-careers-poster.jpg?v=20261028f">
-      <source src="../assets/media/hero-careers.mp4?v=20261028f" type="video/mp4">
+    <video class="co-hero-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="../assets/media/hero-careers-poster.jpg?v=20261028h">
+      <source src="../assets/media/hero-careers.mp4?v=20261028h" type="video/mp4">
     </video>
     <div class="co-wrap co-hero-grid">
       <div>
@@ -1422,8 +1422,8 @@ def wrap_page(title, active_opt, body_html):
 def build_hub():
     hub_body = f'''
     <section class="co-hero has-playing-video">
-      <video class="co-hero-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="../assets/media/hero-careers-poster.jpg?v=20261028f">
-        <source src="../assets/media/hero-careers.mp4?v=20261028f" type="video/mp4">
+      <video class="co-hero-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="../assets/media/hero-careers-poster.jpg?v=20261028h">
+        <source src="../assets/media/hero-careers.mp4?v=20261028h" type="video/mp4">
       </video>
       <div class="co-wrap co-hero-grid">
         <div>

@@ -1326,67 +1326,12 @@ def careers(write):
     head_css, motion_js = about_motion_tags(p)
     hero = careers_hero(p, 'fa', 'فرصت‌های <em>همکاری</em>', crumbs(p, [('فرصت‌های همکاری', None)]))
     opts = '<option>ارسال رزومه عمومی / خارج از ردیف‌های شغلی فعلی</option>' + opts
-    main = f'''{hero}
-  <section class="section" id="jobs"><div class="wrap">
-    <h2 class="reveal" style="margin-bottom:18px">فرصت‌های همکاری</h2>
-    <div class="grid g-3">{cards}</div>
-  </div></section>
-  <section class="section" id="general-resume"><div class="wrap" style="max-width:860px">
-    <article class="card resume-intro reveal">
-      <h2>ارسال رزومه عمومی / خارج از ردیف‌های شغلی فعلی</h2>
-      <p><a class="btn btn-primary" href="#apply" id="generalResumeCta">ارسال رزومه عمومی / خارج از ردیف‌های شغلی فعلی</a></p>
-    </article>
-  </div></section>
-  <section class="section section--alt" id="apply"><div class="wrap" style="max-width:860px">
-    <div class="card reveal">
-      <h2 style="font-size:1.4rem;margin-bottom:6px">ثبت درخواست</h2>
-      <p class="note form-offline-hint" style="margin-bottom:16px">پیش‌نمایش: این فرم پس از اتصال به سرور سایت فعال می‌شود؛ فعلاً با ارسال، ایمیل آماده به info@abadis-med.com باز می‌شود.</p>
-      <form class="form" data-abadis-form="careers" data-mailto-form="info@abadis-med.com" data-subject="ثبت درخواست همکاری">
-        <input type="hidden" name="form_name" value="careers">
-        <label class="hp-field" aria-hidden="true">Leave blank<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label>
-        <label>عنوان شغلی *<select name="عنوان شغلی" required><option value="">انتخاب کنید</option>{opts}</select></label>
-        <h3 class="form-block-title">مشخصات فردی *</h3>
-        <div class="grid g-2" style="gap:12px">
-          <label>نام<input name="نام" required autocomplete="given-name"></label>
-          <label>نام خانوادگی<input name="نام خانوادگی" required autocomplete="family-name"></label>
-          <label>نام پدر<input name="نام پدر" required></label>
-          <label>وضعیت نظام وظیفه<input name="وضعیت نظام وظیفه" required></label>
-          <label>تاریخ تولد *<input name="تاریخ تولد" placeholder="۱۳۷۰/۰۱/۰۱" required inputmode="numeric"></label>
-          <label>محل تولد<input name="محل تولد" required></label>
-          <label>شماره شناسنامه<input name="شماره شناسنامه" required inputmode="numeric"></label>
-          <label>محل صدور<input name="محل صدور" required></label>
-        </div>
-        <label>وضعیت تاهل *<select name="وضعیت تاهل" required><option value="">انتخاب کنید</option><option>مجرد</option><option>متاهل</option></select></label>
-        <label>آیا بیماری خاص و یا سابقه بستری شدن در بیمارستان دارید؟ *<select name="بیماری خاص یا سابقه بستری" required><option value="">انتخاب کنید</option><option>بلی</option><option>خیر</option></select></label>
-        <label>آدرس محل سکونت *<input name="آدرس محل سکونت" required autocomplete="street-address" placeholder="لطفا نشانی کامل محل سکونت خود را وارد نمایید."></label>
-        <div class="grid g-2" style="gap:12px">
-          <label>تلفن ثابت *<input name="تلفن ثابت" type="tel" dir="ltr" required inputmode="tel" autocomplete="tel-national"></label>
-          <label>تلفن همراه *<input name="تلفن همراه" type="tel" dir="ltr" required inputmode="tel" autocomplete="tel"></label>
-        </div>
-        {edu}
-        {work}
-        <div class="grid g-2" style="gap:12px">
-          <label>آخرین حقوق دریافتی *<input name="آخرین حقوق دریافتی" required inputmode="numeric"></label>
-          <label>حقوق درخواستی *<input name="حقوق درخواستی" required inputmode="numeric"></label>
-        </div>
-        <label>طریق مراجعه به شرکت جهت استخدام *<input name="طریق مراجعه به شرکت جهت استخدام" required></label>
-        <h3 class="form-block-title">انتظار شما از محیط کارتان چیست؟ (به ترتیب شماره گذاری فرمایید) *</h3>
-        <p class="note">به هر مورد عددی از ۱ تا ۸ بدهید (بدون تکرار).</p>
-        <div class="grid g-2" style="gap:12px">{expect}</div>
-        {current}
-        <fieldset class="check-set">
-          <legend>آشنایی با زبان های خارجی</legend>
-          <div class="check-row">{langs}</div>
-        </fieldset>
-        {computer}
-        <label>در مورد توانایی، مهارت ها و شغل مناسب و ایده آل خود در یک پارا گراف توضیح دهید ؟<textarea name="توانایی و مهارت و شغل ایده‌آل" rows="5"></textarea></label>
-        <button class="btn btn-primary" type="submit">ثبت درخواست</button>
-        <p class="form-status" role="status" aria-live="polite"></p>
-      </form>
-    </div>
-  </div></section>'''
-    html = page(p, 'careers', 'فرصت‌های همکاری', 'فرصت‌های همکاری شرکت دانش‌بنیان مخازن طبی آبادیس', main, fa_path='careers/', extra_head=head_css, html_attrs='data-slogan="t1"', scripts=motion_js)
-    html = html.replace('</body>', '<script>document.getElementById("generalResumeCta")&&document.getElementById("generalResumeCta").addEventListener("click",function(){var s=document.querySelector(\'[name="عنوان شغلی"]\');if(s)s.value="ارسال رزومه عمومی / خارج از ردیف‌های شغلی فعلی";});</script>\n</body>', 1)
+    from build_careers_options import build_c1_body, SHARED_JS
+    c1_main = build_c1_body().replace(
+        '<p class="co-crumbs"><a href="../">خانه</a> / <a href="../careers/">فرصت‌های همکاری</a> / پیشنهاد C1 — داشبورد تعاملی دپارتمان‌ها و مسیر شغلی</p>',
+        '<p class="co-crumbs"><a href="../">خانه</a> › فرصت‌های همکاری</p>'
+    ).replace('href="../careers/jobs/', 'href="jobs/')
+    html = page(p, 'careers', 'فرصت‌های همکاری', 'فرصت‌های همکاری شرکت دانش‌بنیان مخازن طبی آبادیس', c1_main, fa_path='careers/', extra_head=head_css, html_attrs='data-slogan="t1"', scripts=motion_js + '\n<script>' + SHARED_JS + '</script>')
     write('careers/index.html', html)
     en_path = SITE / 'en/collaboration-opportunities/index.html'
     if en_path.exists() and 'id="general-resume"' not in en_path.read_text(encoding='utf-8'):
