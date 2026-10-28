@@ -351,7 +351,7 @@ html, body {
 }
 .co-hero::before {
   content: ""; position: absolute; inset: 0;
-  background: url("../assets/media/hero-careers-poster.jpg?v=20261028i") center / cover no-repeat;
+  background: url("../assets/media/hero-careers-poster.jpg?v=20261028j") center / cover no-repeat;
   opacity: .18; z-index: 0; pointer-events: none;
   transition: opacity .35s ease, visibility .35s ease;
 }
@@ -365,9 +365,7 @@ html, body {
   z-index: 0; pointer-events: none;
   transition: opacity .35s ease;
 }
-.co-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(5, 74, 76, 0.52) 0%, rgba(6, 30, 34, 0.68) 100%); z-index: 0; pointer-events: none; }
-.co-hero-video { filter: brightness(0.72) saturate(0.92) contrast(1.05); }
-.co-hero-video.is-playing { opacity: .16 !important; visibility: visible !important; }
+.co-hero-video.is-playing { opacity: .28 !important; visibility: visible !important; }
 .co-wrap { width: min(1180px, 100%); margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
 .co-crumbs { font-size: .86rem; color: rgba(255,255,255,.78); margin: 0 0 8px; }
 .co-crumbs a { color: rgba(255,255,255,.86); text-decoration: none; }
@@ -838,8 +836,8 @@ def hero_block(subtitle_badge, kpis):
       </div>''' for t, s in kpis)
     return f'''
   <section class="co-hero has-playing-video">
-    <video class="co-hero-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="../assets/media/hero-careers-poster.jpg?v=20261028i">
-      <source src="../assets/media/hero-careers.mp4?v=20261028i" type="video/mp4">
+    <video class="co-hero-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="../assets/media/hero-careers-poster.jpg?v=20261028j">
+      <source src="../assets/media/hero-careers.mp4?v=20261028j" type="video/mp4">
     </video>
     <div class="co-wrap co-hero-grid">
       <div>
@@ -1424,8 +1422,8 @@ def wrap_page(title, active_opt, body_html):
 def build_hub():
     hub_body = f'''
     <section class="co-hero has-playing-video">
-      <video class="co-hero-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="../assets/media/hero-careers-poster.jpg?v=20261028i">
-        <source src="../assets/media/hero-careers.mp4?v=20261028i" type="video/mp4">
+      <video class="co-hero-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="../assets/media/hero-careers-poster.jpg?v=20261028j">
+        <source src="../assets/media/hero-careers.mp4?v=20261028j" type="video/mp4">
       </video>
       <div class="co-wrap co-hero-grid">
         <div>
