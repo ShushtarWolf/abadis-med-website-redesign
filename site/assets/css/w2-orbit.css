@@ -81,8 +81,11 @@
 .w2-live .w2-detail-panel { grid-column: 1; direction: rtl; min-width: 0; }
 html[dir="ltr"] .w2-live .w2-detail-panel { direction: ltr; }
 
+.w2-live { max-width: 100%; overflow-x: clip; }
 .w2-live .w2-stage-fit {
   width: min(640px, 100%);
+  max-width: 100%;
+  overflow: hidden;
   margin-inline: auto;
   container-type: inline-size;
 }
@@ -90,6 +93,7 @@ html[dir="ltr"] .w2-live .w2-detail-panel { direction: ltr; }
   position: relative;
   width: 640px;
   height: 610px;
+  overflow: hidden;
   margin: 0 auto;
   user-select: none;
   border-radius: 24px;

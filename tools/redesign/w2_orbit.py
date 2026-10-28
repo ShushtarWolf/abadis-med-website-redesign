@@ -58,8 +58,8 @@ _UI = {
 
 def assets(prefix=''):
     return (
-        f'<link rel="stylesheet" href="{prefix}assets/css/w2-orbit.css">\n'
-        f'<script src="{prefix}assets/js/w2-orbit.js" defer></script>\n'
+        f'<link rel="stylesheet" href="{prefix}assets/css/w2-orbit.css?v=20261028e">\n'
+        f'<script src="{prefix}assets/js/w2-orbit.js?v=20261028e" defer></script>\n'
     )
 
 

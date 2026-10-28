@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" data-theme="light">
+<html lang="en" dir="ltr" data-theme="light" data-slogan="t1">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,10 +23,11 @@
 <meta property="og:image" content="../../assets/img/og-image.jpg">
 <link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/css/site.css">
-<link rel="stylesheet" href="../../assets/css/boss-order.css">
+<link rel="stylesheet" href="../../assets/css/site.css?v=20261028e">
+<link rel="stylesheet" href="../../assets/css/boss-order.css?v=20261028e">
 <link rel="stylesheet" href="../../assets/css/consent.css">
 <link rel="stylesheet" href="../../assets/css/footer-motion.css">
+<link rel="stylesheet" href="../../assets/css/slogan-options.css?v=20261028e">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -48,15 +49,13 @@
   </button>
 </header>
 <main id="main">
-  <section class="page-hero">
-    <div class="wrap page-hero-with-mark">
-      <div class="page-hero-copy">
-      <p class="crumbs"><a href="../../en/">Home</a> › Abadis Medical Reservoirs</p>
-      <h1>SDG’s</h1>
-      <p class="lead">Abadis Medical Technologies Co., as a pioneering knowledge-based company and the leading manufacturer of disposable suction bags in Iran, is committed to aligning its operations with the United Nations Sustainable Development Goals (UN SDGs). We believe that industrial development holds true value only when it promotes public health, contributes to the conservation of natural resources, reduces environmental impacts, and encourages a culture of responsible consumption.</p>
-      
+  <section class="page-hero about-hero sdgs-hero">
+    <video class="about-hero-video sdgs-hero-video" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="../../assets/media/hero-sdgs-poster.jpg?v=20261028e"><source src="../../assets/media/hero-sdgs.mp4?v=20261028e" type="video/mp4"></video>
+    <div class="wrap about-hero-grid">
+      <div><p class="crumbs"><a href="../../en/">Home</a> › Abadis Medical Reservoirs</p>
+        <h1>Sustainable <em>Development</em></h1>
+        <p class="slogan reveal" aria-label="Aligned with 7 UN Sustainable Development Goals (SDGs), Over 28 Million Liters of Water Saved Reduced Energy Use &amp; Carbon Footprint Green Zagros Oak Reforestation"><span class="slogan-line" style="--i:0">Aligned with 7 UN Sustainable Development Goals (SDGs),</span><span class="slogan-line" style="--i:1">Over 28 Million Liters of Water Saved</span><span class="slogan-line" style="--i:2">Reduced Energy Use &amp; Carbon Footprint</span><span class="slogan-line" style="--i:3">Green Zagros Oak Reforestation</span></p>
       </div>
-      <span class="sec-mark sec-mark--lg" aria-hidden="true"><img class="sec-mark-light" src="../../brand/section-logos/sustainable-icon.svg" alt="" width="120" height="120" decoding="async"><img class="sec-mark-dark" src="../../brand/section-logos/sustainable-icon-dark.svg" alt="" width="120" height="120" decoding="async"></span>
     </div>
   </section>
   <section class="section"><div class="wrap"><div class="sdg-page"><div class="prose"><div>
@@ -345,8 +344,12 @@
   </div>
   <div class="wrap foot-copy">All rights reserved: Abadis Medical Reservoirs · redesign preview</div>
 </footer>
-<script src="../../assets/js/site.js" defer></script>
+<script src="../../assets/js/site.js?v=20261028e" defer></script>
 <script src="../../assets/js/consent.js" defer></script>
 <script src="../../assets/js/footer-motion.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script src="../../assets/js/logo-scroll.js?v=20261028e" defer></script>
+<script src="../../assets/js/slogan-options.js?v=20261028e" defer></script>
 </body>
 </html>

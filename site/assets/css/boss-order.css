@@ -165,8 +165,10 @@
 @keyframes n3Pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(14, 116, 117, .0); } 50% { box-shadow: 0 0 14px 2px rgba(14, 116, 117, .35); } }
 .n3-card, .cert-tile, #partners .card.partner {
   position: relative; isolation: isolate; border-radius: 16px;
+  overflow: hidden;
   animation: n3Float 5.2s ease-in-out infinite;
 }
+.ab-members { overflow-x: hidden; overflow-x: clip; max-width: 100%; }
 .n3-card::before, .cert-tile::before, #partners .card.partner::before {
   content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 2px; pointer-events: none; z-index: 2;
   background: conic-gradient(from var(--n3-ang), transparent 0 42%, #5eead4 68%, #05686b 80%, #fff 88%, transparent 96%);

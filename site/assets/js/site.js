@@ -315,8 +315,15 @@
       return true;
     }
     function arm(v) {
-      function on() { v.classList.add('is-playing'); }
-      function off() { v.classList.remove('is-playing'); }
+      var hero = v.closest('.about-hero, .page-hero');
+      function on() {
+        v.classList.add('is-playing');
+        if (hero) hero.classList.add('has-playing-video');
+      }
+      function off() {
+        v.classList.remove('is-playing');
+        if (hero) hero.classList.remove('has-playing-video');
+      }
       v.addEventListener('playing', on);
       v.addEventListener('timeupdate', function () {
         if (!v.paused && v.currentTime > 0) on();
@@ -336,7 +343,11 @@
       v.setAttribute('webkit-playsinline', '');
       v.removeAttribute('controls');
       var pending = v.play();
-      if (pending && pending.catch) pending.catch(function () { v.classList.remove('is-playing'); });
+      if (pending && pending.catch) pending.catch(function () {
+        v.classList.remove('is-playing');
+        var hero = v.closest('.about-hero, .page-hero');
+        if (hero) hero.classList.remove('has-playing-video');
+      });
     }
     vids.forEach(function (v) {
       var poster = v.getAttribute('poster');

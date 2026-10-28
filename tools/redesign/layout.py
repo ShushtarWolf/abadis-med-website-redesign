@@ -66,8 +66,8 @@ def head(p, title, desc, og=None, lang='fa', fa_path='', canonical_path=None, ht
 <meta property="og:image" content="{ogi}">
 <link rel="preload" href="{p}assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{p}assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="{p}assets/css/site.css?v=20261028d">
-<link rel="stylesheet" href="{p}assets/css/boss-order.css">
+<link rel="stylesheet" href="{p}assets/css/site.css?v=20261028e">
+<link rel="stylesheet" href="{p}assets/css/boss-order.css?v=20261028e">
 <link rel="stylesheet" href="{p}assets/css/consent.css">
 <link rel="stylesheet" href="{p}assets/css/footer-motion.css">
 </head>
@@ -305,7 +305,7 @@ def page(p, cur, title, desc, main, og=None, lightbox=False, scripts='', lang='f
     return (html
             + header(p, cur, lang=lang, fa_path=fa_path) + f'\n<main id="main"{main_attrs}>\n' + main + '\n</main>\n'
             + lb + footer(p, cur, lang=lang)
-            + f'\n<script src="{p}assets/js/site.js?v=20261028d" defer></script>\n<script src="{p}assets/js/consent.js" defer></script>\n<script src="{p}assets/js/footer-motion.js" defer></script>\n{scripts}</body>\n</html>\n')
+            + f'\n<script src="{p}assets/js/site.js?v=20261028e" defer></script>\n<script src="{p}assets/js/consent.js" defer></script>\n<script src="{p}assets/js/footer-motion.js" defer></script>\n{scripts}</body>\n</html>\n')
 
 
 def crumbs(p, trail, lang='fa'):

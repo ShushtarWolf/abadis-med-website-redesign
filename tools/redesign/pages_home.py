@@ -215,9 +215,9 @@ def or_hero(media, zagros='csr/img/hero/'):
     m = media.rstrip('/') + '/'
     return f'''  <section class="home-or home-or--product" id="intro" aria-label="معرفی محصول آبادیس">
     <div class="home-or-media" aria-hidden="true">
-      <img class="home-or-fill" src="{m}hero-or-zagros-poster.jpg" alt="" width="640" height="1214" decoding="async" fetchpriority="high">
-      <video class="home-or-video" id="homeOrVideo" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="{m}hero-or-zagros-poster.jpg">
-        <source src="{m}hero-or-zagros.mp4" type="video/mp4">
+      <img class="home-or-fill" src="{m}hero-or-zagros-poster.jpg?v=20261028e" alt="" width="640" height="1214" decoding="async" fetchpriority="high">
+      <video class="home-or-video" id="homeOrVideo" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="{m}hero-or-zagros-poster.jpg?v=20261028e">
+        <source src="{m}hero-or-zagros.mp4?v=20261028e" type="video/mp4">
       </video>
       <div class="home-or-veil"></div>
     </div>
@@ -572,7 +572,7 @@ SCROLL_SRC = 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js
 
 def logo_scroll_css(prefix=''):
     """Slogan T1 overrides. Load after home.css."""
-    return f'<link rel="stylesheet" href="{prefix}assets/css/slogan-options.css?v=20261028d">'
+    return f'<link rel="stylesheet" href="{prefix}assets/css/slogan-options.css?v=20261028e">'
 
 
 def counter_options_css(prefix=''):
@@ -595,9 +595,9 @@ def logo_scroll_scripts(prefix='', existing=''):
     if 'scrolltrigger' not in low:
         tags.append(f'<script src="{SCROLL_SRC}" defer></script>')
     if 'logo-scroll.js' not in existing:
-        tags.append(f'<script src="{prefix}assets/js/logo-scroll.js?v=20261028d" defer></script>')
+        tags.append(f'<script src="{prefix}assets/js/logo-scroll.js?v=20261028e" defer></script>')
     if 'slogan-options.js' not in existing:
-        tags.append(f'<script src="{prefix}assets/js/slogan-options.js?v=20261028d" defer></script>')
+        tags.append(f'<script src="{prefix}assets/js/slogan-options.js?v=20261028e" defer></script>')
     return ('\n'.join(tags) + '\n') if tags else ''
 
 

@@ -10,6 +10,8 @@
     var fitEl = root.querySelector('.w2-stage-fit');
     var stage = root.querySelector('.orb-stage--w2');
     if (!fitEl || !stage) return;
+    fitEl.style.overflow = 'hidden';
+    fitEl.style.maxWidth = '100%';
     var avail = fitEl.clientWidth;
     if (!avail) return;
     var z = Math.min(1, avail / 640);

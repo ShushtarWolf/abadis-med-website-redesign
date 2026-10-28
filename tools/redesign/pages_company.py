@@ -112,8 +112,8 @@ def about_hero_video(p):
     return (
         f'<video class="about-hero-video" autoplay muted loop playsinline webkit-playsinline '
         f'disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" '
-        f'poster="{p}assets/media/hero-or-zagros-poster.jpg">'
-        f'<source src="{p}assets/media/hero-or-zagros.mp4" type="video/mp4"></video>'
+        f'poster="{p}assets/media/hero-or-zagros-poster.jpg?v=20261028e">'
+        f'<source src="{p}assets/media/hero-or-zagros.mp4?v=20261028e" type="video/mp4"></video>'
     )
 
 
@@ -154,8 +154,8 @@ def customers_hero_video(p):
     return (
         f'<video class="about-hero-video customers-hero-video" autoplay muted loop playsinline webkit-playsinline '
         f'disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" '
-        f'poster="{p}assets/media/hero-customers-poster.jpg">'
-        f'<source src="{p}assets/media/hero-customers.mp4" type="video/mp4"></video>'
+        f'poster="{p}assets/media/hero-customers-poster.jpg?v=20261028e">'
+        f'<source src="{p}assets/media/hero-customers.mp4?v=20261028e" type="video/mp4"></video>'
     )
 
 
@@ -167,6 +167,57 @@ def customers_hero(p, lang, h1_html, crumbs):
       <div>{crumbs}
         <h1>{h1_html}</h1>
         {customers_slogan_block(lang)}
+      </div>
+    </div>
+  </section>'''
+
+
+SLOGAN_SDGS_I18N = {
+    'fa': [
+        'هم‌سویی با ۷ هدف توسعه پایدار سازمان ملل (UN SDGs)،',
+        'صرفه‌جویی بیش از ۲۸ میلیون لیتر آب',
+        'کاهش مصرف انرژی و ردپای کربنی',
+        'احیای جنگل‌های بلوط زاگرس سبز',
+    ],
+    'en': [
+        'Aligned with 7 UN Sustainable Development Goals (SDGs),',
+        'Over 28 Million Liters of Water Saved',
+        'Reduced Energy Use & Carbon Footprint',
+        'Green Zagros Oak Reforestation',
+    ],
+    'ar': [
+        'التوافق مع ٧ من أهداف التنمية المستدامة للأمم المتحدة (UN SDGs)،',
+        'توفير أكثر من ٢٨ مليون لتر من المياه',
+        'خفض استهلاك الطاقة والبصمة الكربونية',
+        'إحياء غابات بلوط زاغروس الخضراء',
+    ],
+}
+
+
+def sdgs_slogan_block(lang):
+    lines = SLOGAN_SDGS_I18N[lang]
+    spans = ''.join(
+        f'<span class="slogan-line" style="--i:{n}">{esc(x)}</span>' for n, x in enumerate(lines))
+    return f'<p class="slogan reveal" aria-label="{esc(" ".join(lines))}">{spans}</p>'
+
+
+def sdgs_hero_video(p):
+    return (
+        f'<video class="about-hero-video sdgs-hero-video" autoplay muted loop playsinline webkit-playsinline '
+        f'disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" '
+        f'poster="{p}assets/media/hero-sdgs-poster.jpg?v=20261028e">'
+        f'<source src="{p}assets/media/hero-sdgs.mp4?v=20261028e" type="video/mp4"></video>'
+    )
+
+
+def sdgs_hero(p, lang, h1_html, crumbs):
+    """SDGs hero: Zagros oak sustainability video, slogan in header type with motions."""
+    return f'''  <section class="page-hero about-hero sdgs-hero">
+    {sdgs_hero_video(p)}
+    <div class="wrap about-hero-grid">
+      <div>{crumbs}
+        <h1>{h1_html}</h1>
+        {sdgs_slogan_block(lang)}
       </div>
     </div>
   </section>'''
@@ -761,17 +812,19 @@ def _sdg_sections(p, bl):
 
 def sdgs(write):
     """FA توسعه پایدار — commitment page (old /توسعه-پایدار/)."""
+    from layout import crumbs
     p = '../'
     bl = B('/توسعه-پایدار/')
     body = _sdg_sections(p, bl)
-    lead = next((strip_tags(b['html']) for b in bl if b['t'] == 'html'), '')
-    main = f'''{page_hero(p, [('توسعه پایدار', None)], 'توسعه پایدار', esc(lead), mark='sustainable')}
+    head_css, motion_js = about_motion_tags(p)
+    hero = sdgs_hero(p, 'fa', 'توسعه <em>پایدار</em>', crumbs(p, [('توسعه پایدار', None)]))
+    main = f'''{hero}
   <section class="section sdg-page" id="sdg"><div class="wrap" style="max-width:980px">
     {body}
   </div></section>'''
     write('sdgs/index.html', page(p, 'sdgs', 'توسعه پایدار',
           'سند تعهد شرکت دانش‌بنیان مخازن طبی آبادیس به اهداف توسعه پایدار سازمان ملل (UN SDGs)',
-          main, fa_path='sdgs/'))
+          main, fa_path='sdgs/', extra_head=head_css, html_attrs='data-slogan="t1"', scripts=motion_js))
     redir = (
         '<!DOCTYPE html><html lang="{lang}" dir="{direction}"><head><meta charset="utf-8">'
         '<meta name="robots" content="noindex,nofollow">'

@@ -65,12 +65,14 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: hidden; overflow-x: clip; }
 body {
   font-family: "Kalameh", Tahoma, sans-serif; font-size: 16px; line-height: 1.8;
   color: var(--ink); background: var(--bg); letter-spacing: 0;
   transition: background-color .35s ease, color .35s ease;
+  overflow-x: hidden; overflow-x: clip;
 }
+main, .section { overflow-x: clip; }
 html[lang="en"] body { font-family: "KalamehLatinDigits", "Kalameh", Tahoma, sans-serif; }
 img, video, canvas { max-width: 100%; display: block; }
 a { color: var(--brand); }
@@ -1457,13 +1459,28 @@ video:not([controls]):not(.wp-video-shortcode):not(.is-playing) {
   content: "";
   position: absolute;
   inset: 0;
-  background: url("../media/hero-or-zagros-poster.jpg") center / cover no-repeat;
+  background: url("../media/hero-or-zagros-poster.jpg?v=20261028e") center / cover no-repeat;
   opacity: .18;
   z-index: 0;
   pointer-events: none;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
 }
 .customers-hero::before {
-  background-image: url("../media/hero-customers-poster.jpg");
+  background-image: url("../media/hero-customers-poster.jpg?v=20261028e");
+}
+.sdgs-hero::before {
+  background-image: url("../media/hero-sdgs-poster.jpg?v=20261028e");
+}
+.careers-hero::before {
+  background-image: url("../media/hero-careers-poster.jpg?v=20261028e");
+}
+.about-hero.has-playing-video::before,
+.about-hero:has(.about-hero-video.is-playing)::before,
+.page-hero.has-playing-video::before,
+.page-hero:has(.about-hero-video.is-playing)::before {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
 }
 .about-hero-video {
   position: absolute;
