@@ -586,10 +586,7 @@ def about(write):
   <section class="section section--alt" id="history"><div class="wrap prose" style="max-width:1000px">
     <div class="reveal">{hist}</div>
   </div></section>
-  <section class="section section--alt" id="why"><div class="wrap">
-    <h2 class="reveal sec-title" style="margin-bottom:20px">{section_mark(p, 'why')}چرا آبادیس؟</h2>
-    <ul class="checks why-list reveal">{whys}</ul>
-  </div></section>
+  {__import__('about_motion').why_18_section('fa', p, section_mark(p, 'why'))}
   {__import__('about_motion').membership_section('fa', p)}
   <section class="section" id="certs"><div class="wrap">
     <h2 class="reveal" style="margin-bottom:8px">مجوزها و گواهینامه‌ها</h2>
