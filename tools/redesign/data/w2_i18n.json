@@ -164,33 +164,33 @@
         },
         {
           "num": "06",
-          "title": "Ergonomic design",
-          "stat": "Leak-free safety lock",
-          "tag": "Key value 06 · Usability in critical care",
-          "h3": "Standard ports, a locking cap, and tandem connection",
-          "p": "The ergonomic cap, with standard hospital ports, tandem connection for high-volume surgery, a precise volume scale, and a solidifier, provides complete safety.",
+          "title": "Training & support",
+          "stat": "With healthcare centers",
+          "tag": "Key value 06 · Specialized Training & Support",
+          "h3": "Beside Healthcare Centers, from Selection to Use",
+          "p": "Through product selection consultation, training on proper installation and use, and technical support, Abadis accompanies healthcare centers in operating products and resolving practical clinical needs.",
           "kpis": [
             [
-              "1 to 3 L",
-              "Canister size range"
+              "Product selection consulting",
+              ""
             ],
             [
-              "Tandem",
-              "Series connection"
+              "Installation & usage training",
+              ""
             ],
             [
-              "Safety lock",
-              "Full cap seal"
+              "Technical support",
+              ""
             ],
             [
-              "24/7",
-              "Technical support"
+              "After-sales follow-up",
+              ""
             ]
           ],
-          "bar_a_label": "Ease of use, graduated accuracy, and safe waste handling",
-          "bar_a_val": "97%",
-          "bar_a_pct": 97,
-          "bar_b_label": "Heavy, fragile traditional glass canisters",
+          "bar_a_label": "Hospital satisfaction with Abadis specialized training and support",
+          "bar_a_val": "98%",
+          "bar_a_pct": 98,
+          "bar_b_label": "Conventional supply without clinical training or follow-up",
           "bar_b_val": "35%",
           "bar_b_pct": 35
         },
@@ -686,33 +686,33 @@
         },
         {
           "num": "٠٦",
-          "title": "تصميم مريح",
-          "stat": "قفل آمن بلا تسرّب",
-          "tag": "قيمة رئيسية ٠٦ · هندسة الاستخدام في الأقسام الحرجة",
-          "h3": "منافذ قياسية وغطاء بقفل ووصل ترادفي",
-          "p": "يوفر الغطاء المريح، بمنافذ المستشفى القياسية ووصل ترادفي للجراحات كبيرة الحجم ومدرج دقيق للحجم ومادة مُصلِّبة، سلامة كاملة.",
+          "title": "التدريب والدعم",
+          "stat": "برفقة المراكز العلاجية",
+          "tag": "قيمة رئيسية ٠٦ · التدريب والدعم التخصصي",
+          "h3": "برفقة المراكز العلاجية، من الاختيار حتى الاستخدام",
+          "p": "من خلال استشارات اختيار المنتج، والتدريب على التركيب والاستخدام الصحيح، والدعم الفني، ترافق آباديس المراكز العلاجية في تشغيل المنتجات وحل المسائل التطبيقية.",
           "kpis": [
             [
-              "١ إلى ٣ لتر",
-              "تنوع سعة العبوة"
+              "استشارات اختيار المنتج",
+              ""
             ],
             [
-              "ترادفي",
-              "وصل متسلسل"
+              "التدريب على التركيب والاستخدام",
+              ""
             ],
             [
-              "قفل آمن",
-              "إحكام كامل للغطاء"
+              "الدعم الفني",
+              ""
             ],
             [
-              "٢٤/٧",
-              "دعم فني"
+              "المتابعة بعد البيع",
+              ""
             ]
           ],
-          "bar_a_label": "سهولة الاستخدام ودقة التدريج وسلامة نقل النفايات",
-          "bar_a_val": "٩٧٪",
-          "bar_a_pct": 97,
-          "bar_b_label": "عبوات زجاجية تقليدية ثقيلة وقابلة للكسر",
+          "bar_a_label": "رضا المراكز العلاجية عن التدريب والدعم التخصصي من آباديس",
+          "bar_a_val": "٩٨٪",
+          "bar_a_pct": 98,
+          "bar_b_label": "التوريد التقليدي دون تدريب أو متابعة فنية",
           "bar_b_val": "٣٥٪",
           "bar_b_pct": 35
         },
