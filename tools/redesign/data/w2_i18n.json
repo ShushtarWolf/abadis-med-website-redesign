@@ -132,11 +132,11 @@
         },
         {
           "num": "05",
-          "title": "Material quality",
+          "title": "Build quality & durability",
           "stat": "Medical grade",
-          "tag": "Key value 05 · Polymer engineering and durability",
-          "h3": "Medical-grade polymer resistant to negative pressure and impact",
-          "p": "Abadis canister bodies and flexible liners are made from pure medical polymers with ultrasonic welding and 100% leak testing, and their recorded failure rate is only 0.0018 percent.",
+          "tag": "Key value 05 · Build Quality & Product Durability",
+          "h3": "Right Materials, Reliable Performance",
+          "p": "By selecting medical-grade raw materials and maintaining strict quality control in producing suction liners, canisters, and tubing, Abadis focuses on strength, secure sealing, and reliable product performance.",
           "kpis": [
             [
               "0.0018%",
@@ -654,11 +654,11 @@
         },
         {
           "num": "٠٥",
-          "title": "جودة المواد الأولية",
+          "title": "جودة التصنيع والمتانة",
           "stat": "درجة طبية",
-          "tag": "قيمة رئيسية ٠٥ · هندسة البوليمر والمتانة",
-          "h3": "بوليمر من الدرجة الطبية مقاوم للضغط السالب والصدم",
-          "p": "تُصنع أجسام العبوات والبطانات المرنة من آباديس من بوليمرات طبية نقية بلحام فوق صوتي واختبار تسرّب بنسبة ١٠٠٪، ونسبة العطل المسجّلة ٠٫٠٠١٨ بالمئة فقط.",
+          "tag": "قيمة رئيسية ٠٥ · جودة التصنيع ومتانة المنتجات",
+          "h3": "مواد أولية مناسبة، أداء موثوق",
+          "p": "من خلال اختيار مواد أولية من الدرجة الطبية ومراقبة الجودة في إنتاج أكياس الشفط والعبوات والأنابيب، تركّز آباديس على المتانة والإغلاق المحكم والأداء الموثوق للمنتجات.",
           "kpis": [
             [
               "٠٫٠٠١٨٪",
