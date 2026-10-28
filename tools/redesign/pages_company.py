@@ -766,7 +766,7 @@ def sdg_icons(lang, prefix):
             f'<img src="{prefix}{src}" width="{wh}" height="{wh}" loading="lazy" decoding="async" alt="{esc(alt)}">'
             f'</span>'
         )
-    return f'<div class="sdg-icons">{"".join(bits)}</div>'
+    return f'<div class="sdg-icons" dir="ltr">{"".join(bits)}</div>'
 
 
 def _strip_rainbow_goals(html):

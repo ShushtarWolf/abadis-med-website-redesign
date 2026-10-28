@@ -1062,9 +1062,17 @@ details.letter[open] summary { margin-bottom: 12px; }
 .sdg-stat strong span { color: inherit; font-size: inherit; }
 .sdg-stat > span { display: block; margin-top: 6px; color: var(--muted); font-size: .82rem; line-height: 1.65; }
 .sdg-page .reveal { transition-delay: calc(var(--i, 0) * 70ms); }
-.sdg-icons { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; margin: 4px 0 22px; }
-@media (max-width: 900px) { .sdg-icons { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-@media (max-width: 520px) { .sdg-icons { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.sdg-icons { display: grid; direction: ltr; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; margin: 4px 0 22px; }
+@media (max-width: 900px) and (min-width: 521px) {
+  .sdg-icons { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+  .sdg-icons > .sdg-logo { grid-column: span 2; }
+  .sdg-icons > .sdg-logo:nth-child(5) { grid-column: 2 / span 2; }
+}
+@media (max-width: 520px) {
+  .sdg-icons { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; }
+  .sdg-icons > .sdg-logo { grid-column: span 2; }
+  .sdg-icons > .sdg-logo:nth-child(7) { grid-column: 3 / span 2; }
+}
 .sdg-logo { display: block; border-radius: 14px; }
 .sdg-logo img { display: block; width: 100%; height: auto; border-radius: inherit; }
 .sdg-page .sdg-goals { list-style-position: inside; display: grid; gap: 12px; margin: 8px 0 18px; padding: 0; }
