@@ -1727,7 +1727,20 @@ body.academy { background: #f3f8f8; }
 }
 
 /* Header and footer nav links are text-only (no section-logo icons). */
-.nav .nav-caret { display: none; }
+.nav .nav-caret {
+  display: inline-flex;
+  width: 13px;
+  height: 13px;
+  border: 0 !important;
+  opacity: .84;
+  flex-shrink: 0;
+  transition: transform .22s ease, opacity .2s ease;
+}
+.nav-item.open > .nav-parent .nav-caret,
+.nav-item:hover > .nav-parent .nav-caret {
+  transform: rotate(180deg);
+  opacity: 1;
+}
 .nav .nav-sub a::before { content: none !important; display: none !important; }
 .nav .nav-sub a:hover,
 .nav .nav-sub a:focus-visible,

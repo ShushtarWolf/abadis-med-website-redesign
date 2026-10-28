@@ -182,11 +182,48 @@
       .replace(/"/g, '&quot;');
   }
 
-  function getName(c) { return c.name || c.n || ''; }
+  var PROV_EN = {
+    'آذربایجان شرقی': 'East Azerbaijan', 'آذربایجان غربی': 'West Azerbaijan', 'اردبیل': 'Ardabil',
+    'اصفهان': 'Isfahan', 'البرز': 'Alborz', 'ایلام': 'Ilam', 'بوشهر': 'Bushehr', 'تهران': 'Tehran',
+    'چهارمحال و بختیاری': 'Chaharmahal & Bakhtiari', 'خراسان جنوبی': 'South Khorasan',
+    'خراسان رضوی': 'Razavi Khorasan', 'خراسان شمالی': 'North Khorasan', 'خوزستان': 'Khuzestan',
+    'زنجان': 'Zanjan', 'سمنان': 'Semnan', 'سیستان و بلوچستان': 'Sistan & Baluchestan', 'فارس': 'Fars',
+    'قزوین': 'Qazvin', 'قم': 'Qom', 'کردستان': 'Kurdistan', 'کرمان': 'Kerman', 'کرمانشاه': 'Kermanshah',
+    'کهگیلویه و بویراحمد': 'Kohgiluyeh & Boyer-Ahmad', 'گلستان': 'Golestan', 'گیلان': 'Gilan',
+    'لرستان': 'Lorestan', 'مازندران': 'Mazandaran', 'مرکزی': 'Markazi', 'هرمزگان': 'Hormozgan',
+    'همدان': 'Hamadan', 'یزد': 'Yazd'
+  };
+  var PROV_AR = {
+    'آذربایجان شرقی': 'أذربيجان الشرقية', 'آذربایجان غربی': 'أذربيجان الغربية', 'اردبیل': 'أردبيل',
+    'اصفهان': 'أصفهان', 'البرز': 'ألبرز', 'ایلام': 'إيلام', 'بوشهر': 'بوشهر', 'تهران': 'طهران',
+    'چهارمحال و بختیاری': 'جهارمحال وبختياري', 'خراسان جنوبی': 'خراسان الجنوبية',
+    'خراسان رضوی': 'خراسان الرضوية', 'خراسان شمالی': 'خراسان الشمالية', 'خوزستان': 'خوزستان',
+    'زنجان': 'زنجان', 'سمنان': 'سمنان', 'سیستان و بلوچستان': 'سيستان وبلوشستان', 'فارس': 'فارس',
+    'قزوین': 'قزوين', 'قم': 'قم', 'کردستان': 'كردستان', 'کرمان': 'كرمان', 'کرمانشاه': 'كرمانشاه',
+    'کهگیلویه و بویراحمد': 'كهكيلويه وبوير أحمد', 'گلستان': 'غلستان', 'گیلان': 'جيلان',
+    'لرستان': 'لرستان', 'مازندران': 'مازندران', 'مرکزی': 'مركزي', 'هرمزگان': 'هرمزغان',
+    'همدان': 'همدان', 'یزد': 'يزد'
+  };
+  function provDisplay(pFa, lang) {
+    if (lang === 'en') return PROV_EN[pFa] || pFa;
+    if (lang === 'ar') return PROV_AR[pFa] || pFa;
+    return pFa;
+  }
+  function getName(c, lang) {
+    if (lang === 'en' && c.name_en) return c.name_en;
+    if (lang === 'ar' && c.name_ar) return c.name_ar;
+    return c.name || c.n || '';
+  }
   function getProv(c) { return c.province || c.p || ''; }
-  function cityLabel(c) { return c.city_fa || c.city || c.c || ''; }
+  function cityLabel(c, lang) {
+    if (lang === 'en' && c.city_en) return c.city_en;
+    if (lang === 'ar' && c.city_ar) return c.city_ar;
+    return c.city_fa || c.city || c.c || '';
+  }
   function getKind(c) { return (c.type === 'surgery' || c.t === 's') ? 'surgery' : 'hospital'; }
-  function getOwn(c) {
+  function getOwn(c, lang) {
+    if (lang === 'en' && c.ownership_en != null) return c.ownership_en;
+    if (lang === 'ar' && c.ownership_ar != null) return c.ownership_ar;
     var o = c.ownership != null ? c.ownership : (c.o || '');
     if (!o || o === 'نامشخص') return '';
     return String(o).replace(/\s*;\s*/g, ' · ');
@@ -291,7 +328,7 @@
     centers.forEach(function (c, i) {
       var pName = getProv(c);
       byProv[pName] = (byProv[pName] || 0) + 1;
-      var oName = getOwn(c);
+      var oName = getOwn(c, lang);
       if (oName) ownCounts[oName] = (ownCounts[oName] || 0) + 1;
       c._i = i;
       c._p = project(getLon(c), getLat(c), pName, i);
@@ -301,7 +338,7 @@
       var n = byProv[name] || 0;
       var tier = n >= 80 ? '4' : (n >= 40 ? '3' : (n >= 20 ? '2' : '1'));
       return '<path class="ir-prov tier-' + tier + '" data-prov="' + esc(name) + '" data-tier="' + tier + '" data-n="' + n + '" d="' + provs[name].d + '">' +
-        '<title>' + esc(name) + ' — ' + digits(n, lang) + ' ' + T.count + '</title></path>';
+        '<title>' + esc(provDisplay(name, lang)) + ' — ' + digits(n, lang) + ' ' + T.count + '</title></path>';
     }).join('');
 
     var textDir = (lang === 'fa' || lang === 'ar')
@@ -315,7 +352,7 @@
       if (!pObj || !pObj.c) return '';
       var n = byProv[name] || 0;
       var cx = pObj.c[0], cy = pObj.c[1];
-      var label = name + ' (' + digits(n, lang) + ')';
+      var label = provDisplay(name, lang) + ' (' + digits(n, lang) + ')';
       var bw = Math.max(48, Math.min(96, label.length * 4.5 + 12));
       var bh = 16;
       var box = { x: cx - bw / 2, y: cy - bh / 2, w: bw, h: bh };
@@ -336,11 +373,11 @@
       return '<g class="ir-pin ir-pin--' + kind + '" data-i="' + i + '" data-prov="' + esc(getProv(c)) + '" data-city="' + esc(cityLabel(c)) + '" data-own="' + esc(getOwn(c)) + '" style="--pulse-d:-' + phase + 's" transform="translate(' + p.x.toFixed(1) + ' ' + p.y.toFixed(1) + ')">' +
         '<g class="ir-bulb"><circle class="ir-glow" r="4.8"/>' + mark + '</g>' +
         '<circle class="ir-hit" r="7"/>' +
-        '<title>' + esc(getName(c)) + ' (' + esc(getProv(c)) + ' · ' + esc(cityLabel(c)) + ')</title></g>';
+        '<title>' + esc(getName(c, lang)) + ' (' + esc(provDisplay(getProv(c), lang)) + ' · ' + esc(cityLabel(c, lang)) + ')</title></g>';
     }).join('');
 
     var provOpts = provOrder.map(function (name) {
-      return '<option value="' + esc(name) + '">' + esc(name) + ' (' + digits(byProv[name], lang) + ')</option>';
+      return '<option value="' + esc(name) + '">' + esc(provDisplay(name, lang)) + ' (' + digits(byProv[name], lang) + ')</option>';
     }).join('');
 
     var ownOpts = Object.keys(ownCounts).sort(function (a, b) { return ownCounts[b] - ownCounts[a]; }).map(function (name) {
@@ -442,12 +479,12 @@
     var stagesWrap = root.querySelector('[data-ir-stages]');
 
     var rows = centers.map(function (c) {
-      return { c: c, n: norm([getName(c), cityLabel(c), getProv(c), getOwn(c)].join(' ')) };
+      return { c: c, n: norm([getName(c, lang), getName(c, 'fa'), cityLabel(c, lang), cityLabel(c, 'fa'), provDisplay(getProv(c), lang), getProv(c), getOwn(c, lang)].join(' ')) };
     }).sort(function (a, b) {
-      var oa = getOwn(a.c) ? 0 : 1;
-      var ob = getOwn(b.c) ? 0 : 1;
+      var oa = getOwn(a.c, lang) ? 0 : 1;
+      var ob = getOwn(b.c, lang) ? 0 : 1;
       if (oa !== ob) return oa - ob;
-      return getName(a.c).localeCompare(getName(b.c), 'fa');
+      return getName(a.c, lang).localeCompare(getName(b.c, lang), lang === 'en' ? 'en' : 'fa');
     });
     var city = '';
     var selected = -1;
@@ -593,9 +630,9 @@
 
     function matchBase(c, row, skipCity) {
       if (prov.value && getProv(c) !== prov.value) return false;
-      if (!skipCity && city && cityLabel(c) !== city) return false;
+      if (!skipCity && city && cityLabel(c, lang) !== city) return false;
       if (type.value && getKind(c) !== type.value) return false;
-      if (own.value && getOwn(c) !== own.value) return false;
+      if (own.value && getOwn(c, lang) !== own.value) return false;
       if (norm(q.value) && row.n.indexOf(norm(q.value)) < 0) return false;
       return true;
     }
@@ -623,7 +660,7 @@
       rows.forEach(function (row) {
         var c = row.c;
         if (!matchBase(c, row, true)) return;
-        var label = cityLabel(c) || '—';
+        var label = cityLabel(c, lang) || '—';
         bag[label] = (bag[label] || 0) + 1;
         if (!pts[label]) pts[label] = { x: 0, y: 0, n: 0 };
         pts[label].x += c._p.x;
@@ -679,19 +716,19 @@
       for (var i = 0; i < rows.length; i++) {
         var c = rows[i].c;
         var typeOk = !type.value || getKind(c) === type.value;
-        var ownOk = !own.value || getOwn(c) === own.value;
+        var ownOk = !own.value || getOwn(c, lang) === own.value;
         var queryOk = !norm(q.value) || rows[i].n.indexOf(norm(q.value)) >= 0;
         if (typeOk && ownOk && queryOk) lit[getProv(c)] = (lit[getProv(c)] || 0) + 1;
         if (!matchBase(c, rows[i], false)) continue;
         n++;
-        var oText = ownLabel(getOwn(c));
+        var oText = ownLabel(getOwn(c, lang));
         var kType = getKind(c);
         html += '<tr data-i="' + i + '"' + (i === selected ? ' class="is-on"' : '') + ' tabindex="0">' +
-          '<td><strong>' + esc(getName(c)) + '</strong></td>' +
-          '<td>' + esc(cityLabel(c)) + '</td>' +
-          '<td>' + esc(getProv(c)) + '</td>' +
+          '<td><strong>' + esc(getName(c, lang)) + '</strong></td>' +
+          '<td>' + esc(cityLabel(c, lang)) + '</td>' +
+          '<td>' + esc(provDisplay(getProv(c), lang)) + '</td>' +
           '<td><span class="ir-tbl-badge ir-tbl-badge--' + kType + '">' + esc(typeLabel(kType)) + '</span></td>' +
-          '<td><span class="ir-tbl-own' + (getOwn(c) ? '' : ' is-muted') + '">' + esc(oText) + '</span></td>' +
+          '<td><span class="ir-tbl-own' + (getOwn(c, lang) ? '' : ' is-muted') + '">' + esc(oText) + '</span></td>' +
         '</tr>';
       }
       body.innerHTML = html;
@@ -700,7 +737,7 @@
 
       if (regionPill) {
         if (prov.value) {
-          regionPill.textContent = T.provPrefix + prov.value + (city ? ' · ' + city : '') + ' · ' + digits(n, lang) + ' ' + T.count;
+          regionPill.textContent = T.provPrefix + provDisplay(prov.value, lang) + (city ? ' · ' + city : '') + ' · ' + digits(n, lang) + ' ' + T.count;
         } else {
           regionPill.textContent = T.countryTitle + ' · ' + digits(n, lang) + ' ' + T.count;
         }
@@ -714,7 +751,7 @@
         el.classList.toggle('is-hot', isSelectedProv);
         el.classList.toggle('is-dim', isOtherWhenSelected || (!prov.value && provinceCount === 0));
         var title = el.querySelector('title');
-        if (title) title.textContent = pname + ' — ' + digits(provinceCount, lang) + ' ' + T.count;
+        if (title) title.textContent = provDisplay(pname, lang) + ' — ' + digits(provinceCount, lang) + ' ' + T.count;
       });
 
       svg.querySelectorAll('.ir-pin').forEach(function (el) {
@@ -734,11 +771,11 @@
       var lat = getLat(c).toFixed(5);
       var lon = getLon(c).toFixed(5);
       card.hidden = false;
-      card.querySelector('[data-ir-kicker]').textContent = getProv(c) + ' · ' + cityLabel(c);
-      card.querySelector('[data-ir-name]').textContent = getName(c);
-      card.querySelector('[data-ir-place]').textContent = T.prov + ': ' + getProv(c) + ' · ' + T.city + ': ' + cityLabel(c);
+      card.querySelector('[data-ir-kicker]').textContent = provDisplay(getProv(c), lang) + ' · ' + cityLabel(c, lang);
+      card.querySelector('[data-ir-name]').textContent = getName(c, lang);
+      card.querySelector('[data-ir-place]').textContent = T.prov + ': ' + provDisplay(getProv(c), lang) + ' · ' + T.city + ': ' + cityLabel(c, lang);
       card.querySelector('[data-ir-type]').textContent = typeLabel(getKind(c));
-      card.querySelector('[data-ir-own]').textContent = T.own + ': ' + ownLabel(getOwn(c));
+      card.querySelector('[data-ir-own]').textContent = T.own + ': ' + ownLabel(getOwn(c, lang));
       var osm = card.querySelector('[data-ir-osm]');
       osm.href = c.osm || ('https://www.openstreetmap.org/directions?to=' + lat + '%2C' + lon);
       card.querySelector('[data-ir-g]').href = 'https://www.google.com/maps/search/?api=1&query=' + lat + '%2C' + lon;
@@ -757,9 +794,9 @@
       if (!fromRow) {
         if (norm(q.value) && rows[i].n.indexOf(norm(q.value)) < 0) q.value = '';
         if (type.value && getKind(c) !== type.value) type.value = '';
-        if (own.value && getOwn(c) !== own.value) own.value = '';
+        if (own.value && getOwn(c, lang) !== own.value) own.value = '';
         if (prov.value !== getProv(c)) prov.value = getProv(c);
-        city = cityLabel(c);
+        city = cityLabel(c, lang);
       }
       selected = i;
       paint();
@@ -942,7 +979,7 @@
       if (!pEl) return;
       var pname = pEl.getAttribute('data-prov');
       if (pname && byProv[pname] != null) {
-        regionPill.textContent = T.provPrefix + pname + ' · ' + digits(byProv[pname], lang) + ' ' + T.count;
+        regionPill.textContent = T.provPrefix + provDisplay(pname, lang) + ' · ' + digits(byProv[pname], lang) + ' ' + T.count;
       }
     });
     svg.addEventListener('pointerleave', function () {

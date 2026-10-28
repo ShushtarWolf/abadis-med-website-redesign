@@ -3,9 +3,14 @@
     "id": 1014,
     "date": "2022-11-23T10:40:53",
     "date_gmt": "2022-11-23T07:10:53",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=1014"
+    },
     "modified": "2022-11-23T10:40:53",
+    "modified_gmt": "2022-11-23T07:10:53",
     "slug": "%d8%aa%d9%82%d8%b1%d9%8a%d8%b1-%d9%85%d8%b5%d9%88%d8%b1-%d8%b9%d9%86-%d8%ad%d8%b6%d9%88%d8%b1-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3-%d9%81%d9%8a-%d9%85%d8%b9%d8%b1%d8%b6-%d8%a5%d9%8a%d8%b1%d8%a7%d9%86",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d8%aa%d9%82%d8%b1%d9%8a%d8%b1-%d9%85%d8%b5%d9%88%d8%b1-%d8%b9%d9%86-%d8%ad%d8%b6%d9%88%d8%b1-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3-%d9%81%d9%8a-%d9%85%d8%b9%d8%b1%d8%b6-%d8%a5%d9%8a%d8%b1%d8%a7%d9%86/",
     "title": {
       "rendered": "تقرير مصور عن حضور آباديس في معرض إيران هلث الدولي عام 2018"
@@ -18,18 +23,119 @@
       "rendered": "<p>تقرير مصور عن حضور آباديس في معرض إيران هلث الدولي عام 2018 &nbsp; &nbsp;</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 1015,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-1014",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/1014",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=1014"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 2,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/1014/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 1019,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/1014/revisions/1019"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/1015"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=1014"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=1014"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=1014"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 1009,
     "date": "2022-11-23T10:39:16",
     "date_gmt": "2022-11-23T07:09:16",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=1009"
+    },
     "modified": "2022-11-23T10:39:16",
+    "modified_gmt": "2022-11-23T07:09:16",
     "slug": "%d8%a7%d9%84%d9%83%d8%b4%d9%81-%d8%b9%d9%86-%d9%85%d9%86%d8%aa%d8%ac-%d8%ad%d8%a7%d9%85%d9%84-%d8%a3%d8%af%d8%a7%d8%a9-%d8%aa%d8%ab%d8%a8%d9%8a%d8%aa-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d8%a7%d9%84%d9%83%d8%b4%d9%81-%d8%b9%d9%86-%d9%85%d9%86%d8%aa%d8%ac-%d8%ad%d8%a7%d9%85%d9%84-%d8%a3%d8%af%d8%a7%d8%a9-%d8%aa%d8%ab%d8%a8%d9%8a%d8%aa-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3/",
     "title": {
       "rendered": "الكشف عن منتج حامل (أداة تثبيت) آباديس"
@@ -42,18 +148,119 @@
       "rendered": "<p>الكشف عن منتج آباديس الجديد، حامل أنبوب القصبة الهوائية في اليوم الأول من معرض إيران هلث 2019 &nbsp;</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 1011,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-1009",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/1009",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=1009"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 2,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/1009/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 1013,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/1009/revisions/1013"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/1011"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=1009"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=1009"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=1009"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 1005,
     "date": "2022-11-23T10:37:16",
     "date_gmt": "2022-11-23T07:07:16",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=1005"
+    },
     "modified": "2022-11-23T10:37:16",
+    "modified_gmt": "2022-11-23T07:07:16",
     "slug": "%d8%a7%d9%81%d8%aa%d8%aa%d8%a7%d8%ad-%d8%b5%d9%86%d8%af%d9%88%d9%82-%d8%a7%d8%b3%d8%aa%d8%ab%d9%85%d8%a7%d8%b1-%d9%85%d8%b4%d8%a7%d8%b1%d9%8a%d8%b9-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3-%d8%a7%d9%84",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d8%a7%d9%81%d8%aa%d8%aa%d8%a7%d8%ad-%d8%b5%d9%86%d8%af%d9%88%d9%82-%d8%a7%d8%b3%d8%aa%d8%ab%d9%85%d8%a7%d8%b1-%d9%85%d8%b4%d8%a7%d8%b1%d9%8a%d8%b9-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3-%d8%a7%d9%84/",
     "title": {
       "rendered": "افتتاح صندوق استثمار مشاريع آباديس الإبداعية في معرض إيران هلث الدولي"
@@ -66,18 +273,119 @@
       "rendered": "<p>شركة آباديس مستعدة للتعاون والاستثمار في المشاريع الإنتاجية الإبداعية المختصة بمجال المعدات الطبية ولوازم المستشفيات. نرجو من المهندسين والنخب والأساتذة وأصحاب الأفكار الرائدة إرسال مشاريعهم لآباديس عبر موقع abadis-med.ir. لمزيد من المعلومات، راجعوا الموقع أعلاه.</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 1006,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-1005",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/1005",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=1005"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 2,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/1005/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 1008,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/1005/revisions/1008"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/1006"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=1005"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=1005"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=1005"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 991,
     "date": "2022-11-23T10:35:38",
     "date_gmt": "2022-11-23T07:05:38",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=991"
+    },
     "modified": "2022-11-23T10:35:38",
+    "modified_gmt": "2022-11-23T07:05:38",
     "slug": "%d8%aa%d9%82%d8%b1%d9%8a%d8%b1-%d9%85%d8%b5%d9%88%d8%b1-%d9%84%d9%85%d8%b9%d8%b1%d8%b6-%d8%a5%d9%8a%d8%b1%d8%a7%d9%86-%d9%87%d9%84%d8%ab-%d8%a7%d9%84%d8%af%d9%88%d9%84%d9%8a-%d8%a7%d9%84%d8%ab%d8%a7",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d8%aa%d9%82%d8%b1%d9%8a%d8%b1-%d9%85%d8%b5%d9%88%d8%b1-%d9%84%d9%85%d8%b9%d8%b1%d8%b6-%d8%a5%d9%8a%d8%b1%d8%a7%d9%86-%d9%87%d9%84%d8%ab-%d8%a7%d9%84%d8%af%d9%88%d9%84%d9%8a-%d8%a7%d9%84%d8%ab%d8%a7/",
     "title": {
       "rendered": "تقرير مصور لمعرض إيران هلث الدولي الثاني والعشرين 2019"
@@ -90,18 +398,119 @@
       "rendered": "<p>تقرير مصور لمعرض إيران هلث الدولي الثاني والعشرين 2019 &nbsp; &nbsp; &nbsp;</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 992,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-991",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/991",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=991"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 2,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/991/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 1004,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/991/revisions/1004"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/992"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=991"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=991"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=991"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 985,
     "date": "2022-11-23T10:31:07",
     "date_gmt": "2022-11-23T07:01:07",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=985"
+    },
     "modified": "2022-11-23T10:31:38",
+    "modified_gmt": "2022-11-23T07:01:38",
     "slug": "%d9%85%d9%82%d8%a7%d8%a8%d9%84%d8%a9-%d9%85%d8%b9-%d8%b2%d9%85%d9%84%d8%a7%d8%a1-%d9%88%d8%b1%d8%a4%d8%b3%d8%a7%d8%a1-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3-%d9%84%d9%84%d8%ae%d8%b2%d8%a7%d9%86%d8%a7",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d9%85%d9%82%d8%a7%d8%a8%d9%84%d8%a9-%d9%85%d8%b9-%d8%b2%d9%85%d9%84%d8%a7%d8%a1-%d9%88%d8%b1%d8%a4%d8%b3%d8%a7%d8%a1-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3-%d9%84%d9%84%d8%ae%d8%b2%d8%a7%d9%86%d8%a7/",
     "title": {
       "rendered": "مقابلة مع زملاء ورؤساء آباديس للخزانات الطبية في معرض إيران للصحة 2019"
@@ -114,18 +523,119 @@
       "rendered": "<p>تتقدم إدارة آباديس بجزيل الشكر وعظيم الامتنان إلى جميع زملائها لجهودهم خلال فترة إقامة المعرض. نتمنى أن يحقق هذا الفريق مع أهدافه المزيد من النجاح في مجال النهوض بصناعة المعدات الطبية في البلاد. &nbsp;</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 986,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-985",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/985",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=985"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 5,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/985/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 2589,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/985/revisions/2589"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/986"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=985"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=985"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=985"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 981,
     "date": "2022-11-23T10:29:27",
     "date_gmt": "2022-11-23T06:59:27",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=981"
+    },
     "modified": "2022-11-23T10:29:27",
+    "modified_gmt": "2022-11-23T06:59:27",
     "slug": "%d9%85%d9%82%d8%a7%d8%a8%d9%84%d8%a9-%d8%a5%d8%b0%d8%a7%d8%b9%d8%a9-%d8%a5%d9%8a%d8%b1%d8%a7%d9%86-%d9%85%d8%b9-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3-%d9%81%d9%8a-%d9%85%d8%b9%d8%b1%d8%b6-%d8%a5%d9%8a",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d9%85%d9%82%d8%a7%d8%a8%d9%84%d8%a9-%d8%a5%d8%b0%d8%a7%d8%b9%d8%a9-%d8%a5%d9%8a%d8%b1%d8%a7%d9%86-%d9%85%d8%b9-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3-%d9%81%d9%8a-%d9%85%d8%b9%d8%b1%d8%b6-%d8%a5%d9%8a/",
     "title": {
       "rendered": "مقابلة إذاعة إيران مع آباديس في معرض إيران هلث 2019"
@@ -138,18 +648,119 @@
       "rendered": "<p>تغطية إخبارية لحضور آباديس في معرض إيران هلث 2019 في برنامج رهاورد على إذاعة إيران. مع الكشف عن حامل أنبوب القصبة الهوائية وافتتاح مشروع صندوق آباديس للأفكار https://abadis-med.com/wp-content/uploads/2019/06/Voice.mp4</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 982,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-981",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/981",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=981"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 2,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/981/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 984,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/981/revisions/984"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/982"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=981"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=981"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=981"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 977,
     "date": "2022-11-23T10:27:54",
     "date_gmt": "2022-11-23T06:57:54",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=977"
+    },
     "modified": "2022-11-26T10:54:49",
+    "modified_gmt": "2022-11-26T07:24:49",
     "slug": "%d8%a7%d9%84%d8%aa%d8%ba%d8%b7%d9%8a%d8%a9-%d8%a7%d9%84%d8%a5%d8%ae%d8%a8%d8%a7%d8%b1%d9%8a%d8%a9-%d9%84%d8%ad%d8%b6%d9%88%d8%b1-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3-%d9%81%d9%8a-%d9%85%d8%b9%d8%b1",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d8%a7%d9%84%d8%aa%d8%ba%d8%b7%d9%8a%d8%a9-%d8%a7%d9%84%d8%a5%d8%ae%d8%a8%d8%a7%d8%b1%d9%8a%d8%a9-%d9%84%d8%ad%d8%b6%d9%88%d8%b1-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3-%d9%81%d9%8a-%d9%85%d8%b9%d8%b1/",
     "title": {
       "rendered": "التغطية الإخبارية لحضور آباديس في معرض إيران هلث على موقع Medirence"
@@ -162,18 +773,119 @@
       "rendered": "<p>التغطية الإخبارية لحضور آباديس في معرض إيران هلث على موقع Medirence https://abadis-med.com/wp-content/uploads/2019/06/medirence-Abadis-Iranhealth.mp4</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 978,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-977",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/977",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=977"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 2,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/977/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 1096,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/977/revisions/1096"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/978"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=977"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=977"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=977"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 970,
     "date": "2022-11-23T10:25:44",
     "date_gmt": "2022-11-23T06:55:44",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=970"
+    },
     "modified": "2022-11-23T10:26:22",
+    "modified_gmt": "2022-11-23T06:56:22",
     "slug": "%d9%85%d9%82%d8%a7%d8%a8%d9%84%d8%a9-%d9%85%d8%ac%d9%84%d8%a9-%d8%a7%d9%84%d9%87%d9%86%d8%af%d8%b3%d8%a9-%d8%a7%d9%84%d8%b7%d8%a8%d9%8a%d8%a9-%d9%85%d8%b9-%d8%a7%d9%84%d9%85%d8%b3%d8%aa%d8%b4",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d9%85%d9%82%d8%a7%d8%a8%d9%84%d8%a9-%d9%85%d8%ac%d9%84%d8%a9-%d8%a7%d9%84%d9%87%d9%86%d8%af%d8%b3%d8%a9-%d8%a7%d9%84%d8%b7%d8%a8%d9%8a%d8%a9-%d9%85%d8%b9-%d8%a7%d9%84%d9%85%d8%b3%d8%aa%d8%b4/",
     "title": {
       "rendered": "مقابلة مجلة &#8220;الهندسة الطبية&#8221; مع المستشار الاستراتيجي لشركة آباديس"
@@ -186,18 +898,119 @@
       "rendered": "<p>مقابلة مجلة &#8220;الهندسة الطبية&#8221; مع المستشار الاستراتيجي لشركة آباديس &nbsp;</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 972,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-970",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/970",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=970"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 4,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/970/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 974,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/970/revisions/974"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/972"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=970"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=970"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=970"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 966,
     "date": "2022-11-23T10:23:44",
     "date_gmt": "2022-11-23T06:53:44",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=966"
+    },
     "modified": "2022-11-23T10:23:44",
+    "modified_gmt": "2022-11-23T06:53:44",
     "slug": "%d8%ac%d8%b1%d9%8a%d8%af%d8%a9-%d8%ba%d8%b0%d8%a7-%d9%88%d8%af%d8%a7%d8%b1%d9%88-%d8%a7%d9%84%d8%b9%d8%af%d8%af-40",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d8%ac%d8%b1%d9%8a%d8%af%d8%a9-%d8%ba%d8%b0%d8%a7-%d9%88%d8%af%d8%a7%d8%b1%d9%88-%d8%a7%d9%84%d8%b9%d8%af%d8%af-40/",
     "title": {
       "rendered": "جريدة &#8220;غذا ودارو&#8221; العدد 40"
@@ -210,18 +1023,119 @@
       "rendered": "<p>في هذا القسم من الموقع يمكنكم الاطلاع على العدد 40 من جريدة &#8220;غذا ودارو&#8221;. اضغط على هذا الرابط للمشاهدة.</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 967,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-966",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/966",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=966"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 2,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/966/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 969,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/966/revisions/969"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/967"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=966"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=966"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=966"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 961,
     "date": "2022-11-23T10:21:47",
     "date_gmt": "2022-11-23T06:51:47",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=961"
+    },
     "modified": "2022-11-23T10:22:16",
+    "modified_gmt": "2022-11-23T06:52:16",
     "slug": "%d8%a7%d9%84%d9%8a%d8%a7%d9%86%d8%b5%d9%8a%d8%a8-%d8%a7%d9%84%d9%83%d8%a8%d9%8a%d8%b1-%d9%84%d8%b4%d8%b1%d9%83%d8%a9-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d8%a7%d9%84%d9%8a%d8%a7%d9%86%d8%b5%d9%8a%d8%a8-%d8%a7%d9%84%d9%83%d8%a8%d9%8a%d8%b1-%d9%84%d8%b4%d8%b1%d9%83%d8%a9-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3/",
     "title": {
       "rendered": "اليانصيب الكبير لشركة آباديس"
@@ -234,18 +1148,119 @@
       "rendered": "<p>ندعو جميع الممرضين والمسعفين وجميع الأعزاء العاملين في المستشفيات التي ندعمها، إلى إرسال صورتهم أو مقطع فيديو لهم مع أكياس شفط آباديس ذات الاستعمال الواحد، بالإضافة إلى اسمهم الكامل واسم المستشفى الذي يعملون فيه واسم مهنتهم ورقم هاتفهم، إلى الرابط أدناه أو إلى الرقم التالي في واتساب أو تلغرام لكي يحصلوا على جوائزنا في يانصيب [&hellip;]</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 962,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-961",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/961",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=961"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 3,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/961/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 965,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/961/revisions/965"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/962"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=961"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=961"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=961"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 957,
     "date": "2022-11-23T10:20:36",
     "date_gmt": "2022-11-23T06:50:36",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=957"
+    },
     "modified": "2022-11-23T10:20:36",
+    "modified_gmt": "2022-11-23T06:50:36",
     "slug": "%d8%ad%d8%b6%d9%88%d8%b1-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3-%d9%81%d9%8a-%d9%85%d8%b9%d8%b1%d8%b6-%d8%b4%d9%8a%d8%b1%d8%a7%d8%b2-%d8%a7%d9%84%d8%b1%d8%a7%d8%a8%d8%b9-%d9%84%d9%84%d8%a3%d8%ac%d9%87",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d8%ad%d8%b6%d9%88%d8%b1-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3-%d9%81%d9%8a-%d9%85%d8%b9%d8%b1%d8%b6-%d8%b4%d9%8a%d8%b1%d8%a7%d8%b2-%d8%a7%d9%84%d8%b1%d8%a7%d8%a8%d8%b9-%d9%84%d9%84%d8%a3%d8%ac%d9%87/",
     "title": {
       "rendered": "حضور آباديس في معرض شيراز الرابع للأجهزة الطبية"
@@ -258,18 +1273,119 @@
       "rendered": "<p>حضور الممثل المحترم لشركة آباديس ، وشركة دانش نوانديشان بهبود في معرض شيراز الرابع عشر للمعدات الطبية الموقع الدائم للمعارض الدولية لمحافظة فارس، قاعة بهار من 25 إلى 28 سبتمبر 2019</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 958,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-957",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/957",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=957"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 2,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/957/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 960,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/957/revisions/960"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/958"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=957"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=957"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=957"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 953,
     "date": "2022-11-23T10:19:33",
     "date_gmt": "2022-11-23T06:49:33",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=953"
+    },
     "modified": "2022-11-23T10:19:33",
+    "modified_gmt": "2022-11-23T06:49:33",
     "slug": "%d8%a3%d8%ae%d8%a8%d8%a7%d8%b1-%d8%a3%d9%83%d8%ab%d8%b1-%d8%b9%d9%86-%d9%85%d8%b3%d8%a7%d8%a8%d9%82%d8%a9-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3-%d8%a7%d9%84%d9%83%d8%a8%d9%8a%d8%b1%d8%a9",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d8%a3%d8%ae%d8%a8%d8%a7%d8%b1-%d8%a3%d9%83%d8%ab%d8%b1-%d8%b9%d9%86-%d9%85%d8%b3%d8%a7%d8%a8%d9%82%d8%a9-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3-%d8%a7%d9%84%d9%83%d8%a8%d9%8a%d8%b1%d8%a9/",
     "title": {
       "rendered": "أخبار أكثر عن مسابقة آباديس الكبيرة"
@@ -282,18 +1398,119 @@
       "rendered": "<p>للمشاركة في المسابقة، شاهد الفيديو أدناه. ابق معنا للفوز &#8230; https://abadis-med.com/wp-content/uploads/2022/03/33da398f9dea0eca0a045ec9c115885517630214-240p.mp4</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 954,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-953",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/953",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=953"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 2,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/953/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 956,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/953/revisions/956"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/954"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=953"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=953"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=953"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 949,
     "date": "2022-11-23T10:18:31",
     "date_gmt": "2022-11-23T06:48:31",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=949"
+    },
     "modified": "2022-11-26T10:18:26",
+    "modified_gmt": "2022-11-26T06:48:26",
     "slug": "%d8%a7%d9%84%d8%ae%d8%a8%d8%b1-%d8%a7%d9%84%d8%b9%d8%a7%d8%ac%d9%84-%d9%84%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d8%a7%d9%84%d8%ae%d8%a8%d8%b1-%d8%a7%d9%84%d8%b9%d8%a7%d8%ac%d9%84-%d9%84%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3/",
     "title": {
       "rendered": "الخبر العاجل لآباديس"
@@ -306,18 +1523,119 @@
       "rendered": "<p>الرجاء الانتباه إلى الخبر العاجل الذي نشرته آباديس اليوم الثلاثاء 12 نوفمبر 2019 https://abadis-med.com/wp-content/uploads/2022/03/df856f7e5793b40b5034500be1a9b03617853585-240p.mp4</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 950,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-949",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/949",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=949"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 2,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/949/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 1085,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/949/revisions/1085"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/950"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=949"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=949"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=949"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 941,
     "date": "2022-11-23T10:12:49",
     "date_gmt": "2022-11-23T06:42:49",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=941"
+    },
     "modified": "2022-11-23T10:16:36",
+    "modified_gmt": "2022-11-23T06:46:36",
     "slug": "%d9%8a%d8%a7%d9%86%d8%b5%d9%8a%d8%a8-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3-%d8%a7%d9%84%d9%83%d8%a8%d9%8a%d8%b1-2020-%d8%a8%d9%85%d9%86%d8%a7%d8%b3%d8%a8%d8%a9-%d8%b9%d9%8a%d8%af-%d8%a7%d9%84%d8%aa",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d9%8a%d8%a7%d9%86%d8%b5%d9%8a%d8%a8-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3-%d8%a7%d9%84%d9%83%d8%a8%d9%8a%d8%b1-2020-%d8%a8%d9%85%d9%86%d8%a7%d8%b3%d8%a8%d8%a9-%d8%b9%d9%8a%d8%af-%d8%a7%d9%84%d8%aa/",
     "title": {
       "rendered": "يانصيب آباديس الكبير 2020 بمناسبة عيد التمريض"
@@ -330,18 +1648,119 @@
       "rendered": "<p>أقيم يانصيب آباديس الكبير في يوم التمريض عام 2020 &#8230; ندعوكم لمشاهدة الفيديو الكامل لليانصيب. &nbsp;</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 942,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-941",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/941",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=941"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 5,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/941/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 948,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/941/revisions/948"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/942"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=941"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=941"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=941"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 937,
     "date": "2022-11-23T10:11:17",
     "date_gmt": "2022-11-23T06:41:17",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=937"
+    },
     "modified": "2022-11-23T10:11:17",
+    "modified_gmt": "2022-11-23T06:41:17",
     "slug": "%d8%ad%d8%b6%d9%88%d8%b1-%d8%b4%d8%b1%d9%83%d8%a9-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3-%d9%81%d9%8a-%d9%85%d8%b9%d8%b1%d8%b6-%d8%a7%d9%84%d9%85%d8%b9%d8%af%d8%a7%d8%aa-%d8%a7%d9%84%d8%b7%d8%a8%d9%8a",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d8%ad%d8%b6%d9%88%d8%b1-%d8%b4%d8%b1%d9%83%d8%a9-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3-%d9%81%d9%8a-%d9%85%d8%b9%d8%b1%d8%b6-%d8%a7%d9%84%d9%85%d8%b9%d8%af%d8%a7%d8%aa-%d8%a7%d9%84%d8%b7%d8%a8%d9%8a/",
     "title": {
       "rendered": "حضور شركة آباديس في معرض المعدات الطبية الرابع عشر في أصفهان"
@@ -354,18 +1773,119 @@
       "rendered": "<p>تدعو شركة آباديس جميع الزملاء والأحباء الذين هم معنا دائماً للمشاركة في معرض أصفهان الذي سيقام في 22 إلى 25 يناير من الساعة 15:00 إلى 21:00.</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 938,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-937",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/937",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=937"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 2,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/937/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 940,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/937/revisions/940"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/938"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=937"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=937"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=937"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 933,
     "date": "2022-11-23T10:08:31",
     "date_gmt": "2022-11-23T06:38:31",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=933"
+    },
     "modified": "2022-11-23T10:08:31",
+    "modified_gmt": "2022-11-23T06:38:31",
     "slug": "%d8%a3%d9%86%d8%b4%d8%b7%d8%a9-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3-%d8%ae%d9%84%d8%a7%d9%84-%d8%a3%d8%b2%d9%85%d8%a9-%d9%83%d9%88%d8%b1%d9%88%d9%86%d8%a7",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d8%a3%d9%86%d8%b4%d8%b7%d8%a9-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3-%d8%ae%d9%84%d8%a7%d9%84-%d8%a3%d8%b2%d9%85%d8%a9-%d9%83%d9%88%d8%b1%d9%88%d9%86%d8%a7/",
     "title": {
       "rendered": "أنشطة آباديس خلال أزمة كورونا"
@@ -378,18 +1898,119 @@
       "rendered": "<p>https://abadis-med.com/wp-content/uploads/2020/04/Final.mp4 حاولت شركة آباديس ، بوصفها إحدى الشركات المصنعة للمعدات الطبية، أن تحضر في أزمة كورونا بجوار المراكز الطبية بالبلاد وفقاً لواجبها والتزاماتها. ولم تكتف شركة آباديس بعدم إغلاق قسم تركيب المعدات المتعلقة بمنتجاتها الرئيسية، أي أكياس الشفط، في المراكز الطبية، بل واصلت عملها بنشاط خلال هذه الفترة بأكملها (حتى في الفترة 21 مارس إلى [&hellip;]</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 934,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-933",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/933",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=933"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 2,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/933/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 936,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/933/revisions/936"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/934"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=933"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=933"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=933"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 929,
     "date": "2022-11-23T09:18:11",
     "date_gmt": "2022-11-23T05:48:11",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=929"
+    },
     "modified": "2022-11-23T09:18:11",
+    "modified_gmt": "2022-11-23T05:48:11",
     "slug": "%d8%a7%d9%84%d8%ad%d8%b5%d9%88%d9%84-%d8%b9%d9%84%d9%89-%d8%b4%d9%87%d8%a7%d8%af%d8%a9-ce-%d9%85%d9%86-%d8%a7%d9%84%d8%a7%d8%aa%d8%ad%d8%a7%d8%af-%d8%a7%d9%84%d8%a3%d9%88%d8%b1%d9%88%d8%a8%d9%8a",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d8%a7%d9%84%d8%ad%d8%b5%d9%88%d9%84-%d8%b9%d9%84%d9%89-%d8%b4%d9%87%d8%a7%d8%af%d8%a9-ce-%d9%85%d9%86-%d8%a7%d9%84%d8%a7%d8%aa%d8%ad%d8%a7%d8%af-%d8%a7%d9%84%d8%a3%d9%88%d8%b1%d9%88%d8%a8%d9%8a/",
     "title": {
       "rendered": "الحصول على شهادة CE من الاتحاد الأوروبي"
@@ -402,18 +2023,119 @@
       "rendered": "<p>بكل فخر نهنئ جميع العاملين في مجموعة آباديس والزملاء والعملاء الأعزاء بحصول شركة آباديس على شهادة CE من الاتحاد الأوروبي كأول منتج لأكياس الشفط ذات الاستعمال الواحد في إيران. يمكنك استخدام هذا الرابط للاستعلام عن شهادة CE  لآباديس. &nbsp; &nbsp; تفاعل معنا</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 930,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-929",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/929",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=929"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 2,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/929/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 932,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/929/revisions/932"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/930"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=929"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=929"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=929"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 923,
     "date": "2022-11-22T17:27:48",
     "date_gmt": "2022-11-22T13:57:48",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=923"
+    },
     "modified": "2022-11-22T17:27:48",
+    "modified_gmt": "2022-11-22T13:57:48",
     "slug": "%d8%a7%d9%84%d9%83%d8%b4%d9%81-%d8%b9%d9%86-%d8%a7%d9%84%d9%85%d9%86%d8%aa%d8%ac%d8%a7%d8%aa-%d8%a7%d9%84%d8%ac%d8%af%d9%8a%d8%af%d8%a9-%d9%84%d8%b4%d8%b1%d9%83%d8%a9-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d8%a7%d9%84%d9%83%d8%b4%d9%81-%d8%b9%d9%86-%d8%a7%d9%84%d9%85%d9%86%d8%aa%d8%ac%d8%a7%d8%aa-%d8%a7%d9%84%d8%ac%d8%af%d9%8a%d8%af%d8%a9-%d9%84%d8%b4%d8%b1%d9%83%d8%a9-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a/",
     "title": {
       "rendered": "الكشف عن المنتجات الجديدة لشركة آباديس"
@@ -426,18 +2148,119 @@
       "rendered": "<p>كشفت شركة آباديس ، أكبر مصنع لأكياس الشفط ذات الاستعمال الواحد في إيران، مؤخراً عن منتجين جديدين، وهما الشفط الجداري والمنظم. المنظم، وهو أحد المنتجات الجديدة التي تنتجها هذه الشركة لأول مرة في إيران، هو قطعة بين مَخرج التفريغ وخزان الشفط، والذي يمكن باستخدامه تعديل كمية التفريغ. هذا المنظم يتميز بتصميم جميل وجودة عالية. &nbsp; [&hellip;]</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 924,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-923",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/923",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=923"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 2,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/923/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 928,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/923/revisions/928"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/924"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=923"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=923"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=923"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 917,
     "date": "2022-11-22T17:22:57",
     "date_gmt": "2022-11-22T13:52:57",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=917"
+    },
     "modified": "2022-11-22T17:23:42",
+    "modified_gmt": "2022-11-22T13:53:42",
     "slug": "%d8%b9%d8%b1%d8%b6-%d9%85%d9%86%d8%aa%d8%ac%d8%a7%d8%aa-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3-%d8%a7%d9%84%d8%ac%d8%af%d9%8a%d8%af%d8%a9-%d9%81%d9%8a-%d9%85%d8%ac%d8%a7%d9%84-%d8%a7%d9%84%d8%aa%d8%b1",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d8%b9%d8%b1%d8%b6-%d9%85%d9%86%d8%aa%d8%ac%d8%a7%d8%aa-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3-%d8%a7%d9%84%d8%ac%d8%af%d9%8a%d8%af%d8%a9-%d9%81%d9%8a-%d9%85%d8%ac%d8%a7%d9%84-%d8%a7%d9%84%d8%aa%d8%b1/",
     "title": {
       "rendered": "عرض منتجات آباديس الجديدة في مجال الترشيح والتصفية"
@@ -450,18 +2273,119 @@
       "rendered": "<p>&nbsp; بدأت مجموعة آباديس بإنتاج الفلتر القاطع للتيار والفلتر المضاد للبكتيريا، وذلك لإكمال مجموعة منتجاتها. فلتر آباديس القاطع للتيار: مناسب لوضعه في مسار أجهزة الشفط لعمر أطول وللحيلولة دون انتشار الكائنات الحية الدقيقة في البيئة المحيطة فلتر آباديس المضاد للبكتيريا: مناسب للوضعه في مسار أجهزة الشفط لعمر أطول ولمنع دخول الغبار إلى الأجهزة الذهاب إلى [&hellip;]</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 918,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-917",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/917",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=917"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 3,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/917/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 922,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/917/revisions/922"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/918"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=917"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=917"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=917"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 910,
     "date": "2022-11-22T17:19:03",
     "date_gmt": "2022-11-22T13:49:03",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=910"
+    },
     "modified": "2022-11-22T17:19:46",
+    "modified_gmt": "2022-11-22T13:49:46",
     "slug": "%d8%a3%d8%b3%d9%85%d8%a7%d8%a1-%d8%a7%d9%84%d9%81%d8%a7%d8%a6%d8%b2%d9%8a%d9%86-%d9%81%d9%8a-%d9%85%d8%b3%d8%a7%d8%a8%d9%82%d8%a9-%d9%8a%d9%88%d9%85-%d8%a7%d9%84%d8%aa%d9%85%d8%b1%d9%8a%d8%b6-%d8%b9",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d8%a3%d8%b3%d9%85%d8%a7%d8%a1-%d8%a7%d9%84%d9%81%d8%a7%d8%a6%d8%b2%d9%8a%d9%86-%d9%81%d9%8a-%d9%85%d8%b3%d8%a7%d8%a8%d9%82%d8%a9-%d9%8a%d9%88%d9%85-%d8%a7%d9%84%d8%aa%d9%85%d8%b1%d9%8a%d8%b6-%d8%b9/",
     "title": {
       "rendered": "أسماء الفائزين في مسابقة يوم التمريض عام 2022"
@@ -474,18 +2398,119 @@
       "rendered": "<p>أسماء الفائزين في مسابقة يوم التمريض التي عقدتها آباديس هي كالتالي: سعادة السيدة فاطمة اميديان من مستشفى الامام سجاد في شهريار سعادة السيدة معصومة جودرزي من مستشفى أمير المؤمنين في جوادية سعادة السيدة زينب كارجر من مستشفى البرز سعادة السيد سعيد اسماعيلي فر من مستشفى خاتم الأنبياء في شوشتر سعادة السيدة حكيمة عباسبور من مستشفى [&hellip;]</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 911,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-910",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/910",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=910"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 4,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/910/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 915,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/910/revisions/915"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/911"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=910"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=910"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=910"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 905,
     "date": "2022-11-22T17:17:06",
     "date_gmt": "2022-11-22T13:47:06",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=905"
+    },
     "modified": "2022-11-22T17:17:34",
+    "modified_gmt": "2022-11-22T13:47:34",
     "slug": "%d9%85%d9%82%d8%a7%d8%a8%d9%84%d8%a9-%d9%85%d8%af%d9%8a%d8%b1%d9%86%d8%b3-%d9%85%d8%b9-%d8%b1%d8%a4%d8%b3%d8%a7%d8%a1-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d9%85%d9%82%d8%a7%d8%a8%d9%84%d8%a9-%d9%85%d8%af%d9%8a%d8%b1%d9%86%d8%b3-%d9%85%d8%b9-%d8%b1%d8%a4%d8%b3%d8%a7%d8%a1-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a%d8%b3/",
     "title": {
       "rendered": "مقابلة مديرنس مع رؤساء آباديس"
@@ -498,18 +2523,119 @@
       "rendered": "<p>اضغط على هذا الرابط لقراءة مقابلة الرئيس التنفيذي لشركة مديرنس مع رؤساء شركة آباديس والتي أجريت على إنستغرام (البث المباشر) حول موضوع الهندسة الطبية والمعدات الطبية بتاريخ 21 نوفمبر 2021. &nbsp; &nbsp;</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 906,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-905",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/905",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=905"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 3,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/905/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 908,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/905/revisions/908"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/906"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=905"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=905"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=905"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 900,
     "date": "2022-11-22T17:14:40",
     "date_gmt": "2022-11-22T13:44:40",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=900"
+    },
     "modified": "2022-11-22T17:15:00",
+    "modified_gmt": "2022-11-22T13:45:00",
     "slug": "%d8%b5%d9%81%d8%ad%d8%a7%d8%aa%d9%86%d8%a7-%d8%a7%d9%84%d8%a7%d9%81%d8%aa%d8%b1%d8%a7%d8%b6%d9%8a%d8%a9",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d8%b5%d9%81%d8%ad%d8%a7%d8%aa%d9%86%d8%a7-%d8%a7%d9%84%d8%a7%d9%81%d8%aa%d8%b1%d8%a7%d8%b6%d9%8a%d8%a9/",
     "title": {
       "rendered": "صفحاتنا الافتراضية"
@@ -522,18 +2648,119 @@
       "rendered": "<p>اضغط على هذا الرابط للدخول إلى صفحاتنا الافتراضية.</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 901,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-900",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/900",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=900"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 3,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/900/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 904,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/900/revisions/904"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/901"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=900"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=900"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=900"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 894,
     "date": "2022-11-22T17:12:39",
     "date_gmt": "2022-11-22T13:42:39",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=894"
+    },
     "modified": "2022-11-22T17:12:39",
+    "modified_gmt": "2022-11-22T13:42:39",
     "slug": "%d9%85%d9%82%d8%a7%d8%a8%d9%84%d8%a9-%d9%88%d9%83%d8%a7%d9%84%d8%a9-%d8%a3%d9%86%d8%a8%d8%a7%d8%a1-%d9%81%d8%a7%d8%b1%d8%b3-%d9%85%d8%b9-%d8%b1%d8%a4%d8%b3%d8%a7%d8%a1-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d9%85%d9%82%d8%a7%d8%a8%d9%84%d8%a9-%d9%88%d9%83%d8%a7%d9%84%d8%a9-%d8%a3%d9%86%d8%a8%d8%a7%d8%a1-%d9%81%d8%a7%d8%b1%d8%b3-%d9%85%d8%b9-%d8%b1%d8%a4%d8%b3%d8%a7%d8%a1-%d8%a2%d8%a8%d8%a7%d8%af%d9%8a/",
     "title": {
       "rendered": "مقابلة وكالة أنباء فارس مع رؤساء آباديس"
@@ -546,18 +2773,119 @@
       "rendered": "<p>نأتي فيما يلي بنص المقابلة الإخبارية التي أجرتها وكالة فارس مع رؤساء آباديس: مقابلة مع الرؤساء الشباب والناجحين لشركة آباديس الناشطة في مجال إنتاج المعدات الطبية وأكبر منتج لأكياس الشفط ذات الاستعمال الواحد في إيران. &nbsp; &nbsp; أجاب عليرضا حسنعلي، الرئيس التنفيذي لشركة آبديس ، ونويد حسنعلي، نائب رئيس التجارة والمبيعات لشركة آبديس ، بوصفهم [&hellip;]</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 895,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-894",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/894",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=894"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 2,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/894/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 899,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/894/revisions/899"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/895"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=894"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=894"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=894"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 882,
     "date": "2022-11-22T17:03:16",
     "date_gmt": "2022-11-22T13:33:16",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=882"
+    },
     "modified": "2022-11-22T17:09:49",
+    "modified_gmt": "2022-11-22T13:39:49",
     "slug": "%d8%b5%d9%88%d8%b1%d8%a9-%d8%aa%d9%82%d8%af%d9%8a%d9%85-%d8%a7%d9%84%d8%af%d8%b9%d9%88%d8%a9-%d9%84%d9%85%d8%b9%d8%b1%d8%b6-%d8%a5%d9%8a%d8%b1%d8%a7%d9%86-%d9%87%d9%84%d8%ab-2022-%d9%85%d9%86-%d9%82",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d8%b5%d9%88%d8%b1%d8%a9-%d8%aa%d9%82%d8%af%d9%8a%d9%85-%d8%a7%d9%84%d8%af%d8%b9%d9%88%d8%a9-%d9%84%d9%85%d8%b9%d8%b1%d8%b6-%d8%a5%d9%8a%d8%b1%d8%a7%d9%86-%d9%87%d9%84%d8%ab-2022-%d9%85%d9%86-%d9%82/",
     "title": {
       "rendered": "صورة تقديم الدعوة لمعرض إيران هلث 2022 من قبل رؤساء آباديس"
@@ -570,18 +2898,119 @@
       "rendered": "<p>نحن ننتظرك… بعد 5 سنوات من الجهود المتواصلة، وبحمد الله وبمرافقتك عزيزي معنا، تمكنّا من أن نؤثر على حماية البيئة عبر إحداث أكبر تأثيرعلى مكافحة العدوى في المراكز الطبية. وفي هذا الصدد، يدعوك آباديس، بصفته داعماً خاصاً لمعرض إيران هلث الدولي الثالث والعشرين، لزيارة إنجازاته خلال 5 سنوات. &nbsp; مسیریابی Waze مسیریابی گوگل</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 892,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-882",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/882",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=882"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 9,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/882/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 893,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/882/revisions/893"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/892"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=882"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=882"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=882"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 878,
     "date": "2022-11-22T16:56:07",
     "date_gmt": "2022-11-22T13:26:07",
+    "guid": {
+      "rendered": "https://abadis-med.com/arabic/?p=878"
+    },
     "modified": "2022-11-26T10:57:27",
+    "modified_gmt": "2022-11-26T07:27:27",
     "slug": "%d9%85%d9%82%d8%a7%d8%a8%d9%84%d8%a9-%d9%88%d9%83%d8%a7%d9%84%d8%a9-%d8%a3%d9%86%d8%a8%d8%a7%d8%a1-%d8%a7%d8%ae%d8%a8%d8%a7%d8%b1-%d8%b1%d8%b3%d9%85%d9%8a-%d9%85%d8%b9-%d9%85%d8%af%d9%8a%d8%b1%d9%8a",
     "status": "publish",
+    "type": "post",
     "link": "https://abadis-med.com/arabic/%d9%85%d9%82%d8%a7%d8%a8%d9%84%d8%a9-%d9%88%d9%83%d8%a7%d9%84%d8%a9-%d8%a3%d9%86%d8%a8%d8%a7%d8%a1-%d8%a7%d8%ae%d8%a8%d8%a7%d8%b1-%d8%b1%d8%b3%d9%85%d9%8a-%d9%85%d8%b9-%d9%85%d8%af%d9%8a%d8%b1%d9%8a/",
     "title": {
       "rendered": "مقابلة وكالة أنباء اخبار رسمي مع مديري آباديس"
@@ -594,10 +3023,106 @@
       "rendered": "<p>إن نويد حسنعلي، نائب رئيس التجارة والمبيعات، والشريك المؤسس لشركة آباديس ، مع 13 عاماً من الخبرة في مجال إدارة المعدات الطبية وخبير في الهندسة الطبية اختصاص الكهرحيوي، يقول في تعريفه بأنشطة الشركة: &#8220;استخدمت البلدان المتقدمة أكياس الشفط ذات الاستعمال الواحد لأول مرة في العالم منذ عام 1990، وإننا حصلنا على الوكالة الحصرية لأكياس الشفط [&hellip;]</p>\n",
       "protected": false
     },
+    "author": 2,
     "featured_media": 1097,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
     "categories": [
       10
-    ]
+    ],
+    "tags": [],
+    "class_list": [
+      "post-878",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-10"
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/878",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/comments?post=878"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 2,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/878/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 880,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/posts/878/revisions/880"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media/1097"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/media?parent=878"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/categories?post=878"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://abadis-med.com/arabic/wp-json/wp/v2/tags?post=878"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
   },
   {
     "id": 803,

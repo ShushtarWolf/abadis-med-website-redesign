@@ -326,7 +326,7 @@ def refresh_soc_links(html: str, lang: str) -> str:
 
 def _fa_social_rows() -> str:
     rows = []
-    for url, fn, label, short in social_items('fa'):
+    for url, fn, label, short in social_items('fa')[:1]:
         rows.append(
             f'<dt>{ch(fn())}{label}:</dt><dd><a href="{url}" target="_blank" rel="noopener" dir="ltr">{short}</a></dd>'
         )
@@ -411,14 +411,6 @@ def decorate_fa_contact_main(html: str) -> str:
         <dt>{ch(svg_fax())}فکس:</dt><dd><span dir="ltr">02141425555</span> | داخلی 28544</dd>
         <dt>{ch(svg_mail())}پست الکترونیک:</dt><dd><a href="mailto:info@abadis-med.com">info@abadis-med.com</a></dd>
         <dt>{ch(svg_whatsapp())}واتس‌اپ:</dt><dd><a href="{WA_URL}" target="_blank" rel="noopener" dir="ltr">+989100145809</a></dd>
-        <dt>{ch(svg_instagram())}اینستاگرام:</dt><dd><a href="{IG_URL}" target="_blank" rel="noopener" dir="ltr">abadismedical.co</a></dd>
-        <dt>{ch(svg_telegram())}تلگرام:</dt><dd><a href="{TG_URL}" target="_blank" rel="noopener" dir="ltr">t.me/abadis_med</a></dd>
-        <dt>{ch(svg_aparat())}آپارات:</dt><dd><a href="{AP_URL}" target="_blank" rel="noopener" dir="ltr">aparat.com/abadismed</a></dd>
-        <dt>{ch(svg_youtube())}یوتیوب:</dt><dd><a href="{YT_URL}" target="_blank" rel="noopener" dir="ltr">youtube.com/abadis</a></dd>
-        <dt>{ch(svg_twitter())}ایکس:</dt><dd><a href="{TW_URL}" target="_blank" rel="noopener" dir="ltr">twitter.com/abadismed</a></dd>
-        <dt>{ch(svg_facebook())}فیسبوک:</dt><dd><a href="{FB_URL}" target="_blank" rel="noopener" dir="ltr">fb.com/AbadisMedCo</a></dd>
-        <dt>{ch(svg_linkedin())}لینکدین:</dt><dd><a href="{LI_URL}" target="_blank" rel="noopener" dir="ltr">abadis-medical-co</a></dd>
-        <dt class="soc-placeholder-row" hidden>{ch(svg_pinterest())}پینترست:</dt><dd class="soc-placeholder-row" hidden><span class="soc-placeholder" data-social="pinterest" data-status="placeholder" data-official-url="" title="نشانی رسمی پینترست در آبادیس منتشر نشده است">نشانی رسمی پینترست در آبادیس منتشر نشده است</span></dd>
         <dt>{ch(svg_pin())}دفتر مرکزی:</dt><dd>ایران، تهران، قیطریه، خیابان اندرزگو، پلاک 104، واحد2</dd>
         <dt>{ch(svg_pin())}کارخانه:</dt><dd>ایران،تهران،شهرک صنعتی شمس آباد، بلوار گلستان، کوچه گلشن ۱۹،پلاک۱۷</dd>
       </dl>'''

@@ -228,7 +228,10 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
             from pages_company import customers_hero
             cust_h1 = 'Abadis Green Family · <em>Our Customers</em>' if lang == 'en' else 'عائلة آباديس الخضراء · <em>عملاؤنا</em>'
             hero = customers_hero(p, lang, cust_h1, crumbs(p, trail, lang=lang))
-            main = f'''{hero}{sec}{after}'''
+            main = f'''{hero}{after}'''
+        elif site_path in ('contact-us/', 'اتصل-بنا/'):
+            from pages_company import contact_i18n_main
+            main = contact_i18n_main(lang, p)
         elif site_path == 'sdgs/':
             from pages_company import sdgs_hero
             sdgs_h1 = 'Sustainable <em>Development</em>' if lang == 'en' else 'التنمية <em>المستدامة</em>'
@@ -262,9 +265,11 @@ def build_posts(write, lang):
     if lang == 'en':
         news_path, blog_path = 'latest-news/', 'blog/'
         items = sorted(posts, key=lambda x: x.get('date') or '', reverse=True)
-        _write_post_index(write, lang, news_path, 'news', L['news_tag'] if False else 'News', items)
-        _write_post_index(write, lang, blog_path, 'articles', 'Blog', items)
-        _write_post_index(write, lang, 'articles/', 'articles', 'Articles', items)
+        news_items = [x for x in items if 4 in (x.get('categories') or [])]
+        blog_items = [x for x in items if 4 not in (x.get('categories') or []) and 3 not in (x.get('categories') or [])]
+        _write_post_index(write, lang, news_path, 'news', 'News', news_items)
+        _write_post_index(write, lang, blog_path, 'articles', 'Blog', blog_items)
+        _write_post_index(write, lang, 'articles/', 'articles', 'Articles', blog_items)
     else:
         news_path = 'الاخبار/'
         items = sorted(posts, key=lambda x: x.get('date') or '', reverse=True)
@@ -309,36 +314,58 @@ def _write_post_index(write, lang, site_path, cur, label, items):
     pairs = []
     news = cur in ('news', 'articles')
     if news:
-        from news_topics import classify_text, classify_article_text, article_meta_for, year_bucket, jalali_year_of
+        from news_topics import news_meta_for, article_meta_for, year_bucket, jalali_year_of
     for wp in items:
         slug = _slug_decode(wp.get('slug') or str(wp['id']))
         title = strip_tags(wp.get('title', {}).get('rendered', ''))
         raw_body = strip_tags(wp.get('content', {}).get('rendered', ''))
         desc = meta_description(title, wp.get('excerpt', {}).get('rendered', ''), wp.get('content', {}).get('rendered', ''), lang)[:160]
-        href = f'../{slug}/' if site_path else f'{slug}/'
-        # from latest-news/ to /en/slug/ → ../slug/
         href = f'{p}{root}{slug}/'
         attrs = ''
         if news and cur == 'articles':
             am = article_meta_for(title, desc, raw_body, lang=lang)
-            topic = am['topic']
             bucket = year_bucket(jalali_year_of(wp.get('date')))
-            pairs.append((topic, bucket))
-            attrs = f' data-topic="{esc(topic)}" data-year="{esc(bucket)}" data-rtime="{esc(am["rtime_key"])}" data-aud="{esc(am["aud_key"])}"'
+            pairs.append((am['cats'], bucket, am['ctype'], am['audiences']))
+            attrs = (
+                f' data-topic="{esc(am["topic"])}" data-cats="{esc(am["cats_csv"])}"'
+                f' data-ctype="{esc(am["ctype"])}" data-year="{esc(bucket)}"'
+                f' data-rtime="{esc(am["rtime_key"])}" data-aud="{esc(am["aud_key"])}"'
+                f' data-audiences="{esc(am["audiences_csv"])}"'
+            )
+            cat_badges = ''.join(f'<span class="art-card-badge">{esc(lbl)}</span>' for lbl in am['cat_labels'][:2])
+            aud_pills = ''.join(f'<span class="art-aud-tag">{esc(lbl)}</span>' for lbl in am['aud_labels'][:3])
             cards.append(
                 f'<a class="post-card reveal" href="{href}" data-name="{esc(title)}"{attrs}>'
                 f'<div class="ph txt"><img src="{p}assets/img/post-thumb-fallback.webp" width="1280" height="720" alt="{esc(title)}" loading="lazy">'
-                f'<span class="art-card-badge">{esc(am["topic_label"])}</span><span class="art-card-time">{esc(am["rtime_badge"])}</span></div>'
-                f'<div class="body"><div class="art-meta-row"><span class="art-aud-tag">{esc(am["aud_label"])}</span></div>'
+                f'<div class="card-cat-stack">{cat_badges}</div>'
+                f'<span class="art-ctype-badge art-ctype-badge--{esc(am["ctype"])}">{esc(am["ctype_label"])}</span>'
+                f'<span class="art-card-time">{esc(am["rtime_badge"])}</span></div>'
+                f'<div class="body"><div class="art-meta-row"><div class="art-aud-list">{aud_pills}</div></div>'
                 f'<h3>{esc(title)}</h3><p>{esc(desc)}</p>'
                 f'<span class="go">{esc(am["card_cta"])}</span></div></a>'
             )
             continue
         elif news:
-            topic = classify_text(title + ' ' + desc)
+            nm = news_meta_for(title, desc, body=raw_body, lang=lang)
             bucket = year_bucket(jalali_year_of(wp.get('date')))
-            pairs.append((topic, bucket))
-            attrs = f' data-topic="{esc(topic)}" data-year="{esc(bucket)}"'
+            pairs.append((nm['cats'], bucket, nm['formats']))
+            attrs = (
+                f' data-topic="{esc(nm["topic"])}" data-cats="{esc(nm["cats_csv"])}"'
+                f' data-format="{esc(nm["format"])}" data-formats="{esc(nm["formats_csv"])}"'
+                f' data-year="{esc(bucket)}"'
+            )
+            cat_badges = ''.join(f'<span class="art-card-badge">{esc(lbl)}</span>' for lbl in nm['cat_labels'][:2])
+            fmt_pills = ''.join(f'<span class="news-fmt-pill">{esc(lbl)}</span>' for lbl in nm['format_labels'][:2])
+            cards.append(
+                f'<a class="post-card reveal" href="{href}" data-name="{esc(title)}"{attrs}>'
+                f'<div class="ph txt"><img src="{p}assets/img/post-thumb-fallback.webp" width="1280" height="720" alt="{esc(title)}" loading="lazy">'
+                f'<div class="card-cat-stack">{cat_badges}</div>'
+                f'<span class="news-fmt-badge news-fmt-badge--{esc(nm["format"])}">{esc(nm["format_label"])}</span></div>'
+                f'<div class="body"><div class="art-meta-row"><div class="art-aud-list">{fmt_pills}</div></div>'
+                f'<h3>{esc(title)}</h3><p>{esc(desc)}</p>'
+                f'<span class="go">{esc(nm["card_cta"])}</span></div></a>'
+            )
+            continue
         cards.append(
             f'<a class="post-card reveal" href="{href}" data-name="{esc(title)}"{attrs}>'
             f'<div class="ph txt"><img src="{p}assets/img/post-thumb-fallback.webp" width="1280" height="720" alt="{esc(title)}" loading="lazy"></div>'
@@ -360,8 +387,8 @@ def _write_post_index(write, lang, site_path, cur, label, items):
             shell = article_shell(lang, p, crumbs(p, [(label, None)], lang=lang), stats, article_feature_from_card(cards[0] if cards else '', lang))
             emp = article_empty_html(lang)
         main = shell + f'\n    <div class="post-grid" id="postGrid" data-paged="12">{"".join(cards)}</div>\n    {emp}\n  </div></section>'
-        extra_head = f'<link rel="stylesheet" href="{p}assets/css/news-finalist.css?v=20261028k">\n'
-        scripts = f'<script src="{p}assets/js/news-finalist.js?v=20261028k" defer></script>\n'
+        extra_head = f'<link rel="stylesheet" href="{p}assets/css/news-finalist.css?v=20261028p">\n'
+        scripts = f'<script src="{p}assets/js/news-finalist.js?v=20261028p" defer></script>\n'
     else:
         main = f'''{page_hero(p, [(label, None)], f'<em>{esc(label)}</em>', '', lang=lang)}
   <section class="section"><div class="wrap">

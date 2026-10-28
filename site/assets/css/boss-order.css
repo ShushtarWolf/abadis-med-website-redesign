@@ -1613,3 +1613,749 @@
     border-radius: 18px;
   }
 }
+
+/* ==========================================================================
+   Finalized Abadis «راهکارها» (Solutions) Hub & Subpages ([t279u], [t281u])
+   ========================================================================== */
+.solutions-hero {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #066163 0%, #0b2e32 100%) !important;
+  color: #fff;
+  padding: 118px 0 44px;
+}
+[data-theme="dark"] .solutions-hero {
+  background: linear-gradient(135deg, #087673 0%, #041113 100%) !important;
+}
+[data-theme="noir"] .solutions-hero {
+  background: linear-gradient(135deg, #3b1d7a 0%, #0a0a12 100%) !important;
+}
+.solutions-hero::before {
+  background-image: url("../media/hero-customers-poster.jpg?v=20261028p");
+  opacity: 0.24;
+}
+.solutions-hero .about-hero-video.is-playing {
+  opacity: 0.24 !important;
+  visibility: visible !important;
+}
+.solutions-hero h1 {
+  font-size: clamp(1.85rem, 4vw, 2.85rem);
+  font-weight: 900;
+  line-height: 1.3;
+  margin: 6px 0 10px;
+  color: #fff;
+}
+.solutions-hero h1 em {
+  font-style: normal;
+  color: #5eead4;
+}
+.sol-hero-lead {
+  margin: 14px 0 0;
+  max-width: 54rem;
+  font-size: clamp(0.96rem, 1.45vw, 1.1rem);
+  line-height: 1.8;
+  color: rgba(236, 254, 255, 0.92);
+  border-inline-start: 3px solid #5eead4;
+  padding-inline-start: 14px;
+}
+
+/* 3 Interactive Hero Solution Cards (PDF Page 7 Top Trio) */
+.sol-hero-trio {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 28px;
+}
+.sol-hcard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 18px 18px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #07282b;
+  border: 1.5px solid rgba(94, 234, 212, 0.45);
+  box-shadow: 0 16px 36px rgba(4, 30, 33, 0.24);
+  text-decoration: none;
+  overflow: hidden;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  cursor: pointer;
+}
+.sol-hcard:hover,
+.sol-hcard.is-active {
+  transform: translateY(-4px);
+  border-color: #0d9488;
+  box-shadow: 0 20px 42px rgba(4, 30, 33, 0.34);
+}
+.sol-hcard.is-active {
+  outline: 2.5px solid #5eead4;
+  outline-offset: 2px;
+}
+[data-theme="dark"] .sol-hcard,
+[data-theme="noir"] .sol-hcard {
+  background: rgba(11, 38, 44, 0.94);
+  color: #ecfeff;
+  border-color: rgba(94, 234, 212, 0.32);
+}
+.sol-hcard-wave {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 90px;
+  pointer-events: none;
+  opacity: 0.22;
+}
+.sol-hcard-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+.sol-hcard-num {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #05686b;
+  line-height: 1;
+}
+[data-theme="dark"] .sol-hcard-num,
+[data-theme="noir"] .sol-hcard-num {
+  color: #5eead4;
+}
+.sol-hcard-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 11px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 800;
+  background: #d1fae5;
+  color: #065f46;
+}
+.sol-hcard-badge--future {
+  background: #05686b;
+  color: #ffffff;
+}
+[data-theme="dark"] .sol-hcard-badge {
+  background: rgba(16, 185, 129, 0.22);
+  color: #6ee7b7;
+}
+[data-theme="dark"] .sol-hcard-badge--future {
+  background: rgba(94, 234, 212, 0.22);
+  color: #5eead4;
+}
+.sol-hcard-ico {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #e0f5f5 0%, #f0fafa 100%);
+  border: 1px solid rgba(5, 104, 107, 0.16);
+  color: #05686b;
+  display: grid;
+  place-items: center;
+  position: relative;
+  z-index: 1;
+}
+[data-theme="dark"] .sol-hcard-ico,
+[data-theme="noir"] .sol-hcard-ico {
+  background: rgba(20, 184, 166, 0.16);
+  color: #5eead4;
+  border-color: rgba(94, 234, 212, 0.25);
+}
+.sol-hcard h2,
+.sol-hcard h3 {
+  margin: 0;
+  font-size: 1.08rem;
+  font-weight: 900;
+  line-height: 1.45;
+  color: inherit;
+  position: relative;
+  z-index: 1;
+}
+.sol-hcard p {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: #426366;
+  position: relative;
+  z-index: 1;
+}
+[data-theme="dark"] .sol-hcard p,
+[data-theme="noir"] .sol-hcard p {
+  color: #9cc5c9;
+}
+.sol-hcard-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(5, 104, 107, 0.12);
+  position: relative;
+  z-index: 1;
+}
+[data-theme="dark"] .sol-hcard-foot,
+[data-theme="noir"] .sol-hcard-foot {
+  border-top-color: rgba(94, 234, 212, 0.16);
+}
+.sol-hcard-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: #05686b;
+  text-decoration: none;
+}
+[data-theme="dark"] .sol-hcard-cta,
+[data-theme="noir"] .sol-hcard-cta {
+  color: #5eead4;
+}
+.sol-hcard-cta svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+[dir="ltr"] .sol-hcard-cta svg {
+  transform: scaleX(-1);
+}
+
+/* Interactive Deep-Dive Showcase (PDF Page 7 Middle) */
+.sol-showcase-sec {
+  padding: 44px 0 28px;
+  scroll-margin-top: 84px;
+}
+.sol-switcher-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 8px;
+  border-radius: 18px;
+  background: var(--surface, #fff);
+  border: 1px solid var(--line, #cde4e4);
+  box-shadow: 0 8px 24px rgba(5, 104, 107, 0.06);
+}
+.sol-switch-btn {
+  flex: 1 1 220px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 16px;
+  border-radius: 13px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--ink, #07282b);
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.sol-switch-btn:hover {
+  background: var(--surface-2, #eef7f7);
+}
+.sol-switch-btn[aria-selected="true"] {
+  background: linear-gradient(135deg, #05686b 0%, #0d9488 100%);
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(5, 104, 107, 0.24);
+}
+.sol-switch-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 24px;
+  padding: 0 7px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 900;
+  background: rgba(5, 104, 107, 0.12);
+  color: #05686b;
+}
+.sol-switch-btn[aria-selected="true"] .sol-switch-num {
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+}
+
+.sol-showcase-card {
+  background: var(--surface, #fff);
+  border: 1.5px solid var(--line, #cde4e4);
+  border-radius: 26px;
+  padding: 28px;
+  box-shadow: 0 18px 44px rgba(5, 104, 107, 0.09);
+}
+.sol-showcase-card[hidden] {
+  display: none !important;
+}
+.sol-showcase-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line, #cde4e4);
+}
+.sol-showcase-top h2 {
+  margin: 0 0 4px;
+  font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+  font-weight: 900;
+  color: var(--ink, #07282b);
+}
+.sol-showcase-en {
+  margin: 0 0 4px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #0d9488;
+}
+.sol-showcase-lead {
+  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: var(--muted, #4d6c70);
+}
+
+/* 6 Sub-Navigation Dimension Pills (مسئله | راهکار | اجزا | کاربردها | مزیت‌ها | ارزش اقتصادی) */
+.sol-dim-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0 22px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--line, #cde4e4);
+}
+.sol-dim-tab {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line, #cde4e4);
+  background: var(--surface-2, #f2f9f9);
+  color: var(--ink, #07282b);
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.sol-dim-tab:hover,
+.sol-dim-tab.is-on {
+  background: #05686b;
+  color: #ffffff;
+  border-color: #05686b;
+}
+
+.sol-showcase-split {
+  display: grid;
+  grid-template-columns: 1.25fr 0.95fr;
+  gap: 24px;
+  align-items: start;
+}
+.sol-Visual-stage {
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+  background: linear-gradient(145deg, #e3f4f4 0%, #cce8e8 100%);
+  border: 1px solid rgba(5, 104, 107, 0.2);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+[data-theme="dark"] .sol-Visual-stage,
+[data-theme="noir"] .sol-Visual-stage {
+  background: linear-gradient(145deg, #0d2b30 0%, #071b1e 100%);
+  border-color: rgba(94, 234, 212, 0.24);
+}
+.sol-visual-img {
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 18px;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 10;
+}
+.sol-visual-img img {
+  max-height: 220px;
+  width: auto;
+  object-fit: contain;
+}
+.sol-highlight-pair {
+  display: grid;
+  gap: 10px;
+}
+.sol-hl-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 13px 15px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(5, 104, 107, 0.16);
+  color: #07282b;
+}
+[data-theme="dark"] .sol-hl-card,
+[data-theme="noir"] .sol-hl-card {
+  background: rgba(11, 38, 44, 0.92);
+  color: #ecfeff;
+  border-color: rgba(94, 234, 212, 0.22);
+}
+.sol-hl-ico {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  background: rgba(5, 104, 107, 0.12);
+  color: #05686b;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+[data-theme="dark"] .sol-hl-ico,
+[data-theme="noir"] .sol-hl-ico {
+  background: rgba(94, 234, 212, 0.16);
+  color: #5eead4;
+}
+.sol-hl-card strong {
+  display: block;
+  font-size: 0.92rem;
+  font-weight: 900;
+  margin-bottom: 3px;
+}
+.sol-hl-card p {
+  margin: 0;
+  font-size: 0.83rem;
+  line-height: 1.65;
+  color: var(--muted, #4d6c70);
+}
+
+/* 6 Clinical Dimension Cards + 4 Principles Grid */
+.sol-notes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+.sol-note-card {
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: var(--surface-2, #f2f9f9);
+  border: 1px solid var(--line, #cde4e4);
+  transition: all 0.2s ease;
+}
+.sol-note-card.is-highlighted {
+  border-color: #05686b;
+  background: color-mix(in srgb, #05686b 9%, var(--surface, #fff));
+  box-shadow: 0 8px 22px rgba(5, 104, 107, 0.14);
+}
+.sol-note-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  color: #05686b;
+  font-weight: 900;
+  font-size: 0.92rem;
+}
+[data-theme="dark"] .sol-note-head,
+[data-theme="noir"] .sol-note-head {
+  color: #5eead4;
+}
+.sol-note-card p {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--ink, #07282b);
+}
+
+.sol-axes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+.sol-axis-card {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--surface, #fff);
+  border: 1px solid var(--line, #cde4e4);
+}
+.sol-axis-card strong {
+  display: block;
+  color: #05686b;
+  font-size: 0.9rem;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+[data-theme="dark"] .sol-axis-card strong,
+[data-theme="noir"] .sol-axis-card strong {
+  color: #5eead4;
+}
+.sol-axis-card p {
+  margin: 0;
+  font-size: 0.83rem;
+  line-height: 1.65;
+}
+
+/* Components Strip inside Showcase (اجزای این راهکار — PDF Page 7) */
+.sol-parts-strip {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line, #cde4e4);
+}
+.sol-parts-strip h3 {
+  margin: 0 0 14px;
+  font-size: 1.12rem;
+  font-weight: 900;
+  color: var(--ink, #07282b);
+}
+.sol-parts-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+  gap: 12px;
+}
+.sol-comp-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  padding: 14px 12px;
+  border-radius: 18px;
+  background: var(--surface-2, #f3fafa);
+  border: 1px solid var(--line, #cde4e4);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.sol-comp-card:hover {
+  transform: translateY(-3px);
+  border-color: #05686b;
+}
+.sol-comp-ph {
+  width: 100%;
+  height: 110px;
+  border-radius: 12px;
+  background: #ffffff;
+  display: grid;
+  place-items: center;
+  padding: 8px;
+}
+.sol-comp-ph img {
+  max-width: 100%;
+  max-height: 94px;
+  object-fit: contain;
+}
+.sol-comp-card strong {
+  font-size: 0.9rem;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+/* Measurable Value Banner + 3 Value Pillars (PDF Page 7 Bottom) */
+.sol-value-banner {
+  margin-top: 28px;
+  border-radius: 24px;
+  padding: 26px 28px;
+  background: linear-gradient(135deg, #05686b 0%, #073b3e 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  flex-wrap: wrap;
+  border: 1px solid rgba(94, 234, 212, 0.35);
+  box-shadow: 0 16px 38px rgba(5, 104, 107, 0.2);
+}
+.sol-value-copy {
+  flex: 1 1 360px;
+}
+.sol-value-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.sol-value-ico {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: rgba(94, 234, 212, 0.18);
+  color: #5eead4;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.sol-value-head h2,
+.sol-value-head h3 {
+  margin: 0;
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  font-weight: 900;
+  color: #ffffff;
+}
+.sol-value-copy p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.75;
+  color: rgba(236, 254, 255, 0.9);
+}
+.sol-value-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.sol-btn-calc,
+.sol-btn-consult {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 18px;
+  border-radius: 13px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.sol-btn-calc {
+  background: #5eead4;
+  color: #042f2e;
+}
+.sol-btn-calc:hover {
+  background: #99f6e4;
+}
+.sol-btn-consult {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+.sol-btn-consult:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.sol-bottom-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+.sol-bpillar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: var(--surface, #fff);
+  border: 1px solid var(--line, #cde4e4);
+  box-shadow: 0 6px 18px rgba(5, 104, 107, 0.05);
+}
+.sol-bpillar-ico {
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  background: var(--surface-2, #eef7f7);
+  color: #05686b;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+[data-theme="dark"] .sol-bpillar-ico,
+[data-theme="noir"] .sol-bpillar-ico {
+  color: #5eead4;
+}
+.sol-bpillar strong {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 900;
+  margin-bottom: 2px;
+}
+.sol-bpillar span {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--muted, #4d6c70);
+}
+
+/* Executive Closing Cards in #phil-close */
+.phil-close-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 24px;
+}
+.phil-close-card {
+  padding: 22px 24px;
+  border-radius: 22px;
+  background: var(--surface, #fff);
+  border: 1px solid var(--line, #cde4e4);
+  box-shadow: 0 10px 28px rgba(5, 104, 107, 0.06);
+}
+.phil-close-card h3 {
+  margin: 0 0 10px !important;
+  color: #05686b;
+  font-size: 1.15rem;
+}
+[data-theme="dark"] .phil-close-card h3,
+[data-theme="noir"] .phil-close-card h3 {
+  color: #5eead4;
+}
+
+@media (max-width: 960px) {
+  .sol-hero-trio,
+  .sol-showcase-split,
+  .sol-bottom-pillars,
+  .phil-close-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 640px) {
+  .solutions-hero {
+    padding: 98px 0 32px;
+  }
+  .sol-showcase-card {
+    padding: 18px 16px;
+  }
+  .sol-notes-grid,
+  .sol-axes-grid {
+    grid-template-columns: 1fr;
+  }
+  .sol-parts-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .sol-value-banner {
+    padding: 20px 18px;
+  }
+}
+
+/* Homepage Nurse Video Hero Frame ([t292u]) */
+.hx-product--video {
+  width: 100%;
+}
+.hx-video-frame {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 4 / 3;
+  border-radius: 26px;
+  overflow: hidden;
+  border: 2px solid rgba(127, 220, 221, 0.48);
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.42), 0 0 38px rgba(94, 234, 212, 0.22);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.hx-nurse-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+@media (max-width: 760px) {
+  .hx-video-frame {
+    max-width: 100%;
+    max-height: 240px;
+    border-radius: 20px;
+  }
+}

@@ -505,9 +505,9 @@ def closing_html(lang, url):
     earth = f'<p>{_green(lang, url, CLOSE["earth_body"][0][lang])}</p>'
     green = f'<p>{_green(lang, url, CLOSE["earth_body"][1][lang])}</p>'
     rest = _paras(CLOSE['earth_body'][2:], lang)
-    return (f'<div class="phil-close" id="phil-close">'
-            f'<h3>{esc(CLOSE["h"][lang])}</h3>{body}'
-            f'<h3>{esc(CLOSE["earth"][lang])}</h3>{earth}{green}{rest}</div>')
+    return (f'<div class="phil-close phil-close-grid" id="phil-close">'
+            f'<article class="phil-close-card"><h3>{esc(CLOSE["h"][lang])}</h3>{body}</article>'
+            f'<article class="phil-close-card"><h3>{esc(CLOSE["earth"][lang])}</h3>{earth}{green}{rest}</article></div>')
 
 
 def hub_html(lang, url):

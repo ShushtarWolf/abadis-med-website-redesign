@@ -30,6 +30,7 @@ THEME_ICON = '''<svg class="tt-icon" viewBox="0 0 24 24" aria-hidden="true" focu
       <g class="tt-stars" fill="currentColor"><path d="M18.3 6.1l.6 1.6 1.6.6-1.6.6-.6 1.6-.6-1.6-1.6-.6 1.6-.6z"/><path d="M21.4 1.9l.4 1 1 .4-1 .4-.4 1-.4-1-1-.4 1-.4z"/></g>
     </svg>'''
 CUR = ' aria-current="page"'
+NAV_CARET = '<svg class="nav-caret" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2.5 4.25 6 7.75l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 
 
 def head(p, title, desc, og=None, lang='fa', fa_path='', canonical_path=None, html_attrs=''):
@@ -66,8 +67,8 @@ def head(p, title, desc, og=None, lang='fa', fa_path='', canonical_path=None, ht
 <meta property="og:image" content="{ogi}">
 <link rel="preload" href="{p}assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{p}assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="{p}assets/css/site.css?v=20261028n">
-<link rel="stylesheet" href="{p}assets/css/boss-order.css?v=20261028n">
+<link rel="stylesheet" href="{p}assets/css/site.css?v=20261028p">
+<link rel="stylesheet" href="{p}assets/css/boss-order.css?v=20261028p">
 <link rel="stylesheet" href="{p}assets/css/consent.css">
 <link rel="stylesheet" href="{p}assets/css/footer-motion.css">
 </head>
@@ -102,7 +103,7 @@ def _nav_item(p, root, cur, item):
     nav_attr = f' data-ps-nav="{k}"' if k in ('products', 'solutions') else ''
     return (
         f'<div class="nav-item has-sub"{nav_attr}>'
-        f'<a class="nav-parent" href="{_href(p, root, h)}"{open_cur} aria-haspopup="true" aria-expanded="false">{l}</a>'
+        f'<a class="nav-parent" href="{_href(p, root, h)}"{open_cur} aria-haspopup="true" aria-expanded="false"><span>{l}</span>{NAV_CARET}</a>'
         f'<div class="nav-sub{sub_cls}" role="menu">{"".join(bits)}</div>'
         f'</div>'
     )
@@ -305,7 +306,7 @@ def page(p, cur, title, desc, main, og=None, lightbox=False, scripts='', lang='f
     return (html
             + header(p, cur, lang=lang, fa_path=fa_path) + f'\n<main id="main"{main_attrs}>\n' + main + '\n</main>\n'
             + lb + footer(p, cur, lang=lang)
-            + f'\n<script src="{p}assets/js/site.js?v=20261028j" defer></script>\n<script src="{p}assets/js/consent.js" defer></script>\n<script src="{p}assets/js/footer-motion.js" defer></script>\n{scripts}</body>\n</html>\n')
+            + f'\n<script src="{p}assets/js/site.js?v=20261028p" defer></script>\n<script src="{p}assets/js/consent.js" defer></script>\n<script src="{p}assets/js/footer-motion.js" defer></script>\n{scripts}</body>\n</html>\n')
 
 
 def crumbs(p, trail, lang='fa'):

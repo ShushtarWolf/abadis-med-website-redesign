@@ -408,17 +408,380 @@ def configurator(lang):
 </dialog>'''
 
 
-def solution_main(p, lang, sol):
+
+# ------------------------------------------------------------------ Finalized Visual Solutions Design ([t279u], [t281u])
+SOL_SLOGAN_I18N = {
+    'fa': [
+        'راهکارهای تخصصی آبادیس،',
+        'برای مراقبت ایمن‌تر',
+        'بهره‌وری بالاتر مراکز درمانی',
+        'و حفاظت پایدار از محیط زیست.',
+    ],
+    'en': [
+        'Abadis specialised clinical solutions,',
+        'For safer patient care',
+        'Higher hospital efficiency',
+        'And sustainable environmental protection.',
+    ],
+    'ar': [
+        'حلول آباديس التخصصية،',
+        'لرعاية أكثر أماناً',
+        'وكفاءة أعلى للمراكز العلاجية',
+        'وحماية مستدامة للبيئة.',
+    ],
+}
+
+SOL_SUBPAGE_SLOGANS = {
+    'fluid-management': {
+        'fa': [
+            'مدیریت یکپارچه مایعات و ترشحات بیمارستانی،',
+            'کاهش تماس کادر درمان با ترشحات آلوده',
+            'حذف شست‌وشوی مخازن و صرفه‌جویی در مصرف آب',
+            'افزایش چابکی اتاق عمل، ICU و اورژانس.',
+        ],
+        'en': [
+            'Integrated Hospital Fluid & Secretion Management,',
+            'Reducing staff exposure to contaminated fluids',
+            'Eliminating canister washing & saving water',
+            'Boosting agility in the OR, ICU, and Emergency.',
+        ],
+        'ar': [
+            'إدارة متكاملة للسوائل والإفرازات في المستشفى،',
+            'تقليل تلامس الكادر مع السوائل الملوثة',
+            'إلغاء غسل الخزانات وتوفير استهلاك الماء',
+            'رفع كفاءة غرفة العمليات والعناية المركزة.',
+        ],
+    },
+    'airway-care': {
+        'fa': [
+            'ایمنی و مراقبت تخصصی از راه هوایی،',
+            'تسهیل بهداشت دهان در بیماران اینتوبه و ICU',
+            'تثبیت ایمن لوله تراشه و کاهش ریسک عفونت',
+            'طراحی کاربردی متناسب با نیاز پزشکان و پرستاران.',
+        ],
+        'en': [
+            'Specialised Airway Safety & Care,',
+            'Streamlining oral hygiene for intubated ICU patients',
+            'Secure endotracheal tube fixation & infection control',
+            'Practical clinical design for nurses and physicians.',
+        ],
+        'ar': [
+            'سلامة الطريق الهوائي والعناية التخصصية به،',
+            'تيسير نظافة الفم لمرضى العناية المركزة',
+            'تثبيت آمن لأنبوب القصبة وتقليل مخاطر العدوى',
+            'تصميم سريري عملي يلبي حاجات الأطباء والتمريض.',
+        ],
+    },
+    'waste-management-pva': {
+        'fa': [
+            'کنترل آلودگی و مدیریت هوشمند پسماند بیمارستانی،',
+            'تحقیق و توسعه در فیلم‌ها و کیسه‌های محلول در آب PVA',
+            'کاهش شست‌وشوی ظروف چندبارمصرف با رسیور یکبارمصرف',
+            'گامی نوآورانه برای سلامت انسان و آینده پایدار زمین.',
+        ],
+        'en': [
+            'Contamination Control & Smart Hospital Waste Management,',
+            'R&D in water-soluble PVA polymer films and bags',
+            'Cutting container washing with disposable receivers',
+            'An innovative horizon for human health and sustainability.',
+        ],
+        'ar': [
+            'السيطرة على التلوث وإدارة نفايات المستشفى،',
+            'البحث والتطوير في أفلام وأكياس PVA الذؤابة في الماء',
+            'تقليل غسل الأوعية عبر أوعية التجميع أحادية الاستعمال',
+            'أفق مبتكر لصحة الإنسان ومستقبل الأرض المستدام.',
+        ],
+    },
+}
+
+SOL_HERO_LEAD = {
+    'fa': 'از مدیریت مایعات و ترشحات بیمارستانی تا ایمنی راه هوایی و فناوری‌های نوین کنترل آلودگی؛ راهکارهایی یکپارچه بر پایه دانش مهندسی و نیازهای واقعی بالینی.',
+    'en': 'From hospital fluid and secretion management to airway safety and advanced contamination-control materials — integrated solutions built on engineering knowledge and real clinical needs.',
+    'ar': 'من إدارة السوائل والإفرازات في المستشفى إلى سلامة الطريق الهوائي وتقنيات السيطرة على التلوث؛ حلول متكاملة قائمة على المعرفة الهندسية والحاجات السريرية الحقيقية.',
+}
+
+SOL_HERO_H1 = {
+    'fa': 'راهکارهای تخصصی <em>آبادیس</em>',
+    'en': 'Abadis Specialised <em>Solutions</em>',
+    'ar': 'حلول <em>آباديس</em> التخصصية',
+}
+
+_SVG_DROPLET = '<svg viewBox="0 0 28 28" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3.5C14 3.5 6 12.2 6 17.5a8 8 0 0 0 16 0C22 12.2 14 3.5 14 3.5z"/><path d="M10.5 18.5a3.5 3.5 0 0 0 3.5 3"/></svg>'
+_SVG_LUNGS = '<svg viewBox="0 0 28 28" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4v9"/><path d="M14 10c-2.5 0-4.5-2-6.5-2C4.5 8 3 11 3 15.5 3 20 5 23 8.5 23c2.5 0 3.5-1.8 3.5-4.5V11"/><path d="M14 10c2.5 0 4.5-2 6.5-2 3 0 4.5 3 4.5 7.5 0 4.5-2 7.5-5.5 7.5-2.5 0-3.5-1.8-3.5-4.5V11"/></svg>'
+_SVG_LEAF = '<svg viewBox="0 0 28 28" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 5C12.5 5 6 10.5 6 19c0 1.5.3 2.8.8 4 1.2.5 2.5.8 4 .8 8.5 0 14-6.5 14-15 0-1.5-.3-2.8-.8-3.8z"/><path d="M6.8 22.2C10.5 17.5 15 14 21 11"/></svg>'
+_SVG_ARROW = '<svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10H5"/><path d="M9.5 5.5 5 10l4.5 4.5"/></svg>'
+_SVG_WARN = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'
+_SVG_GEAR = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.77 1.02 1.51 1H21a2 2 0 1 1 0-4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>'
+_SVG_CLOCK = '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><polyline points="12 7 12 12 15.5 14"/></svg>'
+_SVG_CALC = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="10" y2="11"/><line x1="14" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="10" y2="15"/><line x1="14" y1="15" x2="16" y2="15"/></svg>'
+_SVG_CHAT = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>'
+_SVG_COMPASS = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>'
+_SVG_CUBE = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>'
+_SVG_SHIELD = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>'
+
+SOL_WAVE_SVG = (
+    '<svg class="sol-hcard-wave" viewBox="0 0 320 90" preserveAspectRatio="none" aria-hidden="true">'
+    '<path d="M0 55 C80 20, 160 85, 320 30 L320 90 L0 90 Z" fill="#0d9488"/>'
+    '<path d="M0 70 C110 40, 210 88, 320 52 L320 90 L0 90 Z" fill="#05686b" opacity="0.6"/>'
+    '</svg>'
+)
+
+
+def _sol_slogan_html(lines):
+    spans = ''.join(f'<span class="slogan-line" style="--i:{n}">{esc(x)}</span>' for n, x in enumerate(lines))
+    return f'<p class="slogan reveal" aria-label="{esc(" ".join(lines))}">{spans}</p>'
+
+
+def _hero_trio_html(p, lang, active_slug='fluid-management'):
+    nums = {'fa': ('۰۱', '۰۲', '۰۳'), 'en': ('01', '02', '03'), 'ar': ('٠١', '٠٢', '٠٣')}[lang]
+    discover = {'fa': 'کشف راهکار', 'en': 'Discover solution', 'ar': 'اكتشاف الحل'}[lang]
+    act_lbl = {'fa': 'فعال', 'en': 'Active', 'ar': 'نشط'}[lang]
+    fut_lbl = {'fa': 'مسیر توسعه', 'en': 'Development path', 'ar': 'مسار التطوير'}[lang]
+    icos = (_SVG_DROPLET, _SVG_LUNGS, _SVG_LEAF)
+    cards = []
+    for i, s in enumerate(SOLS):
+        slug = s['slug']
+        url = sol_href(p, lang, slug)
+        is_fut = s['future']
+        b_cls = 'sol-hcard-badge sol-hcard-badge--future' if is_fut else 'sol-hcard-badge'
+        b_txt = fut_lbl if is_fut else act_lbl
+        act_cls = ' is-active' if slug == active_slug else ''
+        cards.append(
+            f'<article class="sol-hcard{act_cls}" data-sol-pick="{esc(slug)}" tabindex="0">'
+            f'{SOL_WAVE_SVG}'
+            f'<div>'
+            f'<div class="sol-hcard-top"><span class="sol-hcard-num">{nums[i]}</span><span class="{b_cls}">{esc(b_txt)}</span></div>'
+            f'<div style="display:flex;align-items:center;gap:12px;margin:12px 0 8px">'
+            f'<span class="sol-hcard-ico">{icos[i]}</span>'
+            f'<h3>{esc(s["title"][lang])}</h3>'
+            f'</div>'
+            f'<p>{esc(s["sub"][lang])}</p>'
+            f'</div>'
+            f'<div class="sol-hcard-foot">'
+            f'<a class="sol-hcard-cta" href="{url}"><span>{esc(discover)}</span>{_SVG_ARROW}</a>'
+            f'</div>'
+            f'</article>'
+        )
+    return f'<div class="sol-hero-trio">{"".join(cards)}</div>'
+
+
+def _comp_card(p, lang, part):
+    title = part['title'][lang] if part['title'] else BY_SLUG[part['slug']]['title'][lang]
+    photo_key = part['photo'] if part['photo'] is not None else (part['hash'] or part['slug'])
+    src = PHOTO.get(photo_key) or 'assets/img/c/611f0398754f-640.webp'
+    url = prod_href(p, lang, 'other', 'pva') if part['hash'] == 'pva' else prod_href(p, lang, part['slug'], part['hash'])
+    b = badge(lang, part['status'])
+    return (
+        f'<a class="sol-comp-card" href="{url}">'
+        f'<div class="sol-comp-ph"><img src="{p}{src}" alt="{esc(title)}" width="120" height="94" loading="lazy"></div>'
+        f'<strong>{esc(title)}</strong>{b}'
+        f'</a>'
+    )
+
+
+def _measurable_value_html(p, lang):
+    copy = {
+        'fa': dict(
+            h='ارزش قابل اندازه‌گیری',
+            p='کاهش چشمگیر مصرف آب، مواد ضدعفونی‌کننده و زمان آماده‌سازی اتاق عمل و ICU؛ قابل برآورد دقیق با محاسبه‌گر آبادیس بر اساس تعداد تخت و الگوی مصرف هر مرکز درمانی.',
+            calc='محاسبه صرفه‌جویی',
+            consult='دریافت مشاوره',
+            p1=('مسیر انتخاب روشن', 'از نیاز تا راهکار مناسب'),
+            p2=('محصولات مرتبط', 'یکپارچه و مکمل'),
+            p3=('سه راهکار اصلی', 'پاسخ به نیازهای درمانی مراکز درمانی'),
+        ),
+        'en': dict(
+            h='Measurable Clinical & Economic Value',
+            p='Significant reductions in water consumption, chemical disinfectants, and OR/ICU turnaround time — accurately estimated for your facility with the Abadis calculator.',
+            calc='Calculate Savings',
+            consult='Request Consultation',
+            p1=('Clear Selection Path', 'From clinical need to the right solution'),
+            p2=('Integrated Products', 'Coordinated and complementary'),
+            p3=('Three Core Solutions', 'Answering real hospital care needs'),
+        ),
+        'ar': dict(
+            h='قيمة قابلة للقياس',
+            p='خفض ملموس في استهلاك الماء ومواد التعقيم وزمن تجهيز غرف العمليات والعناية المركزة؛ قابل للتقدير بدقة عبر حاسبة آباديس.',
+            calc='حساب التوفير',
+            consult='طلب استشارة',
+            p1=('مسار اختيار واضح', 'من الحاجة إلى الحل المناسب'),
+            p2=('منتجات مترابطة', 'متكاملة ومكمّلة'),
+            p3=('ثلاثة حلول رئيسية', 'استجابة لحاجات المراكز العلاجية'),
+        ),
+    }[lang]
+    calc_url = href(p, lang, {'fa': 'calculator/', 'en': 'calculator/', 'ar': 'الحوسبة/'}[lang])
+    cont_url = href(p, lang, CONTACT[lang])
+    return (
+        f'<div class="sol-value-banner reveal">'
+        f'<div class="sol-value-copy">'
+        f'<div class="sol-value-head"><span class="sol-value-ico">{_SVG_CLOCK}</span><h3>{esc(copy["h"])}</h3></div>'
+        f'<p>{esc(copy["p"])}</p>'
+        f'</div>'
+        f'<div class="sol-value-actions">'
+        f'<a class="sol-btn-calc" href="{calc_url}">{_SVG_CALC}<span>{esc(copy["calc"])}</span></a>'
+        f'<a class="sol-btn-consult" href="{cont_url}">{_SVG_CHAT}<span>{esc(copy["consult"])}</span></a>'
+        f'</div>'
+        f'</div>'
+        f'<div class="sol-bottom-pillars reveal">'
+        f'<div class="sol-bpillar"><span class="sol-bpillar-ico">{_SVG_COMPASS}</span><div><strong>{esc(copy["p1"][0])}</strong><span>{esc(copy["p1"][1])}</span></div></div>'
+        f'<div class="sol-bpillar"><span class="sol-bpillar-ico">{_SVG_CUBE}</span><div><strong>{esc(copy["p2"][0])}</strong><span>{esc(copy["p2"][1])}</span></div></div>'
+        f'<div class="sol-bpillar"><span class="sol-bpillar-ico">{_SVG_SHIELD}</span><div><strong>{esc(copy["p3"][0])}</strong><span>{esc(copy["p3"][1])}</span></div></div>'
+        f'</div>'
+    )
+
+
+def _showcase_panel_html(p, lang, sol, is_first=True):
+    slug = sol['slug']
+    theme = PHIL.BY_SLUG[slug]
+    url = sol_href(p, lang, slug)
+    view_lbl = {'fa': 'صفحه تخصصی این راهکار', 'en': 'Full Solution Page', 'ar': 'صفحة الحل الكاملة'}[lang]
+    parts_lbl = {'fa': 'اجزای این راهکار', 'en': 'Components of This Solution', 'ar': 'مكوّنات هذا الحل'}[lang]
+    all_dim_lbl = {'fa': 'همه ابعاد راهکار', 'en': 'All Dimensions', 'ar': 'جميع الأبعاد'}[lang]
+
+    dim_tabs = [f'<button type="button" class="sol-dim-tab is-on" data-dim-btn="all">{esc(all_dim_lbl)}</button>']
+    notes_cards = []
+    for idx, (ntitle, nbody) in enumerate(theme['notes']):
+        dkey = f'd{idx}'
+        dim_tabs.append(f'<button type="button" class="sol-dim-tab" data-dim-btn="{dkey}">{esc(ntitle[lang])}</button>')
+        ico = _SVG_WARN if idx == 0 else _SVG_GEAR
+        notes_cards.append(
+            f'<article class="sol-note-card" data-dim-card="{dkey}">'
+            f'<div class="sol-note-head">{ico}<span>{esc(ntitle[lang])}</span></div>'
+            f'<p>{esc(nbody[lang])}</p>'
+            f'</article>'
+        )
+
+    axes_cards = ''.join(
+        f'<div class="sol-axis-card"><strong>{esc(at[lang])}</strong><p>{esc(ab[lang])}</p></div>'
+        for at, ab in theme['axes']
+    )
+    body_paras = ''.join(f'<p style="margin:0 0 10px;line-height:1.85;text-align:justify">{esc(x[lang])}</p>' for x in theme['body'])
+    after_paras = ''.join(f'<p style="margin:10px 0 0;line-height:1.85;font-weight:700">{esc(x[lang])}</p>' for x in theme['after'])
+
+    first_photo_key = sol['parts'][0]['photo'] or sol['parts'][0]['slug']
+    main_img = PHOTO.get(first_photo_key) or 'assets/img/c/38a87bcfaf85-1600.webp'
+    n0_title, n0_body = theme['notes'][0][0][lang], theme['notes'][0][1][lang]
+    n1_title, n1_body = theme['notes'][1][0][lang], theme['notes'][1][1][lang]
+    comp_cards = ''.join(_comp_card(p, lang, pt) for pt in sol['parts'])
+    hidden_attr = '' if is_first else ' hidden'
+
+    return (
+        f'<div class="sol-showcase-card" data-sol-panel="{esc(slug)}"{hidden_attr}>'
+        f'<div class="sol-showcase-top">'
+        f'<div>'
+        f'<p class="sol-showcase-en" dir="ltr">{esc(theme["en"])}</p>'
+        f'<h2>{esc(theme["title"][lang])}</h2>'
+        f'<p class="sol-showcase-lead">{esc(theme["lead"][lang])}</p>'
+        f'</div>'
+        f'<a class="btn btn-primary" href="{url}">{esc(view_lbl)}</a>'
+        f'</div>'
+        f'<div class="sol-dim-tabs" role="tablist">{"".join(dim_tabs)}</div>'
+        f'<div class="sol-showcase-split">'
+        f'<div>'
+        f'{body_paras}'
+        f'<h3 style="font-size:1.02rem;font-weight:900;margin:16px 0 8px;color:var(--brand,#05686b)">{esc(theme["axes_h"][lang])}</h3>'
+        f'<div class="sol-axes-grid">{axes_cards}</div>'
+        f'<div class="sol-notes-grid">{"".join(notes_cards)}</div>'
+        f'{after_paras}'
+        f'</div>'
+        f'<aside class="sol-Visual-stage">'
+        f'<div class="sol-visual-img"><img src="{p}{main_img}" alt="{esc(sol["title"][lang])}" width="420" height="300" loading="lazy"></div>'
+        f'<div class="sol-highlight-pair">'
+        f'<div class="sol-hl-card"><span class="sol-hl-ico">{_SVG_WARN}</span><div><strong>{esc(n0_title)}</strong><p>{esc(n0_body)}</p></div></div>'
+        f'<div class="sol-hl-card"><span class="sol-hl-ico">{_SVG_GEAR}</span><div><strong>{esc(n1_title)}</strong><p>{esc(n1_body)}</p></div></div>'
+        f'</div>'
+        f'</aside>'
+        f'</div>'
+        f'<div class="sol-parts-strip">'
+        f'<h3>{esc(parts_lbl)}</h3>'
+        f'<div class="sol-parts-row">{comp_cards}</div>'
+        f'</div>'
+        f'</div>'
+    )
+
+
+def interactive_showcase_section(p, lang):
+    nums = {'fa': ('۰۱', '۰۲', '۰۳'), 'en': ('01', '02', '03'), 'ar': ('٠١', '٠٢', '٠٣')}[lang]
+    sw_btns = []
+    panels = []
+    for i, s in enumerate(SOLS):
+        slug = s['slug']
+        on = 'true' if i == 0 else 'false'
+        sw_btns.append(
+            f'<button type="button" class="sol-switch-btn" role="tab" data-sol-switch="{esc(slug)}" aria-selected="{on}">'
+            f'<span class="sol-switch-num">{nums[i]}</span><span>{esc(s["title"][lang])}</span></button>'
+        )
+        panels.append(_showcase_panel_html(p, lang, s, is_first=(i == 0)))
+    js = '<script>(function(){var sec=document.getElementById("sol-showcase");if(!sec)return;function selectSol(slug,sc){document.querySelectorAll("[data-sol-switch]").forEach(function(b){b.setAttribute("aria-selected",b.getAttribute("data-sol-switch")===slug?"true":"false");});document.querySelectorAll("[data-sol-pick]").forEach(function(c){c.classList.toggle("is-active",c.getAttribute("data-sol-pick")===slug);});sec.querySelectorAll("[data-sol-panel]").forEach(function(p){p.hidden=p.getAttribute("data-sol-panel")!==slug;});if(sc)sec.scrollIntoView({behavior:"smooth",block:"start"});}document.querySelectorAll("[data-sol-switch]").forEach(function(btn){btn.addEventListener("click",function(){selectSol(btn.getAttribute("data-sol-switch"),false);});});document.querySelectorAll("[data-sol-pick]").forEach(function(card){card.addEventListener("click",function(e){if(e.target.closest("a"))return;selectSol(card.getAttribute("data-sol-pick"),true);});});sec.querySelectorAll(".sol-showcase-card").forEach(function(panel){var tabs=panel.querySelectorAll("[data-dim-btn]"),cards=panel.querySelectorAll("[data-dim-card]");tabs.forEach(function(t){t.addEventListener("click",function(){var k=t.getAttribute("data-dim-btn");tabs.forEach(function(x){x.classList.toggle("is-on",x===t);});cards.forEach(function(c){var m=(k==="all"||c.getAttribute("data-dim-card")===k);c.classList.toggle("is-highlighted",k!=="all"&&m);c.style.opacity=(k==="all"||m)?"1":"0.42";});});});});})();</script>'
+    return (
+        f'<section class="section sol-showcase-sec" id="sol-showcase"><div class="wrap">'
+        f'<div class="sol-switcher-bar" role="tablist">{"".join(sw_btns)}</div>'
+        f'{"".join(panels)}'
+        f'{_measurable_value_html(p, lang)}'
+        f'</div></section>\n{js}'
+    )
+
+
+def solutions_video_hero(p, lang):
+    from layout import crumbs
     ui = UI[lang]
-    future = badge(lang, 'future') if sol['future'] else f'<span class="ps-state">{esc(ui["active"])}</span>'
+    cr = crumbs(p, [(ui['crumb_s'], None)], lang=lang)
+    return (
+        f'  <section class="page-hero about-hero solutions-hero has-playing-video">\n'
+        f'    <video class="about-hero-video solutions-hero-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="{p}assets/media/hero-customers-poster.jpg?v=20261028p">\n'
+        f'      <source src="{p}assets/media/hero-customers.mp4?v=20261028p" type="video/mp4">\n'
+        f'    </video>\n'
+        f'    <div class="wrap about-hero-grid">\n'
+        f'      <div>\n'
+        f'        {cr}\n'
+        f'        <h1>{SOL_HERO_H1[lang]}</h1>\n'
+        f'        {_sol_slogan_html(SOL_SLOGAN_I18N[lang])}\n'
+        f'        <p class="sol-hero-lead">{esc(SOL_HERO_LEAD[lang])}</p>\n'
+        f'        {_hero_trio_html(p, lang, "fluid-management")}\n'
+        f'      </div>\n'
+        f'    </div>\n'
+        f'  </section>'
+    )
+
+
+def solution_main(p, lang, sol):
+    from layout import crumbs
+    ui = UI[lang]
+    slug = sol['slug']
+    future = badge(lang, 'future') if sol['future'] else f'<span class="sol-hcard-badge">{esc(ui["active"])}</span>'
     cta = (f'<div class="ps-actions"><a class="btn btn-primary" href="{href(p, lang, CONTACT[lang])}">{esc(ui["quote"])}</a>'
-           f'<button class="btn btn-ghost" type="button" data-sol-open>{esc(ui["config"])}</button></div>')
-    hero = page_hero(p, [(ui['crumb_s'], href(p, lang, 'solutions/' if lang != 'ar' else 'الحلول/')), (sol['title'][lang], None)],
-                     esc(sol['title'][lang]), esc(sol['sub'][lang]),
-                     meta=future + cta, lang=lang)
+           f'<button class="btn btn-ghost" type="button" data-sol-open style="color:#fff;border-color:rgba(255,255,255,.5)">{esc(ui["config"])}</button></div>')
+    cr = crumbs(p, [(ui['crumb_s'], href(p, lang, 'solutions/' if lang != 'ar' else 'الحلول/')), (sol['title'][lang], None)], lang=lang)
+    vid = 'hero-sdgs' if slug == 'waste-management-pva' else 'hero-customers'
+    slogan_lines = SOL_SUBPAGE_SLOGANS.get(slug, SOL_SLOGAN_I18N)[lang]
+    hero = (
+        f'  <section class="page-hero about-hero solutions-hero has-playing-video">\n'
+        f'    <video class="about-hero-video solutions-hero-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="{p}assets/media/{vid}-poster.jpg?v=20261028p">\n'
+        f'      <source src="{p}assets/media/{vid}.mp4?v=20261028p" type="video/mp4">\n'
+        f'    </video>\n'
+        f'    <div class="wrap about-hero-grid">\n'
+        f'      <div>\n'
+        f'        {cr}\n'
+        f'        <div style="margin:6px 0">{future}</div>\n'
+        f'        <h1>{esc(sol["title"][lang])}</h1>\n'
+        f'        {_sol_slogan_html(slogan_lines)}\n'
+        f'        <p class="sol-hero-lead">{esc(sol["sub"][lang])}</p>\n'
+        f'        {cta}\n'
+        f'      </div>\n'
+        f'    </div>\n'
+        f'  </section>'
+    )
+    showcase = (
+        f'<section class="section sol-showcase-sec" id="sol-detail"><div class="wrap">'
+        f'{_showcase_panel_html(p, lang, sol, is_first=True)}'
+        f'{_measurable_value_html(p, lang)}'
+        f'</div></section>'
+    )
     philosophy = PHIL.theme_html(lang, sol['slug'], lambda h: href(p, lang, h))
     parts = ''.join(_part(p, lang, part) for part in sol['parts'])
-    sales = (f'<p>{esc(ui["sales_p"])}</p>{cta}'
+    cta_light = (f'<div class="ps-actions"><a class="btn btn-primary" href="{href(p, lang, CONTACT[lang])}">{esc(ui["quote"])}</a>'
+                 f'<button class="btn btn-ghost" type="button" data-sol-open>{esc(ui["config"])}</button></div>')
+    sales = (f'<p>{esc(ui["sales_p"])}</p>{cta_light}'
              f'<div class="doc-links"><a href="{CATALOGUE}" target="_blank" rel="noopener" data-track="catalogue_download">{esc(ui["cat"])}</a>'
              f'<a href="{href(p, lang, CONTACT[lang])}">{esc(ui["quote"])}</a>'
              f'<a href="{href(p, lang, {"fa": "calculator/", "en": "calculator/", "ar": "الحوسبة/"}[lang])}">{esc(ui["s_econ"])}</a></div>')
@@ -427,7 +790,8 @@ def solution_main(p, lang, sol):
         f'<div class="ps-parts">{parts}</div></div></section>'
         f'<section class="section sol-sec section--alt" id="sales"><div class="wrap"><h2>{esc(ui["s_sales"])}</h2>{sales}</div></section>'
     )
-    return hero + '\n' + philosophy + '\n' + body + '\n' + configurator(lang)
+    return hero + '\n' + showcase + '\n' + philosophy + '\n' + body + '\n' + configurator(lang)
+
 
 
 def _card(p, lang, href_, title, sub, photo, kind, badge_html=''):
@@ -482,12 +846,16 @@ def architecture(p, lang, default='product', layers=False):
 def hub_main(p, lang, opening='product'):
     ui = UI[lang]
     crumb = ui['crumb_s'] if opening == 'solution' else ui['crumb_p']
-    hero = page_hero(p, [(crumb, None)], esc(ui['h1']), esc(ui['sub']), lang=lang)
-    philosophy = ''
     if opening == 'solution':
+        hero = solutions_video_hero(p, lang)
+        showcase = '\n' + interactive_showcase_section(p, lang)
         philosophy = '\n' + PHIL.hub_html(lang, lambda h: href(p, lang, h))
-    return hero + philosophy + '\n  <section class="section" id="browse"><div class="wrap">\n' + architecture(
-        p, lang, default='solution' if opening == 'solution' else 'product', layers=False
+        return hero + showcase + philosophy + '\n  <section class="section section--alt" id="browse"><div class="wrap">\n' + architecture(
+            p, lang, default='solution', layers=False
+        ) + '\n  </div></section>'
+    hero = page_hero(p, [(crumb, None)], esc(ui['h1']), esc(ui['sub']), lang=lang)
+    return hero + '\n  <section class="section" id="browse"><div class="wrap">\n' + architecture(
+        p, lang, default='product', layers=False
     ) + '\n  </div></section>'
 
 
@@ -567,13 +935,16 @@ def write_solution_pages():
     }
     for lang, (rel_t, p, can_t) in spec.items():
         ui = UI[lang]
+        from pages_company import about_motion_tags
         for sol in SOLS:
             rel = rel_t.format(slug=sol['slug'])
             can = can_t.format(slug=sol['slug'])
             fa = f'solutions/{sol["slug"]}/'
             desc = sol['sub'][lang]
+            h_css, m_js = about_motion_tags(p)
             html = page(p, sol['slug'], sol['title'][lang], desc, solution_main(p, lang, sol),
-                        lang=lang, fa_path=fa, canonical_path=can)
+                        lang=lang, fa_path=fa, canonical_path=can,
+                        extra_head=h_css, scripts=m_js, html_attrs='data-slogan="t1"')
             written.append(_write(rel, html))
         # hub
         if lang == 'fa':
@@ -582,8 +953,10 @@ def write_solution_pages():
             rel, p, can, fa = 'en/solutions/index.html', '../../', 'en/solutions/', 'solutions/'
         else:
             rel, p, can, fa = 'arabic/الحلول/index.html', '../../', 'arabic/الحلول/', 'solutions/'
+        h_css, m_js = about_motion_tags(p)
         html = page(p, 'solutions', ui['h1'], ui['sub'], hub_main(p, lang, opening='solution'),
-                    lang=lang, fa_path=fa, canonical_path=can)
+                    lang=lang, fa_path=fa, canonical_path=can,
+                    extra_head=h_css, scripts=m_js, html_attrs='data-slogan="t1"')
         written.append(_write(rel, html))
     return written
 
@@ -885,7 +1258,7 @@ NAV_FALLBACK = '''
 /* ps-nav-fallback: dropdown for pages that do not load the main site.css */
 .nav-item { position: relative; }
 .nav-parent { display: inline-flex; align-items: center; gap: 6px; }
-.nav-caret { width: 0; height: 0; border-inline: 4px solid transparent; border-top: 5px solid currentColor; opacity: .75; }
+.nav-caret { display: inline-flex; width: 13px; height: 13px; border: 0; opacity: .84; transition: transform .22s ease; }
 .nav-sub { position: absolute; top: calc(100% + 6px); inset-inline-start: 0; z-index: 80; display: none; flex-direction: column; min-width: 16rem; padding: 8px; background: #fff; color: #0a2e32; border-radius: 14px; box-shadow: 0 12px 32px rgba(0,0,0,.16); }
 .nav-item.open > .nav-sub, .nav-item:hover > .nav-sub, .nav-item:focus-within > .nav-sub { display: flex; }
 .nav-sub a { display: block; padding: 8px 10px; color: inherit; text-decoration: none; }

@@ -14,7 +14,8 @@ _NOTE = 'محاسبات بر اساس فرمول‌های محاسبه‌گر ف
 def strip_formula_notes(s):
     """Drop visible formula explanations. The arithmetic in the calculator script stays."""
     if not s:
-        return s
+        s = s.replace('ابزار محاسبه · طرح دایال', 'ابزار محاسبه')
+    return s
     s = re.sub(r'<span class="(?:sum-note|note)">\*\s*' + re.escape(_NOTE) + r'</span>', '', s)
     s = re.sub(r'<p class="note">\*\s*' + re.escape(_NOTE) + r'</p>', '', s)
     s = re.sub(r'<p>\*\s*' + re.escape(_NOTE) + r'</p>', '', s)

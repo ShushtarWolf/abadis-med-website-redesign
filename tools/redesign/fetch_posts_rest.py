@@ -21,8 +21,8 @@ RAW = pathlib.Path(os.environ.get(
     'ABADIS_IMG_RAW',
     str(pathlib.Path(__file__).resolve().parent / '.img-raw'),
 ))
-BASE = 'http://abadis-med.com/wp-json/wp/v2'
-UA = 'AbadisRedesignBot/1.0 (+local rebuild; contact info@abadis-med.com)'
+BASE = 'https://abadis-med.com/wp-json/wp/v2'
+UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36'
 
 CAT_ID = {
     22: 'newss',
@@ -36,10 +36,16 @@ CAT_ID = {
 }
 
 
-def get_json(url, timeout=60):
-    req = urllib.request.Request(url, headers={'User-Agent': UA, 'Accept': 'application/json'})
-    with urllib.request.urlopen(req, timeout=timeout) as r:
-        return json.loads(r.read().decode('utf-8')), dict(r.headers)
+def get_json(url, timeout=30):
+    for attempt in range(4):
+        try:
+            req = urllib.request.Request(url, headers={'User-Agent': UA, 'Accept': 'application/json'})
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                return json.loads(r.read().decode('utf-8')), dict(r.headers)
+        except Exception:
+            if attempt == 3:
+                raise
+            time.sleep(0.6 * (attempt + 1))
 
 
 def strip_tags(h):
@@ -96,7 +102,7 @@ def fetch_all_posts():
     out = []
     page = 1
     while True:
-        url = f'{BASE}/posts?per_page=50&page={page}&_fields={fields}&status=publish'
+        url = f'{BASE}/posts?per_page=25&page={page}&_fields={fields}&status=publish'
         try:
             batch, hdrs = get_json(url)
         except Exception as e:
@@ -108,6 +114,10 @@ def fetch_all_posts():
         out.extend(batch)
         total_pages = int(hdrs.get('X-WP-TotalPages') or hdrs.get('x-wp-totalpages') or 1)
         print(f'  posts page {page}/{total_pages}: +{len(batch)} (total {len(out)})')
+        existing_local_ids = {str(x['id']) for x in json.load(open(DATA / 'posts.json', encoding='utf-8'))}
+        if all(str(x.get('id')) in existing_local_ids for x in batch):
+            print('  all posts on this page already in posts.json; stopping pagination early.')
+            break
         if page >= total_pages:
             break
         page += 1
@@ -142,7 +152,7 @@ def http_to_candidates(url: str):
     if url.startswith('//'):
         url = 'https:' + url
     # prefer http (https often blocked)
-    http = re.sub(r'^https://', 'http://', url)
+    http = re.sub(r'^http://', 'https://', url)
     yield http
     # strip -WxH before extension
     unsized = re.sub(r'-\d+x\d+(\.\w+)$', r'\1', http)
@@ -217,15 +227,15 @@ def main():
     rest = fetch_all_posts()
     print('REST posts:', len(rest))
 
-    media_ids = [p.get('featured_media') or 0 for p in rest]
-    print('Fetching featured media…')
-    media = fetch_media_map(media_ids)
-    print('  media urls:', len(media))
-
     posts_path = DATA / 'posts.json'
     cats_path = DATA / 'known_cats.json'
     imgmap_path = DATA / 'imgmap.json'
     local = json.load(open(posts_path, encoding='utf-8'))
+    existing_ids = {str(p['id']) for p in local}
+    media_ids = [p.get('featured_media') or 0 for p in rest if str(p['id']) not in existing_ids]
+    print('Fetching featured media for new posts…', len(media_ids))
+    media = fetch_media_map(media_ids)
+    print('  media urls:', len(media))
     known = json.load(open(cats_path, encoding='utf-8'))
     imgmap = json.load(open(imgmap_path, encoding='utf-8'))
 

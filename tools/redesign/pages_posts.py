@@ -68,10 +68,23 @@ def excerpt(post):
         d = strip_tags(post.get('t') or post.get('title') or '')
     return d[:190] + ('…' if len(d) > 190 else '')
 
-def card(p, post, from_list=True, tag='', topic='', year='', art_meta=None):
+def card(p, post, from_list=True, tag='', topic='', year='', art_meta=None, news_meta=None):
     r = thumb(p, post)
     alt = esc(post['t'])
-    badges = f'<span class="art-card-badge">{esc(art_meta["topic_label"])}</span><span class="art-card-time">{esc(art_meta["rtime_badge"])}</span>' if art_meta else ''
+    badges = ''
+    if art_meta:
+        cat_badges = ''.join(f'<span class="art-card-badge">{esc(lbl)}</span>' for lbl in art_meta['cat_labels'][:2])
+        badges = (
+            f'<div class="card-cat-stack">{cat_badges}</div>'
+            f'<span class="art-ctype-badge art-ctype-badge--{esc(art_meta["ctype"])}">{esc(art_meta["ctype_label"])}</span>'
+            f'<span class="art-card-time">{esc(art_meta["rtime_badge"])}</span>'
+        )
+    elif news_meta:
+        cat_badges = ''.join(f'<span class="art-card-badge">{esc(lbl)}</span>' for lbl in news_meta['cat_labels'][:2])
+        badges = (
+            f'<div class="card-cat-stack">{cat_badges}</div>'
+            f'<span class="news-fmt-badge news-fmt-badge--{esc(news_meta["format"])}">{esc(news_meta["format_label"])}</span>'
+        )
     ph = (f'<div class="ph"><img src="{p}{r["src"]}" width="{r["w"]}" height="{r["h"]}" alt="{alt}" loading="lazy" decoding="async">{badges}</div>' if r
           else f'<div class="ph txt"><img src="{p}{FALLBACK_THUMB}" width="1280" height="720" alt="{alt}" loading="lazy">{badges}</div>')
     href = (post['rel'].split('/', 1)[1] if from_list else p + post['rel'])
@@ -82,12 +95,29 @@ def card(p, post, from_list=True, tag='', topic='', year='', art_meta=None):
     if year:
         attrs += f' data-year="{esc(year)}"'
     if art_meta:
-        attrs += f' data-rtime="{esc(art_meta["rtime_key"])}" data-aud="{esc(art_meta["aud_key"])}"'
+        attrs += (
+            f' data-cats="{esc(art_meta["cats_csv"])}"'
+            f' data-ctype="{esc(art_meta["ctype"])}"'
+            f' data-rtime="{esc(art_meta["rtime_key"])}"'
+            f' data-aud="{esc(art_meta["aud_key"])}"'
+            f' data-audiences="{esc(art_meta["audiences_csv"])}"'
+        )
+        aud_pills = ''.join(f'<span class="art-aud-tag">{esc(lbl)}</span>' for lbl in art_meta['aud_labels'][:3])
         return (f'<a class="post-card reveal" href="{href}" data-name="{esc(post["t"])}"{attrs}>{ph}<div class="body">'
-                f'<div class="art-meta-row"><time datetime="{post["date"][:10]}">{jdate(post["date"])}</time><span class="art-aud-tag">{esc(art_meta["aud_label"])}</span></div>'
+                f'<div class="art-meta-row"><time datetime="{post["date"][:10]}">{jdate(post["date"])}</time><div class="art-aud-list">{aud_pills}</div></div>'
                 f'<h3>{esc(post["t"])}</h3><p>{esc(excerpt(post))}</p><span class="go">{esc(art_meta["card_cta"])}</span></div></a>')
+    if news_meta:
+        attrs += (
+            f' data-cats="{esc(news_meta["cats_csv"])}"'
+            f' data-format="{esc(news_meta["format"])}"'
+            f' data-formats="{esc(news_meta["formats_csv"])}"'
+        )
+        fmt_pills = ''.join(f'<span class="news-fmt-pill">{esc(lbl)}</span>' for lbl in news_meta['format_labels'][:2])
+        return (f'<a class="post-card reveal" href="{href}" data-name="{esc(post["t"])}"{attrs}>{ph}<div class="body">'
+                f'<div class="art-meta-row"><time datetime="{post["date"][:10]}">{jdate(post["date"])}</time><div class="art-aud-list">{fmt_pills}</div></div>'
+                f'<h3>{esc(post["t"])}</h3><p>{esc(excerpt(post))}</p><span class="go">{esc(news_meta["card_cta"])}</span></div></a>')
     return (f'<a class="post-card reveal" href="{href}" data-name="{esc(post["t"])}"{attrs}>{ph}<div class="body">{tag_html}<time datetime="{post["date"][:10]}">{jdate(post["date"])}</time>'
-            f'<h3>{esc(post["t"])}</h3><p>{esc(excerpt(post))}</p><span class="go">ادامه مطلب ←</span></div></a>')
+            f'<h3>{esc(post["t"])}</h3><p>{esc(excerpt(post))}</p><span class="go">ادامه مطلب</span></div></a>')
 
 def missing_card(p, m):
     return (f'<a class="post-card ext reveal" href="{esc(m["url"])}" target="_blank" rel="noopener" data-name="{esc(m["t"])}"><div class="ph txt"><img src="{p}{FALLBACK_THUMB}" width="1280" height="720" alt="{esc(m["t"])}" loading="lazy"></div>'
@@ -100,44 +130,44 @@ def build(write):
         items = [x for x in POSTS if x['cat'] == cat]
         miss = [m for m in MISSING if m['cat'] == cat]
         n = len(items) + len(miss)
-        lead = ('اخبار، گزارش‌ها، مصاحبه‌ها و رویدادهای شرکت دانش‌بنیان مخازن طبی آبادیس' if cat == 'news'
-                else 'اگر به دنبال مطلب خاصی می گردید، از موتور جستجوگر زیر استفاده نمایید.')
+        lead = ('اخبار، گزارش‌ها، مصاحبه‌ها، اطلاعیه‌ها و رویدادهای شرکت دانش‌بنیان مخازن طبی آبادیس' if cat == 'news'
+                else 'مقالات علمی، پژوهشی، آموزشی و راهنماهای خرید تخصصی تجهیزات پزشکی و کنترل عفونت آبادیس')
         h1 = 'آخرین <em>اخبار</em>' if cat == 'news' else '<em>مقالات</em>'
         if cat == 'news':
-            from news_topics import classify_text, year_bucket, jalali_year_of, news_shell, empty_html, tally, feature_from_card
+            from news_topics import news_meta_for, year_bucket, jalali_year_of, news_shell, empty_html, tally, feature_from_card
             from layout import crumbs
             bits = []
             pairs = []
             for x in items:
-                topic = classify_text(x['t'] + ' ' + excerpt(x))
+                body_txt = strip_tags(' '.join(b.get('html', '') for b in x.get('blocks', []) if b.get('t') == 'html'))
+                nm = news_meta_for(x['t'], excerpt(x), blocks=x.get('blocks'), body=body_txt, lang='fa')
                 bucket = year_bucket(jalali_year_of(x.get('date')))
-                pairs.append((topic, bucket))
-                bits.append(card(p, x, topic=topic, year=bucket))
+                pairs.append((nm['cats'], bucket, nm['formats']))
+                bits.append(card(p, x, topic=nm['topic'], year=bucket, news_meta=nm))
             cards = ''.join(missing_card(p, m) for m in miss) + ''.join(bits)
             stats = tally(pairs)
             shell = news_shell('fa', p, crumbs(p, [(LABEL[cat], None)]), stats, feature_from_card(bits[0] if bits else '', 'fa'))
             main = shell + f'\n    <div class="post-grid" id="postGrid" data-paged="12">{cards}</div>\n    {empty_html("fa")}\n  </div></section>'
-            extra = f'<link rel="stylesheet" href="{p}assets/css/news-finalist.css">\n'
-            scripts = f'<script src="{p}assets/js/news-finalist.js" defer></script>\n'
+            extra = f'<link rel="stylesheet" href="{p}assets/css/news-finalist.css?v=20261028p">\n'
+            scripts = f'<script src="{p}assets/js/news-finalist.js?v=20261028p" defer></script>\n'
             write(f'{cat}/index.html', page(p, cat, LABEL[cat], lead, main, fa_path=f'{cat}/', extra_head=extra, scripts=scripts))
         else:
-            from news_topics import classify_article_text, article_meta_for, year_bucket, jalali_year_of, article_shell, article_empty_html, article_tally, article_feature_from_card
+            from news_topics import article_meta_for, year_bucket, jalali_year_of, article_shell, article_empty_html, article_tally, article_feature_from_card
             from layout import crumbs
             bits = []
             pairs = []
             for x in items:
                 body_txt = strip_tags(' '.join(b.get('html', '') for b in x.get('blocks', []) if b.get('t') == 'html'))
                 am = article_meta_for(x['t'], excerpt(x), body_txt, lang='fa')
-                topic = am['topic']
                 bucket = year_bucket(jalali_year_of(x.get('date')))
-                pairs.append((topic, bucket))
-                bits.append(card(p, x, topic=topic, year=bucket, art_meta=am))
+                pairs.append((am['cats'], bucket, am['ctype'], am['audiences']))
+                bits.append(card(p, x, topic=am['topic'], year=bucket, art_meta=am))
             cards = ''.join(missing_card(p, m) for m in miss) + ''.join(bits)
             stats = article_tally(pairs)
             shell = article_shell('fa', p, crumbs(p, [(LABEL[cat], None)]), stats, article_feature_from_card(bits[0] if bits else '', 'fa'))
             main = shell + f'\n    <div class="post-grid" id="postGrid" data-paged="12">{cards}</div>\n    {article_empty_html("fa")}\n  </div></section>'
-            extra = f'<link rel="stylesheet" href="{p}assets/css/news-finalist.css?v=20261028k">\n'
-            scripts = f'<script src="{p}assets/js/news-finalist.js?v=20261028k" defer></script>\n'
+            extra = f'<link rel="stylesheet" href="{p}assets/css/news-finalist.css?v=20261028p">\n'
+            scripts = f'<script src="{p}assets/js/news-finalist.js?v=20261028p" defer></script>\n'
             write(f'{cat}/index.html', page(p, cat, LABEL[cat], lead, main, fa_path=f'{cat}/', extra_head=extra, scripts=scripts))
         # singles
         p = '../../'
@@ -175,16 +205,13 @@ def build(write):
       {lead_img}
       {body}
     </article>
-    <div class="article-foot post-v2"><span>تاریخ انتشار: {jdate(x['date'])}</span>{share}<a href="../">بازگشت به {LABEL[cat]} ←</a></div>
+    <div class="article-foot post-v2"><span>تاریخ انتشار: {jdate(x['date'])}</span>{share}<a href="../">بازگشت به {LABEL[cat]}</a></div>
     {nav}
     {rel_html}
   </div></section>'''
             og = (p + r['src']) if r else (p + FALLBACK_THUMB)
-            # Document title includes section so it never collides with same-named pages
-            # (e.g. article 2615 «راهنمای نصب مخازن» vs /install-guide/tanks/).
             doc_title = f'{x["t"]} | {LABEL[cat]}'
             write(f'{cat}/{x["id"]}/index.html', page(p, cat, doc_title, excerpt(x), main, og=og, lightbox='data-gallery' in body, fa_path=f'{cat}/'))
-    # Home teasers are generated by pages_home (run `build.py home` or full build).
     try:
         import pages_home
         pages_home.build(write)

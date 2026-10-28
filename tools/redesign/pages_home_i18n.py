@@ -81,8 +81,12 @@ def build_home(write, lang):
           <a class="btn btn-ghost" href="{_h(t, p, t['quote_href'])}" data-track="contact_click" data-track-label="home_hero_quote_{lang}">{esc(t['quote'])}</a>
         </div>
       </div>
-      <figure class="hx-product"><span class="hx-glow" aria-hidden="true"></span>
-        <img src="{p}assets/img/p/hero-bags.webp" alt="{esc(t['bag_alt'])}" width="555" height="554" decoding="async" fetchpriority="high"></figure>
+      <figure class="hx-product hx-product--video"><span class="hx-glow" aria-hidden="true"></span>
+        <div class="hx-video-frame" style="background-image:url('{p}assets/media/hero-nurse-poster.jpg?v=20261028p')">
+          <video class="hx-nurse-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="auto" tabindex="-1" aria-hidden="true" poster="{p}assets/media/hero-nurse-poster.jpg?v=20261028p">
+            <source src="{p}assets/media/hero-nurse.mp4?v=20261028p" type="video/mp4">
+          </video>
+        </div></figure>
     </div>
   </section>'''
     goals = ''.join(f'<li>{esc(g)}</li>' for g in t['goals'])

@@ -920,7 +920,7 @@ def csr(write):
         s = s.replace('</main>\n', '</main>\n' + LIGHTBOX + '\n', 1)
     write('csr/index.html', s)
 
-# ------------------------------------------------------------------ contact extras
+# ------------------------------------------------------------------ contact extras ([t284u])
 def contact(write):
     bl = B('/ارتباط-با-ما/')
     def boxes(after):
@@ -929,18 +929,15 @@ def contact(write):
             if b['t'] == 'h': on = (b['text'] == after); continue
             if on and b['t'] == 'box': out.append(f'<div><b>{esc(b["title"])}</b><span>{esc(b["desc"])}</span></div>')
         return ''.join(out)
-    office = [b['html'] for b in bl if b['t'] == 'html' and 'داخلی ها' in b['html']][0]
-    ext = re.search(r'(<p><strong>داخلی ها:</strong></p>.*)', office, re.S).group(1)
     from icons import (
-        svg_clock, svg_pin, svg_postal, ch, iconize_extensions, brand_buttons, social_items,
+        svg_clock, svg_instagram, ch, brand_buttons, social_items, decorate_fa_contact_main,
     )
-    ext = iconize_extensions(ext)
     brands = brand_buttons([(url, fn(), label) for url, fn, label, _short in social_items('fa')])
     block = f'''<!-- phase2:contact -->
   <section class="section section--alt" id="hours"><div class="wrap grid g-2" style="gap:24px;align-items:start">
     <div class="reveal"><h2 class="with-ico" style="font-size:1.4rem;margin-bottom:14px">{ch(svg_clock())}ساعات کاری</h2><div class="hours">{boxes('ساعات کاری')}</div>
       <h2 class="with-ico" style="font-size:1.4rem;margin:26px 0 14px">{ch(svg_clock())}روزهای تعطیل</h2><div class="hours">{boxes('روزهای تعطیل')}</div></div>
-    <div class="card prose reveal"><h3 class="with-ico">{ch(svg_pin())}دفتر مرکزی</h3>{ext}<h3 class="with-ico">{ch(svg_pin())}کارخانه</h3><p class="with-ico">{ch(svg_postal())}<strong>کدپستی: </strong>۱۸۳۴۱۶۵۷۷۶</p><p><strong>شبکه های اجتماعی: </strong><a href="https://yek.link/abadis.med" target="_blank" rel="noopener">https://yek.link/abadis.med</a></p>{brands}</div>
+    <div class="card reveal"><h2 class="with-ico" style="font-size:1.4rem;margin-bottom:10px">{ch(svg_instagram())}شبکه‌های اجتماعی</h2><p style="margin:0 0 14px;text-align:start"><a href="https://yek.link/abadis.med" target="_blank" rel="noopener" dir="ltr">https://yek.link/abadis.med</a></p>{brands}</div>
   </div></section>
   <section class="section" id="map"><div class="wrap"><h2 style="font-size:1.4rem;margin-bottom:14px">موقعیت دفتر مرکزی روی نقشه</h2>
     <div class="map-embed reveal"><iframe title="نقشه دفتر مرکزی آبادیس (نشان)" src="https://neshan.org/maps/iframe/places/9399a4513b6974a287127c06bd9269b9#c35.799-51.448-20z-0p/35.79866645611763/51.44826324948928" loading="lazy" allowfullscreen></iframe></div>
@@ -951,53 +948,187 @@ def contact(write):
     f = SITE / 'contact/index.html'; s = f.read_text(encoding='utf-8')
     if '<!-- phase2:contact -->' in s: s = re.sub(r'<!-- phase2:contact -->.*?<!-- /phase2:contact -->\n', lambda m: block, s, flags=re.S)
     else: s = s.replace('</main>', block + '</main>', 1)
+    s = re.sub(r'(<main id="main">)(.*?)(</main>)', lambda m: m.group(1) + decorate_fa_contact_main(m.group(2)) + m.group(3), s, count=1, flags=re.S)
     write('contact/index.html', s)
 
+
+def contact_i18n_main(lang, p):
+    from icons import (
+        svg_phone, svg_fax, svg_mail, svg_whatsapp, svg_pin, svg_clock, svg_instagram,
+        ch, brand_buttons, social_items, WA_URL,
+    )
+    from layout import page_hero
+    is_en = (lang == 'en')
+    h1 = 'Contact <em>Us</em>' if is_en else 'اتصل <em>بنا</em>'
+    lead = ('For price lists, samples, dealership inquiries, and installation support, get in touch with the Abadis Med team.'
+            if is_en else 'للحصول على قائمة الأسعار والعينات والوكالات ودعم التركيب، تواصلوا مع فريق مخازن آباديس الطبية.')
+    hero = page_hero(p, [('Contact Us' if is_en else 'اتصل بنا', None)], h1, lead, lang=lang)
+    ways_h = 'Contact Channels' if is_en else 'طرق التواصل'
+    cc_lbl = 'Call Center:' if is_en else 'مركز الاتصال:'
+    tel_lbl = 'Phone Lines:' if is_en else 'أرقام الهاتف:'
+    fax_lbl = 'Fax:' if is_en else 'الفاكس:'
+    fax_ext = 'Ext. 28544' if is_en else 'داخلي ٢٨٥٤٤'
+    mail_lbl = 'Email:' if is_en else 'البريد الإلكتروني:'
+    wa_lbl = 'WhatsApp:' if is_en else 'واتساب:'
+    hq_lbl = 'Head Office:' if is_en else 'المكتب المركزي:'
+    hq_val = 'Iran, Tehran, Qeytarieh, Andarzgoo Blvd., No. 104, Unit 2' if is_en else 'إيران، طهران، قيطريه، شارع أندرزغو، رقم 104، وحدة 2'
+    fac_lbl = 'Factory:' if is_en else 'المصنع:'
+    fac_val = 'Iran, Tehran, Shamsabad Industrial Town, Golestan Blvd., Golshan 19, No. 17' if is_en else 'إيران، طهران، مدينة شمس آباد الصناعية، بوليفارد كلستان، كلشن ١٩، رقم ١٧'
+    dealers_href = f'{p}en/representatives/' if is_en else f'{p}arabic/قائمة-الممثلين/'
+    dealers_lbl = 'Sales Representatives' if is_en else 'قائمة الممثلين'
+    form_h = 'Request Form' if is_en else 'نموذج الطلب'
+    f_name = 'Full Name' if is_en else 'الاسم الكامل'
+    f_org = 'Medical Center / Company' if is_en else 'المركز العلاجي / الشركة'
+    f_phone = 'Phone Number' if is_en else 'رقم الهاتف'
+    f_topic = 'Subject' if is_en else 'الموضوع'
+    f_opts = (['Price Inquiry', 'Sample Request', 'Dealership & Cooperation', 'Export', 'Support & Installation']
+              if is_en else ['استعلام السعر', 'طلب عينة', 'الوكالة والتعاون', 'التصدير', 'الدعم والتركيب'])
+    f_msg = 'Message' if is_en else 'الرسالة'
+    f_btn = 'Send Request' if is_en else 'إرسال الطلب'
+    hours_h = 'Working Hours' if is_en else 'ساعات العمل'
+    hol_h = 'Official Holidays' if is_en else 'العطلات الرسمية'
+    soc_h = 'Social Networks' if is_en else 'الشبكات الاجتماعية'
+    map_h = 'Head Office Location on Map' if is_en else 'موقع المكتب المركزي على الخريطة'
+    opts_html = ''.join(f'<option>{esc(o)}</option>' for o in f_opts)
+    brands = brand_buttons([(url, fn(), label) for url, fn, label, _short in social_items(lang)])
+    hours_html = (
+        '<div><b>Saturday to Tuesday</b><span>7:30 AM – 4:30 PM</span></div><div><b>Wednesdays</b><span>7:30 AM – 3:30 PM</span></div>'
+        if is_en else
+        '<div><b>السبت إلى الثلاثاء</b><span>٧:٣٠ صباحاً حتى ٤:٣٠ مساءً</span></div><div><b>الأربعاء</b><span>٧:٣٠ صباحاً حتى ٣:٣٠ مساءً</span></div>'
+    )
+    hol_html = (
+        '<div><b>Nowruz Holiday</b><span>March 21 – April 2</span></div><div><b>Year-End</b><span>March 18 – March 20</span></div>'
+        if is_en else
+        '<div><b>عطلة النوروز</b><span>١ إلى ١٣ فروردين</span></div><div><b>نهاية العام</b><span>٢٧ إلى ٢٩ اسفند</span></div>'
+    )
+    return f'''{hero}
+  <section class="section"><div class="wrap grid g-2" style="gap:24px;align-items:start">
+    <div class="card reveal">
+      <h2 style="font-size:1.4rem;margin-bottom:16px">{esc(ways_h)}</h2>
+      <dl class="contact-dl">
+        <dt>{ch(svg_phone())}{esc(cc_lbl)}</dt><dd><a href="tel:+982192001017" dir="ltr">02192001017</a></dd>
+        <dt>{ch(svg_phone())}{esc(tel_lbl)}</dt><dd><a href="tel:+982122671845" dir="ltr">02122671845</a> | <a href="tel:+982122205502" dir="ltr">02122205502</a><br><a href="tel:+982122215503" dir="ltr">02122215503</a> | <a href="tel:+982122218910" dir="ltr">02122218910</a></dd>
+        <dt>{ch(svg_fax())}{esc(fax_lbl)}</dt><dd><span dir="ltr">02141425555</span> | {esc(fax_ext)}</dd>
+        <dt>{ch(svg_mail())}{esc(mail_lbl)}</dt><dd><a href="mailto:info@abadis-med.com">info@abadis-med.com</a></dd>
+        <dt>{ch(svg_whatsapp())}{esc(wa_lbl)}</dt><dd><a href="{WA_URL}" target="_blank" rel="noopener" dir="ltr">+989100145809</a></dd>
+        <dt>{ch(svg_pin())}{esc(hq_lbl)}</dt><dd>{esc(hq_val)}</dd>
+        <dt>{ch(svg_pin())}{esc(fac_lbl)}</dt><dd>{esc(fac_val)}</dd>
+      </dl>
+      <div class="doc-links"><a href="{dealers_href}">{esc(dealers_lbl)}</a></div>
+    </div>
+    <form class="card form reveal" id="leadForm" data-abadis-form="contact" data-mailto-form="info@abadis-med.com" data-subject="Website Inquiry">
+      <h2 style="font-size:1.4rem">{esc(form_h)}</h2>
+      <input type="hidden" name="form_name" value="contact">
+      <label class="hp-field" aria-hidden="true">Leave blank<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label>
+      <label>{esc(f_name)}<input name="name" required autocomplete="name"></label>
+      <label>{esc(f_org)}<input name="org" autocomplete="organization"></label>
+      <label>{esc(f_phone)}<input name="phone" type="tel" dir="ltr" required autocomplete="tel" inputmode="tel"></label>
+      <label>{esc(f_topic)}<select name="topic">{opts_html}</select></label>
+      <label>{esc(f_msg)}<textarea name="msg"></textarea></label>
+      <button class="btn btn-primary" type="submit">{esc(f_btn)}</button>
+      <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+    </form>
+  </div></section>
+  <section class="section section--alt" id="hours"><div class="wrap grid g-2" style="gap:24px;align-items:start">
+    <div class="reveal"><h2 class="with-ico" style="font-size:1.4rem;margin-bottom:14px">{ch(svg_clock())}{esc(hours_h)}</h2><div class="hours">{hours_html}</div>
+      <h2 class="with-ico" style="font-size:1.4rem;margin:26px 0 14px">{ch(svg_clock())}{esc(hol_h)}</h2><div class="hours">{hol_html}</div></div>
+    <div class="card reveal"><h2 class="with-ico" style="font-size:1.4rem;margin-bottom:10px">{ch(svg_instagram())}{esc(soc_h)}</h2><p style="margin:0 0 14px;text-align:start"><a href="https://yek.link/abadis.med" target="_blank" rel="noopener" dir="ltr">https://yek.link/abadis.med</a></p>{brands}</div>
+  </div></section>
+  <section class="section" id="map"><div class="wrap"><h2 style="font-size:1.4rem;margin-bottom:14px">{esc(map_h)}</h2>
+    <div class="map-embed reveal"><iframe title="Abadis Head Office Map" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12944.211131436843!2d51.4482284!3d35.7986375!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xcb1043d42c92e72e!2zQWJhZGlzIE1lZGljYWwgfCDZhdiu2KfYstmGINi32KjbjCDYotio2KfYr9uM2LM!5e0!3m2!1sen!2s!4v1614425899752!5m2!1sen!2s" loading="lazy" allowfullscreen></iframe></div>
+    <p class="map-links"><a href="https://www.google.com/maps/search/?api=1&amp;query=35.79866,51.44826" target="_blank" rel="noopener">Google Maps</a> · <a href="https://waze.com/ul?ll=35.79866,51.44826&amp;navigate=yes" target="_blank" rel="noopener">Waze</a></p>
+  </div></section>'''
+
+
 CUST_T = {
- 'fa': dict(h='خانواده سبز آبادیس', lead='۱٬۲۴۲ بیمارستان و ۴۲ مرکز جراحی روی نقشه و در جدول.'),
- 'en': dict(h='Abadis green family', lead='1,242 hospitals and 42 surgery centers on the map and in the table.'),
- 'ar': dict(h='عائلة آباديس الخضراء', lead='١٬٢٤٢ مستشفى و٤٢ مركز جراحة على الخريطة وفي الجدول.'),
+ 'fa': dict(
+     h='خانواده سبز آبادیس',
+     lead='۱٬۲۴۲ بیمارستان و ۴۲ مرکز جراحی روی نقشه و در جدول.',
+     feat_h='مراکز درمانی منتخب با نشان و پیوند مستقیم',
+     feat_lead='لیست مراکز درمانی که به خانواده سبز آبادیس پیوستند',
+     web_btn='وب سایت مجموعه',
+     intl_badge='مرزهای بین‌المللی خانواده سبز آبادیس',
+     intl_title='حضور صادراتی و تجهیز مراکز درمانی در منطقه: عراق · عمان · ازبکستان',
+     intl_sub='علاوه بر ۱٬۲۸۴ مرکز درمانی در ۳۱ استان ایران، محصولات و سیستم‌های ساکشن آبادیس در مراکز درمانی کشورهای عراق، عمان و ازبکستان نیز در حال خدمت‌رسانی هستند.',
+ ),
+ 'en': dict(
+     h='Abadis Green Family',
+     lead='1,242 hospitals and 42 surgery centers across all 31 provinces on the interactive map and directory.',
+     feat_h='Featured Healthcare Centers with Logo & Direct Link',
+     feat_lead='Leading hospitals and surgical centers that have joined the Abadis Green Family',
+     web_btn='Visit Facility Website',
+     intl_badge='International Export Presence',
+     intl_title='Regional Healthcare Footprint: Iraq · Oman · Uzbekistan',
+     intl_sub='Alongside 1,284 healthcare centers across all 31 provinces of Iran, Abadis suction systems and medical consumables actively serve hospitals and clinics in Iraq, Oman, and Uzbekistan.',
+ ),
+ 'ar': dict(
+     h='عائلة آباديس الخضراء',
+     lead='١٬٢٤٢ مستشفى و٤٢ مركز جراحة في ٣١ محافظة على الخريطة التفاعلية وفي الجدول.',
+     feat_h='مراكز علاجية مختارة مع الشعار والرابط المباشر',
+     feat_lead='قائمة المراكز العلاجية والمستشفيات التي انضمت إلى عائلة آباديس الخضراء',
+     web_btn='الموقع الإلكتروني للمركز',
+     intl_badge='الحضور الدولي والتصديري',
+     intl_title='تجهيز المراكز العلاجية إقليمياً: العراق · عُمان · أوزبكستان',
+     intl_sub='إلى جانب ١٬٢٨٤ مركزاً علاجياً في ٣١ محافظة إيرانية، تخدم أنظمة ومستلزمات الشفط من آباديس المستشفيات والمراكز الصحية في العراق وعُمان وأوزبكستان.',
+ ),
 }
 def iran_centers_section(p, lang):
-    """Live default: the cleaned workbook (1,242 hospitals + 42 surgery centers)."""
+    """Live default: the cleaned workbook (1,242 hospitals + 42 surgery centers) + regional export strip."""
     T = CUST_T[lang]
+    globe_svg = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>'
     return f'''<section class="section" id="green-family">
   <div class="wrap">
     <div class="section-head reveal"><h2>{esc(T["h"])}</h2><p>{esc(T["lead"])}</p></div>
+    <div class="cust-intl-banner reveal" style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:16px 20px;margin-bottom:18px;border-radius:18px;background:linear-gradient(135deg,rgba(5,104,107,0.10),rgba(13,148,136,0.04));border:1px solid rgba(5,104,107,0.22)">
+      <div style="display:flex;align-items:center;gap:14px;min-width:240px;flex:1">
+        <span style="width:44px;height:44px;border-radius:12px;background:#05686b;color:#fff;display:grid;place-items:center;flex-shrink:0">{globe_svg}</span>
+        <div>
+          <span style="display:inline-block;font-size:.76rem;font-weight:800;color:#05686b;margin-bottom:2px">{esc(T["intl_badge"])}</span>
+          <strong style="display:block;font-size:1.02rem;font-weight:900;color:var(--ink,#07282b)">{esc(T["intl_title"])}</strong>
+          <p style="margin:4px 0 0;font-size:.86rem;color:var(--muted,#4d6c70);line-height:1.6">{esc(T["intl_sub"])}</p>
+        </div>
+      </div>
+    </div>
     <div data-iran-centers data-src="{p}assets/data/iran-hospitals-centers.json" data-map="{p}assets/data/iran-provinces.json" data-lang="{lang}"></div>
   </div>
 </section>
-<script src="{p}assets/js/iran-centers.js" defer></script>'''
+<script src="{p}assets/js/iran-centers.js?v=20261028p" defer></script>'''
+
+
+def featured_logos_section(lang='fa', p='../'):
+    from customers_i18n import translate_hospital
+    T = CUST_T[lang]
+    bl = B('/مشتریان-ما/')
+    items = bl[1]['items']
+    cards = []
+    for it in items:
+        im = next((x for x in it['blocks'] if x['t'] == 'img'), None)
+        name_fa = next((x['text'] for x in it['blocks'] if x['t'] == 'h'), '')
+        name_loc = name_fa if lang == 'fa' else translate_hospital(name_fa, lang)
+        bt = next((x for x in it['blocks'] if x['t'] == 'btn'), None)
+        pic = picture(p, im['src'], name_loc, 300) if im else ''
+        lg = f'<div class="lg">{pic}</div>' if pic else f'<div class="lg txt" aria-hidden="true">{esc(name_loc[:1])}</div>'
+        link = f'<a href="{esc(bt["href"])}" target="_blank" rel="noopener">{esc(T["web_btn"])}</a>' if bt and bt.get('href') else ''
+        cards.append(f'<div class="logo-card" data-name="{esc(name_loc)}">{lg}<strong>{esc(name_loc)}</strong>{link}</div>')
+    return f'''  <section class="section section--alt" id="featured-logos"><div class="wrap">
+    <div class="section-head reveal"><h2>{esc(T["feat_h"])}</h2><p>{esc(T["feat_lead"])}</p></div>
+    <div class="logo-grid" id="custGrid" data-paged="12">{''.join(cards)}</div>
+  </div></section>'''
 
 
 def customers_all(lang='fa', p='../'):
-    return iran_centers_section(p, lang)
+    return iran_centers_section(p, lang) + '\n' + featured_logos_section(lang, p)
 
 # ------------------------------------------------------------------ customers
 def customers(write):
     p = '../'; bl = B('/مشتریان-ما/')
     head = bl[0]['text']; items = bl[1]['items']
-    cards = []; nimg = 0
-    for it in items:
-        im = next((x for x in it['blocks'] if x['t'] == 'img'), None)
-        name = next((x['text'] for x in it['blocks'] if x['t'] == 'h'), '')
-        bt = next((x for x in it['blocks'] if x['t'] == 'btn'), None)
-        pic = picture(p, im['src'], im.get('alt') or name, 300) if im else ''
-        nimg += bool(pic)
-        lg = f'<div class="lg">{pic}</div>' if pic else f'<div class="lg txt" aria-hidden="true">{esc(re.sub(r"^(بیمارستان|مرکز|درمانگاه|کلینیک)\s+", "", name)[:1])}</div>'
-        link = f'<a href="{esc(bt["href"])}" target="_blank" rel="noopener">{esc(bt["text"])}</a>' if bt and bt.get('href') else ''
-        cards.append(f'<div class="logo-card" data-name="{esc(name)}">{lg}<strong>{esc(name)}</strong>{link}</div>')
+    nimg = sum(1 for it in items if any(x['t'] == 'img' for x in it['blocks']))
     from layout import crumbs
     head_css, motion_js = about_motion_tags(p)
     hero = customers_hero(p, 'fa', 'خانواده سبز <em>آبادیس</em>', crumbs(p, [('خانواده سبز آبادیس (مشتریان ما)', None)]))
     main = f'''{hero}
-  {customers_all('fa', p)}
-  <section class="section section--alt" id="featured-logos"><div class="wrap">
-    <div class="section-head reveal"><h2>مراکز درمانی منتخب با نشان و پیوند مستقیم</h2><p>{esc(head)}</p></div>
-    <div class="list-tools"><input class="search" type="search" placeholder="جستجوی نام مرکز درمانی..." aria-label="جستجوی مشتریان" data-filter="#custGrid"><span class="count" data-count-for="#custGrid">{fa(len(items))} مرکز درمانی</span></div>
-    <div class="logo-grid" id="custGrid" data-paged="12">{''.join(cards)}</div>
-    <p class="empty-msg" hidden>موردی یافت نشد.</p>
-  </div></section>'''
+  {customers_all('fa', p)}'''
     write('customers/index.html', page(p, 'customers', 'خانواده سبز آبادیس', head, main,
           extra_head=head_css, html_attrs='data-slogan="t1"', scripts=motion_js))
     for rel, prefix, lang, title, h1_h, desc in (

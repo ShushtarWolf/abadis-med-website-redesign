@@ -494,9 +494,13 @@ def hero_v2():
           <a class="btn btn-ghost" href="export/#quote" data-track="contact_click" data-track-label="home_hero_quote">درخواست قیمت / همکاری صادراتی</a>
         </div>
       </div>
-      <figure class="hx-product">
+      <figure class="hx-product hx-product--video">
         <span class="hx-glow" aria-hidden="true"></span>
-        <img src="assets/img/p/hero-bags.webp" alt="کیسه ساکشن یکبار مصرف ۱ و ۲ لیتری آبادیس" width="555" height="554" decoding="async" fetchpriority="high">
+        <div class="hx-video-frame" style="background-image:url('assets/media/hero-nurse-poster.jpg?v=20261028p')">
+          <video class="hx-nurse-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="auto" tabindex="-1" aria-hidden="true" poster="assets/media/hero-nurse-poster.jpg?v=20261028p">
+            <source src="assets/media/hero-nurse.mp4?v=20261028p" type="video/mp4">
+          </video>
+        </div>
       </figure>
     </div>
   </section>'''
@@ -751,8 +755,7 @@ def build(write):
         customers_section(),
     ])
     import w2_orbit
-    extra_head = '''<link rel="preload" as="image" href="assets/img/p/hero-bags.webp" type="image/webp">
-<link rel="stylesheet" href="assets/css/home.css?v=20261028f">
+    extra_head = '''<link rel="stylesheet" href="assets/css/home.css?v=20261028f">
 ''' + logo_scroll_css('') + '\n' + counter_options_css('') + '\n' + w2_orbit.assets('')
     scripts = logo_scroll_scripts('') + counter_options_script('')
     html = page(

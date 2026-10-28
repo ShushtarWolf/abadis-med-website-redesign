@@ -155,6 +155,9 @@
 
   /* About-group (and any .nav-item.has-sub): toggle on click for touch / mobile hamburger */
   document.querySelectorAll('.nav-item.has-sub > .nav-parent').forEach((parent) => {
+    if (!parent.querySelector('.nav-caret')) {
+      parent.insertAdjacentHTML('beforeend', '<svg class="nav-caret" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2.5 4.25 6 7.75l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+    }
     const item = parent.parentElement;
     parent.addEventListener('click', (e) => {
       const mobile = menuBtn && getComputedStyle(menuBtn).display !== 'none';
@@ -1162,15 +1165,15 @@
   var base = cur ? cur.getAttribute('src').replace(/assets\/js\/site\.js.*$/, '') : '/';
   var css = document.createElement('link');
   css.rel = 'stylesheet';
-  css.href = base + 'assets/chatbot/chatbot.css';
+  css.href = base + 'assets/chatbot/chatbot.css?v=20261028p';
   document.head.appendChild(css);
   var fb = document.createElement('script');
-  fb.src = base + 'assets/chatbot/kb-fallback.js';
+  fb.src = base + 'assets/chatbot/kb-fallback.js?v=20261028p';
   fb.defer = true;
   document.head.appendChild(fb);
   var cb = document.createElement('script');
-  cb.src = base + 'assets/chatbot/chatbot.js';
+  cb.src = base + 'assets/chatbot/chatbot.js?v=20261028p';
   cb.defer = true;
-  cb.setAttribute('data-kb', base + 'assets/data/abadis-knowledge-base.json');
+  cb.setAttribute('data-kb', base + 'assets/data/abadis-knowledge-base.json?v=20261028p');
   document.head.appendChild(cb);
 })();

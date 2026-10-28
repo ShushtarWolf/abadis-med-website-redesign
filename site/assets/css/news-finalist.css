@@ -1,4 +1,4 @@
-/* Finalist D — topic tags, year pills, lead story. No search field. */
+/* Finalist D — topic tags, year pills, format/content-type & audience pills, lead story. */
 .news-d {
   background: linear-gradient(180deg, var(--bg-2), var(--bg) 280px);
   padding: 28px 0 8px;
@@ -7,7 +7,7 @@
 .news-d .lead { color: var(--muted); max-width: 46rem; margin-bottom: 16px; }
 .news-d-stage {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(260px, .9fr);
+  grid-template-columns: minmax(0, 1.35fr) minmax(260px, .95fr);
   gap: 14px;
   align-items: stretch;
 }
@@ -26,7 +26,7 @@
 }
 .news-panel {
   background: var(--surface); border: 1px solid var(--line); border-radius: 22px;
-  padding: 12px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 8px;
+  padding: 14px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 8px;
 }
 .news-dash { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0; padding: 0; }
 .news-dash li {
@@ -36,15 +36,20 @@
 .news-dash span { color: var(--muted); font-size: .82rem; font-weight: 700; }
 .news-lab { margin: 4px 0 0; font-size: .78rem; font-weight: 800; color: var(--muted); }
 .news-topics, .news-years { display: flex; flex-wrap: wrap; gap: 6px; }
-.news-topics button, .news-years button, .news-empty button {
+.news-topics button, .news-years button, .ao-extra-filters button, .news-empty button {
   font: inherit; cursor: pointer; border-radius: 999px; border: 1px solid var(--line);
-  background: var(--surface-2); color: var(--ink); padding: 4px 10px; font-weight: 700; font-size: .82rem;
+  background: var(--surface-2); color: var(--ink); padding: 4px 10px; font-weight: 700; font-size: .80rem;
+  transition: all .16s ease;
 }
-.news-topics button b, .news-years button b { color: var(--brand); font-weight: 800; }
-.news-topics button[aria-pressed="true"], .news-years button[aria-pressed="true"] {
+.news-topics button b, .news-years button b, .ao-extra-filters button b { color: var(--brand); font-weight: 800; }
+.news-topics button[aria-pressed="true"],
+.news-years button[aria-pressed="true"],
+.ao-extra-filters button[aria-pressed="true"] {
   background: var(--btn-bg); color: var(--btn-ink); border-color: transparent;
 }
-.news-topics button[aria-pressed="true"] b, .news-years button[aria-pressed="true"] b { color: inherit; }
+.news-topics button[aria-pressed="true"] b,
+.news-years button[aria-pressed="true"] b,
+.ao-extra-filters button[aria-pressed="true"] b { color: inherit; }
 .news-live { margin: 2px 0 0; font-weight: 800; color: var(--muted); }
 .news-live span { color: var(--brand); }
 .news-archive-title { margin: 0 0 12px; font-size: 1.25rem; }
@@ -61,7 +66,7 @@
   background: linear-gradient(180deg, var(--bg-2), var(--bg) 280px);
 }
 
-/* --- Approved A2 Articles Knowledge Hub Additions --- */
+/* --- Multi-Category, Content-Format, Content-Type & Multi-Audience Badges --- */
 .articles-d {
   padding-top: clamp(28px, 3.5vw, 44px);
 }
@@ -75,7 +80,7 @@
 .ao-extra-filters {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
   padding-top: 8px;
   border-top: 1px dashed var(--line, #d5e3e4);
@@ -89,19 +94,56 @@
 #postGrid .post-card .ph {
   position: relative;
 }
-.art-card-badge {
+.card-cat-stack {
   position: absolute;
-  top: 12px;
-  inset-inline-start: 12px;
+  top: 10px;
+  inset-inline-start: 10px;
   z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  max-width: calc(100% - 92px);
+}
+.art-card-badge {
+  display: inline-block;
   background: rgba(6, 97, 99, 0.92);
   color: #fff;
-  font-size: 0.73rem;
+  font-size: 0.71rem;
   font-weight: 700;
-  padding: 4px 10px;
+  padding: 3px 9px;
   border-radius: 999px;
   backdrop-filter: blur(6px);
   box-shadow: 0 4px 12px rgba(4, 31, 34, 0.18);
+}
+.news-fmt-badge,
+.art-ctype-badge {
+  position: absolute;
+  top: 10px;
+  inset-inline-end: 10px;
+  z-index: 2;
+  background: rgba(11, 38, 42, 0.88);
+  color: #5eead4;
+  border: 1px solid rgba(94, 234, 212, 0.42);
+  font-size: 0.71rem;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+}
+.news-fmt-badge--interview,
+.art-ctype-badge--research {
+  background: rgba(13, 110, 112, 0.92);
+  color: #ecfeff;
+}
+.news-fmt-badge--video {
+  background: rgba(15, 23, 42, 0.9);
+  color: #fde68a;
+  border-color: rgba(251, 191, 36, 0.45);
+}
+.news-fmt-badge--announcement,
+.art-ctype-badge--buying_guide {
+  background: rgba(6, 78, 59, 0.92);
+  color: #a7f3d0;
 }
 .art-card-time {
   position: absolute;
@@ -129,17 +171,29 @@
   color: var(--muted, #557073);
   font-weight: 600;
 }
-.art-aud-tag {
-  font-size: 0.72rem;
+.art-aud-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.art-aud-tag,
+.news-fmt-pill {
+  font-size: 0.70rem;
   font-weight: 700;
   color: var(--teal-ink, #04484a);
   background: var(--teal-wash, #e3f3f3);
-  padding: 2px 8px;
+  padding: 2px 7px;
   border-radius: 6px;
   border: 1px solid rgba(6, 97, 99, 0.16);
 }
+.news-fmt-pill {
+  background: rgba(13, 148, 136, 0.12);
+  color: #05686b;
+}
 html[data-theme="dark"] .art-aud-tag,
-html[data-theme="noir"] .art-aud-tag {
+html[data-theme="noir"] .art-aud-tag,
+html[data-theme="dark"] .news-fmt-pill,
+html[data-theme="noir"] .news-fmt-pill {
   background: rgba(20, 184, 166, 0.14);
   color: #5eead4;
   border-color: rgba(94, 234, 212, 0.25);
