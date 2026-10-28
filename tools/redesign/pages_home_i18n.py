@@ -22,7 +22,8 @@ T = {
   imp_eb='Abadis impact, right now', imp_unit='litres of water saved since 21 March 2026 (estimate)',
   why_eb='', why_h='Why Is Abadis Impactful?', why_sub='From product design and manufacturing to training and support, we strive to enhance safety, improve efficiency, and meet the real needs of healthcare centers.',
   values=[('Cost Reduction', 'Reduce costs related to cleanser, water consumption, electricity and manpower'), ('Hospital and Infectious Waste Management', 'Better collection of liquid and infectious waste'), ('Recycling', 'Reduces medical waste and preserves the environment'), ('Easy To Use', 'Eliminating activities related to tank cleaning and convenient use for collecting waste during surgery')],
-  factory='Established in 2018, the Abadis Medical Equipment Knowledge-Based Factory operates with state-of-the-art machinery and highly skilled experts. With an annual production capacity of 5 million disposable suction bags, Abadis is recognized as the largest manufacturer of these products in the Middle East.',
+  why_sum_h='Abadis Impact, from Product to Service',
+  factory='Through designing and manufacturing medical consumables and providing training and support, Abadis accompanies healthcare centers. From disposable suction bags, filters, and tubes to complementary equipment, the company focuses on safety, quality, ease of use, and optimal resource consumption—a partnership that begins with identifying needs and selecting products, and continues with training and after-sales service.',
   checks=['Product Warranty and Guarantee', 'Quality Assurance', 'Provide high quality products', 'Communication of Sales and Technical Team with Medical Centers and Hospital', 'Delivery Products in the Shortest Time'],
   prod_eb='Products', prod_h='Abadis products', prod_all='All products →', prod_href='products/',
   products=[('Suction Bag', 'products/suction-bag/', 'assets/img/p/p2-main.webp'), ('Base and Holder', 'products/base-and-holder/', 'assets/img/p/p1-g3-t.webp'), ('Filters', 'products/filters/', 'assets/img/filters/anti-1-t.webp'), ('Suction Tube', 'suction-tube/', 'assets/img/p/p1-g4-t.webp'), ('Canisters', 'products/canisters/', None), ('Connections', 'products/connections/', None), ('Other Products', 'products/other-products/', None)],
@@ -46,7 +47,8 @@ T = {
   imp_eb='أثر آباديس، الآن', imp_unit='لتر من الماء تم توفيره منذ ٢١ مارس ٢٠٢٦ (تقديري)',
   why_eb='', why_h='لماذا تُحدث آباديس أثراً؟', why_sub='من تصميم وتصنيع المنتجات إلى التدريب والدعم، نسعى للارتقاء بالسلامة وتحسين الكفاءة وتلبية الاحتياجات الفعلية للمراكز العلاجية.',
   values=[('تقليص التكاليف', 'تقليص التكاليف المتعلقة بالمنظّفات واستهلاك المياه والكهرباء واستخدام الموارد البشرية'), ('إدارة مخلفات المستشفيات والنفايات المعدية', 'تؤدي إلى تجميع النفايات السائلة والمعدية بشكل أفضل'), ('قابلة لإعادة التدوير', 'تؤدي إلى تقليل كميّة مخلفات المستشفيات والحفاظ على البيئة'), ('الاستخدام البسيط', 'التخلص من عملية غسيل الخزانات والاستخدام المريح لتجميع النفايات أثناء العمل')],
-  factory='تأسست شركة مخازن طبية آباديس المعرفية في عام 2018 باستخدام أحدث المعدات والآلات وبالتعاون مع القوى المتخصصة. تُعدّ هذه الشركة أكبر منتج للحقائب السائلة ذات الاستخدام الواحد في منطقة الشرق الأوسط، بطاقة إنتاجية سنوية تصل إلى 5 مليون حقيبة سحب.',
+  why_sum_h='أثر آباديس، من المنتج إلى الخدمة',
+  factory='من خلال تصميم وتصنيع المستلزمات الطبية الاستهلاكية وتقديم التدريب والدعم، ترافق آباديس المراكز العلاجية. من أكياس الشفط ذات الاستخدام الواحد والفلاتر والأنابيب إلى المعدات التكميلية، تركز المجموعة على السلامة والجودة وسهولة الاستخدام والاستهلاك الأمثل للموارد؛ وهي مرافقة تبدأ من معرفة الاحتياج واختيار المنتج وتستمر بالتدريب وخدمات ما بعد البيع.',
   checks=['الضمان والكفالة', 'ضمان الجودة', 'التواصل المستمر بين قسم المبيعات والفريق الفني مع المراكز الطبية', 'التوصيل السريع للمنتج'],
   prod_eb='منتجات', prod_h='منتجات آباديس', prod_all='كل المنتجات ←', prod_href='منتجات/',
   products=[('كيس الشفط', 'كيس-الشفط/', 'assets/img/p/p2-main.webp'), ('تثبيت', 'تثبیت/', 'assets/img/p/p1-g3-t.webp'), ('الفلتر', 'الفلتر/', 'assets/img/filters/anti-1-t.webp'), ('أنبوب الشفط', 'أنبوب-الشفط/', 'assets/img/p/p1-g4-t.webp'), ('خزانات', 'خزانات/', None), ('الوصلات', 'الوصلات/', None), ('منتجات أخرى', 'منتجات-اخری/', None)],
@@ -113,7 +115,7 @@ def build_home(write, lang):
     fail_l = 'Product Failure Rate' if lang == 'en' else 'نسبة عيوب المنتج'
     cost_l = t['values'][0][1]
     metrics = [(cap, cap_l), (sat, sat_l), (fail, fail_l), (t['values'][0][0], cost_l)]
-    why = H.why_block(p, t['why_eb'], t['why_h'], t['values'], t['factory'], t['checks'], metrics, lang, subtitle=t.get('why_sub', ''))
+    why = H.why_block(p, t['why_eb'], t['why_h'], t['values'], t['factory'], t['checks'], metrics, lang, subtitle=t.get('why_sub', ''), summary_title=t.get('why_sum_h', ''))
     import solutions_arch
     products = solutions_arch.home_section(p, lang)
     quick = f'''  <section class="section quick" id="quick" style="padding-block:28px"><div class="wrap quick-row">
