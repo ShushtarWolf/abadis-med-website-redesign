@@ -55,7 +55,7 @@
       panel.querySelector('[data-role="h3"]').textContent = info.h3;
       panel.querySelector('[data-role="p"]').textContent = info.p;
       panel.querySelector('[data-role="kpis"]').innerHTML = (info.kpis || []).map(function (k) {
-        return '<div class="w2-kpi"><b>' + esc(k[0]) + '</b><span>' + esc(k[1]) + '</span></div>';
+        return k[1] ? '<div class="w2-kpi"><b>' + esc(k[0]) + '</b><span>' + esc(k[1]) + '</span></div>' : '<div class="w2-kpi w2-kpi--single"><b>' + esc(k[0]) + '</b></div>';
       }).join('');
       panel.querySelector('[data-role="bar-a-label"]').textContent = info.bar_a_label;
       panel.querySelector('[data-role="bar-a-val"]').textContent = info.bar_a_val;

@@ -354,7 +354,14 @@ html[lang="en"] .w2-live .orb-node.is-satellite .orb-node-title { font-size: 9px
 }
 .w2-live .w2-kpi {
   background: var(--surface); border: 1px solid var(--line-strong); border-radius: 14px;
-  padding: 10px 6px; text-align: center;
+  padding: 10px 8px; text-align: center;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.w2-live .w2-kpi--single {
+  min-height: 54px;
+}
+.w2-live .w2-kpi--single b {
+  font-size: 0.88rem; line-height: 1.35;
 }
 .w2-live .w2-kpi b { display: block; font-size: 0.95rem; font-weight: 900; color: var(--brand); line-height: 1.25; }
 .w2-live .w2-kpi span { display: block; font-size: 0.72rem; color: var(--muted); margin-top: 3px; font-weight: 600; line-height: 1.35; }

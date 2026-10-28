@@ -36,27 +36,27 @@
         },
         {
           "num": "02",
-          "title": "Cost savings",
-          "stat": "45% lower cost",
-          "tag": "Key value 02 · Hospital budget",
-          "h3": "45% lower total cost of liquid-waste handling and sterilization",
-          "p": "By removing detergents and disinfectants, cutting service-staff workload, eliminating repair costs when central pumps are damaged by overflow, and reducing equipment wear, the hospital’s final cost falls by up to 45 percent.",
+          "title": "Cost optimization",
+          "stat": "Lower cost",
+          "tag": "Key value 02 · Optimizing Hospital Costs",
+          "h3": "Lower Cost, Higher Efficiency",
+          "p": "With disposable suction liners, Abadis eliminates the need for washing and reprocessing for reuse; as a result, the water and detergents consumed in this step are eliminated, reducing preparation time and cost.",
           "kpis": [
             [
-              "45%",
-              "Lower total cost"
+              "100%",
+              "Wash water eliminated"
             ],
             [
               "100%",
-              "Disinfectants removed"
+              "Detergents eliminated"
             ],
             [
-              "0 rial",
-              "Pump-overflow damage"
+              "12 min",
+              "Prep time saved per canister"
             ],
             [
-              "5 million",
-              "Annual production capacity"
+              "0 Rial",
+              "Overflow damage"
             ]
           ],
           "bar_a_label": "Economic efficiency and fewer hidden hospital costs",
@@ -72,15 +72,15 @@
           "stat": "9.3 L per bag",
           "tag": "Key value 03 · Protecting the country’s water",
           "h3": "9.3 litres of clean water saved for every suction bag used",
-          "p": "Washing one traditional suction jar uses more than 9.3 litres of tap water on average and turns it into infectious wastewater. Since 1395, Abadis has saved more than 63 million litres of water.",
+          "p": "Washing each traditional suction bottle uses an average of over 9.3 litres of tap water and turns it into infectious wastewater. With disposable suction liners, Abadis helps save over 12 million litres of water annually.",
           "kpis": [
             [
               "9.3 L",
               "Water saved per bag"
             ],
             [
-              "63.5+ million",
-              "Litres of water saved"
+              "Over 12M L",
+              "Annual water savings"
             ],
             [
               "100%",
@@ -100,27 +100,27 @@
         },
         {
           "num": "04",
-          "title": "Faster clinical staff",
-          "stat": "3× faster",
-          "tag": "Key value 04 · Operating room and ICU agility",
-          "h3": "Surgical-bed turnover prepared 3 times faster between cases",
-          "p": "A full bag is replaced with a new one in a few seconds, with no heavy canisters to carry, empty, wash, or hold for a sterile cycle, which markedly improves operating-room turnover.",
+          "title": "Staff agility",
+          "stat": "Faster preparation",
+          "tag": "Key value 04 · Agility in the OR & ICU",
+          "h3": "Faster Preparation, Greater Focus on Care",
+          "p": "With disposable suction liners, tubing, and complementary accessories, Abadis enables easy bag replacement, faster suction system preparation, and a reduced workload for clinical staff.",
           "kpis": [
             [
-              "3×",
-              "Faster preparation"
+              "Fast bag replacement",
+              ""
             ],
             [
-              "< 10 s",
-              "Safe bag change"
+              "Easy equipment connection",
+              ""
             ],
             [
-              "11,112",
-              "Active specialist users"
+              "Reduced preparation time",
+              ""
             ],
             [
-              "98.99%",
-              "Clinician satisfaction"
+              "Reduced staff workload",
+              ""
             ]
           ],
           "bar_a_label": "Operating-room setup speed with the Abadis disposable bag",
@@ -558,27 +558,27 @@
         },
         {
           "num": "٠٢",
-          "title": "التوفير الاقتصادي",
-          "stat": "خفض التكلفة ٤٥٪",
-          "tag": "قيمة رئيسية ٠٢ · ميزانية المستشفى",
-          "h3": "خفض ٤٥٪ من التكلفة الكلية لإدارة النفايات السائلة والتعقيم",
-          "p": "بإلغاء المنظفات والمطهرات، وتخفيف عبء عمال الخدمات، وإزالة كلفة إصلاح المضخات المركزية المتضررة من الفيض، وتقليل اهتراء المعدات، تنخفض التكلفة النهائية للمستشفى حتى ٤٥ بالمئة.",
+          "title": "تحسين التكاليف",
+          "stat": "تكلفة أقل",
+          "tag": "قيمة رئيسية ٠٢ · تحسين تكاليف المستشفى",
+          "h3": "تكلفة أقل، كفاءة أعلى",
+          "p": "من خلال أكياس الشفط أحادية الاستخدام، تلغي آباديس الحاجة إلى الغسيل لإعادة الاستخدام؛ ونتيجةً لذلك يتم توفير المياه والمنظفات المستهلكة في هذه المرحلة وتقليل وقت وتكلفة التجهيز.",
           "kpis": [
             [
-              "٤٥٪",
-              "خفض التكلفة الكلية"
+              "١٠٠٪",
+              "إلغاء مياه الغسيل"
             ],
             [
               "١٠٠٪",
-              "إلغاء مواد التعقيم"
+              "إلغاء مواد التنظيف"
             ],
             [
-              "٠ ريال",
-              "ضرر فيض المضخة"
+              "١٢ دقيقة",
+              "تقليل وقت التجهيز لكل عبوة"
             ],
             [
-              "٥ ملايين",
-              "طاقة الإنتاج السنوية"
+              "صفر ريال",
+              "خسائر الفيض"
             ]
           ],
           "bar_a_label": "الكفاءة الاقتصادية وخفض التكاليف الخفية للمستشفى",
@@ -594,15 +594,15 @@
           "stat": "٩٫٣ لتر لكل كيس",
           "tag": "قيمة رئيسية ٠٣ · حماية موارد المياه",
           "h3": "توفير ٩٫٣ لتر من الماء النظيف مقابل كل كيس شفط مستخدم",
-          "p": "يستهلك غسيل عبوة الشفط التقليدية في المتوسط أكثر من ٩٫٣ لتر من ماء الشبكة ويحوّله إلى مياه صرف معدية. ومنذ عام ١٣٩٥ وفّرت آباديس أكثر من ٦٣ مليون لتر من الماء.",
+          "p": "يستهلك غسيل كل عبوة شفط تقليدية في المتوسط أكثر من ٩٫٣ لتر من مياه الشبكة ويحوّلها إلى مياه صرف معدية. ومن خلال أكياس الشفط أحادية الاستخدام، تساعد آباديس في توفير أكثر من ١٢ مليون لتر من المياه سنوياً.",
           "kpis": [
             [
               "٩٫٣ لتر",
               "ماء موفَّر لكل كيس"
             ],
             [
-              "٦٣٫٥+ مليون",
-              "لتر ماء موفَّر"
+              "أكثر من ١٢ مليون لتر",
+              "التوفير السنوي للمياه"
             ],
             [
               "١٠٠٪",
@@ -623,26 +623,26 @@
         {
           "num": "٠٤",
           "title": "سرعة الكادر الطبي",
-          "stat": "أسرع بـ٣ أضعاف",
-          "tag": "قيمة رئيسية ٠٤ · خفة غرفة العمليات والعناية",
-          "h3": "تجهيز سرير الجراحة بين عمليتين أسرع بثلاثة أضعاف",
-          "p": "يُستبدل الكيس الممتلئ بكيس جديد خلال ثوانٍ، من دون حمل عبوات ثقيلة أو تفريغها أو غسلها أو انتظار دورة التعقيم، فيتحسّن دوران غرفة العمليات بشكل ملحوظ.",
+          "stat": "تجهيز أسرع",
+          "tag": "قيمة رئيسية ٠٤ · المرونة في غرفة العمليات والعناية المركزة",
+          "h3": "تجهيز أسرع، تركيز أكبر على الرعاية",
+          "p": "من خلال أكياس الشفط أحادية الاستخدام والأنابيب والمعدات المكمّلة، تساعد آباديس في استبدال الكيس بسهولة، وتجهيز نظام الشفط بسرعة أكبر، وتقليل عبء العمل على الكادر الطبي.",
           "kpis": [
             [
-              "٣ أضعاف",
-              "تجهيز أسرع"
+              "استبدال سريع للكيس",
+              ""
             ],
             [
-              "< ١٠ ثوانٍ",
-              "استبدال آمن للكيس"
+              "توصيل سهل للمعدات",
+              ""
             ],
             [
-              "١١٬١١٢",
-              "مستخدم متخصص نشط"
+              "تقليل وقت التجهيز",
+              ""
             ],
             [
-              "٩٨٫٩٩٪",
-              "رضا الكادر الطبي"
+              "تخفيف عبء الكادر الطبي",
+              ""
             ]
           ],
           "bar_a_label": "سرعة تجهيز غرفة العمليات بكيس آباديس أحادي الاستخدام",

@@ -58,8 +58,8 @@ _UI = {
 
 def assets(prefix=''):
     return (
-        f'<link rel="stylesheet" href="{prefix}assets/css/w2-orbit.css?v=20261028n">\n'
-        f'<script src="{prefix}assets/js/w2-orbit.js?v=20261028n" defer></script>\n'
+        f'<link rel="stylesheet" href="{prefix}assets/css/w2-orbit.css?v=20261028p">\n'
+        f'<script src="{prefix}assets/js/w2-orbit.js?v=20261028p" defer></script>\n'
     )
 
 
@@ -170,7 +170,7 @@ def widget(lang, mode, prefix=''):
         for i in range(8)
     )
     kpis = ''.join(
-        f'<div class="w2-kpi"><b>{esc(a)}</b><span>{esc(b)}</span></div>'
+        (f'<div class="w2-kpi"><b>{esc(a)}</b><span>{esc(b)}</span></div>' if b else f'<div class="w2-kpi w2-kpi--single"><b>{esc(a)}</b></div>')
         for a, b in first['kpis']
     )
     payload = {'nodes': nodes, 'stems': ui['stems']}
