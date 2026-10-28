@@ -1,120 +1,143 @@
-/* Finalist D: topic tags and year pills filter the news grid and the lead card. */
+/* News & Articles Finalist D — topic + year + reading-time + audience filters, live featured card */
 (function () {
-  'use strict';
-  function digitsOf(lang) {
-    if (lang === 'en') return null;
-    return lang === 'ar' ? '٠١٢٣٤٥٦٧٨٩' : '۰۱۲۳۴۵۶۷۸۹';
-  }
-  function fmt(n, lang) {
-    var s = String(n);
-    var map = digitsOf(lang);
-    if (!map) return s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    var out = '';
-    for (var i = 0; i < s.length; i++) {
-      if (i && (s.length - i) % 3 === 0) out += '٬';
-      out += map.charAt(+s.charAt(i));
-    }
-    return out;
-  }
-  function langOf() {
-    var l = document.documentElement.lang || 'fa';
-    if (l.indexOf('en') === 0) return 'en';
-    if (l.indexOf('ar') === 0) return 'ar';
-    return 'fa';
+  var root = document.querySelector('[data-news-finalist]');
+  var grid = document.getElementById('postGrid');
+  if (!root || !grid) return;
+
+  var cards = Array.prototype.slice.call(grid.querySelectorAll('.post-card'));
+  var topicBtns = Array.prototype.slice.call(root.querySelectorAll('[data-news-topic]'));
+  var yearBtns = Array.prototype.slice.call(root.querySelectorAll('[data-news-year]'));
+  var rtimeBtns = Array.prototype.slice.call(root.querySelectorAll('[data-art-rtime]'));
+  var audBtns = Array.prototype.slice.call(root.querySelectorAll('[data-art-aud]'));
+  var countEl = root.querySelector('[data-news-count]');
+  var feat = root.querySelector('[data-news-feature]');
+  var empty = document.querySelector('[data-news-empty]');
+  var lang = (document.documentElement.getAttribute('lang') || 'fa').toLowerCase();
+  var fmt = new Intl.NumberFormat(lang.indexOf('fa') === 0 ? 'fa-IR' : lang.indexOf('ar') === 0 ? 'ar-EG' : 'en-US');
+
+  var state = { topic: 'all', year: 'all', rtime: 'all', aud: 'all' };
+
+  function match(card) {
+    var t = card.getAttribute('data-topic') || 'corp';
+    var y = card.getAttribute('data-year') || '';
+    var rt = card.getAttribute('data-rtime') || '';
+    var au = card.getAttribute('data-aud') || '';
+    if (state.topic !== 'all' && t !== state.topic) return false;
+    if (state.year !== 'all' && y !== state.year) return false;
+    if (state.rtime !== 'all' && rt !== state.rtime) return false;
+    if (state.aud !== 'all' && au !== state.aud) return false;
+    return true;
   }
 
-  document.querySelectorAll('[data-news-finalist]').forEach(function (root) {
-    var lang = langOf();
-    var topic = 'all';
-    var year = 'all';
-    var grid = document.getElementById('postGrid');
-    if (!grid) return;
-    var cards = [].slice.call(grid.querySelectorAll('.post-card'));
-    var feature = root.querySelector('[data-news-feature]');
-    var kicker = root.querySelector('[data-news-kicker]');
-    var countEl = root.querySelector('[data-news-count]');
-    var empty = document.querySelector('[data-news-empty]');
-    var labels = {};
-    root.querySelectorAll('[data-news-topic]').forEach(function (btn) {
-      var key = btn.getAttribute('data-news-topic');
-      var text = btn.childNodes[0] ? btn.childNodes[0].textContent : btn.textContent;
-      labels[key] = (text || '').trim();
-    });
+  function fillFeature(card) {
+    if (!feat || !card) return;
+    var img = card.querySelector('img');
+    var fImg = feat.querySelector('img');
+    var h3 = card.querySelector('h3');
+    var p = card.querySelector('p');
+    var tm = card.querySelector('time');
+    var fH = feat.querySelector('h2');
+    var fP = feat.querySelector('p');
+    var fT = feat.querySelector('time');
+    feat.setAttribute('href', card.getAttribute('href') || '#');
+    if (img && fImg) {
+      fImg.setAttribute('src', img.getAttribute('src') || '');
+      fImg.setAttribute('alt', img.getAttribute('alt') || '');
+    }
+    if (h3 && fH) fH.textContent = h3.textContent;
+    if (p && fP) fP.textContent = p.textContent;
+    if (fT) {
+      if (tm) {
+        fT.textContent = tm.textContent;
+        fT.setAttribute('datetime', tm.getAttribute('datetime') || '');
+        fT.hidden = false;
+      } else {
+        fT.hidden = true;
+      }
+    }
+    var fRtime = feat.querySelector('[data-news-feat-rtime]');
+    var cRtime = card.querySelector('.art-card-time');
+    if (fRtime && cRtime) fRtime.textContent = cRtime.textContent;
+    var fAud = feat.querySelector('[data-news-feat-aud]');
+    var cAud = card.querySelector('.art-aud-tag');
+    if (fAud && cAud) fAud.textContent = cAud.textContent;
+    var kick = feat.querySelector('[data-news-kicker]');
+    if (kick) {
+      var activeBtn = root.querySelector('[data-news-topic="' + state.topic + '"] span');
+      kick.textContent = (state.topic === 'all' || !activeBtn)
+        ? kick.getAttribute('data-default') || kick.textContent
+        : activeBtn.textContent;
+    }
+  }
 
-    function match(card) {
-      var okT = topic === 'all' || card.getAttribute('data-topic') === topic;
-      var okY = year === 'all' || card.getAttribute('data-year') === year;
-      return okT && okY;
-    }
-    function fillFeature(card) {
-      if (!feature) return;
-      if (!card) {
-        feature.hidden = true;
-        return;
-      }
-      feature.hidden = false;
-      feature.href = card.getAttribute('href');
-      var img = feature.querySelector('img');
-      var src = card.querySelector('img');
-      if (img && src) {
-        img.src = src.getAttribute('src');
-        img.alt = src.getAttribute('alt') || '';
-      }
-      var heading = feature.querySelector('h2');
-      var h3 = card.querySelector('h3');
-      if (heading && h3) heading.textContent = h3.textContent;
-      var copy = feature.querySelector('p');
-      var p = card.querySelector('.body p, p');
-      if (copy && p) copy.textContent = p.textContent;
-      var time = feature.querySelector('time');
-      var srcTime = card.querySelector('time');
-      if (time && srcTime) {
-        time.textContent = srcTime.textContent;
-        time.setAttribute('datetime', srcTime.getAttribute('datetime') || '');
-      }
-      if (kicker) kicker.textContent = labels[card.getAttribute('data-topic')] || labels.all || kicker.textContent;
-    }
-    function paint() {
-      var n = 0;
-      var first = null;
-      cards.forEach(function (card) {
-        var on = match(card);
-        card.hidden = !on;
-        if (on) {
-          n++;
-          if (!first) first = card;
-        }
-      });
-      if (countEl) countEl.textContent = fmt(n, lang);
-      if (empty) empty.hidden = n !== 0;
-      fillFeature(first);
-      root.querySelectorAll('[data-news-topic]').forEach(function (btn) {
-        btn.setAttribute('aria-pressed', btn.getAttribute('data-news-topic') === topic ? 'true' : 'false');
-      });
-      root.querySelectorAll('[data-news-year]').forEach(function (btn) {
-        btn.setAttribute('aria-pressed', btn.getAttribute('data-news-year') === year ? 'true' : 'false');
-      });
-    }
-    root.addEventListener('click', function (e) {
-      var topicBtn = e.target.closest('[data-news-topic]');
-      var yearBtn = e.target.closest('[data-news-year]');
-      if (topicBtn && root.contains(topicBtn)) {
-        var next = topicBtn.getAttribute('data-news-topic');
-        topic = topic === next && next !== 'all' ? 'all' : next;
-        paint();
-      } else if (yearBtn && root.contains(yearBtn)) {
-        var nextY = yearBtn.getAttribute('data-news-year');
-        year = year === nextY && nextY !== 'all' ? 'all' : nextY;
-        paint();
+  function paint() {
+    var shown = 0;
+    var first = null;
+    cards.forEach(function (c) {
+      var on = match(c);
+      c.hidden = !on;
+      if (on) {
+        shown++;
+        if (!first) first = c;
       }
     });
-    document.addEventListener('click', function (e) {
-      var reset = e.target.closest('[data-news-reset]');
-      if (!reset) return;
-      topic = 'all';
-      year = 'all';
+    if (countEl) countEl.textContent = fmt.format(shown);
+    if (empty) empty.hidden = shown > 0;
+    if (first) fillFeature(first);
+    topicBtns.forEach(function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-news-topic') === state.topic ? 'true' : 'false');
+    });
+    yearBtns.forEach(function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-news-year') === state.year ? 'true' : 'false');
+    });
+    rtimeBtns.forEach(function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-art-rtime') === state.rtime ? 'true' : 'false');
+    });
+    audBtns.forEach(function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-art-aud') === state.aud ? 'true' : 'false');
+    });
+  }
+
+  topicBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var v = b.getAttribute('data-news-topic');
+      state.topic = (state.topic === v && v !== 'all') ? 'all' : v;
       paint();
     });
-    paint();
   });
+
+  yearBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var v = b.getAttribute('data-news-year');
+      state.year = (state.year === v && v !== 'all') ? 'all' : v;
+      paint();
+    });
+  });
+
+  rtimeBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var v = b.getAttribute('data-art-rtime');
+      state.rtime = (state.rtime === v && v !== 'all') ? 'all' : v;
+      paint();
+    });
+  });
+
+  audBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var v = b.getAttribute('data-art-aud');
+      state.aud = (state.aud === v && v !== 'all') ? 'all' : v;
+      paint();
+    });
+  });
+
+  var reset = document.querySelector('[data-news-reset]');
+  if (reset) {
+    reset.addEventListener('click', function () {
+      state.topic = 'all';
+      state.year = 'all';
+      state.rtime = 'all';
+      state.aud = 'all';
+      paint();
+    });
+  }
 })();

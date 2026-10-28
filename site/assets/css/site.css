@@ -1482,6 +1482,9 @@ video:not([controls]):not(.wp-video-shortcode):not(.is-playing) {
 .careers-hero::before {
   background-image: url("../media/hero-careers-poster.jpg?v=20261028j");
 }
+.articles-hero::before {
+  background-image: url("../media/hero-customers-poster.jpg?v=20261028k");
+}
 .about-hero.has-playing-video::before,
 .about-hero:has(.about-hero-video.is-playing)::before,
 .page-hero.has-playing-video::before,

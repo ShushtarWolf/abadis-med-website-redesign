@@ -309,17 +309,33 @@ def _write_post_index(write, lang, site_path, cur, label, items):
     pairs = []
     news = cur in ('news', 'articles')
     if news:
-        from news_topics import classify_text, classify_article_text, year_bucket, jalali_year_of
+        from news_topics import classify_text, classify_article_text, article_meta_for, year_bucket, jalali_year_of
     for wp in items:
         slug = _slug_decode(wp.get('slug') or str(wp['id']))
         title = strip_tags(wp.get('title', {}).get('rendered', ''))
+        raw_body = strip_tags(wp.get('content', {}).get('rendered', ''))
         desc = meta_description(title, wp.get('excerpt', {}).get('rendered', ''), wp.get('content', {}).get('rendered', ''), lang)[:160]
         href = f'../{slug}/' if site_path else f'{slug}/'
         # from latest-news/ to /en/slug/ → ../slug/
         href = f'{p}{root}{slug}/'
         attrs = ''
-        if news:
-            topic = (classify_text if cur == 'news' else classify_article_text)(title + ' ' + desc)
+        if news and cur == 'articles':
+            am = article_meta_for(title, desc, raw_body, lang=lang)
+            topic = am['topic']
+            bucket = year_bucket(jalali_year_of(wp.get('date')))
+            pairs.append((topic, bucket))
+            attrs = f' data-topic="{esc(topic)}" data-year="{esc(bucket)}" data-rtime="{esc(am["rtime_key"])}" data-aud="{esc(am["aud_key"])}"'
+            cards.append(
+                f'<a class="post-card reveal" href="{href}" data-name="{esc(title)}"{attrs}>'
+                f'<div class="ph txt"><img src="{p}assets/img/post-thumb-fallback.webp" width="1280" height="720" alt="{esc(title)}" loading="lazy">'
+                f'<span class="art-card-badge">{esc(am["topic_label"])}</span><span class="art-card-time">{esc(am["rtime_badge"])}</span></div>'
+                f'<div class="body"><div class="art-meta-row"><span class="art-aud-tag">{esc(am["aud_label"])}</span></div>'
+                f'<h3>{esc(title)}</h3><p>{esc(desc)}</p>'
+                f'<span class="go">{esc(am["card_cta"])}</span></div></a>'
+            )
+            continue
+        elif news:
+            topic = classify_text(title + ' ' + desc)
             bucket = year_bucket(jalali_year_of(wp.get('date')))
             pairs.append((topic, bucket))
             attrs = f' data-topic="{esc(topic)}" data-year="{esc(bucket)}"'
@@ -344,8 +360,8 @@ def _write_post_index(write, lang, site_path, cur, label, items):
             shell = article_shell(lang, p, crumbs(p, [(label, None)], lang=lang), stats, article_feature_from_card(cards[0] if cards else '', lang))
             emp = article_empty_html(lang)
         main = shell + f'\n    <div class="post-grid" id="postGrid" data-paged="12">{"".join(cards)}</div>\n    {emp}\n  </div></section>'
-        extra_head = f'<link rel="stylesheet" href="{p}assets/css/news-finalist.css">\n'
-        scripts = f'<script src="{p}assets/js/news-finalist.js" defer></script>\n'
+        extra_head = f'<link rel="stylesheet" href="{p}assets/css/news-finalist.css?v=20261028k">\n'
+        scripts = f'<script src="{p}assets/js/news-finalist.js?v=20261028k" defer></script>\n'
     else:
         main = f'''{page_hero(p, [(label, None)], f'<em>{esc(label)}</em>', '', lang=lang)}
   <section class="section"><div class="wrap">

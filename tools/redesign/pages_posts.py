@@ -68,11 +68,12 @@ def excerpt(post):
         d = strip_tags(post.get('t') or post.get('title') or '')
     return d[:190] + ('…' if len(d) > 190 else '')
 
-def card(p, post, from_list=True, tag='', topic='', year=''):
+def card(p, post, from_list=True, tag='', topic='', year='', art_meta=None):
     r = thumb(p, post)
     alt = esc(post['t'])
-    ph = (f'<div class="ph"><img src="{p}{r["src"]}" width="{r["w"]}" height="{r["h"]}" alt="{alt}" loading="lazy" decoding="async"></div>' if r
-          else f'<div class="ph txt"><img src="{p}{FALLBACK_THUMB}" width="1280" height="720" alt="{alt}" loading="lazy"></div>')
+    badges = f'<span class="art-card-badge">{esc(art_meta["topic_label"])}</span><span class="art-card-time">{esc(art_meta["rtime_badge"])}</span>' if art_meta else ''
+    ph = (f'<div class="ph"><img src="{p}{r["src"]}" width="{r["w"]}" height="{r["h"]}" alt="{alt}" loading="lazy" decoding="async">{badges}</div>' if r
+          else f'<div class="ph txt"><img src="{p}{FALLBACK_THUMB}" width="1280" height="720" alt="{alt}" loading="lazy">{badges}</div>')
     href = (post['rel'].split('/', 1)[1] if from_list else p + post['rel'])
     tag_html = f'<span class="tag">{esc(tag)}</span>' if tag else ''
     attrs = ''
@@ -80,6 +81,11 @@ def card(p, post, from_list=True, tag='', topic='', year=''):
         attrs += f' data-topic="{esc(topic)}"'
     if year:
         attrs += f' data-year="{esc(year)}"'
+    if art_meta:
+        attrs += f' data-rtime="{esc(art_meta["rtime_key"])}" data-aud="{esc(art_meta["aud_key"])}"'
+        return (f'<a class="post-card reveal" href="{href}" data-name="{esc(post["t"])}"{attrs}>{ph}<div class="body">'
+                f'<div class="art-meta-row"><time datetime="{post["date"][:10]}">{jdate(post["date"])}</time><span class="art-aud-tag">{esc(art_meta["aud_label"])}</span></div>'
+                f'<h3>{esc(post["t"])}</h3><p>{esc(excerpt(post))}</p><span class="go">{esc(art_meta["card_cta"])}</span></div></a>')
     return (f'<a class="post-card reveal" href="{href}" data-name="{esc(post["t"])}"{attrs}>{ph}<div class="body">{tag_html}<time datetime="{post["date"][:10]}">{jdate(post["date"])}</time>'
             f'<h3>{esc(post["t"])}</h3><p>{esc(excerpt(post))}</p><span class="go">ادامه مطلب ←</span></div></a>')
 
@@ -115,21 +121,23 @@ def build(write):
             scripts = f'<script src="{p}assets/js/news-finalist.js" defer></script>\n'
             write(f'{cat}/index.html', page(p, cat, LABEL[cat], lead, main, fa_path=f'{cat}/', extra_head=extra, scripts=scripts))
         else:
-            from news_topics import classify_article_text, year_bucket, jalali_year_of, article_shell, article_empty_html, article_tally, article_feature_from_card
+            from news_topics import classify_article_text, article_meta_for, year_bucket, jalali_year_of, article_shell, article_empty_html, article_tally, article_feature_from_card
             from layout import crumbs
             bits = []
             pairs = []
             for x in items:
-                topic = classify_article_text(x['t'] + ' ' + excerpt(x))
+                body_txt = strip_tags(' '.join(b.get('html', '') for b in x.get('blocks', []) if b.get('t') == 'html'))
+                am = article_meta_for(x['t'], excerpt(x), body_txt, lang='fa')
+                topic = am['topic']
                 bucket = year_bucket(jalali_year_of(x.get('date')))
                 pairs.append((topic, bucket))
-                bits.append(card(p, x, topic=topic, year=bucket))
+                bits.append(card(p, x, topic=topic, year=bucket, art_meta=am))
             cards = ''.join(missing_card(p, m) for m in miss) + ''.join(bits)
             stats = article_tally(pairs)
             shell = article_shell('fa', p, crumbs(p, [(LABEL[cat], None)]), stats, article_feature_from_card(bits[0] if bits else '', 'fa'))
             main = shell + f'\n    <div class="post-grid" id="postGrid" data-paged="12">{cards}</div>\n    {article_empty_html("fa")}\n  </div></section>'
-            extra = f'<link rel="stylesheet" href="{p}assets/css/news-finalist.css">\n'
-            scripts = f'<script src="{p}assets/js/news-finalist.js" defer></script>\n'
+            extra = f'<link rel="stylesheet" href="{p}assets/css/news-finalist.css?v=20261028k">\n'
+            scripts = f'<script src="{p}assets/js/news-finalist.js?v=20261028k" defer></script>\n'
             write(f'{cat}/index.html', page(p, cat, LABEL[cat], lead, main, fa_path=f'{cat}/', extra_head=extra, scripts=scripts))
         # singles
         p = '../../'
