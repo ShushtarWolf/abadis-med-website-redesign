@@ -327,7 +327,8 @@ function init(sec) {
     { p: V3(28, 16, 0), t: V3(1.9, 4.2, -15) },
     { p: V3(34, 13, 18), t: V3(11.5, 2.4, -4) },
   ];
-  const LBL = [V3(-9.4, 6, -12), V3(-9.25, 11.4, 3), V3(2.25, 8, 5), V3(1.9, 11.2, -15), V3(11.5, 8.4, -4), V3(0, 8.2, 17.6), V3(16, 0.2, 30.2)];
+  const STREET_M = V3(-12, 0.2, 30.2); // street callout anchor on phones
+  const LBL = [V3(-9.4, 6, -12), V3(-9.25, 11.4, 3), V3(2.25, 8, 5), V3(1.9, 11.2, -15), V3(11.5, 8.4, -4), V3(0, 8.2, 17.6), V3(12, 4.5, 28)];
   const smooth = (x) => { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); };
   const fmtStep = (i) => cfg.step.replace('{n}', cfg.nums[i]).replace('{t}', cfg.total);
 
@@ -622,7 +623,7 @@ function init(sec) {
     lbls.forEach((c, i) => {
       const act = i === idx;
       c.el.classList.toggle('act', act); c.dot.classList.toggle('act', act); c.path.classList.toggle('act', act);
-      items.push({ c, p: LBL[i], on: showHallLabels && (explore || i < 5 || i === 6), pri: act ? 3 : 1 });
+      items.push({ c, p: (i === 6 && narrow) ? STREET_M : LBL[i], on: showHallLabels && (explore || i < 5 || i === 6), pri: act ? 3 : 1 });
     });
     currentPinEls.forEach((c, k) => items.push({ c, p: c.pos, on: idx >= 0, pri: k === activeSubIdx ? 4 : 2 }));
     items.sort((x, y) => y.pri - x.pri);

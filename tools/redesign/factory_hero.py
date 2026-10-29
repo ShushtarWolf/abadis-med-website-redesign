@@ -9,7 +9,7 @@ three.js r170 + OrbitControls are self-hosted in assets/js/ (no CDN).
 import json
 from html import escape as esc
 
-V = '20261029q'
+V = '20261029r'
 
 T = {
   'fa': dict(
