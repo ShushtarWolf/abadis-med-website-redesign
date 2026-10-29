@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex,nofollow">
+  <title>رندر اسکچ کیسه ساکشن</title>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "../../assets/vendor/three/build/three.module.js",
+      "three/addons/": "../../assets/vendor/three/examples/jsm/"
+    }
+  }
+  </script>
+  <style>
+    @font-face { font-family: "Kalameh"; src: url("../../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+    @font-face { font-family: "Kalameh"; src: url("../../assets/fonts/kalameh/KalamehWeb-FaNum-SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+    @font-face { font-family: "Kalameh"; src: url("../../assets/fonts/kalameh/KalamehWeb-FaNum-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+    :root, [data-theme="light"] { --ink: #0a2e32; --muted: #3e5c5f; --card: rgba(255,255,255,.92); --line: rgba(6,97,99,.35); }
+    [data-theme="dark"] { --ink: #e8f3f3; --muted: #b7d4d4; --card: rgba(8,28,30,.88); --line: rgba(197,244,242,.75); }
+    html, body { margin: 0; height: 100%; background: #f3fafa; }
+    [data-theme="dark"] body, [data-theme="dark"] { background: #071416; }
+    body { overflow: hidden; font-family: "Kalameh", Tahoma, sans-serif; letter-spacing: 0; color: var(--ink); }
+    canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+    #hud { position: fixed; inset: 0; pointer-events: none; }
+    .overlay { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .overlay line { stroke: var(--line); stroke-width: 1.25; }
+    .overlay circle { fill: var(--ink); }
+    .dim, .call, .plate {
+      position: absolute; background: var(--card); border: 1px solid var(--line);
+      border-radius: 12px; padding: 6px 10px 7px; line-height: 1.45;
+    }
+    .dim { transform: translate(-50%, -50%); text-align: center; font-weight: 700; font-size: 15px; }
+    .dim span, .call .en, .plate span { display: block; font-weight: 500; font-size: 12px; color: var(--muted); line-height: 1.4; }
+    .call { min-width: 168px; }
+    .call .fa, .plate strong { display: block; font-weight: 700; font-size: 15px; line-height: 1.45; }
+    .plate { left: 20px; bottom: 16px; }
+    .plate b { display: block; font-size: 12px; font-weight: 600; color: var(--muted); }
+    .plate-top { left: 20px; top: 16px; bottom: auto; }
+    .caps {
+      position: absolute; left: 0; right: 0; bottom: 10px; display: grid; grid-template-columns: 1fr 1fr 1fr;
+      text-align: center; font-weight: 700; font-size: 16px;
+    }
+    .caps span { display: block; line-height: 1.4; }
+    .caps span + span { font-size: 12px; font-weight: 500; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <canvas id="view"></canvas>
+  <div id="hud"></div>
+  <script type="module" src="./js/shots.js"></script>
+</body>
+</html>
