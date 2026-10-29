@@ -58,6 +58,11 @@ function init(sec) {
   box(-20, 0, 24.8, -18, 2.4, 25.2); box(-14, 0, 24.8, 14, 2.4, 25.2); box(18, 0, 24.8, 20, 2.4, 25.2);
   [-18, -14, 14, 18].forEach((x) => cyl(0.35, 3, x, 1.5, 25, false, 1, 8));
   box(-20, 0, -25.2, 20, 2.4, -24.8); box(-20.2, 0, -25, -19.8, 2.4, 25); box(19.8, 0, -25, 20.2, 2.4, 25);
+  // Golshan 19 Alley: two-lane street along the south wall (as in the sample), dashed centre line, kerbs, sidewalk
+  box(-34, -0.32, 26.2, 34, -0.02, 34.2, 0, -0.25, 0);
+  box(-34, 0, 25.4, 34, 0.15, 26.2, 0, -0.22, 0); box(-34, 0, 34.2, 34, 0.15, 35.0, 0, -0.22, 0);
+  for (let x = -33; x < 33; x += 4) box(x, -0.02, 30.1, x + 2.2, 0.0, 30.3, 1, -0.2, 0);
+  [-24, 24].forEach((x) => { cyl(0.08, 5, x, 2.5, 25.8, false, 1, 6); box(x - 0.1, 4.9, 25.8, x + 0.1, 5, 27.2, 1); });
   // Central 2-floor office, 11 x 5 m footprint, 110 m² total, in front of the sheds
   box(-5.5, 0, 15, 5.5, 3.4, 20); box(-5.5, 3.4, 15, 5.5, 6.8, 20);
   for (let i = 0; i < 5; i++) { box(-4.6 + i * 2, 1.2, 19.95, -3.4 + i * 2, 2.6, 20.05, 1); box(-4.6 + i * 2, 4.6, 19.95, -3.4 + i * 2, 6, 20.05, 1); }
@@ -322,7 +327,7 @@ function init(sec) {
     { p: V3(28, 16, 0), t: V3(1.9, 4.2, -15) },
     { p: V3(34, 13, 18), t: V3(11.5, 2.4, -4) },
   ];
-  const LBL = [V3(-9.4, 6, -12), V3(-9.25, 11.4, 3), V3(2.25, 8, 5), V3(1.9, 11.2, -15), V3(11.5, 8.4, -4), V3(0, 8.2, 17.6)];
+  const LBL = [V3(-9.4, 6, -12), V3(-9.25, 11.4, 3), V3(2.25, 8, 5), V3(1.9, 11.2, -15), V3(11.5, 8.4, -4), V3(0, 8.2, 17.6), V3(16, 0.2, 30.2)];
   const smooth = (x) => { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); };
   const fmtStep = (i) => cfg.step.replace('{n}', cfg.nums[i]).replace('{t}', cfg.total);
 
@@ -617,7 +622,7 @@ function init(sec) {
     lbls.forEach((c, i) => {
       const act = i === idx;
       c.el.classList.toggle('act', act); c.dot.classList.toggle('act', act); c.path.classList.toggle('act', act);
-      items.push({ c, p: LBL[i], on: showHallLabels && (explore || i < 5), pri: act ? 3 : 1 });
+      items.push({ c, p: LBL[i], on: showHallLabels && (explore || i < 5 || i === 6), pri: act ? 3 : 1 });
     });
     currentPinEls.forEach((c, k) => items.push({ c, p: c.pos, on: idx >= 0, pri: k === activeSubIdx ? 4 : 2 }));
     items.sort((x, y) => y.pri - x.pri);

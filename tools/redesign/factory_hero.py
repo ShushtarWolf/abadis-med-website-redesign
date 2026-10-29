@@ -9,7 +9,7 @@ three.js r170 + OrbitControls are self-hosted in assets/js/ (no CDN).
 import json
 from html import escape as esc
 
-V = '20261029p'
+V = '20261029q'
 
 T = {
   'fa': dict(
@@ -86,7 +86,7 @@ T = {
         ]
       ),
     ],
-    labels=['تزریق','مونتاژ و کارتن','فیلتر','اکسترودر و کلین‌روم','انبار و ارسال','دفتر مرکزی'],
+    labels=['تزریق','مونتاژ و کارتن','فیلتر','اکسترودر و کلین‌روم','انبار و ارسال','دفتر مرکزی','کوچه گلشن ۱۹'],
     digits='fa'),
   'en': dict(
     root='en/', quote_href='export/#quote',
@@ -162,7 +162,7 @@ T = {
         ]
       ),
     ],
-    labels=['Injection','Assembly & cartoning','Filter','Extrusion & cleanroom','Warehouse & dispatch','Head office'],
+    labels=['Injection','Assembly & cartoning','Filter','Extrusion & cleanroom','Warehouse & dispatch','Head office','Golshan 19 Alley'],
     digits='en'),
   'ar': dict(
     root='arabic/', quote_href='export/#quote',
@@ -238,7 +238,7 @@ T = {
         ]
       ),
     ],
-    labels=['الحقن','التجميع والتعبئة','الفلتر','البثق والغرفة النظيفة','المستودع والشحن','المكتب الرئيسي'],
+    labels=['الحقن','التجميع والتعبئة','الفلتر','البثق والغرفة النظيفة','المستودع والشحن','المكتب الرئيسي','زقاق گلشن ۱۹'],
     digits='ar'),
 }
 
