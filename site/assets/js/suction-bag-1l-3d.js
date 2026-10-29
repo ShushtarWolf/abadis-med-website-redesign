@@ -111,12 +111,10 @@ function initBag3D(sec) {
   // Half-moon sunken pit at the back of the dome (where the ports rise from)
   const PIT = [-0.8, -5.6];
   for (const [r, y] of [[4.6, 20.0], [4.2, 18.8], [3.4, 17.6], [2.0, 16.9]]) {
-    ring(r, y, 32, 0, 12, PIT[0], PIT[1], Math.PI, Math.PI * 2);
+    ring(r, y, 32, 0, 12, PIT[0], PIT[1]);
   }
-  pushSeg(PIT[0] - 4.6, 20.0, PIT[1], PIT[0] + 4.6, 20.0, PIT[1], 0, 0, 12);
-  pushSeg(PIT[0] - 2.0, 16.9, PIT[1], PIT[0] + 2.0, 16.9, PIT[1], 0, 0, 12);
   for (let k = 0; k <= 6; k++) {
-    const a = Math.PI + (k / 6) * Math.PI, c = Math.cos(a), s = Math.sin(a);
+    const a = (k / 6) * Math.PI * 2, c = Math.cos(a), s = Math.sin(a);
     pushSeg(PIT[0] + c * 4.6, 20.0, PIT[1] + s * 4.6, PIT[0] + c * 2.0, 16.9, PIT[1] + s * 2.0, 1, 0, 12);
   }
   // Circular recessed filter well on the left of the dome
@@ -151,29 +149,29 @@ function initBag3D(sec) {
   const pMid = pStart.clone().add(pEnd).multiplyScalar(0.5);
   const pQ = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), pDir);
   const pE = new THREE.Euler().setFromQuaternion(pQ);
-  edges(new THREE.CylinderGeometry(1.55, 1.75, pLen, 28, 3, true), pMid.x, pMid.y, pMid.z, 0, 0, 21, pE.x, pE.y, pE.z);
-  edges(new THREE.CylinderGeometry(1.05, 1.05, pLen, 20, 1, true), pMid.x, pMid.y, pMid.z, 1, 0, 21, pE.x, pE.y, pE.z);
+  edges(new THREE.CylinderGeometry(1.55, 1.75, pLen, 28, 3, true), pMid.x, pMid.y, pMid.z, 0, 0, 23, pE.x, pE.y, pE.z);
+  edges(new THREE.CylinderGeometry(1.05, 1.05, pLen, 20, 1, true), pMid.x, pMid.y, pMid.z, 1, 0, 23, pE.x, pE.y, pE.z);
   // Bevel-cut outlet ellipse
-  edges(new THREE.TorusGeometry(1.6, 0.16, 8, 28), pEnd.x, pEnd.y, pEnd.z, 0, 0, 21, pE.x + 0.5, pE.y, pE.z);
+  edges(new THREE.TorusGeometry(1.6, 0.16, 8, 28), pEnd.x, pEnd.y, pEnd.z, 0, 0, 23, pE.x + 0.5, pE.y, pE.z);
   // Anti-reflux valve cone below pit floor (21)
   edges(new THREE.ConeGeometry(1.4, 2.6, 18, 2, true), PIT[0] + 0.6, 15.4, PIT[1] + 0.4, 1, 0, 21, Math.PI);
 
   // 2.2 Small horizontal tandem port lying across the front of the dome (22)
-  const tA = new THREE.Vector3(-3.4, 20.6, 3.2), tB = new THREE.Vector3(3.4, 21.0, 4.4);
+  const tA = new THREE.Vector3(-8.6, 19.4, 4.6), tB = new THREE.Vector3(-1.6, 20.6, 8.4);
   const tDir = tB.clone().sub(tA); const tLen = tDir.length(); tDir.normalize();
   const tM = tA.clone().add(tB).multiplyScalar(0.5);
   const tE = new THREE.Euler().setFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), tDir));
-  edges(new THREE.CylinderGeometry(0.75, 0.75, tLen, 18, 2, true), tM.x, tM.y, tM.z, 0, 0, 22, tE.x, tE.y, tE.z);
-  edges(new THREE.TorusGeometry(0.78, 0.12, 6, 18), tB.x, tB.y, tB.z, 0, 0, 22, tE.x + Math.PI / 2, tE.y, tE.z);
-  edges(new THREE.BoxGeometry(2.4, 0.6, 1.4), -3.0, 20.2, 3.2, 1, 0, 22);
+  edges(new THREE.CylinderGeometry(0.75, 0.75, tLen, 18, 2, true), tM.x, tM.y, tM.z, 0, 0, 21, tE.x, tE.y, tE.z);
+  edges(new THREE.TorusGeometry(0.78, 0.12, 6, 18), tB.x, tB.y, tB.z, 0, 0, 21, tE.x + Math.PI / 2, tE.y, tE.z);
+  edges(new THREE.BoxGeometry(2.2, 0.6, 7.6), -5.2, 19.7, 6.4, 1, 0, 21, 0, -1.07, 0);
 
   // 2.3 Slim vacuum / sampling port standing up out of the pit (23)
   const vA = new THREE.Vector3(PIT[0] + 1.6, 17.6, PIT[1] - 1.2), vB = new THREE.Vector3(2.4, 24.6, -9.2);
   const vDir = vB.clone().sub(vA); const vLen = vDir.length(); vDir.normalize();
   const vM = vA.clone().add(vB).multiplyScalar(0.5);
   const vE = new THREE.Euler().setFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), vDir));
-  edges(new THREE.CylinderGeometry(0.62, 0.7, vLen, 16, 2, true), vM.x, vM.y, vM.z, 0, 0, 23, vE.x, vE.y, vE.z);
-  edges(new THREE.TorusGeometry(0.64, 0.12, 6, 16), vB.x, vB.y, vB.z, 0, 0, 23, vE.x + Math.PI / 2, vE.y, vE.z);
+  edges(new THREE.CylinderGeometry(0.62, 0.7, vLen, 16, 2, true), vM.x, vM.y, vM.z, 0, 0, 22, vE.x, vE.y, vE.z);
+  edges(new THREE.TorusGeometry(0.64, 0.12, 6, 16), vB.x, vB.y, vB.z, 0, 0, 22, vE.x + Math.PI / 2, vE.y, vE.z);
   // Filter-well vacuum boss (left circular well connects down to the filter) (23)
   edges(new THREE.CylinderGeometry(1.65, 1.95, 2.4, 28, 1, true), -6.2, 18.6, 0.8, 1, 0, 23);
 
@@ -369,7 +367,7 @@ function initBag3D(sec) {
   const lidProfile = [[11.0, 12.0], [11.4, 12.4], [11.4, 14.6], [12.2, 15.2], [12.7, 15.6], [13.0, 16.8], [13.0, 17.6], [12.6, 17.8], [11.0, 17.8], [10.4, 18.6], [9.4, 19.3], [7.8, 19.8], [5.6, 20.1], [3.0, 20.2], [0.01, 20.22]].map(([r, y]) => new THREE.Vector2(r, y));
   lidGroup.add(new THREE.Mesh(new THREE.LatheGeometry(lidProfile, 96), lidMat));
   // half-moon pit bowl + filter well discs
-  const pitG = new THREE.CylinderGeometry(4.6, 2.0, 3.1, 40, 1, false, Math.PI / 2, Math.PI);
+  const pitG = new THREE.CylinderGeometry(4.6, 2.0, 3.1, 48, 1, true);
   const pitM = new THREE.Mesh(pitG, lidMat); pitM.position.set(PIT[0], 18.5, PIT[1]); lidGroup.add(pitM);
   const well = new THREE.Mesh(new THREE.CylinderGeometry(2.5, 2.5, 0.7, 40), lidMat); well.position.set(-6.2, 19.8, 0.8); lidGroup.add(well);
   // bail handle arcs + hinge
@@ -383,11 +381,41 @@ function initBag3D(sec) {
   addTube(1.55, 1.75, pLen, pMid, pE);
   addTube(0.75, 0.75, tLen, tM, tE);
   addTube(0.62, 0.7, vLen, vM, vE);
+
+  // Recessed vacuum well floor (darker teal disc), CE mark + PATIENT / VACUUM embossing, translucent liner + teal scale
+  const wellMat = new THREE.MeshStandardMaterial({ color: 0x0b7d80, emissive: 0x085f61, emissiveIntensity: 0.5, roughness: 0.6 });
+  const wellDisc = new THREE.Mesh(new THREE.CircleGeometry(4.55, 48), wellMat); wellDisc.rotation.x = -Math.PI / 2; wellDisc.position.set(PIT[0], 20.26, PIT[1]); lidGroup.add(wellDisc);
+  function textDecal(txt, w, h, px, x, y, z, rotZ) {
+    const cv = document.createElement('canvas'); cv.width = 512; cv.height = Math.round(512 * h / w);
+    const g = cv.getContext('2d'); g.fillStyle = '#04393a'; g.font = `800 ${px}px Arial, sans-serif`; g.textAlign = 'center'; g.textBaseline = 'middle';
+    g.fillText(txt, cv.width / 2, cv.height / 2);
+    const tex = new THREE.CanvasTexture(cv); tex.anisotropy = 4;
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false }));
+    m.rotation.set(-Math.PI / 2, 0, rotZ); m.position.set(x, y, z); m.renderOrder = 2; lidGroup.add(m); return m;
+  }
+  textDecal('CE', 3.2, 2.0, 220, -2.6, 20.45, 3.0, -0.5);
+  textDecal('PATIENT', 6.4, 1.3, 120, -6.4, 20.15, 2.6, -1.07 + Math.PI / 2 - Math.PI / 2);
+  textDecal('VACUUM', 5.0, 1.1, 110, 3.8, 20.45, -2.6, 0.9);
+  const linerMat = new THREE.MeshStandardMaterial({ color: 0xf4f7f7, roughness: 0.35, transparent: true, opacity: 0.32, depthWrite: false, side: THREE.DoubleSide });
+  const linerGroup = new THREE.Group();
+  linerGroup.add(new THREE.Mesh(new THREE.LatheGeometry(bagRings.slice().reverse().map(([r, y]) => new THREE.Vector2(r, y)), 64), linerMat));
+  {
+    const cv = document.createElement('canvas'); cv.width = 128; cv.height = 1024; const g = cv.getContext('2d');
+    g.fillStyle = '#0a7f82'; g.font = '700 30px Arial';
+    g.fillRect(8, 40, 6, 944);
+    for (let i = 0; i <= 18; i++) { const y = 984 - i * (944 / 18); const major = i % 2 === 0; g.fillRect(14, y - 2, major ? 46 : 26, 4); if (major && i > 0) g.fillText(String(i * 50 + 100 > 1000 ? 1000 : (i / 2) * 100 + 100), 64, y + 10); }
+    const tex = new THREE.CanvasTexture(cv);
+    const thetaC = Math.PI / 2 - scaleA, span = 0.55;
+    const sg = new THREE.CylinderGeometry(10.98, 9.3, 25.2, 16, 1, true, thetaC - span / 2, span);
+    const sm = new THREE.Mesh(sg, new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false, side: THREE.FrontSide }));
+    sm.position.y = -3.4; linerGroup.add(sm);
+  }
+  scene.add(linerGroup);
   lidGroup.renderOrder = -1; portGroup.renderOrder = -1;
   scene.add(lidGroup, portGroup);
     function updateSolidLid() {
     const e = uniforms.uExplode.value, prog = uniforms.uProg.value;
-    lidGroup.position.y = 7.5 * e; portGroup.position.y = 13.5 * e;
+    lidGroup.position.y = 7.5 * e; linerGroup.position.y = -3.5 * e; portGroup.position.y = 13.5 * e;
     const a = Math.max(0, Math.min(1, (prog - 0.35) * 2));
     // Uniform solid Abadis teal: no coral tint, no dimming (coral stays on wireframe/callouts only)
     lidMat.opacity = portMat.opacity = a;
