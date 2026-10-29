@@ -363,7 +363,7 @@ function initBag3D(sec) {
   /* ---------- solid HDPE lid shell (Hamid: "make door more solid") ---------- */
   scene.add(new THREE.HemisphereLight(0xffffff, 0x0a3b3c, 1.1));
   const sun = new THREE.DirectionalLight(0xffffff, 1.4); sun.position.set(30, 60, 40); scene.add(sun);
-  const lidMat = new THREE.MeshStandardMaterial({ color: 0x0e8f91, roughness: 0.55, metalness: 0.05, transparent: true, opacity: 0, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 });
+  const lidMat = new THREE.MeshStandardMaterial({ color: 0x0f9a9c, emissive: 0x0a6f71, emissiveIntensity: 0.55, roughness: 0.5, metalness: 0.0, transparent: true, opacity: 0, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 });
   const portMat = lidMat.clone();
   const lidGroup = new THREE.Group(), portGroup = new THREE.Group();
   const lidProfile = [[11.0, 12.0], [11.4, 12.4], [11.4, 14.6], [12.2, 15.2], [12.7, 15.6], [13.0, 16.8], [13.0, 17.6], [12.6, 17.8], [11.0, 17.8], [10.4, 18.6], [9.4, 19.3], [7.8, 19.8], [5.6, 20.1], [3.0, 20.2], [0.01, 20.22]].map(([r, y]) => new THREE.Vector2(r, y));
@@ -385,18 +385,13 @@ function initBag3D(sec) {
   addTube(0.62, 0.7, vLen, vM, vE);
   lidGroup.renderOrder = -1; portGroup.renderOrder = -1;
   scene.add(lidGroup, portGroup);
-  const coralC = new THREE.Color(0xff7a59), lidBase = new THREE.Color(0x0e8f91);
-  function updateSolidLid() {
+    function updateSolidLid() {
     const e = uniforms.uExplode.value, prog = uniforms.uProg.value;
     lidGroup.position.y = 7.5 * e; portGroup.position.y = 13.5 * e;
     const a = Math.max(0, Math.min(1, (prog - 0.35) * 2));
-    const act = uniforms.uActiveSub.value, inSt = uniforms.uInStation.value > 0.5;
-    const lidAct = inSt && act >= 11 && act <= 13, portAct = inSt && act >= 21 && act <= 23;
-    const other = inSt && !lidAct && !portAct;
-    lidMat.opacity = a * (other ? 0.35 : 0.82);
-    portMat.opacity = a * (other ? 0.35 : 0.9);
-    lidMat.color.copy(lidBase).lerp(coralC, lidAct ? 0.2 : 0);
-    portMat.color.copy(lidBase).lerp(coralC, portAct ? 0.3 : 0);
+    // Uniform solid Abadis teal: no coral tint, no dimming (coral stays on wireframe/callouts only)
+    lidMat.opacity = portMat.opacity = a;
+    lidMat.transparent = portMat.transparent = a < 0.999;
     lidMat.depthWrite = portMat.depthWrite = a > 0.5;
   }
 
