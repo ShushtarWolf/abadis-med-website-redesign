@@ -85,19 +85,57 @@ function init(sec) {
   box(-8.65, 0, 6.05, -2.95, 2.7, 7.95, 1);
   box(-15.65, 0, -21.85, -14.6, 5.2, -20.55, 1);
 
-  // Subnode 11: 4 x 220t injection machines across the north of the ground hall
+  // Machine builders: wireframe silhouettes after the Chen Hsong presses and PBM line in the factory videos.
+  const lineY = (x0, z0, x1, z1) => box(x0, 0.005, z0, x1, 0.03, z1, 0, -0.1, 0); // yellow floor safety line
+  const person = (x, z, rot = 0, sub = 0, s = 1) => {
+    const c = Math.cos(rot), sn = Math.sin(rot), o = (dx, dz) => [x + dx * c - dz * sn, z + dx * sn + dz * c];
+    [-0.11, 0.11].forEach((d) => { const [px, pz] = o(d, 0); box(px - 0.07 * s, 0, pz - 0.08 * s, px + 0.07 * s, 0.85 * s, pz + 0.08 * s, 1, 0.05, sub); });
+    box(x - 0.2 * s, 0.85 * s, z - 0.2 * s, x + 0.2 * s, 1.45 * s, z + 0.2 * s, 1, 0.05, sub);
+    [-0.27, 0.27].forEach((d) => { const [px, pz] = o(d, 0.12); box(px - 0.05 * s, 0.95 * s, pz - 0.05 * s, px + 0.05 * s, 1.4 * s, pz + 0.05 * s, 1, 0.05, sub); });
+    edges(new THREE.IcosahedronGeometry(0.13 * s, 1), x, 1.62 * s, z, 1, 0.05, sub);
+  };
+  const crate = (x, z, w = 0.6, d = 0.45, h = 0.4, n = 2, sub = 0) => {
+    for (let k = 0; k < n; k++) box(x - w / 2, k * h, z - d / 2, x + w / 2, (k + 1) * h - 0.03, z + d / 2, 1, 0.02, sub);
+  };
+  // Injection press along +z: injection unit (north) -> clamp unit (south)
+  const press = (x, z0, z1, w, hb, sub) => {
+    const L = z1 - z0, zc = z0 + L * 0.42; // boundary between injection and clamp units
+    box(x - w / 2, 0, z0, x + w / 2, hb * 0.45, z1, 1, 0, sub); // machine base
+    // injection unit: carriage, barrel, nozzle, hopper + dryer tube
+    box(x - w * 0.3, hb * 0.45, z0 + 0.15, x + w * 0.3, hb * 0.7, zc - 0.1, 1, 0, sub);
+    const br = new THREE.CylinderGeometry(w * 0.11, w * 0.11, (zc - z0) * 0.9, 10); br.rotateX(Math.PI / 2);
+    edges(br, x, hb * 0.82, z0 + (zc - z0) * 0.5, 1, 0, sub);
+    const hz = z0 + (zc - z0) * 0.3;
+    edges(new THREE.CylinderGeometry(w * 0.28, w * 0.1, hb * 0.35, 10), x, hb * 1.15, hz, 1, 0, sub);
+    cyl(w * 0.2, hb * 0.35, x, hb * 1.5, hz, false, 1, 10, sub);
+    cyl(0.05, hb * 0.6, x + w * 0.3, hb * 1.25, hz, false, 1, 6, sub); // dryer feed tube
+    // clamp unit: fixed + moving platen, rear platen, 4 tie bars, safety guard with window frames
+    const pH = hb * 1.05;
+    [zc + 0.05, zc + (z1 - zc) * 0.45, z1 - 0.25].forEach((pz) => box(x - w * 0.42, hb * 0.45, pz - 0.12, x + w * 0.42, hb * 0.45 + pH, pz + 0.12, 1, 0, sub));
+    [-1, 1].forEach((sx) => [-1, 1].forEach((sy) => {
+      const g = new THREE.CylinderGeometry(0.045, 0.045, z1 - zc - 0.3, 6); g.rotateX(Math.PI / 2);
+      edges(g, x + sx * w * 0.32, hb * 0.45 + pH * (0.5 + sy * 0.38), (zc + z1) / 2 - 0.1, 1, 0, sub);
+    }));
+    box(x - w / 2 - 0.02, hb * 0.45, zc + 0.3, x + w / 2 + 0.02, hb * 0.45 + pH * 0.95, z1 - 0.5, 0, 0.02, sub);
+    // control cabinet + operator screen on the walkway side, stack light on top
+    box(x + w / 2, 0.6, zc - 0.3, x + w / 2 + 0.12, 1.5, zc + 0.35, 1, 0, sub);
+    box(x + w / 2 + 0.12, 1.1, zc - 0.15, x + w / 2 + 0.16, 1.45, zc + 0.2, 1, 0, sub);
+    [0, 1, 2].forEach((k) => cyl(0.07, 0.12, x + w * 0.35, hb * 0.45 + pH + 0.1 + k * 0.13, zc + 0.05, false, 1, 8, sub));
+    lineY(x - w / 2 - 0.5, z0 - 0.4, x - w / 2 - 0.45, z1 + 0.4);
+    lineY(x + w / 2 + 0.75, z0 - 0.4, x + w / 2 + 0.8, z1 + 0.4);
+  };
+  // Subnode 11: 4 x 220t injection presses (EM220-V proportions) across the north of the ground hall
   [-14.15, -11.15, -8.15, -5.15].forEach((x) => {
-    box(x - 0.95, 0, -20.35, x + 0.95, 2.15, -13.35, 1, 0, 11);
-    box(x - 0.58, 2.15, -19.7, x + 0.58, 3.3, -17.55, 1, 0, 11);
-    cyl(0.42, 0.9, x, 3.75, -18.6, false, 1, 10, 11);
-    box(x - 0.72, 0, -13.35, x + 0.72, 1.15, -12.5, 1, 0, 11);
+    press(x, -20.35, -13.6, 1.75, 2.3, 11);
+    crate(x - 0.3, -12.9, 0.7, 0.5, 0.42, 2, 11); crate(x + 0.5, -12.9, 0.5, 0.5, 0.42, 1, 11);
   });
-  // Subnode 12: 6 x 120t injection machines, two rows of three filling the middle of the hall
+  // Subnode 12: 6 x 120t presses (EM120 proportions), two rows of three filling the middle of the hall
   [-9.7, -4.2].forEach((z) => [-14.05, -9.25, -4.45].forEach((x) => {
-    box(x - 1.05, 0, z - 2.2, x + 1.05, 1.7, z + 2.2, 1, 0, 12);
-    box(x - 0.6, 1.7, z - 1.65, x + 0.6, 2.65, z - 0.15, 1, 0, 12);
-    cyl(0.32, 0.7, x, 3.0, z - 0.9, false, 1, 8, 12);
+    press(x, z - 2.2, z + 1.9, 1.5, 1.85, 12);
+    crate(x - 1.2, z + 1.6, 0.5, 0.45, 0.38, 2, 12);
   }));
+  person(-10.2, -16.0, Math.PI / 2, 11); person(-4.1, -17.2, Math.PI / 2, 11);
+  person(-13.0, -9.0, Math.PI / 2, 12); person(-3.4, -3.5, -Math.PI / 2, 12);
 
   // Subnode 21: upper 10 x 10 PU assembly, the 10 m zone south of the WIP (DWG plan C)
   box(-14.25, 5.4, -2, -4.25, 9.9, 8, 1, 0.05, 21);
@@ -116,14 +154,28 @@ function init(sec) {
   ZG.forEach((z) => roof(xA, xB, 10.5, z, 0.5));
   box(xA, 0, zCut - 0.1, xB, 10.5, zCut + 0.1, 0, 0.02);
 
-  // Subnode 41: 4 extruders side by side on the ground floor of the north 18 m
-  [-1.7, 0.7, 3.1, 5.5].forEach((x) => {
-    const g = new THREE.CylinderGeometry(0.36, 0.36, 8.2, 10); g.rotateX(Math.PI / 2);
-    edges(g, x, 1.12, -16.2, 1, 0, 41);
-    box(x - 0.48, 0, -20.5, x + 0.48, 0.95, -11.6, 1, 0, 41);
-    edges(new THREE.ConeGeometry(0.68, 1.2, 8), x, 2.25, -20.15, 1, 0, 41);
-    box(x - 0.4, 0, -11.7, x + 0.4, 1.35, -10.15, 1, 0, 41);
+  // Subnode 41: 4 extrusion lines (PBM-style) side by side, flow north -> south
+  [-1.7, 0.7, 3.1, 5.5].forEach((x, i) => {
+    box(x - 0.45, 0, -21.4, x + 0.45, 1.0, -19.6, 1, 0, 41); // drive motor + gearbox
+    const g = new THREE.CylinderGeometry(0.2, 0.2, 3.2, 10); g.rotateX(Math.PI / 2);
+    edges(g, x, 1.2, -17.9, 1, 0, 41); // barrel with heater bands
+    for (let k = 0; k < 5; k++) cyl(0.26, 0.18, x, 1.2, -19.2 + k * 0.65, false, 0, 8, 0);
+    box(x - 0.35, 0, -19.5, x + 0.35, 1.0, -16.3, 1, 0, 41);
+    edges(new THREE.ConeGeometry(0.45, 0.8, 8).rotateX(Math.PI), x, 1.9, -19.2, 1, 0, 41); // hopper
+    box(x - 0.3, 0.3, -15.9, x + 0.3, 1.25, -12.9, 1, 0, 41); // vacuum / cooling tank
+    box(x - 0.3, 0, -12.6, x + 0.3, 1.45, -11.5, 1, 0, 41); // haul-off
+    [0.95, 1.2].forEach((y) => { const b2 = new THREE.CylinderGeometry(0.1, 0.1, 0.62, 8); b2.rotateZ(Math.PI / 2); edges(b2, x, y, -12.05, 1, 0, 41); });
+    box(x - 0.25, 0, -11.2, x + 0.25, 1.2, -10.6, 1, 0, 41); // cutter
+    // V-shaped stainless tilt trough
+    box(x - 0.2, 0, -10.4, x + 0.2, 0.75, -10.2, 0, 0, 41); box(x - 0.2, 0, -8.0, x + 0.2, 0.75, -7.8, 0, 0, 41);
+    [-1, 1].forEach((sx) => { const t = new THREE.BoxGeometry(0.03, 0.3, 2.6); t.rotateZ(sx * 0.6); edges(t, x + sx * 0.11, 0.9, -9.1, 1, 0, 41); });
+    // control panel on a swivel arm
+    cyl(0.04, 1.6, x + 0.55, 0.8, -14.4, false, 0, 6, 41);
+    box(x + 0.4, 1.6, -14.65, x + 0.75, 2.05, -14.25, 1, 0, 41);
+    crate(x + (i % 2 ? -0.55 : 0.55), -8.6, 0.42, 0.55, 0.36, 2, 41); // yellow crates for coiled tubing
+    lineY(x - 0.62, -21.6, x - 0.58, -7.6);
   });
+  person(-0.5, -9.4, Math.PI / 2, 41); person(4.3, -12.0, -Math.PI / 2, 41);
   // Subnode 42: cleanroom pass-box + dedicated lift at the 18 m wall
   box(-2.35, 0, -7.3, 0.7, 3, -4.35, 1, 0, 42);
   box(4.55, 0, -7.45, 7.05, 10.5, -4.55, 1, 0, 42);
@@ -142,6 +194,8 @@ function init(sec) {
   box(0.85, 4.85, 2.6, 3.65, 5.25, 5.4, 1, 0, 31);
   // Subnode 32: finished filter QC tray
   box(4.35, 0, 7.2, 6.5, 1, 10.2, 1, 0, 32);
+  // Demold sorters only: one at the press, one at the QC tray
+  person(2.25, 6.3, 0, 31); person(5.4, 10.9, Math.PI, 32);
 
   // HALL 3: finished goods, full 8.50 x 36 m bay (not the old 7 x 18 stub)
   box(xB, 0, zN, xE, 8.6, zS);
