@@ -360,6 +360,46 @@ function initBag3D(sec) {
   const wireMesh = new THREE.LineSegments(geo, mat);
   scene.add(wireMesh);
 
+  /* ---------- solid HDPE lid shell (Hamid: "make door more solid") ---------- */
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x0a3b3c, 1.1));
+  const sun = new THREE.DirectionalLight(0xffffff, 1.4); sun.position.set(30, 60, 40); scene.add(sun);
+  const lidMat = new THREE.MeshStandardMaterial({ color: 0x0e8f91, roughness: 0.55, metalness: 0.05, transparent: true, opacity: 0, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 });
+  const portMat = lidMat.clone();
+  const lidGroup = new THREE.Group(), portGroup = new THREE.Group();
+  const lidProfile = [[11.0, 12.0], [11.4, 12.4], [11.4, 14.6], [12.2, 15.2], [12.7, 15.6], [13.0, 16.8], [13.0, 17.6], [12.6, 17.8], [11.0, 17.8], [10.4, 18.6], [9.4, 19.3], [7.8, 19.8], [5.6, 20.1], [3.0, 20.2], [0.01, 20.22]].map(([r, y]) => new THREE.Vector2(r, y));
+  lidGroup.add(new THREE.Mesh(new THREE.LatheGeometry(lidProfile, 96), lidMat));
+  // half-moon pit bowl + filter well discs
+  const pitG = new THREE.CylinderGeometry(4.6, 2.0, 3.1, 40, 1, false, Math.PI / 2, Math.PI);
+  const pitM = new THREE.Mesh(pitG, lidMat); pitM.position.set(PIT[0], 18.5, PIT[1]); lidGroup.add(pitM);
+  const well = new THREE.Mesh(new THREE.CylinderGeometry(2.5, 2.5, 0.7, 40), lidMat); well.position.set(-6.2, 19.8, 0.8); lidGroup.add(well);
+  // bail handle arcs + hinge
+  for (const a0 of [-1.25, Math.PI - 1.25]) {
+    const m = new THREE.Mesh(new THREE.TorusGeometry(13.9, 0.32, 8, 48, 2.5), lidMat);
+    m.rotation.x = Math.PI / 2; m.rotation.z = a0; m.position.y = 16.9; lidGroup.add(m);
+  }
+  const hinge = new THREE.Mesh(new THREE.BoxGeometry(2.6, 1.0, 1.6), lidMat); hinge.position.set(15.1, 17.0, 2.2); lidGroup.add(hinge);
+  // solid ports
+  const addTube = (rT, rB, len, mid, eul) => { const m = new THREE.Mesh(new THREE.CylinderGeometry(rT, rB, len, 32), portMat); m.position.copy(mid); m.rotation.copy(eul); portGroup.add(m); };
+  addTube(1.55, 1.75, pLen, pMid, pE);
+  addTube(0.75, 0.75, tLen, tM, tE);
+  addTube(0.62, 0.7, vLen, vM, vE);
+  lidGroup.renderOrder = -1; portGroup.renderOrder = -1;
+  scene.add(lidGroup, portGroup);
+  const coralC = new THREE.Color(0xff7a59), lidBase = new THREE.Color(0x0e8f91);
+  function updateSolidLid() {
+    const e = uniforms.uExplode.value, prog = uniforms.uProg.value;
+    lidGroup.position.y = 7.5 * e; portGroup.position.y = 13.5 * e;
+    const a = Math.max(0, Math.min(1, (prog - 0.35) * 2));
+    const act = uniforms.uActiveSub.value, inSt = uniforms.uInStation.value > 0.5;
+    const lidAct = inSt && act >= 11 && act <= 13, portAct = inSt && act >= 21 && act <= 23;
+    const other = inSt && !lidAct && !portAct;
+    lidMat.opacity = a * (other ? 0.35 : 0.82);
+    portMat.opacity = a * (other ? 0.35 : 0.9);
+    lidMat.color.copy(lidBase).lerp(coralC, lidAct ? 0.2 : 0);
+    portMat.color.copy(lidBase).lerp(coralC, portAct ? 0.3 : 0);
+    lidMat.depthWrite = portMat.depthWrite = a > 0.5;
+  }
+
   /* ---------- theme sync ---------- */
   function applyTheme() {
     const t = document.documentElement.dataset.theme || 'light';
@@ -635,6 +675,7 @@ function initBag3D(sec) {
     explodeVal += (targetExp - explodeVal) * (reduce ? 1 : 1 - Math.exp(-dt / 0.38));
     if (Math.abs(targetExp - explodeVal) < 1e-4) explodeVal = targetExp;
     uniforms.uExplode.value = explodeVal;
+    updateSolidLid();
 
     const autoProg = Math.min(1.1, (time / 1.3) * 1.1);
     const prog = (explore || reduce) ? 1.1 : Math.max(autoProg, Math.min(1.1, (s / 0.16) * 1.1));
