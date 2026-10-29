@@ -42,104 +42,122 @@ function init(sec) {
     edges(g, x, y, z, tone, 0, subId);
   };
 
-  // Lot (40 x 50 = 2,000 m2) and south front wall on Golshan 19 alley
+  // Lot 40 x 50 = 2,000 m². South wall is Golshan 19; gates sit in the side yards.
+  // Shell from abadis-factory.dwg (AC1032, Mohsen). Drawing units are metres;
+  // dimension text is centimetres. One connected shed, not three separated halls:
+  //   13.00 | 10.00 | 8.50  = 31.50 m wide (dims 1300 / 1000 / 850)
+  //   36.00 m deep on every bay (dim 3600), grid from the north:
+  //   5.80, 6.00, 6.05, 6.05, 6.05, 6.05
+  // Twin column lines sit 0.80 m apart on the two party walls (grid bubbles E/D and C/B).
+  const xW = -15.75, xA = -2.75, xB = 7.25, xE = 15.75;
+  const zN = -22, zS = 14;
+  const ZG = [0, 5.8, 11.8, 17.85, 23.9, 29.95, 36].map((d) => +(zN + d).toFixed(2));
+  const zCut = zN + 18; // hall 2 partition, dim 1800: north extruder, south filter
+  const zWip = zN + 20; // hall 1 upper WIP is exactly 13 x 20; interior stays closed
   box(-20, -0.3, -25, 20, 0, 25, 0, -0.2, 0);
-  box(-20, 0, 24.8, -18, 2.4, 25.2); box(-12, 0, 24.8, 12, 2.4, 25.2); box(18, 0, 24.8, 20, 2.4, 25.2);
-  [-18, -12, 12, 18].forEach((x) => cyl(0.35, 3, x, 1.5, 25, false, 1, 8));
+  box(-20, 0, 24.8, -18, 2.4, 25.2); box(-14, 0, 24.8, 14, 2.4, 25.2); box(18, 0, 24.8, 20, 2.4, 25.2);
+  [-18, -14, 14, 18].forEach((x) => cyl(0.35, 3, x, 1.5, 25, false, 1, 8));
   box(-20, 0, -25.2, 20, 2.4, -24.8); box(-20.2, 0, -25, -19.8, 2.4, 25); box(19.8, 0, -25, 20.2, 2.4, 25);
-  // Central 2-floor office (110 m2) with gardens
-  box(-5.5, 0, 18, 5.5, 3.4, 23); box(-5.5, 3.4, 18, 5.5, 6.8, 23);
-  for (let i = 0; i < 5; i++) { box(-4.6 + i * 2, 1.2, 22.95, -3.4 + i * 2, 2.6, 23.05, 1); box(-4.6 + i * 2, 4.6, 22.95, -3.4 + i * 2, 6, 23.05, 1); }
-  box(-11, 0, 18.5, -6.5, 0.5, 23.5, 1); box(6.5, 0, 18.5, 11, 0.5, 23.5, 1);
-  [[-9.8, 20], [-7.6, 22.4], [7.6, 20], [9.8, 22.4]].forEach(([x, z]) => { cyl(0.12, 1.4, x, 1.2, z, false, 1, 6); edges(new THREE.IcosahedronGeometry(0.9, 0), x, 2.4, z, 1); });
+  // Central 2-floor office, 11 x 5 m footprint, 110 m² total, in front of the sheds
+  box(-5.5, 0, 15, 5.5, 3.4, 20); box(-5.5, 3.4, 15, 5.5, 6.8, 20);
+  for (let i = 0; i < 5; i++) { box(-4.6 + i * 2, 1.2, 19.95, -3.4 + i * 2, 2.6, 20.05, 1); box(-4.6 + i * 2, 4.6, 19.95, -3.4 + i * 2, 6, 20.05, 1); }
+  box(-12.2, 0, 15.3, -6.2, 0.45, 20.4, 1); box(6.2, 0, 15.3, 12.2, 0.45, 20.4, 1);
+  [[-10.6, 16.2], [-7.4, 19.2], [7.4, 16.2], [10.6, 19.2]].forEach(([x, z]) => { cyl(0.12, 1.4, x, 1.2, z, false, 1, 6); edges(new THREE.IcosahedronGeometry(0.9, 0), x, 2.4, z, 1); });
 
-  // HALL 1 (Injection) 13 x 36, x -19..-6, z -23..13
-  box(-19, 0, 7, -6, 14, 13);
-  box(-18.6, 0, 9.8, -15.6, 4, 12.6, 1); box(-9.4, 0, 9.8, -6.4, 4, 12.6, 1);
-  box(-13.5, 0, 12.9, -11.5, 4.2, 13.1, 1);
-  box(-19, 0, -23, -6, 10.5, 7);
-  box(-19, 5, -23, -6, 5.3, 7, 0, 0.05);
-  box(-18.6, 0, 4.2, -14.6, 3, 7, 1); box(-10.4, 0, 4.2, -6.4, 3, 7, 1);
-  box(-13.5, 0, 6.9, -11.5, 3, 7.1, 1);
-  for (let i = 0; i < 6; i++) box(-19, 10.5, -23 + i * 5, -6, 11.3, -22.6 + i * 5, 0, 0.1);
-  // Subnode 11: 3 x 220t injection machines (top row)
-  [-16.5, -12.5, -8.5].forEach((x) => {
-    box(x - 1.1, 0, -21, x + 1.1, 2.2, -13, 1, 0, 11);
-    box(x - 0.7, 2.2, -20.5, x + 0.7, 3.4, -18.6, 1, 0, 11);
-    cyl(0.55, 1, x, 3.9, -19.6, false, 1, 10, 11);
-    box(x - 0.9, 0, -13, x + 0.9, 1.2, -11.6, 1, 0, 11);
+  const roof = (x0, x1, y, z, h) => box(x0, y, z - 0.12, x1, y + h, z + 0.12, 0, 0.08);
+  const colH = (x) => (x < xA - 0.1 ? 10.6 : x < xB - 0.1 ? 10.5 : 8.6);
+  [xW, xA - 0.4, xA + 0.4, xB - 0.4, xB + 0.4, xE].forEach((x) => {
+    ZG.forEach((z) => box(x - 0.16, 0, z - 0.16, x + 0.16, colH(x), z + 0.16, 0, -0.02));
   });
-  // Subnode 12: 2 x blow molders (bottom-left)
-  [-3.5, 1.5].forEach((z) => {
-    box(-18.2, 0, z - 1.6, -14.8, 3.4, z + 1.6, 1, 0, 12);
-    cyl(0.5, 1.4, -16.5, 4.1, z, false, 1, 10, 12);
+
+  // HALL 1 (Injection) 13 x 36, xW..xA. Mezzanine stops 3 m short of the south lobby.
+  box(xW, 0, zN, xA, 10.6, zS);
+  box(xW, 5.15, zN, xA, 5.4, zS - 3, 0, 0.04);
+  ZG.forEach((z) => roof(xW, xA, 10.6, z, 0.55));
+  // South doors, one per bay, on the street side
+  [[(xW + xA) / 2, 10.6], [(xA + xB) / 2, 10.5], [(xB + xE) / 2, 8.6]].forEach(([cx, h]) => {
+    box(cx - 1.7, 0, zS - 0.06, cx - 1.45, Math.min(3.4, h * 0.42), zS + 0.08, 1);
+    box(cx + 1.45, 0, zS - 0.06, cx + 1.7, Math.min(3.4, h * 0.42), zS + 0.08, 1);
   });
-  // Subnode 13: 1 x 120t injection machine (bottom-right)
-  box(-10.6, 0, -3, -7.4, 1.8, 2.6, 1, 0, 13);
-  box(-10, 1.8, -2.4, -8, 2.8, -0.8, 1, 0, 13);
+  // Ground-floor locker rooms at the south of hall 1 (DWG plan B: 4.50 + 2.50 + 6.00 m, 2.00 m deep)
+  box(-15.55, 0, 6.05, -11.35, 2.7, 7.95, 1);
+  box(-11.15, 0, 6.05, -8.85, 2.7, 7.95, 1);
+  box(-8.65, 0, 6.05, -2.95, 2.7, 7.95, 1);
+  box(-15.65, 0, -21.85, -14.6, 5.2, -20.55, 1);
 
-  // Subnode 21: Upper 10 x 10 PU assembly with 3 table rows
-  box(-19, 5.3, -3, -9, 9.8, 7, 1, 0.05, 21);
-  [-1, 2, 5].forEach((z) => box(-17.8, 5.3, z - 0.5, -10.2, 6.2, z + 0.5, 1, 0, 21));
-  // Subnode 22: 10 x 3 cartoning corridor + lift shaft (right)
-  box(-19, 5.3, -6, -9, 9.8, -3, 1, 0.05, 22);
-  box(-16.5, 5.3, -5.2, -11.5, 6.1, -3.8, 1, 0, 22);
-  box(-9, 0, -6, -6.2, 10.5, -3, 1, 0, 22);
-  box(-9.1, 5.3, -5.4, -8.9, 7.8, -3.6, 1, 0, 22);
-  // WIP storage shell (interior never shown, door closed)
-  box(-19, 5.3, -23, -9, 9.8, -6, 0, 0.05, 0);
-  box(-18.4, 5.3, -6.1, -16.4, 7.8, -5.9, 1, 0, 0);
-
-  // HALL 2: 10 x 36, x -5..5
-  box(-5, 0, -23, 5, 10, 13);
-  box(-5, 5, -23, 5, 5.3, -5, 0, 0.05);
-  for (let i = 0; i < 6; i++) box(-5, 10, -23 + i * 5, 5, 10.8, -22.6 + i * 5, 0, 0.1);
-  box(-5, 0, -5, 5, 10, -1, 0, 0.02);
-  for (let s = 0; s < 8; s++) box(1.5, s * 0.62, -4.6 + s * 0.42, 4.6, s * 0.62 + 0.62, -4.18 + s * 0.42, 1);
-  box(-4, 0, -5.1, -2, 2.4, -4.9, 1); box(-4, 0, -1.1, -2, 2.4, -0.9, 1); box(-1, 0, 12.9, 1, 3, 13.1, 1);
-
-  // Subnode 41: 2 extruders on ground floor
-  [-2.6, 2.6].forEach((x) => {
-    const g = new THREE.CylinderGeometry(0.45, 0.45, 9, 10); g.rotateX(Math.PI / 2);
-    edges(g, x, 1.2, -16, 1, 0, 41);
-    box(x - 0.7, 0, -21.5, x + 0.7, 1, -10.5, 1, 0, 41);
-    edges(new THREE.ConeGeometry(0.9, 1.6, 8), x, 2.6, -20, 1, 0, 41);
-    box(x - 0.6, 0, -9.8, x + 0.6, 1.6, -8, 1, 0, 41);
+  // Subnode 11: 4 x 220t injection machines across the north of the ground hall
+  [-14.15, -11.15, -8.15, -5.15].forEach((x) => {
+    box(x - 0.95, 0, -20.35, x + 0.95, 2.15, -13.35, 1, 0, 11);
+    box(x - 0.58, 2.15, -19.7, x + 0.58, 3.3, -17.55, 1, 0, 11);
+    cyl(0.42, 0.9, x, 3.75, -18.6, false, 1, 10, 11);
+    box(x - 0.72, 0, -13.35, x + 0.72, 1.15, -12.5, 1, 0, 11);
   });
-  // Subnode 42: cleanroom pass-box + dedicated lift
-  box(-4.4, 0, -8.6, -1.2, 3, -5.6, 1, 0, 42);
-  box(2.2, 0, -8.4, 4.8, 10, -5.6, 1, 0, 42);
+  // Subnode 12: 6 x 120t injection machines, two rows of three filling the middle of the hall
+  [-9.7, -4.2].forEach((z) => [-14.05, -9.25, -4.45].forEach((x) => {
+    box(x - 1.05, 0, z - 2.2, x + 1.05, 1.7, z + 2.2, 1, 0, 12);
+    box(x - 0.6, 1.7, z - 1.65, x + 0.6, 2.65, z - 0.15, 1, 0, 12);
+    cyl(0.32, 0.7, x, 3.0, z - 0.9, false, 1, 8, 12);
+  }));
+
+  // Subnode 21: upper 10 x 10 PU assembly, the 10 m zone south of the WIP (DWG plan C)
+  box(-14.25, 5.4, -2, -4.25, 9.9, 8, 1, 0.05, 21);
+  [-0.2, 2.6, 5.4].forEach((z) => box(-13.4, 5.4, z - 0.45, -5.1, 6.25, z + 0.45, 1, 0, 21));
+  // Subnode 22: 10 x 3 cartoning corridor + lift against the hall 2 party wall
+  box(-14.2, 5.4, 8, -4.3, 9.9, 11, 1, 0.05, 22);
+  box(-13.2, 5.4, 8.55, -6.4, 6.2, 10.45, 1, 0, 22);
+  box(-4.25, 0, 8.15, -2.9, 10.6, 10.85, 1, 0, 22);
+  // WIP 13 x 20 closed shell on the upper floor. No racks, no aisles, door shut.
+  box(xW + 0.2, 5.4, zN + 0.2, xA - 0.2, 9.85, zWip, 0, 0.05, 0);
+  box(xW + 1.3, 5.4, zWip - 0.08, xW + 3.3, 7.9, zWip + 0.08, 1, 0, 0);
+
+  // HALL 2: 10 x 36. North 18 m is extruder below / cleanroom above. South bay is the filter room.
+  box(xA, 0, zN, xB, 10.5, zS);
+  box(xA, 5.15, zN, xB, 5.4, zCut, 0, 0.04);
+  ZG.forEach((z) => roof(xA, xB, 10.5, z, 0.5));
+  box(xA, 0, zCut - 0.1, xB, 10.5, zCut + 0.1, 0, 0.02);
+
+  // Subnode 41: 4 extruders side by side on the ground floor of the north 18 m
+  [-1.7, 0.7, 3.1, 5.5].forEach((x) => {
+    const g = new THREE.CylinderGeometry(0.36, 0.36, 8.2, 10); g.rotateX(Math.PI / 2);
+    edges(g, x, 1.12, -16.2, 1, 0, 41);
+    box(x - 0.48, 0, -20.5, x + 0.48, 0.95, -11.6, 1, 0, 41);
+    edges(new THREE.ConeGeometry(0.68, 1.2, 8), x, 2.25, -20.15, 1, 0, 41);
+    box(x - 0.4, 0, -11.7, x + 0.4, 1.35, -10.15, 1, 0, 41);
+  });
+  // Subnode 42: cleanroom pass-box + dedicated lift at the 18 m wall
+  box(-2.35, 0, -7.3, 0.7, 3, -4.35, 1, 0, 42);
+  box(4.55, 0, -7.45, 7.05, 10.5, -4.55, 1, 0, 42);
   // Subnode 43: upper Class 100,000 cleanroom with 2 assembly lines
-  box(-4.5, 5.3, -22.5, 4.5, 9.4, -5.6, 1, 0.05, 43);
-  [-2, 2].forEach((x) => {
-    box(x - 0.6, 5.3, -20.5, x + 0.6, 6.2, -8, 1, 0, 43);
-    for (let k = 0; k < 4; k++) box(x - 0.3, 6.2, -19 + k * 3, x + 0.3, 6.7, -18.4 + k * 3, 1, 0, 43);
+  box(-2.35, 5.4, -21.5, 6.85, 9.55, -4.35, 1, 0.05, 43);
+  [0.3, 4.2].forEach((x) => {
+    box(x - 0.55, 5.4, -19.6, x + 0.55, 6.25, -7.4, 1, 0, 43);
+    for (let k = 0; k < 4; k++) box(x - 0.28, 6.25, -18.4 + k * 2.7, x + 0.28, 6.75, -17.75 + k * 2.7, 1, 0, 43);
   });
 
-  // Right wing: Porous filter room (only demolding shown)
-  box(-4.4, 0, 0.6, 4.4, 4.2, 12.4, 0, 0.03, 0);
+  // Porous filter room: south of the 18 m wall, 9 m clear of the 10 m bay. Demolding only.
+  box(-2.25, 0, zCut + 0.25, 6.75, 5.6, zS - 0.35, 0, 0.03, 0);
   // Subnode 31: mold press bed & columns
-  box(-1.4, 0, 4, 1.4, 1.6, 6.8, 1, 0, 31);
-  [-1.2, 1.2].forEach((x) => [4.2, 6.6].forEach((z) => cyl(0.1, 3.6, x, 1.6 + 1.8, z, false, 1, 6, 31)));
-  box(-1.4, 5, 4, 1.4, 5.4, 6.8, 1, 0, 31);
+  box(0.85, 0, 2.6, 3.65, 1.55, 5.4, 1, 0, 31);
+  [0.95, 3.55].forEach((x) => [2.75, 5.25].forEach((z) => cyl(0.1, 3.5, x, 3.3, z, false, 1, 6, 31)));
+  box(0.85, 4.85, 2.6, 3.65, 5.25, 5.4, 1, 0, 31);
   // Subnode 32: finished filter QC tray
-  box(1.8, 0, 7.6, 4, 1, 10.6, 1, 0, 32);
+  box(4.35, 0, 7.2, 6.5, 1, 10.2, 1, 0, 32);
 
-  // HALL 3: Finished goods 7 x 18, x 7..14, z -5..13
-  box(7, 0, -5, 14, 7, 13);
-  // Subnode 51: 45-count carton pallet racks
-  [8.2, 12.8].forEach((x) => {
-    for (let z = -3.5; z < 11; z += 2.6) {
-      box(x - 0.8, 0, z, x + 0.8, 4.8, z + 2.2, 1, 0, 51);
-      [1.6, 3.2].forEach((y) => box(x - 0.8, y, z, x + 0.8, y + 0.1, z + 2.2, 1, 0, 51));
-      box(x - 0.6, 0.2, z + 0.3, x + 0.2, 1.2, z + 1.9, 1, 0, 51);
+  // HALL 3: finished goods, full 8.50 x 36 m bay (not the old 7 x 18 stub)
+  box(xB, 0, zN, xE, 8.6, zS);
+  ZG.forEach((z) => roof(xB, xE, 8.6, z, 0.45));
+  // Subnode 51: 45-count carton pallet racks along both long walls, aisle on centerline
+  [8.55, 14.45].forEach((x) => {
+    for (let z = -20.4; z < 9.5; z += 3.2) {
+      box(x - 0.7, 0, z, x + 0.7, 5.1, z + 2.45, 1, 0, 51);
+      [1.7, 3.4].forEach((y) => box(x - 0.7, y, z, x + 0.7, y + 0.08, z + 2.45, 1, 0, 51));
+      box(x - 0.5, 0.2, z + 0.35, x + 0.15, 1.15, z + 2.1, 1, 0, 51);
     }
   });
-  // Subnode 52: Forklift, aisle & dispatch gate
-  box(13.9, 0, 9, 14.1, 4, 12.5, 1, 0, 52);
-  box(9.8, 0, 3, 11.2, 1.4, 5.2, 1, 0, 52);
-  box(10.1, 1.4, 3.1, 10.9, 3.4, 3.3, 1, 0, 52);
-  for (let i = 0; i < 4; i++) box(14.6 + i * 0.1, 0, 14 + i * 2.5, 16.2 + i * 0.1, 0.05, 15.6 + i * 2.5, 1, -0.05, 52);
+  // Subnode 52: forklift aisle and the south dispatch door
+  box(10.15, 0, zS - 0.16, 12.85, 3.8, zS + 0.08, 1, 0, 52);
+  box(10.7, 0, 10.15, 12.3, 1.45, 12.55, 1, 0, 52);
+  box(11.05, 1.45, 10.3, 11.95, 3.2, 10.65, 1, 0, 52);
 
   const geo = new THREE.BufferGeometry();
   geo.setAttribute('position', new THREE.Float32BufferAttribute(P, 3));
@@ -244,13 +262,13 @@ function init(sec) {
   /* ---------- stations & sub-nodes ---------- */
   const V3 = (x, y, z) => new THREE.Vector3(x, y, z);
   const VIEWS = [
-    { p: V3(-31, 12, 8), t: V3(-12.5, 1.5, -11) },
-    { p: V3(-30, 17, 16), t: V3(-14, 6.5, -0.5) },
-    { p: V3(13, 9, 21), t: V3(0, 1.5, 6.5) },
-    { p: V3(23, 17, -1), t: V3(0, 6.2, -13.5) },
-    { p: V3(26, 10, 26), t: V3(10.5, 2, 4) },
+    { p: V3(-40, 18, 2), t: V3(-9.4, 1.6, -10) },
+    { p: V3(-36, 18, 14), t: V3(-9.25, 7.2, 4) },
+    { p: V3(20, 11, 24), t: V3(2.25, 2.2, 4) },
+    { p: V3(28, 16, 0), t: V3(1.9, 4.2, -15) },
+    { p: V3(34, 13, 18), t: V3(11.5, 2.4, -4) },
   ];
-  const LBL = [V3(-12.5, 6, -17), V3(-14, 11.6, 2), V3(0, 11.2, 6.5), V3(0, 11.2, -14), V3(10.5, 8.2, 4), V3(0, 8.2, 20.5)];
+  const LBL = [V3(-9.4, 6, -12), V3(-9.25, 11.4, 3), V3(2.25, 8, 5), V3(1.9, 11.2, -15), V3(11.5, 8.4, -4), V3(0, 8.2, 17.6)];
   const smooth = (x) => { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); };
   const fmtStep = (i) => cfg.step.replace('{n}', cfg.nums[i]).replace('{t}', cfg.total);
 
@@ -459,7 +477,7 @@ function init(sec) {
   const clock = new THREE.Clock();
   function aerial(s, out, tgt) {
     const k = Math.min(1, s / 0.25), a = -0.75 + 0.9 * k, R = (camera.aspect < 1 ? 118 : 82) - 10 * k;
-    out.set(Math.sin(a) * R, 52 - 8 * k, Math.cos(a) * R); tgt.set(0, camera.aspect < 1 ? 16 - 8 * k : 19 - 6 * k, 0);
+    out.set(Math.sin(a) * R, 54 - 8 * k, Math.cos(a) * R - 4); tgt.set(0, camera.aspect < 1 ? 14 - 6 * k : 16 - 4 * k, -4);
   }
   function frame() {
     requestAnimationFrame(frame);
@@ -485,9 +503,9 @@ function init(sec) {
 
     // Filter demolding loop (6 s)
     const c = reduce ? 0.8 : (time % 6) / 6, lift = smooth(c / 0.25) - smooth((c - 0.85) / 0.15);
-    moldTop.position.set(0, 2.05 + lift * 1.6, 5.4);
+    moldTop.position.set(2.25, 2.0 + lift * 1.6, 4.0);
     const out = smooth((c - 0.3) / 0.35), place = smooth((c - 0.65) / 0.15);
-    filter.position.set(out * 2.9, 1.75 + Math.sin(out * Math.PI) * 1.6 * (1 - place) + lift * 0.2 * (1 - out) - place * 0.5, 5.4 + out * 3.7);
+    filter.position.set(2.25 + out * 2.5, 1.7 + Math.sin(out * Math.PI) * 1.6 * (1 - place) + lift * 0.2 * (1 - out) - place * 0.45, 4.0 + out * 3.5);
     filter.visible = c < 0.95 && c > 0.05;
 
     subFocusOffset.lerp(targetSubFocus, kF);
