@@ -85,21 +85,19 @@ function init(sec) {
   box(-8.65, 0, 6.05, -2.95, 2.7, 7.95, 1);
   box(-15.65, 0, -21.85, -14.6, 5.2, -20.55, 1);
 
-  // Subnode 11: 3 x 220t injection machines, north row of the ground hall
-  [-13.4, -9.25, -5.1].forEach((x) => {
-    box(x - 1.05, 0, -20.4, x + 1.05, 2.2, -12.2, 1, 0, 11);
-    box(x - 0.65, 2.2, -19.8, x + 0.65, 3.4, -17.6, 1, 0, 11);
-    cyl(0.5, 1, x, 3.9, -18.7, false, 1, 10, 11);
-    box(x - 0.85, 0, -12.2, x + 0.85, 1.2, -10.8, 1, 0, 11);
+  // Subnode 11: 4 x 220t injection machines across the north of the ground hall
+  [-14.15, -11.15, -8.15, -5.15].forEach((x) => {
+    box(x - 0.95, 0, -20.35, x + 0.95, 2.15, -13.35, 1, 0, 11);
+    box(x - 0.58, 2.15, -19.7, x + 0.58, 3.3, -17.55, 1, 0, 11);
+    cyl(0.42, 0.9, x, 3.75, -18.6, false, 1, 10, 11);
+    box(x - 0.72, 0, -13.35, x + 0.72, 1.15, -12.5, 1, 0, 11);
   });
-  // Subnode 12: 2 x blow molders, south-west of the injection hall
-  [-1.2, 2.6].forEach((z) => {
-    box(-15.3, 0, z - 1.45, -12.2, 3.4, z + 1.45, 1, 0, 12);
-    cyl(0.48, 1.3, -13.75, 4.05, z, false, 1, 10, 12);
-  });
-  // Subnode 13: 1 x 120t injection machine, south-east of the injection hall
-  box(-6.6, 0, -1.2, -3.5, 1.8, 4.2, 1, 0, 13);
-  box(-6.1, 1.8, -0.6, -4.0, 2.8, 1.4, 1, 0, 13);
+  // Subnode 12: 6 x 120t injection machines, two rows of three filling the middle of the hall
+  [-9.7, -4.2].forEach((z) => [-14.05, -9.25, -4.45].forEach((x) => {
+    box(x - 1.05, 0, z - 2.2, x + 1.05, 1.7, z + 2.2, 1, 0, 12);
+    box(x - 0.6, 1.7, z - 1.65, x + 0.6, 2.65, z - 0.15, 1, 0, 12);
+    cyl(0.32, 0.7, x, 3.0, z - 0.9, false, 1, 8, 12);
+  }));
 
   // Subnode 21: upper 10 x 10 PU assembly, the 10 m zone south of the WIP (DWG plan C)
   box(-14.25, 5.4, -2, -4.25, 9.9, 8, 1, 0.05, 21);
@@ -118,13 +116,13 @@ function init(sec) {
   ZG.forEach((z) => roof(xA, xB, 10.5, z, 0.5));
   box(xA, 0, zCut - 0.1, xB, 10.5, zCut + 0.1, 0, 0.02);
 
-  // Subnode 41: 2 extruders on the ground floor of the north 18 m
-  [0.3, 4.2].forEach((x) => {
-    const g = new THREE.CylinderGeometry(0.42, 0.42, 9, 10); g.rotateX(Math.PI / 2);
-    edges(g, x, 1.15, -16, 1, 0, 41);
-    box(x - 0.65, 0, -21.2, x + 0.65, 1, -10.8, 1, 0, 41);
-    edges(new THREE.ConeGeometry(0.85, 1.5, 8), x, 2.5, -20.4, 1, 0, 41);
-    box(x - 0.55, 0, -10.2, x + 0.55, 1.5, -8.6, 1, 0, 41);
+  // Subnode 41: 4 extruders side by side on the ground floor of the north 18 m
+  [-1.7, 0.7, 3.1, 5.5].forEach((x) => {
+    const g = new THREE.CylinderGeometry(0.36, 0.36, 8.2, 10); g.rotateX(Math.PI / 2);
+    edges(g, x, 1.12, -16.2, 1, 0, 41);
+    box(x - 0.48, 0, -20.5, x + 0.48, 0.95, -11.6, 1, 0, 41);
+    edges(new THREE.ConeGeometry(0.68, 1.2, 8), x, 2.25, -20.15, 1, 0, 41);
+    box(x - 0.4, 0, -11.7, x + 0.4, 1.35, -10.15, 1, 0, 41);
   });
   // Subnode 42: cleanroom pass-box + dedicated lift at the 18 m wall
   box(-2.35, 0, -7.3, 0.7, 3, -4.35, 1, 0, 42);
@@ -264,13 +262,13 @@ function init(sec) {
   /* ---------- stations & sub-nodes ---------- */
   const V3 = (x, y, z) => new THREE.Vector3(x, y, z);
   const VIEWS = [
-    { p: V3(-34, 13, -4), t: V3(-9.25, 1.6, -14) },
+    { p: V3(-40, 18, 2), t: V3(-9.4, 1.6, -10) },
     { p: V3(-36, 18, 14), t: V3(-9.25, 7.2, 4) },
     { p: V3(20, 11, 24), t: V3(2.25, 2.2, 4) },
-    { p: V3(26, 16, 4), t: V3(2.25, 5.6, -13) },
+    { p: V3(28, 16, 0), t: V3(1.9, 4.2, -15) },
     { p: V3(34, 13, 18), t: V3(11.5, 2.4, -4) },
   ];
-  const LBL = [V3(-9.25, 6, -16), V3(-9.25, 11.4, 3), V3(2.25, 8, 5), V3(2.25, 11.2, -14), V3(11.5, 8.4, -4), V3(0, 8.2, 17.6)];
+  const LBL = [V3(-9.4, 6, -12), V3(-9.25, 11.4, 3), V3(2.25, 8, 5), V3(1.9, 11.2, -15), V3(11.5, 8.4, -4), V3(0, 8.2, 17.6)];
   const smooth = (x) => { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); };
   const fmtStep = (i) => cfg.step.replace('{n}', cfg.nums[i]).replace('{t}', cfg.total);
 

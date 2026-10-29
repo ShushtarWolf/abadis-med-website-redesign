@@ -9,7 +9,7 @@ three.js r170 + OrbitControls are self-hosted in assets/js/ (no CDN).
 import json
 from html import escape as esc
 
-V = '20261029l'
+V = '20261029m'
 
 T = {
   'fa': dict(
@@ -26,15 +26,12 @@ T = {
         n='سوله ۱ (همکف) — سالن تزریق پلاستیک و قالب‌گیری',
         t='ورود از دهانه ۱۴ متری و رختکن‌ها به سالن تزریق با سقف ۵ متر؛ تولید بدنه، درب و قطعات کیسه ساکشن.',
         subs=[
-          dict(id=11, code='۱.۱', pin='۱.۱ تزریق ۲۲۰ تن (۳ دستگاه)', chip='۱.۱ سه دستگاه تزریق ۲۲۰ تن',
-               spec='قالب‌گیری دقیق بدنه کیسه‌های ساکشن یک‌بارمصرف در ردیف شمالی سالن همکف (سقف ۵ متر).',
-               pos=[-9.25, 2.8, -16.2]),
-          dict(id=12, code='۱.۲', pin='۱.۲ بادی (۲ دستگاه)', chip='۱.۲ دو دستگاه بادی',
-               spec='تولید قطعات بادی و مخازن جانبی پزشکی در بخش جنوب‌غربی سالن تزریق.',
-               pos=[-13.8, 3.2, 0.7]),
-          dict(id=13, code='۱.۳', pin='۱.۳ تزریق ۱۲۰ تن', chip='۱.۳ دستگاه تزریق ۱۲۰ تن',
-               spec='تزریق درب، اتصالات و قطعات ظریف کیسه ساکشن با دقت میکرونی در بخش جنوب‌شرقی.',
-               pos=[-5.05, 2.2, 1.5]),
+          dict(id=11, code='۱.۱', pin='۱.۱ ۴ دستگاه تزریق ۲۲۰ تن', chip='۱.۱ ۴ دستگاه تزریق ۲۲۰ تن',
+               spec='قالب‌گیری دقیق بدنه کیسه‌های ساکشن یک‌بارمصرف با ۴ دستگاه تزریق ۲۲۰ تن در ردیف شمالی سالن همکف (سقف ۵ متر).',
+               pos=[-9.65, 2.8, -16.8]),
+          dict(id=12, code='۱.۲', pin='۱.۲ ۶ دستگاه تزریق ۱۲۰ تن', chip='۱.۲ ۶ دستگاه تزریق ۱۲۰ تن',
+               spec='تزریق درب، اتصالات و قطعات ظریف کیسه ساکشن با ۶ دستگاه تزریق ۱۲۰ تن در میانه سالن همکف.',
+               pos=[-9.25, 2.2, -6.95]),
         ]
       ),
       dict(
@@ -63,11 +60,11 @@ T = {
       ),
       dict(
         n='سوله ۲ — سالن اکسترودر و کلین‌روم کلاس ۱۰۰٬۰۰۰',
-        t='تولید تیوب پزشکی در همکف و انتقال بهداشتی با باکس و بالابر مخصوص به کلین‌روم طبقه اول.',
+        t='۴ دستگاه اکسترودر تیوب پزشکی در همکف و انتقال بهداشتی با باکس و بالابر مخصوص به کلین‌روم طبقه اول.',
         subs=[
-          dict(id=41, code='۴.۱', pin='۴.۱ اکسترودر تیوب (۲ خط)', chip='۴.۱ دو خط اکسترودر تیوب (همکف)',
-               spec='تولید پیوسته تیوب‌های ساکشن پزشکی ضدپیچ‌خوردگی در سالن ۱۰×۱۸ متری طبقه همکف سوله ۲.',
-               pos=[2.25, 2.2, -16.0]),
+          dict(id=41, code='۴.۱', pin='۴.۱ ۴ دستگاه اکسترودر', chip='۴.۱ ۴ دستگاه اکسترودر',
+               spec='تولید پیوسته تیوب‌های ساکشن پزشکی ضدپیچ‌خوردگی با ۴ دستگاه اکسترودر در سالن ۱۰×۱۸ متری طبقه همکف سوله ۲.',
+               pos=[1.9, 2.2, -16.2]),
           dict(id=42, code='۴.۲', pin='۴.۲ باکس کلین‌رومی و بالابر', chip='۴.۲ باکس کلین‌رومی و بالابر مخصوص',
                spec='انتقال ایزوله کلاف‌های تیوب از سالن اکسترودر به طبقه بالا بدون تماس با هوای محیط.',
                pos=[2.2, 4.5, -5.8]),
@@ -102,18 +99,15 @@ T = {
     step='Station {n} of {t}', aerial='Aerial view of the plant',
     stations=[
       dict(
-        n='Hall 1 (Ground) — Plastic Injection & Blow Molding',
-        t='Entering past the 14m front bay and locker rooms into the 5m ground hall where canister bodies and lids are molded.',
+        n='Hall 1 (Ground) — Plastic Injection Molding',
+        t='Entering past the 14m front bay and locker rooms into the 5m ground hall, filled with four 220-ton and six 120-ton injection presses.',
         subs=[
-          dict(id=11, code='1.1', pin='1.1 220t Injection (×3)', chip='1.1 3× 220-Ton Injection',
-               spec='Precision molding of disposable suction canister bodies along the north row of the 5m ground hall.',
-               pos=[-9.25, 2.8, -16.2]),
-          dict(id=12, code='1.2', pin='1.2 Blow-Molding (×2)', chip='1.2 2× Blow-Molding',
-               spec='Blow-molding of specialized medical fluid containers in the southwest bay of Hall 1.',
-               pos=[-13.8, 3.2, 0.7]),
-          dict(id=13, code='1.3', pin='1.3 120t Injection', chip='1.3 1× 120-Ton Injection',
-               spec='High-precision injection molding of lids, ports, and fine canister fittings in the southeast bay.',
-               pos=[-5.05, 2.2, 1.5]),
+          dict(id=11, code='1.1', pin='1.1 4× 220-Ton Injection', chip='1.1 4× 220-Ton Injection',
+               spec='Precision molding of disposable suction canister bodies on four 220-ton presses along the north row of the 5m ground hall.',
+               pos=[-9.65, 2.8, -16.8]),
+          dict(id=12, code='1.2', pin='1.2 6× 120-Ton Injection', chip='1.2 6× 120-Ton Injection',
+               spec='Injection of lids, ports, and fine canister fittings on six 120-ton presses filling the middle of the ground hall.',
+               pos=[-9.25, 2.2, -6.95]),
         ]
       ),
       dict(
@@ -142,11 +136,11 @@ T = {
       ),
       dict(
         n='Hall 2 — Tube Extrusion & Class 100,000 Cleanroom',
-        t='Two medical tube extrusion lines downstairs with sealed pass-box & lift transfer to the upstairs Class 100k cleanroom.',
+        t='Four medical tube extruders on the ground floor, with sealed pass-box and lift transfer to the upstairs Class 100k cleanroom.',
         subs=[
-          dict(id=41, code='4.1', pin='4.1 Tube Extruders (×2)', chip='4.1 2× Medical Tube Extruders',
-               spec='Continuous extrusion of kink-resistant medical suction tubing in the 10×18m ground-floor hall.',
-               pos=[2.25, 2.2, -16.0]),
+          dict(id=41, code='4.1', pin='4.1 4× Tube Extruders', chip='4.1 4× Tube Extruders',
+               spec='Continuous extrusion of kink-resistant medical suction tubing on four extruders in the 10×18m ground-floor hall.',
+               pos=[1.9, 2.2, -16.2]),
           dict(id=42, code='4.2', pin='4.2 Pass-Box & Lift', chip='4.2 Cleanroom Pass-Box & Lift',
                spec='Sealed vertical transfer of extruded tubing coils from ground floor into the upstairs cleanroom.',
                pos=[2.2, 4.5, -5.8]),
@@ -184,15 +178,12 @@ T = {
         n='القاعة ١ (الأرضي) — حقن البلاستيك وتشكيل القوالب',
         t='الدخول عبر البهو الأمامي بارتفاع ١٤ م وغرف تبديل الملابس إلى قاعة الحقن بارتفاع ٥ م لتشكيل أجسام وأغطية الأكياس.',
         subs=[
-          dict(id=11, code='١.١', pin='١.١ حقن ٢٢٠ طن (×٣)', chip='١.١ ٣ ماكينات حقن ٢٢٠ طن',
-               spec='قولبة دقيقة لأجسام عبوات الشفط أحادية الاستخدام في الصف الشمالي من القاعة الأرضية (٥ م).',
-               pos=[-9.25, 2.8, -16.2]),
-          dict(id=12, code='١.٢', pin='١.٢ نفخ القوالب (×٢)', chip='١.٢ ماكينتا نفخ القوالب',
-               spec='تشكيل العبوات والخزانات الطبية بالنفخ في الجناح الجنوبي الغربي من قاعة الحقن.',
-               pos=[-13.8, 3.2, 0.7]),
-          dict(id=13, code='١.٣', pin='١.٣ حقن ١٢٠ طن', chip='١.٣ ماكينة حقن ١٢٠ طن',
-               spec='حقن الأغطية والوصلات والأجزاء الدقيقة لعبوات الشفط بدقة ميكرونية عالية.',
-               pos=[-5.05, 2.2, 1.5]),
+          dict(id=11, code='١.١', pin='١.١ ٤ ماكينات حقن ٢٢٠ طن', chip='١.١ ٤ ماكينات حقن ٢٢٠ طن',
+               spec='قولبة دقيقة لأجسام عبوات الشفط أحادية الاستخدام على ٤ ماكينات حقن ٢٢٠ طن في الصف الشمالي من القاعة الأرضية (٥ م).',
+               pos=[-9.65, 2.8, -16.8]),
+          dict(id=12, code='١.٢', pin='١.٢ ٦ ماكينات حقن ١٢٠ طن', chip='١.٢ ٦ ماكينات حقن ١٢٠ طن',
+               spec='حقن الأغطية والوصلات والأجزاء الدقيقة على ٦ ماكينات حقن ١٢٠ طن في وسط القاعة الأرضية.',
+               pos=[-9.25, 2.2, -6.95]),
         ]
       ),
       dict(
@@ -221,11 +212,11 @@ T = {
       ),
       dict(
         n='القاعة ٢ — البثق والغرفة النظيفة فئة ١٠٠٬٠٠٠',
-        t='خطّا بثق الأنابيب في الطابق الأرضي والنقل المعقم عبر الصندوق والمصعد إلى الغرفة النظيفة بالطابق الأول.',
+        t='أربع ماكينات بثق للأنابيب الطبية في الطابق الأرضي والنقل المعقم عبر الصندوق والمصعد إلى الغرفة النظيفة بالطابق الأول.',
         subs=[
-          dict(id=41, code='٤.١', pin='٤.١ بثق الأنابيب (×٢)', chip='٤.١ خطّا بثق الأنابيب الطبية',
-               spec='إنتاج مستمر لأنابيب الشفط الطبية المقاومة للالتواء في قاعة ١٠×١٨ م بالطابق الأرضي.',
-               pos=[2.25, 2.2, -16.0]),
+          dict(id=41, code='٤.١', pin='٤.١ ٤ ماكينات بثق', chip='٤.١ ٤ ماكينات بثق',
+               spec='إنتاج مستمر لأنابيب الشفط الطبية المقاومة للالتواء على ٤ ماكينات بثق في قاعة ١٠×١٨ م بالطابق الأرضي.',
+               pos=[1.9, 2.2, -16.2]),
           dict(id=42, code='٤.٢', pin='٤.٢ صندوق التمرير والمصعد', chip='٤.٢ صندوق التمرير والمصعد المعقم',
                spec='نقل معقم لملفات الأنابيب من قاعة البثق إلى الطابق العلوي دون تلامس مع الهواء الخارجي.',
                pos=[2.2, 4.5, -5.8]),
