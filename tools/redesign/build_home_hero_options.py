@@ -11,6 +11,7 @@ sys.path.insert(0, str(ROOT / 'tools/redesign'))
 import pages_home as PH
 import w2_orbit
 import factory_hero
+import suction_bag_3d
 from layout import page
 
 OUT = ROOT / 'site/home-hero-options'
@@ -229,6 +230,12 @@ def build_index(p='../'):
       <h1>مقایسه ۳ پیشنهاد هیروی تمام‌صفحه ویدیوی پرستاران برای صفحه اصلی (Main Page Hero Proposals)</h1>
       <p>در هر سه گزینه، ویدیوی پرستاران و کادر درمان به‌صورت تمام‌صفحه (Full-Bleed لبه به لبه در کل پس‌زمینه هیرو و بدون هیچ کادر یا باکس مستطیلی) اجرا شده است.</p>
     </div>
+    <a class="f3d-hubcard" href="suction-bag-1l-3d.html" style="background:linear-gradient(120deg,#054a4d,#0e8c8c 58%,#ff7a59)">
+      <span class="f3d-hubcard-tag">SB-1L-3D — کالبدشکافی مهندسی سه‌بعدی محصول</span>
+      <h2>کالبدشکافی تعاملی سه‌بعدی کیسه ساکشن ۱ لیتری آبادیس (وایرفریم مهندسی + نمای انفجاری)</h2>
+      <p>مدل سه‌بعدی دقیق کیسه ساکشن ۱ لیتری (کد ۰۴۰۱۱۱۱) مبتنی بر فایل مهندسی 1L pit.CATPart با ۵ بخش تعاملی (درب و قفل ۳۶۰ درجه، پورت‌ها و دریچه یک‌طرفه، فیلتر هیدروفوبیک ۹۹.۹۹۹٪، کیسه مدرج ۱ لیتری و پودر سوپرجاذب SAP، مخزن پلی‌کربنات و براکت نصب)، خطوط راهنمای مهندسی بدون باکس، حالت کاوش آزاد ۳۶۰ درجه و دکمه نمای انفجاری قطعات.</p>
+      <span class="btn btn-primary">مشاهده زنده کیسه ساکشن ۱ لیتری سه‌بعدی</span>
+    </a>
     <a class="f3d-hubcard" href="factory-3d.html">
       <span class="f3d-hubcard-tag">F-3D — پیشنهاد ویژه</span>
       <h2>هیروی تعاملی سه‌بعدی کارخانه آبادیس (اسکرولی‌تلینگ)</h2>
@@ -279,6 +286,24 @@ def build_factory3d(p='../'):
   </div></section>'''
     return factory_hero.hero(p, 'fa') + '\n' + about
 
+
+
+def build_bag3d(p='../'):
+    about = f'''  <section class="section" id="about"><div class="wrap">
+    <div class="section-head">
+      <h2>مشخصات فنی و صفحه رسمی کیسه ساکشن یک‌بارمصرف ۱ لیتری آبادیس</h2>
+      <p>این صفحه نسخه مستقل کالبدشکافی سه‌بعدی کیسه ساکشن ۱ لیتری (کد ۰۴۰۱۱۱۱ با پودر سوپرجاذب و کد ۰۴۰۱۰۱۱ بدون پودر) است. همین بخش تعاملی سه‌بعدی در صفحه رسمی محصول کیسه ساکشن (فارسی، انگلیسی و عربی) نیز فعال است.</p>
+    </div>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="{p}products/suction-bag/#bag-3d">صفحه محصول کیسه ساکشن (FA)</a>
+      <a class="btn btn-ghost" href="{p}en/products/suction-bag/#bag-3d">Suction Bag Page (EN)</a>
+      <a class="btn btn-ghost" href="{p}arabic/كيس-الشفط/#bag-3d">صفحة كيس الشفط (AR)</a>
+      <a class="btn btn-ghost" href="factory-3d.html">هیروی سه‌بعدی کارخانه</a>
+      <a class="btn btn-ghost" href="index.html">بازگشت به فهرست پیش‌نمایش‌ها</a>
+    </div>
+  </div></section>'''
+    return suction_bag_3d.section(p, 'fa', skip_to='#about', sec_id='intro', tag_h='h1') + '\n' + about
+
 def main():
     p = '../'
     extra_head = (
@@ -295,12 +320,13 @@ def main():
         ('option-2.html', 'گزینه M-H2 هیروی تمام‌صفحه ویدیوی پرستاران (صفحه اصلی)', build_mh2),
         ('option-3.html', 'گزینه M-H3 هیروی تمام‌صفحه ویدیوی پرستاران (صفحه اصلی)', build_mh3),
         ('factory-3d.html', 'هیروی تعاملی سه‌بعدی کارخانه آبادیس (اسکرولی‌تلینگ)', build_factory3d),
+        ('suction-bag-1l-3d.html', 'کالبدشکافی تعاملی سه‌بعدی کیسه ساکشن ۱ لیتری آبادیس (وایرفریم مهندسی)', build_bag3d),
         ('index.html', 'مقایسه ۳ گزینه هیروی تمام‌صفحه ویدیوی پرستاران (صفحه اصلی)', build_index),
     ):
         html = page(
             p, None, title, PH.HOME_DESC, builder(p),
             lang='fa', fa_path='',
-            extra_head=extra_head, scripts=(factory_hero.scripts(p) + scripts) if fname == 'factory-3d.html' else scripts,
+            extra_head=extra_head, scripts=(factory_hero.scripts(p) + scripts) if fname == 'factory-3d.html' else ((suction_bag_3d.scripts(p) + scripts) if fname == 'suction-bag-1l-3d.html' else scripts),
             main_class='home-page', body_class='home', lightbox=True,
             html_attrs='data-slogan="t1"',
         )

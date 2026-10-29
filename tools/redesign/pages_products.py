@@ -383,6 +383,17 @@ def patch_suction_bag_benefits():
         html = html.replace(needle, block + needle, 1)
         html = html.replace('<a href="#intro">معرفی</a>',
                             '<a href="#intro">معرفی</a><a href="#benefits">مزایا</a>', 1)
+    import suction_bag_3d
+    html = re.sub(r'\n?  <section class="f3d f3d--bag" id="bag-3d".*?  </section>\n?', '\n', html, flags=re.S)
+    html = re.sub(r'\n?<link rel="stylesheet" href="\.\./\.\./assets/css/factory-3d\.css\?v=[^"]+">', '', html)
+    html = re.sub(r'\n?<script type="module" src="\.\./\.\./assets/js/suction-bag-1l-3d\.js\?v=[^"]+"></script>', '', html)
+    html = html.replace('<a href="#bag-3d">کالبدشکافی سه‌بعدی ۱ لیتری</a>', '')
+    html = html.replace('<a href="#s1">۱ لیتری</a>', '<a href="#bag-3d">کالبدشکافی سه‌بعدی ۱ لیتری</a><a href="#s1">۱ لیتری</a>', 1)
+    html = html.replace('</head>', suction_bag_3d.head('../../') + '\n</head>', 1)
+    html = html.replace('</body>', suction_bag_3d.scripts('../../') + '</body>', 1)
+    sec_fa = suction_bag_3d.section('../../', 'fa', skip_to='#s1', sec_id='bag-3d', tag_h='h2')
+    html = html.replace('  <section class="section"><div class="wrap">\n    <div class="size-block" id="s1">',
+                        sec_fa + '\n  <section class="section"><div class="wrap">\n    <div class="size-block" id="s1">', 1)
     path.write_text(html, encoding='utf-8')
     return 'products/suction-bag/index.html'
 
@@ -560,6 +571,7 @@ def _tabs(items, blocks, lang='fa', slug='', p=''):
 
 def _related_i18n(p, here, lang):
     from product_copy import UI
+    import suction_bag_3d
     ui = UI[lang]
     titles = {row[0]: row[2] for row in HUB_FAMILIES[lang]}
     srcs = family_src(p)
@@ -580,6 +592,7 @@ def _inquiry(p, lang):
     if lang == 'fa':
         return INQUIRY
     from product_copy import UI
+    import suction_bag_3d
     ui = UI[lang]
     quote = p + 'export/#quote'
     return f'''  <section class="section" id="inquiry"><div class="wrap">
@@ -599,6 +612,7 @@ def write_family_page(write, slug, lang):
     if h1_over:
         h1 = h1_over
     from product_copy import UI
+    import suction_bag_3d
     ui = UI[lang] if lang != 'fa' else _FA_UI
     sep = '، ' if lang != 'en' else ', '
     lead = sep.join(i['title'] for i in items)
@@ -667,6 +681,7 @@ def write_bag(write, lang):
     if lang == 'fa':
         return None
     from product_copy import UI
+    import suction_bag_3d
     import solutions_arch as S
     ui = UI[lang]
     rel, p, can, crumb_href, h1 = OUT['suction-bag'][lang]
@@ -711,7 +726,9 @@ def write_bag(write, lang):
       {_bag_uses(lang, size, p)}
     </article>''')
     benefit = 'Benefits' if lang == 'en' else 'المزايا'
+    b3d_lbl = '3D 1L Cutaway' if lang == 'en' else 'التشريح ثلاثي الأبعاد ١ لتر'
     anchors = (f'<a href="#benefits">{esc(benefit)}</a>'
+               f'<a href="#bag-3d">{esc(b3d_lbl)}</a>'
                f'<a href="#s1">{esc(ui["sz1"])}{S.badge(lang, "order")}</a>'
                f'<a href="#s2">{esc(ui["sz2"])}{S.badge(lang, "order")}</a>'
                f'<a href="#s3">{esc(ui["sz3"])}{S.badge(lang, "order")}</a>'
@@ -729,6 +746,7 @@ def write_bag(write, lang):
             + '\n' + bag_benefits(lang, p) + '\n'
             + f'  <nav class="anchors"><div class="wrap">{anchors}</div></nav>\n'
             + intro
+            + suction_bag_3d.section(p, lang, skip_to='#s1', sec_id='bag-3d', tag_h='h2') + '\n'
             + '  <section class="section"><div class="wrap">\n' + '\n'.join(blocks) + '\n  </div></section>\n'
             + f'''  <section class="section section--alt" id="filters"><div class="wrap">
     <h2>{esc(ui["filters_h"])}</h2>
@@ -743,7 +761,8 @@ def write_bag(write, lang):
             + S.related_section(p, lang, 'suction-bag')
             + _inquiry(p, lang))
     write(rel, page(p, 'products', h1, ui['bag_desc'], main, lightbox=True, lang=lang,
-                    fa_path='products/suction-bag/', canonical_path=can))
+                    fa_path='products/suction-bag/', canonical_path=can,
+                    extra_head=suction_bag_3d.head(p), scripts=suction_bag_3d.scripts(p)))
     return rel
 
 
@@ -785,6 +804,17 @@ def patch_suction_bag_cleanup():
         if n != 1:
             raise SystemExit('suction-bag: filters chapter not replaced')
         html = html2
+    import suction_bag_3d
+    html = re.sub(r'\n?  <section class="f3d f3d--bag" id="bag-3d".*?  </section>\n?', '\n', html, flags=re.S)
+    html = re.sub(r'\n?<link rel="stylesheet" href="\.\./\.\./assets/css/factory-3d\.css\?v=[^"]+">', '', html)
+    html = re.sub(r'\n?<script type="module" src="\.\./\.\./assets/js/suction-bag-1l-3d\.js\?v=[^"]+"></script>', '', html)
+    html = html.replace('<a href="#bag-3d">کالبدشکافی سه‌بعدی ۱ لیتری</a>', '')
+    html = html.replace('<a href="#s1">۱ لیتری</a>', '<a href="#bag-3d">کالبدشکافی سه‌بعدی ۱ لیتری</a><a href="#s1">۱ لیتری</a>', 1)
+    html = html.replace('</head>', suction_bag_3d.head('../../') + '\n</head>', 1)
+    html = html.replace('</body>', suction_bag_3d.scripts('../../') + '</body>', 1)
+    sec_fa = suction_bag_3d.section('../../', 'fa', skip_to='#s1', sec_id='bag-3d', tag_h='h2')
+    html = html.replace('  <section class="section"><div class="wrap">\n    <div class="size-block" id="s1">',
+                        sec_fa + '\n  <section class="section"><div class="wrap">\n    <div class="size-block" id="s1">', 1)
     path.write_text(html, encoding='utf-8')
     return 'products/suction-bag/index.html'
 
