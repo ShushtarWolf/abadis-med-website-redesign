@@ -9,7 +9,7 @@ three.js r170 + OrbitControls are self-hosted in assets/js/ (no CDN).
 import json
 from html import escape as esc
 
-V = '20261029k'
+V = '20261029l'
 
 T = {
   'fa': dict(
@@ -28,13 +28,13 @@ T = {
         subs=[
           dict(id=11, code='۱.۱', pin='۱.۱ تزریق ۲۲۰ تن (۳ دستگاه)', chip='۱.۱ سه دستگاه تزریق ۲۲۰ تن',
                spec='قالب‌گیری دقیق بدنه کیسه‌های ساکشن یک‌بارمصرف در ردیف شمالی سالن همکف (سقف ۵ متر).',
-               pos=[-12.5, 2.8, -17.0]),
+               pos=[-9.25, 2.8, -16.2]),
           dict(id=12, code='۱.۲', pin='۱.۲ بادی (۲ دستگاه)', chip='۱.۲ دو دستگاه بادی',
                spec='تولید قطعات بادی و مخازن جانبی پزشکی در بخش جنوب‌غربی سالن تزریق.',
-               pos=[-16.5, 3.2, -1.0]),
+               pos=[-13.8, 3.2, 0.7]),
           dict(id=13, code='۱.۳', pin='۱.۳ تزریق ۱۲۰ تن', chip='۱.۳ دستگاه تزریق ۱۲۰ تن',
                spec='تزریق درب، اتصالات و قطعات ظریف کیسه ساکشن با دقت میکرونی در بخش جنوب‌شرقی.',
-               pos=[-9.0, 2.4, -0.5]),
+               pos=[-5.05, 2.2, 1.5]),
         ]
       ),
       dict(
@@ -43,22 +43,22 @@ T = {
         subs=[
           dict(id=21, code='۲.۱', pin='۲.۱ سالن مونتاژ (۱۰×۱۰م)', chip='۲.۱ سالن مونتاژ پلی‌اورتان (۱۰×۱۰م)',
                spec='۳ خط موازی مونتاژ و تست نشتی کیسه ساکشن در اتاق ایزوله با دیوار و سقف پلی‌اورتان.',
-               pos=[-14.0, 7.2, 2.0]),
+               pos=[-9.25, 7.2, 3.0]),
           dict(id=22, code='۲.۲', pin='۲.۲ کارتنینگ و بالابر', chip='۲.۲ راهروی کارتنینگ و بالابر (۱۰×۳م)',
                spec='بسته‌بندی در راهروی ۱۰×۳ متری و انتقال مستقیم به همکف با بالابر اختصاصی (انبار میانی بسته).',
-               pos=[-11.5, 7.2, -4.5]),
+               pos=[-8.5, 7.2, 9.5]),
         ]
       ),
       dict(
         n='سوله ۲ — سالن تولید فیلتر متخلخل (خروج از قالب)',
-        t='نمایش صرفاً مرحله خروج فیلتر متخلخل نهایی از قالب در سالن ۱۰×۱۴ متر با حفظ کامل محرمانگی دانش فنی.',
+        t='نمایش صرفاً مرحله خروج فیلتر متخلخل نهایی از قالب در بخش جنوبی سوله ۲، بعد از دیوار ۱۸ متری، با حفظ کامل محرمانگی دانش فنی.',
         subs=[
           dict(id=31, code='۳.۱', pin='۳.۱ خروج فیلتر از قالب', chip='۳.۱ خروج فیلتر متخلخل از قالب',
                spec='جداسازی فیلتر متخلخل نهایی از قالب پرس؛ سایر مراحل تولید به دلیل محرمانگی دانش فنی نمایش داده نمی‌شود.',
-               pos=[0.0, 3.2, 5.4]),
+               pos=[2.25, 3.2, 4.0]),
           dict(id=32, code='۳.۲', pin='۳.۲ سینی کنترل کیفیت فیلتر', chip='۳.۲ سینی کنترل کیفیت فیلتر قطع جریان',
                spec='آماده‌سازی فیلترهای هیدروفوبیک، دوئال و مکانیکی با راندمان ۹۹.۹۹۹٪ جهت نصب در درب کیسه.',
-               pos=[2.9, 1.8, 9.1]),
+               pos=[5.4, 1.6, 8.7]),
         ]
       ),
       dict(
@@ -67,25 +67,25 @@ T = {
         subs=[
           dict(id=41, code='۴.۱', pin='۴.۱ اکسترودر تیوب (۲ خط)', chip='۴.۱ دو خط اکسترودر تیوب (همکف)',
                spec='تولید پیوسته تیوب‌های ساکشن پزشکی ضدپیچ‌خوردگی در سالن ۱۰×۱۸ متری طبقه همکف سوله ۲.',
-               pos=[0.0, 2.2, -15.5]),
+               pos=[2.25, 2.2, -16.0]),
           dict(id=42, code='۴.۲', pin='۴.۲ باکس کلین‌رومی و بالابر', chip='۴.۲ باکس کلین‌رومی و بالابر مخصوص',
                spec='انتقال ایزوله کلاف‌های تیوب از سالن اکسترودر به طبقه بالا بدون تماس با هوای محیط.',
-               pos=[0.5, 4.5, -7.0]),
+               pos=[2.2, 4.5, -5.8]),
           dict(id=43, code='۴.۳', pin='۴.۳ کلین‌روم ۱۰۰٬۰۰۰ (طبقه اول)', chip='۴.۳ کلین‌روم کلاس ۱۰۰٬۰۰۰ (طبقه اول)',
                spec='مونتاژ کانکتور و بسته‌بندی ساکشن تیوب در ۲ خط مجزا تحت فشار مثبت اتاق تمیز کلاس ۱۰۰٬۰۰۰.',
-               pos=[0.0, 7.5, -14.5]),
+               pos=[2.25, 7.4, -13.0]),
         ]
       ),
       dict(
         n='سوله ۳ — انبار محصول نهایی و ارسال سراسری',
-        t='نگهداری پالت‌های کارتن ۴۵ عددی در سوله ۱۸×۷ متر و ارسال مستقیم به ۱٬۲۸۴ مرکز درمانی در ۳۱ استان.',
+        t='نگهداری پالت‌های کارتن ۴۵ عددی در سوله ۸٫۵×۳۶ متر و ارسال مستقیم به ۱٬۲۸۴ مرکز درمانی در ۳۱ استان.',
         subs=[
           dict(id=51, code='۵.۱', pin='۵.۱ پالت‌های کارتن ۴۵ عددی', chip='۵.۱ پالت‌های کارتن ۴۵ عددی (ظرفیت ۵ میلیون)',
                spec='چیدمان استاندارد کارتن‌های ۴۵ عددی در قفسه‌های سوله ۳ با ظرفیت تولید سالانه ۵ میلیون کیسه ساکشن.',
-               pos=[10.5, 3.8, 2.0]),
+               pos=[11.5, 3.4, -6.0]),
           dict(id=52, code='۵.۲', pin='۵.۲ لیفتراک و درب ارسال', chip='۵.۲ راهروی لیفتراک و ارسال به ۱٬۲۸۴ مرکز',
                spec='بارگیری از درب پارکینگ راست و ارسال رایگان به ۱٬۲۸۴ بیمارستان و مرکز جراحی در سراسر کشور.',
-               pos=[12.0, 2.5, 9.5]),
+               pos=[11.5, 2.2, 11.4]),
         ]
       ),
     ],
@@ -107,13 +107,13 @@ T = {
         subs=[
           dict(id=11, code='1.1', pin='1.1 220t Injection (×3)', chip='1.1 3× 220-Ton Injection',
                spec='Precision molding of disposable suction canister bodies along the north row of the 5m ground hall.',
-               pos=[-12.5, 2.8, -17.0]),
+               pos=[-9.25, 2.8, -16.2]),
           dict(id=12, code='1.2', pin='1.2 Blow-Molding (×2)', chip='1.2 2× Blow-Molding',
                spec='Blow-molding of specialized medical fluid containers in the southwest bay of Hall 1.',
-               pos=[-16.5, 3.2, -1.0]),
+               pos=[-13.8, 3.2, 0.7]),
           dict(id=13, code='1.3', pin='1.3 120t Injection', chip='1.3 1× 120-Ton Injection',
                spec='High-precision injection molding of lids, ports, and fine canister fittings in the southeast bay.',
-               pos=[-9.0, 2.4, -0.5]),
+               pos=[-5.05, 2.2, 1.5]),
         ]
       ),
       dict(
@@ -122,22 +122,22 @@ T = {
         subs=[
           dict(id=21, code='2.1', pin='2.1 PU Assembly (10×10m)', chip='2.1 Polyurethane Assembly (10×10m)',
                spec='3 parallel suction canister assembly & leak-testing lines inside an isolated polyurethane panel room.',
-               pos=[-14.0, 7.2, 2.0]),
+               pos=[-9.25, 7.2, 3.0]),
           dict(id=22, code='2.2', pin='2.2 Cartoning & Lift', chip='2.2 Cartoning Corridor & Lift (10×3m)',
                spec='Cartoning in the 10×3m corridor with direct vertical lift transfer to the ground floor (WIP room closed).',
-               pos=[-11.5, 7.2, -4.5]),
+               pos=[-8.5, 7.2, 9.5]),
         ]
       ),
       dict(
         n='Hall 2 — Porous Filter Demolding (IP Protected)',
-        t='Exclusively showing finished porous filter demolding in the 10×14m wing to protect proprietary manufacturing IP.',
+        t='Exclusively showing finished porous filter demolding in the south bay of hall 2, beyond the 18m partition, to protect proprietary manufacturing IP.',
         subs=[
           dict(id=31, code='3.1', pin='3.1 Filter Demolding', chip='3.1 Porous Filter Demolding',
                spec='Finished porous filter exiting the mold press; upstream process is hidden to protect trade secrets.',
-               pos=[0.0, 3.2, 5.4]),
+               pos=[2.25, 3.2, 4.0]),
           dict(id=32, code='3.2', pin='3.2 Shut-Off Filter QC', chip='3.2 Shut-Off Filter QC Tray',
                spec='Inspection of 99.999% efficiency hydrophobic, dual, and mechanical shut-off filters for lid integration.',
-               pos=[2.9, 1.8, 9.1]),
+               pos=[5.4, 1.6, 8.7]),
         ]
       ),
       dict(
@@ -146,25 +146,25 @@ T = {
         subs=[
           dict(id=41, code='4.1', pin='4.1 Tube Extruders (×2)', chip='4.1 2× Medical Tube Extruders',
                spec='Continuous extrusion of kink-resistant medical suction tubing in the 10×18m ground-floor hall.',
-               pos=[0.0, 2.2, -15.5]),
+               pos=[2.25, 2.2, -16.0]),
           dict(id=42, code='4.2', pin='4.2 Pass-Box & Lift', chip='4.2 Cleanroom Pass-Box & Lift',
                spec='Sealed vertical transfer of extruded tubing coils from ground floor into the upstairs cleanroom.',
-               pos=[0.5, 4.5, -7.0]),
+               pos=[2.2, 4.5, -5.8]),
           dict(id=43, code='4.3', pin='4.3 Class 100k Cleanroom', chip='4.3 Class 100,000 Cleanroom (Upper)',
                spec='Suction tube connector assembly and sterile-grade packaging across 2 lines under positive pressure.',
-               pos=[0.0, 7.5, -14.5]),
+               pos=[2.25, 7.4, -13.0]),
         ]
       ),
       dict(
         n='Hall 3 — Finished Goods Warehouse & Nationwide Dispatch',
-        t='Organized 45-count carton pallet racks in the 7×18m hall dispatching to 1,284 medical centers across 31 provinces.',
+        t='Organized 45-count carton pallet racks in the 8.5×36m hall dispatching to 1,284 medical centers across 31 provinces.',
         subs=[
           dict(id=51, code='5.1', pin='5.1 45-Count Pallets', chip='5.1 45-Count Carton Pallets (5M/yr)',
                spec='Standardized pallet racks of 45-unit cartons supporting a 5-million-unit annual production capacity.',
-               pos=[10.5, 3.8, 2.0]),
+               pos=[11.5, 3.4, -6.0]),
           dict(id=52, code='5.2', pin='5.2 Forklift & Dispatch', chip='5.2 Forklift Aisle & Dispatch (1,284 Centers)',
                spec='Loading via the east dispatch gate for free delivery to 1,284 hospitals and surgical centers nationwide.',
-               pos=[12.0, 2.5, 9.5]),
+               pos=[11.5, 2.2, 11.4]),
         ]
       ),
     ],
@@ -186,13 +186,13 @@ T = {
         subs=[
           dict(id=11, code='١.١', pin='١.١ حقن ٢٢٠ طن (×٣)', chip='١.١ ٣ ماكينات حقن ٢٢٠ طن',
                spec='قولبة دقيقة لأجسام عبوات الشفط أحادية الاستخدام في الصف الشمالي من القاعة الأرضية (٥ م).',
-               pos=[-12.5, 2.8, -17.0]),
+               pos=[-9.25, 2.8, -16.2]),
           dict(id=12, code='١.٢', pin='١.٢ نفخ القوالب (×٢)', chip='١.٢ ماكينتا نفخ القوالب',
                spec='تشكيل العبوات والخزانات الطبية بالنفخ في الجناح الجنوبي الغربي من قاعة الحقن.',
-               pos=[-16.5, 3.2, -1.0]),
+               pos=[-13.8, 3.2, 0.7]),
           dict(id=13, code='١.٣', pin='١.٣ حقن ١٢٠ طن', chip='١.٣ ماكينة حقن ١٢٠ طن',
                spec='حقن الأغطية والوصلات والأجزاء الدقيقة لعبوات الشفط بدقة ميكرونية عالية.',
-               pos=[-9.0, 2.4, -0.5]),
+               pos=[-5.05, 2.2, 1.5]),
         ]
       ),
       dict(
@@ -201,22 +201,22 @@ T = {
         subs=[
           dict(id=21, code='٢.١', pin='٢.١ قاعة التجميع (١٠×١٠م)', chip='٢.١ قاعة التجميع المعزولة (١٠×١٠م)',
                spec='٣ خطوط متوازية لتجميع واختبار عدم التسرب داخل غرفة معزولة بألواح البولي يوريثان.',
-               pos=[-14.0, 7.2, 2.0]),
+               pos=[-9.25, 7.2, 3.0]),
           dict(id=22, code='٢.٢', pin='٢.٢ الكرتنة والمصعد', chip='٢.٢ ممر الكرتنة والمصعد (١٠×٣م)',
                spec='التعبئة في ممر ١٠×٣ م والنقل المباشر إلى الطابق الأرضي عبر المصعد المخصص (المخزن الوسيط مغلق).',
-               pos=[-11.5, 7.2, -4.5]),
+               pos=[-8.5, 7.2, 9.5]),
         ]
       ),
       dict(
         n='القاعة ٢ — فصل الفلتر المسامي من القالب',
-        t='عرض مرحلة إخراج الفلتر المسامي النهائي من القالب فقط في قاعة ١٠×١٤ م حفاظاً على سرية تقنية التصنيع.',
+        t='عرض مرحلة إخراج الفلتر المسامي النهائي من القالب فقط في الجناح الجنوبي للقاعة ٢ بعد الفاصل البالغ ١٨ م، حفاظاً على سرية تقنية التصنيع.',
         subs=[
           dict(id=31, code='٣.١', pin='٣.١ إخراج الفلتر من القالب', chip='٣.١ إخراج الفلتر المسامي من القالب',
                spec='فصل الفلتر المسامي النهائي عن القالب؛ لا تُعرض المراحل السابقة حفاظاً على الملكية الفكرية.',
-               pos=[0.0, 3.2, 5.4]),
+               pos=[2.25, 3.2, 4.0]),
           dict(id=32, code='٣.٢', pin='٣.٢ فحص فلاتر الإيقاف', chip='٣.٢ صينية فحص فلاتر إيقاف التدفق',
                spec='تجهيز وفحص الفلاتر الهيدروفوبية والمزدوجة والميكانيكية بكفاءة ٩٩.٩۹٩٪ للتركيب في الأغطية.',
-               pos=[2.9, 1.8, 9.1]),
+               pos=[5.4, 1.6, 8.7]),
         ]
       ),
       dict(
@@ -225,25 +225,25 @@ T = {
         subs=[
           dict(id=41, code='٤.١', pin='٤.١ بثق الأنابيب (×٢)', chip='٤.١ خطّا بثق الأنابيب الطبية',
                spec='إنتاج مستمر لأنابيب الشفط الطبية المقاومة للالتواء في قاعة ١٠×١٨ م بالطابق الأرضي.',
-               pos=[0.0, 2.2, -15.5]),
+               pos=[2.25, 2.2, -16.0]),
           dict(id=42, code='٤.٢', pin='٤.٢ صندوق التمرير والمصعد', chip='٤.٢ صندوق التمرير والمصعد المعقم',
                spec='نقل معقم لملفات الأنابيب من قاعة البثق إلى الطابق العلوي دون تلامس مع الهواء الخارجي.',
-               pos=[0.5, 4.5, -7.0]),
+               pos=[2.2, 4.5, -5.8]),
           dict(id=43, code='٤.٣', pin='٤.٣ الغرفة النظيفة ١٠٠٬٠٠٠', chip='٤.٣ الغرفة النظيفة فئة ١٠٠٬٠٠٠ (الطابق الأول)',
                spec='تجميع وصلات أنابيب الشفط وتغليفها في خطين مستقلين تحت ضغط إيجابي داخل الغرفة النظيفة.',
-               pos=[0.0, 7.5, -14.5]),
+               pos=[2.25, 7.4, -13.0]),
         ]
       ),
       dict(
         n='القاعة ٣ — مستودع المنتجات النهائية والشحن',
-        t='تخزين منصات الكراتين (٤٥ عبوة) في القاعة ٣ (٧×١٨ م) والشحن المباشر إلى ١٬٢٨٤ مركزاً علاجياً.',
+        t='تخزين منصات الكراتين (٤٥ عبوة) في القاعة ٣ (٨٫٥×٣٦ م) والشحن المباشر إلى ١٬٢٨٤ مركزاً علاجياً.',
         subs=[
           dict(id=51, code='٥.١', pin='٥.١ منصات الكراتين (٤٥ عبوة)', chip='٥.١ منصات الكراتين (٥ ملايين سنوياً)',
                spec='تخزين منظم لكراتين سعة ٤٥ عبوة بطاقة إنتاجية سنوية تبلغ ٥ ملايين كيس شفط.',
-               pos=[10.5, 3.8, 2.0]),
+               pos=[11.5, 3.4, -6.0]),
           dict(id=52, code='٥.٢', pin='٥.٢ الرافعة الشوكية والشحن', chip='٥.٢ ممر الرافعة الشوكية والشحن (١٬٢٨٤ مركزاً)',
                spec='التحميل عبر البوابة الشرقية للشحن المجاني إلى ١٬٢٨٤ مستشفى ومركزاً جراحياً في ٣١ محافظة.',
-               pos=[12.0, 2.5, 9.5]),
+               pos=[11.5, 2.2, 11.4]),
         ]
       ),
     ],
