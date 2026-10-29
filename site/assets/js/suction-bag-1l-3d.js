@@ -154,7 +154,7 @@ function initBag3D(sec) {
   // Bevel-cut outlet ellipse
   edges(new THREE.TorusGeometry(1.6, 0.16, 8, 28), pEnd.x, pEnd.y, pEnd.z, 0, 0, 23, pE.x + 0.5, pE.y, pE.z);
   // Anti-reflux valve cone below pit floor (21)
-  edges(new THREE.ConeGeometry(1.4, 2.6, 18, 2, true), PIT[0] + 0.6, 15.4, PIT[1] + 0.4, 1, 0, 21, Math.PI);
+  edges(new THREE.ConeGeometry(1.1, 2.4, 18, 2, true), -7.4, 17.6, 5.2, 1, 0, 21, Math.PI); // one-way valve under PATIENT tube
 
   // 2.2 Small horizontal tandem port lying across the front of the dome (22)
   const tA = new THREE.Vector3(-8.6, 19.4, 4.6), tB = new THREE.Vector3(-1.6, 20.6, 8.4);
@@ -444,7 +444,7 @@ function initBag3D(sec) {
     { p: V3(40, 54, 30), t: V3(1.5, 21.0, -3) },   // Zone 2: Ports & One-Way Valve
     { p: V3(-30, 16, 32), t: V3(-1, 5.5, 2) },  // Zone 3: Hydrophobic Filter & Cage
     { p: V3(40, 2, 40), t: V3(0, -5.5, 0) },    // Zone 4: 1L Liner, Graduations & SAP
-    { p: V3(-36, 10, -40), t: V3(0, -1.5, -4) },// Zone 5: Outer Canister & Rear Bracket
+    { p: V3(-54, 20, -60), t: V3(0, -1.5, -4) },// Zone 5: Outer Canister & Rear Bracket
   ];
   const LBL = [
     { p: V3(12.8, 9.2, 3.0), exp: V3(0, 7.5, 0) },
