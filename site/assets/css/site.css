@@ -1968,3 +1968,6 @@ body.academy { background: #f3f8f8; }
     background: rgba(10, 10, 18, 0.94);
   }
 }
+/* Sticky-header-aware anchors on solutions pages */
+html { scroll-padding-top: var(--sticky-offset, 96px); }
+[data-dim-card], .sol-showcase-card, .sol-showcase-card h2, #sol-detail, #sol-showcase { scroll-margin-top: var(--sticky-offset, 96px); }

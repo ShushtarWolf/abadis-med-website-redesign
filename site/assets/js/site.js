@@ -1177,3 +1177,37 @@
   cb.setAttribute('data-kb', base + 'assets/data/abadis-knowledge-base.json?v=20261028p');
   document.head.appendChild(cb);
 })();
+
+/* Solutions dimension chips: scroll target under sticky header (FA/EN/AR) */
+(function () {
+  function hdrOffset() {
+    var h = document.getElementById('header') || document.querySelector('.header');
+    var r = h ? h.getBoundingClientRect() : null;
+    var base = r && r.bottom > 0 ? r.bottom : 72;
+    return Math.round(base + 16);
+  }
+  function setVar() { document.documentElement.style.setProperty('--sticky-offset', hdrOffset() + 'px'); }
+  setVar(); addEventListener('resize', setVar, { passive: true });
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest && e.target.closest('[data-dim-btn]');
+    if (!t) return;
+    var k = t.getAttribute('data-dim-btn');
+    var panel = t.closest('.sol-showcase-card') || t.closest('section') || document;
+    var tabs = panel.querySelectorAll('[data-dim-btn]'), cards = panel.querySelectorAll('[data-dim-card]');
+    tabs.forEach(function (x) { x.classList.toggle('is-on', x === t); x.setAttribute('aria-selected', x === t ? 'true' : 'false'); });
+    var target = null;
+    cards.forEach(function (c) {
+      var m = k === 'all' || c.getAttribute('data-dim-card') === k;
+      c.classList.toggle('is-highlighted', k !== 'all' && m);
+      c.style.opacity = m ? '1' : '0.42';
+      if (m && k !== 'all' && !target) target = c;
+    });
+    if (!target) target = panel.querySelector('h2') || panel;
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var go = function () {
+      var y = target.getBoundingClientRect().top + scrollY - hdrOffset();
+      scrollTo({ top: Math.max(0, y), behavior: reduce ? 'auto' : 'smooth' });
+    };
+    go(); setTimeout(function () { var d = target.getBoundingClientRect().top - hdrOffset(); if (Math.abs(d) > 6) go(); }, 650);
+  });
+})();
