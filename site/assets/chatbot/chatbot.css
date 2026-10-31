@@ -399,11 +399,14 @@ html[data-theme="noir"] .abadis-chat-choice {
     border: 0;
     transform: translateZ(0);
   }
-  .abadis-chat-langs {
-    display: none; /* Site header already switches language; keeps mobile chat header clean */
-  }
   .abadis-chat-head {
+    flex-wrap: wrap;
     padding: 12px 14px;
+  }
+  .abadis-chat-langs {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1 1 auto;
   }
   .abadis-chat-iconbtn {
     width: 40px;
