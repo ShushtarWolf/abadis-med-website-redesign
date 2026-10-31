@@ -3004,19 +3004,19 @@
         "ar": "/arabic/من-نحن/"
       },
       "text": {
-        "fa": "آمار و دستاوردهای آبادیس در یک نگاه:\n• ۱٬۲۸۴ مرکز درمانی فعال در سراسر کشور (در لیست دیوار افتخار زاگرس؛ شمارنده صفحه اول: ۶۱۲ مرکز)\n• ۱۱٬۱۱۲ کاربر کادر درمان\n• ۹۸.۹۹٪ رضایت مشتریان\n• ۰.۰۰۱۸٪ نرخ خرابی محصول\n• ظرفیت تولید سالانه ۵ میلیون کیسه ساکشن (کارخانه از سال ۱۳۹۷)\n• پوشش حدود ۹۰٪ سهم بازار داخلی کیسه ساکشن در ۳۱ استان کشور و بیش از ۱۰۰۰ مرکز درمانی.",
-        "en": "Abadis Impact & Key Metrics:\n• 1,284 active healthcare centers on the redesign wall of honor (live homepage counter: 612 centers; 1,000+ customers on About)\n• 11,112 active clinical users\n• 98.99% customer satisfaction rate\n• 0.0018% product failure rate\n• 5,000,000 annual disposable liner production capacity (factory operating since 1397 / 2018)\n• ~90% domestic market share across 31 provinces in Iran.",
-        "ar": "إحصائيات وإنجازات آباديس:\n• ١٬٢٨٤ مركزًا علاجيًا ومستشفى فعالًا (عداد الصفحة الرئيسية: ٦١٢ مركزًا)\n• ١١٬١١٢ مستخدمًا من الكوادر الطبية\n• ٩٨٫٩٩٪ نسبة رضا العملاء\n• ٠٫٠٠١٨٪ معدل عطل المنتج\n• طاقة إنتاجية سنوية تبلغ ٥ ملايين كيس شفط وتغطية نحو ٩٠٪ من السوق المحلي في ٣١ محافظة."
+        "fa": "آمار و دستاوردهای آبادیس در یک نگاه:\n• ۱٬۲۸۴ مرکز درمانی فعال در سراسر کشور (در لیست دیوار افتخار زاگرس؛ شمارنده صفحه نخست data-impact-stat برابر ۱۲۸۴، نه ۶۱۲)\n• ۱۱٬۱۱۲ کاربر کادر درمان\n• ۹۸.۹۹٪ رضایت مشتریان\n• ۰.۰۰۱۸٪ نرخ خرابی محصول\n• ظرفیت تولید سالانه ۵ میلیون کیسه ساکشن (کارخانه از سال ۱۳۹۷)\n• پوشش حدود ۹۰٪ سهم بازار داخلی کیسه ساکشن در ۳۱ استان کشور و بیش از ۱۰۰۰ مرکز درمانی.",
+        "en": "Abadis Impact & Key Metrics:\n• 1,284 active healthcare centers on the redesign wall of honor (homepage counter data-impact-stat=\"1284\", not 612; 1,000+ customers on About)\n• 11,112 active clinical users\n• 98.99% customer satisfaction rate\n• 0.0018% product failure rate\n• 5,000,000 annual disposable liner production capacity (factory operating since 1397 / 2018)\n• ~90% domestic market share across 31 provinces in Iran.",
+        "ar": "إحصائيات وإنجازات آباديس:\n• ١٬٢٨٤ مركزًا علاجيًا ومستشفى فعالًا (عداد الصفحة الرئيسية data-impact-stat=1284 وليس 612)\n• ١١٬١١٢ مستخدمًا من الكوادر الطبية\n• ٩٨٫٩٩٪ نسبة رضا العملاء\n• ٠٫٠٠١٨٪ معدل عطل المنتج\n• طاقة إنتاجية سنوية تبلغ ٥ ملايين كيس شفط وتغطية نحو ٩٠٪ من السوق المحلي في ٣١ محافظة."
       },
-      "keywords": "stats impact metrics مراکز درمانی بیمارستان رضایت آمار تعداد کاربر ظرفیت تولید سهم بازار خرابی 1232 612 11112 98.99 0.0018 satisfaction centers centres hospitals users capacity failure rate إحصائيات رضا مراكز مستشفيات"
+      "keywords": "stats impact metrics مراکز درمانی بیمارستان رضایت آمار تعداد کاربر ظرفیت تولید سهم بازار خرابی 1284 11112 98.99 0.0018 12 million satisfaction centers centres hospitals users capacity failure rate إحصائيات رضا مراكز مستشفيات"
     },
     {
       "id": "solutions-philosophy",
       "section": "solutions",
       "url": {
-        "fa": "/solutions/#philosophy",
-        "en": "/en/solutions/#philosophy",
-        "ar": "/arabic/الحلول/#philosophy"
+        "fa": "/solutions/#phil",
+        "en": "/en/solutions/#phil",
+        "ar": "/arabic/الحلول/#phil"
       },
       "text": {
         "fa": "فلسفه راهکارهای بالینی آبادیس (معماری دوگانه و ۴ ستون اصلی):\nآبادیس نمایش محصولات را از دو مسیر مکمل ارائه می‌دهد: ۱) «بر اساس محصول» (مشخصات فنی، تصاویر واقعی و استعلام خرید) و ۲) «بر اساس راهکار بالینی» (مسئله، فناوری، مزیت و نتیجه بالینی).\nچهار ستون اصلی:\n۱. محصولات (Products): چه تولید و تأمین می‌کنیم؟\n۲. راهکارها (Solutions): این محصولات در کنار هم چه مسئله بالینی را حل می‌کنند؟\n۳. کاربردها (Applications): کدام بخش‌های بیمارستانی از این راهکارها استفاده می‌کنند؟\n۴. نوآوری (Innovation): روی چه فناوری‌هایی برای آینده کار می‌کنیم؟\nپنج حوزه راهکار بالینی: مدیریت مایعات و ترشحات بیمارستانی، ایمنی و مراقبت از راه هوایی، کنترل آلودگی و مدیریت پسماند (PVA)، بهره‌وری اتاق عمل (OR) و مراقبت ویژه (ICU).",
