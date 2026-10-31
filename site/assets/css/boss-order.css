@@ -1606,6 +1606,15 @@
   color: var(--text, #0f292a);
   text-align: justify;
 }
+[data-theme="dark"] .why-abadis .why-summary-body,
+[data-theme="noir"] .why-abadis .why-summary-body {
+  color: #e2f3f1 !important;
+  opacity: 1;
+}
+[data-theme="dark"] .why-abadis .why-summary,
+[data-theme="noir"] .why-abadis .why-summary {
+  background: rgba(10, 36, 40, 0.92);
+}
 @media (max-width: 640px) {
   .why-abadis .why-summary {
     margin-top: 22px;
