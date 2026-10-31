@@ -23,7 +23,7 @@ function init(sec) {
   /* ---------- geometry: every edge in one buffer, with aSub for machine highlighting ---------- */
   const P = [], O = [], TN = [], SUB = [];
   // Solid 3D machine shells (injection presses 11/12, extrusion lines 41); edges stay as a thin overlay
-  const SP = [], SN = [], SO = [], SS = [], SOLID_SUBS = new Set([11, 12, 31, 32, 41]);
+  const SP = [], SN = [], SO = [], SS = [], SOLID_SUBS = new Set([11, 12, 22, 31, 32, 41, 42, 51, 52]);
   function edges(geo, x, y, z, tone = 0, ordBias = 0, subId = 0) {
     const e = new THREE.EdgesGeometry(geo, 20), p = e.attributes.position;
     for (let i = 0; i < p.count; i++) {
@@ -226,15 +226,31 @@ function init(sec) {
   // Subnode 51: 45-count carton pallet racks along both long walls, aisle on centerline
   [8.55, 14.45].forEach((x) => {
     for (let z = -20.4; z < 9.5; z += 3.2) {
-      box(x - 0.7, 0, z, x + 0.7, 5.1, z + 2.45, 1, 0, 51);
-      [1.7, 3.4].forEach((y) => box(x - 0.7, y, z, x + 0.7, y + 0.08, z + 2.45, 1, 0, 51));
-      box(x - 0.5, 0.2, z + 0.35, x + 0.15, 1.15, z + 2.1, 1, 0, 51);
+      // solid rack: 4 uprights, 3 shelf decks, pallet + carton stacks on every level
+      [[x - 0.7, z], [x + 0.62, z], [x - 0.7, z + 2.37], [x + 0.62, z + 2.37]].forEach(([px, pz]) => box(px, 0, pz, px + 0.08, 5.1, pz + 0.08, 1, 0, 51));
+      [0.12, 1.7, 3.4].forEach((y, li) => {
+        box(x - 0.7, y, z, x + 0.7, y + 0.08, z + 2.45, 1, 0, 51);
+        box(x - 0.55, y + 0.08, z + 0.2, x + 0.55, y + 0.2, z + 2.25, 1, 0, 51); // pallet
+        for (let c = 0; c < 3; c++) {
+          const cz = z + 0.3 + c * 0.66, h = 0.5 + ((li + c) % 2) * 0.35;
+          box(x - 0.5, y + 0.2, cz, x - 0.02, y + 0.2 + h, cz + 0.6, 1, 0, 51);
+          box(x + 0.02, y + 0.2, cz, x + 0.5, y + 0.2 + 0.85 - h * 0.4, cz + 0.6, 1, 0, 51);
+        }
+      });
     }
   });
-  // Subnode 52: forklift aisle and the south dispatch door
+  // Subnode 52: forklift (solid) in the aisle + south dispatch door
   box(10.15, 0, zS - 0.16, 12.85, 3.8, zS + 0.08, 1, 0, 52);
-  box(10.7, 0, 10.15, 12.3, 1.45, 12.55, 1, 0, 52);
-  box(11.05, 1.45, 10.3, 11.95, 3.2, 10.65, 1, 0, 52);
+  box(10.75, 0.3, 9.6, 12.25, 1.25, 11.9, 1, 0, 52); // chassis
+  box(10.8, 1.25, 11.2, 12.2, 1.75, 11.9, 1, 0, 52); // counterweight
+  box(11.1, 1.25, 10.4, 11.9, 1.6, 11.0, 1, 0, 52); // seat
+  [[10.8, 9.75], [12.2, 9.75], [10.8, 11.75], [12.2, 11.75]].forEach(([px, pz]) => box(px - 0.04, 1.25, pz - 0.04, px + 0.04, 3.0, pz + 0.04, 1, 0, 52));
+  box(10.75, 2.95, 9.7, 12.25, 3.05, 11.85, 1, 0, 52); // overhead guard
+  box(10.95, 0.1, 9.3, 11.1, 3.3, 9.45, 1, 0, 52); box(11.9, 0.1, 9.3, 12.05, 3.3, 9.45, 1, 0, 52); // mast
+  box(11.0, 0.75, 9.25, 12.0, 0.85, 9.35, 1, 0, 52); // carriage
+  box(11.1, 0.7, 8.1, 11.25, 0.78, 9.3, 1, 0, 52); box(11.75, 0.7, 8.1, 11.9, 0.78, 9.3, 1, 0, 52); // forks
+  box(11.0, 0.78, 8.1, 12.0, 0.9, 9.25, 1, 0, 52); box(11.1, 0.9, 8.2, 11.9, 1.6, 9.15, 1, 0, 52); // pallet + carton load
+  [[10.75, 10.0], [12.25, 10.0], [10.75, 11.5], [12.25, 11.5]].forEach(([px, pz]) => cyl(0.3, 0.22, px, 0.3, pz, true, 1, 14, 52));
 
   const geo = new THREE.BufferGeometry();
   geo.setAttribute('position', new THREE.Float32BufferAttribute(P, 3));
