@@ -23,7 +23,7 @@ function init(sec) {
   /* ---------- geometry: every edge in one buffer, with aSub for machine highlighting ---------- */
   const P = [], O = [], TN = [], SUB = [];
   // Solid 3D machine shells (injection presses 11/12, extrusion lines 41); edges stay as a thin overlay
-  const SP = [], SN = [], SO = [], SS = [], SOLID_SUBS = new Set([11, 12, 21, 22, 23, 31, 43, 44, 32, 41, 42, 51, 52]);
+  const SP = [], SN = [], SO = [], SS = [], SOLID_SUBS = new Set([29, 49, 11, 12, 21, 22, 23, 31, 43, 44, 32, 41, 42, 51, 52]);
   function edges(geo, x, y, z, tone = 0, ordBias = 0, subId = 0) {
     const e = new THREE.EdgesGeometry(geo, 20), p = e.attributes.position;
     for (let i = 0; i < p.count; i++) {
@@ -90,7 +90,7 @@ function init(sec) {
 
   // HALL 1 (Injection) 13 x 36, xW..xA. Mezzanine stops 3 m short of the south lobby.
   box(xW, 0, zN, xA, 10.6, zS);
-  box(xW, 5.15, zN, xA, 5.4, zS - 3, 0, 0.04);
+  box(xW, 5.15, zN, xA, 5.4, zS - 3, 1, 0.04, 29); // solid mezzanine slab (2nd floor)
   ZG.forEach((z) => roof(xW, xA, 10.6, z, 0.55));
   // South doors, one per bay, on the street side
   [[(xW + xA) / 2, 10.6], [(xA + xB) / 2, 10.5], [(xB + xE) / 2, 8.6]].forEach(([cx, h]) => {
@@ -174,7 +174,7 @@ function init(sec) {
 
   // HALL 2: 10 x 36. North 18 m is extruder below / cleanroom above. South bay is the filter room.
   box(xA, 0, zN, xB, 10.5, zS);
-  box(xA, 5.15, zN, xB, 5.4, zCut, 0, 0.04);
+  box(xA, 5.15, zN, xB, 5.4, zCut, 1, 0.04, 49); // solid cleanroom floor slab
   ZG.forEach((z) => roof(xA, xB, 10.5, z, 0.5));
   box(xA, 0, zCut - 0.1, xB, 10.5, zCut + 0.1, 0, 0.02);
 
@@ -215,7 +215,6 @@ function init(sec) {
   [0.3, 4.2].forEach((x) => {
     box(x - 0.55, 5.4, -19.6, x + 0.55, 6.25, -7.4, 1, 0, 43);
     for (let k = 0; k < 4; k++) box(x - 0.28, 6.25, -18.4 + k * 2.7, x + 0.28, 6.75, -17.75 + k * 2.7, 1, 0, 43);
-    for (let k = 0; k < 3; k++) box(x - 0.5, 9.2, -18.6 + k * 4.4, x + 0.5, 9.45, -17.0 + k * 4.4, 1, 0, 44); // ceiling HEPA units
   });
 
   // Porous filter room: south of the 18 m wall, 9 m clear of the 10 m bay. Demolding only.
@@ -338,11 +337,14 @@ function init(sec) {
         alpha *= mix(1.0, 0.35, uHideSt * (1.0 - vT));
         alpha *= mix(1.0, 0.45, uHideSt * vT * (1.0 - isSub) * (1.0 - step(39.5, vSub) * step(vSub, 49.5)));
         // Upper-floor focus: hall walls / WIP shell / ground machines fade, mezzanine machines stay crisp
-        float upSub = (step(20.5, vSub) * step(vSub, 23.5) + step(42.5, vSub) * step(vSub, 44.5));
+        float slab = step(28.5, vSub) * step(vSub, 29.5) + step(48.5, vSub) * step(vSub, 49.5);
+        float upSub = (step(20.5, vSub) * step(vSub, 23.5) + step(42.5, vSub) * step(vSub, 44.5)) + slab;
         alpha *= mix(1.0, mix(0.1, 0.3, step(0.5, upSub)), uUpper * (1.0 - vT) * (1.0 - isSub));
         alpha *= mix(1.0, 0.3, uUpper * vT * (1.0 - upSub));
         alpha = max(alpha, uUpper * upSub * vT);
         c = mix(c, uHi, uUpper * upSub * vT * (1.0 - isSub) * 0.6);
+        c = mix(c, uHi, slab * 0.5);
+        alpha *= mix(1.0, mix(0.25, 1.0, uUpper), slab * uRoof);
         gl_FragColor = vec4(c, alpha);
       }
     `,
@@ -384,7 +386,13 @@ function init(sec) {
         float upS = step(20.5, vSub) * step(vSub, 23.5) + step(42.5, vSub) * step(vSub, 44.5);
         c *= mix(1.0, mix(1.0, 1.35, upS), uUpper * (1.0 - isSub)); // key light on the mezzanine, ground dims
         c += uUpper * upS * vec3(0.05, 0.09, 0.1);
-        gl_FragColor = vec4(c, grow * mix(mix(.82, .97, isSub), mix(.22, 1.0, upS), uUpper));
+        // Floor slabs: a clear 2nd-floor deck. Aerial = translucent, upper station = near-opaque, ground station = ghosted
+        float slab = step(28.5, vSub) * step(vSub, 29.5) + step(48.5, vSub) * step(vSub, 49.5);
+        vec3 deck = mix(uHi, vec3(1.0), 0.35) * (0.8 + 0.2 * d);
+        c = mix(c, deck, slab);
+        float a = grow * mix(mix(.82, .97, isSub), mix(.22, 1.0, upS), uUpper);
+        float aSlab = grow * mix(mix(0.55, 0.12, uRoof), 0.92, uUpper);
+        gl_FragColor = vec4(c, mix(a, aSlab, slab));
       }
     `,
   });
