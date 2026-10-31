@@ -23,7 +23,7 @@ function init(sec) {
   /* ---------- geometry: every edge in one buffer, with aSub for machine highlighting ---------- */
   const P = [], O = [], TN = [], SUB = [];
   // Solid 3D machine shells (injection presses 11/12, extrusion lines 41); edges stay as a thin overlay
-  const SP = [], SN = [], SO = [], SS = [], SOLID_SUBS = new Set([11, 12, 41]);
+  const SP = [], SN = [], SO = [], SS = [], SOLID_SUBS = new Set([11, 12, 31, 32, 41]);
   function edges(geo, x, y, z, tone = 0, ordBias = 0, subId = 0) {
     const e = new THREE.EdgesGeometry(geo, 20), p = e.attributes.position;
     for (let i = 0; i < p.count; i++) {
@@ -328,8 +328,15 @@ function init(sec) {
     e.setAttribute('aSub', new THREE.Float32BufferAttribute(new Array(n).fill(subId), 1));
     g.dispose(); return new THREE.LineSegments(e, mat);
   }
-  const moldTop = partLines(() => B(2.8, 0.9, 2.8), 31); scene.add(moldTop);
-  const filter = partLines(() => new THREE.CylinderGeometry(0.75, 0.75, 0.22, 20), 31); scene.add(filter);
+  function solidPart(build, subId = 31) {
+    const l = partLines(build, subId), g = build(), n = g.attributes.position.count;
+    g.setAttribute('aOrd', new THREE.Float32BufferAttribute(new Array(n).fill(0.55), 1));
+    g.setAttribute('aSub', new THREE.Float32BufferAttribute(new Array(n).fill(subId), 1));
+    g.computeVertexNormals();
+    const m = new THREE.Mesh(g, smat); m.renderOrder = -1; l.add(m); return l;
+  }
+  const moldTop = solidPart(() => B(2.8, 0.9, 2.8), 31); scene.add(moldTop);
+  const filter = solidPart(() => new THREE.CylinderGeometry(0.75, 0.75, 0.22, 20), 31); scene.add(filter);
 
   // Operators: block/stick figures with looping work cycles (no faces). Kind from station sub-id.
   const PART = (geo, sub, x, y, z) => { const l = partLines(() => geo, sub); l.position.set(x, y, z); return l; };
