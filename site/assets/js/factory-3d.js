@@ -265,6 +265,8 @@ function init(sec) {
     uCoral: { value: new THREE.Color('#ff7a59') },
     uActiveSub: { value: 0 },
     uInStation: { value: 0 },
+    uRoof: { value: 0 },
+    uPulse: { value: 0 },
   };
   const mat = new THREE.ShaderMaterial({
     uniforms, transparent: true,
@@ -275,7 +277,9 @@ function init(sec) {
       varying float vO;
       varying float vT;
       varying float vSub;
+      varying vec3 vW;
       void main(){
+        vW = position;
         vO = aOrd;
         vT = aTone;
         vSub = aSub;
@@ -292,6 +296,9 @@ function init(sec) {
       varying float vO;
       varying float vT;
       varying float vSub;
+      varying vec3 vW;
+      uniform float uRoof;
+      uniform float uPulse;
       void main(){
         if (vO > uProg) discard;
         float fr = 1. - smoothstep(0., .06, uProg - vO);
@@ -299,6 +306,12 @@ function init(sec) {
         vec3 c = mix(uBase, uHi, vT);
         c = mix(c, uCoral, max(fr, isSub));
         float alpha = mix(1.0, vT > 0.5 ? 0.88 : 0.38, uInStation * (1.0 - isSub));
+        // Roof fade: upper shell (roof trusses + wall tops over the sheds) dims while inside a station
+        float up = smoothstep(7.6, 8.4, vW.y) * step(vW.z, 14.3) * step(abs(vW.x), 16.0);
+        alpha *= mix(1.0, 0.05, uRoof * up);
+        // Non-active machines recede a bit so the active one pops
+        alpha *= mix(1.0, 0.7, uRoof * (1.0 - isSub) * vT * (1.0 - up));
+        c = mix(c, vec3(1.0, 0.62, 0.45), isSub * (0.25 + 0.2 * uPulse));
         gl_FragColor = vec4(c, alpha);
       }
     `,
@@ -321,7 +334,7 @@ function init(sec) {
     `,
     fragmentShader: `
       uniform float uProg; uniform vec3 uBase; uniform vec3 uHi; uniform vec3 uCoral;
-      uniform float uActiveSub; uniform float uInStation;
+      uniform float uActiveSub; uniform float uInStation; uniform float uPulse; uniform float uRoof;
       varying float vO; varying float vSub; varying vec3 vN;
       void main(){
         float grow = smoothstep(vO, vO + .08, uProg);
@@ -329,8 +342,11 @@ function init(sec) {
         vec3 L = normalize(vec3(.45, .85, .35));
         float d = .45 + .55 * max(dot(normalize(vN), L), 0.) + .12 * abs(vN.z);
         float isSub = (uActiveSub > 0.5 && abs(vSub - uActiveSub) < 0.25) ? smoothstep(0.3, 0.7, uInStation) : 0.0;
-        vec3 c = mix(uHi, uCoral, isSub * .55) * d;
-        gl_FragColor = vec4(c, grow * mix(.82, .92, isSub));
+        // Active machine: full coral + key light / rim glow; others dim slightly
+        vec3 c = mix(uHi * d * mix(1.0, 0.78, uRoof), uCoral * (0.75 + 0.6 * d), isSub * .95);
+        float rim = pow(1. - abs(normalize(vN).y), 2.0);
+        c += isSub * (vec3(1.0, 0.55, 0.38) * (0.18 + 0.14 * uPulse) + vec3(1.0, 0.8, 0.6) * rim * 0.12);
+        gl_FragColor = vec4(c, grow * mix(.82, .97, isSub));
       }
     `,
   });
@@ -504,6 +520,7 @@ function init(sec) {
   ];
   const STREET_M = V3(-12, 0.2, 30.2); // street callout anchor on phones
   const LBL = [V3(-9.4, 6, -12), V3(-9.25, 11.4, 3), V3(2.25, 8, 5), V3(1.9, 11.2, -15), V3(11.5, 8.4, -4), V3(0, 8.2, 17.6), V3(12, 4.5, 28)];
+  const HOLD = 0.3; // each station dwells ~60% of its scroll span before the camera moves on
   const smooth = (x) => { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); };
   const fmtStep = (i) => cfg.step.replace('{n}', cfg.nums[i]).replace('{t}', cfg.total);
 
@@ -766,10 +783,10 @@ function init(sec) {
         // Keyframes: aerial at t=0, station i centred at t=i+0.5; ease across the whole gap
         const u = t - 0.5;
         if (u < 0) {
-          aerial(0.25, fromP, fromT); const f = smooth(t / 0.5);
+          aerial(0.25, fromP, fromT); const f = smooth(t / (0.5 - HOLD));
           pos.lerpVectors(fromP, VIEWS[0].p, f); look.lerpVectors(fromT, VIEWS[0].t, f);
         } else {
-          const a = Math.min(4, Math.floor(u)), b = Math.min(4, a + 1), f = smooth(u - a);
+          const a = Math.min(4, Math.floor(u)), b = Math.min(4, a + 1), f = smooth((u - a - HOLD) / (1 - 2 * HOLD));
           pos.lerpVectors(VIEWS[a].p, VIEWS[b].p, f); look.lerpVectors(VIEWS[a].t, VIEWS[b].t, f);
         }
         look.add(subFocusOffset);
@@ -850,6 +867,10 @@ function init(sec) {
       c.el.classList.toggle('show', vis); c.dot.classList.toggle('show', vis); c.path.classList.toggle('show', vis);
     });
 
+    // Roof fade target: on inside a station / explore, off on aerial + outro
+    const roofT = (explore || idx >= 0) ? (explore ? 1 : 1 - outroF) : 0;
+    uniforms.uRoof.value += (roofT - uniforms.uRoof.value) * (reduce ? 1 : 1 - Math.exp(-dt / 0.45));
+    uniforms.uPulse.value = reduce ? 0.5 : 0.5 + 0.5 * Math.sin(time * 3.2);
     renderer.render(scene, camera);
   }
   frame();
