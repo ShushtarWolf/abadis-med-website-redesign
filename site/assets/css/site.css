@@ -1971,3 +1971,9 @@ body.academy { background: #f3f8f8; }
 /* Sticky-header-aware anchors on solutions pages */
 html { scroll-padding-top: var(--sticky-offset, 96px); }
 [data-dim-card], .sol-showcase-card, .sol-showcase-card h2, #sol-detail, #sol-showcase { scroll-margin-top: var(--sticky-offset, 96px); }
+
+/* Footer cert strip — Daneshbonyan + NACI chips beside CE/ISO/IMED */
+.foot-certs-bar { flex-wrap: wrap; align-items: center; gap: 10px; }
+.foot-certs-more { display: flex; gap: 8px; align-items: center; }
+.foot-cert-chip { display: inline-flex; align-items: center; justify-content: center; height: 41px; padding: 4px 8px; background: transparent; border: 1.5px solid #D4DF9C; border-radius: 6px; }
+.site-footer .foot-cert-chip img { display: block; height: 33px; width: auto; margin: 0; }

@@ -67,7 +67,7 @@ def head(p, title, desc, og=None, lang='fa', fa_path='', canonical_path=None, ht
 <meta property="og:image" content="{ogi}">
 <link rel="preload" href="{p}assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{p}assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="{p}assets/css/site.css?v=20261028p">
+<link rel="stylesheet" href="{p}assets/css/site.css?v=20261101k">
 <link rel="stylesheet" href="{p}assets/css/boss-order.css?v=20261028p">
 <link rel="stylesheet" href="{p}assets/css/consent.css">
 <link rel="stylesheet" href="{p}assets/css/footer-motion.css">
@@ -220,6 +220,21 @@ def footer_address_html(lang):
         L['addr_factory'], L['addr_factory_val'], factory_href, cue)
 
 
+FOOT_CERTS_MORE_ALT = {
+    'fa': ('شرکت دانش‌بنیان', 'مرکز ملی تأیید صلاحیت ایران (NACI)'),
+    'en': ('Knowledge-based company (Daneshbonyan)', 'National Accreditation Center of Iran (NACI)'),
+    'ar': ('شركة قائمة على المعرفة (دانش‌بنیان)', 'المركز الوطني للاعتماد في إيران (NACI)'),
+}
+
+
+def foot_certs_more_html(p, lang='fa'):
+    kb, naci = FOOT_CERTS_MORE_ALT.get(lang, FOOT_CERTS_MORE_ALT['fa'])
+    return (
+        f'<span class="foot-cert-chip" title="{esc(kb)}"><img src="{p}assets/img/certs/cert-daneshbonyan.svg" width="24" height="24" alt="{esc(kb)}" loading="lazy"></span>'
+        f'<span class="foot-cert-chip" title="{esc(naci)}"><img src="{p}assets/img/certs/cert-naci.webp" width="398" height="336" alt="{esc(naci)}" loading="lazy"></span>'
+    )
+
+
 def footer(p, cur=None, lang='fa'):
     L = LANGS[lang]
     root = L['root']
@@ -264,6 +279,7 @@ def footer(p, cur=None, lang='fa'):
   </div>
   <div class="wrap foot-certs-bar">
     <div class="foot-certs"><img src="{p}assets/img/certs/abd-certs-768x119-1-copy.webp" width="768" height="119" alt="CE · ISO 13485:2016 · IMED" loading="lazy"></div>
+    <div class="foot-certs-more">{foot_certs_more_html(p, lang)}</div>
   </div>
   <div class="wrap foot-copy">{esc(L['footer_copy'])}</div>
 </footer>'''
