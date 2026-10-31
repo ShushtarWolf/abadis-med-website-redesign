@@ -267,6 +267,7 @@ function init(sec) {
     uInStation: { value: 0 },
     uRoof: { value: 0 },
     uPulse: { value: 0 },
+    uHideSt: { value: 0 }, // 0..1: hide occluding hall-3 racks while on the extruder station
   };
   const mat = new THREE.ShaderMaterial({
     uniforms, transparent: true,
@@ -299,6 +300,7 @@ function init(sec) {
       varying vec3 vW;
       uniform float uRoof;
       uniform float uPulse;
+      uniform float uHideSt;
       void main(){
         if (vO > uProg) discard;
         float fr = 1. - smoothstep(0., .06, uProg - vO);
@@ -312,6 +314,11 @@ function init(sec) {
         // Non-active machines recede a bit so the active one pops
         alpha *= mix(1.0, 0.7, uRoof * (1.0 - isSub) * vT * (1.0 - up));
         c = mix(c, vec3(1.0, 0.62, 0.45), isSub * (0.25 + 0.2 * uPulse));
+        // Extruder station: hall-3 racks nearly vanish, hall shell wireframe recedes hard
+        float occ = step(49.5, vSub) * step(vSub, 59.5);
+        alpha *= mix(1.0, 0.04, uHideSt * occ);
+        alpha *= mix(1.0, 0.35, uHideSt * (1.0 - vT));
+        alpha *= mix(1.0, 0.45, uHideSt * vT * (1.0 - isSub) * (1.0 - step(39.5, vSub) * step(vSub, 49.5)));
         gl_FragColor = vec4(c, alpha);
       }
     `,
@@ -334,9 +341,10 @@ function init(sec) {
     `,
     fragmentShader: `
       uniform float uProg; uniform vec3 uBase; uniform vec3 uHi; uniform vec3 uCoral;
-      uniform float uActiveSub; uniform float uInStation; uniform float uPulse; uniform float uRoof;
+      uniform float uActiveSub; uniform float uInStation; uniform float uPulse; uniform float uRoof; uniform float uHideSt;
       varying float vO; varying float vSub; varying vec3 vN;
       void main(){
+        if (uHideSt > 0.5 && vSub > 49.5 && vSub < 59.5) discard;
         float grow = smoothstep(vO, vO + .08, uProg);
         if (grow <= 0.) discard;
         vec3 L = normalize(vec3(.45, .85, .35));
@@ -346,6 +354,9 @@ function init(sec) {
         vec3 c = mix(uHi * d * mix(1.0, 0.78, uRoof), uCoral * (0.75 + 0.6 * d), isSub * .95);
         float rim = pow(1. - abs(normalize(vN).y), 2.0);
         c += isSub * (vec3(1.0, 0.55, 0.38) * (0.18 + 0.14 * uPulse) + vec3(1.0, 0.8, 0.6) * rim * 0.12);
+        float ext = step(39.5, vSub) * step(vSub, 49.5);
+        c *= 1.0 + uHideSt * ext * 0.25 * (1.0 - isSub);
+        c += uHideSt * isSub * vec3(0.12, 0.05, 0.02);
         gl_FragColor = vec4(c, grow * mix(.82, .97, isSub));
       }
     `,
@@ -515,7 +526,7 @@ function init(sec) {
     { p: V3(-31, 12, 6), t: V3(-9.4, 1.8, -11) },
     { p: V3(-29, 15, 21), t: V3(-9.25, 7, 3) },
     { p: V3(20, 8, 11), t: V3(2.5, 2, 5) },
-    { p: V3(21, 9.5, -1), t: V3(1.9, 1.6, -14) },
+    { p: V3(17, 5.2, -7), t: V3(2.2, 0.9, -15) }, // low 3/4 onto the extruder lines, under the cleanroom deck
     { p: V3(27, 9.5, 13), t: V3(11.5, 2.4, -4) },
   ];
   const STREET_M = V3(-12, 0.2, 30.2); // street callout anchor on phones
@@ -870,6 +881,8 @@ function init(sec) {
     // Roof fade target: on inside a station / explore, off on aerial + outro
     const roofT = (explore || idx >= 0) ? (explore ? 1 : 1 - outroF) : 0;
     uniforms.uRoof.value += (roofT - uniforms.uRoof.value) * (reduce ? 1 : 1 - Math.exp(-dt / 0.45));
+    const hideT = (idx === 3 && outroF < 0.5) ? 1 : 0;
+    uniforms.uHideSt.value += (hideT - uniforms.uHideSt.value) * (reduce ? 1 : 1 - Math.exp(-dt / 0.35));
     uniforms.uPulse.value = reduce ? 0.5 : 0.5 + 0.5 * Math.sin(time * 3.2);
     renderer.render(scene, camera);
   }
