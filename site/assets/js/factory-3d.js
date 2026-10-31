@@ -262,7 +262,7 @@ function init(sec) {
     uProg: { value: 0 },
     uBase: { value: new THREE.Color() },
     uHi: { value: new THREE.Color() },
-    uCoral: { value: new THREE.Color('#ff7a59') },
+    uCoral: { value: new THREE.Color('#ffb300') },
     uActiveSub: { value: 0 },
     uInStation: { value: 0 },
     uRoof: { value: 0 },
@@ -313,7 +313,7 @@ function init(sec) {
         alpha *= mix(1.0, 0.05, uRoof * up);
         // Non-active machines recede a bit so the active one pops
         alpha *= mix(1.0, 0.7, uRoof * (1.0 - isSub) * vT * (1.0 - up));
-        c = mix(c, vec3(1.0, 0.62, 0.45), isSub * (0.25 + 0.2 * uPulse));
+        c = mix(c, vec3(1.0, 0.82, 0.35), isSub * (0.25 + 0.2 * uPulse));
         // Extruder station: hall-3 racks nearly vanish, hall shell wireframe recedes hard
         float occ = step(49.5, vSub) * step(vSub, 59.5);
         alpha *= mix(1.0, 0.04, uHideSt * occ);
@@ -351,12 +351,12 @@ function init(sec) {
         float d = .45 + .55 * max(dot(normalize(vN), L), 0.) + .12 * abs(vN.z);
         float isSub = (uActiveSub > 0.5 && abs(vSub - uActiveSub) < 0.25) ? smoothstep(0.3, 0.7, uInStation) : 0.0;
         // Active machine: full coral + key light / rim glow; others dim slightly
-        vec3 c = mix(uHi * d * mix(1.0, 0.78, uRoof), uCoral * (0.75 + 0.6 * d), isSub * .95);
+        vec3 c = mix(mix(vec3(0.03, 0.2, 0.24), uHi * 0.55, 0.35) * d * mix(1.0, 0.78, uRoof), uCoral * (0.75 + 0.6 * d), isSub * .95);
         float rim = pow(1. - abs(normalize(vN).y), 2.0);
-        c += isSub * (vec3(1.0, 0.55, 0.38) * (0.18 + 0.14 * uPulse) + vec3(1.0, 0.8, 0.6) * rim * 0.12);
+        c += isSub * (vec3(1.0, 0.7, 0.1) * (0.18 + 0.14 * uPulse) + vec3(1.0, 0.9, 0.6) * rim * 0.12);
         float ext = step(39.5, vSub) * step(vSub, 49.5);
         c *= 1.0 + uHideSt * ext * 0.25 * (1.0 - isSub);
-        c += uHideSt * isSub * vec3(0.12, 0.05, 0.02);
+        c += uHideSt * isSub * vec3(0.12, 0.08, 0.0);
         gl_FragColor = vec4(c, grow * mix(.82, .97, isSub));
       }
     `,
@@ -486,7 +486,7 @@ function init(sec) {
 
   // 3D Target Beacon Ring at the active machine sub-node
   const beaconGroup = new THREE.Group();
-  const beaconMat = new THREE.LineBasicMaterial({ color: 0xff7a59, transparent: true, opacity: 0.95 });
+  const beaconMat = new THREE.LineBasicMaterial({ color: 0xffb300, transparent: true, opacity: 0.95 });
   const bPts1 = [], bPts2 = [];
   for (let k = 0; k <= 64; k++) {
     const a = (k / 64) * Math.PI * 2;
@@ -508,13 +508,62 @@ function init(sec) {
     scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), m)); ringMats.push(m);
   }
 
+  // Product journey: glowing dot + simple tube-set silhouette on a dotted floor path
+  // injection -> mold demold -> extruder -> hall 3 racks -> forklift -> south gate -> Golshan 19
+  const PATH = [V0(-9.4, -11), V0(-9.4, -2), V0(2.25, -2), V0(2.25, 4), V0(-2, 4), V0(-2, -15), V0(2.2, -15), V0(8, -15), V0(8, -4), V0(11.5, -4), V0(11.5, 8), V0(11.5, 13.5), V0(11.5, 27)];
+  function V0(x, z) { return new THREE.Vector3(x, 0.14, z); }
+  const pathCurve = new THREE.CatmullRomCurve3(PATH, false, 'catmullrom', 0.05);
+  const pathLen = pathCurve.getLength();
+  const pathPts = pathCurve.getSpacedPoints(Math.round(pathLen * 2));
+  const pathGeo = new THREE.BufferGeometry().setFromPoints(pathPts);
+  const pathMat = new THREE.PointsMaterial({ color: 0x7ff6ff, size: 0.22, transparent: true, opacity: 0.0, depthWrite: false });
+  const pathDots = new THREE.Points(pathGeo, pathMat); scene.add(pathDots);
+  const trailGeo = new THREE.BufferGeometry().setFromPoints(pathPts);
+  const trailMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.36, transparent: true, opacity: 0.95, depthWrite: false });
+  const trail = new THREE.Points(trailGeo, trailMat); trail.geometry.setDrawRange(0, 0); scene.add(trail);
+  const glowTex = (() => { const cv = document.createElement('canvas'); cv.width = cv.height = 64; const x = cv.getContext('2d');
+    const g = x.createRadialGradient(32, 32, 0, 32, 32, 32); g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(0.25, 'rgba(160,250,255,.9)'); g.addColorStop(1, 'rgba(0,229,255,0)');
+    x.fillStyle = g; x.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(cv); })();
+  const product = new THREE.Group(); scene.add(product);
+  const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xffffff, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }));
+  glow.scale.set(3.6, 3.6, 1); glow.position.y = 0.9; product.add(glow);
+  const pMat = new THREE.MeshBasicMaterial({ color: 0xe9fdff, transparent: true, opacity: 0.95 });
+  const pEdge = new THREE.LineBasicMaterial({ color: 0x00e5ff });
+  // simple silhouette: small chamber + tube loop (generic medical tubing set)
+  const chamber = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.5, 14), pMat); chamber.position.y = 0.9; product.add(chamber);
+  const loop = new THREE.Mesh(new THREE.TorusGeometry(0.32, 0.045, 8, 24), pMat); loop.position.set(0, 0.9, 0); loop.rotation.y = Math.PI / 2; product.add(loop);
+  product.add(new THREE.LineSegments(new THREE.EdgesGeometry(chamber.geometry), pEdge)).position.y = 0.9;
+  // scroll t (station i centred at i+0.5) -> path fraction; 0 inj, ~.23 mold, ~.5 extruder, ~.7 racks, 1 street
+  const PKEY = [[0.5, 0], [2.5, 0.24], [3.5, 0.5], [4.5, 0.7], [5.2, 1]];
+  function pathFrac(t) {
+    if (t <= PKEY[0][0]) return 0;
+    for (let k = 1; k < PKEY.length; k++) if (t <= PKEY[k][0]) { const [a, fa] = PKEY[k - 1], [b, fb] = PKEY[k]; return fa + (fb - fa) * smooth((t - a) / (b - a)); }
+    return 1;
+  }
+  let prodF = 0;
+  function animateProduct(time, s, dt) {
+    const tgt = explore ? (reduce ? 0.5 : (time * 0.04) % 1) : pathFrac((s - 0.25) / 0.15);
+    prodF += (tgt - prodF) * (reduce || explore ? 1 : 1 - Math.exp(-dt / 0.35));
+    const vis = explore ? 1 : smooth((s - 0.2) / 0.05);
+    pathMat.opacity = 0.55 * vis; trailMat.opacity = 0.95 * vis; product.visible = vis > 0.02;
+    const p = pathCurve.getPointAt(Math.min(1, Math.max(0, prodF)));
+    product.position.set(p.x, 0, p.z);
+    const bob = reduce ? 0 : Math.sin(time * 3) * 0.08;
+    chamber.position.y = loop.position.y = 0.9 + bob; product.children[3].position.y = 0.9 + bob;
+    if (!reduce) loop.rotation.z = time * 1.2;
+    glow.material.opacity = vis * (0.8 + (reduce ? 0 : 0.2 * Math.sin(time * 5)));
+    trail.geometry.setDrawRange(0, Math.round(prodF * pathPts.length));
+  }
+
   /* ---------- theme sync ---------- */
   function applyTheme() {
     const t = document.documentElement.dataset.theme || 'light';
     const dark = t !== 'light';
-    uniforms.uBase.value.set(dark ? '#3fb3b3' : '#0a666b');
-    uniforms.uHi.value.set(dark ? '#8ff0e6' : '#0e8c8c');
-    ringMats.forEach((m) => m.color.set(dark ? '#4fd1d1' : '#0e8c8c'));
+    // Hero palette is always the deep-teal night scheme (ground #0A1518, grid #162E35, wire #00E5FF..#4DD0E1)
+    void dark;
+    uniforms.uBase.value.set('#4dd0e1');
+    uniforms.uHi.value.set('#00e5ff');
+    ringMats.forEach((m) => m.color.set('#162e35'));
   }
   applyTheme();
   document.addEventListener('themechange', applyTheme);
@@ -759,7 +808,7 @@ function init(sec) {
     const autoProg = Math.min(1.1, (time / 2.6) * 1.1);
     const prog = (explore || reduce) ? 1.1 : Math.max(autoProg, Math.min(1.1, (s / 0.17) * 1.1));
     uniforms.uProg.value = prog;
-    ringMats.forEach((m, i) => { m.opacity = 0.03 + 0.14 * Math.min(1, Math.max(0, prog - i * 0.06)); });
+    ringMats.forEach((m, i) => { m.opacity = 0.25 + 0.55 * Math.min(1, Math.max(0, prog - i * 0.06)); });
 
     // Pulse the 3D beacon ring
     beaconGroup.scale.setScalar(Math.max(0.001, 1 - outroF));
@@ -769,6 +818,7 @@ function init(sec) {
     }
 
     animateWorkers(time);
+    animateProduct(time, s, dt);
     if (!reduce) animateFlag(time);
     animateMachines(time, explore ? activeStation : lastIdx);
 
