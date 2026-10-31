@@ -2,7 +2,7 @@
 .f3d{--f3d-teal:#0e8c8c;--f3d-deep:#066565;--f3d-coral:#e08a00;--f3d-ink:#0b2f30;--f3d-mute:#355d5e;
   --f3d-glass:rgba(255,255,255,.92);--f3d-line:rgba(14,140,140,.25);--f3d-bg:radial-gradient(90% 80% at 50% 40%,#fff 0%,#e8f3f3 70%,#d3e8e8 100%),#e8f3f3;
   --f3d-co:#0b2f30;--f3d-co-line:rgba(14,140,140,.55);--f3d-halo:#f2f8f8;
-  position:relative;height:900vh;color:var(--f3d-ink);font-family:Kalameh,Tahoma,sans-serif;background:var(--f3d-bg)}
+  position:relative;height:1060vh;color:var(--f3d-ink);font-family:Kalameh,Tahoma,sans-serif;background:var(--f3d-bg)}
 .f3d-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
 .f3d.is-ex .f3d-stage{position:fixed;inset:0;z-index:20;background:var(--f3d-bg)}
 .f3d-gl{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}

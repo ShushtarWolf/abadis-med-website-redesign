@@ -23,7 +23,7 @@ function init(sec) {
   /* ---------- geometry: every edge in one buffer, with aSub for machine highlighting ---------- */
   const P = [], O = [], TN = [], SUB = [];
   // Solid 3D machine shells (injection presses 11/12, extrusion lines 41); edges stay as a thin overlay
-  const SP = [], SN = [], SO = [], SS = [], SOLID_SUBS = new Set([11, 12, 21, 22, 31, 43, 32, 41, 42, 51, 52]);
+  const SP = [], SN = [], SO = [], SS = [], SOLID_SUBS = new Set([11, 12, 21, 22, 23, 31, 43, 44, 32, 41, 42, 51, 52]);
   function edges(geo, x, y, z, tone = 0, ordBias = 0, subId = 0) {
     const e = new THREE.EdgesGeometry(geo, 20), p = e.attributes.position;
     for (let i = 0; i < p.count; i++) {
@@ -167,6 +167,10 @@ function init(sec) {
   // WIP 13 x 20 closed shell on the upper floor. No racks, no aisles, door shut.
   box(xW + 0.2, 5.4, zN + 0.2, xA - 0.2, 9.85, zWip, 0, 0.05, 0);
   box(xW + 1.3, 5.4, zWip - 0.08, xW + 3.3, 7.9, zWip + 0.08, 1, 0, 0);
+  // Subnode 23: NW-corner goods lift feeding the closed WIP store above injection (shaft + car + landing door only)
+  box(xW + 0.35, 0, zN + 0.35, xW + 2.55, 10.4, zN + 2.55, 1, 0, 23);
+  box(xW + 0.6, 5.45, zN + 0.6, xW + 2.3, 7.6, zN + 2.3, 1, 0, 23); // lift car parked at the WIP level
+  box(xW + 2.55, 5.4, zN + 0.8, xW + 2.65, 7.8, zN + 2.1, 1, 0, 23); // landing door into the WIP shell (shut)
 
   // HALL 2: 10 x 36. North 18 m is extruder below / cleanroom above. South bay is the filter room.
   box(xA, 0, zN, xB, 10.5, zS);
@@ -211,7 +215,7 @@ function init(sec) {
   [0.3, 4.2].forEach((x) => {
     box(x - 0.55, 5.4, -19.6, x + 0.55, 6.25, -7.4, 1, 0, 43);
     for (let k = 0; k < 4; k++) box(x - 0.28, 6.25, -18.4 + k * 2.7, x + 0.28, 6.75, -17.75 + k * 2.7, 1, 0, 43);
-    for (let k = 0; k < 3; k++) box(x - 0.5, 9.2, -18.6 + k * 4.4, x + 0.5, 9.45, -17.0 + k * 4.4, 1, 0, 43); // ceiling HEPA units
+    for (let k = 0; k < 3; k++) box(x - 0.5, 9.2, -18.6 + k * 4.4, x + 0.5, 9.45, -17.0 + k * 4.4, 1, 0, 44); // ceiling HEPA units
   });
 
   // Porous filter room: south of the 18 m wall, 9 m clear of the 10 m bay. Demolding only.
@@ -334,7 +338,7 @@ function init(sec) {
         alpha *= mix(1.0, 0.35, uHideSt * (1.0 - vT));
         alpha *= mix(1.0, 0.45, uHideSt * vT * (1.0 - isSub) * (1.0 - step(39.5, vSub) * step(vSub, 49.5)));
         // Upper-floor focus: hall walls / WIP shell / ground machines fade, mezzanine machines stay crisp
-        float upSub = (step(20.5, vSub) * step(vSub, 22.5) + step(42.5, vSub) * step(vSub, 43.5));
+        float upSub = (step(20.5, vSub) * step(vSub, 23.5) + step(42.5, vSub) * step(vSub, 44.5));
         alpha *= mix(1.0, mix(0.1, 0.3, step(0.5, upSub)), uUpper * (1.0 - vT) * (1.0 - isSub));
         alpha *= mix(1.0, 0.3, uUpper * vT * (1.0 - upSub));
         alpha = max(alpha, uUpper * upSub * vT);
@@ -377,7 +381,7 @@ function init(sec) {
         float ext = step(39.5, vSub) * step(vSub, 49.5);
         c *= 1.0 + uHideSt * ext * 0.25 * (1.0 - isSub);
         c += uHideSt * isSub * vec3(0.12, 0.08, 0.0);
-        float upS = step(20.5, vSub) * step(vSub, 22.5) + step(42.5, vSub) * step(vSub, 43.5);
+        float upS = step(20.5, vSub) * step(vSub, 23.5) + step(42.5, vSub) * step(vSub, 44.5);
         c *= mix(1.0, mix(1.0, 1.35, upS), uUpper * (1.0 - isSub)); // key light on the mezzanine, ground dims
         c += uUpper * upS * vec3(0.05, 0.09, 0.1);
         gl_FragColor = vec4(c, grow * mix(mix(.82, .97, isSub), mix(.22, 1.0, upS), uUpper));
@@ -610,15 +614,17 @@ function init(sec) {
   const V3 = (x, y, z) => new THREE.Vector3(x, y, z);
   const VIEWS = [
     { p: V3(-31, 12, 6), t: V3(-9.4, 1.8, -11) },
-    { p: V3(-21, 11.8, 12.5), t: V3(-9.5, 6.2, 3.2) }, // close 3/4 onto the PU assembly mezzanine
+    { p: V3(-24, 14.5, 8.5), t: V3(-9.8, 6.6, -2.5) }, // close 3/4 onto the PU assembly mezzanine
     { p: V3(20, 8, 11), t: V3(2.5, 2, 5) },
     { p: V3(17, 5.2, -7), t: V3(2.2, 0.9, -15) }, // low 3/4 onto the extruder lines, under the cleanroom deck
+    { p: V3(19, 13.5, -2), t: V3(2.2, 6.9, -13.2) }, // own station: high 3/4 into the upstairs Class 100k cleanroom
     { p: V3(27, 9.5, 13), t: V3(11.5, 2.4, -4) },
   ];
   const STREET_M = V3(-12, 0.2, 30.2); // street callout anchor on phones
-  const LBL = [V3(-9.4, 6, -12), V3(-9.25, 11.4, 3), V3(2.25, 8, 5), V3(1.9, 11.2, -15), V3(11.5, 8.4, -4), V3(0, 8.2, 17.6), V3(12, 4.5, 28)];
+  const LBL = [V3(-9.4, 6, -12), V3(-9.25, 11.4, 3), V3(2.25, 8, 5), V3(1.9, 4.6, -18.5), V3(2.25, 11.4, -11), V3(11.5, 8.4, -4), V3(0, 8.2, 17.6), V3(12, 4.5, 28)];
   // Close camera for a sub-node on the upper floor (cleanroom), blended in during that station's hold
-  const SUBCAM = { 43: { p: V3(20, 13, 1), t: V3(2.2, 6.6, -13) } };
+  const SUBCAM = { 23: { p: V3(-34, 17, 6), t: V3(-11, 6.4, -15.5) } };
+  const NST = VIEWS.length, LAST = NST - 1, STEP = 0.75 / (NST + 0.5); // scroll span per station
   let subCamK = 0, autoSub = -1;
   const HOLD = 0.3; // each station dwells ~60% of its scroll span before the camera moves on
   const smooth = (x) => { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); };
@@ -671,9 +677,9 @@ function init(sec) {
 
   // Hall labels
   const lbls = cfg.labels.map((txt, i) => makeCallout('f3d-lbl', txt, labelsEl, () => {
-    if (i < 5) {
+    if (i < NST) {
       if (explore) flyTo(i, 0);
-      else scrollTo({ top: stationScroll(i), behavior: reduce ? 'auto' : 'smooth' });
+      else goStation(i);
     }
   }));
 
@@ -770,7 +776,8 @@ function init(sec) {
     sT = m > 0 ? Math.min(1, Math.max(0, -r.top / m)) : 0;
   }
   addEventListener('scroll', readScroll, { passive: true }); readScroll(); sS = sT;
-  const stationScroll = (i) => { const m = sec.offsetHeight - innerHeight; return sec.getBoundingClientRect().top + scrollY + m * (0.25 + 0.15 * i + 0.08); };
+  const stationScroll = (i) => { const m = sec.offsetHeight - innerHeight; return sec.getBoundingClientRect().top + scrollY + m * (0.25 + STEP * (i + 0.5)); };
+  const goStation = (i) => { sT = Math.min(1, Math.max(0, 0.25 + STEP * (i + 0.5))); const y = stationScroll(i); (document.scrollingElement || document.documentElement).scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' }); };
 
   // Lock page scroll during free explore. iOS Safari ignores overflow:hidden on <html>,
   // so touches on the 3D view would scroll the page instead of orbiting the model.
@@ -809,7 +816,7 @@ function init(sec) {
     const i = +b.dataset.i;
     if (!isNarrow()) setCollapsed(false);
     if (explore) flyTo(i, 0);
-    else scrollTo({ top: stationScroll(i), behavior: reduce ? 'auto' : 'smooth' });
+    else goStation(i);
   }));
   function flyTo(i, subIdx = 0) {
     lastIdx = i;
@@ -878,12 +885,12 @@ function init(sec) {
     let idx = -1;
     outroF = 0;
     if (!explore) {
-      const t = (s - 0.25) / 0.15;
+      const t = (s - 0.25) / STEP;
       if (t < 0) {
         aerial(s, pos, look);
         uniforms.uInStation.value = 0;
       } else {
-        idx = Math.min(4, Math.floor(t));
+        idx = Math.min(LAST, Math.floor(t));
         uniforms.uInStation.value = 1;
         // Keyframes: aerial at t=0, station i centred at t=i+0.5; ease across the whole gap
         const u = t - 0.5;
@@ -891,20 +898,18 @@ function init(sec) {
           aerial(0.25, fromP, fromT); const f = smooth(t / (0.5 - HOLD));
           pos.lerpVectors(fromP, VIEWS[0].p, f); look.lerpVectors(fromT, VIEWS[0].t, f);
         } else {
-          const a = Math.min(4, Math.floor(u)), b = Math.min(4, a + 1), f = smooth((u - a - HOLD) / (1 - 2 * HOLD));
+          const a = Math.min(LAST, Math.floor(u)), b = Math.min(LAST, a + 1), f = smooth((u - a - HOLD) / (1 - 2 * HOLD));
           pos.lerpVectors(VIEWS[a].p, VIEWS[b].p, f); look.lerpVectors(VIEWS[a].t, VIEWS[b].t, f);
         }
         look.add(subFocusOffset);
         // Extruder station: second half of the hold auto-switches to the Class 100k cleanroom upstairs
-        if (idx === 3 && lastIdx === 3) { const want = u >= 3.0 ? 2 : 0; if (want !== autoSub) { autoSub = want; selectSubNode(3, want); } }
-        else if (idx !== 3) autoSub = -1;
         const sc = SUBCAM[uniforms.uActiveSub.value];
         const inHold = 1 - smooth((Math.abs(u - idx) - 0.3) / 0.25);
         subCamK += (((sc && idx === activeStation) ? inHold : 0) - subCamK) * kF;
         if (sc && subCamK > 1e-3) { pos.lerp(sc.p, subCamK); look.lerp(sc.t, subCamK); }
         if (camera.aspect < 1) { pos.add(tmp.copy(pos).sub(look).multiplyScalar(0.95 - 0.55 * subCamK)); pos.y += 6 - 3 * subCamK; }
         // Outro: after the last station, rise and pull back to the whole plant + Golshan 19 street, then hold
-        outroF = smooth((u - 4.05) / 0.4);
+        outroF = smooth((u - LAST - 0.05) / 0.4);
         if (outroF > 0) {
           const ph = camera.aspect < 1;
           fromP.set(ph ? -6 : -16, ph ? 70 : 34, ph ? 112 : 70); fromT.set(0, ph ? 2 : 4, ph ? 10 : 12);
@@ -948,7 +953,7 @@ function init(sec) {
     lbls.forEach((c, i) => {
       const act = i === idx && outroF < 0.6;
       c.el.classList.toggle('act', act); c.dot.classList.toggle('act', act); c.path.classList.toggle('act', act);
-      items.push({ c, p: (i === 6 && narrow) ? STREET_M : LBL[i], on: showHallLabels && (explore || i < 5 || i === 6), pri: act ? 3 : 1 });
+      items.push({ c, p: (i === NST + 1 && narrow) ? STREET_M : LBL[i], on: showHallLabels && (explore || i < NST || i === NST + 1), pri: act ? 3 : 1 });
     });
     currentPinEls.forEach((c, k) => items.push({ c, p: c.pos, on: idx >= 0 && outroF < 0.4, pri: k === activeSubIdx ? 4 : 2 }));
     items.sort((x, y) => y.pri - x.pri);
@@ -982,9 +987,9 @@ function init(sec) {
     // Roof fade target: on inside a station / explore, off on aerial + outro
     const roofT = (explore || idx >= 0) ? (explore ? 1 : 1 - outroF) : 0;
     uniforms.uRoof.value += (roofT - uniforms.uRoof.value) * (reduce ? 1 : 1 - Math.exp(-dt / 0.45));
-    const upT = ((idx === 1 || (idx === 3 && uniforms.uActiveSub.value === 43)) && outroF < 0.5) ? 1 : 0;
+    const upT = ((idx === 1 || idx === 4) && outroF < 0.5) ? 1 : 0;
     uniforms.uUpper.value += (upT - uniforms.uUpper.value) * (reduce ? 1 : 1 - Math.exp(-dt / 0.4));
-    const hideT = ((idx === 3 || idx === 2) && outroF < 0.5) ? 1 : 0;
+    const hideT = ((idx >= 2 && idx <= 4) && outroF < 0.5) ? 1 : 0;
     uniforms.uHideSt.value += (hideT - uniforms.uHideSt.value) * (reduce ? 1 : 1 - Math.exp(-dt / 0.35));
     uniforms.uPulse.value = reduce ? 0.5 : 0.5 + 0.5 * Math.sin(time * 3.2);
     renderer.render(scene, camera);

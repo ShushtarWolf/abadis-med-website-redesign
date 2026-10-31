@@ -9,7 +9,7 @@ three.js r170 + OrbitControls are self-hosted in assets/js/ (no CDN).
 import json
 from html import escape as esc
 
-V = '20261031e'
+V = '20261101a'
 
 T = {
   'fa': dict(
@@ -44,6 +44,9 @@ T = {
           dict(id=22, code='۲.۲', pin='۲.۲ کارتنینگ و بالابر', chip='۲.۲ راهروی کارتنینگ و بالابر',
                spec='بسته‌بندی در راهروی ۱۰×۳ متری و انتقال مستقیم به همکف با بالابر اختصاصی (انبار میانی بسته).',
                pos=[-8.5, 7.2, 9.5]),
+          dict(id=23, code='۲.۳', pin='۲.۳ بالابر انبار در جریان ساخت', chip='۲.۳ بالابر شمال‌غربی و انبار در جریان ساخت',
+               spec='بالابر گوشه شمال‌غربی سوله، قطعات تزریقی را به انبار در جریان ساخت بالای سالن تزریق می‌برد (فضای داخلی محرمانه است).',
+               pos=[-15.0, 9.0, -21.2]),
         ]
       ),
       dict(
@@ -59,8 +62,8 @@ T = {
         ]
       ),
       dict(
-        n='سوله ۲ — سالن اکسترودر و کلین‌روم کلاس ۱۰۰٬۰۰۰',
-        t='۴ دستگاه اکسترودر تیوب پزشکی در همکف و انتقال بهداشتی با باکس و بالابر مخصوص به کلین‌روم طبقه اول.',
+        n='سوله ۲ (همکف) — سالن اکسترودر تیوب',
+        t='۴ دستگاه اکسترودر تیوب پزشکی در همکف؛ کلاف‌ها با باکس کلین‌رومی و بالابر مخصوص به طبقه بالا می‌روند.',
         subs=[
           dict(id=41, code='۴.۱', pin='۴.۱ ۴ دستگاه اکسترودر', chip='۴.۱ ۴ دستگاه اکسترودر',
                spec='تولید پیوسته تیوب‌های ساکشن پزشکی ضدپیچ‌خوردگی با ۴ دستگاه اکسترودر در سالن ۱۰×۱۸ متری طبقه همکف سوله ۲.',
@@ -68,25 +71,34 @@ T = {
           dict(id=42, code='۴.۲', pin='۴.۲ باکس کلین‌رومی و بالابر', chip='۴.۲ باکس کلین‌رومی و بالابر مخصوص',
                spec='انتقال ایزوله کلاف‌های تیوب از سالن اکسترودر به طبقه بالا بدون تماس با هوای محیط.',
                pos=[2.2, 4.5, -5.8]),
-          dict(id=43, code='۴.۳', pin='۴.۳ کلین‌روم ۱۰۰٬۰۰۰ (طبقه اول)', chip='۴.۳ کلین‌روم کلاس ۱۰۰٬۰۰۰ (طبقه اول)',
+        ]
+      ),
+      dict(
+        n='سوله ۲ (طبقه اول) — کلین‌روم کلاس ۱۰۰٬۰۰۰',
+        t='اتاق تمیز مستقل بالای سالن اکسترودر با ۲ خط مونتاژ کانکتور و بسته‌بندی تیوب، فیلترهای HEPA سقفی و فشار مثبت.',
+        subs=[
+          dict(id=43, code='۵.۱', pin='۵.۱ کلین‌روم ۱۰۰٬۰۰۰ (طبقه اول)', chip='۵.۱ کلین‌روم کلاس ۱۰۰٬۰۰۰ (طبقه اول)',
                spec='مونتاژ کانکتور و بسته‌بندی ساکشن تیوب در ۲ خط مجزا تحت فشار مثبت اتاق تمیز کلاس ۱۰۰٬۰۰۰.',
                pos=[2.25, 7.4, -13.0]),
+          dict(id=44, code='۵.۲', pin='۵.۲ فیلترهای HEPA سقفی', chip='۵.۲ سقف HEPA و فشار مثبت',
+               spec='هوای فیلترشده HEPA از سقف و فشار مثبت اتاق، محیط کلاس ۱۰۰٬۰۰۰ را پایدار نگه می‌دارد.',
+               pos=[2.25, 9.3, -14.2]),
         ]
       ),
       dict(
         n='سوله ۳ — انبار محصول نهایی و ارسال سراسری',
         t='نگهداری پالت‌های کارتن ۴۵ عددی در سوله ۸٫۵×۳۶ متر و ارسال مستقیم به ۱٬۲۸۴ مرکز درمانی در ۳۱ استان.',
         subs=[
-          dict(id=51, code='۵.۱', pin='۵.۱ پالت‌های کارتن ۴۵ عددی', chip='۵.۱ پالت‌های کارتن ۴۵ عددی (ظرفیت ۵ میلیون)',
+          dict(id=51, code='۶.۱', pin='۶.۱ پالت‌های کارتن ۴۵ عددی', chip='۶.۱ پالت‌های کارتن ۴۵ عددی (ظرفیت ۵ میلیون)',
                spec='چیدمان استاندارد کارتن‌های ۴۵ عددی در قفسه‌های سوله ۳ با ظرفیت تولید سالانه ۵ میلیون کیسه ساکشن.',
                pos=[11.5, 3.4, -6.0]),
-          dict(id=52, code='۵.۲', pin='۵.۲ لیفتراک و درب ارسال', chip='۵.۲ راهروی لیفتراک و ارسال به ۱٬۲۸۴ مرکز',
+          dict(id=52, code='۶.۲', pin='۶.۲ لیفتراک و درب ارسال', chip='۶.۲ راهروی لیفتراک و ارسال به ۱٬۲۸۴ مرکز',
                spec='بارگیری از درب پارکینگ راست و ارسال رایگان به ۱٬۲۸۴ بیمارستان و مرکز جراحی در سراسر کشور.',
                pos=[11.5, 2.2, 11.4]),
         ]
       ),
     ],
-    labels=['تزریق','مونتاژ و کارتن','فیلتر','اکسترودر و کلین‌روم','انبار و ارسال','ساختمان اداری','کوچه گلشن ۱۹'],
+    labels=['تزریق','مونتاژ و کارتن','فیلتر','اکسترودر','کلین‌روم','انبار و ارسال','ساختمان اداری','کوچه گلشن ۱۹'],
     digits='fa'),
   'en': dict(
     root='en/', quote_href='export/#quote',
@@ -120,6 +132,9 @@ T = {
           dict(id=22, code='2.2', pin='2.2 Cartoning & Lift', chip='2.2 Cartoning Corridor & Lift',
                spec='Cartoning in the 10×3m corridor with direct vertical lift transfer to the ground floor (WIP room closed).',
                pos=[-8.5, 7.2, 9.5]),
+          dict(id=23, code='2.3', pin='2.3 WIP Storage Lift', chip='2.3 North-West Lift & WIP Storage',
+               spec='The north-west corner lift carries molded parts up to the closed WIP storage above the injection hall (interior kept private).',
+               pos=[-15.0, 9.0, -21.2]),
         ]
       ),
       dict(
@@ -135,8 +150,8 @@ T = {
         ]
       ),
       dict(
-        n='Hall 2 — Tube Extrusion & Class 100,000 Cleanroom',
-        t='Four medical tube extruders on the ground floor, with sealed pass-box and lift transfer to the upstairs Class 100k cleanroom.',
+        n='Hall 2 (Ground) — Medical Tube Extrusion',
+        t='Four medical tube extruders on the ground floor; coils rise to the upper floor via a sealed pass-box and dedicated lift.',
         subs=[
           dict(id=41, code='4.1', pin='4.1 4× Tube Extruders', chip='4.1 4× Tube Extruders',
                spec='Continuous extrusion of kink-resistant medical suction tubing on four extruders in the 10×18m ground-floor hall.',
@@ -144,25 +159,34 @@ T = {
           dict(id=42, code='4.2', pin='4.2 Pass-Box & Lift', chip='4.2 Cleanroom Pass-Box & Lift',
                spec='Sealed vertical transfer of extruded tubing coils from ground floor into the upstairs cleanroom.',
                pos=[2.2, 4.5, -5.8]),
-          dict(id=43, code='4.3', pin='4.3 Class 100k Cleanroom', chip='4.3 Class 100,000 Cleanroom (Upper)',
+        ]
+      ),
+      dict(
+        n='Hall 2 (Upper Floor) — Class 100,000 Cleanroom',
+        t='A dedicated cleanroom above the extrusion hall: 2 connector-assembly & tube-packing lines under ceiling HEPA and positive pressure.',
+        subs=[
+          dict(id=43, code='5.1', pin='5.1 Class 100k Cleanroom', chip='5.1 Class 100,000 Cleanroom (Upper)',
                spec='Suction tube connector assembly and sterile-grade packaging across 2 lines under positive pressure.',
                pos=[2.25, 7.4, -13.0]),
+          dict(id=44, code='5.2', pin='5.2 Ceiling HEPA', chip='5.2 Ceiling HEPA & Positive Pressure',
+               spec='Ceiling HEPA supply and positive room pressure keep the Class 100,000 environment stable.',
+               pos=[2.25, 9.3, -14.2]),
         ]
       ),
       dict(
         n='Hall 3 — Finished Goods Warehouse & Nationwide Dispatch',
         t='Organized 45-count carton pallet racks in the 8.5×36m hall dispatching to 1,284 medical centers across 31 provinces.',
         subs=[
-          dict(id=51, code='5.1', pin='5.1 45-Count Pallets', chip='5.1 45-Count Carton Pallets (5M/yr)',
+          dict(id=51, code='6.1', pin='6.1 45-Count Pallets', chip='6.1 45-Count Carton Pallets (5M/yr)',
                spec='Standardized pallet racks of 45-unit cartons supporting a 5-million-unit annual production capacity.',
                pos=[11.5, 3.4, -6.0]),
-          dict(id=52, code='5.2', pin='5.2 Forklift & Dispatch', chip='5.2 Forklift Aisle & Dispatch (1,284 Centers)',
+          dict(id=52, code='6.2', pin='6.2 Forklift & Dispatch', chip='6.2 Forklift Aisle & Dispatch (1,284 Centers)',
                spec='Loading via the east dispatch gate for free delivery to 1,284 hospitals and surgical centers nationwide.',
                pos=[11.5, 2.2, 11.4]),
         ]
       ),
     ],
-    labels=['Injection','Assembly & cartoning','Filter','Extrusion & cleanroom','Warehouse & dispatch','Administrative Building','Golshan 19 Alley'],
+    labels=['Injection','Assembly & cartoning','Filter','Extrusion','Cleanroom','Warehouse & dispatch','Administrative Building','Golshan 19 Alley'],
     digits='en'),
   'ar': dict(
     root='arabic/', quote_href='export/#quote',
@@ -196,6 +220,9 @@ T = {
           dict(id=22, code='٢.٢', pin='٢.٢ الكرتنة والمصعد', chip='٢.٢ ممر الكرتنة والمصعد',
                spec='التعبئة في ممر ١٠×٣ م والنقل المباشر إلى الطابق الأرضي عبر المصعد المخصص (المخزن الوسيط مغلق).',
                pos=[-8.5, 7.2, 9.5]),
+          dict(id=23, code='٢.٣', pin='٢.٣ مصعد مخزن قيد التصنيع', chip='٢.٣ المصعد الشمالي الغربي ومخزن قيد التصنيع',
+               spec='ينقل مصعد الزاوية الشمالية الغربية القطع المحقونة إلى مخزن قيد التصنيع المغلق فوق قاعة الحقن (الداخل سري).',
+               pos=[-15.0, 9.0, -21.2]),
         ]
       ),
       dict(
@@ -211,8 +238,8 @@ T = {
         ]
       ),
       dict(
-        n='القاعة ٢ — البثق والغرفة النظيفة فئة ١٠٠٬٠٠٠',
-        t='أربع ماكينات بثق للأنابيب الطبية في الطابق الأرضي والنقل المعقم عبر الصندوق والمصعد إلى الغرفة النظيفة بالطابق الأول.',
+        n='القاعة ٢ (الأرضي) — بثق الأنابيب الطبية',
+        t='أربع آلات بثق للأنابيب الطبية في الطابق الأرضي؛ ترتفع اللفائف إلى الطابق العلوي عبر صندوق تمرير محكم ومصعد مخصص.',
         subs=[
           dict(id=41, code='٤.١', pin='٤.١ ٤ ماكينات بثق', chip='٤.١ ٤ ماكينات بثق',
                spec='إنتاج مستمر لأنابيب الشفط الطبية المقاومة للالتواء على ٤ ماكينات بثق في قاعة ١٠×١٨ م بالطابق الأرضي.',
@@ -220,25 +247,34 @@ T = {
           dict(id=42, code='٤.٢', pin='٤.٢ صندوق التمرير والمصعد', chip='٤.٢ صندوق التمرير والمصعد المعقم',
                spec='نقل معقم لملفات الأنابيب من قاعة البثق إلى الطابق العلوي دون تلامس مع الهواء الخارجي.',
                pos=[2.2, 4.5, -5.8]),
-          dict(id=43, code='٤.٣', pin='٤.٣ الغرفة النظيفة ١٠٠٬٠٠٠', chip='٤.٣ الغرفة النظيفة فئة ١٠٠٬٠٠٠ (الطابق الأول)',
+        ]
+      ),
+      dict(
+        n='القاعة ٢ (الطابق العلوي) — غرفة نظيفة فئة ١٠٠٬٠٠٠',
+        t='غرفة نظيفة مستقلة فوق قاعة البثق: خطّان لتجميع الموصلات وتعبئة الأنابيب تحت فلاتر HEPA سقفية وضغط إيجابي.',
+        subs=[
+          dict(id=43, code='٥.١', pin='٥.١ الغرفة النظيفة ١٠٠٬٠٠٠', chip='٥.١ الغرفة النظيفة فئة ١٠٠٬٠٠٠ (الطابق الأول)',
                spec='تجميع وصلات أنابيب الشفط وتغليفها في خطين مستقلين تحت ضغط إيجابي داخل الغرفة النظيفة.',
                pos=[2.25, 7.4, -13.0]),
+          dict(id=44, code='٥.٢', pin='٥.٢ فلاتر HEPA السقفية', chip='٥.٢ HEPA سقفي وضغط إيجابي',
+               spec='إمداد هواء HEPA من السقف وضغط الغرفة الإيجابي يحافظان على بيئة الفئة ١٠٠٬٠٠٠.',
+               pos=[2.25, 9.3, -14.2]),
         ]
       ),
       dict(
         n='القاعة ٣ — مستودع المنتجات النهائية والشحن',
         t='تخزين منصات الكراتين (٤٥ عبوة) في القاعة ٣ والشحن المباشر إلى ١٬٢٨٤ مركزاً علاجياً.',
         subs=[
-          dict(id=51, code='٥.١', pin='٥.١ منصات الكراتين (٤٥ عبوة)', chip='٥.١ منصات الكراتين (٥ ملايين سنوياً)',
+          dict(id=51, code='٦.١', pin='٦.١ منصات الكراتين (٤٥ عبوة)', chip='٦.١ منصات الكراتين (٥ ملايين سنوياً)',
                spec='تخزين منظم لكراتين سعة ٤٥ عبوة بطاقة إنتاجية سنوية تبلغ ٥ ملايين كيس شفط.',
                pos=[11.5, 3.4, -6.0]),
-          dict(id=52, code='٥.٢', pin='٥.٢ الرافعة الشوكية والشحن', chip='٥.٢ ممر الرافعة الشوكية والشحن (١٬٢٨٤ مركزاً)',
+          dict(id=52, code='٦.٢', pin='٦.٢ الرافعة الشوكية والشحن', chip='٦.٢ ممر الرافعة الشوكية والشحن (١٬٢٨٤ مركزاً)',
                spec='التحميل عبر البوابة الشرقية للشحن المجاني إلى ١٬٢٨٤ مستشفى ومركزاً جراحياً في ٣١ محافظة.',
                pos=[11.5, 2.2, 11.4]),
         ]
       ),
     ],
-    labels=['الحقن','التجميع والتعبئة','الفلتر','البثق والغرفة النظيفة','المستودع والشحن','المبنى الإداري','زقاق گلشن ۱۹'],
+    labels=['الحقن','التجميع والتعبئة','الفلتر','البثق','الغرفة النظيفة','المستودع والشحن','المبنى الإداري','زقاق گلشن ۱۹'],
     digits='ar'),
 }
 
@@ -270,8 +306,8 @@ def hero(p, lang='fa', quote_href=None, skip_to='#about'):
     t = T[lang]
     cfg = {
         'lang': lang,
-        'step': t['step'], 'total': num(5, lang),
-        'nums': [num(i, lang) for i in range(1, 6)],
+        'step': t['step'], 'total': num(len(t['stations']), lang),
+        'nums': [num(i, lang) for i in range(1, len(t['stations']) + 1)],
         'stations': t['stations'],
         'labels': t['labels'],
         'explore': t['explore'], 'back': t['back'],
@@ -279,7 +315,7 @@ def hero(p, lang='fa', quote_href=None, skip_to='#about'):
     }
     pills = ''.join(
         f'<button type="button" class="f3d-pill" data-i="{i}"><b>{num(i + 1, lang)}</b><span>{esc(lb)}</span></button>'
-        for i, lb in enumerate(t['labels'][:5]))
+        for i, lb in enumerate(t['labels'][:len(t['stations'])]))
     return f'''  <section class="f3d" id="intro" aria-label="{esc(t['h1a'] + t['h1b'] + t['h1c'])}">
     <script type="application/json" class="f3d-cfg">{json.dumps(cfg, ensure_ascii=False)}</script>
     <div class="f3d-stage">
@@ -303,7 +339,7 @@ def hero(p, lang='fa', quote_href=None, skip_to='#about'):
           </div>
           <div class="f3d-subchips" role="tablist"></div>
           <p class="f3d-subspec"></p>
-          <div class="f3d-dots"><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="f3d-dots">{''.join('<i></i>' for _ in t['stations'])}</div>
         </div>
       </div>
       <div class="f3d-prog" aria-hidden="true"><i></i></div>
