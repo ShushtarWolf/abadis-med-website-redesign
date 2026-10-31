@@ -267,6 +267,7 @@ function init(sec) {
     uInStation: { value: 0 },
     uRoof: { value: 0 },
     uPulse: { value: 0 },
+    uFill: { value: new THREE.Color('#08333d') }, uFillMix: { value: 0.35 },
     uHideSt: { value: 0 }, // 0..1: hide occluding hall-3 racks while on the extruder station
   };
   const mat = new THREE.ShaderMaterial({
@@ -341,7 +342,7 @@ function init(sec) {
     `,
     fragmentShader: `
       uniform float uProg; uniform vec3 uBase; uniform vec3 uHi; uniform vec3 uCoral;
-      uniform float uActiveSub; uniform float uInStation; uniform float uPulse; uniform float uRoof; uniform float uHideSt;
+      uniform float uActiveSub; uniform float uInStation; uniform float uPulse; uniform float uRoof; uniform float uHideSt; uniform vec3 uFill; uniform float uFillMix;
       varying float vO; varying float vSub; varying vec3 vN;
       void main(){
         if (uHideSt > 0.5 && vSub > 49.5 && vSub < 59.5) discard;
@@ -351,7 +352,7 @@ function init(sec) {
         float d = .45 + .55 * max(dot(normalize(vN), L), 0.) + .12 * abs(vN.z);
         float isSub = (uActiveSub > 0.5 && abs(vSub - uActiveSub) < 0.25) ? smoothstep(0.3, 0.7, uInStation) : 0.0;
         // Active machine: full coral + key light / rim glow; others dim slightly
-        vec3 c = mix(mix(vec3(0.03, 0.2, 0.24), uHi * 0.55, 0.35) * d * mix(1.0, 0.78, uRoof), uCoral * (0.75 + 0.6 * d), isSub * .95);
+        vec3 c = mix(mix(uFill, uHi * 0.55, uFillMix) * d * mix(1.0, 0.78, uRoof), uCoral * (0.75 + 0.6 * d), isSub * .95);
         float rim = pow(1. - abs(normalize(vN).y), 2.0);
         c += isSub * (vec3(1.0, 0.7, 0.1) * (0.18 + 0.14 * uPulse) + vec3(1.0, 0.9, 0.6) * rim * 0.12);
         float ext = step(39.5, vSub) * step(vSub, 49.5);
@@ -559,13 +560,27 @@ function init(sec) {
   function applyTheme() {
     const t = document.documentElement.dataset.theme || 'light';
     const dark = t !== 'light';
-    // Hero palette is always the deep-teal night scheme (ground #0A1518, grid #162E35, wire #00E5FF..#4DD0E1)
-    void dark;
-    uniforms.uBase.value.set('#4dd0e1');
-    uniforms.uHi.value.set('#00e5ff');
-    ringMats.forEach((m) => m.color.set('#162e35'));
+    // light: pale ground + brand teal wire; dark/noir: deep-teal night (#0A1518) cyan wire. Amber active in all.
+    uniforms.uBase.value.set(dark ? '#4dd0e1' : '#0a666b');
+    uniforms.uHi.value.set(dark ? '#00e5ff' : '#0e8c8c');
+    uniforms.uCoral.value.set(dark ? '#ffb300' : '#f29a00');
+    uniforms.uFill.value.set(dark ? '#08333d' : '#b9e2e2');
+    uniforms.uFillMix.value = dark ? 0.35 : 0.12;
+    ringMats.forEach((m) => { m.color.set(dark ? '#162e35' : '#0e8c8c'); });
+    pathMat.color.set(dark ? '#7ff6ff' : '#0e8c8c');
+    trailMat.color.set(dark ? '#ffffff' : '#e08a00');
+    pMat.color.set(dark ? '#e9fdff' : '#ffffff');
+    pEdge.color.set(dark ? '#00e5ff' : '#066565');
+    glow.material.color.set(dark ? '#ffffff' : '#ffb300');
+    glow.material.blending = dark ? THREE.AdditiveBlending : THREE.NormalBlending;
+    glow.material.needsUpdate = true;
   }
   applyTheme();
+  try { // system mode: follow OS when user hasn't picked a theme
+    const mq = matchMedia('(prefers-color-scheme: dark)');
+    mq.addEventListener('change', (e) => { let saved = null; try { saved = localStorage.getItem('abadis-theme'); } catch (_) {}
+      if (!saved) document.documentElement.dataset.theme = e.matches ? 'dark' : 'light'; });
+  } catch (_) {}
   document.addEventListener('themechange', applyTheme);
   new MutationObserver(applyTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
