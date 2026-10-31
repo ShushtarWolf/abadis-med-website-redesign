@@ -92,13 +92,8 @@ function init(sec) {
 
   // Machine builders: wireframe silhouettes after the Chen Hsong presses and PBM line in the factory videos.
   const lineY = (x0, z0, x1, z1) => box(x0, 0.005, z0, x1, 0.03, z1, 0, -0.1, 0); // yellow floor safety line
-  const person = (x, z, rot = 0, sub = 0, s = 1) => {
-    const c = Math.cos(rot), sn = Math.sin(rot), o = (dx, dz) => [x + dx * c - dz * sn, z + dx * sn + dz * c];
-    [-0.11, 0.11].forEach((d) => { const [px, pz] = o(d, 0); box(px - 0.07 * s, 0, pz - 0.08 * s, px + 0.07 * s, 0.85 * s, pz + 0.08 * s, 1, 0.05, sub); });
-    box(x - 0.2 * s, 0.85 * s, z - 0.2 * s, x + 0.2 * s, 1.45 * s, z + 0.2 * s, 1, 0.05, sub);
-    [-0.27, 0.27].forEach((d) => { const [px, pz] = o(d, 0.12); box(px - 0.05 * s, 0.95 * s, pz - 0.05 * s, px + 0.05 * s, 1.4 * s, pz + 0.05 * s, 1, 0.05, sub); });
-    edges(new THREE.IcosahedronGeometry(0.13 * s, 1), x, 1.62 * s, z, 1, 0.05, sub);
-  };
+  const PEOPLE = []; // built later as animated wireframe groups (work-cycle micro-motion)
+  const person = (x, z, rot = 0, sub = 0, s = 1) => { PEOPLE.push({ x, z, rot, sub, s }); };
   const crate = (x, z, w = 0.6, d = 0.45, h = 0.4, n = 2, sub = 0) => {
     for (let k = 0; k < n; k++) box(x - w / 2, k * h, z - d / 2, x + w / 2, (k + 1) * h - 0.03, z + d / 2, 1, 0.02, sub);
   };
@@ -281,6 +276,43 @@ function init(sec) {
   }
   const moldTop = partLines(() => B(2.8, 0.9, 2.8), 31); scene.add(moldTop);
   const filter = partLines(() => new THREE.CylinderGeometry(0.75, 0.75, 0.22, 20), 31); scene.add(filter);
+
+  // Operators: block/stick figures with looping work cycles (no faces). Kind from station sub-id.
+  const PART = (geo, sub, x, y, z) => { const l = partLines(() => geo, sub); l.position.set(x, y, z); return l; };
+  const workers = PEOPLE.map((d, n) => {
+    const { s, sub } = d, g = new THREE.Group(); g.position.set(d.x, 0, d.z); g.rotation.y = -d.rot;
+    [-0.11, 0.11].forEach((dx) => g.add(PART(B(0.14 * s, 0.85 * s, 0.16 * s), sub, dx, 0.425 * s, 0)));
+    const up = new THREE.Group(); up.position.y = 0.85 * s; g.add(up); // hip pivot
+    up.add(PART(B(0.4 * s, 0.6 * s, 0.4 * s), sub, 0, 0.3 * s, 0));
+    const head = PART(new THREE.IcosahedronGeometry(0.13 * s, 1), sub, 0, 0.77 * s, 0); up.add(head);
+    const arms = [-0.27, 0.27].map((dx) => {
+      const sh = new THREE.Group(); sh.position.set(dx * s, 0.55 * s, 0.12 * s); up.add(sh); // shoulder pivot
+      sh.add(PART(B(0.1 * s, 0.45 * s, 0.1 * s), sub, 0, -0.225 * s, 0)); return sh;
+    });
+    scene.add(g);
+    const kind = sub >= 41 ? 'coil' : sub >= 31 ? 'demold' : sub === 12 ? 'sort' : 'pendant';
+    return { up, head, arms, kind, s, ph: n * 0.37, per: 2.2 + (n % 4) * 0.25 };
+  });
+  function animateWorkers(time) {
+    workers.forEach((w) => {
+      const [L, R] = w.arms;
+      if (reduce) { w.up.rotation.set(0.06, 0, 0); w.up.position.y = 0.85 * w.s; L.rotation.set(-0.5, 0, 0); R.rotation.set(-0.5, 0, 0); return; }
+      const c = ((time + w.ph) % w.per) / w.per, sw = Math.sin(c * Math.PI * 2), hump = Math.sin(c * Math.PI);
+      w.up.position.y = 0.85 * w.s + 0.025 * w.s * Math.sin(c * Math.PI * 4); // breathing / weight shift bob
+      if (w.kind === 'pendant') { // reach up to the control pendant, tap, return
+        R.rotation.set(-0.4 - 1.1 * hump, 0, -0.15 * hump); L.rotation.set(-0.15, 0, 0); w.up.rotation.set(0.04, 0.2 * hump, 0); w.head.rotation.x = -0.2 * hump;
+      } else if (w.kind === 'sort') { // bend, pick part, turn and drop into crate
+        const bend = smooth(c / 0.3) - smooth((c - 0.55) / 0.3);
+        w.up.rotation.set(0.45 * bend, 0.6 * smooth((c - 0.35) / 0.3) * (1 - smooth((c - 0.8) / 0.2)), 0);
+        L.rotation.set(-0.3 - 0.9 * bend, 0, 0); R.rotation.set(-0.3 - 0.9 * bend, 0, 0);
+      } else if (w.kind === 'coil') { // hand-over-hand coiling of tube at the haul-off
+        L.rotation.set(-0.9 + 0.5 * sw, 0, 0.2 * sw); R.rotation.set(-0.9 - 0.5 * sw, 0, -0.2 * sw); w.up.rotation.set(0.15, 0.12 * sw, 0);
+      } else { // demold sorter: reach into opened mold, lift filter, set down
+        const reach = smooth((c - 0.2) / 0.25) - smooth((c - 0.6) / 0.25);
+        w.up.rotation.set(0.1 + 0.35 * reach, 0, 0); L.rotation.set(-0.4 - 1.0 * reach, 0, 0); R.rotation.set(-0.4 - 1.0 * reach, 0, 0); w.head.rotation.x = 0.25 * reach;
+      }
+    });
+  }
 
   // 3D Target Beacon Ring at the active machine sub-node
   const beaconGroup = new THREE.Group();
@@ -544,9 +576,9 @@ function init(sec) {
     if (!visible) return;
     const dt = Math.min(0.1, clock.getDelta());
     const time = clock.elapsedTime;
-    // Framerate-independent damping, time constant ~0.6 s
-    const kS = reduce ? 1 : 1 - Math.exp(-dt / 0.6);
-    const kF = reduce ? 1 : 1 - Math.exp(-dt / 0.45);
+    // Framerate-independent damping; heavier time constant (~1.0 s) for a smoother, less snappy glide between stations
+    const kS = reduce ? 1 : 1 - Math.exp(-dt / 1.0);
+    const kF = reduce ? 1 : 1 - Math.exp(-dt / 0.75);
     sS += (sT - sS) * kS;
     if (Math.abs(sT - sS) < 1e-5) sS = sT;
     const s = sS;
@@ -560,6 +592,8 @@ function init(sec) {
       const pulse = reduce ? 1 : 1 + 0.12 * Math.sin(time * 4.0);
       beaconOuter.scale.set(pulse, 1, pulse);
     }
+
+    animateWorkers(time);
 
     // Filter demolding loop (6 s)
     const c = reduce ? 0.8 : (time % 6) / 6, lift = smooth(c / 0.25) - smooth((c - 0.85) / 0.15);
