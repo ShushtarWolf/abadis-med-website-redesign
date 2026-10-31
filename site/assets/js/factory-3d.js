@@ -22,6 +22,8 @@ function init(sec) {
 
   /* ---------- geometry: every edge in one buffer, with aSub for machine highlighting ---------- */
   const P = [], O = [], TN = [], SUB = [];
+  // Solid 3D machine shells (injection presses 11/12, extrusion lines 41); edges stay as a thin overlay
+  const SP = [], SN = [], SO = [], SS = [], SOLID_SUBS = new Set([11, 12, 41]);
   function edges(geo, x, y, z, tone = 0, ordBias = 0, subId = 0) {
     const e = new THREE.EdgesGeometry(geo, 20), p = e.attributes.position;
     for (let i = 0; i < p.count; i++) {
@@ -30,6 +32,17 @@ function init(sec) {
       O.push(Math.min(1, Math.max(0, 0.04 + 0.5 * (25 - wz) / 50 + 0.36 * (wy / 14) + 0.08 * ((wx + 20) / 40) + ordBias)));
       TN.push(tone);
       SUB.push(subId);
+    }
+    if (tone === 1 && SOLID_SUBS.has(subId)) {
+      const g2 = geo.index ? geo.toNonIndexed() : geo; g2.computeVertexNormals();
+      const q = g2.attributes.position, nn = g2.attributes.normal;
+      for (let i = 0; i < q.count; i++) {
+        const wx = q.getX(i) + x, wy = q.getY(i) + y, wz = q.getZ(i) + z;
+        SP.push(wx, wy, wz); SN.push(nn.getX(i), nn.getY(i), nn.getZ(i));
+        SO.push(Math.min(1, Math.max(0, 0.04 + 0.5 * (25 - wz) / 50 + 0.36 * (wy / 14) + 0.08 * ((wx + 20) / 40) + ordBias)));
+        SS.push(subId);
+      }
+      if (g2 !== geo) g2.dispose();
     }
     geo.dispose(); e.dispose();
   }
@@ -275,6 +288,37 @@ function init(sec) {
     `,
   });
   scene.add(new THREE.LineSegments(geo, mat));
+
+  const sgeo = new THREE.BufferGeometry();
+  sgeo.setAttribute('position', new THREE.Float32BufferAttribute(SP, 3));
+  sgeo.setAttribute('normal', new THREE.Float32BufferAttribute(SN, 3));
+  sgeo.setAttribute('aOrd', new THREE.Float32BufferAttribute(SO, 1));
+  sgeo.setAttribute('aSub', new THREE.Float32BufferAttribute(SS, 1));
+  const smat = new THREE.ShaderMaterial({
+    uniforms, transparent: true, side: THREE.DoubleSide, depthWrite: true,
+    polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1,
+    vertexShader: `
+      attribute float aOrd; attribute float aSub;
+      varying float vO; varying float vSub; varying vec3 vN;
+      void main(){ vO = aOrd; vSub = aSub; vN = normalize(normal);
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.); }
+    `,
+    fragmentShader: `
+      uniform float uProg; uniform vec3 uBase; uniform vec3 uHi; uniform vec3 uCoral;
+      uniform float uActiveSub; uniform float uInStation;
+      varying float vO; varying float vSub; varying vec3 vN;
+      void main(){
+        float grow = smoothstep(vO, vO + .08, uProg);
+        if (grow <= 0.) discard;
+        vec3 L = normalize(vec3(.45, .85, .35));
+        float d = .45 + .55 * max(dot(normalize(vN), L), 0.) + .12 * abs(vN.z);
+        float isSub = (uActiveSub > 0.5 && abs(vSub - uActiveSub) < 0.25) ? smoothstep(0.3, 0.7, uInStation) : 0.0;
+        vec3 c = mix(uHi, uCoral, isSub * .55) * d;
+        gl_FragColor = vec4(c, grow * mix(.82, .92, isSub));
+      }
+    `,
+  });
+  const solids = new THREE.Mesh(sgeo, smat); solids.renderOrder = -1; scene.add(solids);
 
   // Animated filter demolding (Subnode 31)
   function partLines(build, subId = 31) {
@@ -643,9 +687,10 @@ function init(sec) {
 
   const pos = new THREE.Vector3(), look = new THREE.Vector3(), tmp = new THREE.Vector3(), fromP = new THREE.Vector3(), fromT = new THREE.Vector3();
   const clock = new THREE.Clock();
+  let introK = reduce ? 1 : 0; // 0 -> 1 over the first ~3.2 s: soft auto-glide into the opening view
   function aerial(s, out, tgt) {
-    const k = Math.min(1, s / 0.25), a = -0.75 + 0.9 * k, R = (camera.aspect < 1 ? 118 : 82) - 10 * k;
-    out.set(Math.sin(a) * R, 54 - 8 * k, Math.cos(a) * R - 4); tgt.set(0, camera.aspect < 1 ? 14 - 6 * k : 16 - 4 * k, -4);
+    const k = Math.min(1, s / 0.25), g = 1 - introK, a = -0.75 + 0.9 * k - 0.35 * g, R = ((camera.aspect < 1 ? 118 : 82) - 10 * k) * (1 + 0.28 * g);
+    out.set(Math.sin(a) * R, 54 - 8 * k + 22 * g, Math.cos(a) * R - 4); tgt.set(0, camera.aspect < 1 ? 14 - 6 * k : 16 - 4 * k, -4);
   }
   function frame() {
     requestAnimationFrame(frame);
@@ -653,12 +698,14 @@ function init(sec) {
     const dt = Math.min(0.1, clock.getDelta());
     const time = clock.elapsedTime;
     // Framerate-independent damping; heavier time constant (~1.0 s) for a smoother, less snappy glide between stations
-    const kS = reduce ? 1 : 1 - Math.exp(-dt / 1.0);
+    if (!reduce) { const it = Math.min(1, time / 3.2); introK = it * it * it * (it * (it * 6 - 15) + 10); }
+    // Heavier damping during the opening seconds so early scroll never snaps
+    const kS = reduce ? 1 : 1 - Math.exp(-dt / (1.0 + 0.9 * (1 - introK)));
     const kF = reduce ? 1 : 1 - Math.exp(-dt / 0.75);
     sS += (sT - sS) * kS;
     if (Math.abs(sT - sS) < 1e-5) sS = sT;
     const s = sS;
-    const autoProg = Math.min(1.1, (time / 1.4) * 1.1);
+    const autoProg = Math.min(1.1, (time / 2.6) * 1.1);
     const prog = (explore || reduce) ? 1.1 : Math.max(autoProg, Math.min(1.1, (s / 0.17) * 1.1));
     uniforms.uProg.value = prog;
     ringMats.forEach((m, i) => { m.opacity = 0.03 + 0.14 * Math.min(1, Math.max(0, prog - i * 0.06)); });
