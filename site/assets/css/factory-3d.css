@@ -130,3 +130,9 @@ body:has(.consent-bar) .f3d-hint{bottom:calc(148px + env(safe-area-inset-bottom,
 }
 
 .f3d-pill.act,.f3d-subchip.act{color:#0a1518}.f3d-pill.act b{color:#0a1518}
+
+/* Panels keep OLD light card + brand teal text (scene stays dark cyan/amber) */
+.f3d :is(.f3d-intro,.f3d-dock),html[data-theme] .f3d :is(.f3d-intro,.f3d-dock){--f3d-teal:#0e8c8c;--f3d-deep:#066565;--f3d-coral:#ff7a59;--f3d-ink:#0b2f30;--f3d-mute:#355d5e;
+  --f3d-line:rgba(14,140,140,.25);background:rgba(255,255,255,.94);border-color:rgba(14,140,140,.25);color:#0b2f30}
+.f3d :is(.f3d-intro,.f3d-dock) :is(p,.f3d-sub,.f3d-subspec){color:#355d5e;opacity:1}
+.f3d :is(.f3d-intro,.f3d-dock) :is(.f3d-pill.act,.f3d-subchip.act),.f3d .f3d-dock .f3d-pill.act b{color:#fff}
