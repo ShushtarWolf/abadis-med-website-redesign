@@ -93,7 +93,8 @@ function init(sec) {
   // Machine builders: wireframe silhouettes after the Chen Hsong presses and PBM line in the factory videos.
   const lineY = (x0, z0, x1, z1) => box(x0, 0.005, z0, x1, 0.03, z1, 0, -0.1, 0); // yellow floor safety line
   const PEOPLE = []; // built later as animated wireframe groups (work-cycle micro-motion)
-  const person = (x, z, rot = 0, sub = 0, s = 1) => { PEOPLE.push({ x, z, rot, sub, s }); };
+  const person = (x, z, rot = 0, sub = 0, s = 1, kind = null) => { PEOPLE.push({ x, z, rot, sub, s, kind }); };
+  const MOV = { hop: [], light: [], roll: [], trough: [] }; // active-station machine motion anchors
   const crate = (x, z, w = 0.6, d = 0.45, h = 0.4, n = 2, sub = 0) => {
     for (let k = 0; k < n; k++) box(x - w / 2, k * h, z - d / 2, x + w / 2, (k + 1) * h - 0.03, z + d / 2, 1, 0.02, sub);
   };
@@ -121,6 +122,8 @@ function init(sec) {
     box(x + w / 2, 0.6, zc - 0.3, x + w / 2 + 0.12, 1.5, zc + 0.35, 1, 0, sub);
     box(x + w / 2 + 0.12, 1.1, zc - 0.15, x + w / 2 + 0.16, 1.45, zc + 0.2, 1, 0, sub);
     [0, 1, 2].forEach((k) => cyl(0.07, 0.12, x + w * 0.35, hb * 0.45 + pH + 0.1 + k * 0.13, zc + 0.05, false, 1, 8, sub));
+    MOV.hop.push({ x, y: hb * 1.15, z: hz, r0: w * 0.28, r1: w * 0.1, h: hb * 0.35, sub, st: 0 });
+    MOV.light.push({ x: x + w * 0.35, y: hb * 0.45 + pH + 0.1 + 2 * 0.13, z: zc + 0.05, sub, st: 0 });
     lineY(x - w / 2 - 0.5, z0 - 0.4, x - w / 2 - 0.45, z1 + 0.4);
     lineY(x + w / 2 + 0.75, z0 - 0.4, x + w / 2 + 0.8, z1 + 0.4);
   };
@@ -162,6 +165,9 @@ function init(sec) {
     for (let k = 0; k < 5; k++) cyl(0.26, 0.18, x, 1.2, -19.2 + k * 0.65, false, 0, 8, 0);
     box(x - 0.35, 0, -19.5, x + 0.35, 1.0, -16.3, 1, 0, 41);
     edges(new THREE.ConeGeometry(0.45, 0.8, 8).rotateX(Math.PI), x, 1.9, -19.2, 1, 0, 41); // hopper
+    MOV.hop.push({ x, y: 1.9, z: -19.2, cone: true, sub: 41, st: 3 });
+    [0.95, 1.2].forEach((y) => MOV.roll.push({ x, y, z: -12.05, sub: 41, st: 3 }));
+    MOV.trough.push({ x, z: -9.1, sub: 41, st: 3 });
     box(x - 0.3, 0.3, -15.9, x + 0.3, 1.25, -12.9, 1, 0, 41); // vacuum / cooling tank
     box(x - 0.3, 0, -12.6, x + 0.3, 1.45, -11.5, 1, 0, 41); // haul-off
     [0.95, 1.2].forEach((y) => { const b2 = new THREE.CylinderGeometry(0.1, 0.1, 0.62, 8); b2.rotateZ(Math.PI / 2); edges(b2, x, y, -12.05, 1, 0, 41); });
@@ -176,6 +182,10 @@ function init(sec) {
     lineY(x - 0.62, -21.6, x - 0.58, -7.6);
   });
   person(-0.5, -9.4, Math.PI / 2, 41); person(4.3, -12.0, -Math.PI / 2, 41);
+  // Extra crew (+6): QC at the yellow lines, crate stackers, extrusion QC, dispatch, street-side walker. None in WIP / cleanroom.
+  person(-6.9, -12.2, 0, 11, 1, 'qc'); person(-11.0, -2.0, Math.PI, 12, 1, 'stack');
+  person(2.0, -8.2, Math.PI / 2, 41, 1, 'qc'); person(9.8, 4.0, Math.PI / 2, 51, 1, 'stack');
+  person(11.5, 13.0, 0, 52, 1, 'qc'); person(-20, 24.2, Math.PI / 2, 0, 1, 'walk');
   // Subnode 42: cleanroom pass-box + dedicated lift at the 18 m wall
   box(-2.35, 0, -7.3, 0.7, 3, -4.35, 1, 0, 42);
   box(4.55, 0, -7.45, 7.05, 10.5, -4.55, 1, 0, 42);
@@ -256,7 +266,7 @@ function init(sec) {
       void main(){
         if (vO > uProg) discard;
         float fr = 1. - smoothstep(0., .06, uProg - vO);
-        float isSub = (uActiveSub > 0.5 && abs(vSub - uActiveSub) < 0.25) ? 1.0 : 0.0;
+        float isSub = (uActiveSub > 0.5 && abs(vSub - uActiveSub) < 0.25) ? smoothstep(0.3, 0.7, uInStation) : 0.0;
         vec3 c = mix(uBase, uHi, vT);
         c = mix(c, uCoral, max(fr, isSub));
         float alpha = mix(1.0, vT > 0.5 ? 0.88 : 0.38, uInStation * (1.0 - isSub));
@@ -290,8 +300,8 @@ function init(sec) {
       sh.add(PART(B(0.1 * s, 0.45 * s, 0.1 * s), sub, 0, -0.225 * s, 0)); return sh;
     });
     scene.add(g);
-    const kind = sub >= 41 ? 'coil' : sub >= 31 ? 'demold' : sub === 12 ? 'sort' : 'pendant';
-    return { up, head, arms, kind, s, ph: n * 0.37, per: 2.2 + (n % 4) * 0.25 };
+    const kind = d.kind || (sub >= 51 ? 'stack' : sub >= 41 ? 'coil' : sub >= 31 ? 'demold' : sub === 12 ? 'sort' : 'pendant');
+    return { g, up, head, arms, kind, s, ph: n * 0.37, per: 2.2 + (n % 4) * 0.25, legs: g.children.slice(0, 2) };
   });
   function animateWorkers(time) {
     workers.forEach((w) => {
@@ -305,12 +315,39 @@ function init(sec) {
         const bend = smooth(c / 0.3) - smooth((c - 0.55) / 0.3);
         w.up.rotation.set(0.45 * bend, 0.6 * smooth((c - 0.35) / 0.3) * (1 - smooth((c - 0.8) / 0.2)), 0);
         L.rotation.set(-0.3 - 0.9 * bend, 0, 0); R.rotation.set(-0.3 - 0.9 * bend, 0, 0);
+      } else if (w.kind === 'qc') { // QC: hold clipboard, look down / scan along the line
+        L.rotation.set(-1.1, 0, 0.3); R.rotation.set(-1.0 - 0.15 * sw, 0, -0.3); w.head.rotation.set(0.35 + 0.1 * sw, 0.45 * Math.sin(c * Math.PI * 2), 0); w.up.rotation.set(0.08, 0, 0);
+      } else if (w.kind === 'stack') { // crate stacker: squat-lift, raise, place on stack
+        const lift = smooth(c / 0.35) - smooth((c - 0.6) / 0.3);
+        w.up.rotation.set(0.55 * (1 - lift) * hump, 0, 0); L.rotation.set(-0.6 - 1.4 * lift, 0, 0); R.rotation.set(-0.6 - 1.4 * lift, 0, 0);
+      } else if (w.kind === 'walk') { // street-side walker: gate path along the sidewalk, ping-pong
+        const T = 24, q = ((time + w.ph) % T) / T, dir = q < 0.5 ? 1 : -1, ph = q < 0.5 ? q * 2 : 2 - q * 2;
+        w.g.position.x = -20 + 40 * smooth(ph); w.g.rotation.y = dir > 0 ? Math.PI / 2 : -Math.PI / 2;
+        const st = Math.sin(time * 7); w.legs[0].rotation.x = 0.4 * st; w.legs[1].rotation.x = -0.4 * st;
+        L.rotation.set(-0.35 * st, 0, 0); R.rotation.set(0.35 * st, 0, 0); w.up.rotation.set(0.05, 0, 0);
       } else if (w.kind === 'coil') { // hand-over-hand coiling of tube at the haul-off
         L.rotation.set(-0.9 + 0.5 * sw, 0, 0.2 * sw); R.rotation.set(-0.9 - 0.5 * sw, 0, -0.2 * sw); w.up.rotation.set(0.15, 0.12 * sw, 0);
       } else { // demold sorter: reach into opened mold, lift filter, set down
         const reach = smooth((c - 0.2) / 0.25) - smooth((c - 0.6) / 0.25);
         w.up.rotation.set(0.1 + 0.35 * reach, 0, 0); L.rotation.set(-0.4 - 1.0 * reach, 0, 0); R.rotation.set(-0.4 - 1.0 * reach, 0, 0); w.head.rotation.x = 0.25 * reach;
       }
+    });
+  }
+
+  // Active-station machine motion overlays (Y): only the station in view animates; others sit still.
+  const movers = [];
+  const ovl = (geo, sub, x, y, z, st, kind, extra = {}) => { const l = partLines(() => geo, sub); l.position.set(x, y, z); scene.add(l); movers.push({ l, st, kind, ...extra }); return l; };
+  MOV.hop.forEach((h, i) => ovl(h.cone ? new THREE.ConeGeometry(0.5, 0.15, 8) : new THREE.CylinderGeometry(h.r0 * 1.08, h.r0 * 1.08, 0.06, 10), h.sub, h.x, h.cone ? 2.25 : h.y + h.h * 0.5, h.z, h.st, 'hop', { i, y0: h.cone ? 2.25 : h.y + h.h * 0.5 }));
+  MOV.light.forEach((h, i) => ovl(new THREE.IcosahedronGeometry(0.11, 1), h.sub, h.x, h.y + 0.02, h.z, h.st, 'light', { i }));
+  MOV.roll.forEach((h, i) => { const g2 = new THREE.CylinderGeometry(0.13, 0.13, 0.5, 6); g2.rotateZ(Math.PI / 2); ovl(g2, h.sub, h.x, h.y, h.z, h.st, 'roll', { i }); });
+  MOV.trough.forEach((h, i) => ovl(new THREE.BoxGeometry(0.34, 0.02, 2.3), h.sub, h.x, 1.1, h.z, h.st, 'trough', { i }));
+  function animateMachines(time, st) {
+    movers.forEach((m) => {
+      const on = !reduce && m.st === st, l = m.l;
+      if (m.kind === 'hop') { const k = on ? Math.sin(time * 3 + m.i * 0.7) : 0; l.scale.set(1 + 0.12 * k, 1, 1 + 0.12 * k); l.position.y = m.y0 + (on ? 0.06 * k : 0); }
+      else if (m.kind === 'light') l.visible = on ? ((time * 1.6 + m.i * 0.31) % 1) < 0.55 : false;
+      else if (m.kind === 'roll') l.rotation.x = on ? (m.i % 2 ? -1 : 1) * time * 4 : 0;
+      else if (m.kind === 'trough') { const c = ((time + m.i * 1.3) % 5) / 5; l.rotation.z = on ? 0.35 * (smooth((c - 0.6) / 0.15) - smooth((c - 0.85) / 0.15)) : 0; }
     });
   }
 
@@ -388,7 +425,7 @@ function init(sec) {
   }
   function removeCallout(c) { c.el.remove(); c.dot.remove(); c.path.remove(); }
 
-  let sT = 0, sS = 0, explore = false, tween = null, lastIdx = -2, activeStation = 0, activeSubIdx = 0, visible = true;
+  let outroF = 0, sT = 0, sS = 0, explore = false, tween = null, lastIdx = -2, activeStation = 0, activeSubIdx = 0, visible = true;
   const subFocusOffset = new THREE.Vector3();
   const targetSubFocus = new THREE.Vector3();
 
@@ -588,12 +625,14 @@ function init(sec) {
     ringMats.forEach((m, i) => { m.opacity = 0.03 + 0.14 * Math.min(1, Math.max(0, prog - i * 0.06)); });
 
     // Pulse the 3D beacon ring
+    beaconGroup.scale.setScalar(Math.max(0.001, 1 - outroF));
     if (beaconGroup.visible) {
       const pulse = reduce ? 1 : 1 + 0.12 * Math.sin(time * 4.0);
       beaconOuter.scale.set(pulse, 1, pulse);
     }
 
     animateWorkers(time);
+    animateMachines(time, explore ? activeStation : lastIdx);
 
     // Filter demolding loop (6 s)
     const c = reduce ? 0.8 : (time % 6) / 6, lift = smooth(c / 0.25) - smooth((c - 0.85) / 0.15);
@@ -605,6 +644,7 @@ function init(sec) {
     subFocusOffset.lerp(targetSubFocus, kF);
 
     let idx = -1;
+    outroF = 0;
     if (!explore) {
       const t = (s - 0.25) / 0.15;
       if (t < 0) {
@@ -624,12 +664,24 @@ function init(sec) {
         }
         look.add(subFocusOffset);
         if (camera.aspect < 1) { pos.add(tmp.copy(pos).sub(look).multiplyScalar(0.95)); pos.y += 6; }
+        // Outro: after the last station, rise and pull back to the whole plant + Golshan 19 street, then hold
+        outroF = smooth((u - 4.05) / 0.4);
+        if (outroF > 0) {
+          const ph = camera.aspect < 1;
+          fromP.set(ph ? 10 : 8, ph ? 92 : 58, ph ? 112 : 74); fromT.set(0, ph ? 0 : 2, ph ? 8 : 6);
+          // gentle arc: lift first, then glide out
+          const fy = smooth(outroF * 1.4), fx = outroF;
+          pos.set(pos.x + (fromP.x - pos.x) * fx, pos.y + (fromP.y - pos.y) * fy, pos.z + (fromP.z - pos.z) * fx);
+          look.lerp(fromT, outroF);
+          uniforms.uInStation.value = 1 - outroF;
+        }
       }
       camera.position.copy(pos); camera.lookAt(look);
       intro.style.opacity = String(Math.max(0, 1 - Math.max(0, s - 0.19) / 0.045));
       intro.style.visibility = s > 0.235 ? 'hidden' : 'visible';
       bar.style.height = (s * 100) + '%';
       dock.classList.toggle('on', idx >= 0);
+      sec.classList.toggle('is-outro', outroF > 0.6);
       if (idx !== lastIdx) {
         lastIdx = idx;
         renderStationUI(idx);
@@ -652,14 +704,14 @@ function init(sec) {
     const dockBot = dock.classList.contains('on') ? dock.getBoundingClientRect().bottom - sr.top + 4 : (narrow ? 110 : 130);
     const introBot = (idx < 0 && s < 0.22 && !explore) ? intro.getBoundingClientRect().bottom - sr.top + 8 : 0;
     const topSafe = Math.max(dockBot, introBot, narrow ? 64 : 80), botSafe = h - (narrow ? 84 : 90);
-    const showHallLabels = (explore || idx < 0) && prog > 0.75;
+    const showHallLabels = (explore || idx < 0 || outroF > 0.6) && prog > 0.75;
     const items = [];
     lbls.forEach((c, i) => {
-      const act = i === idx;
+      const act = i === idx && outroF < 0.6;
       c.el.classList.toggle('act', act); c.dot.classList.toggle('act', act); c.path.classList.toggle('act', act);
       items.push({ c, p: (i === 6 && narrow) ? STREET_M : LBL[i], on: showHallLabels && (explore || i < 5 || i === 6), pri: act ? 3 : 1 });
     });
-    currentPinEls.forEach((c, k) => items.push({ c, p: c.pos, on: idx >= 0, pri: k === activeSubIdx ? 4 : 2 }));
+    currentPinEls.forEach((c, k) => items.push({ c, p: c.pos, on: idx >= 0 && outroF < 0.4, pri: k === activeSubIdx ? 4 : 2 }));
     items.sort((x, y) => y.pri - x.pri);
     const placed = [];
     const hit = (r) => placed.some((q) => r.x < q.x + q.w && r.x + r.w > q.x && r.y < q.y + q.h && r.y + r.h > q.y);
