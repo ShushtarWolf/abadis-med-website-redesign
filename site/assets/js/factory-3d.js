@@ -282,6 +282,7 @@ function init(sec) {
     uRoof: { value: 0 },
     uPulse: { value: 0 },
     uFill: { value: new THREE.Color('#08333d') }, uFillMix: { value: 0.35 },
+    uSt: { value: -1 }, // current station index (shaft / pass-box fades)
     uUpSide: { value: 1 }, // 1 = hall 1 mezzanine, 2 = hall 2 cleanroom deck
     uUpper: { value: 0 }, // 0..1: upper-floor focus (assembly / cleanroom): shells + other floors recede
     uHideSt: { value: 0 }, // 0..1: hide occluding hall-3 racks while on the extruder station
@@ -320,10 +321,11 @@ function init(sec) {
       uniform float uHideSt;
       uniform float uUpper;
       uniform float uUpSide;
+      uniform float uSt;
       void main(){
         if (vO > uProg) discard;
         float fr = 1. - smoothstep(0., .06, uProg - vO);
-        float isSub = (uActiveSub > 0.5 && abs(vSub - uActiveSub) < 0.25) ? smoothstep(0.3, 0.7, uInStation) : 0.0;
+        float isSub = (uActiveSub > 0.5 && abs(vSub - uActiveSub) < 0.25) ? smoothstep(0.3, 0.7, uInStation) * step(0.5, vT) : 0.0;
         vec3 c = mix(uBase, uHi, vT);
         c = mix(c, uCoral, max(fr, isSub));
         float alpha = mix(1.0, vT > 0.5 ? 0.88 : 0.38, uInStation * (1.0 - isSub));
@@ -349,6 +351,9 @@ function init(sec) {
         c = mix(c, uHi, uUpper * upSub * vT * (1.0 - isSub) * 0.6);
         c = mix(c, uHi, slab * 0.5);
         alpha *= mix(1.0, mix(0.25, 1.0, uUpper), slab * uRoof);
+        float shaft = step(21.5, vSub) * step(vSub, 23.5) + step(41.5, vSub) * step(vSub, 42.5);
+        float shK = (uSt > 3.5 && uSt < 4.5) ? 0.06 : 0.3;
+        alpha *= mix(1.0, shK, shaft * uHideSt * (1.0 - isSub));
         gl_FragColor = vec4(c, alpha);
       }
     `,
@@ -371,7 +376,7 @@ function init(sec) {
     `,
     fragmentShader: `
       uniform float uProg; uniform vec3 uBase; uniform vec3 uHi; uniform vec3 uCoral;
-      uniform float uActiveSub; uniform float uInStation; uniform float uPulse; uniform float uRoof; uniform float uHideSt; uniform float uUpper; uniform float uUpSide; uniform vec3 uFill; uniform float uFillMix;
+      uniform float uActiveSub; uniform float uInStation; uniform float uPulse; uniform float uRoof; uniform float uHideSt; uniform float uUpper; uniform float uUpSide; uniform vec3 uFill; uniform float uFillMix; uniform float uSt;
       varying float vO; varying float vSub; varying vec3 vN;
       void main(){
         if (uHideSt > 0.5 && vSub > 49.5 && vSub < 59.5) discard;
@@ -398,6 +403,11 @@ function init(sec) {
         float a = grow * mix(mix(.82, .97, isSub), mix(.22, 1.0, upS), uUpper);
         float slabMine = s1 * step(28.5, vSub) * step(vSub, 29.5) + s2 * step(48.5, vSub) * step(vSub, 49.5);
         float aSlab = grow * mix(mix(0.55, 0.12, uRoof), mix(0.1, 0.92, slabMine), uUpper);
+        // Hall-1 lifts / cartoning and the cleanroom pass-box lift: ghost them while hall 2 is in focus (dark corner clutter on phones); near-hidden on the cleanroom station
+        float shaft = step(21.5, vSub) * step(vSub, 23.5) + step(41.5, vSub) * step(vSub, 42.5);
+        float shK = (uSt > 3.5 && uSt < 4.5) ? 0.0 : 0.18;
+        a *= mix(1.0, shK, shaft * uHideSt * (1.0 - isSub));
+        if (a < 0.01) discard;
         gl_FragColor = vec4(c, mix(a, aSlab, slab));
       }
     `,
@@ -626,14 +636,18 @@ function init(sec) {
 
   /* ---------- stations & sub-nodes ---------- */
   const V3 = (x, y, z) => new THREE.Vector3(x, y, z);
-  const VIEWS = [
+  const VIEWS_D = [
     { p: V3(-31, 12, 6), t: V3(-9.4, 1.8, -11) },
-    { p: V3(-24, 14.5, 8.5), t: V3(-9.8, 6.6, -2.5) }, // close 3/4 onto the PU assembly mezzanine
+    { p: V3(-6, 22, 24), t: V3(-11, 4, -8) }, // close 3/4 onto the PU assembly mezzanine
     { p: V3(20, 8, 11), t: V3(2.5, 2, 5) },
-    { p: V3(17, 5.2, -7), t: V3(2.2, 0.9, -15) }, // low 3/4 onto the extruder lines, under the cleanroom deck
+    { p: V3(16, 7, 2), t: V3(2.4, 1.2, -12) }, // low 3/4 onto the extruder lines, under the cleanroom deck
     { p: V3(19, 13.5, -2), t: V3(2.2, 6.9, -13.2) }, // own station: high 3/4 into the upstairs Class 100k cleanroom
-    { p: V3(27, 9.5, 13), t: V3(11.5, 2.4, -4) },
+    { p: V3(30, 12, 22), t: V3(11.5, 2, 1) },
   ];
+  // Phones (portrait): looking down the 36 m bay so a station's far-apart machines stack vertically instead of falling off the sides
+  const VIEWS_M = VIEWS_D.slice();
+  VIEWS_M[1] = { p: V3(-8, 17, 14), t: V3(-10.5, 5.5, -7) };
+  let VIEWS = VIEWS_D;
   const STREET_M = V3(-12, 0.2, 30.2); // street callout anchor on phones
   const LBL = [V3(-9.4, 6, -12), V3(-9.25, 11.4, 3), V3(2.25, 8, 5), V3(1.9, 4.6, -18.5), V3(2.25, 11.4, -11), V3(11.5, 8.4, -4), V3(0, 8.2, 17.6), V3(12, 4.5, 28)];
   // Close camera for a sub-node on the upper floor (cleanroom), blended in during that station's hold
@@ -668,7 +682,7 @@ function init(sec) {
   }
   function removeCallout(c) { c.el.remove(); c.dot.remove(); c.path.remove(); }
 
-  let viewShift = 0, outroF = 0, sT = 0, sS = 0, explore = false, tween = null, lastIdx = -2, activeStation = 0, activeSubIdx = 0, visible = true;
+  let viewShift = 0, viewShiftY = 0, outroF = 0, sT = 0, sS = 0, explore = false, tween = null, lastIdx = -2, activeStation = 0, activeSubIdx = 0, visible = true;
   const subFocusOffset = new THREE.Vector3();
   const targetSubFocus = new THREE.Vector3();
 
@@ -841,7 +855,7 @@ function init(sec) {
 
   function resize() {
     const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false);
-    camera.aspect = w / h; camera.fov = w / h < 1 ? 60 : 40; camera.updateProjectionMatrix();
+    VIEWS = w / h < 1 ? VIEWS_M : VIEWS_D; camera.aspect = w / h; camera.fov = w / h < 1 ? 60 : 40; camera.updateProjectionMatrix();
   }
   resize(); addEventListener('resize', resize);
   new IntersectionObserver((en) => { visible = en[0].isIntersecting; }).observe(sec);
@@ -921,7 +935,7 @@ function init(sec) {
         const inHold = 1 - smooth((Math.abs(u - idx) - 0.3) / 0.25);
         subCamK += (((sc && idx === activeStation) ? inHold : 0) - subCamK) * kF;
         if (sc && subCamK > 1e-3) { pos.lerp(sc.p, subCamK); look.lerp(sc.t, subCamK); }
-        if (camera.aspect < 1) { pos.add(tmp.copy(pos).sub(look).multiplyScalar(0.95 - 0.55 * subCamK)); pos.y += 6 - 3 * subCamK; }
+        if (camera.aspect < 1) { pos.add(tmp.copy(pos).sub(look).multiplyScalar(0.72 - 0.4 * subCamK)); pos.y += 1.5 - 1 * subCamK; }
         // Outro: after the last station, rise and pull back to the whole plant + Golshan 19 street, then hold
         outroF = smooth((u - LAST - 0.05) / 0.4);
         if (outroF > 0) {
@@ -1013,7 +1027,11 @@ function init(sec) {
     // Desktop: the info card sits bottom-right, so shift the framed subject left of it
     const shT = (dockOn && !dockTop && !narrow && !explore && outroF < 0.5) ? Math.min(0.16, (w - (dockR.left - sr.left)) / w * 0.5) : 0;
     viewShift += (shT - viewShift) * (reduce ? 1 : 1 - Math.exp(-dt / 0.5));
-    if (viewShift > 0.002) camera.setViewOffset(w, h, w * viewShift, 0, w, h); else if (camera.view && camera.view.enabled) camera.clearViewOffset();
+    // Phones: drop the framed subject below centre so the lower half is not empty under the dock
+    const shY = (narrow && !explore && idx >= 0 && outroF < 0.5) ? -0.11 : 0;
+    viewShiftY += (shY - viewShiftY) * (reduce ? 1 : 1 - Math.exp(-dt / 0.5));
+    uniforms.uSt.value = explore ? -1 : idx;
+    if (viewShift > 0.002 || viewShiftY < -0.002) camera.setViewOffset(w, h, w * viewShift, h * viewShiftY, w, h); else if (camera.view && camera.view.enabled) camera.clearViewOffset();
     renderer.render(scene, camera);
   }
   frame();
