@@ -473,11 +473,11 @@ function init(sec) {
   /* ---------- stations & sub-nodes ---------- */
   const V3 = (x, y, z) => new THREE.Vector3(x, y, z);
   const VIEWS = [
-    { p: V3(-40, 18, 2), t: V3(-9.4, 1.6, -10) },
-    { p: V3(-36, 18, 14), t: V3(-9.25, 7.2, 4) },
-    { p: V3(20, 11, 24), t: V3(2.25, 2.2, 4) },
-    { p: V3(28, 16, 0), t: V3(1.9, 4.2, -15) },
-    { p: V3(34, 13, 18), t: V3(11.5, 2.4, -4) },
+    { p: V3(-31, 12, 6), t: V3(-9.4, 1.8, -11) },
+    { p: V3(-29, 15, 21), t: V3(-9.25, 7, 3) },
+    { p: V3(20, 8, 11), t: V3(2.5, 2, 5) },
+    { p: V3(21, 9.5, -1), t: V3(1.9, 1.6, -14) },
+    { p: V3(27, 9.5, 13), t: V3(11.5, 2.4, -4) },
   ];
   const STREET_M = V3(-12, 0.2, 30.2); // street callout anchor on phones
   const LBL = [V3(-9.4, 6, -12), V3(-9.25, 11.4, 3), V3(2.25, 8, 5), V3(1.9, 11.2, -15), V3(11.5, 8.4, -4), V3(0, 8.2, 17.6), V3(12, 4.5, 28)];
@@ -690,7 +690,7 @@ function init(sec) {
   let introK = reduce ? 1 : 0; // 0 -> 1 over the first ~3.2 s: soft auto-glide into the opening view
   function aerial(s, out, tgt) {
     const k = Math.min(1, s / 0.25), g = 1 - introK, a = -0.75 + 0.9 * k - 0.35 * g, R = ((camera.aspect < 1 ? 118 : 82) - 10 * k) * (1 + 0.28 * g);
-    out.set(Math.sin(a) * R, 54 - 8 * k + 22 * g, Math.cos(a) * R - 4); tgt.set(0, camera.aspect < 1 ? 14 - 6 * k : 16 - 4 * k, -4);
+    out.set(Math.sin(a) * R, 40 - 6 * k + 22 * g, Math.cos(a) * R + 4); tgt.set(0, camera.aspect < 1 ? 14 - 6 * k : 16 - 4 * k, -4);
   }
   function frame() {
     requestAnimationFrame(frame);
@@ -755,7 +755,7 @@ function init(sec) {
         outroF = smooth((u - 4.05) / 0.4);
         if (outroF > 0) {
           const ph = camera.aspect < 1;
-          fromP.set(ph ? 10 : 8, ph ? 92 : 58, ph ? 112 : 74); fromT.set(0, ph ? 0 : 2, ph ? 8 : 6);
+          fromP.set(ph ? -6 : -16, ph ? 70 : 34, ph ? 112 : 70); fromT.set(0, ph ? 2 : 4, ph ? 10 : 12);
           // gentle arc: lift first, then glide out
           const fy = smooth(outroF * 1.4), fx = outroF;
           pos.set(pos.x + (fromP.x - pos.x) * fx, pos.y + (fromP.y - pos.y) * fy, pos.z + (fromP.z - pos.z) * fx);

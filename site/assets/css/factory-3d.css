@@ -1,7 +1,7 @@
 /* Interactive 3D factory scrollytelling hero (.f3d) — Option 2 + Option 3 Hybrid */
 .f3d{--f3d-teal:#0e8c8c;--f3d-deep:#066565;--f3d-coral:#ff7a59;--f3d-ink:#0b2f30;--f3d-mute:#355d5e;
   --f3d-glass:rgba(255,255,255,.92);--f3d-line:rgba(14,140,140,.25);--f3d-bg:radial-gradient(90% 80% at 50% 40%,#fff 0%,#e8f3f3 70%,#d3e8e8 100%);
-  position:relative;height:500vh;color:var(--f3d-ink);font-family:Kalameh,Tahoma,sans-serif;background:var(--f3d-bg)}
+  position:relative;height:900vh;color:var(--f3d-ink);font-family:Kalameh,Tahoma,sans-serif;background:var(--f3d-bg)}
 html[data-theme="dark"] .f3d,html[data-theme="noir"] .f3d{--f3d-ink:#e6f4f4;--f3d-mute:#a9c9c9;--f3d-glass:rgba(7,24,30,.90);--f3d-line:rgba(120,210,210,.26);
   --f3d-bg:radial-gradient(90% 80% at 50% 40%,#0d2a2e 0%,#061719 70%,#03100f 100%)}
 html[data-theme="noir"] .f3d{--f3d-bg:radial-gradient(90% 80% at 50% 40%,#151527 0%,#0a0a12 75%)}
