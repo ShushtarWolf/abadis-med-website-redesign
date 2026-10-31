@@ -742,7 +742,7 @@ function init(sec) {
     const narrow = w < 768;
     const sr = stage.getBoundingClientRect();
     const dockBot = dock.classList.contains('on') ? dock.getBoundingClientRect().bottom - sr.top + 4 : (narrow ? 110 : 130);
-    const introBot = (idx < 0 && s < 0.22 && !explore) ? intro.getBoundingClientRect().bottom - sr.top + 8 : 0;
+    const introBot = (innerWidth <= 760 && idx < 0 && s < 0.22 && !explore) ? intro.getBoundingClientRect().bottom - sr.top + 8 : 0;
     const topSafe = Math.max(dockBot, introBot, narrow ? 64 : 80), botSafe = h - (narrow ? 84 : 90);
     const showHallLabels = (explore || idx < 0 || outroF > 0.6) && prog > 0.75;
     const items = [];
