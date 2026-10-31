@@ -705,6 +705,13 @@
       setup(c1, 'surgery', view(c1, 'surgery'));
       setup(c2, 'beds', view(c2, 'beds'));
       window.DIAL_PRACTICAL = { calc1: calcs[0], calc2: calcs[1] };
+      try {
+        var nParam = new URLSearchParams(location.search).get('n');
+        if (nParam && calcs[0]) {
+          var nVal = parseInt(String(nParam).replace(/[^\d]/g, ''), 10);
+          if (nVal > 0) calcs[0].setVal('n', Math.min(15000, nVal));
+        }
+      } catch (eN) {}
       document.documentElement.classList.add('no-anim');
       calcs.forEach((c) => c.update(0, true));
       A.start();
