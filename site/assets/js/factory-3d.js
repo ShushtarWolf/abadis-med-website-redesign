@@ -212,13 +212,19 @@ function init(sec) {
   // Porous filter room: south of the 18 m wall, 9 m clear of the 10 m bay. Demolding only.
   box(-2.25, 0, zCut + 0.25, 6.75, 5.6, zS - 0.35, 0, 0.03, 0);
   // Subnode 31: mold press bed & columns
-  box(0.85, 0, 2.6, 3.65, 1.55, 5.4, 1, 0, 31);
-  [0.95, 3.55].forEach((x) => [2.75, 5.25].forEach((z) => cyl(0.1, 3.5, x, 3.3, z, false, 1, 6, 31)));
-  box(0.85, 4.85, 2.6, 3.65, 5.25, 5.4, 1, 0, 31);
+  // 6 filter mold presses: 2 columns x 3 rows, west of the QC tray
+  const PRESSES = [];
+  [-0.35, 3.05].forEach((cx) => [-1.4, 2.6, 6.6].forEach((cz) => PRESSES.push([cx, cz])));
+  PRESSES.forEach(([cx, cz]) => {
+    box(cx - 1.4, 0, cz - 1.4, cx + 1.4, 1.55, cz + 1.4, 1, 0, 31);
+    [cx - 1.3, cx + 1.3].forEach((x) => [cz - 1.25, cz + 1.25].forEach((z) => cyl(0.1, 3.5, x, 3.3, z, false, 1, 6, 31)));
+    box(cx - 1.4, 4.85, cz - 1.4, cx + 1.4, 5.25, cz + 1.4, 1, 0, 31);
+  });
   // Subnode 32: finished filter QC tray
-  box(4.35, 0, 7.2, 6.5, 1, 10.2, 1, 0, 32);
-  // Demold sorters only: one at the press, one at the QC tray
-  person(2.25, 6.3, 0, 31); person(5.4, 10.9, Math.PI, 32);
+  box(5.0, 0, 7.2, 6.6, 1, 10.2, 1, 0, 32);
+  // Demold sorters only: at the presses and one at the QC tray
+  person(1.35, 3.0, Math.PI / 2, 31); person(1.35, -1.0, -Math.PI / 2, 31); person(1.35, 7.0, Math.PI / 2, 31);
+  person(5.8, 10.9, Math.PI, 32);
 
   // HALL 3: finished goods, full 8.50 x 36 m bay (not the old 7 x 18 stub)
   box(xB, 0, zN, xE, 8.6, zS);
@@ -379,8 +385,8 @@ function init(sec) {
     g.computeVertexNormals();
     const m = new THREE.Mesh(g, smat); m.renderOrder = -1; l.add(m); return l;
   }
-  const moldTop = solidPart(() => B(2.8, 0.9, 2.8), 31); scene.add(moldTop);
-  const filter = solidPart(() => new THREE.CylinderGeometry(0.75, 0.75, 0.22, 20), 31); scene.add(filter);
+  const moldTops = PRESSES.map(() => { const m = solidPart(() => B(2.8, 0.9, 2.8), 31); scene.add(m); return m; });
+  const filters = PRESSES.map(() => { const m = solidPart(() => new THREE.CylinderGeometry(0.75, 0.75, 0.22, 20), 31); scene.add(m); return m; });
 
   // Operators: block/stick figures with looping work cycles (no faces). Kind from station sub-id.
   const PART = (geo, sub, x, y, z) => { const l = partLines(() => geo, sub); l.position.set(x, y, z); return l; };
@@ -511,7 +517,7 @@ function init(sec) {
 
   // Product journey: glowing dot + simple tube-set silhouette on a dotted floor path
   // injection -> mold demold -> extruder -> hall 3 racks -> forklift -> south gate -> Golshan 19
-  const PATH = [V0(-9.4, -11), V0(-9.4, -2), V0(2.25, -2), V0(2.25, 4), V0(-2, 4), V0(-2, -15), V0(2.2, -15), V0(8, -15), V0(8, -4), V0(11.5, -4), V0(11.5, 8), V0(11.5, 13.5), V0(11.5, 27)];
+  const PATH = [V0(-9.4, -11), V0(-9.4, -2), V0(1.35, -2), V0(1.35, 4), V0(-2, 4), V0(-2, -15), V0(2.2, -15), V0(8, -15), V0(8, -4), V0(11.5, -4), V0(11.5, 8), V0(11.5, 13.5), V0(11.5, 27)];
   function V0(x, z) { return new THREE.Vector3(x, 0.14, z); }
   const pathCurve = new THREE.CatmullRomCurve3(PATH, false, 'catmullrom', 0.05);
   const pathLen = pathCurve.getLength();
@@ -838,11 +844,15 @@ function init(sec) {
     animateMachines(time, explore ? activeStation : lastIdx);
 
     // Filter demolding loop (6 s)
-    const c = reduce ? 0.8 : (time % 6) / 6, lift = smooth(c / 0.25) - smooth((c - 0.85) / 0.15);
-    moldTop.position.set(2.25, 2.0 + lift * 1.6, 4.0);
-    const out = smooth((c - 0.3) / 0.35), place = smooth((c - 0.65) / 0.15);
-    filter.position.set(2.25 + out * 2.5, 1.7 + Math.sin(out * Math.PI) * 1.6 * (1 - place) + lift * 0.2 * (1 - out) - place * 0.45, 4.0 + out * 3.5);
-    filter.visible = c < 0.95 && c > 0.05;
+    PRESSES.forEach(([px, pz], k) => {
+      const c = reduce ? 0.8 : ((time + k * 1.0) % 6) / 6, lift = smooth(c / 0.25) - smooth((c - 0.85) / 0.15);
+      moldTops[k].position.set(px, 2.0 + lift * 1.6, pz);
+      const out = smooth((c - 0.3) / 0.35), place = smooth((c - 0.65) / 0.15);
+      // lift filter out of the opened mold and set it on the bed edge toward the aisle (x ~ 1.35)
+      const dir = px < 1.35 ? 1 : -1;
+      filters[k].position.set(px + dir * out * 0.9, 1.7 + Math.sin(out * Math.PI) * 1.6 * (1 - place) + lift * 0.2 * (1 - out) - place * 0.1, pz);
+      filters[k].visible = c < 0.95 && c > 0.05;
+    });
 
     subFocusOffset.lerp(targetSubFocus, kF);
 
@@ -946,7 +956,7 @@ function init(sec) {
     // Roof fade target: on inside a station / explore, off on aerial + outro
     const roofT = (explore || idx >= 0) ? (explore ? 1 : 1 - outroF) : 0;
     uniforms.uRoof.value += (roofT - uniforms.uRoof.value) * (reduce ? 1 : 1 - Math.exp(-dt / 0.45));
-    const hideT = (idx === 3 && outroF < 0.5) ? 1 : 0;
+    const hideT = ((idx === 3 || idx === 2) && outroF < 0.5) ? 1 : 0;
     uniforms.uHideSt.value += (hideT - uniforms.uHideSt.value) * (reduce ? 1 : 1 - Math.exp(-dt / 0.35));
     uniforms.uPulse.value = reduce ? 0.5 : 0.5 + 0.5 * Math.sin(time * 3.2);
     renderer.render(scene, camera);
