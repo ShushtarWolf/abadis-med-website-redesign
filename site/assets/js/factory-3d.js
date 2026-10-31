@@ -341,6 +341,45 @@ function init(sec) {
   MOV.light.forEach((h, i) => ovl(new THREE.IcosahedronGeometry(0.11, 1), h.sub, h.x, h.y + 0.02, h.z, h.st, 'light', { i }));
   MOV.roll.forEach((h, i) => { const g2 = new THREE.CylinderGeometry(0.13, 0.13, 0.5, 6); g2.rotateZ(Math.PI / 2); ovl(g2, h.sub, h.x, h.y, h.z, h.st, 'roll', { i }); });
   MOV.trough.forEach((h, i) => ovl(new THREE.BoxGeometry(0.34, 0.02, 2.3), h.sub, h.x, 1.1, h.z, h.st, 'trough', { i }));
+  // BIG Abadis Med flag in the front yard by Golshan 19 (boss request): tall pole + waving teal flag with wordmark
+  const FLAG = { x: -10, z: 23, h: 17, w: 8, fh: 4.6 };
+  {
+    const pm = new THREE.LineBasicMaterial({ color: 0x0e8c8c, transparent: true, opacity: 0.9 });
+    const pole = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.CylinderGeometry(0.12, 0.16, FLAG.h, 8)), pm);
+    pole.position.set(FLAG.x, FLAG.h / 2, FLAG.z); scene.add(pole);
+    const base = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.CylinderGeometry(0.9, 1.1, 0.5, 8)), pm);
+    base.position.set(FLAG.x, 0.25, FLAG.z); scene.add(base);
+    const fin = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.SphereGeometry(0.28, 8, 6)), pm);
+    fin.position.set(FLAG.x, FLAG.h + 0.25, FLAG.z); scene.add(fin);
+  }
+  const flagCv = document.createElement('canvas'); flagCv.width = 1024; flagCv.height = 590;
+  {
+    const c = flagCv.getContext('2d');
+    c.fillStyle = 'rgba(14,140,140,0.82)'; c.fillRect(0, 0, 1024, 590);
+    c.strokeStyle = 'rgba(255,255,255,0.9)'; c.lineWidth = 10; c.strokeRect(18, 18, 988, 554);
+    c.beginPath(); c.arc(512, 210, 105, 0, Math.PI * 2); c.lineWidth = 14; c.stroke(); // Abadis mark: ring + medical cross
+    c.fillStyle = '#fff'; c.fillRect(492, 145, 40, 130); c.fillRect(447, 190, 130, 40);
+    c.textAlign = 'center'; c.font = '700 120px system-ui, Arial, sans-serif'; c.fillText('ABADIS MED', 512, 440);
+    c.font = '700 70px Tahoma, system-ui, sans-serif'; c.fillText('آبادیس طب', 512, 535);
+  }
+  const flagTex = new THREE.CanvasTexture(flagCv);
+  const flagGeo = new THREE.PlaneGeometry(FLAG.w, FLAG.fh, 24, 8); flagGeo.translate(FLAG.w / 2, 0, 0);
+  const flag0 = flagGeo.attributes.position.array.slice();
+  const flagMesh = new THREE.Mesh(flagGeo, new THREE.MeshBasicMaterial({ map: flagTex, transparent: true, side: THREE.DoubleSide, depthWrite: false }));
+  const flagWire = new THREE.LineSegments(new THREE.WireframeGeometry(flagGeo), new THREE.LineBasicMaterial({ color: 0x7fe3e3, transparent: true, opacity: 0.25 }));
+  const flagG = new THREE.Group(); flagG.add(flagMesh, flagWire);
+  flagG.position.set(FLAG.x + 0.15, FLAG.h - FLAG.fh / 2 - 0.2, FLAG.z); scene.add(flagG);
+  function animateFlag(time) {
+    const a = flagGeo.attributes.position;
+    for (let i = 0; i < a.count; i++) {
+      const x = flag0[i * 3], k = x / FLAG.w;
+      a.array[i * 3 + 2] = reduce ? 0.25 * k : k * (0.55 * Math.sin(x * 0.9 - time * 2.6) + 0.15 * Math.sin(flag0[i * 3 + 1] * 1.3 - time * 1.7));
+    }
+    a.needsUpdate = true;
+    flagWire.geometry.dispose(); flagWire.geometry = new THREE.WireframeGeometry(flagGeo);
+  }
+  animateFlag(0);
+
   function animateMachines(time, st) {
     movers.forEach((m) => {
       const on = !reduce && m.st === st, l = m.l;
@@ -632,6 +671,7 @@ function init(sec) {
     }
 
     animateWorkers(time);
+    if (!reduce) animateFlag(time);
     animateMachines(time, explore ? activeStation : lastIdx);
 
     // Filter demolding loop (6 s)
