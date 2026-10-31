@@ -357,10 +357,10 @@ function init(sec) {
     const c = flagCv.getContext('2d');
     c.fillStyle = 'rgba(14,140,140,0.82)'; c.fillRect(0, 0, 1024, 590);
     c.strokeStyle = 'rgba(255,255,255,0.9)'; c.lineWidth = 10; c.strokeRect(18, 18, 988, 554);
-    c.beginPath(); c.arc(512, 210, 105, 0, Math.PI * 2); c.lineWidth = 14; c.stroke(); // Abadis mark: ring + medical cross
-    c.fillStyle = '#fff'; c.fillRect(492, 145, 40, 130); c.fillRect(447, 190, 130, 40);
-    c.textAlign = 'center'; c.font = '700 120px system-ui, Arial, sans-serif'; c.fillText('ABADIS MED', 512, 440);
-    c.font = '700 70px Tahoma, system-ui, sans-serif'; c.fillText('آبادیس طب', 512, 535);
+    // real site logo (same asset as header), drawn once loaded
+    const img = new Image();
+    img.onload = () => { const w = 860, h = w * 79.16 / 165.57; c.drawImage(img, 512 - w / 2, 295 - h / 2, w, h); flagTex.needsUpdate = true; };
+    img.src = new URL('../img/abadis-logo-white.svg', import.meta.url).href;
   }
   const flagTex = new THREE.CanvasTexture(flagCv);
   const flagGeo = new THREE.PlaneGeometry(FLAG.w, FLAG.fh, 24, 8); flagGeo.translate(FLAG.w / 2, 0, 0);
