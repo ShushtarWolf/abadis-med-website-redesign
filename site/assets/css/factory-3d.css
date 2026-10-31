@@ -108,6 +108,12 @@ body:has(.consent-bar) .f3d-hint{bottom:calc(148px + env(safe-area-inset-bottom,
   .f3d-intro{top:50%;left:auto;right:28px;transform:translateY(-50%);width:min(400px,32vw);text-align:right;padding:20px 22px}
   [dir="ltr"] .f3d-intro,html[dir="ltr"] .f3d-intro{text-align:left}
   .f3d-intro :is(h1,.f3d-h){font-size:clamp(22px,2.2vw,32px)}
+  /* desktop: intro + station description pinned bottom-right, clear of tools/FAB */
+  .f3d-intro{top:auto;bottom:96px;right:28px;left:auto;transform:none}
+  .f3d-dock{top:auto;bottom:96px;right:28px;left:auto;width:min(460px,36vw);transform:translateY(10px);max-height:calc(100% - 190px);overflow:auto}
+  .f3d-dock.on{transform:none}
+  .f3d-dock .f3d-pills{flex-wrap:wrap}
+  body:has(.consent-bar) .f3d-intro,body:has(.consent-bar) .f3d-dock{bottom:176px}
 }
 @media(max-width:760px){
   .f3d-prog{display:none}
