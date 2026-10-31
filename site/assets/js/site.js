@@ -1165,15 +1165,11 @@
   var base = cur ? cur.getAttribute('src').replace(/assets\/js\/site\.js.*$/, '') : '/';
   var css = document.createElement('link');
   css.rel = 'stylesheet';
-  css.href = base + 'assets/chatbot/chatbot.css?v=20261028p';
+  css.href = base + 'assets/chatbot/chatbot.css?v=20261031k';
   document.head.appendChild(css);
-  var fb = document.createElement('script');
-  fb.src = base + 'assets/chatbot/kb-fallback.js?v=20261028p';
-  fb.defer = true;
-  document.head.appendChild(fb);
   var cb = document.createElement('script');
-  cb.src = base + 'assets/chatbot/chatbot.js?v=20261028p';
+  cb.src = base + 'assets/chatbot/chatbot.js?v=20261031k';
   cb.defer = true;
-  cb.setAttribute('data-kb', base + 'assets/data/abadis-knowledge-base.json?v=20261028p');
+  cb.setAttribute('data-kb', base + 'assets/data/abadis-knowledge-base.json?v=20261031k');
   document.head.appendChild(cb);
 })();
