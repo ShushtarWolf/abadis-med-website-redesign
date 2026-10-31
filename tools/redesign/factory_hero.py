@@ -26,10 +26,10 @@ T = {
         n='سوله ۱ (همکف) — سالن تزریق پلاستیک و قالب‌گیری',
         t='ورود از دهانه ۱۴ متری و رختکن‌ها به سالن تزریق با سقف ۵ متر؛ تولید بدنه، درب و قطعات کیسه ساکشن.',
         subs=[
-          dict(id=11, code='۱.۱', pin='۱.۱ ۴ دستگاه تزریق ۲۲۰ تن', chip='۱.۱ ۴ دستگاه تزریق ۲۲۰ تن',
+          dict(id=11, code='۱.۱', pin='۱.۱ سالن تزریق', chip='۱.۱ سالن تزریق',
                spec='قالب‌گیری دقیق بدنه کیسه‌های ساکشن یک‌بارمصرف با ۴ دستگاه تزریق ۲۲۰ تن در ردیف شمالی سالن همکف (سقف ۵ متر).',
                pos=[-9.65, 2.8, -16.8]),
-          dict(id=12, code='۱.۲', pin='۱.۲ ۶ دستگاه تزریق ۱۲۰ تن', chip='۱.۲ ۶ دستگاه تزریق ۱۲۰ تن',
+          dict(id=12, code='۱.۲', pin='۱.۲ سالن تزریق', chip='۱.۲ سالن تزریق',
                spec='تزریق درب، اتصالات و قطعات ظریف کیسه ساکشن با ۶ دستگاه تزریق ۱۲۰ تن در میانه سالن همکف.',
                pos=[-9.25, 2.2, -6.95]),
         ]
@@ -86,7 +86,7 @@ T = {
         ]
       ),
     ],
-    labels=['تزریق','مونتاژ و کارتن','فیلتر','اکسترودر و کلین‌روم','انبار و ارسال','دفتر مرکزی','کوچه گلشن ۱۹'],
+    labels=['تزریق','مونتاژ و کارتن','فیلتر','اکسترودر و کلین‌روم','انبار و ارسال','ساختمان اداری','کوچه گلشن ۱۹'],
     digits='fa'),
   'en': dict(
     root='en/', quote_href='export/#quote',
@@ -102,10 +102,10 @@ T = {
         n='Hall 1 (Ground) — Plastic Injection Molding',
         t='Entering past the 14m front bay and locker rooms into the 5m ground hall, filled with four 220-ton and six 120-ton injection presses.',
         subs=[
-          dict(id=11, code='1.1', pin='1.1 4× 220-Ton Injection', chip='1.1 4× 220-Ton Injection',
+          dict(id=11, code='1.1', pin='1.1 Injection Hall', chip='1.1 Injection Hall',
                spec='Precision molding of disposable suction canister bodies on four 220-ton presses along the north row of the 5m ground hall.',
                pos=[-9.65, 2.8, -16.8]),
-          dict(id=12, code='1.2', pin='1.2 6× 120-Ton Injection', chip='1.2 6× 120-Ton Injection',
+          dict(id=12, code='1.2', pin='1.2 Injection Hall', chip='1.2 Injection Hall',
                spec='Injection of lids, ports, and fine canister fittings on six 120-ton presses filling the middle of the ground hall.',
                pos=[-9.25, 2.2, -6.95]),
         ]
@@ -162,7 +162,7 @@ T = {
         ]
       ),
     ],
-    labels=['Injection','Assembly & cartoning','Filter','Extrusion & cleanroom','Warehouse & dispatch','Head office','Golshan 19 Alley'],
+    labels=['Injection','Assembly & cartoning','Filter','Extrusion & cleanroom','Warehouse & dispatch','Administrative Building','Golshan 19 Alley'],
     digits='en'),
   'ar': dict(
     root='arabic/', quote_href='export/#quote',
@@ -178,10 +178,10 @@ T = {
         n='القاعة ١ (الأرضي) — حقن البلاستيك وتشكيل القوالب',
         t='الدخول عبر البهو الأمامي بارتفاع ١٤ م وغرف تبديل الملابس إلى قاعة الحقن بارتفاع ٥ م لتشكيل أجسام وأغطية الأكياس.',
         subs=[
-          dict(id=11, code='١.١', pin='١.١ ٤ ماكينات حقن ٢٢٠ طن', chip='١.١ ٤ ماكينات حقن ٢٢٠ طن',
+          dict(id=11, code='١.١', pin='١.١ قاعة الحقن', chip='١.١ قاعة الحقن',
                spec='قولبة دقيقة لأجسام عبوات الشفط أحادية الاستخدام على ٤ ماكينات حقن ٢٢٠ طن في الصف الشمالي من القاعة الأرضية (٥ م).',
                pos=[-9.65, 2.8, -16.8]),
-          dict(id=12, code='١.٢', pin='١.٢ ٦ ماكينات حقن ١٢٠ طن', chip='١.٢ ٦ ماكينات حقن ١٢٠ طن',
+          dict(id=12, code='١.٢', pin='١.٢ قاعة الحقن', chip='١.٢ قاعة الحقن',
                spec='حقن الأغطية والوصلات والأجزاء الدقيقة على ٦ ماكينات حقن ١٢٠ طن في وسط القاعة الأرضية.',
                pos=[-9.25, 2.2, -6.95]),
         ]
@@ -238,7 +238,7 @@ T = {
         ]
       ),
     ],
-    labels=['الحقن','التجميع والتعبئة','الفلتر','البثق والغرفة النظيفة','المستودع والشحن','المكتب الرئيسي','زقاق گلشن ۱۹'],
+    labels=['الحقن','التجميع والتعبئة','الفلتر','البثق والغرفة النظيفة','المستودع والشحن','المبنى الإداري','زقاق گلشن ۱۹'],
     digits='ar'),
 }
 
