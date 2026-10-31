@@ -282,6 +282,7 @@ function init(sec) {
     uRoof: { value: 0 },
     uPulse: { value: 0 },
     uFill: { value: new THREE.Color('#08333d') }, uFillMix: { value: 0.35 },
+    uUpSide: { value: 1 }, // 1 = hall 1 mezzanine, 2 = hall 2 cleanroom deck
     uUpper: { value: 0 }, // 0..1: upper-floor focus (assembly / cleanroom): shells + other floors recede
     uHideSt: { value: 0 }, // 0..1: hide occluding hall-3 racks while on the extruder station
   };
@@ -318,6 +319,7 @@ function init(sec) {
       uniform float uPulse;
       uniform float uHideSt;
       uniform float uUpper;
+      uniform float uUpSide;
       void main(){
         if (vO > uProg) discard;
         float fr = 1. - smoothstep(0., .06, uProg - vO);
@@ -338,7 +340,9 @@ function init(sec) {
         alpha *= mix(1.0, 0.45, uHideSt * vT * (1.0 - isSub) * (1.0 - step(39.5, vSub) * step(vSub, 49.5)));
         // Upper-floor focus: hall walls / WIP shell / ground machines fade, mezzanine machines stay crisp
         float slab = step(28.5, vSub) * step(vSub, 29.5) + step(48.5, vSub) * step(vSub, 49.5);
-        float upSub = (step(20.5, vSub) * step(vSub, 23.5) + step(42.5, vSub) * step(vSub, 44.5)) + slab;
+        float s2 = step(1.5, uUpSide), s1 = 1.0 - s2;
+        float slabMine = s1 * step(28.5, vSub) * step(vSub, 29.5) + s2 * step(48.5, vSub) * step(vSub, 49.5);
+        float upSub = (s1 * step(20.5, vSub) * step(vSub, 23.5) + s2 * step(42.5, vSub) * step(vSub, 44.5)) + slabMine;
         alpha *= mix(1.0, mix(0.1, 0.3, step(0.5, upSub)), uUpper * (1.0 - vT) * (1.0 - isSub));
         alpha *= mix(1.0, 0.3, uUpper * vT * (1.0 - upSub));
         alpha = max(alpha, uUpper * upSub * vT);
@@ -367,7 +371,7 @@ function init(sec) {
     `,
     fragmentShader: `
       uniform float uProg; uniform vec3 uBase; uniform vec3 uHi; uniform vec3 uCoral;
-      uniform float uActiveSub; uniform float uInStation; uniform float uPulse; uniform float uRoof; uniform float uHideSt; uniform float uUpper; uniform vec3 uFill; uniform float uFillMix;
+      uniform float uActiveSub; uniform float uInStation; uniform float uPulse; uniform float uRoof; uniform float uHideSt; uniform float uUpper; uniform float uUpSide; uniform vec3 uFill; uniform float uFillMix;
       varying float vO; varying float vSub; varying vec3 vN;
       void main(){
         if (uHideSt > 0.5 && vSub > 49.5 && vSub < 59.5) discard;
@@ -383,7 +387,8 @@ function init(sec) {
         float ext = step(39.5, vSub) * step(vSub, 49.5);
         c *= 1.0 + uHideSt * ext * 0.25 * (1.0 - isSub);
         c += uHideSt * isSub * vec3(0.12, 0.08, 0.0);
-        float upS = step(20.5, vSub) * step(vSub, 23.5) + step(42.5, vSub) * step(vSub, 44.5);
+        float s2 = step(1.5, uUpSide), s1 = 1.0 - s2;
+        float upS = s1 * step(20.5, vSub) * step(vSub, 23.5) + s2 * step(42.5, vSub) * step(vSub, 44.5);
         c *= mix(1.0, mix(1.0, 1.35, upS), uUpper * (1.0 - isSub)); // key light on the mezzanine, ground dims
         c += uUpper * upS * vec3(0.05, 0.09, 0.1);
         // Floor slabs: a clear 2nd-floor deck. Aerial = translucent, upper station = near-opaque, ground station = ghosted
@@ -391,7 +396,8 @@ function init(sec) {
         vec3 deck = mix(uHi, vec3(1.0), 0.35) * (0.8 + 0.2 * d);
         c = mix(c, deck, slab);
         float a = grow * mix(mix(.82, .97, isSub), mix(.22, 1.0, upS), uUpper);
-        float aSlab = grow * mix(mix(0.55, 0.12, uRoof), 0.92, uUpper);
+        float slabMine = s1 * step(28.5, vSub) * step(vSub, 29.5) + s2 * step(48.5, vSub) * step(vSub, 49.5);
+        float aSlab = grow * mix(mix(0.55, 0.12, uRoof), mix(0.1, 0.92, slabMine), uUpper);
         gl_FragColor = vec4(c, mix(a, aSlab, slab));
       }
     `,
@@ -662,7 +668,7 @@ function init(sec) {
   }
   function removeCallout(c) { c.el.remove(); c.dot.remove(); c.path.remove(); }
 
-  let outroF = 0, sT = 0, sS = 0, explore = false, tween = null, lastIdx = -2, activeStation = 0, activeSubIdx = 0, visible = true;
+  let viewShift = 0, outroF = 0, sT = 0, sS = 0, explore = false, tween = null, lastIdx = -2, activeStation = 0, activeSubIdx = 0, visible = true;
   const subFocusOffset = new THREE.Vector3();
   const targetSubFocus = new THREE.Vector3();
 
@@ -955,7 +961,10 @@ function init(sec) {
     const sr = stage.getBoundingClientRect();
     const dockBot = dock.classList.contains('on') ? dock.getBoundingClientRect().bottom - sr.top + 4 : (narrow ? 110 : 130);
     const introBot = (innerWidth <= 760 && idx < 0 && s < 0.22 && !explore) ? intro.getBoundingClientRect().bottom - sr.top + 8 : 0;
-    const topSafe = Math.max(dockBot, introBot, narrow ? 64 : 80), botSafe = h - (narrow ? 84 : 90);
+    // Desktop dock floats as a card: treat it as an obstacle instead of a top band, so pins stay visible
+    const dockOn = dock.classList.contains('on'), dockR = dock.getBoundingClientRect();
+    const dockTop = narrow || dockR.top - sr.top < 140;
+    const topSafe = Math.max(dockTop ? dockBot : 0, introBot, narrow ? 64 : 80), botSafe = h - (narrow ? 84 : 90);
     const showHallLabels = (explore || idx < 0 || outroF > 0.6) && prog > 0.75;
     const items = [];
     lbls.forEach((c, i) => {
@@ -965,7 +974,7 @@ function init(sec) {
     });
     currentPinEls.forEach((c, k) => items.push({ c, p: c.pos, on: idx >= 0 && outroF < 0.4, pri: k === activeSubIdx ? 4 : 2 }));
     items.sort((x, y) => y.pri - x.pri);
-    const placed = [];
+    const placed = (dockOn && !dockTop) ? [{ x: dockR.left - sr.left - 10, y: dockR.top - sr.top - 10, w: dockR.width + 20, h: dockR.height + 20 }] : [];
     const hit = (r) => placed.some((q) => r.x < q.x + q.w && r.x + r.w > q.x && r.y < q.y + q.h && r.y + r.h > q.y);
     const LX = narrow ? 18 : 26, LY = narrow ? 26 : 34, LH = narrow ? 10 : 14;
     items.forEach(({ c, p, on }) => {
@@ -996,10 +1005,15 @@ function init(sec) {
     const roofT = (explore || idx >= 0) ? (explore ? 1 : 1 - outroF) : 0;
     uniforms.uRoof.value += (roofT - uniforms.uRoof.value) * (reduce ? 1 : 1 - Math.exp(-dt / 0.45));
     const upT = ((idx === 1 || idx === 4) && outroF < 0.5) ? 1 : 0;
+    if (idx === 1) uniforms.uUpSide.value = 1; else if (idx === 4) uniforms.uUpSide.value = 2;
     uniforms.uUpper.value += (upT - uniforms.uUpper.value) * (reduce ? 1 : 1 - Math.exp(-dt / 0.4));
     const hideT = ((idx >= 2 && idx <= 4) && outroF < 0.5) ? 1 : 0;
     uniforms.uHideSt.value += (hideT - uniforms.uHideSt.value) * (reduce ? 1 : 1 - Math.exp(-dt / 0.35));
     uniforms.uPulse.value = reduce ? 0.5 : 0.5 + 0.5 * Math.sin(time * 3.2);
+    // Desktop: the info card sits bottom-right, so shift the framed subject left of it
+    const shT = (dockOn && !dockTop && !narrow && !explore && outroF < 0.5) ? Math.min(0.16, (w - (dockR.left - sr.left)) / w * 0.5) : 0;
+    viewShift += (shT - viewShift) * (reduce ? 1 : 1 - Math.exp(-dt / 0.5));
+    if (viewShift > 0.002) camera.setViewOffset(w, h, w * viewShift, 0, w, h); else if (camera.view && camera.view.enabled) camera.clearViewOffset();
     renderer.render(scene, camera);
   }
   frame();
