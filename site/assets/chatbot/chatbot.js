@@ -226,7 +226,7 @@
     faq: { fa: '/faq/', en: '/en/faqs/', ar: '/arabic/پرسش-های-متداول/' },
     products: { fa: '/products/', en: '/en/products/', ar: '/arabic/منتجات/' },
     bag3d: { fa: '/products/suction-bag/#bag-3d', en: '/en/products/suction-bag/#bag-3d', ar: '/arabic/كيس-الشفط/#bag-3d' },
-    factory: { fa: '/#intro', en: '/en/#intro', ar: '/arabic/#intro' },
+    factory: { fa: '/about/#plant', en: '/en/about-us/#plant', ar: '/arabic/من-نحن/#plant' },
     green: { fa: '/green-family-map/', en: '/en/green-family-map/', ar: '/arabic/green-family-map/' },
     customers: { fa: '/customers/', en: '/en/our-customers/', ar: '/arabic/customers/' },
     sdgs: { fa: '/sdgs/', en: '/en/sdgs/', ar: '/arabic/sdgs/' },
