@@ -63,9 +63,9 @@
   width: 11px;
   height: 11px;
   border-radius: 50%;
-  background: #4ade80;
+  background: #f3fafa;
   border: 2px solid #066163;
-  box-shadow: 0 0 0 2px rgba(74, 222, 128, .25);
+  box-shadow: 0 0 0 2px rgba(243, 250, 250, .45);
 }
 
 /* Hide floating launcher when chat panel is open */
@@ -399,11 +399,14 @@ html[data-theme="noir"] .abadis-chat-choice {
     border: 0;
     transform: translateZ(0);
   }
-  .abadis-chat-langs {
-    display: none; /* Site header already switches language; keeps mobile chat header clean */
-  }
   .abadis-chat-head {
+    flex-wrap: wrap;
     padding: 12px 14px;
+  }
+  .abadis-chat-langs {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1 1 auto;
   }
   .abadis-chat-iconbtn {
     width: 40px;

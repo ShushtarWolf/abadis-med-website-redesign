@@ -64,8 +64,24 @@
     var code = cur === 'IRT' ? 'IRT' : ($('#ci-code').value || '').toUpperCase().slice(0, 3);
     $('#ci-cost').textContent = nf.format(u.c * 2.5 * unitCost) + (code ? ' ' + code : '');
   }
+  function applyNParam() {
+    var raw = '';
+    try { raw = new URLSearchParams(window.location.search).get('n') || ''; } catch (e) { return; }
+    if (!raw) return;
+    raw = String(raw)
+      .replace(/[۰-۹]/g, function (ch) { return String('۰۱۲۳۴۵۶۷۸۹'.indexOf(ch)); })
+      .replace(/[٠-٩]/g, function (ch) { return String('٠١٢٣٤٥٦٧٨٩'.indexOf(ch)); });
+    var n = parseInt(raw.replace(/[^\d]/g, ''), 10);
+    if (!(n > 0)) return;
+    var input = $('#ci-n');
+    if (!input) return;
+    input.value = String(Math.min(15000, n));
+    var surgery = root.querySelector('input[name=ci-mode][value=surgery]');
+    if (surgery) surgery.checked = true;
+  }
   root.addEventListener('input', run);
   root.addEventListener('change', run);
+  applyNParam();
   run();
   loadUsdRate();
 })();

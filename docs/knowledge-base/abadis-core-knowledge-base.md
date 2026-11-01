@@ -27,7 +27,7 @@ The full FA / EN / AR About text approved on 2026-10-20 is embedded in the JSON 
 | Figure | Value | Source |
 | --- | --- | --- |
 | Active centres on the redesign customers list | 1232 | zagros-names/names.json |
-| Live homepage counter on 2026-10-24 | 612 | Unique names in site/zagros-names/names.json. The live homepage counter read on 2026-10-24 was still 612. |
+| Homepage impact counter (1405) | 1284 | Homepage impact counter is data-impact-stat="1284". 612 is not the current homepage figure. |
 | Users | 11112 | homepage impact row |
 | Satisfaction | 98.99% | homepage impact row |
 | Product failure | 0.0018% | homepage impact row |

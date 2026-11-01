@@ -172,11 +172,14 @@
     { id: 'infection-waste', fa: 'کنترل آلودگی و مدیریت پسماند', en: 'Contamination Control & Waste Management', ar: 'السيطرة على التلوث وإدارة النفايات' }
   ];
   var PRODUCTS = [
-    { id: 'canisters-liners', fa: 'کیسه و مخزن', en: 'Liners & canisters', ar: 'الأكياس والخزانات' },
-    { id: 'suction-instruments', fa: 'تیوب ساکشن', en: 'Suction tubes', ar: 'أنبوب الشفط' },
-    { id: 'airway', fa: 'راه هوایی', en: 'Airway care', ar: 'الطريق الهوائي' },
-    { id: 'anesthesia-icu', fa: 'بیهوشی و ICU', en: 'Anesthesia & ICU', ar: 'التخدير وICU' },
-    { id: 'general-consumables', fa: 'ملزومات عمومی', en: 'General consumables', ar: 'مستهلكات عامة' }
+    { id: 'liners', volume: true, fa: 'کیسه ساکشن یکبار مصرف', en: 'Disposable Suction Bag', ar: 'أكياس الشفط ذات الاستخدام الواحد', blurb: { fa: 'مدل‌های ۱، ۲ و ۳ لیتری', en: '1, 2 and 3 litre models', ar: 'موديلات ١ و٢ و٣ لتر' }, page: { fa: '/products/suction-bag/', en: '/en/products/suction-bag/', ar: '/arabic/كيس-الشفط/' } },
+    { id: 'canisters', fa: 'مخزن ساکشن', en: 'Suction Canister', ar: 'علبة الشفط', blurb: { fa: 'مخازن و سیستم‌های دیواری', en: 'Canisters and wall systems', ar: 'الخزانات والأنظمة الجدارية' }, page: { fa: '/products/canister/', en: '/en/products/canisters/', ar: '/arabic/خزانات/' } },
+    { id: 'stands', fa: 'پایه و نگهدارنده‌ها', en: 'Stands & Holders', ar: 'الحوامل والمثبتات', blurb: { fa: 'ترولی، پایه و گیره‌ها', en: 'Trolley, stand and clamps', ar: 'ترولي وقاعدة ومشابك' }, page: { fa: '/products/stand/', en: '/en/products/base-and-holder/', ar: '/arabic/تثبیت/' } },
+    { id: 'connectors', fa: 'اتصالات', en: 'Connectors', ar: 'الوصلات', blurb: { fa: 'کانکتورها و شیرها', en: 'Connectors and valves', ar: 'الوصلات والصمامات' }, page: { fa: '/products/connectors/', en: '/en/products/connections/', ar: '/arabic/الوصلات/' } },
+    { id: 'filters', fa: 'فیلتر', en: 'Filter', ar: 'الفلاتر', blurb: { fa: 'انواع فیلترهای حفاظتی', en: 'Protective filter types', ar: 'أنواع الفلاتر الواقية' }, page: { fa: '/products/filters/', en: '/en/products/filters/', ar: '/arabic/الفلتر/' } },
+    { id: 'tubes', fa: 'ساکشن تیوب', en: 'Suction Tube', ar: 'أنبوب الشفط', blurb: { fa: 'لوله‌ها و رابط‌های ساکشن', en: 'Tubes and suction connectors', ar: 'الأنابيب ووصلات الشفط' }, page: { fa: '/products/suction-tube/', en: '/en/suction-tube/', ar: '/arabic/أنبوب-الشفط/' } },
+    { id: 'oral', fa: 'بهداشت دهان', en: 'Oral Hygiene', ar: 'نظافة الفم', blurb: { fa: 'مسواک ساکشن، سواب دهانی، فیکسر لوله تراشه', en: 'Suction toothbrush, oral swab, tube fixer', ar: 'فرشاة الشفط والمسحة ومثبّت الأنبوب' }, page: { fa: '/products/oral-hygiene/', en: '/en/products/oral-hygiene/', ar: '/arabic/نظافة-الفم/' } },
+    { id: 'other', fa: 'سایر محصولات', en: 'Other Products', ar: 'منتجات أخرى', blurb: { fa: 'رگولاتور، کیسه زباله PVA، رسیور یکبار مصرف', en: 'Regulator, PVA waste bag, disposable receiver', ar: 'المنظّم وكيس نفايات PVA ووعاء التجميع' }, page: { fa: '/products/other/', en: '/en/products/other-products/', ar: '/arabic/منتجات-اخری/' } }
   ];
 
   function fmt(n, lang) {
@@ -215,6 +218,30 @@
     if (!node) return '';
     if (typeof node === 'string') return node;
     return node[state.lang] || node.fa || '';
+  }
+
+  var PAGES = {
+    about: { fa: '/about/', en: '/en/about-us/', ar: '/arabic/من-نحن/' },
+    team: { fa: '/about/#team', en: '/en/about-us/#team', ar: '/arabic/من-نحن/#team' },
+    faq: { fa: '/faq/', en: '/en/faqs/', ar: '/arabic/پرسش-های-متداول/' },
+    products: { fa: '/products/', en: '/en/products/', ar: '/arabic/منتجات/' },
+    bag3d: { fa: '/products/suction-bag/#bag-3d', en: '/en/products/suction-bag/#bag-3d', ar: '/arabic/كيس-الشفط/#bag-3d' },
+    factory: { fa: '/about/#plant', en: '/en/about-us/#plant', ar: '/arabic/من-نحن/#plant' },
+    green: { fa: '/green-family-map/', en: '/en/green-family-map/', ar: '/arabic/green-family-map/' },
+    customers: { fa: '/customers/', en: '/en/our-customers/', ar: '/arabic/customers/' },
+    sdgs: { fa: '/sdgs/', en: '/en/sdgs/', ar: '/arabic/sdgs/' },
+    dial: { fa: '/dial-practical/', en: '/en/calculator/', ar: '/arabic/الحوسبة/' },
+    impact: { fa: '/#impact', en: '/en/#impact', ar: '/arabic/#impact' }
+  };
+  function pageUrl(key) {
+    var row = PAGES[key];
+    if (!row) return '/';
+    return row[state.lang] || row.fa;
+  }
+  function dialUrl(n) {
+    var base = pageUrl('dial');
+    if (n == null || n === '') return base;
+    return base + (base.indexOf('?') === -1 ? '?' : '&') + 'n=' + encodeURIComponent(String(n));
   }
 
   function el(tag, cls, html) {
@@ -286,7 +313,7 @@
     panel.appendChild(chipEl);
 
     var llm = el('details', 'abadis-chat-llm');
-    llm.hidden = true;
+    llm.hidden = !demo;
     var sum = el('summary');
     llm.appendChild(sum);
     var tiers = el('div', 'abadis-chat-tiers');
@@ -378,13 +405,17 @@
     root.appendChild(launcher);
     root.appendChild(panel);
     document.body.appendChild(root);
+    var savedLang = '';
+    try { savedLang = sessionStorage.getItem('abadis-chat-lang') || ''; } catch (e) {}
     var docLang = (document.documentElement.lang || '').toLowerCase();
-    if (docLang.indexOf('en') === 0) state.lang = 'en';
+    if (I18N[savedLang]) state.lang = savedLang;
+    else if (docLang.indexOf('en') === 0) state.lang = 'en';
     else if (docLang.indexOf('ar') === 0) state.lang = 'ar';
     state.adminUser = loadAdminSession();
     state.adminRules = loadAdminRules();
     setLang(state.lang);
     setMode('sales');
+    document.addEventListener('keydown', onPanelKey);
   }
 
   function paintChrome() {
@@ -495,6 +526,12 @@
     return null;
   }
 
+  function findProductPage(id) {
+    var list = (state.kb && state.kb.product_pages) || [];
+    for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
+    return null;
+  }
+
   function onChoice(kind, item) {
     if (kind === 'path') {
       if (item.id === 'solution') {
@@ -522,22 +559,31 @@
     }
     if (kind === 'product') {
       state.choice = item.id;
-      var product = findCatalog(item.id);
-      var summary = product ? textOf(product.summary) + '\n' + textOf(product.applications) : '';
-      var href = product && product.links && product.links[0] ? urlOf(product.links[0]) : '/products/';
-      addMsg('bot', esc(summary).replace(/\n/g, '<br>') + linkLine(href, href) + (item.id === 'canisters-liners' || item.id === 'anesthesia-icu' || item.id === 'gastroenterology' || item.id === 'gynecology' ? '<br>' + esc(t().pickVolume) : '<br>' + ctaLine()));
-      if (item.id === 'canisters-liners' || item.id === 'anesthesia-icu') {
+      var page = findProductPage(item.id);
+      var href = (item.page && (item.page[state.lang] || item.page.fa)) || '/products/';
+      var summary = item.blurb ? textOf(item.blurb) : '';
+      if (page && page.sections && page.sections.length) {
+        var bits = [];
+        var acc = '';
+        for (var si = 0; si < page.sections.length && acc.length < 700; si++) {
+          var sec = page.sections[si];
+          var line = ((sec.heading || '') + '\n' + (sec.body || '')).trim();
+          if (!line) continue;
+          bits.push(line);
+          acc = bits.join('\n');
+        }
+        if (acc) summary = acc.slice(0, 700);
+      }
+      if (!summary) summary = textOf(item);
+      addMsg('bot', esc(summary).replace(/\n/g, '<br>') + linkLine(href, href) + (item.volume ? '<br>' + esc(t().pickVolume) : '<br>' + ctaLine()));
+      if (item.volume) {
         showChoices([
           { id: '1', fa: '۱ لیتر', en: '1 litre', ar: '١ لتر' },
           { id: '2', fa: '۲ لیتر', en: '2 litres', ar: '٢ لتر' },
           { id: '3', fa: '۳ لیتر', en: '3 litres', ar: '٣ لتر' }
         ], 'volume');
       } else {
-        showChoices([
-          { id: '1000', fa: '۱۰۰۰ عمل', en: '1000 surgeries', ar: '١٠٠٠ عملية' },
-          { id: '5000', fa: '۵۰۰۰ عمل', en: '5000 surgeries', ar: '٥٠٠٠ عملية' },
-          { id: '15000', fa: '۱۵۰۰۰ عمل', en: '15000 surgeries', ar: '١٥٠٠٠ عملية' }
-        ], 'savings');
+        choiceEl.textContent = '';
       }
       return;
     }
@@ -554,8 +600,9 @@
     }
     if (kind === 'savings') {
       var row = estimate(item.id);
-      var calc = state.kb && state.kb.calculator && urlOf(state.kb.calculator.url);
-      addMsg('bot', esc(t().estimate(row)) + linkLine(calc || '/dial-practical/', calc || '/dial-practical/') + ctaLine());
+      var calc = dialUrl(row && row.n);
+      var calcName = state.lang === 'en' ? 'Practical savings dial' : state.lang === 'ar' ? 'حاسبة التوفير العملية' : 'محاسبه‌گر عملی';
+      addMsg('bot', esc(t().estimate(row)) + linkLine(calc, calcName) + ctaLine());
       choiceEl.textContent = '';
     }
   }
@@ -589,7 +636,7 @@
     ['تیوب', 'tube', 'انبوب'],
     ['صرفه', 'صرفهجویی', 'saving', 'توفیر', 'calculator', 'محاسبهگر'],
     ['پودر', 'powder', 'جاذب', 'absorbent', 'ژله', 'جامدکننده', 'ماص'],
-    ['امار', 'رضایت', 'مراکز', 'مرکز', 'بیمارستان', 'کاربر', 'خرابی', 'ظرفیت', 'سهم', 'stats', 'satisfaction', 'center', 'hospital', 'user', 'failure', 'rate', '1232', '11112', '98', 'احصاییات', 'رضا', 'مراکز'],
+    ['امار', 'رضایت', 'مراکز', 'مرکز', 'بیمارستان', 'کاربر', 'خرابی', 'ظرفیت', 'سهم', 'stats', 'satisfaction', 'center', 'hospital', 'user', 'failure', 'rate', '1284', '11112', '98', 'احصاییات', 'رضا', 'مراکز'],
     ['فلسفه', 'ستون', 'رویکرد', 'معماری', 'راهکار', 'philosophy', 'pillar', 'solution', 'فلسفه', 'ارکان', 'حلول'],
     ['شیشه', 'سنتی', 'چندبارمصرف', 'مداربسته', 'بسته', 'بهتر', 'برتری', 'مقایسه', 'glass', 'bottle', 'reusable', 'traditional', 'closed', 'better', 'beat', 'advantage', 'زجاج', 'زجاجیه', 'تقلیدیه', 'مغلق', 'افضل'],
     ['قیمت', 'خرید', 'هزینه', 'تعرفه', 'پیشفاکتور', 'فاکتور', 'سفارش', 'حجم', 'سایز', 'لیتر', 'price', 'pricing', 'cost', 'quote', 'proforma', 'order', 'volume', 'سعر', 'اسعار', 'شراء', 'سعه', 'سعات'],
@@ -613,10 +660,16 @@
         en: 'Question 1 of 3 (Abadis Academy Clinical Interview):\nIn the ICU or Operating Room, what is the primary clinical hazard of manually emptying and washing traditional reusable glass suction bottles?',
         ar: 'السؤال ١ من ٣ (المقابلة السريرية لأكاديمية آباديس):\nفي قسم العناية المركزة أو غرفة العمليات، ما هو الخطر الرئيسي لتفريغ وغسل قوارير الشفط الزجاجية التقليدية يدويًا؟'
       },
+      correct: 'q1_a',
       options: [
         { id: 'q1_a', fa: 'انتشار آئروسل و تماس مستقیم پرستار با ترشحات عفونی', en: 'Aerosol splash & direct nurse exposure to infectious fluids', ar: 'انتشار الرذاذ والتعرض المباشر للسوائل المعدية' },
         { id: 'q1_b', fa: 'فقط سنگینی شیشه', en: 'Only the weight of the glass bottle', ar: 'ثقل وزن القارورة الزجاجية فقط' }
       ],
+      wrong: {
+        fa: 'این گزینه درست نیست. سنگینی شیشه خطر اصلی بالینی نیست. خطر اصلی، انتشار آئروسل و تماس مستقیم پرستار با ترشحات عفونی هنگام تخلیه و شست‌وشو است.',
+        en: 'That choice is not correct. The weight of the glass is not the main clinical hazard. The hazard is aerosol splash and direct nurse exposure to infectious fluids when the bottles are emptied and washed.',
+        ar: 'هذا الخيار غير صحيح. ثقل الزجاج ليس الخطر السريري الرئيسي. الخطر هو انتشار الرذاذ وتعرض التمريض المباشر للسوائل المعدية عند التفريغ والغسل.'
+      },
       feedback: {
         fa: 'دقیقاً درست است! تخلیه دستی شیشه‌های سنتی باعث پخش آئروسل‌های عفونی (مانند هانتاویروس و پاتوژن‌های تنفسی/خونی) و آلودگی محیط می‌شود. سیستم ساکشن مدار بسته یکبارمصرف آبادیس با پودر جاذب (ژله‌ای‌کننده) این تماس را به صفر می‌رساند.',
         en: 'Spot on! Manual emptying of open glass canisters releases infectious aerosols and exposes nursing staff to bloodborne and respiratory pathogens. Abadis closed-system disposable liners with solidifying powder eliminate this exposure completely.',
@@ -629,10 +682,16 @@
         en: 'Question 2 of 3 (Abadis Academy Clinical Interview):\nWhat is the role of the hydrophobic shutoff filter integrated into the Abadis suction liner lid?',
         ar: 'السؤال ٢ من ٣ (المقابلة السريرية لأكاديمية آباديس):\nما هي وظيفة فلتر قطع التدفق (الهيدروفوبيك) في غطاء كيس الشفط من آباديس؟'
       },
+      correct: 'q2_a',
       options: [
         { id: 'q2_a', fa: 'جلوگیری از سرریز مایع و محافظت از سیستم وکیوم مرکزی/دستگاه', en: 'Prevents fluid overflow & protects central vacuum/suction pump', ar: 'منع طفح السوائل وحماية منظومة الشفط المركزية' },
         { id: 'q2_b', fa: 'افزایش حجم مخزن ساکشن', en: 'Increases the volume of the canister', ar: 'زيادة سعة خزان الشفط' }
       ],
+      wrong: {
+        fa: 'این گزینه درست نیست. فیلتر قطع‌کننده حجم مخزن را زیاد نمی‌کند. کار آن جلوگیری از سرریز مایع و محافظت از سیستم وکیوم مرکزی یا دستگاه ساکشن است.',
+        en: 'That choice is not correct. The shutoff filter does not increase canister volume. It stops fluid overflow and protects the central vacuum or the suction unit.',
+        ar: 'هذا الخيار غير صحيح. فلتر قطع التدفق لا يزيد سعة الخزان. وظيفته منع طفح السائل وحماية منظومة الشفط.'
+      },
       feedback: {
         fa: 'عالی! آبادیس اولین تولیدکننده فیلترهای قطع‌کننده جریان در ایران است. به محض پر شدن کیسه یا رسیدن مایع به فیلتر، مسیر وکیوم به شکل خودکار مسدود می‌شود تا مایعات عفونی وارد شلنگ وکیوم مرکزی یا موتور دستگاه ساکشن نشوند.',
         en: 'Excellent! Abadis is the first manufacturer of shutoff filters in Iran. When fluid reaches the filter, it automatically seals the vacuum path so infectious liquid never enters the central vacuum line or portable suction unit.',
@@ -645,10 +704,16 @@
         en: 'Question 3 of 3 (Abadis Academy Clinical Interview):\nFor high-fluid-volume operating room surgeries, which Abadis liner size and configuration is recommended?',
         ar: 'السؤال ٣ من ٣ (المقابلة السريرية لأكاديمية آباديس):\nفي العمليات الجراحية ذات الحجم العالي من السوائل، أي سعة وترتيب لأكياس آباديس يُنصح به؟'
       },
+      correct: 'q3_a',
       options: [
         { id: 'q3_a', fa: 'کیسه ۳ لیتری با قابلیت اتصال سری تا ۴ مخزن (۱۲ لیتر) روی ترولی', en: '3 L liners connected in series up to 4 canisters (12 L) on a trolley', ar: 'كيس ٣ لتر مع الربط المتسلسل حتى ٤ خزانات (١٢ لترًا) على ترولي' },
         { id: 'q3_b', fa: 'کیسه ۱ لیتری تکی (مخصوص آمبولانس و دندانپزشکی)', en: 'Single 1 L liner (meant for ambulance & dental)', ar: 'كيس ١ لتر مفرد (للإسعاف والأسنان)' }
       ],
+      wrong: {
+        fa: 'این گزینه درست نیست. کیسه ۱ لیتری برای آمبولانس و دندانپزشکی است، نه جراحی سنگین با حجم مایعات بالا. پیشنهاد اتاق عمل، کیسه ۳ لیتری با اتصال سری تا ۴ مخزن است.',
+        en: 'That choice is not correct. A single 1 L liner is for ambulance and dental use, not high-fluid operating-room surgery. The recommendation is 3 L liners connected in series, up to 4 canisters.',
+        ar: 'هذا الخيار غير صحيح. كيس ١ لتر للإسعاف والأسنان، وليس للعمليات ذات الحجم العالي. التوصية هي كيس ٣ لتر مع الربط المتسلسل حتى ٤ خزانات.'
+      },
       feedback: {
         fa: 'تبریک! شما مصاحبه بالینی آکادمی آبادیس را با موفقیت کامل کردید. کیسه ۱ لیتری برای آمبولانس و دندانپزشکی، ۲ لیتری برای ICU/CCU و آندوسکوپی، و ۳ لیتری (با قابلیت اتصال سری تا ۴ مخزن / ۱۲ لیتر) برای اتاق عمل طراحی شده است.',
         en: 'Congratulations! You completed the Abadis Academy Clinical Assessment. 1 L is built for ambulance/dental/pediatrics, 2 L for ICU/CCU & endoscopy, and 3 L (connectable in series up to 4 canisters / 12 L) for the Operating Room.',
@@ -767,22 +832,16 @@
   }
 
   function loadAdminSession() {
-    try {
-      var raw = sessionStorage.getItem(ADMIN_SESSION_KEY);
-      if (raw) {
-        var parsed = JSON.parse(raw);
-        if (parsed && ADMIN_ACCOUNTS[parsed.id]) return ADMIN_ACCOUNTS[parsed.id];
-      }
-    } catch (e) {}
+    // A static page cannot treat a token built only from published script
+    // constants as a login. Drop any stored proof and keep the session in memory.
+    try { sessionStorage.removeItem(ADMIN_SESSION_KEY); } catch (e) {}
     return null;
   }
 
   function saveAdminSession(acc) {
     state.adminUser = acc || null;
-    try {
-      if (acc) sessionStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({ id: acc.id }));
-      else sessionStorage.removeItem(ADMIN_SESSION_KEY);
-    } catch (e) {}
+    try { sessionStorage.removeItem(ADMIN_SESSION_KEY); } catch (e) {}
+    if (state.kb) buildIndex();
   }
 
   function loadAdminRules() {
@@ -804,52 +863,68 @@
     buildIndex();
   }
 
-  function detectAdminLogin(rawQuery) {
-    var clean = normDigits(rawQuery)
-      .replace(/\u200c/g, ' ')
-      .replace(/[يئ]/g, 'ی')
-      .replace(/ك/g, 'ک')
-      .replace(/[:|,،؛\-]+/g, ' ')
-      .replace(/^(admin|login|ورود|ادمین|کاربر)\s+/i, '')
+  function classifyAdminLogin(rawQuery) {
+    var clean = normDigits(foldLetters(rawQuery))
+      .replace(/[:|,،؛=\-]+/g, ' ')
+      .replace(/\s+/g, ' ')
       .trim();
-    var parts = clean.split(/\s+/);
+    if (/کیست|کیه|سابقه|سمت|مدیرعامل|معاون|بیوگرافی|معرفی|who|what|why|چیست|چطور|چگونه|[?؟]/.test(clean)) return null;
+    var explicit = /(?:^|\s)(admin|login|ورود|ادمین|signin|sign-in)(?:\s|$)/i.test(clean);
+    clean = clean.replace(/^(?:لطفا\s+|please\s+)?(?:admin|login|ورود|ادمین|کاربر|sign-in|signin)\s+/i, '').trim();
+    var parts = clean.split(/\s+/).filter(Boolean);
     if (parts.length < 2 || parts.length > 4) return null;
     var uRaw = parts[0].toLowerCase();
-    var pRaw = parts.slice(1).join('').toLowerCase();
     var uid = null;
     if (uRaw === 'alireza' || uRaw === 'علیرضا' || uRaw === 'alirezahassanali') uid = 'alireza';
     else if (uRaw === 'navid' || uRaw === 'نوید' || uRaw === 'navidhassanali') uid = 'navid';
     if (!uid) return null;
+    var nameWord = /^(حسنعلی|حسن|علی|hassanali|hassan|ali|مهندس|اقای|جناب|eng|mr|معاون|فروش|بازرگانی|مدیرعامل|هم|بنیانگذار)$/;
+    var secretParts = parts.slice(1).filter(function (w) { return !nameWord.test(w.toLowerCase()); });
+    if (!secretParts.length) return null;
+    if (!explicit && !(parts.length === 2 && secretParts.length === 1)) return null;
+    var pRaw = secretParts.join('').toLowerCase();
+    if (pRaw.length < 3) return null;
     var acc = ADMIN_ACCOUNTS[uid];
     var h = fnv1aHex(uid + ':' + pRaw);
-    if (acc && acc.hashes[h]) return acc;
-    return null;
+    if (acc && acc.hashes[h]) return { ok: acc };
+    return { failed: true };
   }
 
   function getAdminChunks() {
+    if (!state.adminUser) return [];
     var rules = state.adminRules || loadAdminRules();
     state.adminRules = rules;
     return rules.map(function (r, idx) {
-      var textFa = 'اصلاحیه و قانون رسمی مدیریت ارشد آبادیس (' + (r.author || 'ادمین') + '): ' + r.fact + (r.topic ? (' | موضوع مرتبط: ' + r.topic) : '');
+      var textFa = 'نکته محلی همین مرورگر، نه قانون رسمی منتشرشده سایت (' + (r.author || 'ادمین') + '): ' + r.fact + (r.topic ? (' | موضوع مرتبط: ' + r.topic) : '');
       return {
         id: 'admin-override-' + (r.id || idx),
         section: 'admin-override',
-        url: { fa: '/about/', en: '/en/about/', ar: '/ar/about/' },
+        url: { fa: '/about/', en: '/en/about-us/', ar: '/arabic/من-نحن/' },
         text: { fa: textFa, en: textFa, ar: textFa },
         keywords: (r.topic || '') + ' ' + (r.fact || '')
       };
     });
   }
 
+  function foldLetters(s) {
+    return String(s || '')
+      .replace(/\u200c/g, ' ')
+      .replace(/[يئ]/g, 'ی')
+      .replace(/ك/g, 'ک')
+      .replace(/ة/g, 'ه')
+      .replace(/[أإآ]/g, 'ا')
+      .trim();
+  }
+
   function handleAdminCommand(rawQuery) {
     if (!state.adminUser) return false;
-    var q = normDigits(rawQuery).replace(/\u200c/g, ' ').replace(/[يئ]/g, 'ی').replace(/ك/g, 'ک').trim();
-    var qLow = q.toLowerCase();
+    var folded = foldLetters(rawQuery);
+    var qLow = normDigits(folded).toLowerCase();
 
     if (/^(خروج ادمین|خروج از ادمین|بستن ادمین|logout|admin logout|exit admin)$/i.test(qLow)) {
       var prevName = state.adminUser.nameFa;
       saveAdminSession(null);
-      addMsg('bot', fmtMd(' **خروج از حالت ادمین انجام شد.** (' + prevName + ')\nچت‌بات اکنون در حالت عادی بازدیدکنندگان (فقط‌خواندنی و قفل‌شده روی اطلاعات رسمی) قرار دارد.'));
+      addMsg('bot', fmtMd(' **خروج از حالت ادمین انجام شد.** (' + prevName + ')\nآموزش در این صفحه بسته شد. برای آموزش دوباره باید رمز همین بارگذاری صفحه را وارد کنید؛ نشانهٔ ورود در مرورگر ذخیره نمی‌شود.\nنکته‌های ذخیره‌شده در همین مرورگر برای فهرست ادمین می‌مانند و پس از خروج جایگزین پاسخ رسمی سایت برای بازدیدکننده نمی‌شوند. برای حذف، دوباره وارد شوید و `لیست اصلاحات` را ببینید.'));
       return true;
     }
 
@@ -892,14 +967,23 @@
       return true;
     }
 
-    var explicitMatch = q.match(/^(?:اصلاح|اصلاحیه|یاد بگیر|یادبگیر|قانون|نکته|ثبت نکته|ثبت|درستش اینه|درستش|همیشه بگو|teach|correct)\s*[:：\-]?\s*(.+)$/i);
+    var explicitPrefix = /^(?:اصلاح(?:یه)?|یاد\s*بگیر|ياد\s*بگير|قانون|نکته|نكته|ثبت(?:\s*(?:نکته|نكته))?|درستش(?:\s*(?:اینه|اینه‌|اينه))?|همیشه\s*بگو|هميشه\s*بگو|teach|correct)\s*[:：\-]?\s*/i;
+    var explicitRaw = String(rawQuery).match(explicitPrefix);
+    var explicitMatch = explicitRaw || folded.match(/^(?:اصلاح|اصلاحیه|یاد بگیر|یادبگیر|قانون|نکته|ثبت نکته|ثبت|درستش اینه|درستش|همیشه بگو|teach|correct)\s*[:：\-]?\s*(.+)$/i);
     var isConversationalCorrection = !explicitMatch && (
       /^(نه[،,\s]|خیر[،,\s]|اشتباه|غلط|درست نیست|اینطور نیست|برعکس)/.test(qLow) ||
-      /قبلا گفتی|قبلاً گفتی|چرا گفتی|ولی تو گفتی|سابقه.*داره ولی|نگو .* بگو|به جای .* بگو|اطلاعاتت قدیمی|بروز کن|به‌روز کن|تو شرکت ما نیست|در شرکت ما نیست|کارمند ما نیست|پاک کن|حذف کن|اینا کی هستن|این اسامی|از کجا میاری|وجود ندار|غلطه|اشتباهه|نباید بگی|نگو|فقط .* هستن|اصلا تو شرکت|اصلاً تو شرکت/.test(qLow)
-    ) && q.length >= 8;
+      /قبلا گفتی|قبلاً گفتی|چرا گفتی|ولی تو گفتی|سابقه.*داره ولی|نگو .+ بگو|به جای .+ بگو|اطلاعاتت قدیمی|بروز کن|به‌روز کن|تو شرکت ما نیست|در شرکت ما نیست|کارمند ما نیست|پاک کن|حذف کن|اینا کی هستن|این اسامی|از کجا میاری|وجود ندار|غلطه|اشتباهه|نباید بگی|فقط .+ هستن|اصلا تو شرکت|اصلاً تو شرکت/.test(qLow)
+    ) && folded.length >= 8;
 
     if (explicitMatch || isConversationalCorrection) {
-      var factText = explicitMatch ? explicitMatch[1].trim() : q;
+      var factText = '';
+      if (explicitRaw) factText = String(rawQuery).slice(explicitRaw[0].length).trim();
+      else if (explicitMatch) {
+        var preOnly = folded.match(/^(?:اصلاح|اصلاحیه|یاد بگیر|یادبگیر|قانون|نکته|ثبت نکته|ثبت|درستش اینه|درستش|همیشه بگو|teach|correct)\s*[:：\-]?\s*/i);
+        var lead = String(rawQuery).match(/^\s*/);
+        factText = preOnly ? String(rawQuery).slice((lead ? lead[0].length : 0) + preOnly[0].length).trim() : String(rawQuery).trim();
+      } else factText = String(rawQuery).trim();
+      if (!factText) return false;
       var topicText = state.lastUserQuery || '';
       var currentRules = (state.adminRules || loadAdminRules()).slice();
       var newRule = {
@@ -911,7 +995,7 @@
       };
       currentRules.push(newRule);
       saveAdminRules(currentRules);
-      addMsg('bot', fmtMd(' **اصلاحیه رسمی شما ثبت و قفل شد** (' + state.adminUser.nameFa + '):\n«' + factText + '»\n\nاز این لحظه این قانون بالاترین اولویت را در پاسخگویی بات دارد. (برای مشاهده همه موارد: `لیست اصلاحات` | برای خروج: `خروج ادمین`)'));
+      addMsg('bot', fmtMd(' **نکته در همین مرورگر ثبت شد** (' + state.adminUser.nameFa + '):\n«' + factText + '»\n\nاین نکته فقط تا وقتی این نشست ادمین باز است به پاسخ‌های همین صفحه اضافه می‌شود و قانون رسمی منتشرشده برای بازدیدکنندگان دیگر نیست. (فهرست: `لیست اصلاحات` | خروج: `خروج ادمین`)'));
       return true;
     }
 
@@ -1081,6 +1165,9 @@
       if (doc.chunk.section === 'admin-override' && docHits >= 1) {
         score += 160;
       }
+      var asksImpact = isStatsQuestion(qRaw);
+      if (asksImpact && doc.chunk.id === 'canonical-1405-facts-and-disambiguations') score += 160;
+      if (asksImpact && doc.chunk.id === 'company-impact-stats') score += 20;
       if (asksFoundersOrStats) {
         if (doc.chunk.id === 'canonical-1405-facts-and-disambiguations') score += 85;
         if (doc.chunk.id === 'executive-team-full') score += 75;
@@ -1151,7 +1238,7 @@
     }
     var lead = composeWarmLead(hit);
     var shown = body;
-    var maxChars = (hit.id === 'dealers-directory-all' || hit.id === 'executive-team-full' || hit.id === 'sales-experts-team' || hit.id === 'site-news-archive' || hit.id === 'site-articles-archive' || hit.id.indexOf('boss-') === 0 || hit.id.indexOf('hospitals-province-') === 0 || hit.id.indexOf('page-') === 0) ? 2800 : 1600;
+    var maxChars = (hit.id === 'dealers-directory-all' || hit.id === 'executive-team-full' || hit.id === 'sales-experts-team' || hit.id === 'site-news-archive' || hit.id === 'site-articles-archive' || hit.id === 'canonical-1405-facts-and-disambiguations' || hit.id.indexOf('boss-') === 0 || hit.id.indexOf('hospitals-province-') === 0 || hit.id.indexOf('page-') === 0) ? 2800 : 1600
     if (shown.length > maxChars) {
       shown = shown.slice(0, maxChars);
       var cut = Math.max(shown.lastIndexOf('.'), shown.lastIndexOf('؟'), shown.lastIndexOf('?'), shown.lastIndexOf('\n'));
@@ -1210,6 +1297,10 @@
       b.textContent = opt[state.lang] || opt.fa;
       b.addEventListener('click', function () {
         addMsg('user', esc(opt[state.lang] || opt.fa));
+        if (opt.id !== step.correct) {
+          addMsg('bot', esc(textOf(step.wrong)).replace(/\n/g, '<br>'));
+          return;
+        }
         var fb = esc(textOf(step.feedback)).replace(/\n/g, '<br>');
         addMsg('bot', fb);
         if (stepIndex + 1 < ACADEMY_QUIZ.length) {
@@ -1221,6 +1312,14 @@
       });
       choiceEl.appendChild(b);
     });
+  }
+
+  function isStatsQuestion(q) {
+    var s = String(q || '');
+    if (/نمایند|پخش|توزیع|dealer|distributor|representative|agent|استان|شیراز|اصفهان|تبریز|مشهد|اهواز|کرمان|یزد|رشت|گیلان|مازندران|محصول|کیسه|ساکشن|فیلتر|تیوب|مخزن|کاتالوگ|catalog|liner|canister|product/.test(s)) return false;
+    var water = (/صرفه\s*جویی/.test(s) && /اب|لیتر|water/.test(s)) || /میلیون لیتر|۱۲ میلیون|12 million|water sav/.test(s);
+    var figures = /امار|آمار|رضایت|خرابی|data-impact|چند بیمارستان|چند مرکز|تعداد مرکز|تعداد بیمارستان|how many hospital|how many cent/.test(s);
+    return !!(water || figures);
   }
 
   function conversationalReply(query) {
@@ -1238,21 +1337,33 @@
     var numNorm = q.replace(/[۰-۹]/g, function (d) { return '۰۱۲۳۴۵۶۷۸۹'.indexOf(d); })
       .replace(/[٠-٩]/g, function (d) { return '٠١٢٣٤٥٦٧٨٩'.indexOf(d); });
 
-    // 00. Check Admin Override rules first
-    var adminRulesNow = state.adminRules || loadAdminRules();
-    if (adminRulesNow && adminRulesNow.length) {
+    // 00. Local admin notes apply only while this page's password session is open.
+    var adminRulesNow = state.adminUser ? (state.adminRules || loadAdminRules()) : [];
+    if (state.adminUser && adminRulesNow && adminRulesNow.length) {
       var qToks = tokens(raw);
       for (var arIdx = adminRulesNow.length - 1; arIdx >= 0; arIdx--) {
         var ar = adminRulesNow[arIdx];
         var arToks = tokens((ar.topic || '') + ' ' + (ar.fact || ''));
         var overlap = 0;
         qToks.forEach(function (wt) { if (arToks.indexOf(wt) !== -1) overlap++; });
-        if (overlap >= 2 || (qToks.length === 1 && overlap === 1 && (ar.topic || '').indexOf(qToks[0]) !== -1)) {
-          if (state.cutoff) {
-            addMsg('bot', fmtMd(ar.fact) + linkLine('/about/', '/about/') + ctaLine());
-            showQuickPrompts();
-            return true;
+        var ruleBlob = (ar.fact || '') + ' ' + (ar.topic || '');
+        var people = [['نوید حسنعلی', 'نوید'], ['علیرضا حسنعلی', 'علیرضا'], ['ابوالفضل حسنعلی', 'ابوالفضل']];
+        var nameHit = false;
+        for (var pi = 0; pi < people.length; pi++) {
+          if (q.indexOf(people[pi][0]) !== -1 && (ruleBlob.indexOf(people[pi][0]) !== -1 || ruleBlob.indexOf(people[pi][1]) !== -1)) {
+            nameHit = true;
           }
+        }
+        if (nameHit || overlap >= 2 || (qToks.length === 1 && overlap === 1 && (ar.topic || '').indexOf(qToks[0]) !== -1)) {
+          var teamName = state.lang === 'en' ? 'About the team' : state.lang === 'ar' ? 'عن الفريق' : 'آشنایی با تیم';
+          var localNote = state.lang === 'en'
+            ? 'Local note in this browser, not a published site fact:'
+            : state.lang === 'ar'
+            ? 'ملاحظة محلية في هذا المتصفح، وليست حقيقة منشورة في الموقع:'
+            : 'نکته محلی همین مرورگر، نه واقعیت منتشرشده سایت:';
+          addMsg('bot', fmtMd(localNote + '\n' + ar.fact) + linkLine(pageUrl('team'), teamName) + ctaLine());
+          showQuickPrompts();
+          return true;
         }
       }
     }
@@ -1262,15 +1373,15 @@
       var navidBio = state.lang === 'en'
         ? '**Eng. Navid Hassanali — Co-Founder & VP of Commercial and Sales at Abadis Medical Canisters:**\n• **Role:** VP of Commercial & Sales, Board Member, and Co-Founder of the knowledge-based company Abadis Medical Canisters (`abadis-med.com`), leading all sales, marketing, provincial dealer networks, and customer relations.\n• **Education & Experience:** B.Sc. in Biomedical Engineering (Bioelectric) with **over 16 years of continuous management experience in the medical device industry** (since 1389 / 2010).\n• **Key Milestones:** Obtained exclusive representation of Daiken Japan disposable suction liners in 1389 (2010), pioneered the clinical culture of closed-system disposable suction liners across Iranian hospitals, and co-founded **Abadis Medical Canisters** in **1396 (2017)** to launch national production in Iran.\n*(Note on older news archives: the "13 years of management experience" figure appeared in a Khordad 1401 / June 2022 news interview 4 years ago, which corresponds to 16+ years today in 1405/2026.)*'
         : '**مهندس نوید حسنعلی — معاونت بازرگانی و فروش و هم‌بنیان‌گذار شرکت دانش‌بنیان مخازن طبی آبادیس:**\n• **سمت:** معاونت بازرگانی و فروش، عضو هیئت‌مدیره و هم‌بنیان‌گذار شرکت دانش‌بنیان مخازن طبی آبادیس (`abadis-med.com`) و مسئول کل فعالیت‌های فروش، بازاریابی، شبکه نمایندگان و ارتباط با مشتریان.\n• **تحصیلات و سابقه مدیریتی:** کارشناس مهندسی پزشکی (گرایش بیوالکتریک) با **بیش از ۱۶ سال سابقه مدیریتی مستمر در حوزه تجهیزات پزشکی** (از سال ۱۳۸۹ تا ۱۴۰۵).\n• **دستاوردها و پیشینه:** اخذ نمایندگی انحصاری کیسه ساکشن یکبارمصرف از شرکت دایکن ژاپن در سال ۱۳۸۹، فرهنگ‌سازی گسترده استفاده از محصولات کنترل عفونت و کیسه‌های ساکشن یکبارمصرف در بیمارستان‌های کشور، و هم‌بنیان‌گذاری شرکت دانش‌بنیان «مخازن طبی آبادیس» در سال ۱۳۹۶ و راه‌اندازی خط تولید ملی کیسه ساکشن.\n• **توضیح درباره تفاوت عدد ۱۳ سال در آرشیو اخبار با ۱۶ سال فعلی:** عدد «۱۳ سال سابقه مدیریتی» مربوط به مصاحبه خبری خرداد سال ۱۴۰۱ (۴ سال پیش) در آرشیو اخبار سایت است که با گذشت زمان تا سال ۱۴۰۵ به **بیش از ۱۶ سال سابقه مدیریتی در حوزه تجهیزات پزشکی** (و حدود ۱۰ سال از تأسیس شرکت مخازن طبی آبادیس در سال ۱۳۹۶) رسیده است.';
-      addMsg('bot', fmtMd(navidBio) + linkLine('/about/#team', '/about/#team') + ctaLine());
+      addMsg('bot', fmtMd(navidBio) + linkLine(pageUrl('team'), state.lang === 'en' ? 'About the team' : state.lang === 'ar' ? 'عن الفريق' : 'آشنایی با تیم') + ctaLine());
       showQuickPrompts();
       return true;
     }
-    if (/علیرضا حسنعلی/.test(q) && /کیه|کیست|بیوگرافی|معرفی|سابقه|سمت|مدیرعامل/.test(q)) {
+    if (/علیرضا حسنعلی/.test(q) && !/مقاله|کنگره|عمان|تمپا/.test(q)) {
       var alirezaBio = state.lang === 'en'
         ? '**Eng. Alireza Hassanali — CEO & Co-Founder of Abadis Medical Canisters:**\n• **Role:** Chief Executive Officer (CEO), Board Member, and Co-Founder of the knowledge-based company Abadis Medical Canisters (`abadis-med.com`).\n• **Background & Leadership:** Co-founded Abadis Medical Canisters in **1396 (2017)** building on the parent group Persia Medical Instruments (founded in **1385 / 2006**) and exclusive Daiken Japan representation (**1389 / 2010**).\n• **Research & Strategic Focus:** Author of scientific and international conference papers on Business Intelligence (BI) for liquidity and production planning in medical device manufacturing and Green Governance in hospital waste and water reduction; leads Abadis’s 3rd Five-Year Strategic Plan toward 1410.'
         : '**مهندس علیرضا حسنعلی — مدیرعامل و هم‌بنیان‌گذار شرکت دانش‌بنیان مخازن طبی آبادیس:**\n• **سمت:** مدیرعامل، عضو هیئت‌مدیره و هم‌بنیان‌گذار شرکت دانش‌بنیان مخازن طبی آبادیس (`abadis-med.com`).\n• **پیشینه و راهبری:** هم‌بنیان‌گذاری شرکت دانش‌بنیان مخازن طبی آبادیس در سال ۱۳۹۶ (با پشتوانه دو دهه فعالیت مجموعه مادر «ابزار درمان پرشیا» از سال ۱۳۸۵ و فعالیت تخصصی در حوزه کیسه ساکشن از سال ۱۳۸۹) و هدایت شرکت به جایگاه بزرگ‌ترین تولیدکننده کیسه ساکشن یکبارمصرف و اولین تولیدکننده فیلترهای قطع‌کننده جریان در ایران (همراه با ۱٬۲۸۴ مرکز درمانی فعال در سراسر کشور).\n• **فعالیت‌های علمی و راهبردی:** پژوهشگر و نویسنده مقالات علمی و کنفرانسی در زمینه «طراحی سیستم‌های هوش تجاری (BI) برای مدیریت نقدینگی و تصمیم‌گیری تولید در شرکت‌های تجهیزات پزشکی» و «حکمرانی سبز و نوآوری پایدار در کاهش مصرف آب و پسماند بیمارستانی»، و طراح سند چشم‌انداز راهبردی ۱۴۱۰ آبادیس.';
-      addMsg('bot', fmtMd(alirezaBio) + linkLine('/about/#team', '/about/#team') + ctaLine());
+      addMsg('bot', fmtMd(alirezaBio) + linkLine(pageUrl('team'), state.lang === 'en' ? 'About the team' : state.lang === 'ar' ? 'عن الفريق' : 'آشنایی با تیم') + ctaLine());
       showQuickPrompts();
       return true;
     }
@@ -1278,13 +1389,13 @@
       var abolfazlBio = state.lang === 'en'
         ? '**Mr. Abolfazl Hassanali — Chairman of the Board at Abadis Medical Canisters:**\n• **Role:** Chairman of the Board of Directors at the knowledge-based company Abadis Medical Canisters (`abadis-med.com`), overseeing corporate governance, sustainable development, and social responsibility initiatives including the Save Zagros campaign.'
         : '**جناب آقای ابوالفضل حسنعلی — رئیس هیئت‌مدیره شرکت دانش‌بنیان مخازن طبی آبادیس:**\n• **سمت:** رئیس هیئت‌مدیره شرکت دانش‌بنیان مخازن طبی آبادیس (`abadis-med.com`).\n• **محور فعالیت‌ها:** راهبری کلان هیئت‌مدیره، توسعه پایدار، حمایت از تولید دانش‌بنیان و پیشبرد مسئولیت‌های اجتماعی و انسان‌دوستانه آبادیس (از جمله پویش «نجات زاگرس» و کاشت بیش از ۲٬۰۰۰ نهال بلوط به نام مراکز درمانی همراه).';
-      addMsg('bot', fmtMd(abolfazlBio) + linkLine('/about/#team', '/about/#team') + ctaLine());
+      addMsg('bot', fmtMd(abolfazlBio) + linkLine(pageUrl('team'), state.lang === 'en' ? 'About the team' : state.lang === 'ar' ? 'عن الفريق' : 'آشنایی با تیم') + ctaLine());
       showQuickPrompts();
       return true;
     }
 
     // 0a. Direct authoritative answers for Sales Experts, Executive Team & Provincial Dealers
-    var hasAdminRules = !!(state.adminRules && state.adminRules.length > 0);
+    var hasAdminRules = !!(state.adminUser && state.adminRules && state.adminRules.length > 0);
     var isAnalyticalQ = /از کجا|غیر از|چرا|کیست|کیه|لیست پرسنل|کیا رو|چند نفر/.test(q);
     if (!hasAdminRules && (state.cutoff || !isAnalyticalQ)) {
       if (/کارشناس.*فروش|کارشناسان.*فروش|اسامی.*فروش|تیم فروش|نفرات فروش|همکاران فروش|بخش فروش کی|واحد فروش کی|sales expert|sales team|account executive/.test(q)) {
@@ -1315,49 +1426,147 @@
         : state.lang === 'ar'
         ? '**تعبئة وأبعاد كراتين منتجات آباديس:**\n• **أكياس الشفط ذات الاستعمال الواحد (١، ٢، ٣ لتر):** **٤٥ كيسًا في كل كرتون** (الكيس بفلتر ميكانيكي: ٣٠ في الكرتون).\n• **أنابيب الشفط (CH25، CH30، CH35):** **١٠٠ أنبوب في الكرتون**.'
         : '**تعداد در کارتن و ابعاد بسته‌بندی محصولات آبادیس:**\n• **کیسه ساکشن یکبارمصرف (۱، ۲ و ۳ لیتری):** در هر کارتن **۴۵ عدد** قرار دارد (مدل دارای فیلتر مکانیکی: **۳۰ عدد** در کارتن).\n• **ساکشن تیوب (CH25، CH30، CH35):** در هر کارتن **۱۰۰ عدد** قرار دارد.\n• **ابعاد کارتن‌ها:** کیسه ۱ و ۲ لیتری: ۴۴×۴۲٫۵×۵۷٫۵ سانتی‌متر | کیسه ۳ لیتری: ۴۹×۴۹×۴۹ سانتی‌متر | ساکشن تیوب: ۴۳٫۵×۴۴٫۵×۵۹ سانتی‌متر.';
-      addMsg('bot', fmtMd(cartTxt) + linkLine('/faq/', '/faq/') + ctaLine());
+      var faqName = state.lang === 'en' ? 'FAQ' : state.lang === 'ar' ? 'الأسئلة الشائعة' : 'پرسش‌های متداول';
+      addMsg('bot', fmtMd(cartTxt) + linkLine(pageUrl('faq'), faqName) + ctaLine());
       return true;
     }
 
-    // 1. Academy interactive interview / quiz trigger
-    if (/^(شروع مصاحبه|مصاحبه بالینی|مصاحبه اکادمی|ازمون بالینی|کوییز|تست بالینی|امتحان|start academy|clinical interview|academy interview|start quiz|quiz|مقابله الاکادیمیه|ابدا مقابله)/.test(q) || /مصاحبه.*اکادمی|اکادمی.*مصاحبه|interview.*academy|academy.*interview/.test(q)) {
+    // 1. Academy interview only — not a bare «امتحان…»
+    if (/مصاحبه بالینی|مصاحبه اکادمی|clinical interview|academy interview|شروع مصاحبه بالینی|مقابله الاکادیم|ابدا مقابله/.test(q) || /مصاحبه.*اکادمی|اکادمی.*مصاحبه|interview.*academy|academy.*interview/.test(q)) {
       startQuiz(0);
       return true;
     }
 
-    // 2. Bed-count savings calculation in chat (e.g. "بیمارستان ۲۰۰ تخت", "10 تخت اتاق عمل و 20 تخت ICU")
-    if (/تخت|bed|سریر|سرير/.test(numNorm)) {
-      var nums = numNorm.match(/\d+/g);
-      if (nums && nums.length >= 1) {
-        var n1 = parseInt(nums[0], 10);
-        var n2 = nums.length >= 2 ? parseInt(nums[1], 10) : 0;
-        var orB = n1, icuB = n2;
-        if (nums.length === 1 && n1 > 30) {
-          orB = Math.max(2, Math.round(n1 * 0.08));
-          icuB = Math.max(4, Math.round(n1 * 0.15));
-        }
-        var br = estimateBeds(orB, icuB);
-        var calcUrl = (state.kb && state.kb.calculator && urlOf(state.kb.calculator.url)) || '/dial-practical/';
-        var bedTxt = state.lang === 'en'
-          ? ('For ' + fmt(br.a, 'en') + ' OR beds and ' + fmt(br.b, 'en') + ' ICU beds per year: switching to Abadis closed-system suction liners saves approximately ' + fmt(br.water, 'en') + ' litres of water, ' + fmt(br.cost, 'en') + ' toman in washing & disinfectant costs, and ' + fmt(br.hours, 'en') + ' nursing/staff hours per year (cap: 15,000 surgeries; no CO₂ metric).')
-          : state.lang === 'ar'
-          ? ('لمركز يضم ' + fmt(br.a, 'ar') + ' سرير عمليات و' + fmt(br.b, 'ar') + ' سرير عناية مركزة سنويًا: يحقق نظام الشفط المغلق من آباديس توفيرًا يقارب ' + fmt(br.water, 'ar') + ' لتر ماء، و' + fmt(br.cost, 'ar') + ' تومان من تكاليف الغسل والتعقيم، و' + fmt(br.hours, 'ar') + ' ساعة من وقت الكادر الطبي سنويًا.')
-          : ('برآورد صرفه‌جویی سالانه برای ' + fmt(br.a, 'fa') + ' تخت اتاق عمل و ' + fmt(br.b, 'fa') + ' تخت ویژه (ICU/CCU):\n• صرفه‌جویی در مصرف آب: حدود ' + fmt(br.water, 'fa') + ' لیتر در سال\n• کاهش هزینه شست‌وشو و مواد ضدعفونی: حدود ' + fmt(br.cost, 'fa') + ' تومان در سال\n• آزادسازی زمان کادر درمان: حدود ' + fmt(br.hours, 'fa') + ' ساعت در سال\n(طبق فرمول محاسبه‌گر عملی آبادیس؛ بدون لحاظ CO₂ و کیلوگرم پلاستیک).');
-        addMsg('bot', fmtMd(bedTxt) + linkLine(calcUrl, calcUrl) + ctaLine());
+    if (/کیسه ۲ لیتری برای icu|کیسه 2 لیتری برای icu|2 litre liner for icu|2 liter liner for icu|کیس ٢ لتر|کیس 2 لتر|كيس ٢ لتر/.test(q)) {
+      var icuTxt = state.lang === 'en'
+        ? 'The 2 litre Abadis liner is the size for ICU/CCU, endoscopy, gastroenterology, and emergency. The 1 litre liner is for ambulance and dental use, and the 3 litre liner is for the operating room (connectable in series). I can open the practical savings dial next, or you can give OR beds and ICU beds separately.'
+        : state.lang === 'ar'
+        ? 'كيس ٢ لتر من آباديس مناسب للعناية المركزة وCCU والتنظير والجهاز الهضمي والطوارئ. سعة ١ لتر للإسعاف والأسنان، و٣ لتر لغرفة العمليات مع الربط المتسلسل. يمكن فتح حاسبة التوفير العملية، أو ذكر أسرّة العمليات وأسرّة العناية كلًا على حدة.'
+        : 'کیسه ۲ لیتری آبادیس برای ICU/CCU، آندوسکوپی، گوارش و اورژانس است. کیسه ۱ لیتری برای آمبولانس و دندانپزشکی است و کیسه ۳ لیتری برای اتاق عمل (با اتصال سری). اگر بخواهید، محاسبه‌گر عملی را باز کنید یا تعداد تخت اتاق عمل و تخت ICU را جدا بنویسید.';
+      var dialName = state.lang === 'en' ? 'Practical savings dial' : state.lang === 'ar' ? 'حاسبة التوفير العملية' : 'محاسبه‌گر عملی';
+      addMsg('bot', fmtMd(icuTxt) + linkLine(dialUrl(), dialName) + ctaLine());
+      showQuickPrompts();
+      return true;
+    }
+
+    if (/کارخانه سه بعدی|بازدید سه بعدی کارخانه|نمای سه بعدی کارخانه|3d factory|factory tour|المصنع ثلاثی|المصنع ثلاثي|جولة المصنع/.test(q)) {
+      var facName = state.lang === 'en' ? '3D factory tour' : state.lang === 'ar' ? 'جولة المصنع ثلاثية الأبعاد' : 'بازدید سه‌بعدی کارخانه';
+      var facTxt = state.lang === 'en'
+        ? 'The 3D factory tour is on the homepage. Open it by name below.'
+        : state.lang === 'ar'
+        ? 'جولة المصنع ثلاثية الأبعاد على الصفحة الرئيسية. افتحوها بالاسم أدناه.'
+        : 'بازدید سه‌بعدی کارخانه روی صفحه نخست است. از نام زیر بازش کنید.';
+      addMsg('bot', fmtMd(facTxt) + linkLine(pageUrl('factory'), facName) + ctaLine());
+      return true;
+    }
+    if (/نمای سه بعدی کیسه|کیسه سه بعدی|3d (bag|liner|viewer)|bag-3d|المشاهد ثلاثی|المشاهد ثلاثي|کات.?اوی|cutaway/.test(q)) {
+      var bagName = state.lang === 'en' ? '3D suction liner viewer' : state.lang === 'ar' ? 'عارض كيس الشفط ثلاثي الأبعاد' : 'نمای سه‌بعدی کیسه ساکشن';
+      var bagTxt = state.lang === 'en'
+        ? 'The 3D suction liner viewer is on the suction bag page.'
+        : state.lang === 'ar'
+        ? 'عارض كيس الشفط ثلاثي الأبعاد في صفحة كيس الشفط.'
+        : 'نمای سه‌بعدی کیسه ساکشن در صفحه کیسه ساکشن است.';
+      addMsg('bot', fmtMd(bagTxt) + linkLine(pageUrl('bag3d'), bagName) + ctaLine());
+      return true;
+    }
+    if (/نقشه خانواده سبز|خانواده سبز|green family|خریطه العایله الخضراء|green-family/.test(q)) {
+      var mapName = state.lang === 'en' ? 'Green family map' : state.lang === 'ar' ? 'خريطة العائلة الخضراء' : 'نقشه خانواده سبز';
+      var mapTxt = state.lang === 'en'
+        ? 'The green-family map lists 1,242 hospitals and 42 surgery centres (1,284 centres in total).'
+        : state.lang === 'ar'
+        ? 'خريطة العائلة الخضراء تعرض ١٬٢٤٢ مستشفى و٤٢ مركز جراحة (المجموع ١٬٢٨٤ مركزاً).'
+        : 'نقشه خانواده سبز ۱٬۲۴۲ بیمارستان و ۴۲ مرکز جراحی را نشان می‌دهد (جمع ۱٬۲۸۴ مرکز).';
+      addMsg('bot', fmtMd(mapTxt) + linkLine(pageUrl('green'), mapName) + ctaLine());
+      return true;
+    }
+
+    if (isStatsQuestion(q) && !/کیست|کیه|بیوگرافی/.test(q)) {
+      var canonHit = findChunk('canonical-1405-facts-and-disambiguations');
+      if (canonHit) {
+        addMsg('bot', synthesize(canonHit));
+        showQuickPrompts();
         return true;
       }
     }
 
+    // 2. Bed-count savings: whole-word counts or OR+ICU phrasing. «beside the bed» is not a count.
+    var bedSource = numNorm.replace(/\b(beside|bedside)\b/g, ' ');
+    var hasBedWord = /\bbeds?\b/.test(bedSource) || /(^|[^\u0600-\u06FFa-z0-9_])(تخت|سریر|سرير)(?=$|[^\u0600-\u06FFa-z0-9_])/.test(bedSource);
+    var hasOrPhrase = /اتاق عمل|اتاقعمل|operating room|سرير عمليات|غرفة العمليات|or beds|تخت اتاق عمل/.test(bedSource);
+    var hasIcuPhrase = /\bicu\b|\bccu\b|مراقبت ویژه|عناية مركزة|عنایه|تخت icu|icu beds/.test(bedSource);
+    var hasBedCount = hasBedWord && /\d+/.test(bedSource);
+    if (hasBedCount || (hasOrPhrase && hasIcuPhrase) || /تخت اتاق عمل|تخت icu|or beds|icu beds/.test(bedSource)) {
+      state.bedAsk = state.bedAsk || { or: null, icu: null };
+      var nums = numNorm.match(/\d+/g) || [];
+      var hasOr = /اتاق عمل|اتاقعمل|or bed|operating room|سرير عمليات|غرفة العمليات/.test(numNorm);
+      var hasIcu = /icu|ccu|ویژه|مراقبت ویژه|عناية/.test(numNorm);
+      var dialNameB = state.lang === 'en' ? 'Practical savings dial' : state.lang === 'ar' ? 'حاسبة التوفير العملية' : 'محاسبه‌گر عملی';
+      function askBeds(which) {
+        var msg = which === 'icu'
+          ? (state.lang === 'en' ? 'How many ICU beds? I will not guess them from a total.' : state.lang === 'ar' ? 'كم سرير عناية مركزة؟ لا أخمّن العدد من الإجمالي.' : 'چند تخت ICU؟ از روی جمع تخت‌ها حدس نمی‌زنم.')
+          : which === 'or'
+          ? (state.lang === 'en' ? 'How many operating-room beds? I will not guess them from a total.' : state.lang === 'ar' ? 'كم سرير غرفة عمليات؟ لا أخمّن العدد من الإجمالي.' : 'چند تخت اتاق عمل؟ از روی جمع تخت‌ها حدس نمی‌زنم.')
+          : (state.lang === 'en'
+            ? 'Tell me operating-room beds and ICU beds separately, the same way the practical dial does. For example: 10 OR beds and 20 ICU beds. I will not invent a ratio from a total bed count.'
+            : state.lang === 'ar'
+            ? 'اذكروا أسرّة غرفة العمليات وأسرّة العناية المركزة كلًا على حدة، كما في الحاسبة العملية. مثال: ١٠ أسرّة عمليات و٢٠ سرير عناية. لا أستنتج نسبة من إجمالي الأسرّة.'
+            : 'تعداد تخت اتاق عمل و تعداد تخت ICU را جدا بنویسید، مثل محاسبه‌گر عملی. مثلاً: ۱۰ تخت اتاق عمل و ۲۰ تخت ICU. از روی جمع تخت‌ها نسبتی نمی‌سازم.');
+        addMsg('bot', fmtMd(msg) + linkLine(dialUrl(), dialNameB) + ctaLine());
+      }
+      function emitBeds(orB, icuB) {
+        var br = estimateBeds(orB, icuB);
+        state.bedAsk = { or: null, icu: null };
+        var bedTxt = state.lang === 'en'
+          ? ('For ' + fmt(br.a, 'en') + ' OR beds and ' + fmt(br.b, 'en') + ' ICU beds: switching to Abadis closed-system suction liners saves approximately ' + fmt(br.water, 'en') + ' litres of water, ' + fmt(br.cost, 'en') + ' toman in washing and disinfectant, and ' + fmt(br.hours, 'en') + ' staff hours a year. No CO₂ figure in this formula.')
+          : state.lang === 'ar'
+          ? ('لـ ' + fmt(br.a, 'ar') + ' سرير عمليات و' + fmt(br.b, 'ar') + ' سرير عناية مركزة: توفير يقارب ' + fmt(br.water, 'ar') + ' لتر ماء، و' + fmt(br.cost, 'ar') + ' تومان، و' + fmt(br.hours, 'ar') + ' ساعة من وقت الكادر سنويًا.')
+          : ('برآورد صرفه‌جویی سالانه برای ' + fmt(br.a, 'fa') + ' تخت اتاق عمل و ' + fmt(br.b, 'fa') + ' تخت ICU:\n• آب: حدود ' + fmt(br.water, 'fa') + ' لیتر در سال\n• شست‌وشو و ضدعفونی: حدود ' + fmt(br.cost, 'fa') + ' تومان در سال\n• زمان کادر درمان: حدود ' + fmt(br.hours, 'fa') + ' ساعت در سال\n(فرمول محاسبه‌گر عملی؛ بدون CO₂ و بدون کیلوگرم پلاستیک).');
+        addMsg('bot', fmtMd(bedTxt) + linkLine(dialUrl(), dialNameB) + ctaLine());
+      }
+      if (nums.length >= 2 && (hasOr || hasIcu)) {
+        var orPos = numNorm.search(/اتاق عمل|اتاقعمل|or bed|operating room|سرير عمليات|غرفة العمليات/);
+        var icuPos = numNorm.search(/icu|ccu|ویژه|مراقبت ویژه|عناية/);
+        var orN = parseInt(nums[0], 10);
+        var icuN = parseInt(nums[1], 10);
+        if (orPos !== -1 && icuPos !== -1 && icuPos < orPos) {
+          icuN = parseInt(nums[0], 10);
+          orN = parseInt(nums[1], 10);
+        }
+        emitBeds(orN, icuN);
+        return true;
+      }
+      if (nums.length === 1 && hasOr && !hasIcu) {
+        state.bedAsk.or = parseInt(nums[0], 10);
+        if (state.bedAsk.icu == null) { askBeds('icu'); return true; }
+        emitBeds(state.bedAsk.or, state.bedAsk.icu);
+        return true;
+      }
+      if (nums.length === 1 && hasIcu && !hasOr) {
+        state.bedAsk.icu = parseInt(nums[0], 10);
+        if (state.bedAsk.or == null) { askBeds('or'); return true; }
+        emitBeds(state.bedAsk.or, state.bedAsk.icu);
+        return true;
+      }
+      askBeds('both');
+      return true;
+    }
+
     // 3. Broad "What products does Abadis have?" overview
-    if (/^(محصولات|محصولات ابادیس|محصولات شرکت|لیست محصولات|سبد محصولات|چه محصولاتی دارید|چه تولید میکنید|تولیدات ابادیس|all products|what products|product list|your products|ما هي منتجات|منتجات اباديس)$/.test(q) || (/محصولات/.test(q) && q.split(' ').length <= 4 && !/کد|قیمت|گارانتی|کارتن/.test(q))) {
+    if (/^(محصولات|محصولات ابادیس|محصولات شرکت|لیست محصولات|سبد محصولات|چه محصولاتی دارید|چه تولید میکنید|تولیدات ابادیس|all products|what products|product list|your products|ما هي منتجات|منتجات اباديس)$/.test(q) || (/محصولات/.test(q) && q.split(' ').length <= 4 && !/کد|قیمت|گارانتی|کارتن/.test(q)) || /what products|which products|product list|product catalogue|product catalog|products do you|products does|your products|all products/.test(q)) {
       var prodText = state.lang === 'en'
         ? 'Abadis groups its catalogue in eight categories:\n1. Disposable Suction Bag\n2. Suction Canister\n3. Stands & Holders\n4. Connectors\n5. Filter\n6. Suction Tube\n7. Oral Hygiene (suction toothbrush, oral swab, endotracheal-tube fixer)\n8. Other Products (regulator, PVA waste bag, disposable receiver)'
         : state.lang === 'ar'
         ? 'تجمع آباديس كتالوجها في ثماني فئات:\n١. أكياس الشفط ذات الاستخدام الواحد\n٢. علبة الشفط\n٣. الحوامل والمثبتات\n٤. الوصلات\n٥. الفلاتر\n٦. أنبوب الشفط\n٧. نظافة الفم (فرشاة الشفط، المسحة الفموية، مثبّت أنبوب القصبة)\n٨. منتجات أخرى (المنظّم، كيس نفايات PVA، وعاء التجميع)'
         : 'محصولات آبادیس در هشت گروه است:\n۱. کیسه ساکشن یکبار مصرف\n۲. مخزن ساکشن\n۳. پایه و نگهدارنده‌ها\n۴. اتصالات\n۵. فیلتر\n۶. ساکشن تیوب\n۷. بهداشت دهان (مسواک ساکشن، سواب دهانی، فیکسر لوله تراشه)\n۸. سایر محصولات (رگولاتور، کیسه زباله PVA، رسیور یکبار مصرف)';
-      addMsg('bot', fmtMd(prodText) + linkLine('/products/', '/products/') + ctaLine());
+      var prodName = state.lang === 'en' ? 'Product catalogue' : state.lang === 'ar' ? 'كتالوج المنتجات' : 'کاتالوگ محصولات';
+      addMsg('bot', fmtMd(prodText) + linkLine(pageUrl('products'), prodName) + ctaLine());
       showQuickPrompts();
       return true;
+    }
+
+    if (/فلسفه راهکار|solutions philosophy|three solutions|سه راهکار|3 solutions|live solutions/.test(q)) {
+      var phil = findChunk('solutions-philosophy');
+      if (phil) { addMsg('bot', synthesize(phil)); showQuickPrompts(); return true; }
     }
 
     // 4. Greetings & Salutations (only when the message is primarily a greeting/small-talk, not a domain question starting with سلام)
@@ -1383,7 +1592,7 @@
           ? 'I am doing great and ready to help! As Abadis Medical’s on-site assistant, I have the full product catalog, clinical solutions, calculator formulas, and FAQ loaded right here. What ward or product can I help you with today?'
           : state.lang === 'ar'
           ? 'بخير والحمد لله، وجاهز لخدمتكم! قاعدة معرفة آباديس الكاملة متوفرة لدي هنا. كيف يمكنني مساعدتكم اليوم؟'
-          : 'ممنون از لطف شما، عالی هستم و آماده پاسخگویی! تمام اطلاعات محصولات، ۵ راهکار بالینی، محاسبه‌گر صرفه‌جویی و دانش‌نامه فنی آبادیس در هسته سایت آماده است. درباره کدام محصول یا بخش بیمارستانی سؤال دارید؟';
+          : 'ممنون از لطف شما، عالی هستم و آماده پاسخگویی! تمام اطلاعات محصولات، ۳ راهکار بالینی (مایعات، راه هوایی، پسماند)، محاسبه‌گر صرفه‌جویی و دانش‌نامه فنی آبادیس در هسته سایت آماده است. درباره کدام محصول یا بخش بیمارستانی سؤال دارید؟';
         addMsg('bot', fmtMd(howTxt));
         showQuickPrompts();
         return true;
@@ -1446,15 +1655,49 @@
     return /نمی‌?توانم این اطلاعات|متأسفم،?\s*نمی‌?توانم|متاسفم،?\s*نمی‌?توانم|معذورم|اجازه ارائه|در متن مرجع اطلاعاتی|اطلاعاتی درباره.*وجود ندارد|در اطلاعات مرجع.*نیست|i cannot provide|i'm sorry, i can't|i am sorry, i cannot|unable to provide/i.test(txt || '');
   }
 
+  var liveReq = null;
+  var liveBubble = null;
+  function abortLive() {
+    var bubble = liveBubble;
+    var req = liveReq;
+    liveBubble = null;
+    liveReq = null;
+    if (req) {
+      req.superseded = true;
+      try { req.abort(); } catch (e) {}
+    }
+    if (bubble && bubble.parentNode) bubble.parentNode.removeChild(bubble);
+  }
+
+  function externalUrl() {
+    if (!demo || state.cutoff || state.tier === 'core') return '';
+    if (state.tier === 'domestic') return (domesticEl && domesticEl.value.trim()) || '';
+    if (state.tier === 'intl') return (intlEl && intlEl.value.trim()) || '';
+    return '';
+  }
+
+  function externalAiOn() {
+    return !!externalUrl();
+  }
+
   function tryLiveAi(query, hit, fallbackHtml) {
+    abortLive();
+    var target = externalUrl();
+    if (!target) {
+      addMsg('bot', fallbackHtml);
+      showQuickPrompts();
+      return;
+    }
     var bubble = addMsg('bot', '<span class="abadis-chat-typing">' + (state.lang === 'en' ? 'Typing…' : state.lang === 'ar' ? 'جاري الكتابة…' : 'در حال نوشتن…') + '</span>');
     var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
-    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 13000);
+    liveReq = ctrl;
+    liveBubble = bubble;
+    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, TIER_MS);
     var refText = topKbContext(query, hit);
-    var adminRulesList = state.adminRules || loadAdminRules();
+    var adminRulesList = state.adminUser ? (state.adminRules || loadAdminRules()) : [];
     var adminRulesPrompt = '';
     if (adminRulesList && adminRulesList.length) {
-      adminRulesPrompt = '\n\n[قوانین و اصلاحات قطعی مدیران ارشد آبادیس — دارای بالاترین اولویت مطلق بر هر متن دیگر]:\n'
+      adminRulesPrompt = '\n\n[نکته محلی همین مرورگر در نشست ادمین — قانون رسمی منتشرشده برای بازدیدکنندگان دیگر نیست]:\n'
         + adminRulesList.map(function (r) { return '• ' + r.fact; }).join('\n');
     }
     var langInstruction = state.lang === 'en'
@@ -1471,9 +1714,9 @@
       + '\n\n[اطلاعات رسمی و به‌روز سال ۱۴۰۵ شرکت دانش‌بنیان مخازن طبی آبادیس]: '
       + 'هیئت‌مدیره و مدیران ارشد: ابوالفضل حسنعلی (رئیس هیئت مدیره)، مهندس علیرضا حسنعلی (مدیرعامل و هم‌بنیان‌گذار)، مهندس نوید حسنعلی (معاونت بازرگانی و فروش، عضو هیئت‌مدیره و هم‌بنیان‌گذار؛ کارشناس مهندسی پزشکی گرایش بیوالکتریک با بیش از ۱۶ سال سابقه مدیریتی در حوزه تجهیزات پزشکی از سال ۱۳۸۹ و هم‌بنیان‌گذار مخازن طبی آبادیس در سال ۱۳۹۶)، میلاد پورحسن (مشاور عالی مدیرعامل)، مژده مهین‌دوست (مدیر مالی)، محمدمهدی احمدی (مدیر کارخانه)، نازنین اخوان طباطبایی (مدیر حقوقی)، نازنین حسنعلی (مدیر روابط عمومی)، مائده ناصری (مدیر تضمین کیفیت)، علی‌سینا صالحی (مدیر IT). '
       + 'سرپرست تولید: مهران خلیلی. تیم فروش، بازرگانی و امور مشتریان (مطابق صفحه رسمی /about/#team): روژان کوکبی (کارشناس فروش و امور مشتریان)، امیر محسن‌زاده (کارشناس فروش و امور مشتریان)، محبوبه رعیتی (کارشناس فروش و امور مشتریان)، سونا هاشمیان (کارشناس فروش و امور مشتریان)، زهرا ناطقی (کارشناس فروش و امور مشتریان)، هلیا تیموری (کارشناس عملیات فروش)، نیلوفر شرفی (کارشناس ارشد تأمین و بازرگانی)، الهه رستمی (کارشناس بازرگانی). سایر همکاران تیم اجرایی: کیمیا قدیمی (کارشناس حسابداری)، امیرعرشیا تقوی (کارشناس نصب و خدمات فنی)، میثم اسدالهی (انباردار)، پوریا فرهنگ (تحصیلدار)، محمد قائم‌پناه (مسئول تحویل کالا). '
-      + 'محصولات: کیسه ساکشن یکبارمصرف در ۳ سایز ۱، ۲ و ۳ لیتر (هر کارتن ۴۵ عدد، فیلتر مکانیکی ۳۰ عدد) با فیلتر هیدروفوبیک قطع‌کننده جریان و پودر جاذب؛ مخازن پلی‌کربنات نشکن؛ ساکشن تیوب CH25/CH30/CH35 (۱۰۰ عدد در کارتن)؛ مسواک ساکشن؛ فیکسر لوله تراشه؛ رگولاتور وکیوم VR-A1 و VR-B1؛ فیلتر آنتی‌باکتریال؛ ترولی سری تا ۴ مخزن (۱۲ لیتر). آمار رسمی سال ۱۴۰۵: ۱٬۲۸۴ مرکز درمانی فعال در سراسر کشور (۱٬۲۸۴ بیمارستان و مرکز جراحی در ۳۱ استان روی نقشه خانواده سبز)، ۱۱٬۱۱۲ کاربر، ۹۸.۹۹٪ رضایت، ۰.۰۰۱۸٪ خرابی، تأسیس شرکت آبادیس ۱۳۹۶ (۲۰۱۷) و پیشینه گروه مادر ابزار درمان پرشیا از ۱۳۸۵ و نمایندگی دایکن ژاپن از ۱۳۸۹. تلفن فروش: ۰۲۱-۲۲۲۱۸۹۱۰ و ۰۲۱-۹۲۰۰۱۰۱۷ داخلی ۱۱، واتس‌اپ +۹۸۹۱۰۰۱۴۵۸۰۹.'
+      + 'محصولات: کیسه ساکشن یکبارمصرف در ۳ سایز ۱، ۲ و ۳ لیتر (هر کارتن ۴۵ عدد، فیلتر مکانیکی ۳۰ عدد) با فیلتر هیدروفوبیک قطع‌کننده جریان و پودر جاذب؛ مخازن پلی‌کربنات نشکن؛ ساکشن تیوب CH25/CH30/CH35 (۱۰۰ عدد در کارتن)؛ مسواک ساکشن؛ فیکسر لوله تراشه؛ رگولاتور وکیوم VR-A1 و VR-B1؛ فیلتر آنتی‌باکتریال؛ ترولی سری تا ۴ مخزن (۱۲ لیتر). آمار رسمی سال ۱۴۰۵: ۱٬۲۸۴ مرکز درمانی فعال در سراسر کشور (۱٬۲۴۲ بیمارستان و ۴۲ مرکز جراحی در ۳۱ استان روی نقشه خانواده سبز)، ۱۱٬۱۱۲ کاربر، ۹۸.۹۹٪ رضایت، ۰.۰۰۱۸٪ خرابی، صرفه‌جویی سالانه بیش از ۱۲ میلیون لیتر آب. تأسیس شرکت آبادیس ۱۳۹۶ (۲۰۱۷) و پیشینه گروه مادر ابزار درمان پرشیا از ۱۳۸۵ و نمایندگی دایکن ژاپن از ۱۳۸۹. تلفن فروش: ۰۲۱-۲۲۲۱۸۹۱۰ و ۰۲۱-۹۲۰۰۱۰۱۷ داخلی ۱۱، واتس‌اپ +۹۸۹۱۰۰۱۴۵۸۰۹.'
       + (refText ? ('\n\n[جزئیات تکمیلی از صفحات وب‌سایت]:\n' + refText) : '')
-      + (adminRulesList && adminRulesList.length ? ('\n\n⚠️ دستور قطعی و لازم‌الاجرای مدیر ارشد (این دستور هر اطلاعات متناقض در متن پایه را باطل می‌کند):\n' + adminRulesList.map(function (r) { return '• ' + r.fact; }).join('\n')) : '');
+      + (adminRulesList && adminRulesList.length ? ('\n\nنکته محلی نشست ادمین در همین مرورگر (پس از خروج، پاسخ رسمی سایت برمی‌گردد):\n' + adminRulesList.map(function (r) { return '• ' + r.fact; }).join('\n')) : '');
 
     var msgs = [{ role: 'system', content: sys }];
     state.history = state.history || [];
@@ -1481,11 +1724,7 @@
     recent.forEach(function (m) { msgs.push(m); });
     msgs.push({ role: 'user', content: query });
 
-    var customUrl = state.tier === 'domestic' && domesticEl && domesticEl.value.trim()
-      ? domesticEl.value.trim()
-      : state.tier === 'intl' && intlEl && intlEl.value.trim()
-      ? intlEl.value.trim()
-      : 'https://text.pollinations.ai/';
+    var customUrl = target;
 
     var payload = {
       model: 'openai-fast',
@@ -1500,10 +1739,14 @@
     if (ctrl) opts.signal = ctrl.signal;
 
     fetch(customUrl, opts).then(function (r) {
+      if (ctrl && ctrl.superseded) return '';
       if (!r.ok) throw new Error('http');
       return r.text();
     }).then(function (raw) {
+      if (ctrl && ctrl.superseded) return;
       clearTimeout(timer);
+      if (liveReq === ctrl) liveReq = null;
+      if (liveBubble === bubble) liveBubble = null;
       var txt = String(raw || '').trim();
       if (txt.charAt(0) === '{') {
         try {
@@ -1529,9 +1772,16 @@
       }
       if (logEl) logEl.scrollTop = logEl.scrollHeight;
       showQuickPrompts();
-    }).catch(function () {
+    }).catch(function (err) {
       clearTimeout(timer);
-      bubble.innerHTML = fallbackHtml;
+      if (ctrl && ctrl.superseded) return;
+      if (liveReq === ctrl) liveReq = null;
+      if (liveBubble === bubble) liveBubble = null;
+      if (err && err.name === 'AbortError' && bubble.parentNode) {
+        bubble.innerHTML = fallbackHtml;
+      } else if (bubble.parentNode) {
+        bubble.innerHTML = fallbackHtml;
+      }
       if (logEl) logEl.scrollTop = logEl.scrollHeight;
       showQuickPrompts();
     });
@@ -1541,7 +1791,7 @@
     var hit = search(query);
     if (hit) state.lastHit = hit;
     var fallbackHtml = hit ? synthesize(hit) : (fmtMd(t().empty) + '<br>' + ctaLine());
-    if (!state.cutoff) {
+    if (externalAiOn()) {
       tryLiveAi(query, hit, fallbackHtml);
     } else {
       addMsg('bot', fallbackHtml);
@@ -1588,22 +1838,45 @@
 
   var WIZARD_SHORTCUTS = {
     'راهکار مدیریت مایعات': { type: 'solution', id: 'fluid' },
-    'کیسه ۲ لیتری برای icu': { type: 'volume', id: '2' },
     'fluid management solution': { type: 'solution', id: 'fluid' },
-    '2 litre liner for icu': { type: 'volume', id: '2' },
-    'حل إدارة السوائل': { type: 'solution', id: 'fluid' },
-    'كيس ٢ لتر لـ icu': { type: 'volume', id: '2' }
+    'حل إدارة السوائل': { type: 'solution', id: 'fluid' }
   };
 
+  function foldKey(s) {
+    return foldLetters(String(s || '')).toLowerCase().replace(/\s+/g, ' ').trim();
+  }
+
+  function explicitSavings(q) {
+    return /صرفه\s*جویی|صرفهجویی|saving|savings|توفير|توفیر/.test(q);
+  }
+
+  function surgeryCount(query) {
+    var q = String(query || '').toLowerCase()
+      .replace(/\u200c/g, ' ')
+      .replace(/[يئ]/g, 'ی')
+      .replace(/ك/g, 'ک');
+    var stripped = q.replace(/عملکرد/g, ' ');
+    if (!/عمل|جراحی|surger/.test(stripped)) return null;
+    var n = normDigits(stripped);
+    n = n.replace(/(?:^|[^\d])140[1-5](?=[^\d]|$)/g, ' ');
+    var m = n.match(/(\d{2,5})/);
+    if (!m) return null;
+    var num = parseInt(m[1], 10);
+    if (num >= 1401 && num <= 1405) return null;
+    if (num < 1 || num > 15000) return null;
+    return String(num);
+  }
+
   function intent(query) {
-    var q = query.trim().toLowerCase();
-    var n = query.replace(/[۰-۹]/g, function (d) { return '۰۱۲۳۴۵۶۷۸۹'.indexOf(d); })
-      .replace(/[٠-٩]/g, function (d) { return '٠١٢٣٤٥٦٧٨٩'.indexOf(d); });
-    var surg = n.match(/(\d{3,5})/);
-    if (/صرف|saving|توفير|عمل|جراحی|surger/.test(q) && surg && !/سال\s*13|سال\s*20|1396|1397|2017|13485/.test(n)) {
-      return { type: 'savings', n: surg[1] };
+    var q = foldKey(query);
+    var shortcutKeys = Object.keys(WIZARD_SHORTCUTS);
+    for (var si = 0; si < shortcutKeys.length; si++) {
+      if (foldKey(shortcutKeys[si]) === q) return WIZARD_SHORTCUTS[shortcutKeys[si]];
     }
-    if (WIZARD_SHORTCUTS[q]) return WIZARD_SHORTCUTS[q];
+    if (explicitSavings(q)) {
+      var n = surgeryCount(query);
+      if (n) return { type: 'savings', n: n };
+    }
     return null;
   }
 
@@ -1629,17 +1902,27 @@
   }
 
   function ask(query) {
+    abortLive();
     open();
-    var loginAcc = detectAdminLogin(query);
-    if (loginAcc) {
-      saveAdminSession(loginAcc);
+    var loginTry = classifyAdminLogin(query);
+    if (loginTry && loginTry.ok) {
+      saveAdminSession(loginTry.ok);
       addMsg('user', ' [احراز هویت مدیر ارشد]');
-      addMsg('bot', fmtMd(' **خوش آمدید ' + loginAcc.nameFa + ' عزیز — حالت آموزش و اصلاح ادمین فعال شد.**\n'
-        + 'از این لحظه هر نکته یا اصلاحیه‌ای که بنویسید، در حافظه رسمی بات ثبت می‌شود و اولویت قطعی بر تمام متون قبلی خواهد داشت:\n'
+      addMsg('bot', fmtMd(' **خوش آمدید ' + loginTry.ok.nameFa + ' عزیز — حالت آموزش این صفحه فعال شد.**\n'
+        + 'رمز فقط برای همین بارگذاری صفحه در حافظه می‌ماند و نشانهٔ قابل ساخت از روی کد منتشرشده ذخیره نمی‌شود. نکته‌ها محلی همین مرورگرند و قانون رسمی سایت برای بازدیدکنندگان دیگر نیستند:\n'
         + '• **ثبت اصلاحیه یا فکت جدید:** کافی است بنویسید `اصلاح: متن صحیح...` یا `یاد بگیر: ...` (یا مستقیماً به پاسخ قبلی بات اعتراض/اصلاحیه بنویسید).\n'
         + '• **مشاهده قوانین ثبت‌شده:** بنویسید `لیست اصلاحات`\n'
         + '• **حذف آخرین مورد:** بنویسید `حذف آخرین اصلاح`\n'
         + '• **خروج از حالت ادمین:** بنویسید `خروج ادمین`'));
+      return;
+    }
+    if (loginTry && loginTry.failed) {
+      addMsg('user', ' [تلاش ورود ناموفق]');
+      addMsg('bot', fmtMd(state.lang === 'en'
+        ? 'That sign-in did not match. The attempt stays in this browser only and is not sent out.'
+        : state.lang === 'ar'
+        ? 'لم تنجح محاولة الدخول. تُفحص داخل المتصفح ولا تُرسل إلى خارج الموقع.'
+        : 'ورود انجام نشد. تلاش فقط در همین مرورگر سنجیده شد و به بیرون از سایت فرستاده نمی‌شود.'));
       return;
     }
     addMsg('user', esc(query));
@@ -1676,7 +1959,7 @@
     state.lang = lang;
     try { sessionStorage.setItem('abadis-chat-lang', lang); } catch (e) {}
     paintChrome();
-    resetThread();
+    if (!logEl || !logEl.childElementCount) resetThread();
     if (demo) {
       document.documentElement.lang = root.lang;
       document.documentElement.dir = root.dir;
@@ -1688,7 +1971,7 @@
     state.mode = mode === 'academy' ? 'academy' : 'sales';
     root.dataset.mode = state.mode;
     paintChrome();
-    resetThread();
+    if (!logEl || !logEl.childElementCount) resetThread();
   }
 
   function syncViewport() {
@@ -1732,22 +2015,78 @@
     window.scrollTo(0, y);
   }
 
+  var lastFocus = null;
+  function visuallyHidden(node) {
+    var n = node;
+    while (n && n !== document.body) {
+      if (n.hidden) return true;
+      if (window.getComputedStyle) {
+        var st = window.getComputedStyle(n);
+        if (st && (st.display === 'none' || st.visibility === 'hidden')) return true;
+      }
+      n = n.parentElement;
+    }
+    return false;
+  }
+  function focusables() {
+    if (!panel) return [];
+    return Array.prototype.filter.call(
+      panel.querySelectorAll('a[href], button:not([disabled]), textarea, input, select, summary, [tabindex]:not([tabindex="-1"])'),
+      function (node) {
+        if (node.hidden || node.disabled) return false;
+        if (node.closest('[hidden]')) return false;
+        if (visuallyHidden(node)) return false;
+        return true;
+      }
+    );
+  }
+  function onPanelKey(ev) {
+    if (!state.open) return;
+    if (ev.key === 'Escape') {
+      ev.preventDefault();
+      close();
+      return;
+    }
+    if (ev.key !== 'Tab') return;
+    var nodes = focusables();
+    if (!nodes.length) return;
+    var first = nodes[0];
+    var last = nodes[nodes.length - 1];
+    var active = document.activeElement;
+    if (ev.shiftKey && (active === first || !panel.contains(active))) {
+      ev.preventDefault();
+      last.focus();
+    } else if (!ev.shiftKey && active === last) {
+      ev.preventDefault();
+      first.focus();
+    }
+  }
+
   function open() {
+    var wasOpen = state.open;
     state.open = true;
     panel.hidden = false;
+    panel.setAttribute('aria-modal', 'true');
     root.classList.add('is-open');
     lockMobileBody();
     syncViewport();
     root.querySelector('.abadis-chat-launcher').setAttribute('aria-expanded', 'true');
+    if (!wasOpen) lastFocus = document.activeElement;
     if (logEl) logEl.scrollTop = logEl.scrollHeight;
+    ensureKb();
+    var focusTarget = input || panel.querySelector('[data-close]');
+    setTimeout(function () { if (state.open && focusTarget && focusTarget.focus) focusTarget.focus(); }, 0);
   }
   function close() {
     if (root.classList.contains('is-docked')) return;
     state.open = false;
     panel.hidden = true;
+    panel.setAttribute('aria-modal', 'false');
     root.classList.remove('is-open', 'is-typing');
     unlockMobileBody();
-    root.querySelector('.abadis-chat-launcher').setAttribute('aria-expanded', 'false');
+    var launcher = root.querySelector('.abadis-chat-launcher');
+    launcher.setAttribute('aria-expanded', 'false');
+    if (launcher && launcher.focus) launcher.focus();
   }
 
   function dock(host) {
@@ -1808,6 +2147,7 @@
   }
 
   function loadEmbedded() {
+    kbStarted = true;
     if (applyKb(window.ABADIS_KB, 'embedded')) return;
     var node = document.createElement('script');
     node.src = fallbackSrc();
@@ -1818,16 +2158,22 @@
     document.head.appendChild(node);
   }
 
-  build();
-  if (window.ABADIS_KB) {
-    applyKb(window.ABADIS_KB, 'embedded');
+  var kbStarted = false;
+  function ensureKb() {
+    if (state.kb || kbStarted) return;
+    kbStarted = true;
+    fetch(kbUrl, { credentials: 'omit' }).then(function (r) {
+      if (!r.ok) throw new Error('kb');
+      return r.json();
+    }).then(function (data) {
+      if (!applyKb(data, 'site-json', true)) throw new Error('kb');
+    }).catch(function () {
+      kbStarted = false;
+      loadEmbedded();
+    });
   }
-  fetch(kbUrl, { credentials: 'omit' }).then(function (r) {
-    if (!r.ok) throw new Error('kb');
-    return r.json();
-  }).then(function (data) {
-    if (!applyKb(data, 'site-json', true)) throw new Error('kb');
-  }).catch(loadEmbedded);
+
+  build();
 
   window.AbadisChat = {
     open: open,
