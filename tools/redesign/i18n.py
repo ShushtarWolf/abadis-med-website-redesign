@@ -159,8 +159,8 @@ NAV = {
     # jobs merged into careers; calculator only on home + footer.
     'fa': [
         ('about', 'about/', 'آشنایی با ما', [
-            ('about', 'about/', 'درباره ما'),
-            ('customers', 'customers/', 'مشتریان ما'),
+            ('about', 'about/', 'درباره آبادیس'),
+            ('customers', 'customers/', 'خانواده سبز آبادیس (مشتریان)'),
             ('dealers', 'dealers/', 'لیست نمایندگان'),
             ('sdgs', 'sdgs/', 'توسعه پایدار'),
             ('careers', 'careers/', 'فرصت‌های همکاری'),
@@ -188,8 +188,8 @@ NAV = {
     ],
     'en': [
         ('about', 'about-us/', 'About us', [
-            ('about', 'about-us/', 'About us'),
-            ('customers', 'our-customers/', 'Our customers'),
+            ('about', 'about-us/', 'About Abadis'),
+            ('customers', 'our-customers/', 'Abadis Green Family (Customers)'),
             ('dealers', 'representatives/', 'Representatives'),
             ('sdgs', 'sdgs/', 'SDGs'),
             ('careers', 'collaboration-opportunities/', 'Collaboration opportunities'),
@@ -218,8 +218,8 @@ NAV = {
     'ar': [
         # '~' = path from the site root (no Arabic URL on the live site; links to the FA page).
         ('about', 'من-نحن/', 'من نحن', [
-            ('about', 'من-نحن/', 'من نحن'),
-            ('customers', 'customers/', 'عملاؤنا'),
+            ('about', 'من-نحن/', 'عن آباديس'),
+            ('customers', 'customers/', 'عائلة آباديس الخضراء (العملاء)'),
             ('dealers', 'قائمة-الممثلين/', 'قائمة الممثلين'),
             ('sdgs', 'sdgs/', 'التنمية المستدامة'),
             ('careers', 'careers/', 'فرص التعاون'),
@@ -275,8 +275,8 @@ def nav_keys(nav):
 
 SECONDARY = {
     'fa': [
-        # Footer column only. The header submenu keeps «مشتریان ما» (NAV above).
-        ('customers', 'customers/', 'خانواده سبز آبادیس'),
+        # Footer column only. Same label as the header submenu (NAV above).
+        ('customers', 'customers/', 'خانواده سبز آبادیس (مشتریان)'),
         ('experiences', 'academy/', 'آکادمی آبادیس'),
         ('downloads', 'downloads/', 'مرکز دانلود'),
         ('install', 'install-guide/', 'راهنمای نصب'),
@@ -286,7 +286,7 @@ SECONDARY = {
         ('zagros', 'csr/', 'نجات زاگرس'),
     ],
     'en': [
-        ('customers', 'our-customers/', 'Our customers'),
+        ('customers', 'our-customers/', 'Abadis Green Family (Customers)'),
         ('downloads', 'center-download/', 'Download Center'),
         ('install', 'installation-manual/', 'Installation Manual'),
         ('faq', 'faqs/', 'FAQs'),

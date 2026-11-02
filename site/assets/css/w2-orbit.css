@@ -206,8 +206,8 @@ html[dir="ltr"] .w2-live .w2-detail-panel { direction: ltr; }
 }
 .w2-live .orb-hub-q2 svg { width: 100%; height: 100%; display: block; overflow: visible; }
 .w2-live .orb-hub-title {
-  font-family: "KalamehWeb", "Vazirmatn", sans-serif;
-  font-weight: 900; font-size: 16px;
+  font-family: "Kalameh", Tahoma, sans-serif;
+  font-weight: 700; font-size: 16px;
   line-height: 1.2;
   letter-spacing: -0.01em;
   margin: 0;
@@ -218,7 +218,7 @@ html[dir="ltr"] .w2-live .w2-detail-panel { direction: ltr; }
 .w2-live .w2-stem-pill { display: none !important; }
 .w2-live[data-w2="home"] .orb-hub-title { font-size: 16px; margin: 0; }
 .w2-live .orb-hub-sub { font-size: 10px; color: #ccfbf1; margin-top: 2px; font-weight: 700; line-height: 1.15; max-width: 112px; }
-html[lang="en"] .w2-live .orb-hub-title { font-size: 13.5px; }
+html[lang="en"] .w2-live .orb-hub-title { font-size: 13.5px; font-family: "KalamehLatinDigits", "Kalameh", Tahoma, sans-serif; }
 html[lang="en"] .w2-live .orb-hub-sub { font-size: 9px; }
 
 .w2-live .orb-node {
