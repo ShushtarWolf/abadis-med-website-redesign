@@ -1,0 +1,1747 @@
+{
+ "articles": {
+  "19793": {
+   "cats": [
+    "medical_equipment",
+    "infection_safety",
+    "abadis_products"
+   ],
+   "ctype": "educational"
+  },
+  "19761": {
+   "cats": [
+    "medical_equipment"
+   ],
+   "ctype": "educational"
+  },
+  "19716": {
+   "cats": [
+    "health_management"
+   ],
+   "ctype": "educational"
+  },
+  "19701": {
+   "cats": [
+    "abadis_products",
+    "health_management"
+   ],
+   "ctype": "buying_guide"
+  },
+  "19696": {
+   "cats": [
+    "medical_equipment"
+   ],
+   "ctype": "buying_guide"
+  },
+  "19689": {
+   "cats": [
+    "infection_safety",
+    "env_sustainability",
+    "abadis_products"
+   ],
+   "ctype": "educational"
+  },
+  "19391": {
+   "cats": [
+    "medical_equipment"
+   ],
+   "ctype": "educational"
+  },
+  "18883": {
+   "cats": [
+    "medical_equipment"
+   ],
+   "ctype": "educational"
+  },
+  "18824": {
+   "cats": [
+    "medical_equipment"
+   ],
+   "ctype": "educational"
+  },
+  "18814": {
+   "cats": [
+    "abadis_products"
+   ],
+   "ctype": "buying_guide"
+  },
+  "18793": {
+   "cats": [
+    "medical_equipment"
+   ],
+   "ctype": "educational"
+  },
+  "18786": {
+   "cats": [
+    "abadis_products",
+    "infection_safety",
+    "quality_standards",
+    "medical_equipment"
+   ],
+   "ctype": "buying_guide"
+  },
+  "18772": {
+   "cats": [
+    "medical_equipment"
+   ],
+   "ctype": "educational"
+  },
+  "18768": {
+   "cats": [
+    "abadis_products",
+    "medical_equipment"
+   ],
+   "ctype": "educational"
+  },
+  "18761": {
+   "cats": [
+    "medical_equipment"
+   ],
+   "ctype": "educational"
+  },
+  "18758": {
+   "cats": [
+    "abadis_products",
+    "infection_safety",
+    "env_sustainability"
+   ],
+   "ctype": "educational"
+  },
+  "18681": {
+   "cats": [
+    "medical_equipment",
+    "abadis_products"
+   ],
+   "ctype": "educational"
+  },
+  "18736": {
+   "cats": [
+    "medical_equipment"
+   ],
+   "ctype": "buying_guide"
+  },
+  "18609": {
+   "cats": [
+    "abadis_products",
+    "infection_safety"
+   ],
+   "ctype": "educational"
+  },
+  "18597": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "educational"
+  },
+  "18699": {
+   "cats": [
+    "health_management"
+   ],
+   "ctype": "educational"
+  },
+  "18578": {
+   "cats": [
+    "health_management"
+   ],
+   "ctype": "research"
+  },
+  "18568": {
+   "cats": [
+    "health_management"
+   ],
+   "ctype": "educational"
+  },
+  "18540": {
+   "cats": [
+    "medical_equipment"
+   ],
+   "ctype": "educational"
+  },
+  "18529": {
+   "cats": [
+    "abadis_products",
+    "infection_safety"
+   ],
+   "ctype": "educational"
+  },
+  "18499": {
+   "cats": [
+    "infection_safety",
+    "quality_standards",
+    "health_management"
+   ],
+   "ctype": "educational"
+  },
+  "18409": {
+   "cats": [
+    "abadis_products",
+    "infection_safety"
+   ],
+   "ctype": "educational"
+  },
+  "18410": {
+   "cats": [
+    "abadis_products",
+    "env_sustainability",
+    "health_management"
+   ],
+   "ctype": "research"
+  },
+  "17992": {
+   "cats": [
+    "abadis_products",
+    "infection_safety"
+   ],
+   "ctype": "educational"
+  },
+  "17949": {
+   "cats": [
+    "abadis_products",
+    "quality_standards"
+   ],
+   "ctype": "educational"
+  },
+  "17936": {
+   "cats": [
+    "abadis_products",
+    "quality_standards"
+   ],
+   "ctype": "educational"
+  },
+  "17781": {
+   "cats": [
+    "abadis_products",
+    "quality_standards"
+   ],
+   "ctype": "educational"
+  },
+  "17796": {
+   "cats": [
+    "abadis_products",
+    "infection_safety",
+    "quality_standards"
+   ],
+   "ctype": "educational"
+  },
+  "17756": {
+   "cats": [
+    "quality_standards"
+   ],
+   "ctype": "educational"
+  },
+  "17748": {
+   "cats": [
+    "quality_standards",
+    "health_management"
+   ],
+   "ctype": "educational"
+  },
+  "17588": {
+   "cats": [
+    "abadis_products",
+    "infection_safety"
+   ],
+   "ctype": "research"
+  },
+  "17605": {
+   "cats": [
+    "abadis_products",
+    "env_sustainability",
+    "health_management"
+   ],
+   "ctype": "educational"
+  },
+  "17561": {
+   "cats": [
+    "medical_equipment"
+   ],
+   "ctype": "educational"
+  },
+  "17551": {
+   "cats": [
+    "health_management"
+   ],
+   "ctype": "educational"
+  },
+  "17496": {
+   "cats": [
+    "env_sustainability"
+   ],
+   "ctype": "educational"
+  },
+  "17488": {
+   "cats": [
+    "health_management"
+   ],
+   "ctype": "educational"
+  },
+  "17431": {
+   "cats": [
+    "abadis_products",
+    "env_sustainability"
+   ],
+   "ctype": "educational"
+  },
+  "17425": {
+   "cats": [
+    "abadis_products",
+    "medical_equipment"
+   ],
+   "ctype": "educational"
+  },
+  "17402": {
+   "cats": [
+    "infection_safety",
+    "medical_equipment"
+   ],
+   "ctype": "educational"
+  },
+  "17305": {
+   "cats": [
+    "abadis_products",
+    "infection_safety",
+    "health_management"
+   ],
+   "ctype": "research"
+  },
+  "17269": {
+   "cats": [
+    "health_management"
+   ],
+   "ctype": "educational"
+  },
+  "17226": {
+   "cats": [
+    "infection_safety",
+    "quality_standards"
+   ],
+   "ctype": "educational"
+  },
+  "17000": {
+   "cats": [
+    "medical_equipment"
+   ],
+   "ctype": "educational"
+  },
+  "16927": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "educational"
+  },
+  "16870": {
+   "cats": [
+    "abadis_products",
+    "medical_equipment"
+   ],
+   "ctype": "educational"
+  },
+  "16804": {
+   "cats": [
+    "medical_equipment"
+   ],
+   "ctype": "educational"
+  },
+  "16798": {
+   "cats": [
+    "health_management"
+   ],
+   "ctype": "educational"
+  },
+  "16765": {
+   "cats": [
+    "quality_standards"
+   ],
+   "ctype": "educational"
+  },
+  "16752": {
+   "cats": [
+    "medical_equipment"
+   ],
+   "ctype": "buying_guide"
+  },
+  "16714": {
+   "cats": [
+    "abadis_products",
+    "env_sustainability"
+   ],
+   "ctype": "educational"
+  },
+  "16437": {
+   "cats": [
+    "abadis_products"
+   ],
+   "ctype": "educational"
+  },
+  "16394": {
+   "cats": [
+    "quality_standards"
+   ],
+   "ctype": "educational"
+  },
+  "16430": {
+   "cats": [
+    "health_management"
+   ],
+   "ctype": "educational"
+  },
+  "16317": {
+   "cats": [
+    "abadis_products",
+    "medical_equipment"
+   ],
+   "ctype": "educational"
+  },
+  "16208": {
+   "cats": [
+    "abadis_products"
+   ],
+   "ctype": "educational"
+  },
+  "16135": {
+   "cats": [
+    "health_management"
+   ],
+   "ctype": "educational"
+  },
+  "15884": {
+   "cats": [
+    "abadis_products",
+    "medical_equipment",
+    "quality_standards"
+   ],
+   "ctype": "educational"
+  },
+  "16727": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "research"
+  },
+  "16419": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "research"
+  },
+  "16427": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "research"
+  },
+  "16856": {
+   "cats": [
+    "env_sustainability"
+   ],
+   "ctype": "research"
+  },
+  "16791": {
+   "cats": [
+    "infection_safety",
+    "quality_standards"
+   ],
+   "ctype": "educational"
+  },
+  "16445": {
+   "cats": [
+    "infection_safety",
+    "env_sustainability"
+   ],
+   "ctype": "research"
+  },
+  "16744": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "research"
+  },
+  "16786": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "research"
+  },
+  "16244": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "research"
+  },
+  "16849": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "research"
+  },
+  "16340": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "research"
+  },
+  "16273": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "research"
+  },
+  "16452": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "research"
+  },
+  "16173": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "research"
+  },
+  "16170": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "research"
+  },
+  "15898": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "educational"
+  },
+  "16051": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "educational"
+  },
+  "15088": {
+   "cats": [
+    "abadis_products",
+    "infection_safety"
+   ],
+   "ctype": "research"
+  },
+  "14956": {
+   "cats": [
+    "abadis_products",
+    "env_sustainability"
+   ],
+   "ctype": "research"
+  },
+  "15774": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "research"
+  },
+  "15766": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "research"
+  },
+  "15757": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "educational"
+  },
+  "15748": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "research"
+  },
+  "15731": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "research"
+  },
+  "11455": {
+   "cats": [
+    "abadis_products"
+   ],
+   "ctype": "educational"
+  },
+  "9953": {
+   "cats": [
+    "env_sustainability"
+   ],
+   "ctype": "educational"
+  },
+  "9939": {
+   "cats": [
+    "env_sustainability"
+   ],
+   "ctype": "educational"
+  },
+  "9920": {
+   "cats": [
+    "infection_safety",
+    "env_sustainability"
+   ],
+   "ctype": "educational"
+  },
+  "9724": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "educational"
+  },
+  "1041": {
+   "cats": [
+    "medical_equipment"
+   ],
+   "ctype": "educational"
+  },
+  "7930": {
+   "cats": [
+    "abadis_products"
+   ],
+   "ctype": "educational"
+  },
+  "7890": {
+   "cats": [
+    "abadis_products"
+   ],
+   "ctype": "educational"
+  },
+  "7643": {
+   "cats": [
+    "abadis_products"
+   ],
+   "ctype": "educational"
+  },
+  "7451": {
+   "cats": [
+    "env_sustainability"
+   ],
+   "ctype": "educational"
+  },
+  "7439": {
+   "cats": [
+    "infection_safety",
+    "env_sustainability"
+   ],
+   "ctype": "educational"
+  },
+  "6370": {
+   "cats": [
+    "env_sustainability"
+   ],
+   "ctype": "educational"
+  },
+  "3691": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "educational"
+  },
+  "3489": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "educational"
+  },
+  "3404": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "educational"
+  },
+  "3341": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "educational"
+  },
+  "2615": {
+   "cats": [
+    "abadis_products"
+   ],
+   "ctype": "educational"
+  },
+  "1140": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "educational"
+  },
+  "1133": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "educational"
+  },
+  "1050": {
+   "cats": [
+    "medical_equipment"
+   ],
+   "ctype": "educational"
+  },
+  "945": {
+   "cats": [
+    "infection_safety",
+    "abadis_products"
+   ],
+   "ctype": "educational"
+  },
+  "910": {
+   "cats": [
+    "abadis_products",
+    "infection_safety"
+   ],
+   "ctype": "educational"
+  },
+  "773": {
+   "cats": [
+    "health_management"
+   ],
+   "ctype": "educational"
+  },
+  "738": {
+   "cats": [
+    "abadis_products",
+    "infection_safety"
+   ],
+   "ctype": "educational"
+  },
+  "719": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "educational"
+  },
+  "716": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "educational"
+  },
+  "713": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "educational"
+  },
+  "709": {
+   "cats": [
+    "quality_standards"
+   ],
+   "ctype": "educational"
+  },
+  "516": {
+   "cats": [
+    "abadis_products"
+   ],
+   "ctype": "educational"
+  },
+  "467": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "research"
+  },
+  "452": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "research"
+  },
+  "393": {
+   "cats": [
+    "abadis_products",
+    "infection_safety"
+   ],
+   "ctype": "educational"
+  },
+  "382": {
+   "cats": [
+    "infection_safety"
+   ],
+   "ctype": "educational"
+  }
+ },
+ "news": {
+  "19271": {
+   "cats": [
+    "company"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "19204": {
+   "cats": [
+    "industry"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "18810": {
+   "cats": [
+    "csr"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "18804": {
+   "cats": [
+    "company"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "18779": {
+   "cats": [
+    "industry"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "18693": {
+   "cats": [
+    "company",
+    "csr"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "18586": {
+   "cats": [
+    "education"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "19284": {
+   "cats": [
+    "company",
+    "partnerships"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "18554": {
+   "cats": [
+    "company",
+    "honor"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "18478": {
+   "cats": [
+    "industry",
+    "education"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "18474": {
+   "cats": [
+    "events",
+    "company"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "18446": {
+   "cats": [
+    "education",
+    "events"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "18415": {
+   "cats": [
+    "education",
+    "events"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "18235": {
+   "cats": [
+    "csr"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "18217": {
+   "cats": [
+    "industry"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "18213": {
+   "cats": [
+    "industry"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "18210": {
+   "cats": [
+    "industry",
+    "events"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "18205": {
+   "cats": [
+    "events",
+    "education"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "18169": {
+   "cats": [
+    "events",
+    "industry"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "18140": {
+   "cats": [
+    "company"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "18112": {
+   "cats": [
+    "product",
+    "csr"
+   ],
+   "formats": [
+    "interview"
+   ]
+  },
+  "18108": {
+   "cats": [
+    "product",
+    "industry"
+   ],
+   "formats": [
+    "interview"
+   ]
+  },
+  "18088": {
+   "cats": [
+    "events",
+    "partnerships",
+    "csr"
+   ],
+   "formats": [
+    "announcement",
+    "video"
+   ]
+  },
+  "18537": {
+   "cats": [
+    "csr"
+   ],
+   "formats": [
+    "interview",
+    "video"
+   ]
+  },
+  "17970": {
+   "cats": [
+    "events",
+    "education"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "17929": {
+   "cats": [
+    "education"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "17912": {
+   "cats": [
+    "product",
+    "csr"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "17760": {
+   "cats": [
+    "events",
+    "partnerships"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "17738": {
+   "cats": [
+    "csr",
+    "company"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "17688": {
+   "cats": [
+    "events",
+    "education"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "17663": {
+   "cats": [
+    "product"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "16638": {
+   "cats": [
+    "partnerships",
+    "csr"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "18195": {
+   "cats": [
+    "csr"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "17448": {
+   "cats": [
+    "csr"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "17302": {
+   "cats": [
+    "product"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "17297": {
+   "cats": [
+    "industry"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "17291": {
+   "cats": [
+    "industry",
+    "product",
+    "csr"
+   ],
+   "formats": [
+    "interview"
+   ]
+  },
+  "17194": {
+   "cats": [
+    "industry"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "17277": {
+   "cats": [
+    "product",
+    "industry"
+   ],
+   "formats": [
+    "interview"
+   ]
+  },
+  "17173": {
+   "cats": [
+    "events"
+   ],
+   "formats": [
+    "report",
+    "interview"
+   ]
+  },
+  "17214": {
+   "cats": [
+    "industry"
+   ],
+   "formats": [
+    "interview"
+   ]
+  },
+  "17068": {
+   "cats": [
+    "industry"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "17283": {
+   "cats": [
+    "product",
+    "csr"
+   ],
+   "formats": [
+    "interview"
+   ]
+  },
+  "17077": {
+   "cats": [
+    "events"
+   ],
+   "formats": [
+    "report",
+    "interview"
+   ]
+  },
+  "16916": {
+   "cats": [
+    "events"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "17024": {
+   "cats": [
+    "events",
+    "product"
+   ],
+   "formats": [
+    "interview"
+   ]
+  },
+  "16921": {
+   "cats": [
+    "events"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "17128": {
+   "cats": [
+    "events"
+   ],
+   "formats": [
+    "interview"
+   ]
+  },
+  "17014": {
+   "cats": [
+    "industry",
+    "events"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "16906": {
+   "cats": [
+    "csr"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "16880": {
+   "cats": [
+    "events",
+    "education"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "16300": {
+   "cats": [
+    "industry"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "16198": {
+   "cats": [
+    "events",
+    "education"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "16121": {
+   "cats": [
+    "company"
+   ],
+   "formats": [
+    "interview"
+   ]
+  },
+  "16094": {
+   "cats": [
+    "csr"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "15833": {
+   "cats": [
+    "events"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "15799": {
+   "cats": [
+    "events"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "15495": {
+   "cats": [
+    "events"
+   ],
+   "formats": [
+    "report",
+    "interview",
+    "video"
+   ]
+  },
+  "15358": {
+   "cats": [
+    "events"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "15479": {
+   "cats": [
+    "csr"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "15300": {
+   "cats": [
+    "events",
+    "csr"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "15123": {
+   "cats": [
+    "education",
+    "honor"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "15101": {
+   "cats": [
+    "education",
+    "product"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "15027": {
+   "cats": [
+    "events",
+    "partnerships"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "15009": {
+   "cats": [
+    "company",
+    "csr"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "14923": {
+   "cats": [
+    "events",
+    "partnerships"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "14844": {
+   "cats": [
+    "partnerships"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "14748": {
+   "cats": [
+    "events",
+    "industry"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "14506": {
+   "cats": [
+    "honor"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "13840": {
+   "cats": [
+    "events",
+    "education"
+   ],
+   "formats": [
+    "report",
+    "video"
+   ]
+  },
+  "13234": {
+   "cats": [
+    "events",
+    "education"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "12626": {
+   "cats": [
+    "product"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "11498": {
+   "cats": [
+    "product"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "11467": {
+   "cats": [
+    "product",
+    "partnerships"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "11453": {
+   "cats": [
+    "events",
+    "partnerships"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "10719": {
+   "cats": [
+    "events",
+    "partnerships"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "10707": {
+   "cats": [
+    "product"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "16311": {
+   "cats": [
+    "industry"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "10187": {
+   "cats": [
+    "events",
+    "partnerships"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "10182": {
+   "cats": [
+    "honor"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "9354": {
+   "cats": [
+    "events",
+    "company"
+   ],
+   "formats": [
+    "report",
+    "interview",
+    "video"
+   ]
+  },
+  "9036": {
+   "cats": [
+    "company",
+    "product"
+   ],
+   "formats": [
+    "interview"
+   ]
+  },
+  "9013": {
+   "cats": [
+    "events"
+   ],
+   "formats": [
+    "announcement",
+    "video"
+   ]
+  },
+  "8008": {
+   "cats": [
+    "company",
+    "product"
+   ],
+   "formats": [
+    "interview"
+   ]
+  },
+  "6708": {
+   "cats": [
+    "industry"
+   ],
+   "formats": [
+    "interview",
+    "video"
+   ]
+  },
+  "5985": {
+   "cats": [
+    "csr"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "4968": {
+   "cats": [
+    "product"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "3704": {
+   "cats": [
+    "product"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "3524": {
+   "cats": [
+    "honor"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "1162": {
+   "cats": [
+    "company",
+    "csr"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "14895": {
+   "cats": [
+    "events"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "1124": {
+   "cats": [
+    "csr"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "1122": {
+   "cats": [
+    "csr"
+   ],
+   "formats": [
+    "report",
+    "video"
+   ]
+  },
+  "19280": {
+   "cats": [
+    "company",
+    "honor"
+   ],
+   "formats": [
+    "announcement"
+   ]
+  },
+  "1056": {
+   "cats": [
+    "company"
+   ],
+   "formats": [
+    "interview"
+   ]
+  },
+  "1036": {
+   "cats": [
+    "events",
+    "product"
+   ],
+   "formats": [
+    "report",
+    "interview"
+   ]
+  },
+  "1029": {
+   "cats": [
+    "events",
+    "product"
+   ],
+   "formats": [
+    "interview",
+    "video"
+   ]
+  },
+  "1022": {
+   "cats": [
+    "events",
+    "company"
+   ],
+   "formats": [
+    "interview"
+   ]
+  },
+  "1001": {
+   "cats": [
+    "events"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "994": {
+   "cats": [
+    "product",
+    "events"
+   ],
+   "formats": [
+    "report"
+   ]
+  },
+  "16162": {
+   "cats": [
+    "events"
+   ],
+   "formats": [
+    "report",
+    "video"
+   ]
+  },
+  "535": {
+   "cats": [
+    "events",
+    "partnerships"
+   ],
+   "formats": [
+    "report"
+   ]
+  }
+ },
+ "en_to_fa": {
+  "11013": 19716,
+  "11008": 19701,
+  "11003": 19696,
+  "10998": 19689,
+  "10782": 18814,
+  "10773": 18824,
+  "10798": 18793,
+  "10769": 18772,
+  "10765": 18768,
+  "10761": 18761,
+  "10758": 18758,
+  "10693": 18681,
+  "10688": 18609,
+  "10684": 18597,
+  "10703": 18699,
+  "10669": 18529,
+  "10620": 18409,
+  "10611": 18410,
+  "10468": 18140,
+  "10465": 17760,
+  "10447": 18112,
+  "10452": 18088,
+  "10492": 17992,
+  "10305": 17949,
+  "10298": 17936,
+  "10290": 17929,
+  "10149": 17781,
+  "10162": 17796,
+  "10495": 17588,
+  "10443": 18195,
+  "10438": 17605,
+  "10498": 17431,
+  "10506": 17305,
+  "10033": 16714,
+  "9990": 16437,
+  "9950": 16208,
+  "10531": 15884,
+  "9842": 15884,
+  "9967": 15833,
+  "10017": 16445,
+  "10012": 16744,
+  "9830": 15088,
+  "9795": 15495,
+  "9997": 15300,
+  "9393": 15123,
+  "9206": 15027,
+  "9126": 14956,
+  "9122": 14923,
+  "10026": 15774,
+  "10021": 15757,
+  "9981": 13840,
+  "9529": 11467,
+  "7138": 10187,
+  "7071": 10719,
+  "6919": 9354,
+  "5948": 6708,
+  "4405": 3704,
+  "4385": 3524,
+  "1128": 14895,
+  "9977": 16162
+ },
+ "ar_to_fa": {
+  "1014": 535,
+  "1009": 994,
+  "991": 1001,
+  "985": 1022,
+  "981": 1029,
+  "977": 1036,
+  "970": 1056,
+  "941": 1122,
+  "937": 14895,
+  "933": 1162,
+  "929": 3524,
+  "923": 3704,
+  "917": 4968,
+  "910": 5985,
+  "905": 6708,
+  "894": 8008,
+  "882": 9013,
+  "878": 9036,
+  "803": 9354,
+  "801": 10182,
+  "782": 10187
+ },
+ "ambiguous": [
+  {
+   "sheet": "news",
+   "row": 104,
+   "note": "stray row without a news item",
+   "values": [
+    "گزارش"
+   ]
+  }
+ ]
+}
