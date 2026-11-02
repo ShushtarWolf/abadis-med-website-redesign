@@ -15,7 +15,7 @@ T = {
   'fa': dict(
     root='', quote_href='export/#quote',
     kicker='شرکت دانش‌بنیان مخازن طبی آبادیس',
-    h1a='آبادیس؛ ', h1b='مهندسی دقیق', h1c='، برای مراقبتی ایمن‌تر',
+    h1a='آبادیس؛ ', h1b='خلق ارزش', h1c='، اثرگذاری پایدار',
     sub='پیشرو در کنترل عفونت و مدیریت مایعات بیمارستانی — اسکرول کنید یا روی ایستگاه‌ها بزنید تا وارد خط تولید شوید.',
     skip='رد کردن و ادامه صفحه', explore='حالت کاوش آزاد', back='بازگشت به مسیر اسکرول',
     collapse='بستن جزئیات', expand='نمایش جزئیات',
@@ -100,7 +100,7 @@ T = {
   'en': dict(
     root='en/', quote_href='export/#quote',
     kicker='Abadis Medical Canisters Knowledge-Based Co.',
-    h1a='Abadis: ', h1b='Precision Engineering', h1c=' for Safer Care',
+    h1a='Abadis: ', h1b='Creating Value', h1c=', Sustainable Impact',
     sub='Pioneer in Hospital Infection Control & Fluid Management — Scroll or tap any station to inspect the plant.',
     skip='Skip & Continue', explore='Free Exploration Mode', back='Back to scroll tour',
     collapse='Hide details', expand='Show details',
@@ -185,7 +185,7 @@ T = {
   'ar': dict(
     root='arabic/', quote_href='export/#quote',
     kicker='شركة أباديس المعرفية للخزانات الطبية',
-    h1a='أباديس؛ ', h1b='هندسة دقيقة', h1c=' لرعاية أكثر أماناً',
+    h1a='آباديس؛ ', h1b='خلق القيمة', h1c='، أثر مستدام',
     sub='الرائدة في مكافحة العدوى وإدارة السوائل بالمستشفيات — مرّر أو اضغط على المحطات لاستكشاف خط الإنتاج.',
     skip='تخطي والمتابعة', explore='وضع الاستكشاف الحر', back='العودة إلى جولة التمرير',
     collapse='إخفاء التفاصيل', expand='عرض التفاصيل',
