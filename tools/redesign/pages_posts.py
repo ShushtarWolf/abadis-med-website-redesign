@@ -73,18 +73,14 @@ def card(p, post, from_list=True, tag='', topic='', year='', art_meta=None, news
     alt = esc(post['t'])
     badges = ''
     if art_meta:
-        cat_badges = ''.join(f'<span class="art-card-badge">{esc(lbl)}</span>' for lbl in art_meta['cat_labels'][:2])
-        badges = (
-            f'<div class="card-cat-stack">{cat_badges}</div>'
-            f'<span class="art-ctype-badge art-ctype-badge--{esc(art_meta["ctype"])}">{esc(art_meta["ctype_label"])}</span>'
-            f'<span class="art-card-time">{esc(art_meta["rtime_badge"])}</span>'
-        )
+        cat_badges = ''.join(f'<span class="art-card-badge">{esc(lbl)}</span>' for lbl in art_meta['cat_labels'][:1])
+        meta_html = (f'<div class="card-meta">{cat_badges}<span class="art-ctype-badge art-ctype-badge--{esc(art_meta["ctype"])}">{esc(art_meta["ctype_label"])}</span></div>'
+                     f'<div class="card-sub"><time datetime="{post["date"][:10]}">{jdate(post["date"])}</time><span class="art-card-time">{esc(art_meta["rtime_badge"])}</span></div>'
+                     + (f'<span class="art-aud-tag" hidden>{esc(art_meta["aud_labels"][0])}</span>' if art_meta['aud_labels'] else ''))
     elif news_meta:
-        cat_badges = ''.join(f'<span class="art-card-badge">{esc(lbl)}</span>' for lbl in news_meta['cat_labels'][:2])
-        badges = (
-            f'<div class="card-cat-stack">{cat_badges}</div>'
-            f'<span class="news-fmt-badge news-fmt-badge--{esc(news_meta["format"])}">{esc(news_meta["format_label"])}</span>'
-        )
+        cat_badges = ''.join(f'<span class="art-card-badge">{esc(lbl)}</span>' for lbl in news_meta['cat_labels'][:1])
+        meta_html = (f'<div class="card-meta">{cat_badges}<span class="news-fmt-badge news-fmt-badge--{esc(news_meta["format"])}">{esc(news_meta["format_label"])}</span></div>'
+                     f'<div class="card-sub"><time datetime="{post["date"][:10]}">{jdate(post["date"])}</time></div>')
     ph = (f'<div class="ph"><img src="{p}{r["src"]}" width="{r["w"]}" height="{r["h"]}" alt="{alt}" loading="lazy" decoding="async">{badges}</div>' if r
           else f'<div class="ph txt"><img src="{p}{FALLBACK_THUMB}" width="1280" height="720" alt="{alt}" loading="lazy">{badges}</div>')
     href = (post['rel'].split('/', 1)[1] if from_list else p + post['rel'])
@@ -102,9 +98,8 @@ def card(p, post, from_list=True, tag='', topic='', year='', art_meta=None, news
             f' data-aud="{esc(art_meta["aud_key"])}"'
             f' data-audiences="{esc(art_meta["audiences_csv"])}"'
         )
-        aud_pills = ''.join(f'<span class="art-aud-tag">{esc(lbl)}</span>' for lbl in art_meta['aud_labels'][:3])
         return (f'<a class="post-card reveal" href="{href}" data-name="{esc(post["t"])}"{attrs}>{ph}<div class="body">'
-                f'<div class="art-meta-row"><time datetime="{post["date"][:10]}">{jdate(post["date"])}</time><div class="art-aud-list">{aud_pills}</div></div>'
+                f'{meta_html}'
                 f'<h3>{esc(post["t"])}</h3><p>{esc(excerpt(post))}</p><span class="go">{esc(art_meta["card_cta"])}</span></div></a>')
     if news_meta:
         attrs += (
@@ -112,9 +107,8 @@ def card(p, post, from_list=True, tag='', topic='', year='', art_meta=None, news
             f' data-format="{esc(news_meta["format"])}"'
             f' data-formats="{esc(news_meta["formats_csv"])}"'
         )
-        fmt_pills = ''.join(f'<span class="news-fmt-pill">{esc(lbl)}</span>' for lbl in news_meta['format_labels'][:2])
         return (f'<a class="post-card reveal" href="{href}" data-name="{esc(post["t"])}"{attrs}>{ph}<div class="body">'
-                f'<div class="art-meta-row"><time datetime="{post["date"][:10]}">{jdate(post["date"])}</time><div class="art-aud-list">{fmt_pills}</div></div>'
+                f'{meta_html}'
                 f'<h3>{esc(post["t"])}</h3><p>{esc(excerpt(post))}</p><span class="go">{esc(news_meta["card_cta"])}</span></div></a>')
     return (f'<a class="post-card reveal" href="{href}" data-name="{esc(post["t"])}"{attrs}>{ph}<div class="body">{tag_html}<time datetime="{post["date"][:10]}">{jdate(post["date"])}</time>'
             f'<h3>{esc(post["t"])}</h3><p>{esc(excerpt(post))}</p><span class="go">ادامه مطلب</span></div></a>')
