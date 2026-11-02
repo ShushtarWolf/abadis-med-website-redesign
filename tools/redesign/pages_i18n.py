@@ -342,15 +342,14 @@ def _write_post_index(write, lang, site_path, cur, label, items):
                 f' data-rtime="{esc(am["rtime_key"])}" data-aud="{esc(am["aud_key"])}"'
                 f' data-audiences="{esc(am["audiences_csv"])}"'
             )
-            cat_badges = ''.join(f'<span class="art-card-badge">{esc(lbl)}</span>' for lbl in am['cat_labels'][:2])
-            aud_pills = ''.join(f'<span class="art-aud-tag">{esc(lbl)}</span>' for lbl in am['aud_labels'][:3])
+            cat_badges = ''.join(f'<span class="art-card-badge">{esc(lbl)}</span>' for lbl in am['cat_labels'][:1])
+            aud_pills = ''.join(f'<span class="art-aud-tag" hidden>{esc(lbl)}</span>' for lbl in am['aud_labels'][:1])
             cards.append(
                 f'<a class="post-card reveal" href="{href}" data-name="{esc(title)}"{attrs}>'
                 f'<div class="ph txt"><img src="{p}assets/img/post-thumb-fallback.webp" width="1280" height="720" alt="{esc(title)}" loading="lazy">'
-                f'<div class="card-cat-stack">{cat_badges}</div>'
-                f'<span class="art-ctype-badge art-ctype-badge--{esc(am["ctype"])}">{esc(am["ctype_label"])}</span>'
-                f'<span class="art-card-time">{esc(am["rtime_badge"])}</span></div>'
-                f'<div class="body"><div class="art-meta-row"><div class="art-aud-list">{aud_pills}</div></div>'
+                '</div>'
+                f'<div class="body"><div class="card-meta">{cat_badges}<span class="art-ctype-badge art-ctype-badge--{esc(am["ctype"])}">{esc(am["ctype_label"])}</span></div>'
+                f'<div class="card-sub"><span class="art-card-time">{esc(am["rtime_badge"])}</span></div>{aud_pills}'
                 f'<h3>{esc(title)}</h3><p>{esc(desc)}</p>'
                 f'<span class="go">{esc(am["card_cta"])}</span></div></a>'
             )
@@ -364,14 +363,13 @@ def _write_post_index(write, lang, site_path, cur, label, items):
                 f' data-format="{esc(nm["format"])}" data-formats="{esc(nm["formats_csv"])}"'
                 f' data-year="{esc(bucket)}"'
             )
-            cat_badges = ''.join(f'<span class="art-card-badge">{esc(lbl)}</span>' for lbl in nm['cat_labels'][:2])
+            cat_badges = ''.join(f'<span class="art-card-badge">{esc(lbl)}</span>' for lbl in nm['cat_labels'][:1])
             fmt_pills = ''.join(f'<span class="news-fmt-pill">{esc(lbl)}</span>' for lbl in nm['format_labels'][:2])
             cards.append(
                 f'<a class="post-card reveal" href="{href}" data-name="{esc(title)}"{attrs}>'
                 f'<div class="ph txt"><img src="{p}assets/img/post-thumb-fallback.webp" width="1280" height="720" alt="{esc(title)}" loading="lazy">'
-                f'<div class="card-cat-stack">{cat_badges}</div>'
-                f'<span class="news-fmt-badge news-fmt-badge--{esc(nm["format"])}">{esc(nm["format_label"])}</span></div>'
-                f'<div class="body"><div class="art-meta-row"><div class="art-aud-list">{fmt_pills}</div></div>'
+                '</div>'
+                f'<div class="body"><div class="card-meta">{cat_badges}<span class="news-fmt-badge news-fmt-badge--{esc(nm["format"])}">{esc(nm["format_label"])}</span></div><div class="card-sub"></div>'
                 f'<h3>{esc(title)}</h3><p>{esc(desc)}</p>'
                 f'<span class="go">{esc(nm["card_cta"])}</span></div></a>'
             )
