@@ -1977,6 +1977,5 @@ html { scroll-padding-top: var(--sticky-offset, 96px); }
 .foot-certs-more { display: flex; gap: 8px; align-items: center; }
 .foot-cert-chip { display: inline-flex; align-items: center; justify-content: center; height: 41px; padding: 4px 8px; background: transparent; border: 1.5px solid #D4DF9C; border-radius: 6px; }
 .site-footer .foot-cert-chip img { display: block; height: 33px; width: auto; margin: 0; }
-/* Official Daneshbonyan mark (gray SVG from abadis-med.com): keep legible in dark mode */
+/* Official Daneshbonyan mark recoloured to the cert-strip lime (#D4DF9C) */
 .site-footer .foot-cert-chip img.cert-kb { height: 33px; width: auto; }
-[data-theme="dark"] .site-footer .foot-cert-chip img.cert-kb { filter: brightness(1.35); }
