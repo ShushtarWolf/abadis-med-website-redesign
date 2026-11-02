@@ -67,7 +67,7 @@ def head(p, title, desc, og=None, lang='fa', fa_path='', canonical_path=None, ht
 <meta property="og:image" content="{ogi}">
 <link rel="preload" href="{p}assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{p}assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="{p}assets/css/site.css?v=20261101k">
+<link rel="stylesheet" href="{p}assets/css/site.css?v=20261102kb">
 <link rel="stylesheet" href="{p}assets/css/boss-order.css?v=20261028p">
 <link rel="stylesheet" href="{p}assets/css/consent.css">
 <link rel="stylesheet" href="{p}assets/css/footer-motion.css">
@@ -230,7 +230,7 @@ FOOT_CERTS_MORE_ALT = {
 def foot_certs_more_html(p, lang='fa'):
     kb, naci = FOOT_CERTS_MORE_ALT.get(lang, FOOT_CERTS_MORE_ALT['fa'])
     return (
-        f'<span class="foot-cert-chip" title="{esc(kb)}"><img src="{p}assets/img/certs/cert-daneshbonyan.svg" width="24" height="24" alt="{esc(kb)}" loading="lazy"></span>'
+        f'<span class="foot-cert-chip" title="{esc(kb)}"><img src="{p}assets/img/certs/cert-daneshbonyan-official.svg" width="171" height="69" class="cert-kb" alt="{esc(kb)}" loading="lazy"></span>'
         f'<span class="foot-cert-chip" title="{esc(naci)}"><img src="{p}assets/img/certs/cert-naci.webp" width="398" height="336" alt="{esc(naci)}" loading="lazy"></span>'
     )
 
