@@ -23,7 +23,7 @@ function init(sec) {
   /* ---------- geometry: every edge in one buffer, with aSub for machine highlighting ---------- */
   const P = [], O = [], TN = [], SUB = [];
   // Solid 3D machine shells (injection presses 11/12, extrusion lines 41); edges stay as a thin overlay
-  const SP = [], SN = [], SO = [], SS = [], SOLID_SUBS = new Set([29, 49, 11, 12, 21, 22, 23, 31, 43, 44, 32, 41, 42, 51, 52]);
+  const SP = [], SN = [], SO = [], SS = [], SOLID_SUBS = new Set([24, 29, 49, 11, 12, 21, 22, 23, 31, 43, 44, 32, 41, 42, 51, 52]);
   function edges(geo, x, y, z, tone = 0, ordBias = 0, subId = 0) {
     const e = new THREE.EdgesGeometry(geo, 20), p = e.attributes.position;
     for (let i = 0; i < p.count; i++) {
@@ -165,7 +165,8 @@ function init(sec) {
   box(-13.2, 5.4, 8.55, -6.4, 6.2, 10.45, 1, 0, 22);
   box(-4.25, 0, 8.15, -2.9, 10.6, 10.85, 1, 0, 22);
   // WIP 13 x 20 closed shell on the upper floor. No racks, no aisles, door shut.
-  box(xW + 0.2, 5.4, zN + 0.2, xA - 0.2, 9.85, zWip, 0, 0.05, 0);
+  box(xW + 2.75, 5.4, zN + 0.2, xA - 0.2, 8.4, zWip, 1, 0.05, 24); // solid closed block (fills the upper floor; interior never shown)
+  box(xW + 0.2, 8.4, zN + 0.2, xA - 0.2, 9.85, zWip, 0, 0.05, 0);
   box(xW + 1.3, 5.4, zWip - 0.08, xW + 3.3, 7.9, zWip + 0.08, 1, 0, 0);
   // Subnode 23: NW-corner goods lift feeding the closed WIP store above injection (shaft + car + landing door only)
   box(xW + 0.35, 0, zN + 0.35, xW + 2.55, 10.4, zN + 2.55, 1, 0, 23);
@@ -344,9 +345,9 @@ function init(sec) {
         float slab = step(28.5, vSub) * step(vSub, 29.5) + step(48.5, vSub) * step(vSub, 49.5);
         float s2 = step(1.5, uUpSide), s1 = 1.0 - s2;
         float slabMine = s1 * step(28.5, vSub) * step(vSub, 29.5) + s2 * step(48.5, vSub) * step(vSub, 49.5);
-        float upSub = (s1 * step(20.5, vSub) * step(vSub, 23.5) + s2 * step(42.5, vSub) * step(vSub, 44.5)) + slabMine;
+        float upSub = (s1 * step(20.5, vSub) * step(vSub, 24.5) + s2 * step(42.5, vSub) * step(vSub, 44.5)) + slabMine;
         alpha *= mix(1.0, mix(0.1, 0.3, step(0.5, upSub)), uUpper * (1.0 - vT) * (1.0 - isSub));
-        alpha *= mix(1.0, 0.3, uUpper * vT * (1.0 - upSub));
+        alpha *= mix(1.0, 0.55, uUpper * vT * (1.0 - upSub));
         alpha = max(alpha, uUpper * upSub * vT);
         c = mix(c, uHi, uUpper * upSub * vT * (1.0 - isSub) * 0.6);
         c = mix(c, uHi, slab * 0.5);
@@ -361,6 +362,13 @@ function init(sec) {
   scene.add(new THREE.LineSegments(geo, mat));
 
   const sgeo = new THREE.BufferGeometry();
+  { // reorder: slab decks (29 / 49) drawn after everything so the ground floor shows through them
+    const idx = [...Array(SS.length).keys()], isSl = (k) => SS[k] === 29 || SS[k] === 49;
+    const ord = idx.filter((k) => !isSl(k)).concat(idx.filter(isSl));
+    const rp = (A, n) => { const o = []; ord.forEach((k) => { for (let j = 0; j < n; j++) o.push(A[k * n + j]); }); return o; };
+    const a = rp(SP, 3), b = rp(SN, 3), c = rp(SO, 1), d = rp(SS, 1);
+    SP.length = SN.length = SO.length = SS.length = 0; SP.push(...a); SN.push(...b); SO.push(...c); SS.push(...d);
+  }
   sgeo.setAttribute('position', new THREE.Float32BufferAttribute(SP, 3));
   sgeo.setAttribute('normal', new THREE.Float32BufferAttribute(SN, 3));
   sgeo.setAttribute('aOrd', new THREE.Float32BufferAttribute(SO, 1));
@@ -393,20 +401,21 @@ function init(sec) {
         c *= 1.0 + uHideSt * ext * 0.25 * (1.0 - isSub);
         c += uHideSt * isSub * vec3(0.12, 0.08, 0.0);
         float s2 = step(1.5, uUpSide), s1 = 1.0 - s2;
-        float upS = s1 * step(20.5, vSub) * step(vSub, 23.5) + s2 * step(42.5, vSub) * step(vSub, 44.5);
+        float upS = s1 * step(20.5, vSub) * step(vSub, 24.5) + s2 * step(42.5, vSub) * step(vSub, 44.5);
         c *= mix(1.0, mix(1.0, 1.35, upS), uUpper * (1.0 - isSub)); // key light on the mezzanine, ground dims
         c += uUpper * upS * vec3(0.05, 0.09, 0.1);
         // Floor slabs: a clear 2nd-floor deck. Aerial = translucent, upper station = near-opaque, ground station = ghosted
         float slab = step(28.5, vSub) * step(vSub, 29.5) + step(48.5, vSub) * step(vSub, 49.5);
         vec3 deck = mix(uHi, vec3(1.0), 0.35) * (0.8 + 0.2 * d);
         c = mix(c, deck, slab);
-        float a = grow * mix(mix(.82, .97, isSub), mix(.22, 1.0, upS), uUpper);
+        float a = grow * mix(mix(.82, .97, isSub), mix(.5, 1.0, upS), uUpper);
         float slabMine = s1 * step(28.5, vSub) * step(vSub, 29.5) + s2 * step(48.5, vSub) * step(vSub, 49.5);
-        float aSlab = grow * mix(mix(0.55, 0.12, uRoof), mix(0.1, 0.92, slabMine), uUpper);
+        float aSlab = grow * mix(mix(0.55, 0.12, uRoof), mix(0.1, 0.42, slabMine), uUpper);
         // Hall-1 lifts / cartoning and the cleanroom pass-box lift: ghost them while hall 2 is in focus (dark corner clutter on phones); near-hidden on the cleanroom station
         float shaft = step(21.5, vSub) * step(vSub, 23.5) + step(41.5, vSub) * step(vSub, 42.5);
         float shK = (uSt > 3.5 && uSt < 4.5) ? 0.0 : 0.18;
         a *= mix(1.0, shK, shaft * uHideSt * (1.0 - isSub));
+        a *= mix(1.0, 0.6, step(23.5, vSub) * step(vSub, 24.5) * uUpper); // closed WIP block: frosted so the ground presses read below it
         if (a < 0.01) discard;
         gl_FragColor = vec4(c, mix(a, aSlab, slab));
       }
@@ -647,6 +656,7 @@ function init(sec) {
   // Phones (portrait): looking down the 36 m bay so a station's far-apart machines stack vertically instead of falling off the sides
   const VIEWS_M = VIEWS_D.slice();
   VIEWS_M[1] = { p: V3(-8, 17, 14), t: V3(-10.5, 5.5, -7) };
+  VIEWS_M[4] = { p: V3(13, 12, 1), t: V3(2.2, 1.0, -13) }; // phones: lift the cleanroom deck into the upper half (no empty sky)
   let VIEWS = VIEWS_D;
   const STREET_M = V3(-12, 0.2, 30.2); // street callout anchor on phones
   const LBL = [V3(-9.4, 6, -12), V3(-9.25, 11.4, 3), V3(2.25, 8, 5), V3(1.9, 4.6, -18.5), V3(2.25, 11.4, -11), V3(11.5, 8.4, -4), V3(0, 8.2, 17.6), V3(12, 4.5, 28)];
