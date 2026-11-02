@@ -333,7 +333,7 @@ def _write_post_index(write, lang, site_path, cur, label, items):
         href = f'{p}{root}{slug}/'
         attrs = ''
         if news and cur == 'articles':
-            am = article_meta_for(title, desc, raw_body, lang=lang)
+            am = article_meta_for(title, desc, raw_body, lang=lang, pid=wp['id'])
             bucket = year_bucket(jalali_year_of(wp.get('date')))
             pairs.append((am['cats'], bucket, am['ctype'], am['audiences']))
             attrs = (
@@ -356,7 +356,7 @@ def _write_post_index(write, lang, site_path, cur, label, items):
             )
             continue
         elif news:
-            nm = news_meta_for(title, desc, body=raw_body, lang=lang)
+            nm = news_meta_for(title, desc, body=raw_body, lang=lang, pid=wp['id'])
             bucket = year_bucket(jalali_year_of(wp.get('date')))
             pairs.append((nm['cats'], bucket, nm['formats']))
             attrs = (

@@ -140,7 +140,7 @@ def build(write):
             pairs = []
             for x in items:
                 body_txt = strip_tags(' '.join(b.get('html', '') for b in x.get('blocks', []) if b.get('t') == 'html'))
-                nm = news_meta_for(x['t'], excerpt(x), blocks=x.get('blocks'), body=body_txt, lang='fa')
+                nm = news_meta_for(x['t'], excerpt(x), blocks=x.get('blocks'), body=body_txt, lang='fa', pid=x['id'])
                 bucket = year_bucket(jalali_year_of(x.get('date')))
                 pairs.append((nm['cats'], bucket, nm['formats']))
                 bits.append(card(p, x, topic=nm['topic'], year=bucket, news_meta=nm))
@@ -160,7 +160,7 @@ def build(write):
             pairs = []
             for x in items:
                 body_txt = strip_tags(' '.join(b.get('html', '') for b in x.get('blocks', []) if b.get('t') == 'html'))
-                am = article_meta_for(x['t'], excerpt(x), body_txt, lang='fa')
+                am = article_meta_for(x['t'], excerpt(x), body_txt, lang='fa', pid=x['id'])
                 bucket = year_bucket(jalali_year_of(x.get('date')))
                 pairs.append((am['cats'], bucket, am['ctype'], am['audiences']))
                 bits.append(card(p, x, topic=am['topic'], year=bucket, art_meta=am))
