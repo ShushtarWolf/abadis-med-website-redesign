@@ -13,6 +13,11 @@ SITE_ORIGIN = 'https://abadis-med.com'
 # Public form POST URL (Formspree / Worker / n8n). Empty ⇒ client falls back to mailto.
 # Override locally with env ABADIS_FORM_ENDPOINT; never commit secrets or private keys.
 FORM_ENDPOINT = os.environ.get('ABADIS_FORM_ENDPOINT', '').strip()
+if not FORM_ENDPOINT:  # easy switch: put the Liara forms URL in data/form_endpoint.txt (empty = mailto)
+    try:
+        FORM_ENDPOINT = open(os.path.join(os.path.dirname(__file__), 'data', 'form_endpoint.txt')).read().strip()
+    except OSError:
+        FORM_ENDPOINT = ''
 FORM_MAILTO = 'info@abadis-med.com'
 RAW = pathlib.Path(os.environ.get(
     'ABADIS_IMG_RAW',
