@@ -10,6 +10,7 @@
 import re, os, json, glob, html, urllib.parse
 ROOT = os.path.join(os.path.dirname(__file__), '..', '..', 'site')
 ROOT = os.path.abspath(ROOT)
+FORM_ENDPOINT = ''
 BASE = 'https://abadis-med.com/'
 SKIP_DIRS = ('hero-options', 'home-hero-options', 'contact-hero-options', 'solutions-hero-options', 'news-hero-options',
              'articles-options', 'careers-options', 'hero-test', 'brand', 'dial-designs', 'dial-practical',
@@ -150,6 +151,22 @@ def fix_alts(s):
     out.append(s[last:])
     return ''.join(out)
 
+
+def lazy_images(s):
+    """Below-the-fold images without a loading hint get loading="lazy" decoding="async"."""
+    m = s.find('<main')
+    if m < 0: return s
+    cut = s.find('</section>', m)
+    if cut < 0: return s
+    head, tail = s[:cut], s[cut:]
+    def fix(mt):
+        t = mt.group(0)
+        if 'loading=' in t or 'fetchpriority' in t: return t
+        t = t.replace('<img', '<img loading="lazy"', 1)
+        if 'decoding=' not in t: t = t.replace('<img', '<img decoding="async"', 1)
+        return t
+    return head + re.sub(r'<img\b[^>]*>', fix, tail)
+
 def liara_conf():
     rules = []
     existing = lambda p: os.path.isfile(os.path.join(ROOT, urllib.parse.unquote(p).strip('/'), 'index.html')) or \
@@ -224,6 +241,9 @@ def make_404():
 
 
 def main():
+    global FORM_ENDPOINT
+    import sys; sys.path.insert(0, os.path.dirname(__file__))
+    from lib import FORM_ENDPOINT
     make_404()
     docs = load_docs()
     stats = dict(pages=0, ld=0, docs=0)
@@ -231,12 +251,14 @@ def main():
         rel = os.path.relpath(path, ROOT)
         s0 = s = open(path, encoding='utf-8').read()
         s = rewrite_docs(s, rel, docs)
+        s = re.sub(r'<meta name="abadis-form-endpoint" content="[^"]*">', lambda m: f'<meta name="abadis-form-endpoint" content="{html.escape(FORM_ENDPOINT, quote=True)}">', s)
         top = rel.split('/')[0]
         if top not in SKIP_DIRS and '<head' in s:
             s = fix_canonical(s, rel)
             if rel != '404.html':
                 s = jsonld(s, rel); stats['ld'] += 1
             s = fix_alts(s)
+            s = lazy_images(s)
         if s != s0:
             open(path, 'w', encoding='utf-8').write(s); stats['pages'] += 1
     stats['liara_rules'] = liara_conf()

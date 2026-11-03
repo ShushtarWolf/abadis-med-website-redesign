@@ -1,0 +1,32 @@
+# Deploy site/ to Liara static hosting. Manual only (never runs on push).
+# Needs repository secret LIARA_API_TOKEN (Liara panel > API). App name comes from site/liara.json.
+name: Deploy to Liara (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type DEPLOY to publish site/ to Liara'
+        required: true
+        default: 'no'
+
+concurrency:
+  group: liara-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: ${{ github.event.inputs.confirm == 'DEPLOY' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Liara CLI
+        run: npm install -g @liara/cli@9
+      - name: Deploy site/
+        working-directory: site
+        env:
+          LIARA_TOKEN: ${{ secrets.LIARA_API_TOKEN }}
+        run: liara deploy --api-token "$LIARA_TOKEN" --no-app-logs

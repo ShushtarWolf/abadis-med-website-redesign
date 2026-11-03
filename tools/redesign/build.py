@@ -70,3 +70,6 @@ if __name__ == '__main__':
     if not sys.argv[1:]:
         from discovery import write_sitemap_and_robots
         write_sitemap_and_robots()
+    # SEO post-process (JSON-LD, alt text, canonical, self-hosted docs, 404, Liara nginx config)
+    import seo_postprocess
+    seo_postprocess.main()
