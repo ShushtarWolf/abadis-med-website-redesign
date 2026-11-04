@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>نمای انفجاری کیسه ساکشن ۱ لیتری | Abadis Med</title>
+<style>
+@font-face{font-family:Kalameh;src:url(../../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Kalameh;src:url(../../assets/fonts/kalameh/KalamehWeb-FaNum-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Kalameh;src:url(../../assets/fonts/kalameh/KalamehWeb-FaNum-ExtraBold.woff2) format("woff2");font-weight:800}
+:root{--teal:#0e8c8c;--coral:#e08a00;--ink:#0b2f30;--mute:#355d5e;--glass:rgba(255,255,255,.92);--line:rgba(14,140,140,.25);--co-line:rgba(14,140,140,.6);--halo:#f2f8f8}
+*{box-sizing:border-box}html,body{margin:0}
+body{font-family:Kalameh,Tahoma,sans-serif;color:var(--ink);background:radial-gradient(90% 80% at 50% 40%,#fff 0%,#e8f3f3 70%,#d3e8e8 100%) fixed,#e8f3f3}
+html[lang=en] body{font-family:Inter,"Segoe UI",Arial,sans-serif}
+.scroll{height:600vh;position:relative}
+.stage{position:sticky;top:0;height:100vh;height:100svh;min-height:360px;overflow:hidden}
+#gl{position:absolute;inset:0;width:100%;height:100%;min-height:360px;display:block;touch-action:pan-y;cursor:grab}
+.glass{background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:20px;box-shadow:0 24px 60px -30px rgba(6,70,70,.45)}
+.top{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:min(880px,calc(100% - 24px));padding:12px 18px;z-index:6;display:flex;flex-wrap:wrap;align-items:center;gap:10px;justify-content:space-between}
+.top h1{margin:0;font-size:clamp(16px,2vw,22px);font-weight:800}.top h1 b{color:var(--teal)}
+.top p{margin:2px 0 0;font-size:13px;color:var(--mute)}
+.btns{display:flex;gap:6px;flex-wrap:wrap}
+.btn{font:inherit;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:rgba(14,140,140,.08);color:var(--ink);cursor:pointer}
+.btn:hover{border-color:var(--coral)}.btn.act{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn svg{width:14px;height:14px}
+.leads{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3}
+.leads path{fill:none;stroke:var(--co-line);stroke-width:1.2}
+.dot{position:absolute;top:0;left:0;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;background:var(--teal);color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center;box-shadow:0 0 0 3px rgba(14,140,140,.22),0 0 10px 2px rgba(14,140,140,.5);z-index:4;pointer-events:none}
+.card{position:absolute;top:0;left:0;width:min(250px,42vw);padding:9px 12px;z-index:5;font-size:12.5px;line-height:1.55;pointer-events:none;border-radius:14px}
+.card h3{margin:0;font-size:13.5px;font-weight:800;display:flex;gap:6px;align-items:center}
+.card h3 i{font-style:normal;display:inline-grid;place-items:center;min-width:20px;height:20px;border-radius:50%;background:var(--teal);color:#fff;font-size:11px}
+.card .mat{color:var(--coral);font-weight:700;font-size:12px;margin-top:2px}
+.card p{margin:3px 0 0;color:var(--mute)}
+.spec{position:absolute;bottom:14px;inset-inline-start:14px;z-index:6;padding:10px 14px;font-size:13px;display:flex;gap:14px;align-items:center}
+.spec b{color:var(--teal);font-size:16px}.spec svg{width:18px;height:18px;color:var(--teal)}
+.hint{position:absolute;bottom:14px;inset-inline-end:14px;z-index:6;font-size:12px;color:var(--mute);padding:8px 12px}
+@media (max-width:640px){.top{padding:8px 10px;gap:6px}.top p{display:none}.btn{padding:5px 9px;font-size:12px}.card{width:40vw!important}.card{width:44vw;font-size:11px;padding:6px 8px}.card h3{font-size:12px}.card p{display:none}.hint{display:none}.spec{font-size:12px;gap:8px}}
+</style>
+<script type="importmap">{"imports":{"three":"../../assets/vendor/three/build/three.module.js","three/addons/":"../../assets/vendor/three/examples/jsm/"}}</script>
+</head>
+<body>
+<div class="scroll"><div class="stage">
+<canvas id="gl"></canvas>
+<svg class="leads" id="leads"></svg>
+<div id="labels"></div>
+<header class="top glass">
+ <div><h1 data-fa="نمای انفجاری <b>کیسه ساکشن ۱ لیتری</b>" data-en="Exploded view: <b>1 L Suction Bag</b>"></h1>
+ <p data-fa="برای جدا شدن قطعات اسکرول کنید یا دکمه‌ها را بزنید" data-en="Scroll or use the buttons to explode the parts"></p></div>
+ <div class="btns">
+  <button class="btn" id="bPlay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg><span data-fa="پخش" data-en="Play"></span></button>
+  <button class="btn" id="bEx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v6M9 6l3-3 3 3M12 21v-6M9 18l3 3 3-3M4 12h16"/></svg><span data-fa="انفجار" data-en="Explode"></span></button>
+  <button class="btn" id="bAs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v6M9 6l3 3 3-3M12 21v-6M9 18l3-3 3 3M4 12h16"/></svg><span data-fa="مونتاژ" data-en="Assemble"></span></button>
+  <button class="btn" id="bLang"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg><span data-fa="English" data-en="فارسی"></span></button>
+ </div>
+</header>
+<div class="spec glass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12l-1 18H7z"/><path d="M7 9h10"/></svg>
+ <span><span data-fa="حجم" data-en="Volume"></span> <b data-fa="۱ لیتر" data-en="1 L"></b></span>
+ <span><span data-fa="ابعاد کیسه" data-en="Bag size"></span> <b data-fa="۱۱ × ۱۵٫۵ سانتی‌متر" data-en="11 × 15.5 cm"></b></span></div>
+<div class="hint glass" data-fa="برای چرخاندن بکشید" data-en="Drag to rotate"></div>
+</div></div>
+<script type="module">
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+const L=[ // top to bottom
+ {k:'cap',off:470,fa:['درپوش بنددار','PP','پورت بیمار را هنگام عدم استفاده آب‌بند می‌کند'],en:['Tethered cap','PP','Seals the patient port when not in use']},
+ {k:'lid',off:400,fa:['درب','PP آبی‌سبز','پورت بیمار (PATIENT) و پورت خلا'],en:['Lid ("Door")','PP, blue-green','PATIENT port plus vacuum port']},
+ {k:'filter',off:310,fa:['فیلتر قطع کننده','هیدروفوب / دوگانه / مکانیکی','از سرریز جلوگیری کرده و ساکشن مرکزی را محافظت می‌کند'],en:['Flow stopper filter','Hydrophobic, dual or mechanical','Stops overflow and protects the central suction']},
+ {k:'collar',off:260,fa:['لوله و طوقه','PP','مکش را به داخل کیسه هدایت می‌کند'],en:['Dip tube and collar','PP','Guides suction into the bag']},
+ {k:'powder',off:370,fa:['پودر جاذب','ساشه + گرانول','مایع را ژل می‌کند؛ در کیسه پر یا پاره ایمن می‌ماند'],en:['Absorbent powder','Sachet plus granules','Turns fluid into gel, safe if the bag is full or torn']},
+ {k:'bag',off:200,fa:['کیسه ۱ لیتری','PE نرم','یکبارمصرف؛ حداقل هر ۲۴ ساعت تعویض شود'],en:['1 L liner bag','Soft PE','Single use, change at least every 24 h']},
+ {k:'pit',off:0,fa:['مخزن ۱ لیتری','پلی‌کربنات','قابل استفاده مجدد، اتوکلاو تا ۱۲۰ درجه'],en:['1 L canister','Polycarbonate','Reusable, autoclavable up to 120 °C']}];
+let lang=localStorage.getItem('p01lang')||'fa';
+const labels=document.getElementById('labels'),leads=document.getElementById('leads');
+L.forEach((l,i)=>{l.dot=Object.assign(document.createElement('div'),{className:'dot',textContent:i+1});l.card=Object.assign(document.createElement('div'),{className:'card glass'});
+ l.path=document.createElementNS('http://www.w3.org/2000/svg','path');leads.appendChild(l.path);labels.append(l.dot,l.card);});
+function applyLang(){document.documentElement.lang=lang;document.documentElement.dir=lang==='fa'?'rtl':'ltr';
+ document.querySelectorAll('[data-fa]').forEach(e=>e.innerHTML=e.dataset[lang]);
+ const fn=n=>lang==='fa'?String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]):n;
+ L.forEach((l,i)=>{const t=l[lang];l.card.innerHTML=`<h3><i>${fn(i+1)}</i>${t[0]}</h3><div class="mat">${t[1]}</div><p>${t[2]}</p>`;l.dot.textContent=fn(i+1);});}
+applyLang();
+document.getElementById('bLang').onclick=()=>{lang=lang==='fa'?'en':'fa';localStorage.setItem('p01lang',lang);applyLang();};
+
+const cv=document.getElementById('gl'),stage=cv.parentElement;
+const R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});R.setPixelRatio(Math.min(devicePixelRatio,2));R.toneMapping=THREE.NeutralToneMapping;
+const S=new THREE.Scene();S.environment=new THREE.PMREMGenerator(R).fromScene(new RoomEnvironment(),.04).texture;S.environmentIntensity=.55;
+const C=new THREE.PerspectiveCamera(32,1,1,5000);
+S.add(new THREE.HemisphereLight(0xffffff,0x9cc,1.1));const dl=new THREE.DirectionalLight(0xffffff,1.6);dl.position.set(200,500,300);S.add(dl);
+const ctl=new OrbitControls(C,cv);ctl.enableDamping=true;ctl.enableZoom=false;ctl.enablePan=false;
+const root=new THREE.Group();S.add(root);
+const M={
+ pit:new THREE.MeshPhysicalMaterial({color:0xeef6f8,roughness:.35,transmission:.85,thickness:3,transparent:true,opacity:.55,side:THREE.DoubleSide,depthWrite:false}),
+ bag:new THREE.MeshPhysicalMaterial({color:0xf4f3ee,roughness:.6,transmission:.35,transparent:true,opacity:.82,side:THREE.DoubleSide}),
+ pp:new THREE.MeshStandardMaterial({color:0x2e7f96,roughness:.5,metalness:0}),
+ filter:new THREE.MeshStandardMaterial({color:0xf2f2ee,roughness:.9}),
+ sachet:new THREE.MeshStandardMaterial({color:0xfafafa,roughness:.7}),gran:new THREE.MeshStandardMaterial({color:0xe9e4d6,roughness:1})};
+const parts={};
+function size(){const w=stage.clientWidth||innerWidth,h=Math.max(stage.clientHeight,360);R.setSize(w,h,false);C.aspect=w/h;C.updateProjectionMatrix();
+ mob=w<640;if(mob)C.setViewOffset(w,h,w*.2,-h*.03,w,h);else C.clearViewOffset();cam(E,true);}
+let mob=false;const dir=new THREE.Vector3(.55,.2,.82).normalize();
+function cam(e,force){const span=440+e*(mob?440:480),ty=-85+e*(mob?255:265);const d=span/(2*Math.tan(C.fov*Math.PI/360))*(mob?1/(C.aspect*1.45):1.05);
+ const off=C.position.clone().sub(ctl.target);const cur=force||off.length()<1?dir.clone():off.normalize();
+ ctl.target.set(0,ty,0);C.position.copy(ctl.target).addScaledVector(cur,d);}
+new ResizeObserver(size).observe(stage);size();
+new GLTFLoader().load('p01-1l.glb',g=>{
+ g.scene.traverse(o=>{if(!o.isMesh)return;const n=(o.name+' '+(o.parent?.name||'')).toLowerCase();
+  const k=['pit','bag','lid','collar','cap'].find(x=>n.includes(x));if(!k)return;
+  if(!o.geometry.attributes.normal)o.geometry.computeVertexNormals();o.material=k==='pit'?M.pit:k==='bag'?M.bag:M.pp;if(k==='pit')o.renderOrder=2;
+  (parts[k]=parts[k]||new THREE.Group());});
+ const tmp=[];g.scene.traverse(o=>{if(o.isMesh)tmp.push(o)});
+ tmp.forEach(o=>{const n=(o.name+' '+(o.parent?.name||'')).toLowerCase();const k=['pit','bag','lid','collar','cap'].find(x=>n.includes(x));if(k)parts[k].attach(o);});
+ // filter: disc stack under vacuum port
+ const f=new THREE.Group();const d1=new THREE.Mesh(new THREE.CylinderGeometry(20,20,10,48),M.filter);const d2=new THREE.Mesh(new THREE.CylinderGeometry(12,14,14,32),M.pp);d2.position.y=12;
+ const ring=new THREE.Mesh(new THREE.TorusGeometry(20,1.6,8,48),M.pp);ring.rotation.x=Math.PI/2;ring.position.y=5;f.add(d1,d2,ring);f.position.set(32,-14,-8);parts.filter=f;
+ // powder: sachet + granules
+ const p=new THREE.Group();const sh=new THREE.Mesh(new THREE.BoxGeometry(46,6,32,4,1,4),M.sachet);const pos=sh.geometry.attributes.position;for(let i=0;i<pos.count;i++)pos.setY(i,pos.getY(i)*(1-Math.abs(pos.getX(i))/40));sh.geometry.computeVertexNormals();p.add(sh);
+ const gg=new THREE.IcosahedronGeometry(1.6,0);const im=new THREE.InstancedMesh(gg,M.gran,160);const m4=new THREE.Matrix4();
+ for(let i=0;i<160;i++){const a=Math.random()*6.28,r=Math.sqrt(Math.random())*26;m4.makeTranslation(Math.cos(a)*r+38,-2+Math.random()*3,Math.sin(a)*r);im.setMatrixAt(i,m4);}p.add(im);
+ p.position.set(-8,-170,0);parts.powder=p;
+ L.forEach(l=>{if(parts[l.k]){l.g=parts[l.k];root.add(l.g);l.base=l.g.position.y;}});
+ window.__ready=true;},undefined,e=>{console.error(e);window.__ready='error';});
+
+const sm=x=>x<=0?0:x>=1?1:x*x*(3-2*x);
+var E=0;let mode='scroll',target=0,playT=null;
+const N=L.length-1;
+function scrollE(){const max=document.documentElement.scrollHeight-innerHeight;const p=max>0?scrollY/max:0;
+ return p<.08?0:p<.55?(p-.08)/.47:p<.75?1:p<.97?1-(p-.75)/.22:0;}
+addEventListener('scroll',()=>{mode='scroll';playT=null;setAct(null);},{passive:true});
+function setAct(b){document.querySelectorAll('.btn').forEach(x=>x.classList.toggle('act',x===b));}
+const bP=document.getElementById('bPlay'),bE=document.getElementById('bEx'),bA=document.getElementById('bAs');
+bP.onclick=()=>{mode='play';playT=performance.now();setAct(bP);};
+bE.onclick=()=>{mode='btn';target=1;setAct(bE);};bA.onclick=()=>{mode='btn';target=0;setAct(bA);};
+const v=new THREE.Vector3(),box=new THREE.Box3();
+function frame(now){requestAnimationFrame(frame);
+ if(mode==='scroll')E+= (scrollE()-E)*.15;
+ else if(mode==='btn')E+=(target-E)*.06;
+ else if(mode==='play'){const t=(now-playT)/9000;E=t<.45?t/.45:t<.6?1:t<1?1-(t-.6)/.4:0;if(t>=1){mode='btn';target=0;setAct(null);}}
+ if(new URLSearchParams(location.search).has('e'))E=+new URLSearchParams(location.search).get('e');
+ const w=stage.clientWidth,h=Math.max(stage.clientHeight,360);let prevB=(w<640?150:84);
+ L.forEach((l,i)=>{if(!l.g)return;const e=i===N?1:sm(E*N-i); // cap first
+  l.g.position.y=l.base+l.off*(i===N?0:e);
+  const op=i===N?sm(E*N-(N-1)):e;
+  box.setFromObject(l.g);box.getCenter(v);v.x=box.max.x*.8;v.project(C);
+  const x=(v.x+1)/2*w,y=(1-v.y)/2*h;const right=w>700?x<w*.62:true;
+  const ch=l.card.offsetHeight||60;let cy=Math.max(y-ch/2,prevB+6);if(op>.05)prevB=cy+ch;const cw=l.card.offsetWidth||250;const cx=w<640?w-cw-8:Math.min(w-cw-12,x+110);
+  l.dot.style.transform=`translate(${x}px,${y}px)`;l.card.style.transform=`translate(${cx}px,${cy}px)`;
+  const ex=cx;l.path.setAttribute('d',`M${x} ${y} L${(x+ex)/2} ${y} L${ex} ${cy+16}`);
+  [l.dot,l.card,l.path].forEach(o=>o.style.opacity=op);});
+ cam(E);ctl.update();R.render(S,C);}
+requestAnimationFrame(frame);
+</script>
+</body></html>
