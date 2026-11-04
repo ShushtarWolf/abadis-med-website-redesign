@@ -1043,6 +1043,7 @@ function init(sec) {
     uniforms.uSt.value = explore ? -1 : idx;
     if (viewShift > 0.002 || viewShiftY < -0.002) camera.setViewOffset(w, h, w * viewShift, h * viewShiftY, w, h); else if (camera.view && camera.view.enabled) camera.clearViewOffset();
     renderer.render(scene, camera);
+    if (!sec.classList.contains('gl-on')) sec.classList.add('gl-on');
   }
   frame();
 }

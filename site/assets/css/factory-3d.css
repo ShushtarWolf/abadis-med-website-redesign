@@ -144,3 +144,8 @@ html:is([data-theme="dark"],[data-theme="noir"]) .f3d :is(.f3d-intro,.f3d-dock){
   --f3d-line:rgba(120,210,210,.26);background:rgba(7,24,30,.92);border-color:rgba(120,210,210,.26);color:#e6f4f4}
 html:is([data-theme="dark"],[data-theme="noir"]) .f3d :is(.f3d-intro,.f3d-dock) :is(p,.f3d-sub,.f3d-subspec){color:#a9c9c9}
 html:is([data-theme="dark"],[data-theme="noir"]) .f3d :is(.f3d-intro,.f3d-dock) :is(.f3d-pill.act,.f3d-subchip.act),html:is([data-theme="dark"],[data-theme="noir"]) .f3d .f3d-dock .f3d-pill.act b{color:#0a1518}
+
+/* Static sketch fallback: shown while the 3D engine loads, and permanently when WebGL is unavailable */
+.f3d:not(.gl-on) .f3d-stage{background-image:url("../img/factory-3d-fallback.webp");background-repeat:no-repeat;background-position:center bottom;background-size:cover}
+.f3d.no-gl .f3d-labels,.f3d.no-gl .f3d-subpins{display:none}
+@media (max-width:760px){.f3d:not(.gl-on) .f3d-stage{background-size:180% auto;background-position:42% 78%}}
