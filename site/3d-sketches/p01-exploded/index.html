@@ -34,6 +34,8 @@ html[lang=en] body{font-family:Inter,"Segoe UI",Arial,sans-serif}
 .spec b{color:var(--teal);font-size:16px}.spec svg{width:18px;height:18px;color:var(--teal)}
 .hint{position:absolute;bottom:14px;inset-inline-end:14px;z-index:6;font-size:12px;color:var(--mute);padding:8px 12px}
 @media (max-width:640px){.top{padding:8px 10px;gap:6px}.top p{display:none}.btn{padding:5px 9px;font-size:12px}.card{width:40vw!important}.card{width:44vw;font-size:11px;padding:6px 8px}.card h3{font-size:12px}.card p{display:none}.hint{display:none}.spec{font-size:12px;gap:8px}}
+.dim{position:absolute;top:0;left:0;z-index:4;font:700 11.5px/1 Inter,Arial,sans-serif;color:#b37400;background:rgba(255,255,255,.85);padding:2px 6px;border-radius:6px;border:1px solid rgba(224,138,0,.4);pointer-events:none;white-space:nowrap;direction:ltr}
+body{background:radial-gradient(90% 80% at 50% 40%,#fbfefe 0%,#eaf4f4 70%,#d8eaea 100%) fixed,#eaf4f4}
 </style>
 <script type="importmap">{"imports":{"three":"../../assets/vendor/three/build/three.module.js","three/addons/":"../../assets/vendor/three/examples/jsm/"}}</script>
 </head>
@@ -61,67 +63,97 @@ html[lang=en] body{font-family:Inter,"Segoe UI",Arial,sans-serif}
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
-const L=[ // top to bottom
+import {mergeVertices,toCreasedNormals} from 'three/addons/utils/BufferGeometryUtils.js';
+const L=[
  {k:'cap',off:470,fa:['درپوش بنددار','PP','پورت بیمار را هنگام عدم استفاده آب‌بند می‌کند'],en:['Tethered cap','PP','Seals the patient port when not in use']},
  {k:'lid',off:400,fa:['درب','PP آبی‌سبز','پورت بیمار (PATIENT) و پورت خلا'],en:['Lid ("Door")','PP, blue-green','PATIENT port plus vacuum port']},
- {k:'filter',off:310,fa:['فیلتر قطع کننده','هیدروفوب / دوگانه / مکانیکی','از سرریز جلوگیری کرده و ساکشن مرکزی را محافظت می‌کند'],en:['Flow stopper filter','Hydrophobic, dual or mechanical','Stops overflow and protects the central suction']},
+ {k:'filter',off:310,fa:['فیلتر قطع کننده','هیدروفوب / دوگانه / مکانیکی','از سرریز جلوگیری می‌کند'],en:['Flow stopper filter','Hydrophobic, dual or mechanical','Stops overflow']},
  {k:'collar',off:260,fa:['لوله و طوقه','PP','مکش را به داخل کیسه هدایت می‌کند'],en:['Dip tube and collar','PP','Guides suction into the bag']},
- {k:'powder',off:370,fa:['پودر جاذب','ساشه + گرانول','مایع را ژل می‌کند؛ در کیسه پر یا پاره ایمن می‌ماند'],en:['Absorbent powder','Sachet plus granules','Turns fluid into gel, safe if the bag is full or torn']},
+ {k:'powder',off:370,fa:['پودر جاذب','ساشه + گرانول','مایع را ژل می‌کند'],en:['Absorbent powder','Sachet plus granules','Turns fluid into gel']},
  {k:'bag',off:200,fa:['کیسه ۱ لیتری','PE نرم','یکبارمصرف؛ حداقل هر ۲۴ ساعت تعویض شود'],en:['1 L liner bag','Soft PE','Single use, change at least every 24 h']},
- {k:'pit',off:0,fa:['مخزن ۱ لیتری','پلی‌کربنات','قابل استفاده مجدد، اتوکلاو تا ۱۲۰ درجه'],en:['1 L canister','Polycarbonate','Reusable, autoclavable up to 120 °C']}];
+ {k:'pit',off:0,fa:['مخزن ۱ لیتری','پلی‌کربنات (PC)','قابل استفاده مجدد، اتوکلاو تا ۱۲۰ درجه'],en:['1 L canister','Polycarbonate (PC)','Reusable, autoclavable up to 120 °C']}];
 let lang=localStorage.getItem('p01lang')||'fa';
 const labels=document.getElementById('labels'),leads=document.getElementById('leads');
 L.forEach((l,i)=>{l.dot=Object.assign(document.createElement('div'),{className:'dot',textContent:i+1});l.card=Object.assign(document.createElement('div'),{className:'card glass'});
  l.path=document.createElementNS('http://www.w3.org/2000/svg','path');leads.appendChild(l.path);labels.append(l.dot,l.card);});
+const fn=n=>lang==='fa'?String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]):n;
 function applyLang(){document.documentElement.lang=lang;document.documentElement.dir=lang==='fa'?'rtl':'ltr';
  document.querySelectorAll('[data-fa]').forEach(e=>e.innerHTML=e.dataset[lang]);
- const fn=n=>lang==='fa'?String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]):n;
- L.forEach((l,i)=>{const t=l[lang];l.card.innerHTML=`<h3><i>${fn(i+1)}</i>${t[0]}</h3><div class="mat">${t[1]}</div><p>${t[2]}</p>`;l.dot.textContent=fn(i+1);});}
-applyLang();
-document.getElementById('bLang').onclick=()=>{lang=lang==='fa'?'en':'fa';localStorage.setItem('p01lang',lang);applyLang();};
-
+ L.forEach((l,i)=>{const t=l[lang];l.card.innerHTML=`<h3><i>${fn(i+1)}</i>${t[0]}</h3><div class="mat">${t[1]}</div><p>${t[2]}</p>`;l.dot.textContent=fn(i+1);});
+ DIMS.forEach(d=>d.el.textContent=d[lang]);}
 const cv=document.getElementById('gl'),stage=cv.parentElement;
-const R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});R.setPixelRatio(Math.min(devicePixelRatio,2));R.toneMapping=THREE.NeutralToneMapping;
-const S=new THREE.Scene();S.environment=new THREE.PMREMGenerator(R).fromScene(new RoomEnvironment(),.04).texture;S.environmentIntensity=.55;
-const C=new THREE.PerspectiveCamera(32,1,1,5000);
-S.add(new THREE.HemisphereLight(0xffffff,0x9cc,1.1));const dl=new THREE.DirectionalLight(0xffffff,1.6);dl.position.set(200,500,300);S.add(dl);
+const R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true,logarithmicDepthBuffer:false});R.setPixelRatio(Math.min(devicePixelRatio,2));
+const S=new THREE.Scene();
+const C=new THREE.PerspectiveCamera(32,1,40,3000);
 const ctl=new OrbitControls(C,cv);ctl.enableDamping=true;ctl.enableZoom=false;ctl.enablePan=false;
 const root=new THREE.Group();S.add(root);
-const M={
- pit:new THREE.MeshPhysicalMaterial({color:0xeef6f8,roughness:.35,transmission:.85,thickness:3,transparent:true,opacity:.55,side:THREE.DoubleSide,depthWrite:false}),
- bag:new THREE.MeshPhysicalMaterial({color:0xf4f3ee,roughness:.6,transmission:.35,transparent:true,opacity:.82,side:THREE.DoubleSide}),
- pp:new THREE.MeshStandardMaterial({color:0x2e7f96,roughness:.5,metalness:0}),
- filter:new THREE.MeshStandardMaterial({color:0xf2f2ee,roughness:.9}),
- sachet:new THREE.MeshStandardMaterial({color:0xfafafa,roughness:.7}),gran:new THREE.MeshStandardMaterial({color:0xe9e4d6,roughness:1})};
+// sketch materials: depth prepass + translucent fill + ink edges
+const INK=0x0e8c8c, CY=0x7fe3e3, AMB=0xe08a00;
+const pre=new THREE.MeshBasicMaterial({colorWrite:false,polygonOffset:true,polygonOffsetFactor:2,polygonOffsetUnits:2,side:THREE.DoubleSide});
+const fill=(c,o)=>new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:o,depthWrite:false,side:THREE.DoubleSide,polygonOffset:true,polygonOffsetFactor:1,polygonOffsetUnits:1});
+const F={pp:fill(0x2e7f96,.32),pit:fill(0xbfe6ee,.10),bag:fill(0xeef7f7,.30),filter:fill(0xdfeff2,.4),sachet:fill(0xffffff,.55)};
+const lineM=new THREE.LineBasicMaterial({color:INK,transparent:true,opacity:.9});
+const lineSoft=new THREE.LineBasicMaterial({color:INK,transparent:true,opacity:.35});
+function clean(geo){let g=geo.clone();['normal','uv','uv1','tangent','color'].forEach(a=>g.deleteAttribute(a));g=mergeVertices(g,1e-3);
+ // drop degenerate + duplicate triangles
+ const ix=g.index.array,p=g.attributes.position,seen=new Set(),out=[],a=new THREE.Vector3(),b=new THREE.Vector3(),c=new THREE.Vector3();
+ for(let i=0;i<ix.length;i+=3){const t=[ix[i],ix[i+1],ix[i+2]];if(t[0]===t[1]||t[1]===t[2]||t[0]===t[2])continue;
+  a.fromBufferAttribute(p,t[0]);b.fromBufferAttribute(p,t[1]);c.fromBufferAttribute(p,t[2]);if(b.sub(a).cross(c.sub(a)).lengthSq()<1e-8)continue;
+  const k=[...t].sort((x,y)=>x-y).join();if(seen.has(k))continue;seen.add(k);out.push(...t);}
+ g.setIndex(out);return toCreasedNormals(g,Math.PI/6);}
+function sketch(geo,fm,thr=20,soft){const g=new THREE.Group();
+ g.add(Object.assign(new THREE.Mesh(geo,pre),{renderOrder:0}));
+ const f=new THREE.Mesh(geo,fm);f.renderOrder=1;g.add(f);
+ const e=new THREE.LineSegments(new THREE.EdgesGeometry(geo,thr),soft?lineSoft:lineM);e.renderOrder=2;g.add(e);return g;}
 const parts={};
+// floor grid
+const grid=new THREE.GridHelper(900,36,CY,CY);grid.material.transparent=true;grid.material.opacity=.28;grid.position.y=-184;S.add(grid);
+// dimension helpers
+const dimM=new THREE.LineBasicMaterial({color:AMB,transparent:true,opacity:.95});
+const DIMS=[];
+function dim(a,b,ext,fa,en,parent){const g=new THREE.Group();const A=new THREE.Vector3(...a),B=new THREE.Vector3(...b),X=new THREE.Vector3(...ext);
+ const lg=new THREE.BufferGeometry().setFromPoints([A.clone().add(X),A.clone().addScaledVector(X,-.25),B.clone().add(X),B.clone().addScaledVector(X,-.25),A,B]);
+ g.add(new THREE.LineSegments(lg,dimM));
+ const d=B.clone().sub(A).normalize();const cone=new THREE.ConeGeometry(2.6,10,12);
+ [[A,d.clone().negate()],[B,d]].forEach(([P,D])=>{const m=new THREE.Mesh(cone,new THREE.MeshBasicMaterial({color:AMB}));m.position.copy(P).addScaledVector(D,-5);m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),D);g.add(m);});
+ const el=Object.assign(document.createElement('div'),{className:'dim'});labels.append(el);
+ DIMS.push({el,fa,en,mid:A.clone().add(B).multiplyScalar(.5),g});(parent||S).add(g);}
+function fit(w,h,ow,oh,ex){/* keep camera planes tight */}
+let mob=false;const qp=new URLSearchParams(location.search);const dir=new THREE.Vector3(.55,.2,.82).normalize();
 function size(){const w=stage.clientWidth||innerWidth,h=Math.max(stage.clientHeight,360);R.setSize(w,h,false);C.aspect=w/h;C.updateProjectionMatrix();
  mob=w<640;if(mob)C.setViewOffset(w,h,w*.2,-h*.03,w,h);else C.clearViewOffset();cam(E,true);}
-let mob=false;const dir=new THREE.Vector3(.55,.2,.82).normalize();
-function cam(e,force){const span=440+e*(mob?440:480),ty=-85+e*(mob?255:265);const d=span/(2*Math.tan(C.fov*Math.PI/360))*(mob?1/(C.aspect*1.45):1.05);
+function cam(e,force){const span=440+e*(mob?440:480),ty=-85+e*(mob?255:265);const d=span/(2*Math.tan(C.fov*Math.PI/360))*(mob?1/(C.aspect*1.45):1.05)*(+qp.get('z')||1);
  const off=C.position.clone().sub(ctl.target);const cur=force||off.length()<1?dir.clone():off.normalize();
- ctl.target.set(0,ty,0);C.position.copy(ctl.target).addScaledVector(cur,d);}
-new ResizeObserver(size).observe(stage);size();
+ ctl.target.set(0,qp.has('ty')?+qp.get('ty'):ty,0);C.position.copy(ctl.target).addScaledVector(cur,d);
+ C.near=Math.max(20,d-700);C.far=d+700;C.updateProjectionMatrix();}
 new GLTFLoader().load('p01-1l.glb',g=>{
- g.scene.traverse(o=>{if(!o.isMesh)return;const n=(o.name+' '+(o.parent?.name||'')).toLowerCase();
-  const k=['pit','bag','lid','collar','cap'].find(x=>n.includes(x));if(!k)return;
-  if(!o.geometry.attributes.normal)o.geometry.computeVertexNormals();o.material=k==='pit'?M.pit:k==='bag'?M.bag:M.pp;if(k==='pit')o.renderOrder=2;
-  (parts[k]=parts[k]||new THREE.Group());});
- const tmp=[];g.scene.traverse(o=>{if(o.isMesh)tmp.push(o)});
- tmp.forEach(o=>{const n=(o.name+' '+(o.parent?.name||'')).toLowerCase();const k=['pit','bag','lid','collar','cap'].find(x=>n.includes(x));if(k)parts[k].attach(o);});
- // filter: disc stack under vacuum port
- const f=new THREE.Group();const d1=new THREE.Mesh(new THREE.CylinderGeometry(20,20,10,48),M.filter);const d2=new THREE.Mesh(new THREE.CylinderGeometry(12,14,14,32),M.pp);d2.position.y=12;
- const ring=new THREE.Mesh(new THREE.TorusGeometry(20,1.6,8,48),M.pp);ring.rotation.x=Math.PI/2;ring.position.y=5;f.add(d1,d2,ring);f.position.set(32,-14,-8);parts.filter=f;
- // powder: sachet + granules
- const p=new THREE.Group();const sh=new THREE.Mesh(new THREE.BoxGeometry(46,6,32,4,1,4),M.sachet);const pos=sh.geometry.attributes.position;for(let i=0;i<pos.count;i++)pos.setY(i,pos.getY(i)*(1-Math.abs(pos.getX(i))/40));sh.geometry.computeVertexNormals();p.add(sh);
- const gg=new THREE.IcosahedronGeometry(1.6,0);const im=new THREE.InstancedMesh(gg,M.gran,160);const m4=new THREE.Matrix4();
- for(let i=0;i<160;i++){const a=Math.random()*6.28,r=Math.sqrt(Math.random())*26;m4.makeTranslation(Math.cos(a)*r+38,-2+Math.random()*3,Math.sin(a)*r);im.setMatrixAt(i,m4);}p.add(im);
+ const ms=[];g.scene.updateMatrixWorld(true);g.scene.traverse(o=>{if(o.isMesh)ms.push(o)});
+ ms.forEach(o=>{const n=(o.name+' '+(o.parent?.name||'')).toLowerCase();const k=['pit','bag','lid','collar','cap'].find(x=>n.includes(x));if(!k)return;
+  const geo=clean(o.geometry.clone().applyMatrix4(o.matrixWorld));
+  const s=sketch(geo,k==='pit'?F.pit:k==='bag'?F.bag:F.pp,k==='bag'?8:20);(parts[k]=parts[k]||new THREE.Group()).add(s);});
+ // flow stopper filter
+ const f=new THREE.Group();const c1=new THREE.CylinderGeometry(20,20,10,48),c2=new THREE.CylinderGeometry(12,14,14,32);
+ f.add(sketch(c1,F.filter));const t=sketch(c2,F.pp);t.position.y=12;f.add(t);
+ const pl=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.CylinderGeometry(15,15,10,10,1,true),1),lineSoft);f.add(pl);
+ f.position.set(32,-14,-8);parts.filter=f;
+ // absorbent powder sachet + granules
+ const p=new THREE.Group();const sg=new THREE.BoxGeometry(46,6,32,1,1,1);const pos=sg.attributes.position;for(let i=0;i<pos.count;i++)pos.setY(i,pos.getY(i)*(Math.abs(pos.getX(i))>20?.3:1));
+ p.add(sketch(sg,F.sachet,10));
+ const gm=new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1.5,0),new THREE.MeshBasicMaterial({color:INK,transparent:true,opacity:.55}),140);const m4=new THREE.Matrix4();
+ for(let i=0;i<140;i++){const a=Math.random()*6.28,r=Math.sqrt(Math.random())*24;m4.makeTranslation(Math.cos(a)*r+40,-2+Math.random()*3,Math.sin(a)*r);gm.setMatrixAt(i,m4);}p.add(gm);
  p.position.set(-8,-170,0);parts.powder=p;
  L.forEach(l=>{if(parts[l.k]){l.g=parts[l.k];root.add(l.g);l.base=l.g.position.y;}});
- window.__ready=true;},undefined,e=>{console.error(e);window.__ready='error';});
-
+ // dimensions (real CAD): canister 129 x 183 mm; bag 11 x 15.5 cm
+ dim([-64.5,-183,95],[64.5,-183,95],[0,0,-12],'۱۲۹ میلی‌متر','129 mm',parts.pit);
+ dim([-92,-183,0],[-92,0,0],[12,0,0],'۱۸۳ میلی‌متر','183 mm',parts.pit);
+ dim([-56.6,-24,70],[56.6,-24,70],[0,0,-10],'کیسه ۱۱ سانتی‌متر','Bag 11 cm',parts.bag);
+ dim([-75,-178,0],[-75,-24,0],[10,0,0],'۱۵٫۵ سانتی‌متر · ۱ لیتر','15.5 cm · 1 L',parts.bag);
+ applyLang();window.__ready=true;},undefined,e=>{console.error(e);window.__ready='error';});
+applyLang();
+document.getElementById('bLang').onclick=()=>{lang=lang==='fa'?'en':'fa';localStorage.setItem('p01lang',lang);applyLang();};
 const sm=x=>x<=0?0:x>=1?1:x*x*(3-2*x);
 var E=0;let mode='scroll',target=0,playT=null;
+new ResizeObserver(size).observe(stage);size();
 const N=L.length-1;
 function scrollE(){const max=document.documentElement.scrollHeight-innerHeight;const p=max>0?scrollY/max:0;
  return p<.08?0:p<.55?(p-.08)/.47:p<.75?1:p<.97?1-(p-.75)/.22:0;}
@@ -132,21 +164,25 @@ bP.onclick=()=>{mode='play';playT=performance.now();setAct(bP);};
 bE.onclick=()=>{mode='btn';target=1;setAct(bE);};bA.onclick=()=>{mode='btn';target=0;setAct(bA);};
 const v=new THREE.Vector3(),box=new THREE.Box3();
 function frame(now){requestAnimationFrame(frame);
- if(mode==='scroll')E+= (scrollE()-E)*.15;
+ if(mode==='scroll')E+=(scrollE()-E)*.15;
  else if(mode==='btn')E+=(target-E)*.06;
  else if(mode==='play'){const t=(now-playT)/9000;E=t<.45?t/.45:t<.6?1:t<1?1-(t-.6)/.4:0;if(t>=1){mode='btn';target=0;setAct(null);}}
- if(new URLSearchParams(location.search).has('e'))E=+new URLSearchParams(location.search).get('e');
+ if(qp.has('e'))E=+qp.get('e');
  const w=stage.clientWidth,h=Math.max(stage.clientHeight,360);let prevB=(w<640?150:84);
- L.forEach((l,i)=>{if(!l.g)return;const e=i===N?1:sm(E*N-i); // cap first
-  l.g.position.y=l.base+l.off*(i===N?0:e);
+ cam(E);ctl.update();root.updateMatrixWorld(true);
+ L.forEach((l,i)=>{if(!l.g)return;const e=i===N?1:sm(E*N-i);
+  l.g.position.y=l.base+l.off*(i===N?0:e);l.g.updateMatrixWorld(true);
   const op=i===N?sm(E*N-(N-1)):e;
   box.setFromObject(l.g);box.getCenter(v);v.x=box.max.x*.8;v.project(C);
-  const x=(v.x+1)/2*w,y=(1-v.y)/2*h;const right=w>700?x<w*.62:true;
+  const x=(v.x+1)/2*w,y=(1-v.y)/2*h;
   const ch=l.card.offsetHeight||60;let cy=Math.max(y-ch/2,prevB+6);if(op>.05)prevB=cy+ch;const cw=l.card.offsetWidth||250;const cx=w<640?w-cw-8:Math.min(w-cw-12,x+110);
   l.dot.style.transform=`translate(${x}px,${y}px)`;l.card.style.transform=`translate(${cx}px,${cy}px)`;
-  const ex=cx;l.path.setAttribute('d',`M${x} ${y} L${(x+ex)/2} ${y} L${ex} ${cy+16}`);
+  l.path.setAttribute('d',`M${x} ${y} L${(x+cx)/2} ${y} L${cx} ${cy+16}`);
   [l.dot,l.card,l.path].forEach(o=>o.style.opacity=op);});
- cam(E);ctl.update();R.render(S,C);}
+ const dop=mob?0:1;
+ DIMS.forEach((d,i)=>{const o=i<2?(E<.15?1:sm(E*N-(N-1))):(E<.15?0:1);d.g.visible=o>.05;v.copy(d.mid);d.g.parent.localToWorld(v);v.project(C);
+  d.el.style.transform=`translate(${(v.x+1)/2*w-20}px,${(1-v.y)/2*h-10}px)`;d.el.style.opacity=o*(mob&&i>1?0:1);});
+ R.render(S,C);}
 requestAnimationFrame(frame);
 </script>
 </body></html>

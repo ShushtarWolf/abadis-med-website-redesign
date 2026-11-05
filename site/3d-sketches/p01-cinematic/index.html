@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>کیسه ساکشن ۱ لیتری آبادیس | Abadis Med</title>
+<style>
+@font-face{font-family:Kalameh;src:url(../../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Kalameh;src:url(../../assets/fonts/kalameh/KalamehWeb-FaNum-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Kalameh;src:url(../../assets/fonts/kalameh/KalamehWeb-FaNum-ExtraBold.woff2) format("woff2");font-weight:800}
+*{box-sizing:border-box}html,body{margin:0;background:#04080a;color:#f2f7f7;font-family:Kalameh,Tahoma,sans-serif}
+.track{height:1100vh;position:relative}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block}
+.vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 45%,transparent 45%,rgba(0,0,0,.55) 85%,rgba(0,0,0,.85) 100%)}
+.beat{position:absolute;left:50%;transform:translate(-50%,0);width:min(900px,92vw);text-align:center;opacity:0;pointer-events:none;will-change:opacity,transform}
+.beat.top{top:11vh}.beat.bot{bottom:9vh}
+.beat h1{margin:0;font-size:clamp(32px,6vw,76px);font-weight:800;letter-spacing:-.5px;line-height:1.25;background:linear-gradient(180deg,#fff,#a9d9dc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.beat h1,.beat h2{text-shadow:0 2px 18px rgba(0,0,0,.85)}.beat h2{margin:0;font-size:clamp(26px,4.4vw,54px);font-weight:800;line-height:1.3}
+.beat h2 em{font-style:normal;color:#5fc7cf}
+.beat p{margin:10px 0 0;font:500 clamp(13px,1.4vw,17px)/1.4 Inter,"Segoe UI",Arial,sans-serif;color:#9fb8ba;direction:ltr;letter-spacing:.2px}
+.logo{position:absolute;left:50%;bottom:10vh;transform:translateX(-50%);width:min(280px,56vw);opacity:0}
+.hint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font-size:13px;color:#8aa;letter-spacing:.3px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.hint i{width:1px;height:28px;background:linear-gradient(#8aa,transparent)}
+.bar{position:absolute;top:0;left:0;height:2px;background:#2e7f96;width:0}
+</style>
+<script type="importmap">{"imports":{"three":"../../assets/vendor/three/build/three.module.js","three/addons/":"../../assets/vendor/three/examples/jsm/"}}</script>
+</head>
+<body>
+<div class="track"><div class="stage">
+<canvas id="gl"></canvas><div class="vig"></div><div class="bar" id="bar"></div>
+<div class="beat top" data-a=".0" data-b=".1"><h1>کیسه ساکشن ۱ لیتری آبادیس</h1><p>Abadis 1 L Suction Bag</p></div>
+<div class="beat bot" data-a=".13" data-b=".23"><h2>درب با پورت <em>بیمار</em> و پورت <em>خلا</em></h2><p>Lid with PATIENT port and vacuum port</p></div>
+<div class="beat bot" data-a=".25" data-b=".35"><h2>فیلتر قطع کننده <em>از سرریز جلوگیری می‌کند</em></h2><p>The flow stopper filter stops overflow</p></div>
+<div class="beat bot" data-a=".37" data-b=".47"><h2>کیسه <em>PE نرم</em>، یکبارمصرف</h2><p>Soft PE liner, single use</p></div>
+<div class="beat bot" data-a=".49" data-b=".6"><h2>مخزن <em>پلی‌کربنات</em>، قابل استفاده مجدد<br>اتوکلاو تا ۱۲۰ درجه</h2><p>PC canister, reusable and autoclavable at 120 °C</p></div>
+<div class="beat top" data-a=".63" data-b=".77"><h2>پودر جاذب <em>مایع را ژل می‌کند</em></h2><p>Absorbent powder turns fluid into gel</p></div>
+<div class="beat top" data-a=".86" data-b="1.01"><h1>کیسه ساکشن ۱ لیتری آبادیس</h1><p>Abadis Med · 1 L Suction Bag</p></div>
+<img class="logo" id="logo" src="../../assets/img/abadis-logo-white.svg" alt="Abadis Med">
+<div class="hint" id="hint">اسکرول کنید · Scroll<i></i></div>
+</div></div>
+<script type="module">
+import * as THREE from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {mergeVertices,toCreasedNormals} from 'three/addons/utils/BufferGeometryUtils.js';
+const mob=matchMedia('(max-width:700px),(pointer:coarse)').matches;
+const cv=document.getElementById('gl'),stage=cv.parentElement;
+const R=new THREE.WebGLRenderer({canvas:cv,antialias:!mob,powerPreference:'high-performance'});
+R.setPixelRatio(Math.min(devicePixelRatio,mob?1.5:2));R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.05;R.setClearColor(0x04080a);
+const S=new THREE.Scene();S.fog=new THREE.Fog(0x04080a,900,2200);
+S.environment=new THREE.PMREMGenerator(R).fromScene(new RoomEnvironment(),.04).texture;S.environmentIntensity=.8;
+const C=new THREE.PerspectiveCamera(30,1,20,3000);
+const key=new THREE.DirectionalLight(0xffffff,2.2);key.position.set(-300,500,400);S.add(key);
+const rim=new THREE.DirectionalLight(0x7fd6e0,2.4);rim.position.set(300,200,-400);S.add(rim);
+S.add(new THREE.HemisphereLight(0xcfe,0x020406,.35));
+// floor glow
+const fl=new THREE.Mesh(new THREE.CircleGeometry(420,64),new THREE.MeshBasicMaterial({color:0x2e7f96,transparent:true,opacity:.0,depthWrite:false}));
+{const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');const g=x.createRadialGradient(128,128,0,128,128,128);g.addColorStop(0,'rgba(46,127,150,.55)');g.addColorStop(1,'rgba(46,127,150,0)');x.fillStyle=g;x.fillRect(0,0,256,256);
+ fl.material.map=new THREE.CanvasTexture(c);fl.material.opacity=1;}
+fl.rotation.x=-Math.PI/2;fl.position.y=-186;S.add(fl);
+const M={
+ pit:mob?new THREE.MeshPhysicalMaterial({color:0xdfeff2,roughness:.3,metalness:0,transparent:true,opacity:.35,clearcoat:1,side:THREE.DoubleSide,depthWrite:false})
+        :new THREE.MeshPhysicalMaterial({color:0xeaf6f8,roughness:.42,transmission:1,thickness:4,ior:1.58,clearcoat:.6,side:THREE.DoubleSide}),
+ bag:new THREE.MeshPhysicalMaterial({color:0xf1f0ea,roughness:.55,transmission:mob?0:.45,thickness:1,transparent:true,opacity:.88,sheen:.6,sheenColor:0xffffff,side:THREE.DoubleSide}),
+ pp:new THREE.MeshPhysicalMaterial({color:0x2e7f96,roughness:.42,metalness:0,clearcoat:.25,clearcoatRoughness:.5,side:THREE.DoubleSide}),
+ filter:new THREE.MeshStandardMaterial({color:0xf3f3ef,roughness:.95}),
+ sachet:new THREE.MeshPhysicalMaterial({color:0xfafafa,roughness:.6,sheen:.5}),
+ gran:new THREE.MeshStandardMaterial({color:0xece6d6,roughness:1}),
+ gel:new THREE.MeshPhysicalMaterial({color:0x6cc3cc,roughness:.12,transmission:mob?0:.7,transparent:true,opacity:mob?.75:1,thickness:6,ior:1.35,clearcoat:1})};
+function clean(geo){let g=geo.clone();['normal','uv','uv1','tangent','color'].forEach(a=>g.deleteAttribute(a));g=mergeVertices(g,1e-3);
+ const ix=g.index.array,out=[],seen=new Set();for(let i=0;i<ix.length;i+=3){const t=[ix[i],ix[i+1],ix[i+2]];if(t[0]===t[1]||t[1]===t[2]||t[0]===t[2])continue;const k=[...t].sort((a,b)=>a-b).join();if(seen.has(k))continue;seen.add(k);out.push(...t);}
+ g.setIndex(out);return toCreasedNormals(g,Math.PI/6);}
+const ORDER=['cap','lid','filter','collar','powder','bag','pit'];const OFF={cap:470,lid:400,filter:310,collar:260,powder:370,bag:200,pit:0};
+const parts={},root=new THREE.Group();S.add(root);let gel,gm,gpos=[];
+new GLTFLoader().load('../p01-exploded/p01-1l.glb',g=>{
+ g.scene.updateMatrixWorld(true);const ms=[];g.scene.traverse(o=>{if(o.isMesh)ms.push(o)});
+ ms.forEach(o=>{const k=['pit','bag','lid','collar','cap'].find(x=>o.name.toLowerCase().includes(x)||(o.parent?.name||'').toLowerCase().includes(x));if(!k)return;
+  const m=new THREE.Mesh(clean(o.geometry.clone().applyMatrix4(o.matrixWorld)),k==='pit'?M.pit:k==='bag'?M.bag:M.pp);if(k==='pit')m.renderOrder=3;
+  (parts[k]=parts[k]||new THREE.Group()).add(m);});
+ const f=new THREE.Group();f.add(new THREE.Mesh(new THREE.CylinderGeometry(20,20,10,48),M.filter));const t=new THREE.Mesh(new THREE.CylinderGeometry(12,14,14,32),M.pp);t.position.y=12;f.add(t);f.position.set(32,-14,-8);parts.filter=f;
+ const p=new THREE.Group();const sg=new THREE.BoxGeometry(46,6,32,6,1,4);const ps=sg.attributes.position;for(let i=0;i<ps.count;i++)ps.setY(i,ps.getY(i)*(1-Math.abs(ps.getX(i))/40));sg.computeVertexNormals();p.add(new THREE.Mesh(sg,M.sachet));
+ const n=mob?120:220;gm=new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1.7,0),M.gran,n);
+ for(let i=0;i<n;i++){const a=Math.random()*6.28,r=Math.sqrt(Math.random())*24;gpos.push(new THREE.Vector3(Math.cos(a)*r+40,-1+Math.random()*3,Math.sin(a)*r));}
+ p.add(gm);gel=new THREE.Mesh(new THREE.IcosahedronGeometry(30,mob?3:5),M.gel);gel.position.set(40,10,0);p.add(gel);
+ {const pa=gel.geometry.attributes.position;gel.userData.base=pa.array.slice();}
+ p.position.set(-8,-170,0);parts.powder=p;
+ ORDER.forEach(k=>{parts[k].userData.base=parts[k].position.y;root.add(parts[k]);});
+ window.__ready=true;},undefined,e=>{console.error(e);window.__ready='error';});
+function size(){const w=stage.clientWidth,h=stage.clientHeight;R.setSize(w,h,false);C.aspect=w/h;C.updateProjectionMatrix();}
+new ResizeObserver(size).observe(stage);size();
+const cl=x=>Math.min(1,Math.max(0,x)),ease=x=>{x=cl(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;},seg=(t,a,b)=>ease((t-a)/(b-a)),lerp=(a,b,k)=>a+(b-a)*k;
+const beats=[...document.querySelectorAll('.beat')].map(e=>({e,a:+e.dataset.a,b:+e.dataset.b}));
+const logo=document.getElementById('logo'),hint=document.getElementById('hint'),bar=document.getElementById('bar');
+const qp=new URLSearchParams(location.search);
+let T=0,lastN=0;const tgt=new THREE.Vector3(),m4=new THREE.Matrix4(),q=new THREE.Quaternion(),sc=new THREE.Vector3(),pv=new THREE.Vector3();
+function prog(){if(qp.has('t'))return +qp.get('t');const max=document.documentElement.scrollHeight-innerHeight;return max>0?cl(scrollY/max):0;}
+function frame(now){requestAnimationFrame(frame);
+ const dt=Math.min(.1,(now-(lastN||now))/1000);lastN=now;T+=(prog()-T)*(qp.has('t')?1:1-Math.exp(-dt*5));const t=T;
+ bar.style.width=(t*100)+'%';hint.style.opacity=1-cl(t*20);
+ beats.forEach(b=>{const fade=.025;const o=Math.min(cl((t-b.a)/fade),cl((b.b-t)/fade));b.e.style.opacity=o;b.e.style.transform=`translate(-50%,${(1-o)*18}px)`;});
+ logo.style.opacity=cl((t-.9)/.05);
+ // explode amount: separate .12-.58, hold, gel .62-.78, reassemble .78-.9
+ const ex=t<.6?seg(t,.12,.58):1-seg(t,.78,.9);
+ ORDER.forEach((k,i)=>{const p=parts[k];if(!p)return;const e=k==='pit'?0:cl(ex*7-i)>0?ease(cl(ex*6.2-i)):0;p.position.y=p.userData.base+OFF[k]*e;});
+ // gel morph
+ const gk=seg(t,.65,.76)*(1-seg(t,.8,.86));
+ if(gm){gpos.forEach((g,i)=>{pv.copy(g).lerp(new THREE.Vector3(40,10,0),gk);sc.setScalar(1-gk);m4.compose(pv,q,sc);gm.setMatrixAt(i,m4);});gm.instanceMatrix.needsUpdate=true;
+  gel.scale.setScalar(Math.max(.001,gk));gel.visible=gk>.01;const pa=gel.geometry.attributes.position,bs=gel.userData.base;
+  if(gel.visible){for(let i=0;i<pa.count;i++){const x=bs[i*3],y=bs[i*3+1],z=bs[i*3+2];const w=1+.08*Math.sin(x*.25+now*.002)*Math.cos(z*.25+now*.0017)+.05*Math.sin(y*.3+now*.0025);pa.setXYZ(i,x*w,y*w*.8,z*w);}pa.needsUpdate=true;gel.geometry.computeVertexNormals();}}
+ // camera path
+ const asp=Math.min(1,C.aspect/1.2);let ang,dist,ty;
+ const base=mob?.95/asp:1;
+ if(t<.12){const k=seg(t,0,.12);ang=.5;dist=lerp(1150,760,k);ty=-90;}
+ else if(t<.6){const k=seg(t,.12,.6);ang=.5+k*Math.PI*.9;let top=40;ORDER.forEach(q=>{const p=parts[q];if(p)top=Math.max(top,p.position.y-p.userData.base+(q==='powder'?-160:40));});ty=(top-183)/2+20;dist=Math.max(760,(top+183)/(2*Math.tan(15*Math.PI/180))*1.3);}
+ else if(t<.78){const k=seg(t,.6,.66);ang=.5+Math.PI*.9+k*.3;const pw=parts.powder?parts.powder.position.y:200;dist=lerp(1430,340,k);ty=lerp(183,pw+5,k);tgt.x=lerp(0,32,k);}
+ else {const k=seg(t,.78,.92);ang=lerp(.5+Math.PI*1.2,Math.PI*2+.35,k);dist=lerp(300,820,k);ty=lerp((parts.powder?parts.powder.position.y:200)+5,-80,k);tgt.x=lerp(32,0,k);}
+ if(t<.6)tgt.x=0;
+ dist*=base;tgt.set(tgt.x,ty,0);C.position.set(tgt.x+Math.sin(ang)*dist,ty+dist*.22,Math.cos(ang)*dist);C.lookAt(tgt);
+ S.fog.near=dist+150;S.fog.far=dist+1300;C.near=Math.max(10,dist-600);C.far=dist+1400;C.updateProjectionMatrix();
+ R.render(S,C);}
+requestAnimationFrame(frame);
+</script>
+</body></html>
