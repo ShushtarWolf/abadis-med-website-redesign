@@ -34,8 +34,9 @@ html[lang=en] body{font-family:Inter,"Segoe UI",Arial,sans-serif}
 .spec b{color:var(--teal);font-size:16px}.spec svg{width:18px;height:18px;color:var(--teal)}
 .hint{position:absolute;bottom:14px;inset-inline-end:14px;z-index:6;font-size:12px;color:var(--mute);padding:8px 12px}
 @media (max-width:640px){.top{padding:8px 10px;gap:6px}.top p{display:none}.btn{padding:5px 9px;font-size:12px}.card{width:40vw!important}.card{width:44vw;font-size:11px;padding:6px 8px}.card h3{font-size:12px}.card p{display:none}.hint{display:none}.spec{font-size:12px;gap:8px}}
-.dim{position:absolute;top:0;left:0;z-index:4;font:700 11.5px/1 Inter,Arial,sans-serif;color:#b37400;background:rgba(255,255,255,.85);padding:2px 6px;border-radius:6px;border:1px solid rgba(224,138,0,.4);pointer-events:none;white-space:nowrap;direction:ltr}
+.dim{position:absolute;top:0;left:0;z-index:4;font:700 11.5px/1 Inter,Arial,sans-serif;color:#b37400;background:rgba(255,255,255,.85);padding:2px 6px;border-radius:6px;border:1px solid rgba(224,138,0,.4);pointer-events:none;white-space:nowrap;unicode-bidi:plaintext}
 body{background:radial-gradient(90% 80% at 50% 40%,#fbfefe 0%,#eaf4f4 70%,#d8eaea 100%) fixed,#eaf4f4}
+.card.hero{border:2px solid var(--teal);box-shadow:0 0 0 4px rgba(14,140,140,.15),0 24px 60px -30px rgba(6,70,70,.6);width:min(290px,46vw)}.card.hero h3{font-size:16px;color:var(--teal)}.dim.big{font-size:14px;color:#fff;background:#e08a00;border-color:#e08a00}.dim.sm{font-size:10px}
 </style>
 <script type="importmap">{"imports":{"three":"../../assets/vendor/three/build/three.module.js","three/addons/":"../../assets/vendor/three/examples/jsm/"}}</script>
 </head>
@@ -65,16 +66,15 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {mergeVertices,toCreasedNormals} from 'three/addons/utils/BufferGeometryUtils.js';
 const L=[
- {k:'cap',off:470,fa:['درپوش بنددار','PP','پورت بیمار را هنگام عدم استفاده آب‌بند می‌کند'],en:['Tethered cap','PP','Seals the patient port when not in use']},
- {k:'lid',off:400,fa:['درب','PP آبی‌سبز','پورت بیمار (PATIENT) و پورت خلا'],en:['Lid ("Door")','PP, blue-green','PATIENT port plus vacuum port']},
- {k:'filter',off:310,fa:['فیلتر قطع کننده','هیدروفوب / دوگانه / مکانیکی','از سرریز جلوگیری می‌کند'],en:['Flow stopper filter','Hydrophobic, dual or mechanical','Stops overflow']},
- {k:'collar',off:260,fa:['لوله و طوقه','PP','مکش را به داخل کیسه هدایت می‌کند'],en:['Dip tube and collar','PP','Guides suction into the bag']},
- {k:'powder',off:370,fa:['پودر جاذب','ساشه + گرانول','مایع را ژل می‌کند'],en:['Absorbent powder','Sachet plus granules','Turns fluid into gel']},
- {k:'bag',off:200,fa:['کیسه ۱ لیتری','PE نرم','یکبارمصرف؛ حداقل هر ۲۴ ساعت تعویض شود'],en:['1 L liner bag','Soft PE','Single use, change at least every 24 h']},
- {k:'pit',off:0,fa:['مخزن ۱ لیتری','پلی‌کربنات (PC)','قابل استفاده مجدد، اتوکلاو تا ۱۲۰ درجه'],en:['1 L canister','Polycarbonate (PC)','Reusable, autoclavable up to 120 °C']}];
+ {k:'cap',off:330,fa:['درپوش بنددار','PP','پورت بیمار را هنگام عدم استفاده آب‌بند می‌کند'],en:['Tethered cap','PP','Seals the patient port when not in use']},
+ {k:'lid',off:285,fa:['درب','PP آبی‌سبز','پورت بیمار (PATIENT) و پورت خلا'],en:['Lid ("Door")','PP, blue-green','PATIENT port plus vacuum port']},
+ {k:'filter',off:215,fa:['فیلتر قطع کننده','هیدروفوب / دوگانه / مکانیکی','از سرریز جلوگیری می‌کند'],en:['Flow stopper filter','Hydrophobic, dual or mechanical','Stops overflow']},
+ {k:'collar',off:175,fa:['لوله و طوقه','PP','مکش را به داخل کیسه هدایت می‌کند'],en:['Dip tube and collar','PP','Guides suction into the bag']},
+ {k:'powder',off:245,fa:['پودر جاذب','ساشه + گرانول','مایع را ژل می‌کند'],en:['Absorbent powder','Sachet plus granules','Turns fluid into gel']},
+ {k:'bag',off:200,fa:['کیسه ساکشن ۱ لیتری','PE نرم · ۱۱ × ۱۵٫۵ سانتی‌متر','یکبارمصرف؛ حداقل هر ۲۴ ساعت تعویض شود'],en:['1 L suction liner bag','Soft PE · 11 × 15.5 cm','Single use, change at least every 24 h']}];
 let lang=localStorage.getItem('p01lang')||'fa';
 const labels=document.getElementById('labels'),leads=document.getElementById('leads');
-L.forEach((l,i)=>{l.dot=Object.assign(document.createElement('div'),{className:'dot',textContent:i+1});l.card=Object.assign(document.createElement('div'),{className:'card glass'});
+L.forEach((l,i)=>{l.dot=Object.assign(document.createElement('div'),{className:'dot',textContent:i+1});l.card=Object.assign(document.createElement('div'),{className:'card glass'+(l.k==='bag'?' hero':'')});
  l.path=document.createElementNS('http://www.w3.org/2000/svg','path');leads.appendChild(l.path);labels.append(l.dot,l.card);});
 const fn=n=>lang==='fa'?String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]):n;
 function applyLang(){document.documentElement.lang=lang;document.documentElement.dir=lang==='fa'?'rtl':'ltr';
@@ -91,7 +91,7 @@ const root=new THREE.Group();S.add(root);
 const INK=0x0e8c8c, CY=0x7fe3e3, AMB=0xe08a00;
 const pre=new THREE.MeshBasicMaterial({colorWrite:false,polygonOffset:true,polygonOffsetFactor:2,polygonOffsetUnits:2,side:THREE.DoubleSide});
 const fill=(c,o)=>new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:o,depthWrite:false,side:THREE.DoubleSide,polygonOffset:true,polygonOffsetFactor:1,polygonOffsetUnits:1});
-const F={pp:fill(0x2e7f96,.32),pit:fill(0xbfe6ee,.10),bag:fill(0xeef7f7,.30),filter:fill(0xdfeff2,.4),sachet:fill(0xffffff,.55)};
+const F={pp:fill(0x2e7f96,.32),pit:fill(0xbfe6ee,.05),bag:fill(0xdff1f3,.5),filter:fill(0xdfeff2,.4),sachet:fill(0xffffff,.55)};
 const lineM=new THREE.LineBasicMaterial({color:INK,transparent:true,opacity:.9});
 const lineSoft=new THREE.LineBasicMaterial({color:INK,transparent:true,opacity:.35});
 function clean(geo){let g=geo.clone();['normal','uv','uv1','tangent','color'].forEach(a=>g.deleteAttribute(a));g=mergeVertices(g,1e-3);
@@ -101,6 +101,13 @@ function clean(geo){let g=geo.clone();['normal','uv','uv1','tangent','color'].fo
   a.fromBufferAttribute(p,t[0]);b.fromBufferAttribute(p,t[1]);c.fromBufferAttribute(p,t[2]);if(b.sub(a).cross(c.sub(a)).lengthSq()<1e-8)continue;
   const k=[...t].sort((x,y)=>x-y).join();if(seen.has(k))continue;seen.add(k);out.push(...t);}
  g.setIndex(out);return toCreasedNormals(g,Math.PI/6);}
+const wireM=new THREE.LineBasicMaterial({color:INK,transparent:true,opacity:.13});
+function hatch(geo,step,mat){/* horizontal contour lines: slice triangles at y planes */const p=geo.attributes.position,ix=geo.index?geo.index.array:null,n=ix?ix.length:p.count,out=[],A=new THREE.Vector3(),B=new THREE.Vector3(),Cc=new THREE.Vector3();
+ geo.computeBoundingBox();const y0=geo.boundingBox.min.y,y1=geo.boundingBox.max.y;
+ for(let i=0;i<n;i+=3){A.fromBufferAttribute(p,ix?ix[i]:i);B.fromBufferAttribute(p,ix?ix[i+1]:i+1);Cc.fromBufferAttribute(p,ix?ix[i+2]:i+2);
+  const lo=Math.min(A.y,B.y,Cc.y),hi=Math.max(A.y,B.y,Cc.y);for(let y=Math.ceil((lo-y0)/step)*step+y0;y<hi;y+=step){const pts=[];
+   [[A,B],[B,Cc],[Cc,A]].forEach(([u,v])=>{if((u.y-y)*(v.y-y)<0){const k=(y-u.y)/(v.y-u.y);pts.push(u.x+(v.x-u.x)*k,y,u.z+(v.z-u.z)*k);}});if(pts.length===6)out.push(...pts);}}
+ const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(out,3));const l=new THREE.LineSegments(g,mat||wireM);l.renderOrder=2;return l;}
 function sketch(geo,fm,thr=20,soft){const g=new THREE.Group();
  g.add(Object.assign(new THREE.Mesh(geo,pre),{renderOrder:0}));
  const f=new THREE.Mesh(geo,fm);f.renderOrder=1;g.add(f);
@@ -116,21 +123,24 @@ function dim(a,b,ext,fa,en,parent){const g=new THREE.Group();const A=new THREE.V
  g.add(new THREE.LineSegments(lg,dimM));
  const d=B.clone().sub(A).normalize();const cone=new THREE.ConeGeometry(2.6,10,12);
  [[A,d.clone().negate()],[B,d]].forEach(([P,D])=>{const m=new THREE.Mesh(cone,new THREE.MeshBasicMaterial({color:AMB}));m.position.copy(P).addScaledVector(D,-5);m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),D);g.add(m);});
- const el=Object.assign(document.createElement('div'),{className:'dim'});labels.append(el);
+ const el=Object.assign(document.createElement('div'),{className:'dim '+(parent===parts.bag?'big':'sm')});labels.append(el);
  DIMS.push({el,fa,en,mid:A.clone().add(B).multiplyScalar(.5),g});(parent||S).add(g);}
 function fit(w,h,ow,oh,ex){/* keep camera planes tight */}
 let mob=false;const qp=new URLSearchParams(location.search);const dir=new THREE.Vector3(.55,.2,.82).normalize();
 function size(){const w=stage.clientWidth||innerWidth,h=Math.max(stage.clientHeight,360);R.setSize(w,h,false);C.aspect=w/h;C.updateProjectionMatrix();
  mob=w<640;if(mob)C.setViewOffset(w,h,w*.2,-h*.03,w,h);else C.clearViewOffset();cam(E,true);}
-function cam(e,force){const span=440+e*(mob?440:480),ty=-85+e*(mob?255:265);const d=span/(2*Math.tan(C.fov*Math.PI/360))*(mob?1/(C.aspect*1.45):1.05)*(+qp.get('z')||1);
+function cam(e,force){const span=330+e*(mob?330:360),ty=-90+e*(mob?185:190);const d=span/(2*Math.tan(C.fov*Math.PI/360))*(mob?1/(C.aspect*1.45):1.05)*(+qp.get('z')||1);
  const off=C.position.clone().sub(ctl.target);const cur=force||off.length()<1?dir.clone():off.normalize();
  ctl.target.set(0,qp.has('ty')?+qp.get('ty'):ty,0);C.position.copy(ctl.target).addScaledVector(cur,d);
  C.near=Math.max(20,d-700);C.far=d+700;C.updateProjectionMatrix();}
 new GLTFLoader().load('p01-1l.glb',g=>{
  const ms=[];g.scene.updateMatrixWorld(true);g.scene.traverse(o=>{if(o.isMesh)ms.push(o)});
- ms.forEach(o=>{const n=(o.name+' '+(o.parent?.name||'')).toLowerCase();const k=['pit','bag','lid','collar','cap'].find(x=>n.includes(x));if(!k)return;
+ ms.forEach(o=>{if(/pit/i.test(o.name+' '+(o.parent?.name||'')))return;const n=(o.name+' '+(o.parent?.name||'')).toLowerCase();const k=['pit','bag','lid','collar','cap'].find(x=>n.includes(x));if(!k)return;
   const geo=clean(o.geometry.clone().applyMatrix4(o.matrixWorld));
-  const s=sketch(geo,k==='pit'?F.pit:k==='bag'?F.bag:F.pp,k==='bag'?8:20);(parts[k]=parts[k]||new THREE.Group()).add(s);});
+  const s=sketch(geo,k==='pit'?F.pit:k==='bag'?F.bag:F.pp,k==='bag'?2:k==='pit'?25:5,k==='pit');
+  if(k==='bag'){s.add(hatch(geo,6,new THREE.LineBasicMaterial({color:INK,transparent:true,opacity:.45})));const w=new THREE.LineSegments(new THREE.WireframeGeometry(geo),wireM);w.renderOrder=2;s.add(w);}
+  if(k==='lid'||k==='collar'||k==='cap'){s.add(hatch(geo,2.5));}
+  if(k==='pit'){for(let y=-160;y<=-40;y+=20){const r=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.CylinderGeometry(63,63,0,64,1,true)),lineSoft);r.position.y=y;const tk=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(55,y,40),new THREE.Vector3(63.5,y,40)]),lineSoft);s.add(tk);}}(parts[k]=parts[k]||new THREE.Group()).add(s);});
  // flow stopper filter
  const f=new THREE.Group();const c1=new THREE.CylinderGeometry(20,20,10,48),c2=new THREE.CylinderGeometry(12,14,14,32);
  f.add(sketch(c1,F.filter));const t=sketch(c2,F.pp);t.position.y=12;f.add(t);
@@ -144,9 +154,7 @@ new GLTFLoader().load('p01-1l.glb',g=>{
  p.position.set(-8,-170,0);parts.powder=p;
  L.forEach(l=>{if(parts[l.k]){l.g=parts[l.k];root.add(l.g);l.base=l.g.position.y;}});
  // dimensions (real CAD): canister 129 x 183 mm; bag 11 x 15.5 cm
- dim([-64.5,-183,95],[64.5,-183,95],[0,0,-12],'۱۲۹ میلی‌متر','129 mm',parts.pit);
- dim([-92,-183,0],[-92,0,0],[12,0,0],'۱۸۳ میلی‌متر','183 mm',parts.pit);
- dim([-56.6,-24,70],[56.6,-24,70],[0,0,-10],'کیسه ۱۱ سانتی‌متر','Bag 11 cm',parts.bag);
+ dim([-56.6,-178,70],[56.6,-178,70],[0,0,-10],'کیسه ۱۱ سانتی‌متر','Bag 11 cm',parts.bag);
  dim([-75,-178,0],[-75,-24,0],[10,0,0],'۱۵٫۵ سانتی‌متر · ۱ لیتر','15.5 cm · 1 L',parts.bag);
  applyLang();window.__ready=true;},undefined,e=>{console.error(e);window.__ready='error';});
 applyLang();
@@ -180,8 +188,8 @@ function frame(now){requestAnimationFrame(frame);
   l.path.setAttribute('d',`M${x} ${y} L${(x+cx)/2} ${y} L${cx} ${cy+16}`);
   [l.dot,l.card,l.path].forEach(o=>o.style.opacity=op);});
  const dop=mob?0:1;
- DIMS.forEach((d,i)=>{const o=i<2?(E<.15?1:sm(E*N-(N-1))):(E<.15?0:1);d.g.visible=o>.05;v.copy(d.mid);d.g.parent.localToWorld(v);v.project(C);
-  d.el.style.transform=`translate(${(v.x+1)/2*w-20}px,${(1-v.y)/2*h-10}px)`;d.el.style.opacity=o*(mob&&i>1?0:1);});
+ DIMS.forEach((d,i)=>{const o=1;d.g.visible=o>.05;v.copy(d.mid);d.g.parent.localToWorld(v);v.project(C);
+  d.el.style.transform=`translate(${(v.x+1)/2*w-20}px,${(1-v.y)/2*h-10}px)`;d.el.style.opacity=o;});
  R.render(S,C);}
 requestAnimationFrame(frame);
 </script>

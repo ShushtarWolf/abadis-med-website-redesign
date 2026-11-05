@@ -15,10 +15,10 @@
 .beat{position:absolute;left:50%;transform:translate(-50%,0);width:min(900px,92vw);text-align:center;opacity:0;pointer-events:none;will-change:opacity,transform}
 .beat.top{top:11vh}.beat.bot{bottom:9vh}
 .beat h1{margin:0;font-size:clamp(32px,6vw,76px);font-weight:800;letter-spacing:-.5px;line-height:1.25;background:linear-gradient(180deg,#fff,#a9d9dc);-webkit-background-clip:text;background-clip:text;color:transparent}
-.beat h1,.beat h2{text-shadow:0 2px 18px rgba(0,0,0,.85)}.beat h2{margin:0;font-size:clamp(26px,4.4vw,54px);font-weight:800;line-height:1.3}
+.beat h1,.beat h2{text-shadow:0 2px 18px rgba(0,0,0,.85)}.beat h3{margin:0;font-size:clamp(17px,2vw,24px);font-weight:700;color:#cfdfe0;text-shadow:0 2px 14px #000}.beat h2{margin:0;font-size:clamp(26px,4.4vw,54px);font-weight:800;line-height:1.3}
 .beat h2 em{font-style:normal;color:#5fc7cf}
 .beat p{margin:10px 0 0;font:500 clamp(13px,1.4vw,17px)/1.4 Inter,"Segoe UI",Arial,sans-serif;color:#9fb8ba;direction:ltr;letter-spacing:.2px}
-.logo{position:absolute;left:50%;bottom:10vh;transform:translateX(-50%);width:min(280px,56vw);opacity:0}
+.logo{position:absolute;left:50%;bottom:3vh;transform:translateX(-50%);width:min(190px,44vw);opacity:0}
 .hint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font-size:13px;color:#8aa;letter-spacing:.3px;display:flex;flex-direction:column;align-items:center;gap:6px}
 .hint i{width:1px;height:28px;background:linear-gradient(#8aa,transparent)}
 .bar{position:absolute;top:0;left:0;height:2px;background:#2e7f96;width:0}
@@ -28,13 +28,13 @@
 <body>
 <div class="track"><div class="stage">
 <canvas id="gl"></canvas><div class="vig"></div><div class="bar" id="bar"></div>
-<div class="beat top" data-a=".0" data-b=".1"><h1>کیسه ساکشن ۱ لیتری آبادیس</h1><p>Abadis 1 L Suction Bag</p></div>
-<div class="beat bot" data-a=".13" data-b=".23"><h2>درب با پورت <em>بیمار</em> و پورت <em>خلا</em></h2><p>Lid with PATIENT port and vacuum port</p></div>
-<div class="beat bot" data-a=".25" data-b=".35"><h2>فیلتر قطع کننده <em>از سرریز جلوگیری می‌کند</em></h2><p>The flow stopper filter stops overflow</p></div>
-<div class="beat bot" data-a=".37" data-b=".47"><h2>کیسه <em>PE نرم</em>، یکبارمصرف</h2><p>Soft PE liner, single use</p></div>
-<div class="beat bot" data-a=".49" data-b=".6"><h2>مخزن <em>پلی‌کربنات</em>، قابل استفاده مجدد<br>اتوکلاو تا ۱۲۰ درجه</h2><p>PC canister, reusable and autoclavable at 120 °C</p></div>
-<div class="beat top" data-a=".63" data-b=".77"><h2>پودر جاذب <em>مایع را ژل می‌کند</em></h2><p>Absorbent powder turns fluid into gel</p></div>
-<div class="beat top" data-a=".86" data-b="1.01"><h1>کیسه ساکشن ۱ لیتری آبادیس</h1><p>Abadis Med · 1 L Suction Bag</p></div>
+<div class="beat top" data-a=".0" data-b=".11"><h1>کیسه ساکشن ۱ لیتری آبادیس</h1><p>Abadis 1 L Suction Liner Bag</p></div>
+<div class="beat bot" data-a=".13" data-b=".24"><h2>درب کیسه با پورت <em>بیمار</em> و پورت <em>خلا</em></h2><p>Bag lid with PATIENT port and vacuum port</p></div>
+<div class="beat bot" data-a=".26" data-b=".36"><h2>فیلتر قطع کننده <em>از سرریز جلوگیری می‌کند</em></h2><p>The flow stopper filter stops overflow</p></div>
+<div class="beat bot" data-a=".38" data-b=".6"><h2>کیسه <em>PE نرم</em>، یکبارمصرف<br>۱ لیتر · ۱۱ × ۱۵٫۵ سانتی‌متر</h2><p>Soft PE liner bag, single use · 1 L · 11 × 15.5 cm</p></div>
+
+<div class="beat top" data-a=".64" data-b=".77"><h2>پودر جاذب داخل کیسه <em>مایع را ژل می‌کند</em></h2><p>Absorbent powder in the bag turns fluid into gel</p></div>
+<div class="beat top" data-a=".86" data-b="1.01"><h1>کیسه ساکشن ۱ لیتری آبادیس</h1><p>Abadis Med · 1 L Suction Liner Bag</p></div>
 <img class="logo" id="logo" src="../../assets/img/abadis-logo-white.svg" alt="Abadis Med">
 <div class="hint" id="hint">اسکرول کنید · Scroll<i></i></div>
 </div></div>
@@ -59,9 +59,8 @@ const fl=new THREE.Mesh(new THREE.CircleGeometry(420,64),new THREE.MeshBasicMate
  fl.material.map=new THREE.CanvasTexture(c);fl.material.opacity=1;}
 fl.rotation.x=-Math.PI/2;fl.position.y=-186;S.add(fl);
 const M={
- pit:mob?new THREE.MeshPhysicalMaterial({color:0xdfeff2,roughness:.3,metalness:0,transparent:true,opacity:.35,clearcoat:1,side:THREE.DoubleSide,depthWrite:false})
-        :new THREE.MeshPhysicalMaterial({color:0xeaf6f8,roughness:.42,transmission:1,thickness:4,ior:1.58,clearcoat:.6,side:THREE.DoubleSide}),
- bag:new THREE.MeshPhysicalMaterial({color:0xf1f0ea,roughness:.55,transmission:mob?0:.45,thickness:1,transparent:true,opacity:.88,sheen:.6,sheenColor:0xffffff,side:THREE.DoubleSide}),
+ pit:new THREE.MeshPhysicalMaterial({color:0x8fa9ad,roughness:.5,metalness:0,transparent:true,opacity:.16,clearcoat:.4,side:THREE.DoubleSide,depthWrite:false}),
+ bag:new THREE.MeshPhysicalMaterial({color:0xfbfaf4,emissive:0x1a2224,roughness:.5,transmission:mob?0:.45,thickness:1,transparent:true,opacity:.88,sheen:.6,sheenColor:0xffffff,side:THREE.DoubleSide}),
  pp:new THREE.MeshPhysicalMaterial({color:0x2e7f96,roughness:.42,metalness:0,clearcoat:.25,clearcoatRoughness:.5,side:THREE.DoubleSide}),
  filter:new THREE.MeshStandardMaterial({color:0xf3f3ef,roughness:.95}),
  sachet:new THREE.MeshPhysicalMaterial({color:0xfafafa,roughness:.6,sheen:.5}),
@@ -70,11 +69,11 @@ const M={
 function clean(geo){let g=geo.clone();['normal','uv','uv1','tangent','color'].forEach(a=>g.deleteAttribute(a));g=mergeVertices(g,1e-3);
  const ix=g.index.array,out=[],seen=new Set();for(let i=0;i<ix.length;i+=3){const t=[ix[i],ix[i+1],ix[i+2]];if(t[0]===t[1]||t[1]===t[2]||t[0]===t[2])continue;const k=[...t].sort((a,b)=>a-b).join();if(seen.has(k))continue;seen.add(k);out.push(...t);}
  g.setIndex(out);return toCreasedNormals(g,Math.PI/6);}
-const ORDER=['cap','lid','filter','collar','powder','bag','pit'];const OFF={cap:470,lid:400,filter:310,collar:260,powder:370,bag:200,pit:0};
+const ORDER=['cap','lid','filter','collar','powder','bag'];const OFF={cap:470,lid:400,filter:310,collar:260,powder:370,bag:0};
 const parts={},root=new THREE.Group();S.add(root);let gel,gm,gpos=[];
 new GLTFLoader().load('../p01-exploded/p01-1l.glb',g=>{
  g.scene.updateMatrixWorld(true);const ms=[];g.scene.traverse(o=>{if(o.isMesh)ms.push(o)});
- ms.forEach(o=>{const k=['pit','bag','lid','collar','cap'].find(x=>o.name.toLowerCase().includes(x)||(o.parent?.name||'').toLowerCase().includes(x));if(!k)return;
+ ms.forEach(o=>{if(/pit/i.test(o.name+' '+(o.parent?.name||'')))return;const k=['pit','bag','lid','collar','cap'].find(x=>o.name.toLowerCase().includes(x)||(o.parent?.name||'').toLowerCase().includes(x));if(!k)return;
   const m=new THREE.Mesh(clean(o.geometry.clone().applyMatrix4(o.matrixWorld)),k==='pit'?M.pit:k==='bag'?M.bag:M.pp);if(k==='pit')m.renderOrder=3;
   (parts[k]=parts[k]||new THREE.Group()).add(m);});
  const f=new THREE.Group();f.add(new THREE.Mesh(new THREE.CylinderGeometry(20,20,10,48),M.filter));const t=new THREE.Mesh(new THREE.CylinderGeometry(12,14,14,32),M.pp);t.position.y=12;f.add(t);f.position.set(32,-14,-8);parts.filter=f;
@@ -101,7 +100,7 @@ function frame(now){requestAnimationFrame(frame);
  logo.style.opacity=cl((t-.9)/.05);
  // explode amount: separate .12-.58, hold, gel .62-.78, reassemble .78-.9
  const ex=t<.6?seg(t,.12,.58):1-seg(t,.78,.9);
- ORDER.forEach((k,i)=>{const p=parts[k];if(!p)return;const e=k==='pit'?0:cl(ex*7-i)>0?ease(cl(ex*6.2-i)):0;p.position.y=p.userData.base+OFF[k]*e;});
+ ORDER.forEach((k,i)=>{const p=parts[k];if(!p)return;const e=k==='bag'?0:cl(ex*7-i)>0?ease(cl(ex*6.2-i)):0;p.position.y=p.userData.base+OFF[k]*e;});
  // gel morph
  const gk=seg(t,.65,.76)*(1-seg(t,.8,.86));
  if(gm){gpos.forEach((g,i)=>{pv.copy(g).lerp(new THREE.Vector3(40,10,0),gk);sc.setScalar(1-gk);m4.compose(pv,q,sc);gm.setMatrixAt(i,m4);});gm.instanceMatrix.needsUpdate=true;
@@ -109,13 +108,15 @@ function frame(now){requestAnimationFrame(frame);
   if(gel.visible){for(let i=0;i<pa.count;i++){const x=bs[i*3],y=bs[i*3+1],z=bs[i*3+2];const w=1+.08*Math.sin(x*.25+now*.002)*Math.cos(z*.25+now*.0017)+.05*Math.sin(y*.3+now*.0025);pa.setXYZ(i,x*w,y*w*.8,z*w);}pa.needsUpdate=true;gel.geometry.computeVertexNormals();}}
  // camera path
  const asp=Math.min(1,C.aspect/1.2);let ang,dist,ty;
- const base=mob?.95/asp:1;
- if(t<.12){const k=seg(t,0,.12);ang=.5;dist=lerp(1150,760,k);ty=-90;}
- else if(t<.6){const k=seg(t,.12,.6);ang=.5+k*Math.PI*.9;let top=40;ORDER.forEach(q=>{const p=parts[q];if(p)top=Math.max(top,p.position.y-p.userData.base+(q==='powder'?-160:40));});ty=(top-183)/2+20;dist=Math.max(760,(top+183)/(2*Math.tan(15*Math.PI/180))*1.3);}
- else if(t<.78){const k=seg(t,.6,.66);ang=.5+Math.PI*.9+k*.3;const pw=parts.powder?parts.powder.position.y:200;dist=lerp(1430,340,k);ty=lerp(183,pw+5,k);tgt.x=lerp(0,32,k);}
- else {const k=seg(t,.78,.92);ang=lerp(.5+Math.PI*1.2,Math.PI*2+.35,k);dist=lerp(300,820,k);ty=lerp((parts.powder?parts.powder.position.y:200)+5,-80,k);tgt.x=lerp(32,0,k);}
- if(t<.6)tgt.x=0;
- dist*=base;tgt.set(tgt.x,ty,0);C.position.set(tgt.x+Math.sin(ang)*dist,ty+dist*.22,Math.cos(ang)*dist);C.lookAt(tgt);
+ const base=mob?.8/asp:1;
+ const oy=k=>parts[k]?parts[k].position.y-parts[k].userData.base:0;
+ const F={bag:()=>-100+oy('bag'),lid:()=>-20+oy('lid'),filter:()=>-10+oy('filter'),powder:()=>-170+oy('powder')+5,all:()=>-90,hero:()=>-55};
+ const KF=[[0,'hero',820],[.12,'bag',470],[.18,'lid',400],[.24,'lid',400],[.3,'filter',300],[.36,'filter',320],[.42,'bag',430],[.5,'bag',440],[.57,'bag',470],[.62,'bag',470],[.68,'powder',230],[.77,'powder',240],[.84,'bag',430],[.95,'hero',640],[1,'hero',640]];
+ let a=KF[0],b=KF[KF.length-1];for(let n=0;n<KF.length-1;n++)if(t>=KF[n][0]&&t<=KF[n+1][0]){a=KF[n];b=KF[n+1];break;}
+ const kk=ease((t-a[0])/Math.max(1e-4,b[0]-a[0]));ty=lerp(F[a[1]](),F[b[1]](),kk);dist=lerp(a[2],b[2],kk);
+ ang=.5+seg(t,.12,.62)*Math.PI*.9+seg(t,.62,.68)*.3+seg(t,.78,.95)*(Math.PI*.9-.15);
+ const px=t<.6?0:32*(seg(t,.62,.68)-seg(t,.78,.86));tgt.x=px;
+ dist*=base;tgt.set(tgt.x,ty,0);C.position.set(tgt.x+Math.sin(ang)*dist,ty+dist*.18,Math.cos(ang)*dist);C.lookAt(tgt);
  S.fog.near=dist+150;S.fog.far=dist+1300;C.near=Math.max(10,dist-600);C.far=dist+1400;C.updateProjectionMatrix();
  R.render(S,C);}
 requestAnimationFrame(frame);
