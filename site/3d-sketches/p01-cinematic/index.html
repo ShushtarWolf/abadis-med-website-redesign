@@ -7,8 +7,8 @@
 @font-face{font-family:Kalameh;src:url(../../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2) format("woff2");font-weight:400}
 @font-face{font-family:Kalameh;src:url(../../assets/fonts/kalameh/KalamehWeb-FaNum-Bold.woff2) format("woff2");font-weight:700}
 @font-face{font-family:Kalameh;src:url(../../assets/fonts/kalameh/KalamehWeb-FaNum-ExtraBold.woff2) format("woff2");font-weight:800}
-*{box-sizing:border-box}html,body{margin:0;background:#04080a;color:#f2f7f7;font-family:Kalameh,Tahoma,sans-serif}
-.track{height:1100vh;position:relative}
+*{box-sizing:border-box}html,body{margin:0;background:radial-gradient(120% 90% at 50% 40%,#0f1b20 0%,#05090b 60%,#020405 100%) fixed,#04080a;color:#f2f7f7;font-family:Kalameh,Tahoma,sans-serif}
+.track{height:1400vh;position:relative}
 .stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
 #gl{position:absolute;inset:0;width:100%;height:100%;display:block}
 .vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 45%,transparent 45%,rgba(0,0,0,.55) 85%,rgba(0,0,0,.85) 100%)}
@@ -18,7 +18,7 @@
 .beat h1,.beat h2{text-shadow:0 2px 18px rgba(0,0,0,.85)}.beat h3{margin:0;font-size:clamp(17px,2vw,24px);font-weight:700;color:#cfdfe0;text-shadow:0 2px 14px #000}.beat h2{margin:0;font-size:clamp(26px,4.4vw,54px);font-weight:800;line-height:1.3}
 .beat h2 em{font-style:normal;color:#5fc7cf}
 .beat p{margin:10px 0 0;font:500 clamp(13px,1.4vw,17px)/1.4 Inter,"Segoe UI",Arial,sans-serif;color:#9fb8ba;direction:ltr;letter-spacing:.2px}
-.logo{position:absolute;left:50%;bottom:3vh;transform:translateX(-50%);width:min(190px,44vw);opacity:0}
+.logo{position:absolute;right:4vw;bottom:4vh;width:min(190px,44vw);opacity:0}
 .hint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font-size:13px;color:#8aa;letter-spacing:.3px;display:flex;flex-direction:column;align-items:center;gap:6px}
 .hint i{width:1px;height:28px;background:linear-gradient(#8aa,transparent)}
 .bar{position:absolute;top:0;left:0;height:2px;background:#2e7f96;width:0}
@@ -28,16 +28,18 @@
 <body>
 <div class="track"><div class="stage">
 <canvas id="gl"></canvas><div class="vig"></div><div class="bar" id="bar"></div>
-<div class="beat top" data-a=".0" data-b=".11"><h1>کیسه ساکشن ۱ لیتری آبادیس</h1><p>Abadis 1 L Suction Liner Bag</p></div>
-<div class="beat bot" data-a=".13" data-b=".24"><h2>درب کیسه با پورت <em>بیمار</em> و پورت <em>خلا</em></h2><p>Bag lid with PATIENT port and vacuum port</p></div>
-<div class="beat bot" data-a=".26" data-b=".36"><h2>فیلتر قطع کننده <em>از سرریز جلوگیری می‌کند</em></h2><p>The flow stopper filter stops overflow</p></div>
-<div class="beat bot" data-a=".38" data-b=".6"><h2>کیسه <em>PE نرم</em>، یکبارمصرف<br>۱ لیتر · ۱۱ × ۱۵٫۵ سانتی‌متر</h2><p>Soft PE liner bag, single use · 1 L · 11 × 15.5 cm</p></div>
-
-<div class="beat top" data-a=".64" data-b=".77"><h2>پودر جاذب داخل کیسه <em>مایع را ژل می‌کند</em></h2><p>Absorbent powder in the bag turns fluid into gel</p></div>
-<div class="beat top" data-a=".86" data-b="1.01"><h1>کیسه ساکشن ۱ لیتری آبادیس</h1><p>Abadis Med · 1 L Suction Liner Bag</p></div>
+<div class="beat top" data-a="0" data-b=".09"><h1>کیسه ساکشن ۱ لیتری آبادیس</h1><p>Abadis 1 L Suction Liner Bag</p></div>
+<div class="beat bot" data-a=".12" data-b=".23"><h2>پورت <em>بیمار</em> با درپوش بنددار</h2><p>PATIENT port with tethered cap</p></div>
+<div class="beat bot" data-a=".26" data-b=".37"><h2>فیلتر قطع کننده زیر پورت <em>خلا</em><br>از سرریز جلوگیری می‌کند</h2><p>The flow stopper filter under the VACUUM port stops overflow</p></div>
+<div class="beat bot" data-a=".39" data-b=".5"><h2>پودر جاذب در <em>ساشه دربسته</em></h2><p>Absorbent powder sealed in a mesh sachet</p></div>
+<div class="beat top" data-a=".53" data-b=".64"><h2>ترشحات داخل <em>کیسه</em> جمع می‌شود</h2><p>Fluid collects inside the liner bag</p></div>
+<div class="beat top" data-a=".66" data-b=".78"><h2>پودر جاذب <em>مایع را ژل می‌کند</em></h2><p>Absorbent powder turns fluid into gel</p></div>
+<div class="beat bot" data-a=".8" data-b=".9"><h2>کیسه <em>PE نرم</em>، یکبارمصرف</h2><p>Soft PE liner, single use · change at least every 24 h</p></div>
+<div class="beat top" data-a=".92" data-b="1.01"><h1>کیسه ساکشن ۱ لیتری آبادیس</h1><p>۱ لیتر · ۱۱ × ۱۵٫۵ سانتی‌متر · 1 L · 11 × 15.5 cm</p></div>
 <img class="logo" id="logo" src="../../assets/img/abadis-logo-white.svg" alt="Abadis Med">
 <div class="hint" id="hint">اسکرول کنید · Scroll<i></i></div>
 </div></div>
+
 <script type="module">
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
@@ -45,45 +47,70 @@ import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {mergeVertices,toCreasedNormals} from 'three/addons/utils/BufferGeometryUtils.js';
 const mob=matchMedia('(max-width:700px),(pointer:coarse)').matches;
 const cv=document.getElementById('gl'),stage=cv.parentElement;
-const R=new THREE.WebGLRenderer({canvas:cv,antialias:!mob,powerPreference:'high-performance'});
-R.setPixelRatio(Math.min(devicePixelRatio,mob?1.5:2));R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.05;R.setClearColor(0x04080a);
-const S=new THREE.Scene();S.fog=new THREE.Fog(0x04080a,900,2200);
-S.environment=new THREE.PMREMGenerator(R).fromScene(new RoomEnvironment(),.04).texture;S.environmentIntensity=.8;
-const C=new THREE.PerspectiveCamera(30,1,20,3000);
-const key=new THREE.DirectionalLight(0xffffff,2.2);key.position.set(-300,500,400);S.add(key);
-const rim=new THREE.DirectionalLight(0x7fd6e0,2.4);rim.position.set(300,200,-400);S.add(rim);
-S.add(new THREE.HemisphereLight(0xcfe,0x020406,.35));
-// floor glow
-const fl=new THREE.Mesh(new THREE.CircleGeometry(420,64),new THREE.MeshBasicMaterial({color:0x2e7f96,transparent:true,opacity:.0,depthWrite:false}));
-{const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');const g=x.createRadialGradient(128,128,0,128,128,128);g.addColorStop(0,'rgba(46,127,150,.55)');g.addColorStop(1,'rgba(46,127,150,0)');x.fillStyle=g;x.fillRect(0,0,256,256);
- fl.material.map=new THREE.CanvasTexture(c);fl.material.opacity=1;}
-fl.rotation.x=-Math.PI/2;fl.position.y=-186;S.add(fl);
+const R=new THREE.WebGLRenderer({canvas:cv,antialias:!mob,alpha:true,powerPreference:'high-performance'});
+R.setPixelRatio(Math.min(devicePixelRatio,mob?1.5:2));R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.1;
+R.shadowMap.enabled=!mob;R.shadowMap.type=THREE.PCFSoftShadowMap;
+const S=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(R);S.environment=pm.fromScene(new RoomEnvironment(),.04).texture;S.environmentIntensity=.6;
+const C=new THREE.PerspectiveCamera(mob?40:30,1,2,3000);
+const key=new THREE.DirectionalLight(0xfff6ee,2.6);key.position.set(-220,420,300);key.castShadow=true;key.shadow.mapSize.set(1024,1024);
+Object.assign(key.shadow.camera,{left:-160,right:160,top:160,bottom:-160,near:100,far:1200});key.shadow.radius=8;key.shadow.bias=-.0006;S.add(key);
+const rim=new THREE.DirectionalLight(0x8fe3ee,2.2);rim.position.set(260,160,-360);S.add(rim);
+const under=new THREE.PointLight(0xffffff,1.2,600,1.6);under.position.set(80,-60,180);S.add(under);
+function radTex(stops){const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');const g=x.createRadialGradient(128,128,0,128,128,128);stops.forEach(s=>g.addColorStop(...s));x.fillStyle=g;x.fillRect(0,0,256,256);return new THREE.CanvasTexture(c);}
+function floorPlane(sz,tex,y){const m=new THREE.Mesh(new THREE.PlaneGeometry(sz,sz),new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.y=y;S.add(m);return m;}
+floorPlane(900,radTex([[0,'rgba(46,127,150,.45)'],[1,'rgba(46,127,150,0)']]),-179);
+floorPlane(260,radTex([[0,'rgba(0,0,0,.75)'],[.55,'rgba(0,0,0,.25)'],[1,'rgba(0,0,0,0)']]),-178.6);
+const sr=new THREE.Mesh(new THREE.PlaneGeometry(600,600),new THREE.ShadowMaterial({opacity:.35}));sr.rotation.x=-Math.PI/2;sr.position.y=-178.4;sr.receiveShadow=true;S.add(sr);
+const TL=new THREE.TextureLoader();
+const filmT=TL.load('tex/film-bump.jpg');filmT.wrapS=filmT.wrapT=THREE.RepeatWrapping;filmT.repeat.set(5,4);
+const weaveT=TL.load('tex/sachet-weave.jpg');weaveT.wrapS=weaveT.wrapT=THREE.RepeatWrapping;weaveT.repeat.set(3,4);
+const TEAL=0x0a6176;
 const M={
- pit:new THREE.MeshPhysicalMaterial({color:0x8fa9ad,roughness:.5,metalness:0,transparent:true,opacity:.16,clearcoat:.4,side:THREE.DoubleSide,depthWrite:false}),
- bag:new THREE.MeshPhysicalMaterial({color:0xfbfaf4,emissive:0x1a2224,roughness:.5,transmission:mob?0:.45,thickness:1,transparent:true,opacity:.88,sheen:.6,sheenColor:0xffffff,side:THREE.DoubleSide}),
- pp:new THREE.MeshPhysicalMaterial({color:0x2e7f96,roughness:.42,metalness:0,clearcoat:.25,clearcoatRoughness:.5,side:THREE.DoubleSide}),
- filter:new THREE.MeshStandardMaterial({color:0xf3f3ef,roughness:.95}),
- sachet:new THREE.MeshPhysicalMaterial({color:0xfafafa,roughness:.6,sheen:.5}),
- gran:new THREE.MeshStandardMaterial({color:0xece6d6,roughness:1}),
- gel:new THREE.MeshPhysicalMaterial({color:0x6cc3cc,roughness:.12,transmission:mob?0:.7,transparent:true,opacity:mob?.75:1,thickness:6,ior:1.35,clearcoat:1})};
+ lid:new THREE.MeshPhysicalMaterial({color:TEAL,roughness:.46,metalness:0,clearcoat:.35,clearcoatRoughness:.35,side:THREE.DoubleSide}),
+ bag:new THREE.MeshPhysicalMaterial({color:0xf2f5f5,roughness:.62,metalness:0,transparent:true,opacity:.2,bumpMap:filmT,bumpScale:mob?2.5:3.2,roughnessMap:filmT,side:THREE.DoubleSide,depthWrite:false,clearcoat:.3,clearcoatRoughness:.6}),
+ bagIn:new THREE.MeshPhysicalMaterial({color:0xe7eef0,roughness:.8,transparent:true,opacity:.1,side:THREE.BackSide,depthWrite:false}),
+ filter:new THREE.MeshStandardMaterial({color:0xf4f4f0,roughness:.95,bumpMap:weaveT,bumpScale:1.5}),
+ sachet:new THREE.MeshPhysicalMaterial({color:0xf3f3ef,roughness:.85,bumpMap:weaveT,bumpScale:1.2,map:weaveT,sheen:.6,sheenColor:0xffffff}),
+};
+const U={uR:{value:0},uC:{value:new THREE.Vector3(10,-165,0)}};
+const fluidM=new THREE.MeshPhysicalMaterial({color:0xa3101b,roughness:.05,metalness:0,transmission:0,transparent:true,opacity:.95,clearcoat:1,attenuationColor:0x5a0006,attenuationDistance:30});
+const GK='float gd=distance(vWp,uC)+6.*sin(vWp.x*.3)*sin(vWp.z*.27+vWp.y*.2);float gk=1.-smoothstep(uR-14.,uR,gd);';
+fluidM.customProgramCacheKey=()=>'gelfluid';fluidM.onBeforeCompile=sdr=>{window.__gel=1;Object.assign(sdr.uniforms,U);
+ sdr.vertexShader=sdr.vertexShader.replace('#include <common>','#include <common>\nvarying vec3 vWp;').replace('#include <project_vertex>','#include <project_vertex>\nvWp=(modelMatrix*vec4(transformed,1.)).xyz;');
+ sdr.fragmentShader=sdr.fragmentShader.replace('#include <common>','#include <common>\nvarying vec3 vWp;uniform float uR;uniform vec3 uC;')
+  .replace('#include <color_fragment>','#include <color_fragment>\n'+GK+'diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.06,.004,.008)*(.9+.2*sin(vWp.x*.12+vWp.y*.09)),gk);diffuseColor.a=mix(diffuseColor.a,1.,gk);')
+  .replace('#include <roughnessmap_fragment>','#include <roughnessmap_fragment>\nroughnessFactor=mix(roughnessFactor,.85,gk);');};
 function clean(geo){let g=geo.clone();['normal','uv','uv1','tangent','color'].forEach(a=>g.deleteAttribute(a));g=mergeVertices(g,1e-3);
  const ix=g.index.array,out=[],seen=new Set();for(let i=0;i<ix.length;i+=3){const t=[ix[i],ix[i+1],ix[i+2]];if(t[0]===t[1]||t[1]===t[2]||t[0]===t[2])continue;const k=[...t].sort((a,b)=>a-b).join();if(seen.has(k))continue;seen.add(k);out.push(...t);}
  g.setIndex(out);return toCreasedNormals(g,Math.PI/6);}
-const ORDER=['cap','lid','filter','collar','powder','bag'];const OFF={cap:470,lid:400,filter:310,collar:260,powder:370,bag:0};
-const parts={},root=new THREE.Group();S.add(root);let gel,gm,gpos=[];
+function cylUV(g,y0,y1){const p=g.attributes.position,uv=new Float32Array(p.count*2);for(let i=0;i<p.count;i++){uv[i*2]=Math.atan2(p.getZ(i),p.getX(i))/(2*Math.PI)+.5;uv[i*2+1]=(p.getY(i)-y0)/(y1-y0);}g.setAttribute('uv',new THREE.BufferAttribute(uv,2));return g;}
+function decal(txt,fs,w,h){const c=document.createElement('canvas');c.width=w*8;c.height=h*8;const x=c.getContext('2d');x.textAlign='center';x.textBaseline='middle';
+ x.font=`700 ${fs*8}px Arial`;x.fillStyle='rgba(0,20,25,.45)';x.fillText(txt,c.width/2+6,c.height/2+6);x.fillStyle='rgba(160,230,238,.8)';x.fillText(txt,c.width/2,c.height/2);
+ const tx=new THREE.CanvasTexture(c);tx.colorSpace=THREE.SRGBColorSpace;tx.anisotropy=8;
+ const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshStandardMaterial({map:tx,transparent:true,roughness:.4,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-4}));m.rotation.x=-Math.PI/2;return m;}
+const lidG=new THREE.Group(),bagG=new THREE.Group(),root=new THREE.Group();S.add(root);root.add(lidG,bagG);
+let fluid,sachet,fG;const fW=new THREE.Vector3();
 new GLTFLoader().load('../p01-exploded/p01-1l.glb',g=>{
  g.scene.updateMatrixWorld(true);const ms=[];g.scene.traverse(o=>{if(o.isMesh)ms.push(o)});
- ms.forEach(o=>{if(/pit/i.test(o.name+' '+(o.parent?.name||'')))return;const k=['pit','bag','lid','collar','cap'].find(x=>o.name.toLowerCase().includes(x)||(o.parent?.name||'').toLowerCase().includes(x));if(!k)return;
-  const m=new THREE.Mesh(clean(o.geometry.clone().applyMatrix4(o.matrixWorld)),k==='pit'?M.pit:k==='bag'?M.bag:M.pp);if(k==='pit')m.renderOrder=3;
-  (parts[k]=parts[k]||new THREE.Group()).add(m);});
- const f=new THREE.Group();f.add(new THREE.Mesh(new THREE.CylinderGeometry(20,20,10,48),M.filter));const t=new THREE.Mesh(new THREE.CylinderGeometry(12,14,14,32),M.pp);t.position.y=12;f.add(t);f.position.set(32,-14,-8);parts.filter=f;
- const p=new THREE.Group();const sg=new THREE.BoxGeometry(46,6,32,6,1,4);const ps=sg.attributes.position;for(let i=0;i<ps.count;i++)ps.setY(i,ps.getY(i)*(1-Math.abs(ps.getX(i))/40));sg.computeVertexNormals();p.add(new THREE.Mesh(sg,M.sachet));
- const n=mob?120:220;gm=new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1.7,0),M.gran,n);
- for(let i=0;i<n;i++){const a=Math.random()*6.28,r=Math.sqrt(Math.random())*24;gpos.push(new THREE.Vector3(Math.cos(a)*r+40,-1+Math.random()*3,Math.sin(a)*r));}
- p.add(gm);gel=new THREE.Mesh(new THREE.IcosahedronGeometry(30,mob?3:5),M.gel);gel.position.set(40,10,0);p.add(gel);
- {const pa=gel.geometry.attributes.position;gel.userData.base=pa.array.slice();}
- p.position.set(-8,-170,0);parts.powder=p;
- ORDER.forEach(k=>{parts[k].userData.base=parts[k].position.y;root.add(parts[k]);});
+ ms.forEach(o=>{const nm=(o.name+' '+(o.parent?.name||'')).toLowerCase();if(nm.includes('pit'))return;const k=['bag','lid','collar','cap'].find(x=>nm.includes(x));if(!k)return;
+  const geo=clean(o.geometry.clone().applyMatrix4(o.matrixWorld));
+  if(k==='bag'){cylUV(geo,-178,-24);const m=new THREE.Mesh(geo,M.bag);m.renderOrder=5;bagG.add(m);const mi=new THREE.Mesh(geo,M.bagIn);mi.renderOrder=4;bagG.add(mi);}
+  else{const m=new THREE.Mesh(geo,M.lid);m.castShadow=true;m.receiveShadow=!mob;(k==='collar'?bagG:lidG).add(m);}});
+ const d1=decal('PATIENT',9,60,16);d1.position.set(-8,1.2,8);d1.rotation.z=.15;lidG.add(d1);
+ const d2=decal('VACUUM',9,56,16);d2.position.set(28,1.2,-26);d2.rotation.z=-.5;lidG.add(d2);
+ const d3=decal('CE',11,24,16);d3.position.set(-34,1.2,-12);lidG.add(d3);
+ fG=new THREE.Group();const ring=new THREE.Mesh(new THREE.CylinderGeometry(15,15,12,48,1,true),M.lid);
+ const lip=new THREE.Mesh(new THREE.TorusGeometry(15,1.6,12,48),M.lid);lip.rotation.x=Math.PI/2;lip.position.y=-6;
+ const disc=new THREE.Mesh(new THREE.CylinderGeometry(12.5,12.5,6,48),M.filter);disc.position.y=-4;
+ fG.add(ring,lip,disc);fG.position.set(28,-86,-26);lidG.add(fG);
+ const sg=new THREE.BoxGeometry(34,7,46,10,2,12);const ps=sg.attributes.position;
+ for(let i=0;i<ps.count;i++){const x=ps.getX(i)/17,z=ps.getZ(i)/23;ps.setY(i,ps.getY(i)*Math.max(.12,(1-x*x)*(1-Math.pow(Math.max(0,z),6))));}
+ sg.computeVertexNormals();sachet=new THREE.Group();const smh=new THREE.Mesh(sg,M.sachet);smh.castShadow=true;sachet.add(smh);
+ const seal=new THREE.Mesh(new THREE.BoxGeometry(34,1,6),new THREE.MeshPhysicalMaterial({color:0xdedfdc,roughness:.5,transparent:true,opacity:.85,bumpMap:weaveT,bumpScale:2}));seal.position.z=25.5;sachet.add(seal);
+ bagG.add(sachet);
+ const rAt=y=>48.7+(y+178)/154*7.9-2.2;const H=82,yb=-176.5;
+ const fg=new THREE.CylinderGeometry(rAt(yb+H),rAt(yb),H,64,8);fg.translate(0,H/2,0);fluid=new THREE.Mesh(fg,fluidM);fluid.position.y=yb;fluid.renderOrder=2;bagG.add(fluid);
  window.__ready=true;},undefined,e=>{console.error(e);window.__ready='error';});
 function size(){const w=stage.clientWidth,h=stage.clientHeight;R.setSize(w,h,false);C.aspect=w/h;C.updateProjectionMatrix();}
 new ResizeObserver(size).observe(stage);size();
@@ -91,34 +118,43 @@ const cl=x=>Math.min(1,Math.max(0,x)),ease=x=>{x=cl(x);return x<.5?4*x*x*x:1-Mat
 const beats=[...document.querySelectorAll('.beat')].map(e=>({e,a:+e.dataset.a,b:+e.dataset.b}));
 const logo=document.getElementById('logo'),hint=document.getElementById('hint'),bar=document.getElementById('bar');
 const qp=new URLSearchParams(location.search);
-let T=0,lastN=0;const tgt=new THREE.Vector3(),m4=new THREE.Matrix4(),q=new THREE.Quaternion(),sc=new THREE.Vector3(),pv=new THREE.Vector3();
+const V=(x,y,z)=>new THREE.Vector3(x,y,z);
+const KF=[
+ [0,   V(60,30,600), V(0,-30,0)],
+ [.08, V(170,40,380), V(0,-85,0)],
+ [.15, V(-40,95,150), V(-2,6,22)],
+ [.23, V(30,85,135),  V(2,6,20)],
+ [.3,  V(0,-8,20), V(28,100,-26)],
+ [.37, V(10,-6,0), V(28,100,-26)],
+ [.44, V(230,10,300), V(0,-80,0)],
+ [.5,  V(240,-10,320),V(0,-90,0)],
+ [.6,  V(150,-60,250),V(0,-125,0)],
+ [.72, V(90,-105,185),V(0,-135,0)],
+ [.78, V(70,-110,175),V(0,-135,0)],
+ [.86, V(40,-95,125), V(0,-105,45)],
+ [.9,  V(55,-90,135), V(0,-105,45)],
+ [.97, V(40,0,560),  V(0,-35,0)],
+ [1,   V(40,0,560),  V(0,-35,0)]];
+let T=0,lastN=0;const cp=new THREE.Vector3(),ct=new THREE.Vector3();
 function prog(){if(qp.has('t'))return +qp.get('t');const max=document.documentElement.scrollHeight-innerHeight;return max>0?cl(scrollY/max):0;}
 function frame(now){requestAnimationFrame(frame);
  const dt=Math.min(.1,(now-(lastN||now))/1000);lastN=now;T+=(prog()-T)*(qp.has('t')?1:1-Math.exp(-dt*5));const t=T;
  bar.style.width=(t*100)+'%';hint.style.opacity=1-cl(t*20);
- beats.forEach(b=>{const fade=.025;const o=Math.min(cl((t-b.a)/fade),cl((b.b-t)/fade));b.e.style.opacity=o;b.e.style.transform=`translate(-50%,${(1-o)*18}px)`;});
- logo.style.opacity=cl((t-.9)/.05);
- // explode amount: separate .12-.58, hold, gel .62-.78, reassemble .78-.9
- const ex=t<.6?seg(t,.12,.58):1-seg(t,.78,.9);
- ORDER.forEach((k,i)=>{const p=parts[k];if(!p)return;const e=k==='bag'?0:cl(ex*7-i)>0?ease(cl(ex*6.2-i)):0;p.position.y=p.userData.base+OFF[k]*e;});
- // gel morph
- const gk=seg(t,.65,.76)*(1-seg(t,.8,.86));
- if(gm){gpos.forEach((g,i)=>{pv.copy(g).lerp(new THREE.Vector3(40,10,0),gk);sc.setScalar(1-gk);m4.compose(pv,q,sc);gm.setMatrixAt(i,m4);});gm.instanceMatrix.needsUpdate=true;
-  gel.scale.setScalar(Math.max(.001,gk));gel.visible=gk>.01;const pa=gel.geometry.attributes.position,bs=gel.userData.base;
-  if(gel.visible){for(let i=0;i<pa.count;i++){const x=bs[i*3],y=bs[i*3+1],z=bs[i*3+2];const w=1+.08*Math.sin(x*.25+now*.002)*Math.cos(z*.25+now*.0017)+.05*Math.sin(y*.3+now*.0025);pa.setXYZ(i,x*w,y*w*.8,z*w);}pa.needsUpdate=true;gel.geometry.computeVertexNormals();}}
- // camera path
- const asp=Math.min(1,C.aspect/1.2);let ang,dist,ty;
- const base=mob?.8/asp:1;
- const oy=k=>parts[k]?parts[k].position.y-parts[k].userData.base:0;
- const F={bag:()=>-100+oy('bag'),lid:()=>-20+oy('lid'),filter:()=>-10+oy('filter'),powder:()=>-170+oy('powder')+5,all:()=>-90,hero:()=>-55};
- const KF=[[0,'hero',820],[.12,'bag',470],[.18,'lid',400],[.24,'lid',400],[.3,'filter',300],[.36,'filter',320],[.42,'bag',430],[.5,'bag',440],[.57,'bag',470],[.62,'bag',470],[.68,'powder',230],[.77,'powder',240],[.84,'bag',430],[.95,'hero',640],[1,'hero',640]];
+ beats.forEach(b=>{const f=.022;const o=Math.min(cl((t-b.a)/f),cl((b.b-t)/f));b.e.style.opacity=o;b.e.style.transform=`translate(-50%,${(1-o)*18}px)`;});
+ logo.style.opacity=cl((t-.94)/.03);
+ if(fluid){
+  const lift=seg(t,.24,.3)*(1-seg(t,.47,.53));lidG.position.y=lift*150;lidG.position.z=lift*40;lidG.rotation.x=-lift*1.15;
+  const sd=seg(t,.38,.48);sachet.visible=t>.37;sachet.position.set(10,lerp(70,-170,sd),0);sachet.rotation.set(lerp(-.9,0,sd),lerp(1.2,.3,sd),lerp(.5,0,sd));
+  const fill=seg(t,.53,.64);fluid.visible=fill>.005;fluid.scale.y=Math.max(.001,fill);
+  U.uR.value=lerp(0,190,seg(t,.65,.78));
+  const wob=(1-seg(t,.66,.76))*fill;fluid.rotation.z=Math.sin(now*.0016)*.01*wob;fluid.rotation.x=Math.cos(now*.0013)*.01*wob;}
  let a=KF[0],b=KF[KF.length-1];for(let n=0;n<KF.length-1;n++)if(t>=KF[n][0]&&t<=KF[n+1][0]){a=KF[n];b=KF[n+1];break;}
- const kk=ease((t-a[0])/Math.max(1e-4,b[0]-a[0]));ty=lerp(F[a[1]](),F[b[1]](),kk);dist=lerp(a[2],b[2],kk);
- ang=.5+seg(t,.12,.62)*Math.PI*.9+seg(t,.62,.68)*.3+seg(t,.78,.95)*(Math.PI*.9-.15);
- const px=t<.6?0:32*(seg(t,.62,.68)-seg(t,.78,.86));tgt.x=px;
- dist*=base;tgt.set(tgt.x,ty,0);C.position.set(tgt.x+Math.sin(ang)*dist,ty+dist*.18,Math.cos(ang)*dist);C.lookAt(tgt);
- S.fog.near=dist+150;S.fog.far=dist+1300;C.near=Math.max(10,dist-600);C.far=dist+1400;C.updateProjectionMatrix();
+ const k=ease((t-a[0])/Math.max(1e-4,b[0]-a[0]));cp.lerpVectors(a[1],b[1],k);ct.lerpVectors(a[2],b[2],k);
+ if(mob){cp.sub(ct).multiplyScalar(Math.min(1.9,1/Math.max(.45,C.aspect))*.92).add(ct);}
+ if(fG&&t>.26&&t<.4){const w=seg(t,.26,.3)*(1-seg(t,.37,.42));fG.getWorldPosition(fW);ct.lerp(fW,w);const nrm=V(0,-1,0).applyQuaternion(lidG.quaternion);cp.lerp(fW.clone().addScaledVector(nrm,mob?200:150).add(V(25,10,0)),w);}
+ C.position.copy(cp);C.lookAt(ct);const d=cp.distanceTo(ct);C.near=Math.max(1,d*.05);C.far=d+1500;C.updateProjectionMatrix();
  R.render(S,C);}
 requestAnimationFrame(frame);
+
 </script>
 </body></html>
