@@ -70,7 +70,7 @@ const L=[
  {k:'lid',off:285,fa:['درب','PP آبی‌سبز','پورت بیمار (PATIENT) و پورت خلا'],en:['Lid ("Door")','PP, blue-green','PATIENT port plus vacuum port']},
  {k:'filter',off:215,fa:['فیلتر قطع کننده','هیدروفوب / دوگانه / مکانیکی','از سرریز جلوگیری می‌کند'],en:['Flow stopper filter','Hydrophobic, dual or mechanical','Stops overflow']},
  {k:'collar',off:175,fa:['لوله و طوقه','PP','مکش را به داخل کیسه هدایت می‌کند'],en:['Dip tube and collar','PP','Guides suction into the bag']},
- {k:'powder',off:245,fa:['پودر جاذب','ساشه + گرانول','مایع را ژل می‌کند'],en:['Absorbent powder','Sachet plus granules','Turns fluid into gel']},
+ {k:'powder',off:245,fa:['پودر جاذب در ساشه','ساشه توری سفید، دربسته','پودر داخل ساشه می‌ماند و مایع را ژل می‌کند'],en:['Absorbent powder in sachet','Sealed white mesh sachet','Powder stays sealed in the sachet and turns fluid into gel']},
  {k:'bag',off:200,fa:['کیسه ساکشن ۱ لیتری','PE نرم · ۱۱ × ۱۵٫۵ سانتی‌متر','یکبارمصرف؛ حداقل هر ۲۴ ساعت تعویض شود'],en:['1 L suction liner bag','Soft PE · 11 × 15.5 cm','Single use, change at least every 24 h']}];
 let lang=localStorage.getItem('p01lang')||'fa';
 const labels=document.getElementById('labels'),leads=document.getElementById('leads');
@@ -146,11 +146,17 @@ new GLTFLoader().load('p01-1l.glb',g=>{
  f.add(sketch(c1,F.filter));const t=sketch(c2,F.pp);t.position.y=12;f.add(t);
  const pl=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.CylinderGeometry(15,15,10,10,1,true),1),lineSoft);f.add(pl);
  f.position.set(32,-14,-8);parts.filter=f;
- // absorbent powder sachet + granules
- const p=new THREE.Group();const sg=new THREE.BoxGeometry(46,6,32,1,1,1);const pos=sg.attributes.position;for(let i=0;i<pos.count;i++)pos.setY(i,pos.getY(i)*(Math.abs(pos.getX(i))>20?.3:1));
- p.add(sketch(sg,F.sachet,10));
- const gm=new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1.5,0),new THREE.MeshBasicMaterial({color:INK,transparent:true,opacity:.55}),140);const m4=new THREE.Matrix4();
- for(let i=0;i<140;i++){const a=Math.random()*6.28,r=Math.sqrt(Math.random())*24;m4.makeTranslation(Math.cos(a)*r+40,-2+Math.random()*3,Math.sin(a)*r);gm.setMatrixAt(i,m4);}p.add(gm);
+ // absorbent powder sealed in a mesh sachet (no loose grains)
+ const p=new THREE.Group();
+ // sealed white mesh sachet (pillow), crimped seal strip at one end, mesh weave lines
+ const sg=new THREE.BoxGeometry(40,8,54,8,2,10);const ps=sg.attributes.position;
+ for(let i=0;i<ps.count;i++){const x=ps.getX(i)/20,z=ps.getZ(i)/27;ps.setY(i,ps.getY(i)*Math.max(.15,(1-x*x)*(1-Math.pow(Math.max(0,z),6))));}
+ sg.computeVertexNormals();p.add(sketch(sg,F.sachet,25));
+ const seal=new THREE.BoxGeometry(40,1.2,7,1,1,1);const sl=sketch(seal,F.sachet,10);sl.position.z=30.5;p.add(sl);
+ const cr=[];for(let x=-19;x<=19;x+=2.5)cr.push(x,.7,27.5,x,.7,34);const cg=new THREE.BufferGeometry();cg.setAttribute('position',new THREE.Float32BufferAttribute(cr,3));p.add(new THREE.LineSegments(cg,lineSoft));
+ const mw=[];for(let x=-16;x<=16;x+=3)mw.push(x,4.2,-24,x,4.2,25);for(let z=-24;z<=25;z+=3)mw.push(-17,4.2,z,17,4.2,z);
+ const mg=new THREE.BufferGeometry();mg.setAttribute('position',new THREE.Float32BufferAttribute(mw,3));p.add(new THREE.LineSegments(mg,wireM));
+ p.rotation.y=.35;
  p.position.set(-8,-170,0);parts.powder=p;
  L.forEach(l=>{if(parts[l.k]){l.g=parts[l.k];root.add(l.g);l.base=l.g.position.y;}});
  // dimensions (real CAD): canister 129 x 183 mm; bag 11 x 15.5 cm
