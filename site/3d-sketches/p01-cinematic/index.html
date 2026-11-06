@@ -53,7 +53,6 @@ R.shadowMap.enabled=!mob;R.shadowMap.type=THREE.PCFSoftShadowMap;
 const S=new THREE.Scene();
 const pm=new THREE.PMREMGenerator(R);S.environment=pm.fromScene(new RoomEnvironment(),.05).texture;S.environmentIntensity=.55;
 const C=new THREE.PerspectiveCamera(mob?36:28,1,2,3000);
-/* Soft studio key — large soft shadows, gentle lid gradient */
 const key=new THREE.DirectionalLight(0xfff1e6,1.55);key.position.set(-160,520,220);key.castShadow=true;key.shadow.mapSize.set(2048,2048);
 Object.assign(key.shadow.camera,{left:-200,right:200,top:200,bottom:-200,near:60,far:1400});key.shadow.radius=14;key.shadow.bias=-.00035;S.add(key);
 const fillL=new THREE.DirectionalLight(0xf7f3ee,1.15);fillL.position.set(140,180,260);S.add(fillL);
@@ -74,7 +73,6 @@ const M={
  lidIn:new THREE.MeshPhysicalMaterial({color:0x074a58,roughness:.55,metalness:.02,clearcoat:.15,clearcoatRoughness:.55,side:THREE.BackSide,envMapIntensity:.6}),
  bag:new THREE.MeshPhysicalMaterial({color:0xeef3f4,roughness:.58,metalness:0,transparent:true,opacity:.18,bumpMap:filmT,bumpScale:mob?2.8:3.6,roughnessMap:filmT,side:THREE.DoubleSide,depthWrite:false,clearcoat:.22,clearcoatRoughness:.55}),
  bagIn:new THREE.MeshPhysicalMaterial({color:0xe4ecee,roughness:.82,transparent:true,opacity:.08,side:THREE.BackSide,depthWrite:false}),
- filter:new THREE.MeshStandardMaterial({color:0xf4f4f0,roughness:.95,bumpMap:weaveT,bumpScale:1.5}),
  sachet:new THREE.MeshPhysicalMaterial({color:0xf3f3ef,roughness:.85,bumpMap:weaveT,bumpScale:1.2,map:weaveT,sheen:.6,sheenColor:0xffffff}),
 };
 const U={uR:{value:0},uC:{value:new THREE.Vector3(10,-165,0)}};
@@ -88,38 +86,28 @@ fluidM.customProgramCacheKey=()=>'gelfluid2';fluidM.onBeforeCompile=sdr=>{window
 function cleanBag(geo){let g=geo.clone();['normal','uv','uv1','tangent','color'].forEach(a=>g.deleteAttribute(a));g=mergeVertices(g,1e-3);
  const ix=g.index.array,out=[],seen=new Set();for(let i=0;i<ix.length;i+=3){const t=[ix[i],ix[i+1],ix[i+2]];if(t[0]===t[1]||t[1]===t[2]||t[0]===t[2])continue;const k=[...t].sort((a,b)=>a-b).join();if(seen.has(k))continue;seen.add(k);out.push(...t);}
  g.setIndex(out);return toCreasedNormals(g,Math.PI/2.4);}
-function prepLidSmooth(geo){let g=geo.clone();['uv1','tangent','color'].forEach(a=>g.deleteAttribute(a));
+function prepSmooth(geo){let g=geo.clone();['uv1','tangent','color'].forEach(a=>g.deleteAttribute(a));
  if(g.attributes.normal)g.deleteAttribute('normal');
  if(g.index)g=mergeVertices(g,2e-4);
  g.computeVertexNormals(); return g;}
 function cylUV(g,y0,y1){const p=g.attributes.position,uv=new Float32Array(p.count*2);for(let i=0;i<p.count;i++){uv[i*2]=Math.atan2(p.getZ(i),p.getX(i))/(2*Math.PI)+.5;uv[i*2+1]=(p.getY(i)-y0)/(y1-y0);}g.setAttribute('uv',new THREE.BufferAttribute(uv,2));return g;}
 function addM(parent,geo,mat){const m=new THREE.Mesh(geo,mat);m.castShadow=true;m.receiveShadow=!mob;parent.add(m);return m;}
-/* PATIENT tethered cap: small flush stopper IN angled port mouth + thin strap. No free-standing deck peg. */
-function buildCapTether(){
- const G=new THREE.Group();G.name='PatientCapTether';
- const tip=new THREE.Vector3(54.5,20.0,33.9);
- const base=new THREE.Vector3(38,6,30);
- const axis=tip.clone().sub(base).normalize();
- const plug=new THREE.Group();
- plug.quaternion.copy(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,1,0),axis));
- plug.position.copy(tip).addScaledVector(axis,-2.0);
- addM(plug,new THREE.CylinderGeometry(5.0,5.4,6.5,40).translate(0,0,0),M.lid);
- addM(plug,new THREE.CylinderGeometry(7.2,7.2,1.6,40).translate(0,3.6,0),M.lid);
- addM(plug,new THREE.SphereGeometry(2.2,16,12).translate(0,5.0,0),M.lid);
- G.add(plug);
- const lip=tip.clone().addScaledVector(axis,1.8);
- const p0=new THREE.Vector3(34,3.5,27),p1=new THREE.Vector3(40,7,34),p2=new THREE.Vector3(48,14,37),p3=lip;
- addM(G,new THREE.TubeGeometry(new THREE.CatmullRomCurve3([p0,p1,p2,p3]),64,.7,10,false),M.lid);
- addM(G,new THREE.BoxGeometry(8,1.8,6).translate(32,3.2,26),M.lid);
- return G;
-}
+/* ease-out with tiny overshoot for lid settle */
+function easeOutBack(x){x=cl(x);const c1=1.55,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2);}
 const lidG=new THREE.Group(),bagG=new THREE.Group(),root=new THREE.Group();S.add(root);root.add(lidG,bagG);
-let fluid,sachet,fG,pour;const fW=new THREE.Vector3();
+let fluid,sachet,pour,capM,vacLook;const fW=new THREE.Vector3();
 const loader=new GLTFLoader();
 loader.load('../p01-exploded/p01-1l.glb',g=>{
  g.scene.updateMatrixWorld(true);const ms=[];g.scene.traverse(o=>{if(o.isMesh)ms.push(o)});
- ms.forEach(o=>{const nm=(o.name+' '+(o.parent?.name||'')).toLowerCase();if(nm.includes('pit'))return;
-  if(nm.includes('lid')||nm.includes('cap'))return;
+ ms.forEach(o=>{const nm=(o.name+' '+(o.parent?.name||'')).toLowerCase();
+  if(nm.includes('pit'))return; /* canister — bag-only */
+  if(nm.includes('lid'))return; /* replaced by smooth CAD lid */
+  if(nm.includes('cap')){
+   /* ORIGINAL CAD cap (32-vert) — smooth normals, no invented geometry */
+   const geo=prepSmooth(o.geometry.clone().applyMatrix4(o.matrixWorld));
+   capM=new THREE.Mesh(geo,M.lid);capM.name='CadCap';capM.castShadow=true;capM.receiveShadow=!mob;lidG.add(capM);
+   return;
+  }
   const k=['bag','collar'].find(x=>nm.includes(x));if(!k)return;
   const geo=cleanBag(o.geometry.clone().applyMatrix4(o.matrixWorld));
   if(k==='bag'){cylUV(geo,-178,-24);const m=new THREE.Mesh(geo,M.bag);m.renderOrder=5;bagG.add(m);const mi=new THREE.Mesh(geo,M.bagIn);mi.renderOrder=4;bagG.add(mi);}
@@ -128,15 +116,12 @@ loader.load('../p01-exploded/p01-1l.glb',g=>{
  loader.load('p01-lid-smooth.glb',hg=>{
   hg.scene.updateMatrixWorld(true);
   hg.scene.traverse(o=>{if(!o.isMesh)return;
-   const geo=prepLidSmooth(o.geometry.clone().applyMatrix4(o.matrixWorld));
+   const geo=prepSmooth(o.geometry.clone().applyMatrix4(o.matrixWorld));
    const m=new THREE.Mesh(geo,M.lid);m.castShadow=true;m.receiveShadow=!mob;lidG.add(m);
    const inn=new THREE.Mesh(geo,M.lidIn);inn.renderOrder=1;lidG.add(inn);
   });
-  lidG.add(buildCapTether());
-  fG=new THREE.Group();const ring=new THREE.Mesh(new THREE.CylinderGeometry(12,12,22,48,1,true),M.lid);
-  const lip=new THREE.Mesh(new THREE.TorusGeometry(12,1.4,12,48),M.lid);lip.rotation.x=Math.PI/2;lip.position.y=-11;
-  const disc=new THREE.Mesh(new THREE.CylinderGeometry(10,10,5,48),M.filter);disc.position.y=-8;
-  fG.add(ring,lip,disc);fG.position.set(0,-58,-27);fG.visible=false;lidG.add(fG);
+  /* VACUUM port look-at (CAD underside / -Z side of lid deck) — no synthetic filter */
+  vacLook=new THREE.Object3D();vacLook.position.set(-8,-42,-22);lidG.add(vacLook);
   const sg=new THREE.BoxGeometry(34,7,46,10,2,12);const ps=sg.attributes.position;
   for(let i=0;i<ps.count;i++){const x=ps.getX(i)/17,z=ps.getZ(i)/23;ps.setY(i,ps.getY(i)*Math.max(.12,(1-x*x)*(1-Math.pow(Math.max(0,z),6))));}
   sg.computeVertexNormals();sachet=new THREE.Group();const smh=new THREE.Mesh(sg,M.sachet);smh.castShadow=true;sachet.add(smh);
@@ -144,20 +129,22 @@ loader.load('../p01-exploded/p01-1l.glb',g=>{
   bagG.add(sachet);
   const rAt=y=>48.7+(y+178)/154*7.9-2.2;const H=82,yb=-176.5;
   const rTop=rAt(yb+H),rBot=rAt(yb);
-  const fg=new THREE.CylinderGeometry(rTop,rBot,H,72,16);fg.translate(0,H/2,0);
+  const fg=new THREE.CylinderGeometry(rTop*.985,rBot*.985,H,96,20);fg.translate(0,H/2,0);
   const fpos=fg.attributes.position,fBaseY=new Float32Array(fpos.count);
   for(let i=0;i<fpos.count;i++){
    fBaseY[i]=fpos.getY(i); const y=fBaseY[i],x=fpos.getX(i),z=fpos.getZ(i);
    if(y>H*.78){const rr=Math.min(1,Math.hypot(x,z)/(rTop+1e-3)),ang=Math.atan2(z,x);
-    fpos.setY(i,y+Math.pow(rr,2.2)*6.5+Math.sin(ang*2)*.8*rr+Math.sin(ang*5+1.1)*.35*rr);}
+    fpos.setY(i,y+Math.pow(rr,2.2)*7.2+Math.sin(ang*2)*.9*rr+Math.sin(ang*5+1.1)*.4*rr);}
   }
   fpos.needsUpdate=true;fg.computeVertexNormals();fg.userData.baseY=fBaseY;fg.userData.H=H;fg.userData.rTop=rTop;
   fluid=new THREE.Mesh(fg,fluidM);fluid.position.y=yb;fluid.renderOrder=2;bagG.add(fluid);
   const bubG=new THREE.Group();const bubM=new THREE.MeshPhysicalMaterial({color:0xffe8ea,roughness:.15,transparent:true,opacity:.3,transmission:.55,thickness:2,depthWrite:false});
   [[8,0,12],[-14,0,-6],[18,0,-10],[-6,0,16],[12,0,-18]].forEach(([x,y,z],i)=>{const b=new THREE.Mesh(new THREE.SphereGeometry(.85+i*.12,12,10),bubM.clone());b.position.set(x,H*.9+y,z);bubG.add(b);});
   fluid.add(bubG);window.__bub=bubG;
-  pour=new THREE.Mesh(new THREE.CylinderGeometry(1.2,1.7,95,12),new THREE.MeshPhysicalMaterial({color:0x8a1018,roughness:.25,transparent:true,opacity:.5,depthWrite:false}));
-  pour.position.set(30,-55,20);pour.rotation.z=.32;pour.rotation.x=-.1;pour.visible=false;pour.renderOrder=3;bagG.add(pour);
+  /* thin tapered pour — short soft cone, high transmission so it reads liquid not a stick */
+  const pourGeo=new THREE.CylinderGeometry(.35,.95,70,12);pourGeo.translate(0,-35,0);
+  pour=new THREE.Mesh(pourGeo,new THREE.MeshPhysicalMaterial({color:0x8a1018,roughness:.18,transparent:true,opacity:.28,transmission:.35,thickness:3,depthWrite:false,side:THREE.DoubleSide}));
+  pour.position.set(26,-40,18);pour.rotation.z=.22;pour.rotation.x=-.06;pour.visible=false;pour.renderOrder=3;bagG.add(pour);
   window.__ready=true;
  },undefined,e=>{console.error('lid-smooth',e);window.__ready='error';});
 },undefined,e=>{console.error(e);window.__ready='error';});
@@ -168,58 +155,102 @@ const beats=[...document.querySelectorAll('.beat')].map(e=>({e,a:+e.dataset.a,b:
 const logo=document.getElementById('logo'),hint=document.getElementById('hint'),bar=document.getElementById('bar');
 const qp=new URLSearchParams(location.search);
 const V=(x,y,z)=>new THREE.Vector3(x,y,z);
+/* Deliberate scroll-film block — denser keys so motion never rests flat */
 const KF=[
- [0,   V(70,28,520), V(0,-45,0)],
- [.08, V(150,35,350), V(0,-80,0)],
- /* PATIENT: 3/4 slightly above deck — angled port + seated cap + strap */
- [.15, V(145,55,145), V(52,16,32)],
- [.22, V(150,48,155), V(54,18,34)],
- /* Filter: underside 3/4 — white disc in teal ring */
- [.3,  V(55,-55,130), V(0,-55,-20)],
- [.37, V(65,-45,140), V(0,-50,-18)],
- [.44, V(190,6,255), V(0,-85,0)],
- [.5,  V(200,-8,270),V(0,-95,0)],
- [.58, V(130,-50,220),V(0,-125,0)],
- [.66, V(100,-80,185),V(0,-135,0)],
- [.74, V(78,-100,160),V(0,-138,0)],
- [.86, V(40,-90,120), V(0,-108,40)],
- [.9,  V(50,-86,128), V(0,-108,40)],
- [.97, V(55,6,500),  V(0,-45,0)],
- [1,   V(55,6,500),  V(0,-45,0)]];
-let T=0,lastN=0;const cp=new THREE.Vector3(),ct=new THREE.Vector3();
+ /* Hero: gentle orbit drift around bag */
+ [0,    V(95,22,480),  V(0,-48,0)],
+ [.04,  V(130,30,420), V(2,-55,4)],
+ [.08,  V(155,38,340), V(0,-72,0)],
+ /* PATIENT: low-ish 3/4 close-up — angled port + CAD cap */
+ [.13,  V(118,28,165), V(18,8,30)],
+ [.18,  V(125,32,155), V(12,10,32)],
+ [.22,  V(132,36,160), V(8,8,30)],
+ /* Filter: underside / into VACUUM port (CAD lid only) */
+ [.27,  V(40,-70,115), V(-5,-48,-18)],
+ [.33,  V(55,-62,125), V(-2,-42,-20)],
+ [.37,  V(70,-50,140), V(0,-38,-16)],
+ /* Sachet drop: mid-height 3/4 */
+ [.42,  V(175,10,240), V(5,-95,0)],
+ [.48,  V(190,0,255),  V(0,-110,0)],
+ /* Blood fill: true SIDE-ON at fluid level — meniscus wall curve reads */
+ [.54,  V(195,-138,140), V(0,-142,0)],
+ [.58,  V(185,-145,150), V(5,-148,0)],
+ [.62,  V(170,-152,155), V(0,-152,5)],
+ /* Gel: slight drift while front spreads */
+ [.68,  V(145,-120,145), V(0,-145,8)],
+ [.74,  V(120,-125,155), V(5,-142,0)],
+ [.8,   V(95,-110,170),  V(0,-130,15)],
+ /* Soft PE beat */
+ [.86,  V(70,-95,145), V(0,-115,30)],
+ [.9,   V(60,-80,160), V(0,-100,25)],
+ /* Final iso hero — bag fills frame */
+ [.95,  V(70,8,470),  V(0,-48,0)],
+ [1,    V(78,12,485), V(0,-45,0)]
+];
+let T=0,lastN=0;const cp=new THREE.Vector3(),ct=new THREE.Vector3(),drift=new THREE.Vector3();
 function prog(){if(qp.has('t'))return +qp.get('t');const max=document.documentElement.scrollHeight-innerHeight;return max>0?cl(scrollY/max):0;}
+function sampleKF(t,outP,outT){
+ let a=KF[0],b=KF[KF.length-1];
+ for(let n=0;n<KF.length-1;n++)if(t>=KF[n][0]&&t<=KF[n+1][0]){a=KF[n];b=KF[n+1];break;}
+ const k=ease((t-a[0])/Math.max(1e-4,b[0]-a[0]));
+ outP.lerpVectors(a[1],b[1],k);outT.lerpVectors(a[2],b[2],k);
+}
 function frame(now){requestAnimationFrame(frame);
  const dt=Math.min(.1,(now-(lastN||now))/1000);lastN=now;T+=(prog()-T)*(qp.has('t')?1:1-Math.exp(-dt*3.2));const t=T;
+ const tSec=now*.001;
  bar.style.width=(t*100)+'%';hint.style.opacity=1-cl(t*18);
  beats.forEach(b=>{const f=.028;const o=Math.min(cl((t-b.a)/f),cl((b.b-t)/f));b.e.style.opacity=o;b.e.style.transform=`translate(-50%,${(1-o)*14}px)`;});
  logo.style.opacity=cl((t-.94)/.03);
+ /* gentle bag idle sway — continuous, not scroll-locked */
+ const sway=Math.sin(tSec*.55)*.012, sway2=Math.cos(tSec*.38)*.008;
+ root.rotation.y=sway;root.rotation.z=sway2;
  if(fluid){
-  const lift=seg(t,.24,.3)*(1-seg(t,.47,.53));lidG.position.y=lift*150;lidG.position.z=lift*40;lidG.rotation.x=-lift*1.15;
+  /* lid lift with soft settle + tiny overshoot (easeOutBack) */
+  const liftIn=easeOutBack(seg(t,.24,.31));
+  const liftOut=easeOutBack(seg(t,.47,.54));
+  const lift=liftIn*(1-liftOut);
+  lidG.position.y=lift*150;lidG.position.z=lift*40;lidG.rotation.x=-lift*1.15;
   const sd=seg(t,.38,.48);sachet.visible=t>.37;sachet.position.set(10,lerp(70,-170,sd),0);sachet.rotation.set(lerp(-.9,0,sd),lerp(1.2,.3,sd),lerp(.5,0,sd));
   const fill=seg(t,.53,.64);fluid.visible=fill>.005;fluid.scale.y=Math.max(.001,fill);
   U.uR.value=lerp(0,190,seg(t,.65,.78));
   const pos=fluid.geometry.attributes.position,base=fluid.geometry.userData.baseY,HH=fluid.geometry.userData.H||82,rt=fluid.geometry.userData.rTop||54;
   if(base&&fill>.01){
-   const live=(1-seg(t,.66,.78))*fill,tSec=now*.001;
+   const live=(1-seg(t,.66,.78))*fill;
+   /* landing splash ripple while pouring */
+   const splash=seg(t,.53,.58)*(1-seg(t,.59,.65));
    for(let i=0;i<pos.count;i++){
     const y0=base[i]; if(y0<=HH*.78) continue;
     const x=pos.getX(i),z=pos.getZ(i),rr=Math.min(1,Math.hypot(x,z)/(rt+1e-3)),ang=Math.atan2(z,x);
-    pos.setY(i,y0+Math.pow(rr,2.2)*6.5+(Math.sin(ang*2+tSec*1.4)*.7+Math.sin(ang*5+tSec*2.1)*.3)*rr*live);
+    const men=Math.pow(rr,2.2)*7.2+(Math.sin(ang*2+tSec*1.4)*.85+Math.sin(ang*5+tSec*2.1)*.35)*rr*live;
+    const rip=splash*Math.sin(ang*3-tSec*6)*.9*rr*Math.exp(-rr*1.2);
+    pos.setY(i,y0+men+rip);
    }
    pos.needsUpdate=true;
   }
-  const wob=(1-seg(t,.66,.76))*fill;fluid.rotation.z=Math.sin(now*.0016)*.008*wob;fluid.rotation.x=Math.cos(now*.0013)*.008*wob;
-  if(pour){const ps=seg(t,.53,.58)*(1-seg(t,.6,.66));pour.visible=ps>.02;pour.material.opacity=.15+.4*ps;pour.scale.set(1,Math.max(.05,ps),1);}
-  if(window.__bub){const bo=(1-seg(t,.66,.76))*fill;window.__bub.visible=bo>.05;window.__bub.children.forEach((b,i)=>{b.material.opacity=.1+.28*bo;b.position.y=HH*.88+Math.sin(now*.002+i)*1.1;});}
-  if(fG){
-   const doorShow=t>=.22&&t<.52; const retract=seg(t,.48,.53);
-   fG.visible=doorShow; fG.position.y=lerp(-58,-8,retract); fG.scale.setScalar(lerp(1,.15,retract));
+  const wob=(1-seg(t,.66,.76))*fill;fluid.rotation.z=Math.sin(tSec*1.6)*.01*wob;fluid.rotation.x=Math.cos(tSec*1.3)*.01*wob;
+  if(pour){
+   const ps=seg(t,.53,.58)*(1-seg(t,.6,.66));
+   pour.visible=ps>.02;
+   pour.material.opacity=.08+.22*ps;
+   const wobP=Math.sin(tSec*5.5)*.055*ps;
+   pour.scale.set(.7+.25*ps, Math.max(.03,ps*(.85+Math.sin(tSec*3)*.08)), .7+.25*ps);
+   pour.rotation.z=.22+wobP;pour.rotation.x=-.06+Math.cos(tSec*4.2)*.04*ps;
+   pour.position.x=26+Math.sin(tSec*3.8)*1.2*ps;
   }
+  if(window.__bub){const bo=(1-seg(t,.66,.76))*fill;window.__bub.visible=bo>.05;window.__bub.children.forEach((b,i)=>{b.material.opacity=.1+.28*bo;b.position.y=HH*.88+Math.sin(tSec*2+i)*1.1;});}
  }
- let a=KF[0],b=KF[KF.length-1];for(let n=0;n<KF.length-1;n++)if(t>=KF[n][0]&&t<=KF[n+1][0]){a=KF[n];b=KF[n+1];break;}
- const k=ease((t-a[0])/Math.max(1e-4,b[0]-a[0]));cp.lerpVectors(a[1],b[1],k);ct.lerpVectors(a[2],b[2],k);
+ sampleKF(t,cp,ct);
+ /* continuous micro-drift so no keyframe feels static */
+ drift.set(Math.sin(tSec*.7+t*4)*6, Math.cos(tSec*.55)*4, Math.sin(tSec*.4+t*2)*5);
+ cp.add(drift);ct.x+=drift.x*.15;ct.z+=drift.z*.1;
  if(mob){cp.sub(ct).multiplyScalar(Math.min(1.6,1/Math.max(.5,C.aspect))*.85).add(ct);}
- if(fG&&fG.visible&&t>.26&&t<.4){const w=seg(t,.26,.3)*(1-seg(t,.37,.42));fG.getWorldPosition(fW);ct.lerp(fW,w);const nrm=V(0,-1,0).applyQuaternion(lidG.quaternion);cp.lerp(fW.clone().addScaledVector(nrm,mob?170:130).add(V(20,8,0)),w);}
+ /* Filter beat: track CAD vacuum look target while lid is lifted */
+ if(vacLook&&t>.26&&t<.4){
+  const w=seg(t,.26,.3)*(1-seg(t,.37,.42));
+  vacLook.getWorldPosition(fW);ct.lerp(fW,w);
+  const nrm=V(0,-1,0).applyQuaternion(lidG.quaternion);
+  cp.lerp(fW.clone().addScaledVector(nrm,mob?170:130).add(V(25,10,10)),w);
+ }
  C.position.copy(cp);C.lookAt(ct);const d=cp.distanceTo(ct);C.near=Math.max(1,d*.05);C.far=d+1500;C.updateProjectionMatrix();
  R.render(S,C);}
 requestAnimationFrame(frame);
