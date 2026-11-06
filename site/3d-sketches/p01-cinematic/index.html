@@ -73,11 +73,11 @@ const ppMicro=TL.load('tex/pp-micro-bump.jpg');ppMicro.wrapS=ppMicro.wrapT=THREE
 const filtDiff=TL.load('tex/filter-diffuse.jpg');filtDiff.wrapS=filtDiff.wrapT=THREE.ClampToEdgeWrapping;
 const filtBump=TL.load('tex/filter-bump.jpg');filtBump.wrapS=filtBump.wrapT=THREE.ClampToEdgeWrapping;
 const M={
- /* Satin PP — photo-like, not mirror plastic */
- lid:new THREE.MeshPhysicalMaterial({color:TEAL,roughness:.62,metalness:.01,clearcoat:.08,clearcoatRoughness:.7,sheen:.08,sheenColor:0x4a9aa6,envMapIntensity:.45,bumpMap:ppMicro,bumpScale:mob?.45:.7,roughnessMap:ppMicro,side:THREE.DoubleSide}),
- /* ALWAYS-visible underside shell (do NOT hide) — slightly darker for contact AO feel */
- lidIn:new THREE.MeshPhysicalMaterial({color:0x0a6176,roughness:.68,metalness:.01,clearcoat:.06,clearcoatRoughness:.75,side:THREE.BackSide,envMapIntensity:.4,polygonOffset:true,polygonOffsetFactor:3,polygonOffsetUnits:3,bumpMap:ppMicro,bumpScale:.5}),
- bag:new THREE.MeshPhysicalMaterial({color:0xeef3f4,roughness:.62,metalness:0,transparent:true,opacity:.2,bumpMap:filmT,bumpScale:mob?2.8:3.6,roughnessMap:filmT,side:THREE.DoubleSide,depthWrite:false,clearcoat:.12,clearcoatRoughness:.65}),
+ /* Satin PP outer — FrontSide so rim has real thickness with lidIn, not paper-thin DoubleSide */
+ lid:new THREE.MeshPhysicalMaterial({color:TEAL,roughness:.62,metalness:.01,clearcoat:.08,clearcoatRoughness:.7,sheen:.08,sheenColor:0x4a9aa6,envMapIntensity:.45,bumpMap:ppMicro,bumpScale:mob?.45:.7,roughnessMap:ppMicro,side:THREE.FrontSide}),
+ /* Opaque underside shell — never hide; slightly darker for contact AO */
+ lidIn:new THREE.MeshPhysicalMaterial({color:0x085a6c,roughness:.7,metalness:.01,clearcoat:.05,clearcoatRoughness:.8,side:THREE.BackSide,envMapIntensity:.35,polygonOffset:true,polygonOffsetFactor:2,polygonOffsetUnits:2,bumpMap:ppMicro,bumpScale:.45}),
+ bag:new THREE.MeshPhysicalMaterial({color:0xeef3f4,roughness:.62,metalness:0,transparent:true,opacity:.16,bumpMap:filmT,bumpScale:mob?2.8:3.6,roughnessMap:filmT,side:THREE.DoubleSide,depthWrite:false,clearcoat:.12,clearcoatRoughness:.65}),
  bagIn:new THREE.MeshPhysicalMaterial({color:0xe4ecee,roughness:.85,transparent:true,opacity:.08,side:THREE.BackSide,depthWrite:false}),
  sachet:new THREE.MeshPhysicalMaterial({color:0xf3f3ef,roughness:.85,bumpMap:weaveT,bumpScale:1.2,map:weaveT,sheen:.6,sheenColor:0xffffff}),
  /* Opaque white porous disc — photo texture, no glassiness */
@@ -91,6 +91,43 @@ fluidM.customProgramCacheKey=()=>'gelfluid2';fluidM.onBeforeCompile=sdr=>{window
  sdr.fragmentShader=sdr.fragmentShader.replace('#include <common>','#include <common>\nvarying vec3 vWp;uniform float uR;uniform vec3 uC;')
   .replace('#include <color_fragment>','#include <color_fragment>\n'+GK+'float depth=smoothstep(-176.,-100.,vWp.y);diffuseColor.rgb=mix(diffuseColor.rgb*1.12,diffuseColor.rgb*.55,depth*.55);diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.04,.002,.005)*(.9+.15*sin(vWp.x*.12+vWp.y*.09)),gk);diffuseColor.a=mix(diffuseColor.a,1.,gk);')
   .replace('#include <roughnessmap_fragment>','#include <roughnessmap_fragment>\nroughnessFactor=mix(roughnessFactor,.9,gk);');};
+function clipFilterCavity(geo,cx,cz,rMax,y0,y1){
+ /* Drop CAD triangles inside the filter pocket cylinder (vert OR centroid).
+  * Outer skirt (origin r>=51) is never touched so the rim stays closed. */
+ const g=geo.index?geo.toNonIndexed():geo.clone();
+ const p=g.attributes.position, n=p.count, keep=[];
+ const inside=(x,y,z)=>Math.hypot(x-cx,z-cz)<rMax && y>=y0 && y<=y1 && Math.hypot(x,z)<51;
+ for(let i=0;i<n;i+=3){
+  const ax=p.getX(i),ay=p.getY(i),az=p.getZ(i);
+  const bx=p.getX(i+1),by=p.getY(i+1),bz=p.getZ(i+1);
+  const cx3=p.getX(i+2),cy=p.getY(i+2),cz3=p.getZ(i+2);
+  const mx=(ax+bx+cx3)/3, my=(ay+by+cy)/3, mz=(az+bz+cz3)/3;
+  if(inside(ax,ay,az)||inside(bx,by,bz)||inside(cx3,cy,cz3)||inside(mx,my,mz)) continue;
+  keep.push(ax,ay,az, bx,by,bz, cx3,cy,cz3);
+ }
+ if(!keep.length) return geo;
+ let out=new THREE.BufferGeometry();
+ out.setAttribute('position',new THREE.Float32BufferAttribute(keep,3));
+ out=mergeVertices(out,2e-4); /* re-weld so normals stay smooth (no faceting) */
+ out.computeVertexNormals();
+ return out;
+}
+function tuckBagTop(g){
+ /* Bag ends at y=-24, lid skirt bottom at -23: pull the top lip up and just
+  * inside the skirt (r<=55.2) so the film disappears under the rim, no gap. */
+ const p=g.attributes.position;
+ for(let i=0;i<p.count;i++){const y=p.getY(i);if(y<-30)continue;
+  const k=(y+30)/6; const x=p.getX(i),z=p.getZ(i),r=Math.hypot(x,z);
+  const ny=y+k*7, nr=Math.min(r,55.2+ (1-k)*(r-55.2));
+  if(r>1e-3){p.setX(i,x/r*nr);p.setZ(i,z/r*nr);} p.setY(i,ny);}
+ p.needsUpdate=true;g.computeVertexNormals();return g;}
+function clampCollar(g){
+ /* CAD collar lugs (r≤60.4) poke through the lid skirt (r 55.9@y-23 → 60.4@y-13).
+  * Pull collar verts just inside the skirt profile; hidden part, no visible change. */
+ const p=g.attributes.position;
+ for(let i=0;i<p.count;i++){const y=p.getY(i),x=p.getX(i),z=p.getZ(i),r=Math.hypot(x,z);
+  const sk=55.9+cl((y+23)/10)*4.5-0.8; if(r>sk){p.setX(i,x/r*sk);p.setZ(i,z/r*sk);}}
+ p.needsUpdate=true;g.computeVertexNormals();return g;}
 function cleanBag(geo){let g=geo.clone();['normal','uv','uv1','tangent','color'].forEach(a=>g.deleteAttribute(a));g=mergeVertices(g,1e-3);
  const ix=g.index.array,out=[],seen=new Set();for(let i=0;i<ix.length;i+=3){const t=[ix[i],ix[i+1],ix[i+2]];if(t[0]===t[1]||t[1]===t[2]||t[0]===t[2])continue;const k=[...t].sort((a,b)=>a-b).join();if(seen.has(k))continue;seen.add(k);out.push(...t);}
  g.setIndex(out);return toCreasedNormals(g,Math.PI/2.4);}
@@ -118,42 +155,67 @@ loader.load('../p01-exploded/p01-1l.glb',g=>{
   }
   const k=['bag','collar'].find(x=>nm.includes(x));if(!k)return;
   const geo=cleanBag(o.geometry.clone().applyMatrix4(o.matrixWorld));
-  if(k==='bag'){cylUV(geo,-178,-24);const m=new THREE.Mesh(geo,M.bag);m.renderOrder=5;bagG.add(m);const mi=new THREE.Mesh(geo,M.bagIn);mi.renderOrder=4;bagG.add(mi);}
-  else{const m=new THREE.Mesh(geo,M.lid);m.castShadow=true;m.receiveShadow=!mob;bagG.add(m);}
+  if(k==='bag'){tuckBagTop(geo);cylUV(geo,-178,-24);const m=new THREE.Mesh(geo,M.bag);m.renderOrder=5;bagG.add(m);const mi=new THREE.Mesh(geo,M.bagIn);mi.renderOrder=4;bagG.add(mi);}
+  else{clampCollar(geo);const m=new THREE.Mesh(geo,M.lid);m.castShadow=true;m.receiveShadow=!mob;m.renderOrder=3;bagG.add(m);}
  });
  loader.load('p01-lid-smooth.glb',hg=>{
   hg.scene.updateMatrixWorld(true);
   hg.scene.traverse(o=>{if(!o.isMesh)return;
-   const geo=prepSmooth(o.geometry.clone().applyMatrix4(o.matrixWorld));
-   /* Single DoubleSide mesh — solid underside from any angle, no empty-ring culling */
+   let geo=prepSmooth(o.geometry.clone().applyMatrix4(o.matrixWorld));
+   /* Clip ONLY faces that intrude into the VACUUM filter cavity so CAD ribs
+    * never cross the white disc. Cavity from GLB analysis: axis (33,-32),
+    * clear core r≲14 at y∈[-18,-6]. Keep cylindrical wall (r≳14). */
+   geo=clipFilterCavity(geo,30,-28,13.5,-24,-2);
    const m=new THREE.Mesh(geo,M.lid);m.castShadow=true;m.receiveShadow=!mob;lidG.add(m);
+   /* Opaque BackSide twin — gives rim real thickness; bag cannot show through */
+   const inn=new THREE.Mesh(geo,M.lidIn);inn.renderOrder=1;lidG.add(inn);
   });
+  /* Opaque deck plug under main lid body — fills hollow shell so hero/final
+   * never reads paper-thin. Annulus leaves VACUUM cavity open for the disc. */
+  (function solidDeck(){
+    /* Opaque underside plate with hole ONLY at VACUUM (33,-32) — stops bag bleed */
+    const sh=new THREE.Shape();
+    const N=72; for(let i=0;i<=N;i++){const a=i/N*Math.PI*2;const x=Math.cos(a)*51,y=Math.sin(a)*51; if(i===0)sh.moveTo(x,y); else sh.lineTo(x,y);}
+    const hole=new THREE.Path();
+    for(let i=0;i<=N;i++){const a=i/N*Math.PI*2;const x=30+Math.cos(a)*12.5,y=-28+Math.sin(a)*12.5; if(i===0)hole.moveTo(x,y); else hole.lineTo(x,y);}
+    sh.holes.push(hole);
+    const deckGeo=new THREE.ShapeGeometry(sh,12);
+    const deck=new THREE.Mesh(deckGeo,M.lid);
+    deck.rotation.x=-Math.PI/2;deck.position.y=-3.0;deck.castShadow=true;lidG.add(deck);
+    const deck2=new THREE.Mesh(deckGeo,M.lid);
+    deck2.rotation.x=-Math.PI/2;deck2.position.y=-6.5;lidG.add(deck2);
+    const deckIn=new THREE.Mesh(deckGeo,M.lidIn);
+    deckIn.rotation.x=Math.PI/2;deckIn.position.y=-3.15;lidG.add(deckIn);
+    /* Opaque backing just inside CAD skirt (skirt inner r≈52..56, y -23..-5):
+     * nothing behind the rim can show through. No extra visible rings. */
+    const seal=new THREE.Mesh(new THREE.CylinderGeometry(51.6,54.6,17,72,1,true),M.lidIn);
+    seal.position.y=-14;lidG.add(seal);
+  })();
   /*
-   * PHOTO EXCEPTION: white porous flow-stopper disc + teal seat under VACUUM.
-   * Refs: 01M6ND806 (tear-down underside), 01M6NCZQ (porous white).
-   * Seated IN CAD underside basin around ring mean (33,-7,-33) — not floating mid-bag.
+   * PHOTO EXCEPTION: white porous flow-stopper disc + minimal teal seat.
+   * Refs: 01M6ND806 (tear-down), 01M6NCZQ (porous). NO large basin plate.
+   * Disc recessed in clear CAD cavity at (33,-14.5,-32), r≈11.5 < wall≈19.
    */
   fG=new THREE.Group();fG.name='PhotoFilter';
-  /* Solid teal basin plate — fills underside so lid never reads as empty ring (matches tear-down floor) */
-  const basin=new THREE.Mesh(new THREE.CylinderGeometry(48,48,6.0,64),M.lid);
-  basin.position.y=-5.0;basin.castShadow=true;basin.receiveShadow=!mob;
-  const seat=new THREE.Mesh(new THREE.CylinderGeometry(17.0,17.5,7.0,48,1,true),M.lid);
-  seat.castShadow=true;seat.receiveShadow=!mob;
-  const seatLip=new THREE.Mesh(new THREE.TorusGeometry(17.2,2.0,12,48),M.lid);
-  seatLip.rotation.x=Math.PI/2;seatLip.position.y=3.0;
-  const seatFloor=new THREE.Mesh(new THREE.CylinderGeometry(15.0,15.0,1.6,48),M.lid);
-  seatFloor.position.y=-2.8;
-  const ao=new THREE.Mesh(new THREE.RingGeometry(13.5,18.5,48),new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.32,depthWrite:false,side:THREE.DoubleSide}));
-  ao.rotation.x=-Math.PI/2;ao.position.y=-2.2;ao.renderOrder=2;
-  const disc=new THREE.Mesh(new THREE.CylinderGeometry(15.5,15.5,7.5,48),M.filter);
-  disc.position.y=1.6;disc.castShadow=true;disc.receiveShadow=!mob;
-  fG.add(basin,seat,seatLip,seatFloor,ao,disc);
-  /* Flush into underside basin under VACUUM column */
-  /* Under VACUUM basin — white face toward underside (rot X π) */
-  fG.position.set(33,-10.5,-33);
+  /* Short recessed pocket: floor + low lip only (tall open cylinder made a chord across disc) */
+  const seatFloor=new THREE.Mesh(new THREE.CylinderGeometry(11.6,11.6,1.8,48),M.lid);
+  seatFloor.position.y=-2.8;seatFloor.castShadow=true;
+  const seatLip=new THREE.Mesh(new THREE.TorusGeometry(10.9,1.5,12,48),M.lid);
+  seatLip.rotation.x=Math.PI/2;seatLip.position.y=1.6;
+  const seatWall=new THREE.Mesh(new THREE.CylinderGeometry(11.2,11.5,3.2,48,1,true),M.lid);
+  seatWall.position.y=0.2;
+  const ao=new THREE.Mesh(new THREE.RingGeometry(8.6,11.8,48),new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.42,depthWrite:false,side:THREE.DoubleSide}));
+  ao.rotation.x=-Math.PI/2;ao.position.y=-1.9;ao.renderOrder=2;
+  /* Disc sits in pocket, fully inside lip, proud of floor */
+  const disc=new THREE.Mesh(new THREE.CylinderGeometry(9.4,9.4,4.0,48),M.filter);
+  disc.position.y=0.0;disc.castShadow=true;disc.receiveShadow=!mob;
+  fG.add(seatFloor,seatWall,seatLip,ao,disc);
+  fG.position.set(30,-16.0,-28);
   fG.rotation.x=Math.PI;
   lidG.add(fG);
-  filtLook=new THREE.Object3D();filtLook.position.set(33,-10.5,-33);lidG.add(filtLook);
+  filtLook=new THREE.Object3D();filtLook.position.set(30,-16.0,-28);lidG.add(filtLook);
+  /* CAD assembly pose: lid skirt bottom y=-23 == collar bottom -23.05 */
+  lidG.position.y=0;
   const sg=new THREE.BoxGeometry(34,7,46,10,2,12);const ps=sg.attributes.position;
   for(let i=0;i<ps.count;i++){const x=ps.getX(i)/17,z=ps.getZ(i)/23;ps.setY(i,ps.getY(i)*Math.max(.12,(1-x*x)*(1-Math.pow(Math.max(0,z),6))));}
   sg.computeVertexNormals();sachet=new THREE.Group();const smh=new THREE.Mesh(sg,M.sachet);smh.castShadow=true;sachet.add(smh);
@@ -225,7 +287,7 @@ const KF=[
  [.97,  V(78,14,490), V(0,-45,0)],
  [1,    V(80,14,495), V(0,-45,0)]
 ];
-let T=0,lastN=0;const cp=new THREE.Vector3(),ct=new THREE.Vector3(),drift=new THREE.Vector3();
+let T=0,lastN=0;const cp=new THREE.Vector3(),ct=new THREE.Vector3();
 function prog(){if(qp.has('t'))return +qp.get('t');const max=document.documentElement.scrollHeight-innerHeight;return max>0?cl(scrollY/max):0;}
 function sampleKF(t,outP,outT){
  let a=KF[0],b=KF[KF.length-1];
@@ -239,16 +301,15 @@ function frame(now){requestAnimationFrame(frame);
  bar.style.width=(t*100)+'%';hint.style.opacity=1-cl(t*18);
  beats.forEach(b=>{const f=.028;const o=Math.min(cl((t-b.a)/f),cl((b.b-t)/f));b.e.style.opacity=o;b.e.style.transform=`translate(-50%,${(1-o)*14}px)`;});
  logo.style.opacity=cl((t-.94)/.03);
- /* gentle bag idle sway — continuous, not scroll-locked */
- const sway=Math.sin(tSec*.55)*.012, sway2=Math.cos(tSec*.38)*.008;
- root.rotation.y=sway;root.rotation.z=sway2;
+ /* v8 scroll feel: no idle sway / micro-drift — camera only follows scrubbed t */
+ root.rotation.set(0,0,0);
  if(fluid){
   /* lid lift with soft settle + tiny overshoot (easeOutBack) */
   const liftIn=easeOutBack(seg(t,.24,.31));
   const liftOut=easeOutBack(seg(t,.47,.54));
   const lift=liftIn*(1-liftOut);
-  /* ~30° tilt, modest rise — product-photo underside with bag still nearby */
-  lidG.position.y=lift*55;lidG.position.z=lift*18;lidG.rotation.x=-lift*.5;
+  /* base settle -1.8 seats lid on collar; lift reveals underside + disc */
+  lidG.position.y=lift*75;lidG.position.z=lift*24;lidG.rotation.x=-lift*.58;
   const sd=seg(t,.38,.48);sachet.visible=t>.37;sachet.position.set(10,lerp(70,-170,sd),0);sachet.rotation.set(lerp(-.9,0,sd),lerp(1.2,.3,sd),lerp(.5,0,sd));
   const fill=seg(t,.53,.64);fluid.visible=fill>.005;fluid.scale.y=Math.max(.001,fill);
   U.uR.value=lerp(0,190,seg(t,.65,.78));
@@ -280,23 +341,21 @@ function frame(now){requestAnimationFrame(frame);
   if(window.__drops){const dd=seg(t,.54,.62)*(1-seg(t,.66,.74));window.__drops.visible=dd>.04;window.__drops.children.forEach((d,i)=>{d.material.opacity=.15+.55*dd;d.position.y=HH*.9+Math.sin(tSec*3+i*1.7)*.8;d.scale.setScalar(.7+dd*.5);});}
  }
  sampleKF(t,cp,ct);
- /* continuous micro-drift so no keyframe feels static */
- drift.set(Math.sin(tSec*.7+t*4)*4.5, Math.cos(tSec*.55)*3, Math.sin(tSec*.4+t*2)*4);
- cp.add(drift);ct.x+=drift.x*.15;ct.z+=drift.z*.1;
  if(mob){cp.sub(ct).multiplyScalar(Math.min(1.6,1/Math.max(.5,C.aspect))*.85).add(ct);}
  /* Filter stays on underside; hide only once blood fills */
  if(fG){ fG.visible=t<.52; }
  /*
-  * Product-photo underside: look along lid -Y so solid basin plate + white disc
-  * fill the frame (tear-down style). Never hide lid geometry.
+  * Filter beat: 3/4 from below looking into recessed housing — disc seated
+  * inside teal seat, no ribs crossing face (cavity clipped).
   */
  if(filtLook&&t>.27&&t<.4){
   const w=seg(t,.28,.32)*(1-seg(t,.37,.4));
   filtLook.getWorldPosition(fW);
+  /* Near face-on into recessed pocket so teal lip frames disc as a clean ring */
   const nrm=V(0,-1,0).applyQuaternion(lidG.quaternion).normalize();
-  const side=V(.8,0,.25).applyQuaternion(lidG.quaternion).normalize();
-  const dist=mob?100:118;
-  const goal=fW.clone().addScaledVector(nrm,dist).addScaledVector(side,mob?18:24);
+  const side=V(.25,0,.15).applyQuaternion(lidG.quaternion).normalize();
+  const dist=mob?95:110;
+  const goal=fW.clone().addScaledVector(nrm,dist).addScaledVector(side,mob?14:18);
   cp.lerp(goal,w);
   ct.lerp(fW,w);
  }
