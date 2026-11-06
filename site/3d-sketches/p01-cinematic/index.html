@@ -47,17 +47,17 @@ import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {mergeVertices,toCreasedNormals} from 'three/addons/utils/BufferGeometryUtils.js';
 const mob=matchMedia('(max-width:700px),(pointer:coarse)').matches;
 const cv=document.getElementById('gl'),stage=cv.parentElement;
-const R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true,powerPreference:'high-performance'});
+const R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true,powerPreference:'high-performance',logarithmicDepthBuffer:true});
 R.setPixelRatio(Math.min(devicePixelRatio,mob?1.75:2));R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=.98;
 R.shadowMap.enabled=!mob;R.shadowMap.type=THREE.PCFSoftShadowMap;
 const S=new THREE.Scene();
 const pm=new THREE.PMREMGenerator(R);S.environment=pm.fromScene(new RoomEnvironment(),.05).texture;S.environmentIntensity=.55;
 const C=new THREE.PerspectiveCamera(mob?36:28,1,2,3000);
 const key=new THREE.DirectionalLight(0xfff1e6,1.55);key.position.set(-160,520,220);key.castShadow=true;key.shadow.mapSize.set(2048,2048);
-Object.assign(key.shadow.camera,{left:-200,right:200,top:200,bottom:-200,near:60,far:1400});key.shadow.radius=14;key.shadow.bias=-.00035;S.add(key);
+Object.assign(key.shadow.camera,{left:-200,right:200,top:200,bottom:-200,near:60,far:1400});key.shadow.radius=18;key.shadow.bias=-.00035;S.add(key);
 const fillL=new THREE.DirectionalLight(0xf7f3ee,1.15);fillL.position.set(140,180,260);S.add(fillL);
 const rim=new THREE.DirectionalLight(0x7ecad4,.95);rim.position.set(240,140,-320);S.add(rim);
-const hemi=new THREE.HemisphereLight(0xe8f4f6,0x12100e,.65);S.add(hemi);
+const hemi=new THREE.HemisphereLight(0xe8f4f6,0x0c0a08,.72);S.add(hemi);
 const under=new THREE.PointLight(0xfff8f2,.45,750,1.9);under.position.set(20,-30,140);S.add(under);
 function radTex(stops){const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');const g=x.createRadialGradient(128,128,0,128,128,128);stops.forEach(s=>g.addColorStop(...s));x.fillStyle=g;x.fillRect(0,0,256,256);return new THREE.CanvasTexture(c);}
 function floorPlane(sz,tex,y){const m=new THREE.Mesh(new THREE.PlaneGeometry(sz,sz),new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.y=y;S.add(m);return m;}
@@ -68,15 +68,21 @@ const TL=new THREE.TextureLoader();
 const filmT=TL.load('tex/film-bump.jpg');filmT.wrapS=filmT.wrapT=THREE.RepeatWrapping;filmT.repeat.set(5,4);
 const weaveT=TL.load('tex/sachet-weave.jpg');weaveT.wrapS=weaveT.wrapT=THREE.RepeatWrapping;weaveT.repeat.set(3,4);
 const TEAL=0x0a6176;
+const ppMicro=TL.load('tex/pp-micro-bump.jpg');ppMicro.wrapS=ppMicro.wrapT=THREE.RepeatWrapping;ppMicro.repeat.set(14,14);
+const filtDiff=TL.load('tex/filter-diffuse.jpg');filtDiff.wrapS=filtDiff.wrapT=THREE.RepeatWrapping;filtDiff.repeat.set(2.2,2.2);
+const filtBump=TL.load('tex/filter-bump.jpg');filtBump.wrapS=filtBump.wrapT=THREE.RepeatWrapping;filtBump.repeat.set(2.2,2.2);
 const M={
- lid:new THREE.MeshPhysicalMaterial({color:TEAL,roughness:.48,metalness:.02,clearcoat:.22,clearcoatRoughness:.5,sheen:.05,sheenColor:0x5aa8b4,envMapIntensity:.75}),
- lidIn:new THREE.MeshPhysicalMaterial({color:0x074a58,roughness:.55,metalness:.02,clearcoat:.15,clearcoatRoughness:.55,side:THREE.BackSide,envMapIntensity:.6}),
+ lid:new THREE.MeshPhysicalMaterial({color:TEAL,roughness:.52,metalness:.02,clearcoat:.18,clearcoatRoughness:.55,sheen:.06,sheenColor:0x5aa8b4,envMapIntensity:.7,bumpMap:ppMicro,bumpScale:mob?.35:.55,roughnessMap:ppMicro}),
+ /* polygonOffset fights z-fight with outer shell when viewing underside */
+ lidIn:new THREE.MeshPhysicalMaterial({color:0x074a58,roughness:.6,metalness:.02,clearcoat:.12,clearcoatRoughness:.6,side:THREE.BackSide,envMapIntensity:.55,polygonOffset:true,polygonOffsetFactor:2,polygonOffsetUnits:2,bumpMap:ppMicro,bumpScale:.3}),
  bag:new THREE.MeshPhysicalMaterial({color:0xeef3f4,roughness:.58,metalness:0,transparent:true,opacity:.18,bumpMap:filmT,bumpScale:mob?2.8:3.6,roughnessMap:filmT,side:THREE.DoubleSide,depthWrite:false,clearcoat:.22,clearcoatRoughness:.55}),
  bagIn:new THREE.MeshPhysicalMaterial({color:0xe4ecee,roughness:.82,transparent:true,opacity:.08,side:THREE.BackSide,depthWrite:false}),
  sachet:new THREE.MeshPhysicalMaterial({color:0xf3f3ef,roughness:.85,bumpMap:weaveT,bumpScale:1.2,map:weaveT,sheen:.6,sheenColor:0xffffff}),
+ /* photo-guided white porous filter disc (from tear-down / NCZQ texture) */
+ filter:new THREE.MeshStandardMaterial({color:0xf2f2ee,roughness:.92,metalness:0,map:filtDiff,bumpMap:filtBump,bumpScale:2.6,roughnessMap:filtBump}),
 };
 const U={uR:{value:0},uC:{value:new THREE.Vector3(10,-165,0)}};
-const fluidM=new THREE.MeshPhysicalMaterial({color:0x5c0610,roughness:.12,metalness:0,transmission:.08,transparent:true,opacity:.94,clearcoat:.55,clearcoatRoughness:.25,attenuationColor:0x2a0003,attenuationDistance:22,thickness:18,ior:1.35});
+const fluidM=new THREE.MeshPhysicalMaterial({color:0x5a050f,roughness:.08,metalness:0,transmission:.06,transparent:true,opacity:.95,clearcoat:.85,clearcoatRoughness:.12,attenuationColor:0x2a0003,attenuationDistance:20,thickness:20,ior:1.36});
 const GK='float gd=distance(vWp,uC)+6.*sin(vWp.x*.3)*sin(vWp.z*.27+vWp.y*.2);float gk=1.-smoothstep(uR-14.,uR,gd);';
 fluidM.customProgramCacheKey=()=>'gelfluid2';fluidM.onBeforeCompile=sdr=>{window.__gel=1;Object.assign(sdr.uniforms,U);
  sdr.vertexShader=sdr.vertexShader.replace('#include <common>','#include <common>\nvarying vec3 vWp;').replace('#include <project_vertex>','#include <project_vertex>\nvWp=(modelMatrix*vec4(transformed,1.)).xyz;');
@@ -95,7 +101,7 @@ function addM(parent,geo,mat){const m=new THREE.Mesh(geo,mat);m.castShadow=true;
 /* ease-out with tiny overshoot for lid settle */
 function easeOutBack(x){x=cl(x);const c1=1.55,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2);}
 const lidG=new THREE.Group(),bagG=new THREE.Group(),root=new THREE.Group();S.add(root);root.add(lidG,bagG);
-let fluid,sachet,pour,capM,vacLook;const fW=new THREE.Vector3();
+let fluid,sachet,pour,capM,fG,filtLook;const fW=new THREE.Vector3();
 const loader=new GLTFLoader();
 loader.load('../p01-exploded/p01-1l.glb',g=>{
  g.scene.updateMatrixWorld(true);const ms=[];g.scene.traverse(o=>{if(o.isMesh)ms.push(o)});
@@ -120,8 +126,28 @@ loader.load('../p01-exploded/p01-1l.glb',g=>{
    const m=new THREE.Mesh(geo,M.lid);m.castShadow=true;m.receiveShadow=!mob;lidG.add(m);
    const inn=new THREE.Mesh(geo,M.lidIn);inn.renderOrder=1;lidG.add(inn);
   });
-  /* VACUUM port look-at (CAD underside / -Z side of lid deck) — no synthetic filter */
-  vacLook=new THREE.Object3D();vacLook.position.set(-8,-42,-22);lidG.add(vacLook);
+  /* Slightly shrink backside shell to kill underside z-fight / torn seams */
+  lidG.children.forEach(ch=>{if(ch.material===M.lidIn){ch.scale.setScalar(.992);ch.renderOrder=0;}});
+  /*
+   * PHOTO EXCEPTION: white porous flow-stopper disc + teal seat under VACUUM port.
+   * Refs: 01M6ND806… (tear-down underside basin), 01M6NCZQ… (porous white texture).
+   * Ø≈25mm disc, ~6mm thick in teal ring — flush at port underside (not hanging mid-bag).
+   */
+  fG=new THREE.Group();fG.name='PhotoFilter';
+  const seat=new THREE.Mesh(new THREE.CylinderGeometry(14.0,14.4,7.5,48,1,true),M.lid);
+  seat.castShadow=true;
+  const seatLip=new THREE.Mesh(new THREE.TorusGeometry(14.2,1.4,10,48),M.lid);
+  seatLip.rotation.x=Math.PI/2;seatLip.position.y=3.2;
+  const seatFloor=new THREE.Mesh(new THREE.CylinderGeometry(13.0,13.0,1.2,48),M.lid);
+  seatFloor.position.y=-2.8;
+  const disc=new THREE.Mesh(new THREE.CylinderGeometry(12.2,12.2,6.0,48),M.filter);
+  disc.position.y=.2;disc.castShadow=true;
+  fG.add(seat,seatLip,seatFloor,disc);
+  /* Under VACUUM column ≈(33,11,-31); seat flush on underside */
+  fG.position.set(32,-20.5,-33);
+  fG.rotation.x=Math.PI; /* disc faces down into bag / up when lid flipped for beat */
+  lidG.add(fG);
+  filtLook=new THREE.Object3D();filtLook.position.set(32,-20.5,-33);lidG.add(filtLook);
   const sg=new THREE.BoxGeometry(34,7,46,10,2,12);const ps=sg.attributes.position;
   for(let i=0;i<ps.count;i++){const x=ps.getX(i)/17,z=ps.getZ(i)/23;ps.setY(i,ps.getY(i)*Math.max(.12,(1-x*x)*(1-Math.pow(Math.max(0,z),6))));}
   sg.computeVertexNormals();sachet=new THREE.Group();const smh=new THREE.Mesh(sg,M.sachet);smh.castShadow=true;sachet.add(smh);
@@ -141,6 +167,9 @@ loader.load('../p01-exploded/p01-1l.glb',g=>{
   const bubG=new THREE.Group();const bubM=new THREE.MeshPhysicalMaterial({color:0xffe8ea,roughness:.15,transparent:true,opacity:.3,transmission:.55,thickness:2,depthWrite:false});
   [[8,0,12],[-14,0,-6],[18,0,-10],[-6,0,16],[12,0,-18]].forEach(([x,y,z],i)=>{const b=new THREE.Mesh(new THREE.SphereGeometry(.85+i*.12,12,10),bubM.clone());b.position.set(x,H*.9+y,z);bubG.add(b);});
   fluid.add(bubG);window.__bub=bubG;
+  const dropG=new THREE.Group();const dropM=new THREE.MeshPhysicalMaterial({color:0x6a0812,roughness:.08,transparent:true,opacity:.7,clearcoat:.9,clearcoatRoughness:.1,depthWrite:false});
+  [[10,0,8],[-12,0,-4],[6,0,-14],[-4,0,14]].forEach(([x,y,z],i)=>{const d=new THREE.Mesh(new THREE.SphereGeometry(.55+i*.08,10,8),dropM.clone());d.position.set(x,H*.92+y,z);dropG.add(d);});
+  fluid.add(dropG);window.__drops=dropG;
   /* thin tapered pour — short soft cone, high transmission so it reads liquid not a stick */
   const pourGeo=new THREE.CylinderGeometry(.35,.95,70,12);pourGeo.translate(0,-35,0);
   pour=new THREE.Mesh(pourGeo,new THREE.MeshPhysicalMaterial({color:0x8a1018,roughness:.18,transparent:true,opacity:.28,transmission:.35,thickness:3,depthWrite:false,side:THREE.DoubleSide}));
@@ -157,35 +186,37 @@ const qp=new URLSearchParams(location.search);
 const V=(x,y,z)=>new THREE.Vector3(x,y,z);
 /* Deliberate scroll-film block — denser keys so motion never rests flat */
 const KF=[
- /* Hero: gentle orbit drift around bag */
- [0,    V(95,22,480),  V(0,-48,0)],
- [.04,  V(130,30,420), V(2,-55,4)],
- [.08,  V(155,38,340), V(0,-72,0)],
- /* PATIENT: low-ish 3/4 close-up — angled port + CAD cap */
- [.13,  V(118,28,165), V(18,8,30)],
- [.18,  V(125,32,155), V(12,10,32)],
- [.22,  V(132,36,160), V(8,8,30)],
- /* Filter: underside / into VACUUM port (CAD lid only) */
- [.27,  V(40,-70,115), V(-5,-48,-18)],
- [.33,  V(55,-62,125), V(-2,-42,-20)],
- [.37,  V(70,-50,140), V(0,-38,-16)],
- /* Sachet drop: mid-height 3/4 */
- [.42,  V(175,10,240), V(5,-95,0)],
- [.48,  V(190,0,255),  V(0,-110,0)],
- /* Blood fill: true SIDE-ON at fluid level — meniscus wall curve reads */
- [.54,  V(195,-138,140), V(0,-142,0)],
- [.58,  V(185,-145,150), V(5,-148,0)],
- [.62,  V(170,-152,155), V(0,-152,5)],
- /* Gel: slight drift while front spreads */
- [.68,  V(145,-120,145), V(0,-145,8)],
- [.74,  V(120,-125,155), V(5,-142,0)],
- [.8,   V(95,-110,170),  V(0,-130,15)],
- /* Soft PE beat */
- [.86,  V(70,-95,145), V(0,-115,30)],
- [.9,   V(60,-80,160), V(0,-100,25)],
- /* Final iso hero — bag fills frame */
- [.95,  V(70,8,470),  V(0,-48,0)],
- [1,    V(78,12,485), V(0,-45,0)]
+ /* Hero: gentle orbit with wider establishing */
+ [0,    V(110,28,520), V(0,-48,0)],
+ [.04,  V(140,34,430), V(2,-55,4)],
+ [.08,  V(160,40,350), V(0,-72,0)],
+ /* PATIENT: establish then low-ish 3/4 close-up */
+ [.11,  V(140,40,240), V(10,0,20)],
+ [.15,  V(122,30,168), V(16,8,30)],
+ [.19,  V(128,34,158), V(12,10,32)],
+ [.22,  V(135,38,165), V(8,8,30)],
+ /* Filter: whole lifted assembly in frame — low 3/4 below so underside disc + bag read together */
+ [.25,  V(170,5,320), V(0,-40,0)],
+ [.28,  V(190,-30,300), V(5,20,0)],
+ [.31,  V(210,-55,290), V(10,60,-5)],
+ [.34,  V(205,-65,280), V(15,75,-10)],
+ [.37,  V(195,-40,300), V(5,40,0)],
+ [.4,   V(185,-10,310), V(0,10,0)],
+ /* Sachet: mid-height 3/4 with establish */
+ [.42,  V(185,20,270), V(5,-85,0)],
+ [.47,  V(195,2,250),  V(0,-110,0)],
+ /* Blood: side-on at fluid level */
+ [.53,  V(200,-130,160), V(0,-140,0)],
+ [.58,  V(188,-145,150), V(5,-148,0)],
+ [.62,  V(172,-152,155), V(0,-152,5)],
+ /* Gel drift */
+ [.68,  V(145,-120,150), V(0,-145,8)],
+ [.74,  V(118,-125,158), V(5,-142,0)],
+ [.82,  V(90,-100,170),  V(0,-125,20)],
+ /* Final iso hero */
+ [.92,  V(72,10,470), V(0,-48,0)],
+ [.97,  V(78,14,490), V(0,-45,0)],
+ [1,    V(80,14,495), V(0,-45,0)]
 ];
 let T=0,lastN=0;const cp=new THREE.Vector3(),ct=new THREE.Vector3(),drift=new THREE.Vector3();
 function prog(){if(qp.has('t'))return +qp.get('t');const max=document.documentElement.scrollHeight-innerHeight;return max>0?cl(scrollY/max):0;}
@@ -238,19 +269,18 @@ function frame(now){requestAnimationFrame(frame);
    pour.position.x=26+Math.sin(tSec*3.8)*1.2*ps;
   }
   if(window.__bub){const bo=(1-seg(t,.66,.76))*fill;window.__bub.visible=bo>.05;window.__bub.children.forEach((b,i)=>{b.material.opacity=.1+.28*bo;b.position.y=HH*.88+Math.sin(tSec*2+i)*1.1;});}
+  if(window.__drops){const dd=seg(t,.54,.62)*(1-seg(t,.66,.74));window.__drops.visible=dd>.04;window.__drops.children.forEach((d,i)=>{d.material.opacity=.15+.55*dd;d.position.y=HH*.9+Math.sin(tSec*3+i*1.7)*.8;d.scale.setScalar(.7+dd*.5);});}
  }
  sampleKF(t,cp,ct);
  /* continuous micro-drift so no keyframe feels static */
- drift.set(Math.sin(tSec*.7+t*4)*6, Math.cos(tSec*.55)*4, Math.sin(tSec*.4+t*2)*5);
+ drift.set(Math.sin(tSec*.7+t*4)*4.5, Math.cos(tSec*.55)*3, Math.sin(tSec*.4+t*2)*4);
  cp.add(drift);ct.x+=drift.x*.15;ct.z+=drift.z*.1;
  if(mob){cp.sub(ct).multiplyScalar(Math.min(1.6,1/Math.max(.5,C.aspect))*.85).add(ct);}
  /* Filter beat: track CAD vacuum look target while lid is lifted */
- if(vacLook&&t>.26&&t<.4){
-  const w=seg(t,.26,.3)*(1-seg(t,.37,.42));
-  vacLook.getWorldPosition(fW);ct.lerp(fW,w);
-  const nrm=V(0,-1,0).applyQuaternion(lidG.quaternion);
-  cp.lerp(fW.clone().addScaledVector(nrm,mob?170:130).add(V(25,10,10)),w);
- }
+ /* Hide backside lid shell during underside beat — kills torn z-fight seams */
+ lidG.children.forEach(ch=>{if(ch.material===M.lidIn) ch.visible=!(t>.25&&t<.43);});
+ if(fG){ fG.visible=t<.52; }
+
  C.position.copy(cp);C.lookAt(ct);const d=cp.distanceTo(ct);C.near=Math.max(1,d*.05);C.far=d+1500;C.updateProjectionMatrix();
  R.render(S,C);}
 requestAnimationFrame(frame);
