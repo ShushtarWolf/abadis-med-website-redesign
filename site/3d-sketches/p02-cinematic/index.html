@@ -32,7 +32,7 @@
 <div class="beat top" data-a="0" data-b=".09"><h1>کیسه ساکشن ۲ لیتری آبادیس</h1><p>Abadis 2 L Suction Liner Bag</p></div>
 <div class="beat bot" data-a=".12" data-b=".23"><h2>پورت <em>بیمار</em> با درپوش بنددار</h2><p>PATIENT port with tethered cap</p></div>
 <div class="beat bot" data-a=".26" data-b=".37"><h2>فیلتر قطع کننده زیر پورت <em>خلا</em><br>از سرریز جلوگیری می‌کند</h2><p>The flow stopper filter under the VACUUM port stops overflow</p></div>
-<div class="beat bot" data-a=".39" data-b=".5"><h2>پودر جاذب در <em>ساشه دربسته</em></h2><p>Absorbent powder sealed in a mesh sachet</p></div>
+<div class="beat bot" data-a=".39" data-b=".5"><h2>پودر جاذب در <em>دو ساشهٔ دربسته</em></h2><p>Absorbent powder sealed in two mesh sachets</p></div>
 <div class="beat top" data-a=".53" data-b=".64"><h2>ترشحات داخل <em>کیسه</em> جمع می‌شود</h2><p>Fluid collects inside the liner bag</p></div>
 <div class="beat top" data-a=".66" data-b=".78"><h2>پودر جاذب <em>مایع را ژل می‌کند</em></h2><p>Absorbent powder turns fluid into gel</p></div>
 <div class="beat bot" data-a=".8" data-b=".9"><h2>کیسه <em>PE نرم</em>، یکبارمصرف</h2><p>Soft PE liner · single use</p></div>
@@ -142,6 +142,7 @@ function addM(parent,geo,mat){const m=new THREE.Mesh(geo,mat);m.castShadow=true;
 /* Approved P01 movement, retargeted to true 244 mm 2L liner body. */
 function easeOutBack(x){x=cl(x);const c1=1.55,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2);}
 const lidG=new THREE.Group(),bagG=new THREE.Group(),root=new THREE.Group();S.add(root);root.add(lidG,bagG);
+const sachets=[];
 let fluid,sachet,pour,capM,fG,filtLook;const fW=new THREE.Vector3();
 const loader=new GLTFLoader();
 loader.load('p02-2l-cad.glb',g=>{
@@ -212,7 +213,10 @@ loader.load('p02-2l-cad.glb',g=>{
   for(let i=0;i<ps.count;i++){const x=ps.getX(i)/17,z=ps.getZ(i)/23;ps.setY(i,ps.getY(i)*Math.max(.12,(1-x*x)*(1-Math.pow(Math.max(0,z),6))));}
   sg.computeVertexNormals();sachet=new THREE.Group();const smh=new THREE.Mesh(sg,M.sachet);smh.castShadow=true;sachet.add(smh);
   const seal=new THREE.Mesh(new THREE.BoxGeometry(34,1,6),new THREE.MeshPhysicalMaterial({color:0xdedfdc,roughness:.5,transparent:true,opacity:.85,bumpMap:weaveT,bumpScale:2}));seal.position.z=25.5;sachet.add(seal);
-  bagG.add(sachet);
+  // P02 contains TWO absorbent sachets inside ONE liner (owner correction).
+  // Reuse the approved sealed mesh pouch, never loose powder or a second bag.
+  sachets.push(sachet,sachet.clone(true));
+  sachets.forEach((pouch,i)=>{pouch.name=`SealedAbsorbentSachet${i+1}`;bagG.add(pouch);});
   const rAt=y=>48.7+(y+268)/244*7.9-2.2;const H=130,yb=-266.5;
   const rTop=rAt(yb+H),rBot=rAt(yb);
   const fg=new THREE.CylinderGeometry(rTop*.985,rBot*.985,H,96,20);fg.translate(0,H/2,0);
@@ -312,7 +316,20 @@ function frame(now){requestAnimationFrame(frame);
   const lift=liftIn*(1-liftOut);
   /* base settle -1.8 seats lid on collar; lift reveals underside + disc */
   lidG.position.y=lift*75;lidG.position.z=lift*24;lidG.rotation.x=-lift*.58;
-  const sd=seg(t,.38,.48);sachet.visible=t>.37;sachet.position.set(10,lerp(70,-260,sd),0);sachet.rotation.set(lerp(-.9,0,sd),lerp(1.2,.3,sd),lerp(.5,0,sd));
+  const sd=seg(t,.38,.48);
+  // Keep BOTH pouches in the approved camera window, then settle on the
+  // actual liner floor before the existing blood becomes visible. Cameras,
+  // lid timing and fill/gel timing remain untouched.
+  const dropY=t<.46?lerp(70,-190,seg(t,.38,.46)):lerp(-190,-264,seg(t,.46,.535));
+  // Side-by-side along the camera's screen-horizontal axis. At rest the
+  // 34 x 46 mm pouches + seals fit within the real ~49 mm lower liner radius.
+  sachets.forEach((pouch,i)=>{
+   const side=i===0?-1:1;
+   pouch.visible=t>.37;
+   pouch.rotation.set(lerp(-.9,0,sd),lerp(1.2,.6,sd),lerp(.5,0,sd));
+   const offset=new THREE.Vector3(side*19,0,0).applyEuler(pouch.rotation);
+   pouch.position.copy(offset);pouch.position.y+=dropY;
+  });
   const fill=seg(t,.53,.64);fluid.visible=fill>.005;fluid.scale.y=Math.max(.001,fill);
   U.uR.value=lerp(0,280,seg(t,.65,.78));
   const pos=fluid.geometry.attributes.position,base=fluid.geometry.userData.baseY,HH=fluid.geometry.userData.H||82,rt=fluid.geometry.userData.rTop||54;
@@ -377,7 +394,7 @@ function frame(now){requestAnimationFrame(frame);
   ct.lerp(fW,w);
  }
 
- window.__qa={t, camera:cp.toArray(),target:ct.toArray(),lidY:lidG.position.y};
+ window.__qa={t, camera:cp.toArray(),target:ct.toArray(),lidY:lidG.position.y,sachets:sachets.map(p=>({name:p.name,visible:p.visible,position:p.position.toArray(),rotation:p.rotation.toArray().slice(0,3)}))};
  C.position.copy(cp);C.lookAt(ct);const d=cp.distanceTo(ct);C.near=Math.max(1,d*.05);C.far=d+1500;C.updateProjectionMatrix();
  R.render(S,C);}
 requestAnimationFrame(frame);
