@@ -756,9 +756,9 @@ def build(write):
     # Boss order 2026-10-28: products before impact so visitors see what Abadis
     # makes first. hero → about → products → impact → why →
     # calculator / Zagros → news + articles → memberships → customers.
-    import factory_hero
+    import fingerprint_hero
     main = '\n'.join([
-        factory_hero.hero('', 'fa'),
+        fingerprint_hero.hero('', 'fa'),
         about_v2(),
         products_v2(),
         impact_section(),
@@ -771,8 +771,8 @@ def build(write):
     import w2_orbit
     extra_head = '''<link rel="stylesheet" href="assets/css/home.css?v=20261028f">
 ''' + logo_scroll_css('') + '\n' + counter_options_css('') + '\n' + w2_orbit.assets('')
-    extra_head += '\n' + factory_hero.head('')
-    scripts = factory_hero.scripts('') + logo_scroll_scripts('') + counter_options_script('')
+    extra_head += '\n' + fingerprint_hero.head('')
+    scripts = fingerprint_hero.scripts('') + logo_scroll_scripts('') + counter_options_script('')
     html = page(
         '', None, HOME_TITLE, HOME_DESC, main,
         fa_path='', canonical_path='',

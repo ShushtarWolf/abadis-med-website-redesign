@@ -293,7 +293,7 @@ def scripts(p):
     return f'<script type="module" src="{p}assets/js/factory-3d.js?v={V}"></script>\n'
 
 
-def hero(p, lang='fa', quote_href=None, skip_to='#about'):
+def hero(p, lang='fa', quote_href=None, skip_to='#about', section_id='intro'):
     t = T[lang]
     cfg = {
         'lang': lang,
@@ -307,7 +307,7 @@ def hero(p, lang='fa', quote_href=None, skip_to='#about'):
     pills = ''.join(
         f'<button type="button" class="f3d-pill" data-i="{i}"><b>{num(i + 1, lang)}</b><span>{esc(lb)}</span></button>'
         for i, lb in enumerate(t['labels'][:len(t['stations'])]))
-    return f'''  <section class="f3d" id="intro" aria-label="{esc(t['h1a'] + t['h1b'] + t['h1c'])}">
+    return f'''  <section class="f3d" id="{esc(section_id)}" aria-label="{esc(t['h1a'] + t['h1b'] + t['h1c'])}">
     <script type="application/json" class="f3d-cfg">{json.dumps(cfg, ensure_ascii=False)}</script>
     <div class="f3d-stage">
       <canvas class="f3d-gl" aria-hidden="true"></canvas>

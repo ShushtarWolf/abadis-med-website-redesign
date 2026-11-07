@@ -221,9 +221,14 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
             import pages_products
             benefits = '\n' + pages_products.bag_benefits(lang, p) + '\n'
         if site_path in ('about-us/', 'من-نحن/'):
-            from pages_company import about_hero
-            hero = about_hero(p, lang, esc(title), crumbs(p, trail, lang=lang))
-            main = f'''{hero}{sec}{after}'''
+            import factory_hero
+            # Factory 3D tour lives on About (moved from home).
+            hero = factory_hero.hero(p, lang, skip_to='#intro', section_id='plant')
+            about_sec = (
+                f'\n  <section class="section" id="intro"><div class="wrap{wrap}">{body}</div></section>'
+                if body.strip() else ''
+            )
+            main = f'''{hero}{about_sec}{after}'''
         elif site_path in ('our-customers/', 'customers/'):
             from pages_company import customers_hero
             cust_h1 = 'Abadis Green Family · <em>Our Customers</em>' if lang == 'en' else 'عائلة آباديس الخضراء · <em>عملاؤنا</em>'
@@ -249,7 +254,12 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
     if site_path in ('about-us/', 'من-نحن/', 'our-customers/', 'customers/', 'sdgs/', 'collaboration-opportunities/'):
         from pages_company import about_motion_tags
         extra_head, motion_js = about_motion_tags(p)
-        extra_js = motion_js + extra_js
+        if site_path in ('about-us/', 'من-نحن/'):
+            import factory_hero
+            extra_head = factory_hero.head(p) + '\n' + extra_head
+            extra_js = factory_hero.scripts(p) + motion_js + extra_js
+        else:
+            extra_js = motion_js + extra_js
         html_attrs = 'data-slogan="t1"'
     html = page(p, cur_key, title, desc, main, lang=lang, fa_path=fa_path, canonical_path=can,
                 scripts=extra_js, extra_head=extra_head, html_attrs=html_attrs)
