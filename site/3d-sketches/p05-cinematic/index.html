@@ -14,7 +14,7 @@
 #gl{position:absolute;inset:0;width:100%;height:100%;display:block}
 .vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 45%,transparent 45%,rgba(0,0,0,.55) 85%,rgba(0,0,0,.85) 100%)}
 .beat{position:absolute;left:50%;transform:translate(-50%,0);width:min(900px,92vw);text-align:center;opacity:0;pointer-events:none;will-change:opacity,transform}
-.beat.top{top:11vh}.beat.bot{bottom:9vh}
+.beat.top{top:11vh}.beat.bot{bottom:7vh}
 .beat h1{margin:0;font-size:clamp(32px,6vw,76px);font-weight:800;letter-spacing:-.5px;line-height:1.25;background:linear-gradient(180deg,#fff,#a9d9dc);-webkit-background-clip:text;background-clip:text;color:transparent}
 .beat h1,.beat h2{text-shadow:0 2px 18px rgba(0,0,0,.85)}.beat h3{margin:0;font-size:clamp(17px,2vw,24px);font-weight:700;color:#cfdfe0;text-shadow:0 2px 14px #000}.beat h2{margin:0;font-size:clamp(26px,4.4vw,54px);font-weight:800;line-height:1.3}
 .beat h2 em{font-style:normal;color:#5fc7cf}
@@ -30,12 +30,12 @@
 <body>
 <div class="track"><div class="stage">
 <canvas id="gl"></canvas><div class="vig"></div><div class="bar" id="bar"></div>
-<div class="beat top" data-a="0" data-b=".13"><h1>مخزن ساکشن ۱ لیتری آبادیس</h1><p>Abadis 1 L Reusable Suction Canister</p></div>
-<div class="beat bot" data-a=".17" data-b=".31"><h2>دهانهٔ باز، <em>لبهٔ دقیق</em></h2><p>Open vessel · original CAD rim</p></div>
-<div class="beat bot" data-a=".35" data-b=".51"><h2>جزئیات <em>اتصال پشت مخزن</em></h2><p>Rear mounting geometry · true to the original</p></div>
-<div class="beat top" data-a=".55" data-b=".69"><h2>پلی‌کربنات <em>شفاف</em></h2><p>Clear polycarbonate · a rigid, reusable vessel</p></div>
-<div class="beat bot" data-a=".73" data-b=".86"><h2>فرم واقعی <em>بدنه و کف</em></h2><p>Original vessel profile · no reshaping</p></div>
-<div class="beat top" style="top:8vh" data-a=".9" data-b="1.03"><h1>مخزن ساکشن آبادیس</h1><p lang="fa" style="direction:rtl;font-family:Kalameh,Tahoma,sans-serif">۱ لیتر · کد محصول ۰۴۰۲۰۱۱</p><p>1 L · Product code 0402011</p></div>
+<div class="beat top" data-a="0" data-b=".19"><h1>مخزن ساکشن ۱ لیتری آبادیس</h1><p>Abadis 1 L Reusable Suction Canister</p></div>
+<div class="beat bot" data-a=".24" data-b=".38"><h2>دهانهٔ باز، <em>لبهٔ دقیق</em></h2><p>Open vessel · original CAD rim</p></div>
+<div class="beat bot" data-a=".46" data-b=".57"><h2>جزئیات <em>اتصال پشت مخزن</em></h2><p>Rear mounting geometry · true to the original</p></div>
+<div class="beat bot" data-a=".60" data-b=".69"><h2>پلی‌کربنات <em>شفاف</em></h2><p>Clear polycarbonate · a rigid, reusable vessel</p></div>
+<div class="beat bot" data-a=".71" data-b=".85"><h2>فرم واقعی <em>بدنه و کف</em></h2><p>Original vessel profile · no reshaping</p></div>
+<div class="beat top" style="top:8vh" data-a=".91" data-b="1.03"><h1>مخزن ساکشن آبادیس</h1><p lang="fa" style="direction:rtl;font-family:Kalameh,Tahoma,sans-serif">۱ لیتر · کد محصول ۰۴۰۲۰۱۱</p><p>1 L · Product code 0402011</p></div>
 <img class="logo" id="logo" src="../../assets/img/abadis-logo-white.svg" alt="Abadis Med">
 <div class="hint" id="hint">اسکرول کنید · Scroll<i></i></div>
 </div></div>
@@ -118,32 +118,32 @@ new GLTFLoader().load('p05-1l-canister-cad.glb',g=>{
 },undefined,e=>{console.error(e);window.__ready='error';});
 const V=(x,y,z)=>new THREE.Vector3(x,y,z),cl=x=>Math.min(1,Math.max(0,x));
 const ease=x=>{x=cl(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;};
-// Deliberately composed, scrub-only moves. No idle drift, exploded parts or fake mechanisms.
+// Approved five-view film: readable front three-quarter, gently raised rim,
+// brief rear mount, low base, full product. Polar interpolation preserves
+// stand-off during the restrained out-and-back orbit; no chord through CAD.
+// [scroll, azimuth deg, elevation deg, distance, vertical focus]
 const KF=[
- [0,V(230,105,620),V(0,-45,0)],
- [.06,V(285,90,580),V(0,-45,0)],
- [.12,V(310,100,520),V(0,-45,0)],
- [.17,V(205,150,265),V(0,-22,0)],
- [.24,V(170,170,220),V(0,-20,0)],
- [.30,V(125,180,225),V(0,-24,0)],
- [.34,V(255,95,-230),V(8,-47,-38)],
- [.40,V(165,12,-250),V(0,-49,-69)],
- [.47,V(95,-5,-250),V(0,-51,-73)],
- [.52,V(230,30,-360),V(0,-80,-12)],
- [.56,V(315,-32,210),V(0,-92,0)],
- [.62,V(275,-40,200),V(0,-95,0)],
- [.69,V(240,-35,250),V(0,-100,0)],
- [.73,V(230,-105,235),V(0,-153,0)],
- [.80,V(180,-115,270),V(0,-152,0)],
- [.86,V(225,-50,380),V(0,-107,0)],
- [.92,V(255,90,610),V(0,-45,0)],
- [1,V(230,100,620),V(0,-80,0)]
+ [0,-16,9,660,-68],
+ [.16,-20,9,650,-68],
+ [.30,-20,19,610,-110],
+ [.36,-23,19,610,-110],
+ [.48,-158,10,590,-110],
+ [.54,-165,8,590,-110],
+ [.72,-20,-3,610,-112],
+ [.81,-16,-2,620,-112],
+ [.93,-17,8,660,-70],
+ [1,-16,9,660,-68]
 ];
-// Portrait camera distance preserves full vessel and text separation at every detail.
-if(mob)for(const k of KF)k[1].sub(k[2]).multiplyScalar(k[0]<.14||k[0]>.88?1.08:(k[0]>.54&&k[0]<.71?1.85:1.7)).add(k[2]);
 const qp=new URLSearchParams(location.search),beats=[...document.querySelectorAll('.beat')];
 const cp=new THREE.Vector3(),ct=new THREE.Vector3();let T=0,last=0;
-function sample(t){let a=KF[0],b=KF.at(-1);for(let i=0;i<KF.length-1;i++)if(t>=KF[i][0]&&t<=KF[i+1][0]){a=KF[i];b=KF[i+1];break;}const k=ease((t-a[0])/Math.max(.0001,b[0]-a[0]));cp.lerpVectors(a[1],b[1],k);ct.lerpVectors(a[2],b[2],k);}
+function sample(t){
+ let a=KF[0],b=KF.at(-1);for(let i=0;i<KF.length-1;i++)if(t>=KF[i][0]&&t<=KF[i+1][0]){a=KF[i];b=KF[i+1];break;}
+ const k=ease((t-a[0])/Math.max(.0001,b[0]-a[0])),mix=i=>THREE.MathUtils.lerp(a[i],b[i],k);
+ const az=THREE.MathUtils.degToRad(mix(1)),el=THREE.MathUtils.degToRad(mix(2));
+ // Portrait-safe stand-off holds the real silhouette and bracket inside frame.
+ const distance=mob?Math.max(660+90*Math.pow(Math.sin(az),2),mix(3)*1.03):mix(3);
+ ct.set(0,mix(4),-10*Math.pow(Math.sin(az),2));cp.set(Math.sin(az)*Math.cos(el),Math.sin(el),Math.cos(az)*Math.cos(el)).multiplyScalar(distance).add(ct);
+}
 function resize(){R.setSize(stage.clientWidth,stage.clientHeight,false);C.aspect=stage.clientWidth/stage.clientHeight;C.updateProjectionMatrix();}new ResizeObserver(resize).observe(stage);resize();
 function frame(now){requestAnimationFrame(frame);const dt=Math.min(.1,(now-(last||now))/1000);last=now;
  const max=document.documentElement.scrollHeight-innerHeight;const target=qp.has('t')?cl(+qp.get('t')):cl(scrollY/Math.max(1,max));T+=(target-T)*(qp.has('t')?1:1-Math.exp(-dt*3.2));sample(T);
