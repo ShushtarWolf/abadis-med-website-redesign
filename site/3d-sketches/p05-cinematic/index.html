@@ -62,9 +62,37 @@ const pc=new THREE.MeshPhysicalMaterial({color:0xf3f8fa,roughness:.075,metalness
 const mountPC=pc.clone();mountPC.roughness=.16;mountPC.opacity=.56;mountPC.thickness=3.4;
 // Thin clear PC: edge-weighted alpha makes the rear CAD mount readable through
 // the real wall. A real-time optical approximation, not a new shell or coating.
+// Genuine 1L manufacturer's print, extracted from AMR_4901-scaled-1.jpg.
+// No synthesized logo, type, graduation tick or volume number.
+let cadReady=false,inkReady=false;
+const markReady=()=>{if(cadReady&&inkReady)window.__ready=true;};
+const officialInk=new THREE.TextureLoader().load('tex/official-1l-print.png',()=>{inkReady=true;markReady();},undefined,e=>{console.error(e);window.__ready='error';});
+officialInk.colorSpace=THREE.SRGBColorSpace;officialInk.anisotropy=Math.min(8,R.capabilities.getMaxAnisotropy());
 for(const m of [pc,mountPC]){m.onBeforeCompile=shader=>{
- shader.fragmentShader=shader.fragmentShader.replace('#include <opaque_fragment>',"diffuseColor.a *= .18 + .82 * pow(1. - abs(dot(normal, normalize(vViewPosition))), 2.2);\n#include <opaque_fragment>");
-};m.customProgramCacheKey=()=> 'clear-pc-edge-alpha-v1';}
+ const glassAlpha="diffuseColor.a *= .18 + .82 * pow(1. - abs(dot(normal, normalize(vViewPosition))), 2.2);";
+ if(m===pc){
+  shader.uniforms.uOfficialInk={value:officialInk};
+  shader.vertexShader=shader.vertexShader.replace('#include <common>','#include <common>\nattribute float printOuter; varying vec3 vInkPos; varying vec3 vInkWorld; varying float vInkOuter;').replace('#include <begin_vertex>','#include <begin_vertex>\nvInkPos=position;vInkWorld=(modelMatrix*vec4(position,1.)).xyz;vInkOuter=printOuter;');
+  shader.fragmentShader=shader.fragmentShader.replace('#include <common>','#include <common>\nuniform sampler2D uOfficialInk;varying vec3 vInkPos;varying vec3 vInkWorld;varying float vInkOuter;');
+  shader.fragmentShader=shader.fragmentShader.replace('#include <opaque_fragment>',glassAlpha+`
+   vec2 inkUV=vec2(.5+atan(vInkPos.x,vInkPos.z)/6.28318530718,1.+vInkPos.y/183.);
+   vec4 ink=texture2D(uOfficialInk,inkUV);
+   // Exterior cylinder triangles only, front-facing only: no inner-wall,
+   // rear-wall or bracket duplication, and no mirrored reverse-side logo.
+   // Geometric facing, independent of Three's two-pass transparent
+   // DoubleSide frontFace reversal (gl_FrontFacing alone mirrors the print).
+   float exteriorFacing=step(.02,dot(normalize(vec3(vInkPos.x,0.,vInkPos.z)),normalize(cameraPosition-vInkWorld)));
+   float inkA=ink.a*vInkOuter*exteriorFacing;
+   if(inkA>0.){
+   float printedAlpha=inkA+(1.-inkA)*diffuseColor.a;
+   // Coverage-correct ink over clear PC; the sRGB texture is decoded by GPU.
+   // Preserve real photo antialiasing without a pale glass halo around glyphs.
+   outgoingLight=(outgoingLight*diffuseColor.a*(1.-inkA)+ink.rgb*inkA)/max(printedAlpha,.00001);
+   diffuseColor.a=printedAlpha;
+   }
+   #include <opaque_fragment>`);
+ }else shader.fragmentShader=shader.fragmentShader.replace('#include <opaque_fragment>',glassAlpha+'\n#include <opaque_fragment>');
+};m.customProgramCacheKey=()=>m===pc?'clear-pc-official-photo-ink-v2':'clear-pc-edge-alpha-v1';}
 const root=new THREE.Group();S.add(root);
 // Soft studio contact shadow only; not a product part.
 const sc=document.createElement('canvas');sc.width=sc.height=256;const sx=sc.getContext('2d');const sg=sx.createRadialGradient(128,128,10,128,128,128);sg.addColorStop(0,'rgba(0,0,0,.65)');sg.addColorStop(.48,'rgba(0,0,0,.22)');sg.addColorStop(1,'rgba(0,0,0,0)');sx.fillStyle=sg;sx.fillRect(0,0,256,256);
@@ -73,8 +101,20 @@ new GLTFLoader().load('p05-1l-canister-cad.glb',g=>{
  let triangles=0;g.scene.traverse(o=>{if(!o.isMesh)return;
   // Normals only: actual vertices and silhouette are untouched.
   let geo=o.geometry.clone();geo.deleteAttribute('normal');geo=mergeVertices(geo,1e-5);geo=toCreasedNormals(geo,Math.PI/3);
+  if(o.name==='vessel'){
+   const pos=geo.attributes.position,outer=new Float32Array(pos.count);let outerTriangles=0;
+   for(let i=0;i<pos.count;i+=3){
+    const a=new THREE.Vector3().fromBufferAttribute(pos,i),b=new THREE.Vector3().fromBufferAttribute(pos,i+1),c=new THREE.Vector3().fromBufferAttribute(pos,i+2);
+    const n=b.clone().sub(a).cross(c.clone().sub(a)).normalize();
+    const radial=a.clone().add(b).add(c);radial.y=0;radial.normalize();
+    const exterior=n.dot(radial)>.95&&Math.abs(n.y)<.2;
+    if(exterior){outer.fill(1,i,i+3);outerTriangles++;}
+   }
+   geo.setAttribute('printOuter',new THREE.BufferAttribute(outer,1));
+   window.__branding={outerTriangles,innerInkTriangles:0,source:'official AMR_4901 1L photo',mapping:'front exterior only, no mirrored inner/back print'};
+  }
   const m=new THREE.Mesh(geo,o.name==='vessel'?pc:mountPC);m.name=o.name;root.add(m);triangles+=geo.attributes.position.count/3;
- });window.__cad={triangles,parts:root.children.map(o=>o.name),bounds:new THREE.Box3().setFromObject(root).getSize(new THREE.Vector3()).toArray()};window.__ready=true;
+ });window.__cad={triangles,parts:root.children.map(o=>o.name),bounds:new THREE.Box3().setFromObject(root).getSize(new THREE.Vector3()).toArray()};cadReady=true;markReady();
 },undefined,e=>{console.error(e);window.__ready='error';});
 const V=(x,y,z)=>new THREE.Vector3(x,y,z),cl=x=>Math.min(1,Math.max(0,x));
 const ease=x=>{x=cl(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;};
