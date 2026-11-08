@@ -576,7 +576,9 @@ def about(write):
         h3 = f'<h3 lang="en">{esc(label)}</h3>' if key == 'imed' else f'<h3>{esc(label)}</h3>'
         cert_blocks.append(f'<div class="cert-group reveal" id="certs-{key}">{h3}<div class="cert-wall">{"".join(grouped[key])}</div></div>')
     certs_html = f'<div class="cert-groups">{"".join(cert_blocks)}</div>'
-    hero = about_hero(p, 'fa', 'آشنایی با <em>آبادیس</em>', crumbs_html(p))
+    import factory_hero
+    # Factory 3D tour moved from home → About us (hero). Content #intro stays below.
+    hero = factory_hero.hero(p, 'fa', skip_to='#intro', section_id='plant')
     main = f'''{hero}
   <nav class="anchors" aria-label="بخش‌های صفحه"><div class="wrap"><a href="#intro">درباره ما</a><a href="#history">تاریخچه</a><a href="#why">چرا آبادیس؟</a><a href="#memberships">عضویت‌ها</a><a href="#certs">مجوزها و گواهینامه‌ها</a><a href="#partners">شرکای تجاری</a><a href="#team">تیم اجرایی</a></div></nav>
   <section class="section" id="intro"><div class="wrap prose" style="max-width:1000px">
@@ -601,8 +603,8 @@ def about(write):
   </div></section>'''
     head_css, motion_js = about_motion_tags(p)
     write('about/index.html', page(p, 'about', 'آشنایی با ما', lead[:160], main, lightbox=True,
-          extra_head=head_css, html_attrs='data-slogan="t1"',
-          scripts=motion_js + f'<script src="{p}assets/js/motion.js" defer></script>\n'))
+          extra_head=factory_hero.head(p) + '\n' + head_css, html_attrs='data-slogan="t1"',
+          scripts=factory_hero.scripts(p) + motion_js + f'<script src="{p}assets/js/motion.js" defer></script>\n'))
 
 
 def crumbs_html(p):
