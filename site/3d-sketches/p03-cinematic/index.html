@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="../../assets/img/favicon-32.png"><title>کیسه ساکشن ۳ لیتری آبادیس | Abadis Med</title>
+<style>
+@font-face{font-family:Kalameh;src:url(../../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Kalameh;src:url(../../assets/fonts/kalameh/KalamehWeb-FaNum-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Kalameh;src:url(../../assets/fonts/kalameh/KalamehWeb-FaNum-ExtraBold.woff2) format("woff2");font-weight:800}
+*{box-sizing:border-box}html,body{margin:0;background:radial-gradient(120% 90% at 50% 40%,#0f1b20 0%,#05090b 60%,#020405 100%) fixed,#04080a;color:#f2f7f7;font-family:Kalameh,Tahoma,sans-serif}
+.provenance{position:absolute;top:12px;left:4vw;right:4vw;text-align:center;font-size:11px;line-height:1.45;color:#a4bfc2;pointer-events:none}.provenance .en{font-family:Arial,sans-serif;direction:ltr}
+.track{height:1800vh;position:relative}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block}
+.vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 45%,transparent 45%,rgba(0,0,0,.55) 85%,rgba(0,0,0,.85) 100%)}
+.beat{position:absolute;left:50%;transform:translate(-50%,0);width:min(900px,92vw);text-align:center;opacity:0;pointer-events:none;will-change:opacity,transform}
+.beat.top{top:11vh}.beat.bot{bottom:9vh}
+.beat h1{margin:0;font-size:clamp(32px,6vw,76px);font-weight:800;letter-spacing:-.5px;line-height:1.25;background:linear-gradient(180deg,#fff,#a9d9dc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.beat h1,.beat h2{text-shadow:0 2px 18px rgba(0,0,0,.85)}.beat h3{margin:0;font-size:clamp(17px,2vw,24px);font-weight:700;color:#cfdfe0;text-shadow:0 2px 14px #000}.beat h2{margin:0;font-size:clamp(26px,4.4vw,54px);font-weight:800;line-height:1.3}
+.beat h2 em{font-style:normal;color:#5fc7cf}
+.beat p{margin:10px 0 0;font:500 clamp(13px,1.4vw,17px)/1.4 Inter,"Segoe UI",Arial,sans-serif;color:#9fb8ba;direction:ltr;letter-spacing:.2px}
+.logo{position:absolute;right:4vw;bottom:4vh;width:min(190px,44vw);opacity:0}
+.hint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font-size:13px;color:#8aa;letter-spacing:.3px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.hint i{width:1px;height:28px;background:linear-gradient(#8aa,transparent)}
+@media(min-width:701px){.hint{left:7vw;transform:none}}
+.bar{position:absolute;top:0;left:0;height:2px;background:#2e7f96;width:0}
+</style>
+<script type="importmap">{"imports":{"three":"../../assets/vendor/three/build/three.module.js","three/addons/":"../../assets/vendor/three/examples/jsm/"}}</script>
+</head>
+<body>
+<div class="track"><div class="stage">
+<canvas id="gl"></canvas><div class="provenance">بازسازی اندازه‌ای از CAD دو لیتری و ابعاد سازنده؛ نه CAD اصلی ۳ لیتری<div class="en">Size-adapted reconstruction · 2L CAD + manufacturer dimensions · not original 3L CAD</div></div><div class="vig"></div><div class="bar" id="bar"></div>
+<div class="beat top" data-a="0" data-b=".09"><h1>کیسه ساکشن ۳ لیتری آبادیس</h1><p>Abadis 3 L Suction Liner Bag</p></div>
+<div class="beat bot" data-a=".12" data-b=".23"><h2>پورت <em>بیمار</em> با درپوش بنددار</h2><p>PATIENT port with tethered cap</p></div>
+<div class="beat bot" data-a=".26" data-b=".37"><h2>فیلتر قطع کننده زیر پورت <em>خلا</em><br>از سرریز جلوگیری می‌کند</h2><p>The flow stopper filter under the VACUUM port stops overflow</p></div>
+<div class="beat bot" data-a=".39" data-b=".565"><h2>پودر جاذب در <em>سه ساشهٔ دربسته</em></h2><p>Absorbent powder sealed in three mesh sachets</p></div>
+<div class="beat top" data-a=".56" data-b=".65"><h2>ترشحات داخل <em>کیسه</em> جمع می‌شود</h2><p>Fluid collects inside the liner bag</p></div>
+<div class="beat top" data-a=".66" data-b=".78"><h2>پودر جاذب <em>مایع را ژل می‌کند</em></h2><p>Absorbent powder turns fluid into gel</p></div>
+<div class="beat bot" data-a=".8" data-b=".9"><h2>کیسه <em>PE نرم</em>، یکبارمصرف</h2><p>Soft PE liner · single use</p></div>
+<div class="beat top" style="top:max(90px,11vh)" data-a=".92" data-b="1.01"><h1>کیسه ساکشن ۳ لیتری آبادیس</h1><p>۳ لیتر · قطر ۱۱ × ارتفاع ۳۹ سانتی‌متر (اسمی)</p><p style="margin-top:4px">3 L · Ø 11 × H 39 cm (manufacturer nominal)</p></div>
+<img class="logo" id="logo" src="../../assets/img/abadis-logo-white.svg" alt="Abadis Med">
+<div class="hint" id="hint">اسکرول کنید · Scroll<i></i></div>
+</div></div>
+
+<script type="module">
+import * as THREE from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {mergeVertices,toCreasedNormals} from 'three/addons/utils/BufferGeometryUtils.js';
+const mob=matchMedia('(max-width:700px),(pointer:coarse)').matches;
+const cv=document.getElementById('gl'),stage=cv.parentElement;
+const R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true,powerPreference:'high-performance',logarithmicDepthBuffer:true});
+R.setPixelRatio(Math.min(devicePixelRatio,mob?1.75:2));R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.02;
+R.shadowMap.enabled=!mob;R.shadowMap.type=THREE.PCFSoftShadowMap;
+const S=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(R);S.environment=pm.fromScene(new RoomEnvironment(),.05).texture;S.environmentIntensity=.42;
+const C=new THREE.PerspectiveCamera(mob?32:26,1,2,3000);
+const key=new THREE.DirectionalLight(0xfff2ea,1.35);key.position.set(-140,480,260);key.castShadow=true;key.shadow.mapSize.set(2048,2048);
+Object.assign(key.shadow.camera,{left:-200,right:200,top:200,bottom:-200,near:60,far:1400});key.shadow.radius=18;key.shadow.bias=-.00035;S.add(key);
+const fillL=new THREE.DirectionalLight(0xfff8f2,1.35);fillL.position.set(100,220,200);S.add(fillL);
+const fill2=new THREE.DirectionalLight(0xdde8ea,.55);fill2.position.set(-80,-40,120);S.add(fill2);
+const rim=new THREE.DirectionalLight(0x7ecad4,.95);rim.position.set(240,140,-320);S.add(rim);
+const hemi=new THREE.HemisphereLight(0xf0f6f7,0x1a1814,.85);S.add(hemi);
+const under=new THREE.PointLight(0xfff8f2,.45,750,1.9);under.position.set(20,-30,140);S.add(under);
+function radTex(stops){const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');const g=x.createRadialGradient(128,128,0,128,128,128);stops.forEach(s=>g.addColorStop(...s));x.fillStyle=g;x.fillRect(0,0,256,256);return new THREE.CanvasTexture(c);}
+function floorPlane(sz,tex,y){const m=new THREE.Mesh(new THREE.PlaneGeometry(sz,sz),new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.y=y;S.add(m);return m;}
+floorPlane(1100,radTex([[0,'rgba(46,127,150,.28)'],[.55,'rgba(46,127,150,.08)'],[1,'rgba(46,127,150,0)']]),-414);
+floorPlane(300,radTex([[0,'rgba(0,0,0,.72)'],[.5,'rgba(0,0,0,.2)'],[1,'rgba(0,0,0,0)']]),-413.6);
+const sr=new THREE.Mesh(new THREE.PlaneGeometry(650,650),new THREE.ShadowMaterial({opacity:.08}));sr.rotation.x=-Math.PI/2;sr.position.y=-413.4;sr.receiveShadow=true;S.add(sr);
+const TL=new THREE.TextureLoader();
+const filmT=TL.load('tex/film-bump.jpg');filmT.wrapS=filmT.wrapT=THREE.RepeatWrapping;filmT.repeat.set(5,4);
+const weaveT=TL.load('tex/sachet-weave.jpg');weaveT.wrapS=weaveT.wrapT=THREE.RepeatWrapping;weaveT.repeat.set(3,4);
+const TEAL=0x0a6176;
+const ppMicro=TL.load('tex/pp-micro-bump.jpg');ppMicro.wrapS=ppMicro.wrapT=THREE.RepeatWrapping;ppMicro.repeat.set(14,14);
+const filtDiff=TL.load('tex/filter-diffuse.jpg');filtDiff.wrapS=filtDiff.wrapT=THREE.ClampToEdgeWrapping;
+const filtBump=TL.load('tex/filter-bump.jpg');filtBump.wrapS=filtBump.wrapT=THREE.ClampToEdgeWrapping;
+const M={
+ /* Satin PP outer — FrontSide so rim has real thickness with lidIn, not paper-thin DoubleSide */
+ lid:new THREE.MeshPhysicalMaterial({color:TEAL,roughness:.62,metalness:.01,clearcoat:.08,clearcoatRoughness:.7,sheen:.08,sheenColor:0x4a9aa6,envMapIntensity:.45,bumpMap:ppMicro,bumpScale:mob?.45:.7,roughnessMap:ppMicro,side:THREE.FrontSide}),
+ /* Opaque underside shell — never hide; slightly darker for contact AO */
+ lidIn:new THREE.MeshPhysicalMaterial({color:0x085a6c,roughness:.7,metalness:.01,clearcoat:.05,clearcoatRoughness:.8,side:THREE.BackSide,envMapIntensity:.35,polygonOffset:true,polygonOffsetFactor:2,polygonOffsetUnits:2,bumpMap:ppMicro,bumpScale:.45}),
+ bag:new THREE.MeshPhysicalMaterial({color:0xeef3f4,roughness:.62,metalness:0,transparent:true,opacity:.16,bumpMap:filmT,bumpScale:mob?2.8:3.6,roughnessMap:filmT,side:THREE.DoubleSide,depthWrite:false,clearcoat:.12,clearcoatRoughness:.65}),
+ bagIn:new THREE.MeshPhysicalMaterial({color:0xe4ecee,roughness:.85,transparent:true,opacity:.08,side:THREE.BackSide,depthWrite:false}),
+ sachet:new THREE.MeshPhysicalMaterial({color:0xf3f3ef,roughness:.85,bumpMap:weaveT,bumpScale:1.2,map:weaveT,sheen:.6,sheenColor:0xffffff}),
+ /* Opaque white porous disc — photo texture, no glassiness */
+ filter:new THREE.MeshStandardMaterial({color:0xffffff,roughness:.95,metalness:0,map:filtDiff,bumpMap:filtBump,bumpScale:3.2,roughnessMap:filtBump,envMapIntensity:.15,side:THREE.DoubleSide}),
+};
+const U={uR:{value:0},uC:{value:new THREE.Vector3(10,-400,0)}};
+const fluidM=new THREE.MeshPhysicalMaterial({color:0x5a050f,roughness:.08,metalness:0,transmission:.06,transparent:true,opacity:.95,clearcoat:.85,clearcoatRoughness:.12,attenuationColor:0x2a0003,attenuationDistance:20,thickness:20,ior:1.36});
+const GK='float gd=distance(vWp,uC)+6.*sin(vWp.x*.3)*sin(vWp.z*.27+vWp.y*.2);float gk=1.-smoothstep(uR-14.,uR,gd);';
+fluidM.customProgramCacheKey=()=>'gelfluid2';fluidM.onBeforeCompile=sdr=>{window.__gel=1;Object.assign(sdr.uniforms,U);
+ sdr.vertexShader=sdr.vertexShader.replace('#include <common>','#include <common>\nvarying vec3 vWp;').replace('#include <project_vertex>','#include <project_vertex>\nvWp=(modelMatrix*vec4(transformed,1.)).xyz;');
+ sdr.fragmentShader=sdr.fragmentShader.replace('#include <common>','#include <common>\nvarying vec3 vWp;uniform float uR;uniform vec3 uC;')
+  .replace('#include <color_fragment>','#include <color_fragment>\n'+GK+'float depth=smoothstep(-411.,-206.,vWp.y);diffuseColor.rgb=mix(diffuseColor.rgb*1.12,diffuseColor.rgb*.55,depth*.55);diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.04,.002,.005)*(.9+.15*sin(vWp.x*.12+vWp.y*.09)),gk);diffuseColor.a=mix(diffuseColor.a,1.,gk);')
+  .replace('#include <roughnessmap_fragment>','#include <roughnessmap_fragment>\nroughnessFactor=mix(roughnessFactor,.9,gk);');};
+function clipFilterCavity(geo,cx,cz,rMax,y0,y1){
+ // Exact polygon subtraction of a 48-sided pocket, not whole-triangle deletion.
+ // This preserves the CAD around the photo-guided disc without torn seams.
+ const src=geo.index?geo.toNonIndexed():geo.clone(),p=src.attributes.position,out=[];
+ const planes=[{n:[0,1,0],d:y1},{n:[0,-1,0],d:-y0}];
+ for(let j=0;j<48;j++){const a=j/48*Math.PI*2,n=[Math.cos(a),0,Math.sin(a)];planes.push({n,d:rMax+n[0]*cx+n[2]*cz});}
+ const emit=poly=>{for(let j=1;j<poly.length-1;j++)out.push(...poly[0],...poly[j],...poly[j+1]);};
+ function split(poly,plane){const inn=[],ext=[],n=plane.n,d=plane.d;
+  const dist=v=>v[0]*n[0]+v[1]*n[1]+v[2]*n[2]-d;
+  for(let j=0;j<poly.length;j++){const a=poly[j],b=poly[(j+1)%poly.length],da=dist(a),db=dist(b),ia=da<=0,ib=db<=0;
+   (ia?inn:ext).push(a);
+   if(ia!==ib){const k=da/(da-db),v=a.map((x,i)=>x+(b[i]-x)*k);inn.push(v);ext.push(v);}
+  }return [inn,ext];
+ }
+ for(let i=0;i<p.count;i+=3){
+  let poly=[0,1,2].map(j=>[p.getX(i+j),p.getY(i+j),p.getZ(i+j)]);
+  const xs=poly.map(v=>v[0]),ys=poly.map(v=>v[1]),zs=poly.map(v=>v[2]);
+  if(Math.max(...xs)<cx-rMax||Math.min(...xs)>cx+rMax||Math.max(...zs)<cz-rMax||Math.min(...zs)>cz+rMax||Math.max(...ys)<y0||Math.min(...ys)>y1){emit(poly);continue;}
+  for(const plane of planes){const [inn,ext]=split(poly,plane);if(ext.length>=3)emit(ext);poly=inn;if(poly.length<3)break;}
+ }
+ let result=new THREE.BufferGeometry();result.setAttribute('position',new THREE.Float32BufferAttribute(out,3));result=mergeVertices(result,2e-4);result.computeVertexNormals();return result;
+}
+function tuckBagTop(g){
+ /* Bag ends at y=-24, lid skirt bottom at -23: pull the top lip up and just
+  * inside the skirt (r<=55.2) so the film disappears under the rim, no gap. */
+ const p=g.attributes.position;
+ for(let i=0;i<p.count;i++){const y=p.getY(i);if(y<-30)continue;
+  const k=(y+30)/6; const x=p.getX(i),z=p.getZ(i),r=Math.hypot(x,z);
+  const ny=y+k*7, nr=Math.min(r,55.2+ (1-k)*(r-55.2));
+  if(r>1e-3){p.setX(i,x/r*nr);p.setZ(i,z/r*nr);} p.setY(i,ny);}
+ p.needsUpdate=true;g.computeVertexNormals();return g;}
+function clampCollar(g){
+ /* CAD collar lugs (r≤60.4) poke through the lid skirt (r 55.9@y-23 → 60.4@y-13).
+  * Pull collar verts just inside the skirt profile; hidden part, no visible change. */
+ const p=g.attributes.position;
+ for(let i=0;i<p.count;i++){const y=p.getY(i),x=p.getX(i),z=p.getZ(i),r=Math.hypot(x,z);
+  const sk=55.9+cl((y+23)/10)*4.5-0.8; if(r>sk){p.setX(i,x/r*sk);p.setZ(i,z/r*sk);}}
+ p.needsUpdate=true;g.computeVertexNormals();return g;}
+function cleanBag(geo){let g=geo.clone();['normal','uv','uv1','tangent','color'].forEach(a=>g.deleteAttribute(a));g=mergeVertices(g,1e-3);
+ const ix=g.index.array,out=[],seen=new Set();for(let i=0;i<ix.length;i+=3){const t=[ix[i],ix[i+1],ix[i+2]];if(t[0]===t[1]||t[1]===t[2]||t[0]===t[2])continue;const k=[...t].sort((a,b)=>a-b).join();if(seen.has(k))continue;seen.add(k);out.push(...t);}
+ g.setIndex(out);return toCreasedNormals(g,Math.PI/2.4);}
+function prepSmooth(geo){let g=geo.clone();['uv1','tangent','color'].forEach(a=>g.deleteAttribute(a));
+ if(g.attributes.normal)g.deleteAttribute('normal');
+ if(g.index)g=mergeVertices(g,2e-4);
+ g.computeVertexNormals(); return g;}
+function cylUV(g,y0,y1){const p=g.attributes.position,uv=new Float32Array(p.count*2);for(let i=0;i<p.count;i++){uv[i*2]=Math.atan2(p.getZ(i),p.getX(i))/(2*Math.PI)+.5;uv[i*2+1]=(p.getY(i)-y0)/(y1-y0);}g.setAttribute('uv',new THREE.BufferAttribute(uv,2));return g;}
+function addM(parent,geo,mat){const m=new THREE.Mesh(geo,mat);m.castShadow=true;m.receiveShadow=!mob;parent.add(m);return m;}
+/* Approved P01 movement, retargeted to size-adapted 389 mm liner body. */
+function easeOutBack(x){x=cl(x);const c1=1.55,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2);}
+const lidG=new THREE.Group(),bagG=new THREE.Group(),root=new THREE.Group();S.add(root);root.add(lidG,bagG);
+const sachets=[];
+let fluid,sachet,pour,capM,fG,filtLook;const fW=new THREE.Vector3();
+const loader=new GLTFLoader();
+loader.load('p03-3l-size-adapted.glb',g=>{
+ g.scene.updateMatrixWorld(true);
+ g.scene.traverse(o=>{if(!o.isMesh)return;
+  const nm=o.name.toLowerCase();
+  let geo=o.geometry.clone().applyMatrix4(o.matrixWorld);
+  if(nm==='bag'){
+   geo=cleanBag(geo);tuckBagTop(geo);cylUV(geo,-413,-24);
+   const m=new THREE.Mesh(geo,M.bag);m.renderOrder=5;bagG.add(m);
+   const mi=new THREE.Mesh(geo,M.bagIn);mi.renderOrder=4;bagG.add(mi);
+  }else if(nm==='collar'){
+   geo=clampCollar(prepSmooth(geo));addM(bagG,geo,M.lid);
+  }else if(nm==='cap'){
+   capM=addM(lidG,prepSmooth(geo),M.lid);capM.name='UnscaledParent2LCap';
+  }else if(nm==='lid'){
+   geo=clipFilterCavity(prepSmooth(geo),30,-28,13.5,-24,-2);
+   addM(lidG,geo,M.lid);const inn=new THREE.Mesh(geo,M.lidIn);inn.renderOrder=1;lidG.add(inn);
+  }
+ });
+  /* Opaque deck plug under main lid body — fills hollow shell so hero/final
+   * never reads paper-thin. Annulus leaves VACUUM cavity open for the disc. */
+  (function solidDeck(){
+    /* Opaque underside plate with hole ONLY at VACUUM (33,-32) — stops bag bleed */
+    const sh=new THREE.Shape();
+    const N=72; for(let i=0;i<=N;i++){const a=i/N*Math.PI*2;const x=Math.cos(a)*51,y=Math.sin(a)*51; if(i===0)sh.moveTo(x,y); else sh.lineTo(x,y);}
+    const hole=new THREE.Path();
+    for(let i=0;i<=N;i++){const a=i/N*Math.PI*2;const x=30+Math.cos(a)*12.5,y=28+Math.sin(a)*12.5; if(i===0)hole.moveTo(x,y); else hole.lineTo(x,y);}
+    sh.holes.push(hole);
+    const deckGeo=new THREE.ShapeGeometry(sh,12);
+    const deck=new THREE.Mesh(deckGeo,M.lid);
+    deck.rotation.x=-Math.PI/2;deck.position.y=-3.0;deck.castShadow=true;lidG.add(deck);
+    const deck2=new THREE.Mesh(deckGeo,M.lid);
+    deck2.rotation.x=-Math.PI/2;deck2.position.y=-6.5;lidG.add(deck2);
+    const deckIn=new THREE.Mesh(deckGeo,M.lidIn);
+    deckIn.rotation.x=-Math.PI/2;deckIn.position.y=-3.15;lidG.add(deckIn);
+    /* Opaque backing just inside CAD skirt (skirt inner r≈52..56, y -23..-5):
+     * nothing behind the rim can show through. No extra visible rings. */
+    const seal=new THREE.Mesh(new THREE.CylinderGeometry(51.6,54.6,17,72,1,true),M.lidIn);
+    seal.position.y=-14;lidG.add(seal);
+  })();
+  /*
+   * PHOTO EXCEPTION: white porous flow-stopper disc + minimal teal seat.
+   * Refs: 01M6ND806 (tear-down), 01M6NCZQ (porous). NO large basin plate.
+   * Disc recessed in clear CAD cavity at (33,-14.5,-32), r≈11.5 < wall≈19.
+   */
+  fG=new THREE.Group();fG.name='PhotoFilter';
+  /* Short recessed pocket: floor + low lip only (tall open cylinder made a chord across disc) */
+  const seatFloor=new THREE.Mesh(new THREE.CylinderGeometry(11.6,11.6,1.8,48),M.lid);
+  seatFloor.position.y=-2.8;seatFloor.castShadow=true;
+  const seatLip=new THREE.Mesh(new THREE.TorusGeometry(10.9,1.5,12,48),M.lid);
+  seatLip.rotation.x=Math.PI/2;seatLip.position.y=1.6;
+  const seatWall=new THREE.Mesh(new THREE.CylinderGeometry(11.2,11.5,3.2,48,1,true),M.lid);
+  seatWall.position.y=0.2;
+  const ao=new THREE.Mesh(new THREE.RingGeometry(8.6,11.8,48),new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.42,depthWrite:false,side:THREE.DoubleSide}));
+  ao.rotation.x=-Math.PI/2;ao.position.y=-1.9;ao.renderOrder=2;
+  /* Disc sits in pocket, fully inside lip, proud of floor */
+  const disc=new THREE.Mesh(new THREE.CylinderGeometry(9.4,9.4,4.0,48),M.filter);
+  disc.position.y=0.0;disc.castShadow=true;disc.receiveShadow=!mob;
+  fG.add(seatFloor,seatWall,seatLip,ao,disc);
+  fG.position.set(30,-16.0,-28);
+  fG.rotation.x=Math.PI;
+  lidG.add(fG);
+  filtLook=new THREE.Object3D();filtLook.position.set(30,-16.0,-28);lidG.add(filtLook);
+  /* CAD assembly pose: lid skirt bottom y=-23 == collar bottom -23.05 */
+  lidG.position.y=0;
+  const sg=new THREE.BoxGeometry(34,7,46,10,2,12);const ps=sg.attributes.position;
+  for(let i=0;i<ps.count;i++){const x=ps.getX(i)/17,z=ps.getZ(i)/23;ps.setY(i,ps.getY(i)*Math.max(.12,(1-x*x)*(1-Math.pow(Math.max(0,z),6))));}
+  sg.computeVertexNormals();sachet=new THREE.Group();const smh=new THREE.Mesh(sg,M.sachet);smh.castShadow=true;sachet.add(smh);
+  const seal=new THREE.Mesh(new THREE.BoxGeometry(34,1,6),new THREE.MeshPhysicalMaterial({color:0xdedfdc,roughness:.5,transparent:true,opacity:.85,bumpMap:weaveT,bumpScale:2}));seal.position.z=25.5;sachet.add(seal);
+  // P03 contains THREE owner-confirmed illustrative sealed sachets inside ONE adapted liner.
+  // Reuse the approved sealed mesh pouch, never loose powder or a second liner.
+  sachets.push(sachet,sachet.clone(true),sachet.clone(true));
+  sachets.forEach((pouch,i)=>{pouch.name=`SealedAbsorbentSachet${i+1}`;bagG.add(pouch);});
+  const rAt=y=>48.7+(y+413)/389*7.9-2.2;const H=205,yb=-411.5;
+  const rTop=rAt(yb+H),rBot=rAt(yb);
+  const fg=new THREE.CylinderGeometry(rTop*.985,rBot*.985,H,96,20);fg.translate(0,H/2,0);
+  const fpos=fg.attributes.position,fBaseY=new Float32Array(fpos.count),fBaseXZ=new Float32Array(fpos.count*2);
+  for(let i=0;i<fpos.count;i++){
+   fBaseY[i]=fpos.getY(i);fBaseXZ[i*2]=fpos.getX(i);fBaseXZ[i*2+1]=fpos.getZ(i); const y=fBaseY[i],x=fpos.getX(i),z=fpos.getZ(i);
+   if(y>H*.78){const rr=Math.min(1,Math.hypot(x,z)/(rTop+1e-3)),ang=Math.atan2(z,x);
+    fpos.setY(i,y+Math.pow(rr,2.2)*7.2+Math.sin(ang*2)*.9*rr+Math.sin(ang*5+1.1)*.4*rr);}
+  }
+  fpos.needsUpdate=true;fg.computeVertexNormals();fg.userData.baseY=fBaseY;fg.userData.baseXZ=fBaseXZ;fg.userData.H=H;fg.userData.rTop=rTop;
+  fluid=new THREE.Mesh(fg,fluidM);fluid.position.y=yb;fluid.renderOrder=2;bagG.add(fluid);
+  const bubG=new THREE.Group();const bubM=new THREE.MeshPhysicalMaterial({color:0xffe8ea,roughness:.15,transparent:true,opacity:.3,transmission:.55,thickness:2,depthWrite:false});
+  [[8,0,12],[-14,0,-6],[18,0,-10],[-6,0,16],[12,0,-18]].forEach(([x,y,z],i)=>{const b=new THREE.Mesh(new THREE.SphereGeometry(.85+i*.12,12,10),bubM.clone());b.position.set(x,H*.9+y,z);bubG.add(b);});
+  fluid.add(bubG);window.__bub=bubG;
+  const dropG=new THREE.Group();const dropM=new THREE.MeshPhysicalMaterial({color:0x6a0812,roughness:.08,transparent:true,opacity:.7,clearcoat:.9,clearcoatRoughness:.1,depthWrite:false});
+  [[10,0,8],[-12,0,-4],[6,0,-14],[-4,0,14]].forEach(([x,y,z],i)=>{const d=new THREE.Mesh(new THREE.SphereGeometry(.55+i*.08,10,8),dropM.clone());d.position.set(x,H*.92+y,z);dropG.add(d);});
+  fluid.add(dropG);window.__drops=dropG;
+  /* thin tapered pour — short soft cone, high transmission so it reads liquid not a stick */
+  const pourGeo=new THREE.CylinderGeometry(.35,.95,70,12);pourGeo.translate(0,-35,0);
+  pour=new THREE.Mesh(pourGeo,new THREE.MeshPhysicalMaterial({color:0x8a1018,roughness:.18,transparent:true,opacity:.28,transmission:.35,thickness:3,depthWrite:false,side:THREE.DoubleSide}));
+  pour.position.set(26,-40,18);pour.rotation.z=.22;pour.rotation.x=-.06;pour.visible=false;pour.renderOrder=3;bagG.add(pour);
+  window.__ready=true;
+},undefined,e=>{console.error(e);window.__ready='error';});
+function size(){const w=stage.clientWidth,h=stage.clientHeight;R.setSize(w,h,false);C.aspect=w/h;C.updateProjectionMatrix();}
+new ResizeObserver(size).observe(stage);size();
+const cl=x=>Math.min(1,Math.max(0,x)),ease=x=>{x=cl(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;},seg=(t,a,b)=>ease((t-a)/(b-a)),lerp=(a,b,k)=>a+(b-a)*k;
+const beats=[...document.querySelectorAll('.beat')].map(e=>({e,a:+e.dataset.a,b:+e.dataset.b}));
+const logo=document.getElementById('logo'),hint=document.getElementById('hint'),bar=document.getElementById('bar');
+const qp=new URLSearchParams(location.search);
+const V=(x,y,z)=>new THREE.Vector3(x,y,z);
+/* Approved scrub-only film timing. No autonomous camera or product drift. */
+const KF=[
+ /* Hero: gentle orbit with wider establishing */
+ [0,    V(110,28,520), V(0,-48,0)],
+ [.04,  V(140,34,430), V(2,-55,4)],
+ [.08,  V(160,40,350), V(0,-72,0)],
+ /* PATIENT: establish then low-ish 3/4 close-up */
+ [.11,  V(140,40,240), V(10,0,20)],
+ [.15,  V(122,30,168), V(16,8,30)],
+ [.19,  V(128,34,158), V(12,10,32)],
+ [.22,  V(135,38,165), V(8,8,30)],
+ /* Filter: approach then hold a tear-down-style look INTO underside basin */
+ [.25,  V(140,20,280), V(0,-30,0)],
+ [.28,  V(120,40,220), V(10,20,-10)],
+ /* placeholders — overridden by underside-normal camera below */
+ [.31,  V(80,30,160), V(30,20,-25)],
+ [.34,  V(75,28,150), V(32,18,-28)],
+ [.37,  V(100,25,190), V(15,15,-15)],
+ [.4,   V(140,10,260), V(0,-20,0)],
+ /* Sachet: mid-height 3/4 with establish */
+ [.42,  V(185,20,270), V(5,-85,0)],
+ [.47,  V(195,2,250),  V(0,-110,0)],
+ /* Blood: side-on at fluid level */
+ [.53,  V(200,-130,160), V(0,-140,0)],
+ [.58,  V(188,-145,150), V(5,-148,0)],
+ [.62,  V(172,-152,155), V(0,-152,5)],
+ /* Gel drift */
+ [.68,  V(145,-120,150), V(0,-145,8)],
+ [.74,  V(118,-125,158), V(5,-142,0)],
+ [.82,  V(90,-100,170),  V(0,-125,20)],
+ /* Final iso hero */
+ [.92,  V(72,10,470), V(0,-48,0)],
+ [.97,  V(78,14,490), V(0,-45,0)],
+ [1,    V(80,14,495), V(0,-45,0)]
+];
+// Retarget every beat against adapted 3L body bounds; preserve approved scroll timing.
+const bodyY=y=>y < -30 ? -30+(y+30)*(389/154) : y;
+for(const k of KF){
+ const old=k[2].clone(), offset=k[1].clone().sub(old);
+ k[2].y=bodyY(old.y);
+ const wide=k[0]<.1||k[0]>.88;
+ const body=k[0]>.4&&k[0]<.88;
+ if(wide) k[2].y=-147;
+ offset.multiplyScalar(wide?(mob?2.55:3.15):body?1.4:1);
+ k[1].copy(k[2]).add(offset);
+}
+let T=0,lastN=0;const cp=new THREE.Vector3(),ct=new THREE.Vector3();
+function prog(){if(qp.has('t'))return +qp.get('t');const max=document.documentElement.scrollHeight-innerHeight;return max>0?cl(scrollY/max):0;}
+function sampleKF(t,outP,outT){
+ let a=KF[0],b=KF[KF.length-1];
+ for(let n=0;n<KF.length-1;n++)if(t>=KF[n][0]&&t<=KF[n+1][0]){a=KF[n];b=KF[n+1];break;}
+ const k=ease((t-a[0])/Math.max(1e-4,b[0]-a[0]));
+ outP.lerpVectors(a[1],b[1],k);outT.lerpVectors(a[2],b[2],k);
+}
+function pose(t,draw=true){
+ C.fov=mob?32:26;
+ const tSec=t*24;
+ bar.style.width=(t*100)+'%';hint.style.opacity=1-cl(t*18);
+ beats.forEach(b=>{const f=.028;const o=Math.min(cl((t-b.a)/f),cl((b.b-t)/f));b.e.style.opacity=o;b.e.style.transform=`translate(-50%,${(1-o)*14}px)`;});
+ logo.style.opacity=cl((t-.94)/.03);
+ /* v8 scroll feel: no idle sway / micro-drift — camera only follows scrubbed t */
+ root.rotation.set(0,0,0);
+ if(fluid){
+  /* lid lift with soft settle + tiny overshoot (easeOutBack) */
+  const liftIn=easeOutBack(seg(t,.24,.31));
+  const liftOut=easeOutBack(seg(t,.47,.54));
+  const lift=liftIn*(1-liftOut);
+  /* base settle -1.8 seats lid on collar; lift reveals underside + disc */
+  lidG.position.y=lift*75;lidG.position.z=lift*24;lidG.rotation.x=-lift*.58;
+  const sd=seg(t,.38,.48);
+  // Three owner-confirmed sealed pouches, illustrative (not supplied CAD).
+  // Two naturally settle side by side; the third rests as a shallow top layer.
+  const dropY=t<.46?lerp(70,-310,seg(t,.38,.46)):lerp(-310,-409,seg(t,.46,.535));
+  sachets.forEach((pouch,i)=>{
+   pouch.visible=t>.37;
+   const yaw=i===2?1.57:.6;
+   pouch.rotation.set(lerp(-.9,0,sd),lerp(1.2,yaw,sd),lerp(i===2?-.4:.5,0,sd));
+   const offset=i===2?new THREE.Vector3(0,lerp(24,7,sd),-20):new THREE.Vector3((i===0?-1:1)*19,0,0).applyEuler(pouch.rotation);
+   pouch.position.copy(offset);pouch.position.y+=dropY;
+  });
+  const fill=seg(t,.53,.64);fluid.visible=fill>.005;fluid.scale.y=Math.max(.001,fill);
+  U.uR.value=lerp(0,380,seg(t,.65,.78));
+  const pos=fluid.geometry.attributes.position,base=fluid.geometry.userData.baseY,HH=fluid.geometry.userData.H||82,rt=fluid.geometry.userData.rTop||54;
+  if(base&&fill>.01){
+   const live=(1-seg(t,.66,.78))*fill;
+   /* landing splash ripple while pouring */
+   const splash=seg(t,.53,.58)*(1-seg(t,.59,.65));
+   for(let i=0;i<pos.count;i++){
+    const y0=base[i];
+    const bx=fluid.geometry.userData.baseXZ[i*2],bz=fluid.geometry.userData.baseXZ[i*2+1],br=Math.hypot(bx,bz);
+    const initR=46.5+(y0/389)*7.9;
+    const nowR=46.5+(y0*fill/389)*7.9;
+    pos.setX(i,bx*nowR/initR);pos.setZ(i,bz*nowR/initR);
+    if(y0<=HH*.78) continue;
+    const x=pos.getX(i),z=pos.getZ(i),rr=Math.min(1,Math.hypot(x,z)/(rt+1e-3)),ang=Math.atan2(z,x);
+    const men=Math.pow(rr,2.2)*7.2+(Math.sin(ang*2+tSec*1.4)*.85+Math.sin(ang*5+tSec*2.1)*.35)*rr*live;
+    const rip=splash*Math.sin(ang*3-tSec*6)*.9*rr*Math.exp(-rr*1.2);
+    pos.setY(i,y0+men+rip);
+   }
+   pos.needsUpdate=true;
+  }
+  const wob=(1-seg(t,.66,.76))*fill;fluid.rotation.z=Math.sin(tSec*1.6)*.01*wob;fluid.rotation.x=Math.cos(tSec*1.3)*.01*wob;
+  if(pour){
+   const ps=seg(t,.53,.58)*(1-seg(t,.6,.66));
+   pour.visible=ps>.02;
+   pour.material.opacity=.08+.22*ps;
+   const wobP=Math.sin(tSec*5.5)*.055*ps;
+   const surface=-411.5+205*fill+5;
+   pour.scale.set(.6+.3*ps,Math.max(.03,(-40-surface)/70),.6+.3*ps);
+   pour.rotation.z=.025+wobP*.2;pour.rotation.x=-.015+Math.cos(tSec*4.2)*.008*ps;
+   pour.position.x=26+Math.sin(tSec*3.8)*1.2*ps;
+  }
+  if(window.__bub){const bo=(1-seg(t,.66,.76))*fill;window.__bub.visible=bo>.05;window.__bub.children.forEach((b,i)=>{b.material.opacity=.1+.28*bo;b.position.y=HH*.88+Math.sin(tSec*2+i)*1.1;});}
+  if(window.__drops){const dd=seg(t,.54,.62)*(1-seg(t,.66,.74));window.__drops.visible=dd>.04;window.__drops.children.forEach((d,i)=>{d.material.opacity=.15+.55*dd;d.position.y=HH*.9+Math.sin(tSec*3+i*1.7)*.8;d.scale.setScalar(.7+dd*.5);});}
+ }
+ sampleKF(t,cp,ct);
+ // Hold the liquid volume in frame at its adapted 3L height, not the old 1L base.
+ if(t>.51&&t<.84){
+  const w=seg(t,.51,.54)*(1-seg(t,.80,.84));
+  const fillLevel=seg(t,.53,.64),mid=-411.5+102.5*fillLevel;
+  const offset=cp.clone().sub(ct).multiplyScalar(2.55);offset.y+=45;
+  const target=ct.clone();target.y=mid+20;
+  cp.lerp(target.clone().add(offset),w);ct.lerp(target,w);
+ }
+
+ // Follow the three descending pouches, rather than aiming at the old 2L mid-wall.
+ if(t>.38&&t<.58){
+  const w=seg(t,.38,.40)*(1-seg(t,.535,.58));
+  const y=t<.46?lerp(70,-310,seg(t,.38,.46)):lerp(-310,-409,seg(t,.46,.535));
+  const target=V(0,y+15,3),offset=V(230,190,350);
+  cp.lerp(target.clone().add(offset),w);ct.lerp(target,w);
+ }
+ if(mob){cp.sub(ct).multiplyScalar(Math.min(1.6,1/Math.max(.5,C.aspect))*.85).add(ct);}
+ /* Filter stays on underside; hide only once blood fills */
+ if(fG){ fG.visible=t<.52; }
+ /*
+  * Filter beat: 3/4 from below looking into recessed housing — disc seated
+  * inside teal seat, no ribs crossing face (cavity clipped).
+  */
+ if(filtLook&&t>.27&&t<.4){
+  const w=seg(t,.28,.32)*(1-seg(t,.37,.4));
+  filtLook.getWorldPosition(fW);
+  /* Near face-on into recessed pocket so teal lip frames disc as a clean ring */
+  const nrm=V(0,-1,0).applyQuaternion(lidG.quaternion).normalize();
+  const side=V(.25,0,.15).applyQuaternion(lidG.quaternion).normalize();
+  const dist=mob?95:110;
+  if(mob)C.fov=lerp(32,46,w);
+  const goal=fW.clone().addScaledVector(nrm,dist).addScaledVector(side,mob?14:18);
+  cp.lerp(goal,w);
+  ct.lerp(fW,w);
+ }
+
+ window.__qa={t, camera:cp.toArray(),target:ct.toArray(),lidY:lidG.position.y,sachets:sachets.map(p=>({name:p.name,visible:p.visible,position:p.position.toArray(),rotation:p.rotation.toArray().slice(0,3)}))};
+ C.position.copy(cp);C.lookAt(ct);const d=cp.distanceTo(ct);C.near=Math.max(1,d*.05);C.far=d+1500;C.updateProjectionMatrix();
+ const project=o=>{if(!o)return null;o.updateWorldMatrix(true,true);const box=new THREE.Box3();o.traverseVisible(m=>{if(m.isMesh){if(m===fluid)m.geometry.computeBoundingBox();else if(!m.geometry.boundingBox)m.geometry.computeBoundingBox();box.union(m.geometry.boundingBox.clone().applyMatrix4(m.matrixWorld));}});if(box.isEmpty())return null;const pts=[];for(const x of[box.min.x,box.max.x])for(const y of[box.min.y,box.max.y])for(const z of[box.min.z,box.max.z]){const v=new THREE.Vector3(x,y,z).project(C);pts.push([(v.x+1)*stage.clientWidth/2,(1-v.y)*stage.clientHeight/2,v.z]);}return [Math.min(...pts.map(p=>p[0])),Math.min(...pts.map(p=>p[1])),Math.max(...pts.map(p=>p[0])),Math.max(...pts.map(p=>p[1]))];};
+ C.updateMatrixWorld(true);window.__qa.boxes={root:project(root),sachets:sachets.map(project),filter:project(fG),cap:project(capM),fluid:project(fluid)};window.__qa.requested=prog();window.__qa.adapted=true;
+ if(draw)R.render(S,C);}
+function frame(now){requestAnimationFrame(frame);const dt=Math.min(.1,(now-(lastN||now))/1000);lastN=now;T+=(prog()-T)*(qp.has('t')?1:1-Math.exp(-dt*3.2));pose(T);}
+window.__probePose=t=>{pose(t,false);return window.__qa;};
+requestAnimationFrame(frame);
+
+</script>
+</body></html>

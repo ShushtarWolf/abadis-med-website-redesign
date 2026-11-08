@@ -97,5 +97,36 @@
    ]
   ],
   "sha256": "3113d1599d22224321f12e76fdcc6527f53af58f09e21df8fb01718cdbabfd3b"
+ },
+ "p03-3l-liner": {
+  "provenance": "SIZE-ADAPTED RECONSTRUCTION based on approved P02 2L CAD and manufacturer nominal dimensions; NOT original 3L CAD",
+  "parts": {
+   "lid": 14084,
+   "collar": 284,
+   "bag": 596,
+   "cap": 56
+  },
+  "bounds_mm": [
+   [
+    -66.53,
+    -413.0,
+    -66.39
+   ],
+   [
+    77.77,
+    20.76,
+    66.35
+   ]
+  ],
+  "sha256": "4afe099cfc2a0297524fb3c027afcdb0c63145db66e5ed701cde8fa6ac104627",
+  "nominalDimensionsMm": [
+   110,
+   390
+  ],
+  "bodyHeightMm": 389,
+  "illustrativeSachets": 3,
+  "sachetsAreCAD": false,
+  "filterInSketch": false,
+  "bodyHeightMethod": "244 mm actual parent body + (390-245) nominal difference =389 mm; neck and rounded floor shape preserved; rigid lid/cap/collar unchanged"
  }
 }
