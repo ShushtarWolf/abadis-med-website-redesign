@@ -25,8 +25,11 @@ main{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:
 .view{position:relative;height:420px;touch-action:none}.view canvas{display:block;width:100%!important;height:100%!important}
 .meta{padding:8px 16px 14px;font-size:12.5px;color:var(--mut);line-height:1.7}
 .vb{display:flex;gap:6px;padding:0 16px 12px;flex-wrap:wrap}.vb button{font-size:12.5px;padding:5px 11px}
+nav{display:flex;flex-wrap:wrap;gap:8px;padding:4px clamp(16px,4vw,48px) 6px}nav a,.lk a{color:var(--teal);font-size:13.5px;text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:5px 12px;background:var(--card)}nav a[aria-current=true]{background:var(--teal);color:var(--bg)}
+.lk{padding:2px 16px 0;display:flex;gap:6px;flex-wrap:wrap;align-items:center}.lk a{padding:3px 10px;font-size:12.5px}.lk .cp{font-size:12.5px;padding:3px 10px}
+.card{scroll-margin-top:16px}.card.sel{outline:3px solid var(--teal);outline-offset:2px}.dimn{color:var(--ink)}
 footer{padding:0 clamp(16px,4vw,48px) 36px;color:var(--mut);font-size:13px;line-height:1.8}
-body.plate header,body.plate footer,body.plate .hd,body.plate .meta,body.plate .vb{display:none}
+body.plate nav,body.plate .lk,body.plate header,body.plate footer,body.plate .hd,body.plate .meta,body.plate .vb{display:none}
 body.plate main{padding:0;display:block}body.plate .card{border:0;border-radius:0;background:transparent}body.plate .view{height:100vh}
 html:has(body.plate),body.plate{background:transparent}
 </style>
@@ -41,7 +44,7 @@ html:has(body.plate),body.plate{background:transparent}
   <button id="spin" aria-pressed="false">چرخش خودکار / Auto-rotate</button>
  </div>
 </header>
-<main id="grid"></main>
+<nav id="nav"><a href="#all" data-id="all">همه طرح‌ها / All designs</a></nav><main id="grid"></main>
 <footer>
  <div>فقط هندسه واقعی CAD نمایش داده شده است. فیلتر و ساشه‌های جاذب کیسه‌ها فایل CAD ندارند و عمداً حذف شده‌اند. کیسه ۳ لیتری به دلیل نبود CAD در این مجموعه نیست. ابعاد، اندازه‌های تقریبی مش CAD هستند، نه مشخصات اسمی.</div>
  <div class="en">Only genuine CAD geometry is drawn. Liner filters and absorbent sachets have no CAD and are intentionally excluded. The 3 L liner is omitted (no CAD). Sizes are approximate CAD mesh extents, not nominal specifications. Drag to rotate · scroll/pinch to zoom.</div>
@@ -51,15 +54,15 @@ import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 const P=[
- {id:'p01-1l-liner',fa:'کیسه ساکشن یکبار مصرف ۱ لیتری',en:'P01 · 1 L disposable suction liner',accent:['lid','collar','cap'],faM:'درب، یقه، درپوش و کیسه از CAD «1L suction bag»',enM:'Lid, collar, cap and liner bag from CAD · filter and sachet excluded (no CAD)'},
- {id:'p02-2l-liner',fa:'کیسه ساکشن یکبار مصرف ۲ لیتری',en:'P02 · 2 L disposable suction liner',accent:['lid','collar','cap'],faM:'درب، یقه، درپوش و کیسه از CAD «2L suction bag»',enM:'Lid, collar, cap and liner bag from CAD · filter and two sachets excluded (no CAD)'},
- {id:'p05-1l-canister',fa:'مخزن ساکشن ۱ لیتری قابل استفاده مجدد',en:'P05 · 1 L reusable canister · 0402011',accent:['collar-mount'],faM:'بدنه و یقه/پایه نصب از CAD «1L pit»',enM:'Vessel and collar / rear mount from CAD “1L pit”'},
- {id:'p05-2l-canister',fa:'مخزن ساکشن ۲ لیتری قابل استفاده مجدد',en:'P05 · 2 L reusable canister · 0402012',accent:['collar-mount'],faM:'بدنه و یقه/پایه نصب از CAD «2L pit»',enM:'Vessel and collar / rear mount from CAD “2L pit”'},
- {id:'p05-3l-canister',fa:'مخزن ساکشن ۳ لیتری قابل استفاده مجدد',en:'P05 · 3 L reusable canister · 0402013',accent:['collar-mount'],faM:'بدنه و یقه/پایه نصب از CAD «3L pit»',enM:'Vessel and collar / rear mount from CAD “3L pit”'}];
+ {id:'p01-1l-liner',fa:'کیسه ساکشن یکبار مصرف ۱ لیتری',en:'P01 · 1 L disposable suction liner',accent:['lid','collar','cap'],dim:{fa:'قطر ۱۱ × ارتفاع ۱۵٫۵ سانتی‌متر',en:'Ø 11 × H 15.5 cm',src:'manufacturer'},faM:'درب، یقه، درپوش و کیسه از CAD «1L suction bag»',enM:'Lid, collar, cap and liner bag from CAD · filter and sachet excluded (no CAD) · liner film carries no printed logo or scale in official photos'},
+ {id:'p02-2l-liner',fa:'کیسه ساکشن یکبار مصرف ۲ لیتری',en:'P02 · 2 L disposable suction liner',accent:['lid','collar','cap'],dim:{fa:'قطر ۱۱ × ارتفاع ۲۴٫۵ سانتی‌متر',en:'Ø 11 × H 24.5 cm',src:'manufacturer'},faM:'درب، یقه، درپوش و کیسه از CAD «2L suction bag»',enM:'Lid, collar, cap and liner bag from CAD · filter and two sachets excluded (no CAD) · liner film carries no printed logo or scale in official photos'},
+ {id:'p05-1l-canister',fa:'مخزن ساکشن ۱ لیتری قابل استفاده مجدد',en:'P05 · 1 L reusable canister · 0402011',accent:['collar-mount'],print:'tex/official-1l-print.png',ph:183,faM:'بدنه و یقه/پایه نصب از CAD «1L pit» · چاپ لوگو و درجه‌بندی از عکس رسمی',enM:'Vessel and collar / rear mount from CAD “1L pit” · logo and volume scale from the official 1 L photo print'},
+ {id:'p05-2l-canister',fa:'مخزن ساکشن ۲ لیتری قابل استفاده مجدد',en:'P05 · 2 L reusable canister · 0402012',accent:['collar-mount'],print:'tex/official-2l-print.png',ph:270,faM:'بدنه و یقه/پایه نصب از CAD «2L pit» · چاپ لوگو و درجه‌بندی از عکس رسمی',enM:'Vessel and collar / rear mount from CAD “2L pit” · logo and volume scale from the official 2 L photo print'},
+ {id:'p05-3l-canister',fa:'مخزن ساکشن ۳ لیتری قابل استفاده مجدد',en:'P05 · 3 L reusable canister · 0402013',accent:['collar-mount'],print:'tex/official-3l-print.png',ph:420,faM:'بدنه و یقه/پایه نصب از CAD «3L pit» · چاپ لوگو و درجه‌بندی از عکس رسمی',enM:'Vessel and collar / rear mount from CAD “3L pit” · logo and volume scale from the official 3 L photo print'}];
 const qs=new URLSearchParams(location.search),plate=qs.get('plate');
 if(plate)document.body.classList.add('plate');
 const VIEWS={iso:[38,24],front:[0,0],side:[90,0],top:[0,89]};
-const pal=()=>document.documentElement.dataset.theme==='dark'?{bg:0x0a2425,ink:0xd7eeee,teal:0x5eead4,fill:0x0b3b3b,ring:0x1d4a4b,hid:.22}:{bg:0xffffff,ink:0x1b3436,teal:0x05686b,fill:0xd7f4f4,ring:0xd5e7e7,hid:.2};
+const pal=()=>document.documentElement.dataset.theme==='dark'?{bg:0x0a2425,ink:0xd7eeee,teal:0x5eead4,fill:0x0b3b3b,ring:0x1d4a4b,hid:.22}:{bg:0xffffff,ink:0x10292b,teal:0x04756f,fill:0xd7f4f4,ring:0xd5e7e7,hid:.24};
 let hidden=true,spin=false;const items=[];
 function edgeData(geo){ // merged-position adjacency for crease + silhouette edges
  const pos=geo.attributes.position,idx=geo.index?geo.index.array:[...Array(pos.count).keys()];
@@ -78,8 +81,8 @@ function edgeData(geo){ // merged-position adjacency for crease + silhouette edg
 }
 function silhouette(ed,dir){const pts=[];for(let i=0;i<ed.cand.length;i+=4){if(Math.sign(ed.cand[i+2].dot(dir))!==Math.sign(ed.cand[i+3].dot(dir)))pts.push(ed.V[ed.cand[i]],ed.V[ed.cand[i+1]])}return pts}
 function build(p){
- const card=document.createElement('section');card.className='card';
- card.innerHTML=`<div class="hd"><h2>${p.fa}</h2><span class="en">${p.en}</span></div><div class="view"></div><div class="vb"><button data-v="iso" aria-pressed="true">ایزومتریک / Iso</button><button data-v="front">روبرو / Front</button><button data-v="side">جانبی / Side</button><button data-v="top">بالا / Top</button></div><div class="meta"><div>${p.faM}</div><div class="en">${p.enM}</div><div class="en dim"></div></div>`;
+ const card=document.createElement('section');card.className='card';card.id=p.id;
+ card.innerHTML=`<div class="hd"><h2>${p.fa}</h2><span class="en">${p.en}</span></div><div class="lk"><a href="#${p.id}">لینک مستقیم / Direct link</a> <button class="cp" data-id="${p.id}">کپی لینک / Copy link</button></div><div class="view"></div><div class="vb"><button data-v="iso" aria-pressed="true">ایزومتریک / Iso</button><button data-v="front">روبرو / Front</button><button data-v="side">جانبی / Side</button><button data-v="top">بالا / Top</button></div><div class="meta"><div>${p.faM}</div><div class="en">${p.enM}</div><div class="en dim"></div><div class="dimn"></div></div>`;
  document.getElementById('grid').appendChild(card);
  const host=card.querySelector('.view');
  const R=new THREE.WebGLRenderer({antialias:true,alpha:!!plate,preserveDrawingBuffer:!!plate});R.setPixelRatio(plate?1:Math.min(devicePixelRatio,2));host.appendChild(R.domElement);
@@ -96,22 +99,54 @@ function build(p){
    fillA:new THREE.MeshBasicMaterial({polygonOffset:true,polygonOffsetFactor:1,polygonOffsetUnits:1,side:THREE.DoubleSide}),
    ink:new THREE.LineBasicMaterial(),teal:new THREE.LineBasicMaterial(),
    inkH:new THREE.LineBasicMaterial({transparent:true,depthFunc:THREE.GreaterDepth,depthWrite:false}),tealH:new THREE.LineBasicMaterial({transparent:true,depthFunc:THREE.GreaterDepth,depthWrite:false}),ring:new THREE.LineBasicMaterial({transparent:true})};
-  g.scene.traverse(o=>{if(!o.isMesh)return;const geo=o.geometry.clone().applyMatrix4(o.matrixWorld);const acc=p.accent.includes(o.name);
-   const fm=new THREE.Mesh(geo,acc?M.fillA:M.fill);scene.add(fm);
+  g.scene.traverse(o=>{if(!o.isMesh)return;let geo=o.geometry.clone().applyMatrix4(o.matrixWorld);if(p.print&&o.name==='vessel')geo=geo.toNonIndexed();const acc=p.accent.includes(o.name);
+   let fmat=acc?M.fillA:M.fill;if(p.print&&o.name==='vessel'){fmat=inkMat(it,geo,p);}const fm=new THREE.Mesh(geo,fmat);fm.userData.part=o.name;scene.add(fm);
    const ed=edgeData(geo);const lm=acc?M.teal:M.ink,hm=acc?M.tealH:M.inkH;
    const cr=new THREE.LineSegments(ed.cg,lm),crH=new THREE.LineSegments(ed.cg,hm);const sg=new THREE.BufferGeometry();const sl=new THREE.LineSegments(sg,lm),slH=new THREE.LineSegments(sg,hm);
    [cr,crH,sl,slH].forEach(l=>{l.frustumCulled=false;scene.add(l)});cr.renderOrder=sl.renderOrder=2;crH.renderOrder=slH.renderOrder=3;it.parts.push({ed,sl,crH,slH})});
   // floor rings (presentation only, not product geometry)
   const rg=new THREE.Group();for(const r of[1.05,1.45,1.9]){const pts=[];const R0=Math.max(sz.x,sz.z)*.5*r;for(let a=0;a<=96;a++){const t=a/96*Math.PI*2;pts.push(new THREE.Vector3(c.x+Math.cos(t)*R0,box.min.y,c.z+Math.sin(t)*R0))}rg.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),M.ring))}scene.add(rg);
-  ctl.target.copy(c);applyTheme(it);setView(it,qs.get('view')||'iso');resize(it);it.ready=true;
-  if(plate&&items.every(x=>x.ready)){requestAnimationFrame(()=>requestAnimationFrame(()=>window.__ready=true))}
+  addDims(it,box,p);ctl.target.copy(c);applyTheme(it);setView(it,qs.get('view')||'iso');resize(it);it.ready=true;
+  checkReady();
  },undefined,e=>{console.error(e);window.__ready='error'});
 }
-function setView(it,v){const[az,el]=VIEWS[v]||VIEWS.iso;const a=THREE.MathUtils.degToRad(az),e=THREE.MathUtils.degToRad(el);const d=it.rad*4;
+function inkMat(it,geo,p){
+ // Genuine size-specific official photo print (same texture/mapping as the approved cinematic). Exterior wall only.
+ const pos=geo.attributes.position,outer=new Float32Array(pos.count);
+ for(let i=0;i<pos.count;i+=3){const a=new THREE.Vector3().fromBufferAttribute(pos,i),b=new THREE.Vector3().fromBufferAttribute(pos,i+1),c=new THREE.Vector3().fromBufferAttribute(pos,i+2);
+  const n=b.clone().sub(a).cross(c.clone().sub(a)).normalize();const r=a.clone().add(b).add(c);r.y=0;r.normalize();if(n.dot(r)>.95&&Math.abs(n.y)<.2)outer.fill(1,i,i+3)}
+ geo.setAttribute('printOuter',new THREE.BufferAttribute(outer,1));
+ const tex=new THREE.TextureLoader().load(p.print,()=>{it.inkReady=true;it.dirty=true;checkReady()});tex.anisotropy=8;
+ const m=new THREE.MeshBasicMaterial({polygonOffset:true,polygonOffsetFactor:1,polygonOffsetUnits:1,side:THREE.DoubleSide});it.inkM=m;it.inkU={uInk:{value:tex},uInkCol:{value:new THREE.Color()}};it.needInk=true;
+ m.onBeforeCompile=sh=>{Object.assign(sh.uniforms,it.inkU);
+  sh.vertexShader=sh.vertexShader.replace('#include <common>','#include <common>\nattribute float printOuter;varying vec3 vP;varying vec3 vW;varying float vO;').replace('#include <begin_vertex>','#include <begin_vertex>\nvP=position;vW=(modelMatrix*vec4(position,1.)).xyz;vO=printOuter;');
+  sh.fragmentShader=sh.fragmentShader.replace('#include <common>','#include <common>\nuniform sampler2D uInk;uniform vec3 uInkCol;varying vec3 vP;varying vec3 vW;varying float vO;').replace('#include <dithering_fragment>',`#include <dithering_fragment>
+  vec2 uv=vec2(.5+atan(vP.x,vP.z)/6.28318530718,1.+vP.y/${p.ph.toFixed(1)});
+  vec3 vd=isOrthographic?normalize(vec3(viewMatrix[0][2],viewMatrix[1][2],viewMatrix[2][2])):normalize(cameraPosition-vW);
+  float face=step(.02,dot(normalize(vec3(vP.x,0.,vP.z)),vd))*(gl_FrontFacing?1.:0.);
+  float a=smoothstep(.18,.55,texture2D(uInk,uv).a)*vO*face;
+  gl_FragColor.rgb=mix(gl_FragColor.rgb,uInkCol,a);`)};
+ m.customProgramCacheKey=()=>'sketch-ink-'+p.id;return m}
+function label(txt,col,bg){const c=document.createElement('canvas'),x=c.getContext('2d');const f='600 44px Inter, "Segoe UI", Roboto, Arial, sans-serif';x.font=f;const w=Math.ceil(x.measureText(txt).width)+28;c.width=w;c.height=64;x.font=f;x.fillStyle=bg;x.fillRect(0,0,w,64);x.fillStyle=col;x.textBaseline='middle';x.textAlign='center';x.fillText(txt,w/2,34);
+ const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;const s=new THREE.Sprite(new THREE.SpriteMaterial({map:t,depthTest:false,transparent:true}));s.renderOrder=9;s.userData.asp=w/64;return s}
+function addDims(it,box,p){ // dimension lines: manufacturer nominal (liners) or approximate CAD extents (canisters)
+ it.dimG=new THREE.Group();it.scene.add(it.dimG);it.dimG.visible=it.view!=='top';it.dimBox=box;it.dimP=p;buildDims(it)}
+function buildDims(it){const g=it.dimG,box=it.dimBox,p=it.dimP;while(g.children.length)g.remove(g.children[0]);const c=pal(),col='#'+c.teal.toString(16).padStart(6,'0'),bg='#'+c.bg.toString(16).padStart(6,'0');
+ let vb=box;it.scene.traverse(o=>{if(o.isMesh&&(o.userData.part==='vessel'||o.userData.part==='bag'))vb=new THREE.Box3().setFromObject(o)});
+ const H=box.max.y-box.min.y,D=vb.max.x-vb.min.x,hTxt=p.dim?p.dim.en.split('×')[1].trim():'H ≈ '+(H/10).toFixed(1)+' cm (CAD)',dTxt=p.dim?p.dim.en.split('×')[0].trim()+' cm':'Ø ≈ '+(D/10).toFixed(1)+' cm (CAD)';
+ const m=new THREE.LineBasicMaterial({color:c.teal,depthTest:false,transparent:true,opacity:.9});const L=(a,b)=>{const l=new THREE.Line(new THREE.BufferGeometry().setFromPoints([a,b]),m);l.renderOrder=8;g.add(l)};
+ const z=vb.max.z+4,xl=vb.min.x-18,y0=box.min.y,y1=box.max.y,tk=5;
+ L(new THREE.Vector3(xl,y0,z),new THREE.Vector3(xl,y1,z));L(new THREE.Vector3(xl-tk,y0,z),new THREE.Vector3(xl+tk,y0,z));L(new THREE.Vector3(xl-tk,y1,z),new THREE.Vector3(xl+tk,y1,z));
+ const yt=y1+16;L(new THREE.Vector3(vb.min.x,yt,z),new THREE.Vector3(vb.max.x,yt,z));L(new THREE.Vector3(vb.min.x,yt-tk,z),new THREE.Vector3(vb.min.x,yt+tk,z));L(new THREE.Vector3(vb.max.x,yt-tk,z),new THREE.Vector3(vb.max.x,yt+tk,z));
+ const s1=label(hTxt,col,bg),s2=label(dTxt,col,bg),k=it.rad*(plate?.1:.075);for(const s of[s1,s2])s.scale.set(k*s.userData.asp,k,1);
+ s1.position.set(xl-k*s1.userData.asp*.55,(y0+y1)/2,z);s2.position.set((vb.min.x+vb.max.x)/2,yt+k*.75,z);g.add(s1,s2);
+ it.card.querySelector('.dimn').innerHTML=p.dim?`ابعاد اسمی سازنده: ${p.dim.fa} <span class="en">· Manufacturer nominal ${p.dim.en}</span>`:`<span class="en">Vessel ${dTxt} · ${hTxt} — approximate CAD extents, not nominal specs</span>`;it.dirty=true}
+function checkReady(){if(plate&&items.every(x=>x.ready&&(!x.needInk||x.inkReady)))requestAnimationFrame(()=>requestAnimationFrame(()=>window.__ready=true))}
+function setView(it,v){it.view=v;if(it.dimG)it.dimG.visible=v!=='top';const[az,el]=VIEWS[v]||VIEWS.iso;const a=THREE.MathUtils.degToRad(az),e=THREE.MathUtils.degToRad(el);const d=it.rad*4;
  it.cam.position.set(it.center.x+d*Math.sin(a)*Math.cos(e),it.center.y+d*Math.sin(e),it.center.z+d*Math.cos(a)*Math.cos(e));it.cam.up.set(0,1,0);if(el>80)it.cam.up.set(0,0,-1);it.cam.zoom=1;it.cam.updateProjectionMatrix();it.ctl.target.copy(it.center);it.ctl.update();it.dirty=true}
-function applyTheme(it){const c=pal(),M=it.mats;if(!M.fill)return;M.fill.color.set(c.bg);M.fillA.color.set(c.fill);M.ink.color.set(c.ink);M.teal.color.set(c.teal);M.inkH.color.set(c.ink);M.tealH.color.set(c.teal);M.inkH.opacity=M.tealH.opacity=c.hid;M.ring.color.set(c.ring);
+function applyTheme(it){const c=pal(),M=it.mats;if(!M.fill)return;M.fill.color.set(c.bg);M.fillA.color.set(c.fill);M.ink.color.set(c.ink);M.teal.color.set(c.teal);M.inkH.color.set(c.ink);M.tealH.color.set(c.teal);M.inkH.opacity=M.tealH.opacity=c.hid;M.ring.color.set(c.ring);if(it.inkM)it.inkM.color.set(c.bg);if(it.inkU)it.inkU.uInkCol.value.setHex(c.teal,THREE.LinearSRGBColorSpace);if(it.dimG)buildDims(it);
  if(!plate)it.R.setClearColor(c.bg,1);else it.R.setClearColor(0,0);it.dirty=true}
-function resize(it){const w=it.host.clientWidth,h=it.host.clientHeight;it.R.setSize(w,h,false);const asp=w/h,r=(it.rad||100)*1.08;const hh=asp>1?r:r/asp;it.cam.left=-hh*asp;it.cam.right=hh*asp;it.cam.top=hh;it.cam.bottom=-hh;it.cam.updateProjectionMatrix();it.dirty=true}
+function resize(it){const w=it.host.clientWidth,h=it.host.clientHeight;it.R.setSize(w,h,false);const asp=w/h,r=(it.rad||100)*(plate?1.4:1.22);const hh=asp>1?r:r/asp;it.cam.left=-hh*asp;it.cam.right=hh*asp;it.cam.top=hh;it.cam.bottom=-hh;it.cam.updateProjectionMatrix();it.dirty=true}
 function frame(){for(const it of items){if(!it.ready)continue;if(spin){it.ctl.autoRotate=true;it.ctl.autoRotateSpeed=1.2}else it.ctl.autoRotate=false;it.ctl.update();
  if(it.dirty){const dir=new THREE.Vector3();it.cam.getWorldDirection(dir);for(const pt of it.parts){const ng=new THREE.BufferGeometry().setFromPoints(silhouette(pt.ed,dir));pt.sl.geometry.dispose();pt.sl.geometry=pt.slH.geometry=ng;pt.crH.visible=pt.slH.visible=hidden}it.R.render(it.scene,it.cam);it.dirty=false}}requestAnimationFrame(frame)}
 (plate?P.filter(p=>p.id===plate):P).forEach(build);frame();
@@ -122,6 +157,10 @@ th.onclick=()=>{const d=document.documentElement;d.dataset.theme=d.dataset.theme
 hb.onclick=()=>{hidden=!hidden;hb.setAttribute('aria-pressed',hidden);items.forEach(i=>i.dirty=true)};
 sb.onclick=()=>{spin=!spin;sb.setAttribute('aria-pressed',spin)};
 if(qs.get('hidden')==='0')hidden=false;
+const nav=document.getElementById('nav');P.forEach(p=>{const a=document.createElement('a');a.href='#'+p.id;a.dataset.id=p.id;a.textContent=p.en.split(' · ').slice(0,2).join(' · ');nav.appendChild(a)});
+function sel(){const h=location.hash.slice(1);document.querySelectorAll('.card').forEach(c=>c.classList.toggle('sel',c.id===h));nav.querySelectorAll('a').forEach(a=>a.setAttribute('aria-current',a.dataset.id===(h&&document.getElementById(h)&&h!=='all'?h:'all')));const t=document.getElementById(h);if(t&&t.classList.contains('card'))t.scrollIntoView({block:'start'});else if(h==='all')scrollTo(0,0)}
+addEventListener('hashchange',sel);sel();
+document.querySelectorAll('.cp').forEach(b=>b.onclick=async()=>{const u=location.href.split('#')[0]+'#'+b.dataset.id;try{await navigator.clipboard.writeText(u);b.textContent='کپی شد / Copied'}catch(e){prompt('Link',u)}});
 </script>
 </body>
 </html>
