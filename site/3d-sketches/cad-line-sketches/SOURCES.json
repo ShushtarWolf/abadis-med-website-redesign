@@ -1,0 +1,101 @@
+{
+ "p01-1l-liner": {
+  "parts": {
+   "lid": 3949,
+   "collar": 316,
+   "bag": 596,
+   "cap": 60
+  },
+  "bounds_mm": [
+   [
+    -66.5,
+    -178.0,
+    -66.39
+   ],
+   [
+    77.68,
+    20.43,
+    66.31
+   ]
+  ],
+  "sha256": "f9967989f16b71443e8ab091c4c0d3a5feb3a12fdae50fc0f85b198657b5db60"
+ },
+ "p02-2l-liner": {
+  "parts": {
+   "lid": 3976,
+   "collar": 284,
+   "bag": 596,
+   "cap": 56
+  },
+  "bounds_mm": [
+   [
+    -66.5,
+    -268.0,
+    -66.39
+   ],
+   [
+    77.68,
+    20.77,
+    66.31
+   ]
+  ],
+  "sha256": "72c904fe749b89301d9df035ee51685ae4b2e060aaaabb4fbd376ac46f69145e"
+ },
+ "p05-1l-canister": {
+  "parts": {
+   "vessel": 542,
+   "collar-mount": 552
+  },
+  "bounds_mm": [
+   [
+    -64.5,
+    -183.0,
+    -85.73
+   ],
+   [
+    64.5,
+    0.0,
+    64.5
+   ]
+  ],
+  "sha256": "7b07516bb79d1a101bcfd823e88f9c82418dbf8a5d28b8c6aeeb0ac83f799bbf"
+ },
+ "p05-2l-canister": {
+  "parts": {
+   "vessel": 534,
+   "collar-mount": 660
+  },
+  "bounds_mm": [
+   [
+    -64.5,
+    -270.0,
+    -85.73
+   ],
+   [
+    64.5,
+    0.0,
+    64.5
+   ]
+  ],
+  "sha256": "22d86998a0a78a49bac43935cd889d66feb7d190cf163213aa4ae6859f58644d"
+ },
+ "p05-3l-canister": {
+  "parts": {
+   "vessel": 534,
+   "collar-mount": 660
+  },
+  "bounds_mm": [
+   [
+    -64.5,
+    -420.0,
+    -85.73
+   ],
+   [
+    64.5,
+    0.0,
+    64.5
+   ]
+  ],
+  "sha256": "3113d1599d22224321f12e76fdcc6527f53af58f09e21df8fb01718cdbabfd3b"
+ }
+}

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>اسکچ‌های خطی CAD محصولات — مخازن طبی آبادیس | Abadis CAD line sketches</title>
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){var t;try{var q=new URLSearchParams(location.search).get('theme');if(q)localStorage.setItem('abadis-theme',q);t=localStorage.getItem('abadis-theme')}catch(e){}document.documentElement.dataset.theme=(t==='dark')?'dark':'light'})();</script>
+<style>
+@font-face{font-family:Kalameh;src:url(../../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Kalameh;src:url(../../assets/fonts/kalameh/KalamehWeb-FaNum-Bold.woff2) format('woff2');font-weight:700;font-display:swap}
+:root{--bg:#f4fafa;--card:#ffffff;--ink:#0f2f30;--mut:#557173;--line:#d5e7e7;--teal:#05686b;--tealf:#d7f4f4}
+[data-theme=dark]{--bg:#061a1b;--card:#0a2425;--ink:#e2f8f8;--mut:#8fb3b3;--line:#163b3c;--teal:#5eead4;--tealf:#0b3b3b}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Kalameh,Tahoma,sans-serif}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;justify-content:space-between;padding:28px clamp(16px,4vw,48px) 10px}
+h1{margin:0;font-size:clamp(22px,3vw,34px)}.en{direction:ltr;font-family:Inter,system-ui,sans-serif}
+header p{margin:6px 0 0;color:var(--mut);font-size:14px}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+button{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:8px 14px;border-radius:999px;cursor:pointer}
+button[aria-pressed=true]{background:var(--teal);color:var(--bg);border-color:var(--teal)}
+main{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;padding:12px clamp(16px,4vw,48px) 32px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.card h2{margin:0;font-size:18px}.card .hd{padding:14px 16px 4px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.card .hd .en{font-size:13px;color:var(--mut)}
+.view{position:relative;height:420px;touch-action:none}.view canvas{display:block;width:100%!important;height:100%!important}
+.meta{padding:8px 16px 14px;font-size:12.5px;color:var(--mut);line-height:1.7}
+.vb{display:flex;gap:6px;padding:0 16px 12px;flex-wrap:wrap}.vb button{font-size:12.5px;padding:5px 11px}
+footer{padding:0 clamp(16px,4vw,48px) 36px;color:var(--mut);font-size:13px;line-height:1.8}
+body.plate header,body.plate footer,body.plate .hd,body.plate .meta,body.plate .vb{display:none}
+body.plate main{padding:0;display:block}body.plate .card{border:0;border-radius:0;background:transparent}body.plate .view{height:100vh}
+html:has(body.plate),body.plate{background:transparent}
+</style>
+<script type="importmap">{"imports":{"three":"../../assets/vendor/three/build/three.module.js","three/addons/":"../../assets/vendor/three/examples/jsm/"}}</script>
+</head>
+<body>
+<header>
+ <div><h1>اسکچ خطی CAD محصولات آبادیس</h1><p class="en">Abadis Med — CAD line sketches · genuine CAD geometry only</p></div>
+ <div class="tools">
+  <button id="th" aria-pressed="false">حالت تیره / Dark</button>
+  <button id="hid" aria-pressed="true">خطوط پنهان / Hidden lines</button>
+  <button id="spin" aria-pressed="false">چرخش خودکار / Auto-rotate</button>
+ </div>
+</header>
+<main id="grid"></main>
+<footer>
+ <div>فقط هندسه واقعی CAD نمایش داده شده است. فیلتر و ساشه‌های جاذب کیسه‌ها فایل CAD ندارند و عمداً حذف شده‌اند. کیسه ۳ لیتری به دلیل نبود CAD در این مجموعه نیست. ابعاد، اندازه‌های تقریبی مش CAD هستند، نه مشخصات اسمی.</div>
+ <div class="en">Only genuine CAD geometry is drawn. Liner filters and absorbent sachets have no CAD and are intentionally excluded. The 3 L liner is omitted (no CAD). Sizes are approximate CAD mesh extents, not nominal specifications. Drag to rotate · scroll/pinch to zoom.</div>
+</footer>
+<script type="module">
+import * as THREE from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+const P=[
+ {id:'p01-1l-liner',fa:'کیسه ساکشن یکبار مصرف ۱ لیتری',en:'P01 · 1 L disposable suction liner',accent:['lid','collar','cap'],faM:'درب، یقه، درپوش و کیسه از CAD «1L suction bag»',enM:'Lid, collar, cap and liner bag from CAD · filter and sachet excluded (no CAD)'},
+ {id:'p02-2l-liner',fa:'کیسه ساکشن یکبار مصرف ۲ لیتری',en:'P02 · 2 L disposable suction liner',accent:['lid','collar','cap'],faM:'درب، یقه، درپوش و کیسه از CAD «2L suction bag»',enM:'Lid, collar, cap and liner bag from CAD · filter and two sachets excluded (no CAD)'},
+ {id:'p05-1l-canister',fa:'مخزن ساکشن ۱ لیتری قابل استفاده مجدد',en:'P05 · 1 L reusable canister · 0402011',accent:['collar-mount'],faM:'بدنه و یقه/پایه نصب از CAD «1L pit»',enM:'Vessel and collar / rear mount from CAD “1L pit”'},
+ {id:'p05-2l-canister',fa:'مخزن ساکشن ۲ لیتری قابل استفاده مجدد',en:'P05 · 2 L reusable canister · 0402012',accent:['collar-mount'],faM:'بدنه و یقه/پایه نصب از CAD «2L pit»',enM:'Vessel and collar / rear mount from CAD “2L pit”'},
+ {id:'p05-3l-canister',fa:'مخزن ساکشن ۳ لیتری قابل استفاده مجدد',en:'P05 · 3 L reusable canister · 0402013',accent:['collar-mount'],faM:'بدنه و یقه/پایه نصب از CAD «3L pit»',enM:'Vessel and collar / rear mount from CAD “3L pit”'}];
+const qs=new URLSearchParams(location.search),plate=qs.get('plate');
+if(plate)document.body.classList.add('plate');
+const VIEWS={iso:[38,24],front:[0,0],side:[90,0],top:[0,89]};
+const pal=()=>document.documentElement.dataset.theme==='dark'?{bg:0x0a2425,ink:0xd7eeee,teal:0x5eead4,fill:0x0b3b3b,ring:0x1d4a4b,hid:.22}:{bg:0xffffff,ink:0x1b3436,teal:0x05686b,fill:0xd7f4f4,ring:0xd5e7e7,hid:.2};
+let hidden=true,spin=false;const items=[];
+function edgeData(geo){ // merged-position adjacency for crease + silhouette edges
+ const pos=geo.attributes.position,idx=geo.index?geo.index.array:[...Array(pos.count).keys()];
+ const key=i=>`${pos.getX(i).toFixed(3)},${pos.getY(i).toFixed(3)},${pos.getZ(i).toFixed(3)}`;
+ const vid=new Map(),V=[],F=[];
+ for(let i=0;i<idx.length;i++){const k=key(idx[i]);if(!vid.has(k)){vid.set(k,V.length);V.push(new THREE.Vector3().fromBufferAttribute(pos,idx[i]))}F.push(vid.get(k))}
+ const N=[],E=new Map();
+ for(let f=0;f<F.length/3;f++){const a=V[F[3*f]],b=V[F[3*f+1]],c=V[F[3*f+2]];const n=new THREE.Vector3().subVectors(b,a).cross(new THREE.Vector3().subVectors(c,a));if(n.lengthSq()<1e-12){N.push(null);continue}N.push(n.normalize());
+  for(const[u,v]of[[0,1],[1,2],[2,0]]){const p=F[3*f+u],q=F[3*f+v],k=p<q?p+'_'+q:q+'_'+p;(E.get(k)||E.set(k,[]).get(k)).push(f)}}
+ const crease=[],cand=[];
+ for(const[k,fs]of E){const[p,q]=k.split('_').map(Number);const ns=fs.map(f=>N[f]).filter(Boolean);
+  if(ns.length!==2){crease.push(p,q);continue}
+  if(ns[0].dot(ns[1])<Math.cos(THREE.MathUtils.degToRad(28)))crease.push(p,q);else cand.push(p,q,ns[0],ns[1])}
+ const cg=new THREE.BufferGeometry().setFromPoints(crease.map(i=>V[i]));
+ return {V,cand,cg};
+}
+function silhouette(ed,dir){const pts=[];for(let i=0;i<ed.cand.length;i+=4){if(Math.sign(ed.cand[i+2].dot(dir))!==Math.sign(ed.cand[i+3].dot(dir)))pts.push(ed.V[ed.cand[i]],ed.V[ed.cand[i+1]])}return pts}
+function build(p){
+ const card=document.createElement('section');card.className='card';
+ card.innerHTML=`<div class="hd"><h2>${p.fa}</h2><span class="en">${p.en}</span></div><div class="view"></div><div class="vb"><button data-v="iso" aria-pressed="true">ایزومتریک / Iso</button><button data-v="front">روبرو / Front</button><button data-v="side">جانبی / Side</button><button data-v="top">بالا / Top</button></div><div class="meta"><div>${p.faM}</div><div class="en">${p.enM}</div><div class="en dim"></div></div>`;
+ document.getElementById('grid').appendChild(card);
+ const host=card.querySelector('.view');
+ const R=new THREE.WebGLRenderer({antialias:true,alpha:!!plate,preserveDrawingBuffer:!!plate});R.setPixelRatio(plate?1:Math.min(devicePixelRatio,2));host.appendChild(R.domElement);
+ const scene=new THREE.Scene(),cam=new THREE.OrthographicCamera(-1,1,1,-1,-5000,5000);
+ const ctl=new OrbitControls(cam,R.domElement);ctl.enableDamping=true;ctl.enablePan=false;ctl.minZoom=.6;ctl.maxZoom=4;
+ const it={p,R,scene,cam,ctl,host,parts:[],mats:{},dirty:true,card};items.push(it);
+ ctl.addEventListener('change',()=>it.dirty=true);
+ card.querySelectorAll('.vb button').forEach(b=>b.onclick=()=>{card.querySelectorAll('.vb button').forEach(x=>x.setAttribute('aria-pressed',x===b));setView(it,b.dataset.v)});
+ new GLTFLoader().load('models/'+p.id+'.glb',g=>{
+  g.scene.updateMatrixWorld(true);const box=new THREE.Box3().setFromObject(g.scene);it.box=box;
+  const sz=box.getSize(new THREE.Vector3());card.querySelector('.dim').textContent=`CAD extents ≈ ${sz.x.toFixed(0)} × ${sz.z.toFixed(0)} × ${sz.y.toFixed(0)} mm (W × D × H, incl. mount)`;
+  const c=box.getCenter(new THREE.Vector3());it.center=c;it.rad=box.getBoundingSphere(new THREE.Sphere()).radius;
+  const M=it.mats={fill:new THREE.MeshBasicMaterial({polygonOffset:true,polygonOffsetFactor:1,polygonOffsetUnits:1,side:THREE.DoubleSide}),
+   fillA:new THREE.MeshBasicMaterial({polygonOffset:true,polygonOffsetFactor:1,polygonOffsetUnits:1,side:THREE.DoubleSide}),
+   ink:new THREE.LineBasicMaterial(),teal:new THREE.LineBasicMaterial(),
+   inkH:new THREE.LineBasicMaterial({transparent:true,depthFunc:THREE.GreaterDepth,depthWrite:false}),tealH:new THREE.LineBasicMaterial({transparent:true,depthFunc:THREE.GreaterDepth,depthWrite:false}),ring:new THREE.LineBasicMaterial({transparent:true})};
+  g.scene.traverse(o=>{if(!o.isMesh)return;const geo=o.geometry.clone().applyMatrix4(o.matrixWorld);const acc=p.accent.includes(o.name);
+   const fm=new THREE.Mesh(geo,acc?M.fillA:M.fill);scene.add(fm);
+   const ed=edgeData(geo);const lm=acc?M.teal:M.ink,hm=acc?M.tealH:M.inkH;
+   const cr=new THREE.LineSegments(ed.cg,lm),crH=new THREE.LineSegments(ed.cg,hm);const sg=new THREE.BufferGeometry();const sl=new THREE.LineSegments(sg,lm),slH=new THREE.LineSegments(sg,hm);
+   [cr,crH,sl,slH].forEach(l=>{l.frustumCulled=false;scene.add(l)});cr.renderOrder=sl.renderOrder=2;crH.renderOrder=slH.renderOrder=3;it.parts.push({ed,sl,crH,slH})});
+  // floor rings (presentation only, not product geometry)
+  const rg=new THREE.Group();for(const r of[1.05,1.45,1.9]){const pts=[];const R0=Math.max(sz.x,sz.z)*.5*r;for(let a=0;a<=96;a++){const t=a/96*Math.PI*2;pts.push(new THREE.Vector3(c.x+Math.cos(t)*R0,box.min.y,c.z+Math.sin(t)*R0))}rg.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),M.ring))}scene.add(rg);
+  ctl.target.copy(c);applyTheme(it);setView(it,qs.get('view')||'iso');resize(it);it.ready=true;
+  if(plate&&items.every(x=>x.ready)){requestAnimationFrame(()=>requestAnimationFrame(()=>window.__ready=true))}
+ },undefined,e=>{console.error(e);window.__ready='error'});
+}
+function setView(it,v){const[az,el]=VIEWS[v]||VIEWS.iso;const a=THREE.MathUtils.degToRad(az),e=THREE.MathUtils.degToRad(el);const d=it.rad*4;
+ it.cam.position.set(it.center.x+d*Math.sin(a)*Math.cos(e),it.center.y+d*Math.sin(e),it.center.z+d*Math.cos(a)*Math.cos(e));it.cam.up.set(0,1,0);if(el>80)it.cam.up.set(0,0,-1);it.cam.zoom=1;it.cam.updateProjectionMatrix();it.ctl.target.copy(it.center);it.ctl.update();it.dirty=true}
+function applyTheme(it){const c=pal(),M=it.mats;if(!M.fill)return;M.fill.color.set(c.bg);M.fillA.color.set(c.fill);M.ink.color.set(c.ink);M.teal.color.set(c.teal);M.inkH.color.set(c.ink);M.tealH.color.set(c.teal);M.inkH.opacity=M.tealH.opacity=c.hid;M.ring.color.set(c.ring);
+ if(!plate)it.R.setClearColor(c.bg,1);else it.R.setClearColor(0,0);it.dirty=true}
+function resize(it){const w=it.host.clientWidth,h=it.host.clientHeight;it.R.setSize(w,h,false);const asp=w/h,r=(it.rad||100)*1.08;const hh=asp>1?r:r/asp;it.cam.left=-hh*asp;it.cam.right=hh*asp;it.cam.top=hh;it.cam.bottom=-hh;it.cam.updateProjectionMatrix();it.dirty=true}
+function frame(){for(const it of items){if(!it.ready)continue;if(spin){it.ctl.autoRotate=true;it.ctl.autoRotateSpeed=1.2}else it.ctl.autoRotate=false;it.ctl.update();
+ if(it.dirty){const dir=new THREE.Vector3();it.cam.getWorldDirection(dir);for(const pt of it.parts){const ng=new THREE.BufferGeometry().setFromPoints(silhouette(pt.ed,dir));pt.sl.geometry.dispose();pt.sl.geometry=pt.slH.geometry=ng;pt.crH.visible=pt.slH.visible=hidden}it.R.render(it.scene,it.cam);it.dirty=false}}requestAnimationFrame(frame)}
+(plate?P.filter(p=>p.id===plate):P).forEach(build);frame();
+addEventListener('resize',()=>items.forEach(resize));
+const th=document.getElementById('th'),hb=document.getElementById('hid'),sb=document.getElementById('spin');
+const sync=()=>th.setAttribute('aria-pressed',document.documentElement.dataset.theme==='dark');sync();
+th.onclick=()=>{const d=document.documentElement;d.dataset.theme=d.dataset.theme==='dark'?'light':'dark';try{localStorage.setItem('abadis-theme',d.dataset.theme)}catch(e){}sync();items.forEach(applyTheme)};
+hb.onclick=()=>{hidden=!hidden;hb.setAttribute('aria-pressed',hidden);items.forEach(i=>i.dirty=true)};
+sb.onclick=()=>{spin=!spin;sb.setAttribute('aria-pressed',spin)};
+if(qs.get('hidden')==='0')hidden=false;
+</script>
+</body>
+</html>
