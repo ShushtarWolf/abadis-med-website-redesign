@@ -350,7 +350,9 @@ function frame(now){requestAnimationFrame(frame);
  }
 
  C.position.copy(cp);C.lookAt(ct);const d=cp.distanceTo(ct);C.near=Math.max(1,d*.05);C.far=d+1500;C.updateProjectionMatrix();
- R.render(S,C);}
+ R.render(S,C);
+ if(!window.__cin_frame){window.__cin_frame=true;root.dispatchEvent(new CustomEvent('cin-frame',{bubbles:true}));}
+}
 
 
 root.classList.remove('is-still');

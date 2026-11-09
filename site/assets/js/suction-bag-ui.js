@@ -83,6 +83,21 @@
   }
 
   var heroCopy = document.querySelector('.cin-copy');
+  var film = document.getElementById('film');
+  var header = document.querySelector('.header');
+  function syncHeroHeaderInk() {
+    if (!header || !film) return;
+    var theme = document.documentElement.getAttribute('data-theme') || 'light';
+    var heroOn = film.getBoundingClientRect().bottom > 88;
+    header.classList.toggle('bag-hero-ink', theme === 'light' && heroOn);
+  }
+  if (film && header) {
+    syncHeroHeaderInk();
+    window.addEventListener('scroll', function () { requestAnimationFrame(syncHeroHeaderInk); }, { passive: true });
+    window.addEventListener('resize', syncHeroHeaderInk);
+    document.addEventListener('themechange', syncHeroHeaderInk);
+  }
+
   function placeChat() {
     if (!heroCopy) return;
     var r = heroCopy.getBoundingClientRect();

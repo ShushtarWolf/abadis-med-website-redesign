@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Round 4: hero + use-case chips screenshots and overflow check."""
+"""Round 4 screenshots: hero (wait for WebGL), fallback, use chips."""
 import json
 import sys
 from pathlib import Path
@@ -19,8 +19,22 @@ PREP = """() => {
 }"""
 
 
-def snap(page, path, full=False):
-    page.screenshot(path=str(path), full_page=full)
+def wait_model(page, webgl=True):
+    if webgl:
+        page.wait_for_function("() => window.__ready === true", timeout=120000)
+        page.wait_for_function(
+            """() => new Promise((res) => {
+              if (window.__cin_frame) return res(true);
+              const r = document.querySelector('[data-cin-root]');
+              if (!r) return res(false);
+              r.addEventListener('cin-frame', () => res(true), { once: true });
+              setTimeout(() => res(!!window.__cin_frame), 8000);
+            })""",
+            timeout=15000,
+        )
+        page.wait_for_timeout(400)
+    else:
+        page.wait_for_selector('[data-cin-root].is-still', timeout=30000)
 
 
 def overflow_ok(page):
@@ -32,44 +46,61 @@ def overflow_ok(page):
 shots = []
 overflow = []
 
-PAGES = [
-    ("fa", "/products/suction-bag/?theme={theme}", 390),
-    ("en", "/en/products/suction-bag/?theme={theme}", 390),
-]
+
+def hero_shot(page, path):
+    page.evaluate("window.scrollTo(0, 0)")
+    page.wait_for_timeout(200)
+    page.locator(".cin-stage").screenshot(path=str(path))
+
 
 with sync_playwright() as p:
     browser = p.chromium.launch()
-    for lang, route, w in PAGES:
-        for theme in ("light", "dark"):
-            ctx = browser.new_context(viewport={"width": w, "height": 844}, device_scale_factor=2)
-            page = ctx.new_page()
-            page.add_init_script("try{localStorage.setItem('abadis-consent','accepted');}catch(e){}")
-            page.goto(BASE + route.format(theme=theme), wait_until="networkidle", timeout=90000)
-            page.evaluate(PREP)
-            overflow.append({"page": f"{lang}-{theme}-390", **overflow_ok(page)})
-            snap(page, ART / f"r4-{lang}-390-{theme}-hero-top.png")
-            shots.append(str(ART / f"r4-{lang}-390-{theme}-hero-top.png"))
-            page.evaluate("window.scrollTo(0, Math.round(window.innerHeight * 0.45))")
-            page.wait_for_timeout(400)
-            snap(page, ART / f"r4-{lang}-390-{theme}-hero-mid.png")
-            shots.append(str(ART / f"r4-{lang}-390-{theme}-hero-mid.png"))
-            page.locator("#uses").scroll_into_view_if_needed()
-            page.wait_for_timeout(300)
-            uses = page.locator("#uses .use-tier").first
-            uses.screenshot(path=str(ART / f"r4-{lang}-390-{theme}-uses.png"))
-            shots.append(str(ART / f"r4-{lang}-390-{theme}-uses.png"))
-            ctx.close()
+    for theme in ("light", "dark"):
+        ctx = browser.new_context(viewport={"width": 1440, "height": 900}, device_scale_factor=1)
+        page = ctx.new_page()
+        page.goto(BASE + f"/products/suction-bag/?theme={theme}", wait_until="load", timeout=120000)
+        page.evaluate(PREP)
+        wait_model(page, webgl=True)
+        overflow.append({"page": f"fa-{theme}-1440", **overflow_ok(page)})
+        hero_shot(page, ART / f"r4b-fa-1440-{theme}-hero-webgl.png")
+        shots.append(str(ART / f"r4b-fa-1440-{theme}-hero-webgl.png"))
+        ctx.close()
 
-    ctx = browser.new_context(viewport={"width": 1440, "height": 900}, device_scale_factor=1)
+    ctx = browser.new_context(
+        viewport={"width": 1440, "height": 900},
+        device_scale_factor=1,
+        java_script_enabled=True,
+    )
+    # Force still fallback: disable WebGL before any page script runs
+    ctx.add_init_script("""(() => {
+      const proto = HTMLCanvasElement.prototype;
+      const orig = proto.getContext;
+      proto.getContext = function(type, attrs) {
+        if (type && String(type).includes('webgl')) return null;
+        return orig.call(this, type, attrs);
+      };
+    })();""")
     page = ctx.new_page()
-    page.goto(BASE + "/products/suction-bag/?theme=light", wait_until="networkidle", timeout=90000)
+    page.goto(BASE + "/products/suction-bag/?theme=light", wait_until="load", timeout=120000)
     page.evaluate(PREP)
-    overflow.append({"page": "fa-light-1440", **overflow_ok(page)})
-    snap(page, ART / f"r4-fa-1440-light-hero.png")
-    shots.append(str(ART / f"r4-fa-1440-light-hero.png"))
+    wait_model(page, webgl=False)
+    hero_shot(page, ART / "r4b-fa-1440-light-hero-still-fallback.png")
+    shots.append(str(ART / "r4b-fa-1440-light-hero-still-fallback.png"))
     ctx.close()
+
+    for w, lang, tag in ((390, "fa", "fa"), (320, "en", "en")):
+        ctx = browser.new_context(viewport={"width": w, "height": 844}, device_scale_factor=2)
+        page = ctx.new_page()
+        route = "/products/suction-bag/" if lang == "fa" else "/en/products/suction-bag/"
+        page.goto(BASE + route + "?theme=light", wait_until="load", timeout=120000)
+        page.evaluate(PREP)
+        overflow.append({"page": f"{tag}-light-{w}", **overflow_ok(page)})
+        page.locator("#uses .use-tier").nth(1).screenshot(path=str(ART / f"r4b-{tag}-{w}-light-uses.png"))
+        shots.append(str(ART / f"r4b-{tag}-{w}-light-uses.png"))
+        ctx.close()
+
     browser.close()
 
 out = {"overflow": overflow, "shots": shots}
-(ART / "suction-bag-round4.json").write_text(json.dumps(out, indent=2))
+(ART / "suction-bag-round4b.json").write_text(json.dumps(out, indent=2))
 print(json.dumps(out, indent=2))

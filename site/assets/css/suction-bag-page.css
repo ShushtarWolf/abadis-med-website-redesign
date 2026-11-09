@@ -27,9 +27,6 @@
   object-fit: contain; object-position: center center;
   background: transparent;
 }
-[data-theme="light"] .page-bag .cin-still { mix-blend-mode: screen; }
-[data-theme="dark"] .page-bag .cin-still,
-[data-theme="noir"] .page-bag .cin-still { mix-blend-mode: lighten; }
 /* The root is .cin-track[data-cin-root], not .cin-root — the old selector left the still on top. */
 [data-cin-root].is-playing .cin-still {
   opacity: 0; visibility: hidden; pointer-events: none;
@@ -267,29 +264,35 @@
 .filter-list li { background: var(--bg-2, var(--surface-2)); border-radius: 12px; padding: 10px 12px; }
 .page-bag .uses {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 6.5rem), 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
   width: 100%;
   max-width: 100%;
+}
+@media (min-width: 720px) {
+  .page-bag .uses { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .page-bag .uses { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 }
 .page-bag .use {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: 8px;
+  gap: 6px;
   min-width: 0;
   max-width: 100%;
-  padding: 10px 8px 12px;
-  border-radius: 16px;
+  padding: 8px 6px 10px;
+  border-radius: 14px;
   background: var(--surface-2, var(--bg-2));
   color: var(--brand, #066163);
   font-weight: 700;
   box-sizing: border-box;
 }
 .page-bag .use-ic {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   flex: 0 0 auto;
   border-radius: 50%;
   background: #e8f3f3;
@@ -303,8 +306,8 @@
 }
 .page-bag .use-ic img,
 .page-bag .use-ic svg {
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
   border-radius: 0;
   background: none;
   object-fit: contain;
@@ -315,7 +318,7 @@
   text-align: center !important;
   text-align-last: center !important;
   text-justify: auto !important;
-  font-size: clamp(11px, 3.1vw, 13px);
+  font-size: clamp(10px, 2.75vw, 12px);
   line-height: 1.35;
   hyphens: none;
   overflow-wrap: normal;
@@ -461,3 +464,21 @@ html[lang^="en"] .page-bag .filter-list li {
 [data-theme="dark"] .page-bag .gal-pair .gal-dark,
 [data-theme="noir"] .page-bag .gal-pair .gal-dark { display: block !important; }
 .page-bag .gal-rail { height: auto !important; }
+
+/* Light hero: teal header ink while the film is in view (nav was white-on-mint) */
+[data-theme="light"] body.page-bag .header.bag-hero-ink {
+  color: var(--header-ink);
+}
+[data-theme="light"] body.page-bag .header.bag-hero-ink .nav a,
+[data-theme="light"] body.page-bag .header.bag-hero-ink .lang-link,
+[data-theme="light"] body.page-bag .header.bag-hero-ink .theme-toggle,
+[data-theme="light"] body.page-bag .header.bag-hero-ink .menu-btn {
+  color: var(--header-ink);
+  opacity: 1;
+}
+[data-theme="light"] body.page-bag .header.bag-hero-ink .lang-link {
+  background: rgba(6, 97, 99, .06);
+  border-color: rgba(6, 97, 99, .22);
+}
+[data-theme="light"] body.page-bag .header.bag-hero-ink .logo .lg-light { opacity: 1; }
+[data-theme="light"] body.page-bag .header.bag-hero-ink .logo .lg-dark { opacity: 0; }
