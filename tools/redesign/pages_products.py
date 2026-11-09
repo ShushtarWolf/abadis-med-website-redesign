@@ -372,6 +372,8 @@ def patch_suction_bag_benefits():
     """Hand-built FA page: keep the home benefits block across shell rebuilds."""
     from lib import SITE
     path = SITE / 'products/suction-bag/index.html'
+    if 'data-bag-rebuild="v12"' in path.read_text(encoding='utf-8'):
+        return 'products/suction-bag/index.html'
     html = path.read_text(encoding='utf-8')
     block = '<!-- phase2:bag-benefits -->\n' + bag_benefits('fa', '../../') + '\n<!-- /phase2:bag-benefits -->\n'
     if '<!-- phase2:bag-benefits -->' in html:
@@ -681,6 +683,10 @@ def write_bag(write, lang):
     """EN/AR suction bag: 1 L then 2 L then 3 L, current codes, benefits kept by the caller shell."""
     if lang == 'fa':
         return None
+    from lib import SITE
+    rel = OUT['suction-bag'][lang][0]
+    if 'data-bag-rebuild="v12"' in (SITE / rel).read_text(encoding='utf-8'):
+        return rel
     from product_copy import UI
     import suction_bag_3d
     import solutions_arch as S
@@ -800,6 +806,8 @@ def patch_suction_bag_cleanup():
     from lib import SITE
     path = SITE / 'products/suction-bag/index.html'
     html = path.read_text(encoding='utf-8')
+    if 'data-bag-rebuild="v12"' in html:
+        return 'products/suction-bag/index.html'
     i1, iv, i2 = html.find('id="s1"'), html.find('id="viewer"'), html.find('id="s2"')
     if not (i1 != -1 and iv != -1 and i2 != -1 and i1 < iv < i2):
         m = re.search(r'  <section class="section deep" id="viewer">.*?\n  </section>\n', html, re.S)
@@ -852,6 +860,8 @@ def patch_suction_bag_cleanup():
 def patch_product_3d_pilot_fa():
     """Hand-built FA suction-bag page: parity photo + additive sketches/CAD/3D/cinematic."""
     from lib import SITE
+    if 'data-bag-rebuild="v12"' in (SITE / 'products/suction-bag/index.html').read_text(encoding='utf-8'):
+        return 'products/suction-bag/index.html'
     import suction_bag_3d
     path = SITE / 'products/suction-bag/index.html'
     html = path.read_text(encoding='utf-8')

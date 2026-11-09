@@ -423,8 +423,20 @@ html[data-theme="noir"] .abadis-chat-choice {
   }
 }
 
-body:has(.consent-bar:not([hidden])) .abadis-chat-launcher {
-  bottom: 82px;
+body:has(.consent-bar:not([hidden])) .abadis-chat-launcher,
+body:has(.lang-suggest) .abadis-chat-launcher {
+  bottom: calc(var(--abadis-banner, 76px) + 16px);
+}
+/* Product pages: corner button once the hero CTAs leave the screen; mid-edge while they are on screen. */
+body.page-bag .abadis-chat-launcher {
+  top: auto;
+  bottom: calc(var(--abadis-banner, 0px) + 14px);
+}
+body.page-bag.bag-hero-cta .abadis-chat-launcher,
+body.page-bag.bag-hero-cta:has(.consent-bar) .abadis-chat-launcher,
+body.page-bag.bag-hero-cta:has(.lang-suggest) .abadis-chat-launcher {
+  top: 36%;
+  bottom: auto;
 }
 
 .abadis-chat-typing {
