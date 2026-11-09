@@ -287,3 +287,12 @@
 }
 .page-bag .yn svg { width: 16px; height: 16px; display: block; }
 .page-bag .yn-no { font-size: 18px; line-height: 1; font-weight: 700; color: var(--muted); }
+
+/* pair slides: only one image, never stack */
+.page-bag .gal-pair .gal-dark { display: none !important; }
+.page-bag .gal-pair .gal-light { display: block !important; }
+[data-theme="dark"] .page-bag .gal-pair .gal-light,
+[data-theme="noir"] .page-bag .gal-pair .gal-light { display: none !important; }
+[data-theme="dark"] .page-bag .gal-pair .gal-dark,
+[data-theme="noir"] .page-bag .gal-pair .gal-dark { display: block !important; }
+.page-bag .gal-rail { height: auto !important; }
