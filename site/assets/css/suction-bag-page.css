@@ -131,15 +131,16 @@
 .gal-rail {
   display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory;
   scroll-padding-inline: 16px; padding: 4px 16px 12px;
-  scrollbar-width: none;
+  scrollbar-width: none; align-items: flex-start;
 }
+.gal-card { height: auto !important; align-self: flex-start; }
 .gal-rail::-webkit-scrollbar { display: none; }
 .gal-card {
   flex: 0 0 min(86vw, 420px); scroll-snap-align: center;
   margin: 0; background: var(--surface); border-radius: 18px; overflow: hidden;
   /* border removed */
 }
-.gal-card img { width: 100%; height: auto; max-height: 380px; object-fit: contain; background: #f4f7f7; display: block; }
+.gal-card img { width: 100%; height: auto !important; max-height: 420px; object-fit: contain; background: #f4f7f7; display: block; }
 .gal-pair img { object-fit: contain; }
 [data-theme="dark"] .gal-card img { background: #0c2224; }
 [data-theme="noir"] .gal-card img { background: #141222; }
