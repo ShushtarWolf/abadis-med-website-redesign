@@ -40,19 +40,6 @@
   color: #f2f7f7;
   isolation: isolate;
 }
-/* soft exit from studio into page content */
-.page-bag .cin-stage::after {
-  content: "";
-  position: absolute; inset-inline: 0; bottom: 0; z-index: 1;
-  height: 72px;
-  pointer-events: none;
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    color-mix(in srgb, var(--bag-page-bg, var(--bg)) 12%, transparent) 55%,
-    var(--bag-page-bg, var(--bg)) 100%
-  );
-}
 .page-bag .cin-view {
   position: absolute; inset: 0; z-index: 0;
   background: inherit;
