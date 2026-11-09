@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>P01 v12 still export</title>
+<style>html,body{margin:0;background:transparent;height:100%}#host{position:fixed;inset:0}.cin-stage,.cin-view{position:absolute;inset:0}</style>
+<script type="importmap">{"imports":{"three":"../../assets/vendor/three/build/three.module.js","three/addons/":"../../assets/vendor/three/examples/jsm/"}}</script>
+</head>
+<body>
+<div id="host" class="cin-track" data-cin-root data-cin-floors="none" data-cin-capture="still">
+  <div class="cin-stage">
+    <div class="cin-view"><canvas aria-hidden="true"></canvas></div>
+  </div>
+</div>
+<script type="module">
+import { mount } from '../../assets/js/p01-cinematic-page.js';
+mount(document.querySelector('[data-cin-root]'));
+</script>
+</body>
+</html>

@@ -19,7 +19,7 @@ SITE = ROOT / 'site'
 FA_DIG = str.maketrans('0123456789', '۰۱۲۳۴۵۶۷۸۹')
 AR_DIG = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
 
-V = '20261109q'
+V = '20261109r'
 
 ARROW = ('<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
          '<path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" '
@@ -700,7 +700,7 @@ def main_html(lang, pfx):
         export = f'<a class="btn-ghost" href="{ui["export_href"]}">{esc(ui["export"])}</a>'
     still = f'{pfx}assets/img/products/3d/p01-cinematic-v12-still-alpha.webp'
     return f'''<main id="main">
-  <div class="cin-track" id="film" data-cin-root data-cin-module="{pfx}assets/js/p01-cinematic-page.js?v={V}">
+  <div class="cin-track" id="film" data-cin-root data-cin-floors="soft" data-cin-module="{pfx}assets/js/p01-cinematic-page.js?v={V}">
     <div class="cin-stage">
       <div class="cin-view">
         <canvas aria-hidden="true"></canvas>

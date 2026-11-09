@@ -62,8 +62,8 @@ with sync_playwright() as p:
         page.evaluate(PREP)
         wait_model(page, webgl=True)
         overflow.append({"page": f"fa-{theme}-1440", **overflow_ok(page)})
-        hero_shot(page, ART / f"r4b-fa-1440-{theme}-hero-webgl.png")
-        shots.append(str(ART / f"r4b-fa-1440-{theme}-hero-webgl.png"))
+        hero_shot(page, ART / f"r4c-fa-1440-{theme}-hero-webgl.png")
+        shots.append(str(ART / f"r4c-fa-1440-{theme}-hero-webgl.png"))
         ctx.close()
 
     ctx = browser.new_context(
@@ -84,8 +84,34 @@ with sync_playwright() as p:
     page.goto(BASE + "/products/suction-bag/?theme=light", wait_until="load", timeout=120000)
     page.evaluate(PREP)
     wait_model(page, webgl=False)
-    hero_shot(page, ART / "r4b-fa-1440-light-hero-still-fallback.png")
-    shots.append(str(ART / "r4b-fa-1440-light-hero-still-fallback.png"))
+    hero_shot(page, ART / "r4c-fa-1440-light-hero-still-fallback.png")
+    shots.append(str(ART / "r4c-fa-1440-light-hero-still-fallback.png"))
+    page.goto(BASE + "/products/suction-bag/?theme=dark", wait_until="load", timeout=120000)
+    page.evaluate(PREP)
+    wait_model(page, webgl=False)
+    hero_shot(page, ART / "r4c-fa-1440-dark-hero-still-fallback.png")
+    shots.append(str(ART / "r4c-fa-1440-dark-hero-still-fallback.png"))
+    ctx.close()
+
+    ctx = browser.new_context(
+        viewport={"width": 390, "height": 844},
+        device_scale_factor=2,
+    )
+    ctx.add_init_script("""(() => {
+      const proto = HTMLCanvasElement.prototype;
+      const orig = proto.getContext;
+      proto.getContext = function(type, attrs) {
+        if (type && String(type).includes('webgl')) return null;
+        return orig.call(this, type, attrs);
+      };
+    })();""")
+    page = ctx.new_page()
+    page.goto(BASE + "/products/suction-bag/?theme=light", wait_until="load", timeout=120000)
+    page.evaluate(PREP)
+    wait_model(page, webgl=False)
+    overflow.append({"page": "fa-light-390-fallback", **overflow_ok(page)})
+    page.locator(".cin-stage").screenshot(path=str(ART / "r4c-fa-390-light-hero-still-fallback.png"))
+    shots.append(str(ART / "r4c-fa-390-light-hero-still-fallback.png"))
     ctx.close()
 
     for w, lang, tag in ((390, "fa", "fa"), (320, "en", "en")):
@@ -95,12 +121,12 @@ with sync_playwright() as p:
         page.goto(BASE + route + "?theme=light", wait_until="load", timeout=120000)
         page.evaluate(PREP)
         overflow.append({"page": f"{tag}-light-{w}", **overflow_ok(page)})
-        page.locator("#uses .use-tier").nth(1).screenshot(path=str(ART / f"r4b-{tag}-{w}-light-uses.png"))
-        shots.append(str(ART / f"r4b-{tag}-{w}-light-uses.png"))
+        page.locator("#uses .use-tier").nth(1).screenshot(path=str(ART / f"r4c-{tag}-{w}-light-uses.png"))
+        shots.append(str(ART / f"r4c-{tag}-{w}-light-uses.png"))
         ctx.close()
 
     browser.close()
 
 out = {"overflow": overflow, "shots": shots}
-(ART / "suction-bag-round4b.json").write_text(json.dumps(out, indent=2))
+(ART / "suction-bag-round4c.json").write_text(json.dumps(out, indent=2))
 print(json.dumps(out, indent=2))
