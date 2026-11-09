@@ -15,13 +15,13 @@ SITE = ROOT / 'site'
 FA_DIG = str.maketrans('0123456789', '۰۱۲۳۴۵۶۷۸۹')
 AR_DIG = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
 
-V = '20261109j'
+V = '20261109l'
 
-CHECK = ('<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
-         '<path d="M5 12.5 9.2 16.7 19 7" fill="none" stroke="currentColor" '
-         'stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>')
-NO_DASH = ('<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
-           '<path d="M6 12.5h12" fill="none" stroke="currentColor" stroke-width="2.4" '
+CHECK = ('<svg class="yn-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+         '<path d="M5.5 12.5 L9.5 16.5 L18.5 7.5" fill="none" stroke="currentColor" '
+         'stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>')
+NO_DASH = ('<svg class="yn-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+           '<path d="M6 12h12" fill="none" stroke="currentColor" stroke-width="2.2" '
            'stroke-linecap="round"/></svg>')
 ARROW = ('<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
          '<path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" '
@@ -161,7 +161,7 @@ UI = {
         specs='مشخصات', pause='توقف یا ادامه حرکت',
         intro_h='معرفی کوتاه',
         intro_p='کیسه ساکشن یکبار مصرف آبادیس در حجم‌های ۱، ۲ و ۳ لیتری؛ دارای پودر ژل‌کننده، فیلتر هیدروفوبیک و سیستم حفاظت از ساکشن مرکزی.',
-        nav=[('film', 'سینمایی'), ('intro', 'معرفی'), ('stats', 'اعداد'), ('gallery', 'گالری'), ('sizes', 'سایزها'), ('uses', 'مصرف'), ('packaging', 'بسته‌بندی'), ('filters', 'فیلتر'), ('catalog', 'کاتالوگ'), ('order', 'قیمت')],
+        nav=[('intro', 'معرفی'), ('stats', 'اعداد'), ('gallery', 'گالری'), ('sizes', 'سایزها'), ('uses', 'مصرف'), ('packaging', 'بسته‌بندی'), ('filters', 'فیلتر'), ('catalog', 'کاتالوگ'), ('order', 'قیمت')],
         uses_h='موارد مصرف',
         packaging_h='بسته‌بندی و کارتن',
         filters_h='فیلترها',
@@ -171,7 +171,7 @@ UI = {
         stats=[
             ('۱، ۲ و ۳ لیتر', 'حجم‌های کیسه'),
             ('۱۱ سانتی‌متر', 'قطر کیسه'),
-            ('۱۵٫۵ / ۲۴٫۵ / ۳۹', 'ارتفاع، سانتی‌متر'),
+            ('۱۵٫۵\u00a0/\u00a0۲۴٫۵\u00a0/\u00a0۳۹', 'ارتفاع، سانتی\u200cمتر'),
             ('۴۵ عدد', 'در هر کارتن'),
         ],
         gal_h='گالری',
@@ -209,7 +209,7 @@ UI = {
         specs='Specifications', pause='Pause or play motion',
         intro_h='Overview',
         intro_p='Abadis single-use disposable suction liner bags in 1, 2 and 3 litres, with gel powder, a hydrophobic flow-stopper filter and central suction protection.',
-        nav=[('film', 'Film'), ('intro', 'Overview'), ('stats', 'Numbers'), ('gallery', 'Gallery'), ('sizes', 'Sizes'), ('uses', 'Usage'), ('packaging', 'Packaging'), ('filters', 'Filters'), ('catalog', 'Catalog'), ('order', 'Quote')],
+        nav=[('intro', 'Overview'), ('stats', 'Numbers'), ('gallery', 'Gallery'), ('sizes', 'Sizes'), ('uses', 'Usage'), ('packaging', 'Packaging'), ('filters', 'Filters'), ('catalog', 'Catalog'), ('order', 'Quote')],
         uses_h='Usage',
         packaging_h='Packaging & carton',
         filters_h='Filters',
@@ -219,7 +219,7 @@ UI = {
         stats=[
             ('1, 2 and 3 L', 'Bag volumes'),
             ('11 cm', 'Bag diameter'),
-            ('15.5 / 24.5 / 39', 'Height, cm'),
+            ('15.5\u00a0/\u00a024.5\u00a0/\u00a039', 'Height, cm'),
             ('45 pcs', 'Per carton'),
         ],
         gal_h='Gallery',
@@ -259,7 +259,7 @@ UI = {
         specs='المواصفات', pause='إيقاف الحركة أو متابعتها',
         intro_h='مقدمة',
         intro_p='أكياس شفط آباديس ذات الاستعمال الواحد بسعات ١ و٢ و٣ لتر، مع مسحوق التهليم وفلتر كاره للماء ونظام حماية الشفط المركزي.',
-        nav=[('film', 'فيلم'), ('intro', 'مقدمة'), ('stats', 'أرقام'), ('gallery', 'المعرض'), ('sizes', 'الأحجام'), ('uses', 'الاستخدام'), ('packaging', 'التغليف'), ('filters', 'الفلاتر'), ('catalog', 'الكتالوج'), ('order', 'السعر')],
+        nav=[('intro', 'مقدمة'), ('stats', 'أرقام'), ('gallery', 'المعرض'), ('sizes', 'الأحجام'), ('uses', 'الاستخدام'), ('packaging', 'التغليف'), ('filters', 'الفلاتر'), ('catalog', 'الكتالوج'), ('order', 'السعر')],
         uses_h='الاستخدامات',
         packaging_h='التغليف والكرتون',
         filters_h='الفلاتر',
@@ -269,7 +269,7 @@ UI = {
         stats=[
             ('١، ٢ و٣ لتر', 'سعات الكيس'),
             ('١١ سم', 'قطر الكيس'),
-            ('١٥٫٥ / ٢٤٫٥ / ٣٩', 'الارتفاع، سم'),
+            ('١٥٫٥\u00a0/\u00a0٢٤٫٥\u00a0/\u00a0٣٩', 'الارتفاع، سم'),
             ('٤٥ قطعة', 'في كل كرتون'),
         ],
         gal_h='المعرض',
@@ -658,7 +658,7 @@ def gallery(lang, pfx):
     for name, _dark, alts in GALLERY:
         alt = esc(alts[lang])
         cards.append(
-            f'<figure class="gal-card"><img src="{pfx}assets/img/p/{name}" alt="{alt}" width="1200" height="800" loading="lazy" decoding="async"><figcaption>{alt}</figcaption></figure>'
+            f'<figure class="gal-card"><div class="gal-frame"><img src="{pfx}assets/img/p/{name}" alt="{alt}" width="1200" height="800" loading="lazy" decoding="async"></div><figcaption>{alt}</figcaption></figure>'
         )
     for view, fa, en, ar in (
         ('front', 'نمای روبه‌رو', 'Front view', 'المنظر الأمامي'),
@@ -668,8 +668,10 @@ def gallery(lang, pfx):
         light = f'{pfx}assets/img/products/3d/p01-1l-liner-{view}-light.webp'
         dark = f'{pfx}assets/img/products/3d/p01-1l-liner-{view}-dark.webp'
         cards.append(
-            f'<figure class="gal-card gal-pair"><img class="gal-light" src="{light}" alt="{esc(cap)}" width="800" height="700" loading="lazy" decoding="async">'
-            f'<img class="gal-dark" src="{dark}" alt="" width="800" height="700" loading="lazy" decoding="async" aria-hidden="true"><figcaption>{esc(cap)}</figcaption></figure>'
+            f'<figure class="gal-card gal-pair"><div class="gal-frame">'
+            f'<img class="gal-light" src="{light}" alt="{esc(cap)}" width="800" height="700" loading="lazy" decoding="async">'
+            f'<img class="gal-dark" src="{dark}" alt="" width="800" height="700" loading="lazy" decoding="async" aria-hidden="true">'
+            f'</div><figcaption>{esc(cap)}</figcaption></figure>'
         )
     ui = UI[lang]
     return f'''<div class="gal" data-gal>
@@ -689,7 +691,11 @@ def main_html(lang, pfx):
         f'<p class="beat" data-a="{a}" data-b="{b}">{esc(t)}</p>' for a, b, t in ui['beats']
     )
     nav = ''.join(f'<a href="#{i}">{esc(digits(n, lang))}</a>' for i, n in ui['nav'])
-    stats = ''.join(f'<div class="stat"><b>{esc(a)}</b><span>{esc(b)}</span></div>' for a, b in ui['stats'])
+    stats = ''.join(
+        f'<div class="stat"><b class="stat-val">{esc(digits(a, lang))}</b>'
+        f'<span class="stat-lbl">{esc(digits(b, lang))}</span></div>'
+        for a, b in ui['stats']
+    )
     export = ''
     if lang == 'en':
         export = f'<a class="btn-ghost" href="{ui["export_href"]}">{esc(ui["export"])}</a>'
@@ -703,15 +709,8 @@ def main_html(lang, pfx):
         <div class="cin-bar" aria-hidden="true"></div>
       </div>
       <div class="cin-copy">
-        <p class="cin-crumb"><a href="{home_h}">{esc(home)}</a> · <a href="{mid_h}">{esc(mid)}</a> · {esc(here)}</p>
         <h1>{esc(ui["h1"])}</h1>
         <div class="cin-beats">{beats}</div>
-        <p class="cin-hint">{esc(ui["hint"])}</p>
-        <div class="cin-cta">
-          <a class="btn-primary" href="{ui["quote_href"]}">{esc(ui["quote"])}</a>
-          <a class="btn-ghost" href="#sizes">{esc(ui["specs"])}</a>
-          <button class="cin-pause" type="button" data-cin-pause aria-pressed="false" aria-label="{esc(ui["pause"])}">{PAUSE}</button>
-        </div>
       </div>
     </div>
   </div>
@@ -726,7 +725,7 @@ def main_html(lang, pfx):
     <h2>{esc(ui["intro_h"])}</h2>
     <p class="bag-lead">{esc(ui["intro_p"])}</p>
   </div></section>
-  <section class="bag-block" id="stats"><div class="wrap">
+  <section class="bag-block bag-stats" id="stats"><div class="wrap">
     <h2>{esc(ui["stats_h"])}</h2>
     <div class="stat-grid">{stats}</div>
   </div></section>

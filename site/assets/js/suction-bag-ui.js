@@ -82,14 +82,14 @@
     sync();
   }
 
-  var heroCta = document.querySelector('.cin-cta');
+  var heroCopy = document.querySelector('.cin-copy');
   function placeChat() {
-    if (!heroCta) return;
-    var r = heroCta.getBoundingClientRect();
+    if (!heroCopy) return;
+    var r = heroCopy.getBoundingClientRect();
     var on = r.bottom > 80 && r.top < window.innerHeight - 8;
     document.body.classList.toggle('bag-hero-cta', on);
   }
-  if (heroCta) {
+  if (heroCopy) {
     placeChat();
     window.addEventListener('scroll', function () { requestAnimationFrame(placeChat); }, { passive: true });
     window.addEventListener('resize', placeChat);

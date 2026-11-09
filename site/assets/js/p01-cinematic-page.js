@@ -13,6 +13,7 @@ const asset=(rel)=>new URL(rel, new URL('../../3d-sketches/p01-cinematic/', impo
 const mob=matchMedia('(max-width:700px),(pointer:coarse)').matches;
 const cv=root.querySelector('canvas'),stage=cv.parentElement;
 const R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true,powerPreference:'high-performance',logarithmicDepthBuffer:true});
+R.setClearColor(0x000000, 0);
 R.setPixelRatio(Math.min(devicePixelRatio,mob?1.75:2));R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.02;
 R.shadowMap.enabled=!mob;R.shadowMap.type=THREE.PCFSoftShadowMap;
 const S=new THREE.Scene();
