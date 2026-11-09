@@ -1165,7 +1165,7 @@
   var base = cur ? cur.getAttribute('src').replace(/assets\/js\/site\.js.*$/, '') : '/';
   var css = document.createElement('link');
   css.rel = 'stylesheet';
-  css.href = base + 'assets/chatbot/chatbot.css?v=20261109b';
+  css.href = base + 'assets/chatbot/chatbot.css?v=20261109c';
   document.head.appendChild(css);
   var btn = document.createElement('button');
   btn.type = 'button';

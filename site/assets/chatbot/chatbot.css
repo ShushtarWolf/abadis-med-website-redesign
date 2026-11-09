@@ -432,11 +432,17 @@ body.page-bag .abadis-chat-launcher {
   top: auto;
   bottom: calc(var(--abadis-banner, 0px) + 14px);
 }
-body.page-bag.bag-hero-cta .abadis-chat-launcher,
-body.page-bag.bag-hero-cta:has(.consent-bar) .abadis-chat-launcher,
-body.page-bag.bag-hero-cta:has(.lang-suggest) .abadis-chat-launcher {
-  top: 36%;
-  bottom: auto;
+/* While the film is on screen, keep the bubble in the caption band, not beside the bag. */
+@media (max-width: 899px) {
+  body.page-bag.bag-hero-cta .abadis-chat-launcher,
+  body.page-bag.bag-hero-cta:has(.consent-bar) .abadis-chat-launcher,
+  body.page-bag.bag-hero-cta:has(.lang-suggest) .abadis-chat-launcher {
+    top: auto;
+    bottom: calc(var(--abadis-banner, 0px) + 78px);
+    inset-inline-end: 10px;
+    width: 46px;
+    height: 46px;
+  }
 }
 
 .abadis-chat-typing {

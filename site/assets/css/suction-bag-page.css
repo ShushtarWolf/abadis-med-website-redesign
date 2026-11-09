@@ -29,13 +29,20 @@
   background: radial-gradient(120% 90% at 50% 40%, #0f1b20 0%, #05090b 60%, #020405 100%);
   color: #f2f7f7;
 }
-.cin-view { position: relative; min-height: 0; }
+.cin-view { position: relative; min-height: 0; background: inherit; }
 .cin-view canvas, .cin-still {
-  position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+  position: absolute; inset: 0; width: 100% !important; height: 100% !important;
+  max-width: none !important; display: block;
 }
-.cin-still { object-fit: contain; object-position: center 42%; }
-.cin-root.is-playing .cin-still { opacity: 0; transition: opacity .4s ease; }
-.cin-root.is-still canvas { visibility: hidden; }
+.cin-still {
+  object-fit: cover; object-position: center center;
+  background: #05090b;
+}
+/* The root is .cin-track[data-cin-root], not .cin-root — the old selector left the still on top. */
+[data-cin-root].is-playing .cin-still {
+  opacity: 0; visibility: hidden; pointer-events: none;
+}
+[data-cin-root].is-still canvas { visibility: hidden; }
 .cin-bar { position: absolute; top: 0; inset-inline-start: 0; height: 2px; width: 0; background: #2e7f96; }
 .cin-copy {
   position: relative; z-index: 2;
