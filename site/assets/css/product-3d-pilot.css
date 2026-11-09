@@ -1,0 +1,78 @@
+/* Product 3D sketch pilot — 1L suction bag + products hub cards. No emojis. */
+.theme-sketch{position:relative;display:block;width:100%}
+.theme-sketch img{width:100%;height:auto;display:block;object-fit:contain}
+.theme-sketch .ts-light{display:block}
+.theme-sketch .ts-dark{display:none}
+[data-theme="dark"] .theme-sketch .ts-light,
+[data-theme="noir"] .theme-sketch .ts-light{display:none}
+[data-theme="dark"] .theme-sketch .ts-dark,
+[data-theme="noir"] .theme-sketch .ts-dark{display:block}
+
+.ps-card .ph.ph--sketch{background:radial-gradient(circle at 50% 40%,#f3fafa,#e8f3f3 70%)}
+[data-theme="dark"] .ps-card .ph.ph--sketch{background:radial-gradient(circle at 50% 40%,#0f3034,#0b2427 70%)}
+[data-theme="noir"] .ps-card .ph.ph--sketch{background:radial-gradient(circle at 50% 40%,#1c1a2e,#13121f 70%)}
+.ps-card .ph.ph--sketch .theme-sketch{width:100%;height:100%}
+.ps-card .ph.ph--sketch .theme-sketch img{width:100%;height:100%;object-fit:contain}
+
+.cad-tech{margin-top:28px}
+.cad-tech-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:14px}
+.cad-tech-head h2{margin:0}
+.cad-tech-head p{margin:0;color:var(--muted);font-size:.92rem;max-width:42rem}
+.cad-tech-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.cad-dl{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;
+  border:1px solid rgba(5,104,107,.28);background:rgba(5,104,107,.06);color:inherit;text-decoration:none;font-weight:700;font-size:.9rem
+}
+.cad-dl:hover{background:rgba(5,104,107,.12)}
+[data-theme="dark"] .cad-dl,[data-theme="noir"] .cad-dl{border-color:rgba(127,220,221,.28);background:rgba(127,220,221,.08)}
+.cad-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.cad-grid{grid-template-columns:1fr}}
+.cad-plate{
+  display:block;border-radius:14px;overflow:hidden;border:1px solid rgba(5,104,107,.14);
+  background:#fff;text-decoration:none;color:inherit
+}
+[data-theme="dark"] .cad-plate,[data-theme="noir"] .cad-plate{background:#0b2427;border-color:rgba(127,220,221,.16)}
+[data-theme="noir"] .cad-plate{background:#13121f}
+.cad-plate .theme-sketch{padding:10px}
+.cad-plate figcaption{
+  display:flex;justify-content:space-between;gap:8px;padding:8px 12px 12px;font-size:.86rem;color:var(--muted)
+}
+.cad-plate figcaption strong{color:inherit;font-weight:800}
+.cad-dim{margin-top:10px;font-size:.9rem;color:var(--muted)}
+
+/* Deferred 3D gate on bag scrollytelling */
+.f3d--bag .f3d-gate{
+  position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;padding:24px;text-align:center;background:rgba(232,243,243,.72);backdrop-filter:blur(2px)
+}
+[data-theme="dark"] .f3d--bag .f3d-gate{background:rgba(4,17,19,.72)}
+[data-theme="noir"] .f3d--bag .f3d-gate{background:rgba(10,10,18,.78)}
+.f3d--bag.is-gated .f3d-dock,
+.f3d--bag.is-gated .f3d-tools,
+.f3d--bag.is-gated .f3d-hint,
+.f3d--bag.is-gated .f3d-prog,
+.f3d--bag.is-gated .f3d-labels,
+.f3d--bag.is-gated .f3d-subpins{visibility:hidden;pointer-events:none}
+.f3d--bag:not(.is-gated) .f3d-gate{display:none}
+.f3d-gate-btn{
+  display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:999px;border:0;
+  background:#05686b;color:#fff;font:inherit;font-weight:800;cursor:pointer;box-shadow:0 8px 24px rgba(5,104,107,.28)
+}
+.f3d-gate-btn:hover{filter:brightness(1.06)}
+.f3d-gate-btn:disabled{opacity:.7;cursor:wait}
+.f3d-gate-note{max-width:28rem;margin:0;font-size:.92rem;color:var(--muted)}
+.f3d-gate-fallback{max-width:min(420px,80%);border-radius:16px;overflow:hidden}
+.f3d-gate-fallback .theme-sketch img{width:100%;height:auto}
+
+/* Bag-specific static sketch while loading / when WebGL unavailable */
+.f3d--bag:not(.gl-on) .f3d-stage{
+  background-image:url("../img/products/3d/p01-1l-liner-fallback.webp");
+  background-repeat:no-repeat;background-position:center;background-size:contain
+}
+@media (max-width:760px){
+  .f3d--bag:not(.gl-on) .f3d-stage{background-size:120% auto;background-position:center 60%}
+}
+
+.size-media .gal-main.gal-main--sketch{background:radial-gradient(circle at 50% 40%,#f3fafa,#e8f3f3 70%)}
+[data-theme="dark"] .size-media .gal-main.gal-main--sketch{background:radial-gradient(circle at 50% 40%,#0f3034,#0b2427 70%)}
+[data-theme="noir"] .size-media .gal-main.gal-main--sketch{background:radial-gradient(circle at 50% 40%,#1c1a2e,#13121f 70%)}

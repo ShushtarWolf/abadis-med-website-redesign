@@ -9,7 +9,7 @@ Matches the exact visual & interactive architecture of factory_hero.py:
 import html as _h
 import json
 
-V = '20261029k'
+V = '20261109a'
 FA_DIGITS = str.maketrans('0123456789', '۰۱۲۳۴۵۶۷۸۹')
 AR_DIGITS = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
 
@@ -545,6 +545,28 @@ T = {
     ),
 }
 
+
+GATE = {
+    'fa': dict(
+        btn='نمایش سه‌بعدی',
+        note='طرح مهندسی ثابت همین حالا دیده می‌شود. با زدن دکمه، مدل سه‌بعدی فقط در صورت نیاز بارگذاری می‌شود.',
+        alt='طرح سه‌بعدی کیسه ساکشن یک‌بارمصرف ۱ لیتری آبادیس',
+    ),
+    'en': dict(
+        btn='View in 3D',
+        note='A still engineering sketch is shown first. The interactive 3D model downloads only after you tap the button.',
+        alt='3D sketch of the Abadis 1L disposable suction liner',
+    ),
+    'ar': dict(
+        btn='عرض ثلاثي الأبعاد',
+        note='تظهر رسمة هندسية ثابتة أولاً. يُحمَّل النموذج التفاعلي ثلاثي الأبعاد فقط بعد الضغط على الزر.',
+        alt='رسمة ثلاثية الأبعاد لكيس الشفط أحادي الاستعمال سعة ١ لتر من آباديس',
+    ),
+}
+
+ICO_CUBE = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 3 7v10l9 5 9-5V7l-9-5z"/><path d="M12 22V12"/><path d="m3 7 9 5 9-5"/></svg>'
+
+
 ICO_ORBIT = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="9" ry="3.8"/><path d="M12 3a15 15 0 0 1 0 18"/></svg>'
 ICO_EXPLODE = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6m0 8v6M4.93 4.93l4.24 4.24m5.66 5.66 4.24 4.24M2 12h6m8 0h6M4.93 19.07l4.24-4.24m5.66-5.66 4.24-4.24"/></svg>'
 ICO_SKIP = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10l5 5 5-5"/><path d="M5 19h14"/></svg>'
@@ -552,11 +574,18 @@ ICO_CHEV = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="
 
 
 def head(p):
-    return f'<link rel="stylesheet" href="{p}assets/css/factory-3d.css?v={V}">'
+    return (
+        f'<link rel="stylesheet" href="{p}assets/css/factory-3d.css?v={V}">'
+        f'\n<link rel="stylesheet" href="{p}assets/css/product-3d-pilot.css?v={V}">'
+    )
 
 
 def scripts(p):
-    return f'<script type="module" src="{p}assets/js/suction-bag-1l-3d.js?v={V}"></script>\n'
+    # Gate only — heavy Three.js module loads on user click (see suction-bag-1l-3d-gate.js).
+    return (
+        f'<script type="module" src="{p}assets/js/suction-bag-1l-3d-gate.js?v={V}" '
+        f'data-f3d-module="{p}assets/js/suction-bag-1l-3d.js?v={V}"></script>\n'
+    )
 
 
 def section(p, lang='fa', skip_to='#s1', sec_id='bag-3d', tag_h='h2'):
@@ -579,9 +608,24 @@ def section(p, lang='fa', skip_to='#s1', sec_id='bag-3d', tag_h='h2'):
         f'<button type="button" class="f3d-pill" data-i="{i}"><b>{num(i + 1, lang)}</b><span>{esc(lb)}</span></button>'
         for i, lb in enumerate(t['labels'][:5])
     )
-    return f'''  <section class="f3d f3d--bag" id="{esc(sec_id)}" aria-label="{esc(t['h1a'] + t['h1b'] + t['h1c'])}">
+    g = GATE[lang]
+    sketch = (
+        f'<span class="theme-sketch f3d-gate-fallback" aria-hidden="true">'
+        f'<img class="ts-light" src="{p}assets/img/products/3d/p01-1l-liner-light.webp" width="1200" height="771" alt="" loading="lazy" decoding="async">'
+        f'<img class="ts-dark" src="{p}assets/img/products/3d/p01-1l-liner-dark.webp" width="1200" height="771" alt="" loading="lazy" decoding="async">'
+        f'</span>'
+    )
+    gate = (
+        f'<div class="f3d-gate">'
+        f'{sketch}'
+        f'<button type="button" class="f3d-gate-btn" data-f3d-start>{ICO_CUBE}<span>{esc(g["btn"])}</span></button>'
+        f'<p class="f3d-gate-note">{esc(g["note"])}</p>'
+        f'</div>'
+    )
+    return f'''  <section class="f3d f3d--bag is-gated" id="{esc(sec_id)}" aria-label="{esc(t['h1a'] + t['h1b'] + t['h1c'])}" data-f3d-src="{p}assets/js/suction-bag-1l-3d.js?v={V}">
     <script type="application/json" class="f3d-cfg">{json.dumps(cfg, ensure_ascii=False)}</script>
     <div class="f3d-stage">
+      {gate}
       <canvas class="f3d-gl" aria-hidden="true"></canvas>
       <div class="f3d-labels"></div>
       <div class="f3d-subpins"></div>
@@ -614,3 +658,100 @@ def section(p, lang='fa', skip_to='#s1', sec_id='bag-3d', tag_h='h2'):
       <div class="f3d-hint f3d-glass">{esc(t['hint'])}</div>
     </div>
   </section>'''
+
+
+def theme_sketch(p, light, dark, alt, w=1200, h=771, loading='lazy', cls=''):
+    """Theme-aware light/dark sketch pair (noir uses dark)."""
+    extra = (' ' + cls) if cls else ''
+    return (
+        f'<span class="theme-sketch{extra}">'
+        f'<img class="ts-light" src="{p}{light}" width="{w}" height="{h}" alt="{esc(alt)}" loading="{loading}" decoding="async">'
+        f'<img class="ts-dark" src="{p}{dark}" width="{w}" height="{h}" alt="" loading="{loading}" decoding="async" aria-hidden="true">'
+        f'</span>'
+    )
+
+
+CAD_UI = {
+    'fa': dict(
+        h='مشخصات فنی',
+        lead='نقشه‌های خطی CAD کیسه ساکشن ۱ لیتری — ابعاد اسمی سازنده: قطر ۱۱ سانتی‌متر × ارتفاع ۱۵٫۵ سانتی‌متر.',
+        dl='دانلود برگه فنی (PDF)',
+        dim='ابعاد اسمی سازنده: ⌀۱۱ cm × H۱۵٫۵ cm',
+        views=[('iso', 'ایزومتریک'), ('front', 'نما از جلو'), ('top', 'نما از بالا')],
+        zoom='نمایش بزرگ‌تر',
+        alt='طرح سه‌بعدی کیسه ساکشن یک‌بارمصرف ۱ لیتری آبادیس',
+    ),
+    'en': dict(
+        h='Technical specs',
+        lead='CAD line drawings for the 1L suction liner — manufacturer nominal dimensions: Ø11 cm × H15.5 cm.',
+        dl='Download technical sheet (PDF)',
+        dim='Manufacturer nominal dimensions: Ø11 cm × H15.5 cm',
+        views=[('iso', 'Isometric'), ('front', 'Front'), ('top', 'Top')],
+        zoom='Larger view',
+        alt='3D sketch of the Abadis 1L disposable suction liner',
+    ),
+    'ar': dict(
+        h='المواصفات الفنية',
+        lead='رسومات CAD الخطية لكيس الشفط سعة ١ لتر — الأبعاد الاسمية للشركة المصنعة: ⌀١١ سم × ارتفاع ١٥٫٥ سم.',
+        dl='تنزيل الورقة الفنية (PDF)',
+        dim='الأبعاد الاسمية للشركة المصنعة: ⌀١١ سم × ارتفاع ١٥٫٥ سم',
+        views=[('iso', 'منظور متساوي القياس'), ('front', 'الواجهة'), ('top', 'من الأعلى')],
+        zoom='عرض أكبر',
+        alt='رسمة ثلاثية الأبعاد لكيس الشفط أحادي الاستعمال سعة ١ لتر من آباديس',
+    ),
+}
+
+ICO_DL = (
+    '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" '
+    'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+    '<path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>'
+)
+
+
+def cad_tech_section(p, lang='fa'):
+    """CAD plates + self-hosted PDF beside the product specs."""
+    ui = CAD_UI[lang]
+    plates = []
+    for view, label in ui['views']:
+        light = f'assets/img/products/3d/p01-1l-liner-{view}-light.webp'
+        dark = f'assets/img/products/3d/p01-1l-liner-{view}-dark.webp'
+        wh = (662, 662) if view != 'front' else (675, 570)
+        alt = ui['alt'] + ' — ' + label
+        plates.append(
+            '<a class="cad-plate" href="' + p + light + '" data-gallery="cad-1l" data-w="' + str(wh[0]) +
+            '" data-h="' + str(wh[1]) + '" aria-label="' + esc(ui['zoom']) + ': ' + esc(label) + '">'
+            '<figure>' + theme_sketch(p, light, dark, alt, w=wh[0], h=wh[1]) +
+            '<figcaption><strong>' + esc(label) + '</strong><span>' + esc(ui['dim']) +
+            '</span></figcaption></figure></a>'
+        )
+    pdf = p + 'assets/docs/abadis-1l-suction-liner-technical-drawing.pdf'
+    return (
+        '  <section class="section cad-tech" id="tech-drawings">\n'
+        '    <div class="wrap reveal">\n'
+        '      <div class="cad-tech-head">\n'
+        '        <div>\n'
+        '          <h2>' + esc(ui['h']) + '</h2>\n'
+        '          <p>' + esc(ui['lead']) + '</p>\n'
+        '        </div>\n'
+        '        <div class="cad-tech-actions">\n'
+        '          <a class="cad-dl" href="' + pdf + '" download target="_blank" rel="noopener" '
+        'data-track="tech_drawing_download">' + ICO_DL + '<span>' + esc(ui['dl']) + '</span></a>\n'
+        '        </div>\n'
+        '      </div>\n'
+        '      <div class="cad-grid">' + ''.join(plates) + '</div>\n'
+        '      <p class="cad-dim">' + esc(ui['dim']) + '</p>\n'
+        '    </div>\n'
+        '  </section>\n'
+    )
+
+
+def s1_sketch_main(p, lang, gallery='s1'):
+    """Theme-aware sketch used as the 1L size-block main image."""
+    ui = CAD_UI[lang]
+    light = 'assets/img/products/3d/p01-1l-liner-light.webp'
+    dark = 'assets/img/products/3d/p01-1l-liner-dark.webp'
+    return (
+        '<a class="gal-main gal-main--sketch" href="' + p + light + '" data-gallery="' + gallery +
+        '" data-w="1200" data-h="771" aria-label="' + esc(ui['zoom']) + ': ' + esc(ui['alt']) + '">'
+        + theme_sketch(p, light, dark, ui['alt'], w=1200, h=771, loading='eager') + '</a>'
+    )

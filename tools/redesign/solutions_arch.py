@@ -203,6 +203,19 @@ CATALOG = [
 ]
 BY_SLUG = {c['slug']: c for c in CATALOG}
 
+# Theme-aware 3D sketch cards for the products hub (pilot). Keys match CATALOG photo/slug.
+# Only families with a verified pNN mapping get a sketch; others keep PHOTO.
+SKETCH_CARD = {
+    'suction-bag': 'p01',
+    'canister': 'p05',
+    'stand': 'p14',
+    'connectors': 'p17',
+    'filters': 'p11',
+    'suction-tube': 'p09',
+    'oral': 'p23',
+    'other': 'p25',
+}
+
 PHOTO = {
     'suction-bag': 'assets/img/c/611f0398754f-640.webp',
     'stand': 'assets/img/c/90d179b67447-1600.webp',
@@ -863,8 +876,19 @@ def solution_main(p, lang, sol):
 
 
 def _card(p, lang, href_, title, sub, photo, kind, badge_html=''):
-    src = PHOTO.get(photo)
-    ph = (f'<div class="ph"><img src="{p}{src}" alt="" loading="lazy"></div>' if src else '')
+    pid = SKETCH_CARD.get(photo) if kind == 'product' else None
+    if pid:
+        light = f'{p}assets/img/products/3d/{pid}-light-card.webp'
+        dark = f'{p}assets/img/products/3d/{pid}-dark-card.webp'
+        ph = (
+            f'<div class="ph ph--sketch"><span class="theme-sketch">'
+            f'<img class="ts-light" src="{light}" width="640" height="411" alt="{esc(title)}" loading="lazy" decoding="async">'
+            f'<img class="ts-dark" src="{dark}" width="640" height="411" alt="" loading="lazy" decoding="async" aria-hidden="true">'
+            f'</span></div>'
+        )
+    else:
+        src = PHOTO.get(photo)
+        ph = (f'<div class="ph"><img src="{p}{src}" alt="{esc(title)}" loading="lazy" decoding="async"></div>' if src else '')
     return (f'<a class="ps-card" href="{href_}">{ph}<span class="ps-card-top">{icons(p, kind)}{badge_html}</span>'
             f'<strong>{esc(title)}</strong><em>{esc(sub)}</em></a>')
 
