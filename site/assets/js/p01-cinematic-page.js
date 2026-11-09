@@ -44,8 +44,17 @@ if(sr){sr.rotation.x=-Math.PI/2;sr.position.y=-178.4;sr.receiveShadow=true;S.add
 function syncPageTone(){
  const t=document.documentElement.getAttribute('data-theme')||'light';
  const light=t==='light';
+ const pageBg=light?0xf3fafa:t==='noir'?0x0a0a12:0x061719;
  R.toneMappingExposure=light?1.14:1.02;
- S.environmentIntensity=light?.58:.42;
+ if(floorMode==='soft'||floorMode==='none'){
+  S.environmentIntensity=light?.52:.34;
+  hemi.color.setHex(light?0xf8fbfb:0x0b2427);
+  hemi.groundColor.setHex(pageBg);
+  hemi.intensity=light?.62:.42;
+  S.background=null;
+ }else{
+  S.environmentIntensity=light?.58:.42;
+ }
  key.intensity=light?1.48:1.35;
  fillL.intensity=light?1.45:1.35;
  if(sr)sr.material.opacity=light?.28:.22;
