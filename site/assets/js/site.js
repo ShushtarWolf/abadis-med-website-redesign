@@ -1158,24 +1158,34 @@
   });
 })();
 
-/* Auto-mount Abadis Sales & Academy Chatbot widget across site pages */
+/* Chat launcher is immediate; the knowledge base and chatbot.js load on first open. */
 (function () {
-  if (document.querySelector('script[src*="chatbot.js"]')) return;
+  if (document.querySelector('script[src*="chatbot.js"]') || document.querySelector('.abadis-chat-launcher')) return;
   var cur = document.querySelector('script[src*="assets/js/site.js"]');
   var base = cur ? cur.getAttribute('src').replace(/assets\/js\/site\.js.*$/, '') : '/';
   var css = document.createElement('link');
   css.rel = 'stylesheet';
-  css.href = base + 'assets/chatbot/chatbot.css?v=20261028p';
+  css.href = base + 'assets/chatbot/chatbot.css?v=20261109c';
   document.head.appendChild(css);
-  var fb = document.createElement('script');
-  fb.src = base + 'assets/chatbot/kb-fallback.js?v=20261028p';
-  fb.defer = true;
-  document.head.appendChild(fb);
-  var cb = document.createElement('script');
-  cb.src = base + 'assets/chatbot/chatbot.js?v=20261028p';
-  cb.defer = true;
-  cb.setAttribute('data-kb', base + 'assets/data/abadis-knowledge-base.json?v=20261028p');
-  document.head.appendChild(cb);
+  var btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'abadis-chat-launcher';
+  btn.setAttribute('aria-label', 'گفتگو با آبادیس');
+  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>';
+  btn.addEventListener('click', function () {
+    if (btn.dataset.loading === '1') return;
+    btn.dataset.loading = '1';
+    var s = document.createElement('script');
+    s.src = base + 'assets/chatbot/chatbot.js?v=20261109b';
+    s.setAttribute('data-kb', base + 'assets/data/abadis-knowledge-base.json?v=20261028p');
+    s.onload = function () {
+      btn.remove();
+      if (window.AbadisChat && window.AbadisChat.open) window.AbadisChat.open();
+    };
+    s.onerror = function () { btn.dataset.loading = ''; };
+    document.head.appendChild(s);
+  });
+  document.body.appendChild(btn);
 })();
 
 /* Solutions dimension chips: scroll target under sticky header (FA/EN/AR) */

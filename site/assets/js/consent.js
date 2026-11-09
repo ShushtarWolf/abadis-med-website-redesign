@@ -223,22 +223,55 @@
     });
   }
 
+  function isBagPage() {
+    return document.body.classList.contains('page-bag');
+  }
+
+  function syncBanner() {
+    var bar = document.querySelector('.consent-bar') || document.querySelector('.lang-suggest');
+    var h = bar ? bar.offsetHeight : 0;
+    document.documentElement.style.setProperty('--abadis-banner', h + 'px');
+    stack();
+  }
+
   function bootSuggest() {
     if (isCrawler() || !isPersianPage()) return;
     if (read(LANG_KEY)) return;
+    /* One banner at a time: the language suggestion waits until the cookie bar is gone. */
+    if (!consent() || document.querySelector('.consent-bar')) return;
     var href = englishHref();
     if (!href) return;
+    var host = (location.hostname || '').replace(/^www\./, '');
+    /* GitHub Pages and local previews have no Cloudflare trace. Skip the probe (it 404s). */
+    if (host !== 'abadis-med.com') return;
     var pending;
     try { pending = lookupCountry(); } catch (e) { return; }
     pending.then(function (cc) {
-      if (cc && cc !== 'IR') showSuggest(href);
+      if (cc && cc !== 'IR' && !document.querySelector('.consent-bar')) showSuggest(href);
     }).catch(function () { /* silent: no banner, no redirect */ });
+  }
+
+  function bootSuggestLater() {
+    if (!isBagPage()) { bootSuggest(); return; }
+    /* On the product page, keep the hero CTAs clear: offer English only after the film. */
+    function arm() {
+      if (window.scrollY < window.innerHeight * 0.85) return;
+      window.removeEventListener('scroll', arm);
+      bootSuggest();
+    }
+    window.addEventListener('scroll', arm, { passive: true });
   }
 
   function boot() {
     showConsent();
-    bootSuggest();
-    window.addEventListener('resize', stack, { passive: true });
+    syncBanner();
+    if (consent()) bootSuggestLater();
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest || !e.target.closest('.consent-accept, .consent-reject')) return;
+      syncBanner();
+      bootSuggestLater();
+    });
+    window.addEventListener('resize', syncBanner, { passive: true });
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
