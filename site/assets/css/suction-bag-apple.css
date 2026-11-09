@@ -149,8 +149,16 @@
   transform:none; image-rendering:auto;
   background:transparent
 }
+.bag-gal-item:not(.bag-gal-item--studio){
+  background:#f7fbfb !important;
+}
 .bag-gal-item:not(.bag-gal-item--studio) img{
-  padding:0; object-fit:cover; object-position:center 40%;
+  padding:8% 6%; object-fit:contain; object-position:center center;
+  background:transparent;
+}
+[data-theme="dark"] .bag-gal-item:not(.bag-gal-item--studio),
+[data-theme="noir"] .bag-gal-item:not(.bag-gal-item--studio){
+  background:#0b2427 !important;
 }
 
 

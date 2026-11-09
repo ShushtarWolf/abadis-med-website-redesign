@@ -1,7 +1,7 @@
 """Apple-style 1L suction bag page sections (FA/EN/AR). Additions/reorder only."""
 import html as _h
 
-V = '20261109s'
+V = '20261109t'
 
 
 def esc(s):
