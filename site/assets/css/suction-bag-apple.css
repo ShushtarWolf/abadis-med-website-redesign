@@ -30,7 +30,7 @@
   color:#eef6f6; overflow:hidden;
 }
 .bag-hero-stage{
-  position:absolute; left:0; right:0; top:0; bottom:46%;
+  position:absolute; left:0; right:0; top:0; bottom:50%;
   /* Bag lives fully above the copy band */
 }
 @media (min-width:900px){
