@@ -10,24 +10,47 @@
 .page-bag h1, .page-bag h2, .page-bag h3 { letter-spacing: 0; font-weight: 800; line-height: 1.3; }
 .page-bag p, .page-bag li { line-height: 1.85; }
 
-/* ----- cinematic hero (v12): one full-bleed frame; caption overlays canvas (no caption band) ----- */
-.page-bag .cin-track { position: relative; height: 460vh; background: var(--bg); color: var(--ink); }
+/* header over dark studio hero */
+.page-bag .lang-link,
+.page-bag .theme-toggle,
+.page-bag .menu-btn {
+  background: rgba(8, 28, 32, .45);
+  border-color: rgba(255, 255, 255, .45);
+}
+.page-bag .lang-switch.on-light .lang-link,
+.page-bag .theme-toggle.on-light,
+.page-bag .menu-btn.on-light {
+  background: rgba(255, 255, 255, .92);
+  border-color: rgba(6, 97, 99, .35);
+  color: #05686b;
+}
+
+/* ----- cinematic hero: lit studio, full-bleed; caption overlays (no band) ----- */
+.page-bag .cin-track {
+  position: relative; height: 460vh;
+  background: #05090b; color: #f2f7f7;
+}
 .page-bag .cin-stage {
   position: sticky; top: 0;
-  height: 100vh;
-  height: 100svh;
-  height: 100dvh;
-  min-height: 100svh;
-  min-height: 100dvh;
+  height: 100vh; height: 100svh; height: 100dvh;
+  min-height: 100svh; min-height: 100dvh;
   overflow: hidden;
   display: block;
-  background: var(--bg);
-  color: var(--ink);
+  background: radial-gradient(120% 90% at 50% 40%, #0f1b20 0%, #05090b 60%, #020405 100%);
+  color: #f2f7f7;
   isolation: isolate;
+}
+/* soft exit from studio into page content */
+.page-bag .cin-stage::after {
+  content: "";
+  position: absolute; inset-inline: 0; bottom: 0; z-index: 1;
+  height: min(24vh, 168px);
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, var(--bag-page-bg, var(--bg)));
 }
 .page-bag .cin-view {
   position: absolute; inset: 0; z-index: 0;
-  background: transparent;
+  background: inherit;
 }
 .page-bag .cin-view canvas, .page-bag .cin-still {
   position: absolute; inset: 0; width: 100% !important; height: 100% !important;
@@ -57,22 +80,13 @@
 .cin-crumb a { color: inherit; text-decoration: none; }
 .cin-crumb a:hover { text-decoration: underline; }
 .page-bag .cin-copy h1 {
-  margin: 0; font-size: clamp(22px, 6vw, 32px); line-height: 1.25; color: var(--ink);
+  margin: 0; font-size: clamp(22px, 6vw, 32px); line-height: 1.25; color: #fff;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, .55);
 }
 .page-bag .cin-beats { display: grid; min-height: 2.4em; margin-top: 4px; }
 .page-bag .cin-beats .beat {
-  grid-area: 1 / 1; margin: 0; opacity: 0; font-size: 15px; line-height: 1.7; color: var(--muted);
-}
-[data-theme="light"] .page-bag .cin-copy h1,
-[data-theme="light"] .page-bag .cin-beats .beat {
-  text-shadow: 0 0 22px color-mix(in srgb, var(--bg) 92%, transparent),
-    0 1px 2px color-mix(in srgb, var(--bg) 85%, transparent);
-}
-[data-theme="dark"] .page-bag .cin-copy h1,
-[data-theme="dark"] .page-bag .cin-beats .beat,
-[data-theme="noir"] .page-bag .cin-copy h1,
-[data-theme="noir"] .page-bag .cin-beats .beat {
-  text-shadow: 0 0 16px color-mix(in srgb, var(--bg) 70%, transparent);
+  grid-area: 1 / 1; margin: 0; opacity: 0; font-size: 15px; line-height: 1.7; color: #d5e6e7;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, .45);
 }
 .cin-hint { margin: 6px 0 0; font-size: 12px; color: #8aa; }
 .cin-cta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
@@ -466,20 +480,3 @@ html[lang^="en"] .page-bag .filter-list li {
 [data-theme="noir"] .page-bag .gal-pair .gal-dark { display: block !important; }
 .page-bag .gal-rail { height: auto !important; }
 
-/* Light hero: teal header ink while the film is in view (nav was white-on-mint) */
-[data-theme="light"] body.page-bag .header.bag-hero-ink {
-  color: var(--header-ink);
-}
-[data-theme="light"] body.page-bag .header.bag-hero-ink .nav a,
-[data-theme="light"] body.page-bag .header.bag-hero-ink .lang-link,
-[data-theme="light"] body.page-bag .header.bag-hero-ink .theme-toggle,
-[data-theme="light"] body.page-bag .header.bag-hero-ink .menu-btn {
-  color: var(--header-ink);
-  opacity: 1;
-}
-[data-theme="light"] body.page-bag .header.bag-hero-ink .lang-link {
-  background: rgba(6, 97, 99, .06);
-  border-color: rgba(6, 97, 99, .22);
-}
-[data-theme="light"] body.page-bag .header.bag-hero-ink .logo .lg-light { opacity: 1; }
-[data-theme="light"] body.page-bag .header.bag-hero-ink .logo .lg-dark { opacity: 0; }

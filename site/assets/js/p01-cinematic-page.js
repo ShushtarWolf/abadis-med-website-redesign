@@ -10,7 +10,7 @@ import {mergeVertices,toCreasedNormals} from 'three/addons/utils/BufferGeometryU
 
 export function mount(root){
 const asset=(rel)=>new URL(rel, new URL('../../3d-sketches/p01-cinematic/', import.meta.url)).href;
-const floorMode = root.getAttribute('data-cin-floors') || (root.hasAttribute('data-cin-root') ? 'soft' : 'studio');
+const floorMode = root.getAttribute('data-cin-floors') || (root.hasAttribute('data-cin-root') ? 'hero' : 'studio');
 const stillCapture = root.getAttribute('data-cin-capture') === 'still';
 const mob=stillCapture?false:matchMedia('(max-width:700px),(pointer:coarse)').matches;
 const cv=root.querySelector('canvas'),stage=cv.parentElement;
@@ -31,12 +31,13 @@ const under=new THREE.PointLight(0xfff8f2,.45,750,1.9);under.position.set(20,-30
 function radTex(stops){const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');const g=x.createRadialGradient(128,128,0,128,128,128);stops.forEach(s=>g.addColorStop(...s));x.fillStyle=g;x.fillRect(0,0,256,256);return new THREE.CanvasTexture(c);}
 function floorPlane(sz,tex,y){const m=new THREE.Mesh(new THREE.PlaneGeometry(sz,sz),new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.y=y;S.add(m);return m;}
 let floorTeal=null,floorDark=null,sr=null;
-if(floorMode==='studio'){
+if(floorMode==='studio'||floorMode==='hero'){
  floorTeal=floorPlane(1100,radTex([[0,'rgba(46,127,150,.28)'],[.55,'rgba(46,127,150,.08)'],[1,'rgba(46,127,150,0)']]),-179);
  floorDark=floorPlane(300,radTex([[0,'rgba(0,0,0,.72)'],[.5,'rgba(0,0,0,.2)'],[1,'rgba(0,0,0,0)']]),-178.6);
- sr=new THREE.Mesh(new THREE.PlaneGeometry(650,650),new THREE.ShadowMaterial({opacity:.38}));
+ const srSz=floorMode==='hero'?220:650;
+ const srOp=floorMode==='hero'?.2:.38;
+ sr=new THREE.Mesh(new THREE.PlaneGeometry(srSz,srSz),new THREE.ShadowMaterial({opacity:srOp}));
 }else if(floorMode==='soft'){
- /* no floor decals — contact read comes from the bag/collar geometry only */
 }else{
  R.shadowMap.enabled=false;key.castShadow=false;
 }
@@ -44,6 +45,19 @@ if(sr){sr.rotation.x=-Math.PI/2;sr.position.y=-178.4;sr.receiveShadow=true;S.add
 function syncPageTone(){
  const t=document.documentElement.getAttribute('data-theme')||'light';
  const light=t==='light';
+ if(floorMode==='hero'){
+  R.toneMappingExposure=1.02;
+  S.environmentIntensity=.42;
+  hemi.color.setHex(0xf0f6f7);
+  hemi.groundColor.setHex(0x1a1814);
+  hemi.intensity=.85;
+  key.intensity=1.35;
+  fillL.intensity=1.35;
+  if(sr)sr.material.opacity=.2;
+  if(floorDark)floorDark.visible=true;
+  S.background=null;
+  return;
+ }
  const pageBg=light?0xf3fafa:t==='noir'?0x0a0a12:0x061719;
  R.toneMappingExposure=light?1.14:1.02;
  if(floorMode==='soft'||floorMode==='none'){
@@ -57,8 +71,8 @@ function syncPageTone(){
  }
  key.intensity=light?1.48:1.35;
  fillL.intensity=light?1.45:1.35;
- if(sr)sr.material.opacity=light?.28:.22;
- if(floorDark)floorDark.visible=!light;
+ if(sr)sr.material.opacity=light?(floorMode==='studio'?.28:.22):.22;
+ if(floorDark)floorDark.visible=floorMode==='studio'?!light:true;
 }
 syncPageTone();
 if(!stillCapture)document.addEventListener('themechange',syncPageTone);

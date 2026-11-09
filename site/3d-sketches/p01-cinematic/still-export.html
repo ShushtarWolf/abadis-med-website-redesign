@@ -3,12 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>P01 v12 still export</title>
-<style>html,body{margin:0;background:transparent;height:100%}#host{position:fixed;inset:0}.cin-stage,.cin-view{position:absolute;inset:0}</style>
+<title>P01 v12 still export (studio)</title>
+<style>
+html,body{margin:0;height:100%;background:#05090b}
+#host{position:fixed;inset:0}
+.cin-stage,.cin-view{position:absolute;inset:0}
+.cin-stage{
+  background:radial-gradient(120% 90% at 50% 40%,#0f1b20 0%,#05090b 60%,#020405 100%);
+}
+</style>
 <script type="importmap">{"imports":{"three":"../../assets/vendor/three/build/three.module.js","three/addons/":"../../assets/vendor/three/examples/jsm/"}}</script>
 </head>
 <body>
-<div id="host" class="cin-track" data-cin-root data-cin-floors="none" data-cin-capture="still">
+<div id="host" class="cin-track" data-cin-root data-cin-floors="hero" data-cin-capture="still">
   <div class="cin-stage">
     <div class="cin-view"><canvas aria-hidden="true"></canvas></div>
   </div>
