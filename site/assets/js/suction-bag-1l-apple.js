@@ -25,6 +25,23 @@ function seg(t, a, b) {
   return (t - a) / (b - a);
 }
 
+function fitCamera(THREE, camera, object, { fill = 0.6, pad = 1.35, preferY = 2 } = {}) {
+  const box = new THREE.Box3().setFromObject(object);
+  const size = new THREE.Vector3();
+  const center = new THREE.Vector3();
+  box.getSize(size);
+  box.getCenter(center);
+  // Recenter object so geometry sits around origin mid-height
+  object.position.sub(center);
+  object.position.y += preferY;
+  const maxDim = Math.max(size.x, size.y, size.z);
+  const fov = (camera.fov * Math.PI) / 180;
+  // Distance so the bag occupies ~fill of the shorter view axis
+  let dist = Math.abs((maxDim / fill) / 2 / Math.tan(fov / 2));
+  dist *= pad;
+  return { dist, size, maxDim };
+}
+
 async function loadThree() {
   const three = await import('./three.module.js');
   const { OrbitControls } = await import('./OrbitControls.js');
@@ -149,9 +166,17 @@ async function mountHero(root) {
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   const scene = new THREE.Scene();
   setupLights(THREE, scene);
-  const camera = new THREE.PerspectiveCamera(32, 1, 0.5, 400);
+  const mob = matchMedia('(max-width:700px),(pointer:coarse)').matches;
+  const camera = new THREE.PerspectiveCamera(mob ? 34 : 28, 1, 0.5, 600);
   const bag = buildApprovedBag(THREE);
   scene.add(bag);
+  // Whole bag (lid+body) ~55-65% of the band ABOVE the headline (~42% of full hero height on mobile)
+  const fit = fitCamera(THREE, camera, bag, {
+    fill: mob ? 0.48 : 0.55,
+    pad: mob ? 1.12 : 1.08,
+    preferY: mob ? 9 : 6,
+  });
+  let baseDist = fit.dist;
 
   function resize() {
     const w = root.clientWidth || 1;
@@ -159,31 +184,35 @@ async function mountHero(root) {
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
+    const fov = (camera.fov * Math.PI) / 180;
+    const fill = mob ? 0.46 : 0.54;
+    baseDist = Math.abs((fit.maxDim / fill) / 2 / Math.tan(fov / 2)) * (mob ? 1.14 : 1.08);
   }
   resize();
   new ResizeObserver(resize).observe(root);
 
   let playing = true;
   let t0 = performance.now();
-  const CYCLE = 12000;
+  const CYCLE = 16000;
   root.classList.add('is-gl');
 
   function frame(now) {
     requestAnimationFrame(frame);
     if (!playing) return;
     const u = ((now - t0) % CYCLE) / CYCLE;
-    const ang = u * Math.PI * 2;
-    const elev = 0.38 + 0.06 * Math.sin(u * Math.PI * 2);
-    const dist = 48;
+    const ang = -0.7 + u * Math.PI * 2;
+    const elev = 0.18 + 0.04 * Math.sin(u * Math.PI * 2);
+    const dist = baseDist * (1.0 + 0.03 * Math.sin(u * Math.PI * 2));
+    // Look above origin so the bag sits in the upper hero band, clear of the headline
+    const targetY = mob ? 10.5 : 7;
     camera.position.set(
       Math.cos(ang) * dist * Math.cos(elev),
-      8 + Math.sin(elev) * dist * 0.55,
+      targetY + 1.5 + Math.sin(elev) * dist * 0.32,
       Math.sin(ang) * dist * Math.cos(elev),
     );
-    camera.lookAt(0, 4, 0);
-    // gentle lid breathe
-    const lift = 0.35 * Math.sin(u * Math.PI * 2);
-    bag.userData.lidG.position.y = Math.max(0, lift);
+    camera.lookAt(0, targetY, 0);
+    const lift = 0.2 * Math.max(0, Math.sin(u * Math.PI * 2));
+    bag.userData.lidG.position.y = lift;
     renderer.render(scene, camera);
   }
   requestAnimationFrame(frame);
@@ -241,10 +270,15 @@ async function mountStory(root) {
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   const scene = new THREE.Scene();
   setupLights(THREE, scene);
-  const camera = new THREE.PerspectiveCamera(30, 1, 0.5, 400);
+  const mob = matchMedia('(max-width:700px),(pointer:coarse)').matches;
+  const camera = new THREE.PerspectiveCamera(mob ? 34 : 28, 1, 0.5, 500);
   const bag = buildApprovedBag(THREE);
   scene.add(bag);
+  const fit = fitCamera(THREE, camera, bag, { fill: 0.50, pad: 1.15, preferY: 3 });
+  let baseDist = fit.dist;
   root.classList.add('is-gl');
+  // Hide stills once live GL is up
+  stills.forEach((s) => { s.style.opacity = '0'; s.style.visibility = 'hidden'; });
 
   function resize() {
     const w = root.clientWidth || 1;
@@ -252,6 +286,8 @@ async function mountStory(root) {
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
+    const fov = (camera.fov * Math.PI) / 180;
+    baseDist = Math.abs((fit.maxDim / 0.48) / 2 / Math.tan(fov / 2)) * 1.15;
   }
   resize();
   new ResizeObserver(resize).observe(root);
@@ -259,19 +295,19 @@ async function mountStory(root) {
   let u = 0;
   function apply(u) {
     setProgress(u);
-    // Camera path: establish → lid lift → ports → seal → gel settle
-    const ang = -0.4 + u * Math.PI * 1.6;
-    const elev = 0.32 + 0.2 * Math.sin(u * Math.PI);
-    const dist = 52 - 10 * ease(seg(u, 0.15, 0.55));
+    // Camera path: establish → lid lift → ports → seal → gel settle (whole bag always in frame)
+    const ang = -0.45 + u * Math.PI * 1.55;
+    const elev = 0.2 + 0.12 * Math.sin(u * Math.PI);
+    const dist = baseDist * (1.05 - 0.08 * ease(seg(u, 0.1, 0.5)));
     camera.position.set(
       Math.cos(ang) * dist * Math.cos(elev),
-      6 + Math.sin(elev) * dist * 0.7,
+      3 + Math.sin(elev) * dist * 0.45,
       Math.sin(ang) * dist * Math.cos(elev),
     );
-    camera.lookAt(0, 6, 0);
+    camera.lookAt(0, 2, 0);
     const lift = ease(seg(u, 0.12, 0.28)) * (1 - ease(seg(u, 0.55, 0.7)));
-    bag.userData.lidG.position.y = lift * 6.5;
-    bag.userData.bagG.position.y = -lift * 1.2;
+    bag.userData.lidG.position.y = lift * 3.8;
+    bag.userData.bagG.position.y = -lift * 1.0;
     renderer.render(scene, camera);
   }
 

@@ -1,7 +1,7 @@
 """Apple-style 1L suction bag page sections (FA/EN/AR). Additions/reorder only."""
 import html as _h
 
-V = '20261109f'
+V = '20261109l'
 
 
 def esc(s):
@@ -19,11 +19,11 @@ COPY = {
         cta_quote='درخواست قیمت',
         cta_specs='مشخصات',
         story_beats=[
-            dict(a=0.00, b=0.18, pos='top', h='درب فیروزه‌ای <em>یکپارچه</em>', p='قفل رینگ ۳۶۰ درجه روی لبه کیسه و دهانه مخزن.', num='۱ L'),
-            dict(a=0.18, b=0.38, pos='bot', h='فیلتر <em>هیدروفوبیک</em>', p='زیر پورت وکیوم؛ قطع‌کن سرریز از ساکشن مرکزی محافظت می‌کند.', num='۹۹.۹۹۹٪'),
-            dict(a=0.38, b=0.58, pos='bot', h='پورت <em>بیمار</em> و <em>وکیوم</em>', p='لوله باریک PATIENT و پورت ضخیم VACUUM روی درب مشخص شده‌اند.', num='۳ پورت'),
-            dict(a=0.58, b=0.78, pos='top', h='آب‌بندی <em>ضد نشت</em>', p='جوش به یقه درب و نشستن کیپ در مخزن پلی‌کربنات.', num='⌀ ۱۱ cm'),
-            dict(a=0.78, b=1.01, pos='bot', h='پودر <em>ژل‌کننده</em>', p='ساشه سوپرجاذب ترشحات را به ژل نیمه‌جامد تبدیل می‌کند.', num='۴۵ / کارتن'),
+            dict(a=0.00, b=0.18, pos='top', h='درب فیروزه‌ای <em>یکپارچه</em>', p='قفل رینگ روی لبه کیسه و دهانه مخزن.', num='۱ L'),
+            dict(a=0.18, b=0.38, pos='bot', h='فیلتر <em>هیدروفوبیک</em>', p='فیلتر قطع‌کن سرریز (flow stopper) از مسیر ساکشن مرکزی محافظت می‌کند.', num='قطع‌کن سرریز'),
+            dict(a=0.38, b=0.58, pos='bot', h='پورت <em>بیمار</em> و <em>وکیوم</em>', p='لوله PATIENT و پورت VACUUM روی درب مشخص شده‌اند.', num='PATIENT · VACUUM'),
+            dict(a=0.58, b=0.78, pos='top', h='ابعاد <em>اسمی</em> ۱ لیتری', p='قطر و ارتفاع طبق مشخصات محصول روی سایت آبادیس.', num='⌀ ۱۱ × ۱۵٫۵ cm'),
+            dict(a=0.78, b=1.01, pos='bot', h='پودر <em>ژل‌کننده</em>', p='حاوی پودر ژل؛ معمولاً ۴۵ عدد در هر کارتن.', num='۴۵ / کارتن'),
         ],
         stats=[
             ('⌀ ۱۱ cm', 'قطر کیسه'),
@@ -66,11 +66,11 @@ COPY = {
         cta_quote='Request quote',
         cta_specs='Specifications',
         story_beats=[
-            dict(a=0.00, b=0.18, pos='top', h='Solid <em>teal</em> HDPE lid', p='360° lock ring on the liner rim and canister mouth.', num='1 L'),
-            dict(a=0.18, b=0.38, pos='bot', h='Hydrophobic <em>filter</em>', p='Under the VACUUM port; overflow shut-off protects central suction.', num='99.999%'),
-            dict(a=0.38, b=0.58, pos='bot', h='PATIENT & <em>VACUUM</em> ports', p='Slim PATIENT tube and thick VACUUM port marked on the lid.', num='3 ports'),
-            dict(a=0.58, b=0.78, pos='top', h='Leak-proof <em>seal</em>', p='Welded collar and a snug fit in the polycarbonate canister.', num='Ø11 cm'),
-            dict(a=0.78, b=1.01, pos='bot', h='Gelling <em>powder</em>', p='Super-absorbent sachet turns fluid into a semi-solid gel.', num='45 / carton'),
+            dict(a=0.00, b=0.18, pos='top', h='Solid <em>teal</em> HDPE lid', p='Lock ring on the liner rim and canister mouth.', num='1 L'),
+            dict(a=0.18, b=0.38, pos='bot', h='Hydrophobic <em>filter</em>', p='Flow-stopper filter protects the central suction path from liquid overflow.', num='Flow stopper'),
+            dict(a=0.38, b=0.58, pos='bot', h='PATIENT & <em>VACUUM</em> ports', p='PATIENT tube and VACUUM port marked on the lid.', num='PATIENT · VACUUM'),
+            dict(a=0.58, b=0.78, pos='top', h='1L <em>nominal</em> size', p='Diameter and height per Abadis product specifications.', num='Ø11 × 15.5 cm'),
+            dict(a=0.78, b=1.01, pos='bot', h='Gelling <em>powder</em>', p='Contains gel powder; typically 45 units per carton.', num='45 / carton'),
         ],
         stats=[
             ('Ø11 cm', 'Liner diameter'),
@@ -113,11 +113,11 @@ COPY = {
         cta_quote='طلب عرض سعر',
         cta_specs='المواصفات',
         story_beats=[
-            dict(a=0.00, b=0.18, pos='top', h='غطاء <em>فيروزي</em> صلب', p='حلقة قفل ٣٦٠ درجة على حافة الكيس وفوهة الخزان.', num='١ لتر'),
-            dict(a=0.18, b=0.38, pos='bot', h='فلتر <em>كاره للماء</em>', p='تحت منفذ التفريغ؛ قطع الفيضان يحمي الشفط المركزي.', num='٩٩٫٩٩٩٪'),
-            dict(a=0.38, b=0.58, pos='bot', h='منافذ <em>المريض</em> و<em>التفريغ</em>', p='أنبوب PATIENT الرفيع ومنفذ VACUUM السميك على الغطاء.', num='٣ منافذ'),
-            dict(a=0.58, b=0.78, pos='top', h='ختم <em>مانع للتسرب</em>', p='لحام الطوق وملاءمة محكمة داخل خزان البولي كربونات.', num='⌀ ١١ سم'),
-            dict(a=0.78, b=1.01, pos='bot', h='مسحوق <em>التهليم</em>', p='كيس سوبر ماص يحوّل السوائل إلى هلام شبه صلب.', num='٤٥ / كرتون'),
+            dict(a=0.00, b=0.18, pos='top', h='غطاء <em>فيروزي</em> صلب', p='حلقة قفل على حافة الكيس وفوهة الخزان.', num='١ لتر'),
+            dict(a=0.18, b=0.38, pos='bot', h='فلتر <em>كاره للماء</em>', p='فلتر قطع الفيضان (flow stopper) يحمي مسار الشفط المركزي.', num='قطع الفيضان'),
+            dict(a=0.38, b=0.58, pos='bot', h='منافذ <em>المريض</em> و<em>التفريغ</em>', p='أنبوب PATIENT ومنفذ VACUUM على الغطاء.', num='PATIENT · VACUUM'),
+            dict(a=0.58, b=0.78, pos='top', h='أبعاد <em>اسمية</em> ١ لتر', p='القطر والارتفاع وفق مواصفات منتج آباديس.', num='⌀ ١١ × ١٥٫٥ سم'),
+            dict(a=0.78, b=1.01, pos='bot', h='مسحوق <em>التهليم</em>', p='يحتوي مسحوق التهليم؛ عادة ٤٥ قطعة في الكرتون.', num='٤٥ / كرتون'),
         ],
         stats=[
             ('⌀ ١١ سم', 'قطر الكيس'),
