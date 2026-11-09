@@ -15,7 +15,7 @@ SITE = ROOT / 'site'
 FA_DIG = str.maketrans('0123456789', '۰۱۲۳۴۵۶۷۸۹')
 AR_DIG = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
 
-V = '20261109i'
+V = '20261109j'
 
 CHECK = ('<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
          '<path d="M5 12.5 9.2 16.7 19 7" fill="none" stroke="currentColor" '
@@ -161,7 +161,9 @@ UI = {
         specs='مشخصات', pause='توقف یا ادامه حرکت',
         intro_h='معرفی کوتاه',
         intro_p='کیسه ساکشن یکبار مصرف آبادیس در حجم‌های ۱، ۲ و ۳ لیتری؛ دارای پودر ژل‌کننده، فیلتر هیدروفوبیک و سیستم حفاظت از ساکشن مرکزی.',
-        nav=[('film', 'سینمایی'), ('intro', 'معرفی'), ('stats', 'اعداد'), ('gallery', 'گالری'), ('sizes', 'سایزها'), ('filters', 'فیلتر'), ('catalog', 'کاتالوگ'), ('order', 'قیمت')],
+        nav=[('film', 'سینمایی'), ('intro', 'معرفی'), ('stats', 'اعداد'), ('gallery', 'گالری'), ('sizes', 'سایزها'), ('uses', 'مصرف'), ('packaging', 'بسته‌بندی'), ('filters', 'فیلتر'), ('catalog', 'کاتالوگ'), ('order', 'قیمت')],
+        uses_h='موارد مصرف',
+        packaging_h='بسته‌بندی و کارتن',
         filters_h='فیلترها',
         catalog_h='کاتالوگ',
         catalog_lead='دانلود کاتالوگ و راهنمای استفاده از بخش درخواست قیمت.',
@@ -207,7 +209,9 @@ UI = {
         specs='Specifications', pause='Pause or play motion',
         intro_h='Overview',
         intro_p='Abadis single-use disposable suction liner bags in 1, 2 and 3 litres, with gel powder, a hydrophobic flow-stopper filter and central suction protection.',
-        nav=[('film', 'Film'), ('intro', 'Overview'), ('stats', 'Numbers'), ('gallery', 'Gallery'), ('sizes', 'Sizes'), ('filters', 'Filters'), ('catalog', 'Catalog'), ('order', 'Quote')],
+        nav=[('film', 'Film'), ('intro', 'Overview'), ('stats', 'Numbers'), ('gallery', 'Gallery'), ('sizes', 'Sizes'), ('uses', 'Usage'), ('packaging', 'Packaging'), ('filters', 'Filters'), ('catalog', 'Catalog'), ('order', 'Quote')],
+        uses_h='Usage',
+        packaging_h='Packaging & carton',
         filters_h='Filters',
         catalog_h='Catalog',
         catalog_lead='Download the catalog from the quote section.',
@@ -255,7 +259,9 @@ UI = {
         specs='المواصفات', pause='إيقاف الحركة أو متابعتها',
         intro_h='مقدمة',
         intro_p='أكياس شفط آباديس ذات الاستعمال الواحد بسعات ١ و٢ و٣ لتر، مع مسحوق التهليم وفلتر كاره للماء ونظام حماية الشفط المركزي.',
-        nav=[('film', 'فيلم'), ('intro', 'مقدمة'), ('stats', 'أرقام'), ('gallery', 'المعرض'), ('sizes', 'الأحجام'), ('filters', 'الفلاتر'), ('catalog', 'الكتالوج'), ('order', 'السعر')],
+        nav=[('film', 'فيلم'), ('intro', 'مقدمة'), ('stats', 'أرقام'), ('gallery', 'المعرض'), ('sizes', 'الأحجام'), ('uses', 'الاستخدام'), ('packaging', 'التغليف'), ('filters', 'الفلاتر'), ('catalog', 'الكتالوج'), ('order', 'السعر')],
+        uses_h='الاستخدامات',
+        packaging_h='التغليف والكرتون',
         filters_h='الفلاتر',
         catalog_h='الكتالوج',
         catalog_lead='تنزيل الكتالوج من قسم طلب عرض السعر.',
@@ -493,22 +499,7 @@ def code_tables(lang, pfx):
     return f'<div class="size-jump">{"".join(jump)}</div>' + ''.join(blocks)
 
 
-def spec_one(size, lang, pfx):
-    ui = UI[lang]
-    s = SPECS[lang][size]
-    cards = []
-    def card(title, body, span=''):
-        return f'<article class="spec-card {span}"><h3>{esc(title)}</h3><p>{body}</p></article>'
-    keys = ['vol', 'char', 'types', 'dim', 'dim_d', 'dim_h', 'weight', 'pack', 'packdim', 'qty', 'carton']
-    labels = {
-        'fa': dict(vol='حجم ساکشن', char='مشخصات', types='فیلترها', dim='ابعاد محصول', weight='وزن محصول', pack='نحوه بسته بندی', packdim='ابعاد بسته بندی هر محصول', qty='تعداد در هر کارتن', carton='ابعاد کارتن'),
-        'en': dict(vol='Volume', char='Characteristic', types='Types of filter', dim='Product Dimensions', weight='Product Weight', pack='Packaging Type', packdim='Individual Package Dimensions', qty='Quantity per Carton', carton='Carton Dimensions'),
-        'ar': dict(vol='حجم الشفط', char='المواصفات', types='أنواع الفلاتر', dim='أبعاد المنتج', dim_d='القطر', dim_h='الارتفاع', weight='وزن المنتج', pack='نوع التغليف', packdim='أبعاد تغليف كل منتج', qty='الكمية في كل كرتون', carton='أبعاد الكرتون'),
-    }[lang]
-    for key in keys:
-        if key not in s:
-            continue
-        cards.append(card(labels.get(key, key), meas(s[key], lang), 'span-2' if key in ('char', 'types', 'vol') else ''))
+def render_uses(s, lang, pfx):
     uses = []
     for icon, label in s['uses']:
         if icon == 'lipo':
@@ -516,7 +507,34 @@ def spec_one(size, lang, pfx):
         else:
             ic = f'<img src="{pfx}assets/img/use/{icon}.webp" width="72" height="72" alt="" loading="lazy" decoding="async">'
         uses.append(f'<span class="use">{ic}{esc(digits(label, lang))}</span>')
-    cards.append(f'<article class="spec-card span-2"><h3>{esc(s["uses_h"])}</h3><div class="uses">{"".join(uses)}</div></article>')
+    return ''.join(uses)
+
+
+def spec_labels(lang):
+    return {
+        'fa': dict(vol='حجم ساکشن', char='مشخصات', types='فیلترها', dim='ابعاد محصول', weight='وزن محصول',
+                  pack='نحوه بسته بندی', packdim='ابعاد بسته بندی هر محصول', qty='تعداد در هر کارتن', carton='ابعاد کارتن'),
+        'en': dict(vol='Volume', char='Characteristic', types='Types of filter', dim='Product Dimensions', weight='Product Weight',
+                  pack='Packaging Type', packdim='Individual Package Dimensions', qty='Quantity per Carton', carton='Carton Dimensions'),
+        'ar': dict(vol='حجم الشفط', char='المواصفات', types='أنواع الفلاتر', dim='أبعاد المنتج', dim_d='القطر', dim_h='الارتفاع',
+                  weight='وزن المنتج', pack='نوع التغليف', packdim='أبعاد تغليف كل منتج', qty='الكمية في كل كرتون', carton='أبعاد الكرتون'),
+    }[lang]
+
+
+def spec_one(size, lang, pfx):
+    ui = UI[lang]
+    s = SPECS[lang][size]
+    cards = []
+    labels = spec_labels(lang)
+
+    def card(title, body, span=''):
+        return f'<article class="spec-card {span}"><h3>{esc(title)}</h3><p>{body}</p></article>'
+
+    keys = ['vol', 'char', 'types', 'dim', 'dim_d', 'dim_h', 'weight']
+    for key in keys:
+        if key not in s:
+            continue
+        cards.append(card(labels.get(key, key), meas(s[key], lang), 'span-2' if key in ('char', 'types', 'vol') else ''))
     if s.get('sterile_p'):
         merits = ''.join(f'<li>{meas(m, lang)}</li>' for m in s['merits'])
         cards.append(
@@ -543,6 +561,48 @@ def spec_one(size, lang, pfx):
         f'<section class="spec-group" id="spec-{size}"><h3>{esc(digits(s["name"], lang))}</h3>'
         f'<p>{esc(label)}</p>{extra}<div class="spec-grid">{"".join(cards)}</div></section>'
     )
+
+
+def uses_block(lang, pfx):
+    ui = UI[lang]
+    chunks = []
+    for size in ('1', '2', '3'):
+        s = SPECS[lang][size]
+        chunks.append(
+            f'<section class="use-tier" aria-labelledby="use-{size}">'
+            f'<h3 id="use-{size}">{esc(digits(s["name"], lang))}</h3>'
+            f'<p class="use-sub">{esc(s["uses_h"])}</p>'
+            f'<div class="uses">{render_uses(s, lang, pfx)}</div></section>'
+        )
+    return f'''<section class="bag-block" id="uses"><div class="wrap">
+    <h2>{esc(ui["uses_h"])}</h2>
+    <div class="use-tiers">{"".join(chunks)}</div>
+  </div></section>'''
+
+
+def packaging_block(lang):
+    ui = UI[lang]
+    labels = spec_labels(lang)
+    pack_keys = ['pack', 'packdim', 'qty', 'carton']
+    chunks = []
+    for size in ('1', '2', '3'):
+        s = SPECS[lang][size]
+        cards = []
+        for key in pack_keys:
+            if key not in s:
+                continue
+            cards.append(
+                f'<article class="spec-card"><h3>{esc(labels[key])}</h3><p>{meas(s[key], lang)}</p></article>'
+            )
+        chunks.append(
+            f'<section class="pack-tier" aria-labelledby="pack-{size}">'
+            f'<h3 id="pack-{size}">{esc(digits(s["name"], lang))}</h3>'
+            f'<div class="spec-grid pack-grid">{"".join(cards)}</div></section>'
+        )
+    return f'''<section class="bag-block" id="packaging"><div class="wrap">
+    <h2>{esc(ui["packaging_h"])}</h2>
+    <div class="pack-tiers">{"".join(chunks)}</div>
+  </div></section>'''
 
 
 def filters_block(lang):
@@ -680,6 +740,8 @@ def main_html(lang, pfx):
     <p class="bag-lead">{meas(ui["sizes_lead"], lang)}</p>
     {code_tables(lang, pfx)}
   </div></section>
+  {uses_block(lang, pfx)}
+  {packaging_block(lang)}
   {filters_block(lang)}
   <section class="bag-block" id="catalog"><div class="wrap">
     <h2>{esc(ui["catalog_h"])}</h2>

@@ -209,6 +209,10 @@
 .lid-red { background: #c44545; }
 
 .spec-group { margin: 0 0 22px; }
+.use-tiers, .pack-tiers { display: grid; gap: 18px; }
+.use-tier h3, .pack-tier h3 { margin: 0 0 4px; font-size: 18px; }
+.use-sub { margin: 0 0 10px; color: var(--muted); font-size: 14px; }
+.pack-grid { margin-top: 8px; }
 .spec-grid { display: grid; gap: 10px; }
 @media (min-width: 800px) { .spec-grid { grid-template-columns: 1fr 1fr; } }
 .spec-card {
