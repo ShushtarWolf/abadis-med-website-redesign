@@ -314,7 +314,7 @@ function frame(now){requestAnimationFrame(frame);
     Phone: v12's tall-phone scale (1.36), even when the caption band
     makes the stage wider, so the opening frame is not zoomed in.
     Desktop: a slightly longer lens so the base stays inside a 16:9 frame. */
- const fit = mob ? 1.36 : 1.46;
+ const fit = mob ? 1.55 : 1.46;
  cp.sub(ct).multiplyScalar(fit).add(ct);
  /* Filter stays on underside; hide only once blood fills */
  if(fG){ fG.visible=t<.52; }

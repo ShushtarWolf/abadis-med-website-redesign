@@ -15,9 +15,14 @@ SITE = ROOT / 'site'
 FA_DIG = str.maketrans('0123456789', '۰۱۲۳۴۵۶۷۸۹')
 AR_DIG = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
 
+V = '20261109i'
+
 CHECK = ('<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
          '<path d="M5 12.5 9.2 16.7 19 7" fill="none" stroke="currentColor" '
          'stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>')
+NO_DASH = ('<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+           '<path d="M6 12.5h12" fill="none" stroke="currentColor" stroke-width="2.4" '
+           'stroke-linecap="round"/></svg>')
 ARROW = ('<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
          '<path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" '
          'stroke-linecap="round" stroke-linejoin="round"/></svg>')
@@ -55,7 +60,7 @@ def yn(flag, lang):
         return f'<span class="yn yn-yes" role="img" aria-label="{label}">{CHECK}</span>'
     if flag == 'no':
         label = {'fa': 'ندارد', 'en': 'No', 'ar': 'لا'}[lang]
-        return f'<span class="yn yn-no" role="img" aria-label="{label}">×</span>'
+        return f'<span class="yn yn-no" role="img" aria-label="{label}">{NO_DASH}</span>'
     return esc(str(flag))
 
 
@@ -154,7 +159,12 @@ UI = {
         crumb=('خانه', '../../', 'محصولات', '../../products/', 'کیسه ساکشن'),
         quote='درخواست قیمت', quote_href='../../contact/',
         specs='مشخصات', pause='توقف یا ادامه حرکت',
-        nav=[('film', 'معرفی'), ('stats', 'اعداد'), ('gallery', 'گالری'), ('sizes', 'سایزها'), ('specs', 'مشخصات')],
+        intro_h='معرفی کوتاه',
+        intro_p='کیسه ساکشن یکبار مصرف آبادیس در حجم‌های ۱، ۲ و ۳ لیتری؛ دارای پودر ژل‌کننده، فیلتر هیدروفوبیک و سیستم حفاظت از ساکشن مرکزی.',
+        nav=[('film', 'سینمایی'), ('intro', 'معرفی'), ('stats', 'اعداد'), ('gallery', 'گالری'), ('sizes', 'سایزها'), ('filters', 'فیلتر'), ('catalog', 'کاتالوگ'), ('order', 'قیمت')],
+        filters_h='فیلترها',
+        catalog_h='کاتالوگ',
+        catalog_lead='دانلود کاتالوگ و راهنمای استفاده از بخش درخواست قیمت.',
         stats_h='اعداد کلیدی',
         stats=[
             ('۱، ۲ و ۳ لیتر', 'حجم‌های کیسه'),
@@ -195,7 +205,12 @@ UI = {
         crumb=('Home', '../../../en/', 'Products', '../', 'Disposable Suction Bag'),
         quote='Request quote', quote_href='../../contact-us/',
         specs='Specifications', pause='Pause or play motion',
-        nav=[('film', 'Overview'), ('stats', 'Numbers'), ('gallery', 'Gallery'), ('sizes', 'Sizes'), ('specs', 'Specifications')],
+        intro_h='Overview',
+        intro_p='Abadis single-use disposable suction liner bags in 1, 2 and 3 litres, with gel powder, a hydrophobic flow-stopper filter and central suction protection.',
+        nav=[('film', 'Film'), ('intro', 'Overview'), ('stats', 'Numbers'), ('gallery', 'Gallery'), ('sizes', 'Sizes'), ('filters', 'Filters'), ('catalog', 'Catalog'), ('order', 'Quote')],
+        filters_h='Filters',
+        catalog_h='Catalog',
+        catalog_lead='Download the catalog from the quote section.',
         stats_h='Key numbers',
         stats=[
             ('1, 2 and 3 L', 'Bag volumes'),
@@ -238,7 +253,12 @@ UI = {
         crumb=('الرئيسية', '../../', 'منتجات', '../منتجات/', 'كيس الشفط'),
         quote='طلب عرض سعر', quote_href='../اتصل-بنا/',
         specs='المواصفات', pause='إيقاف الحركة أو متابعتها',
-        nav=[('film', 'نظرة'), ('stats', 'أرقام'), ('gallery', 'المعرض'), ('sizes', 'الأحجام'), ('specs', 'المواصفات')],
+        intro_h='مقدمة',
+        intro_p='أكياس شفط آباديس ذات الاستعمال الواحد بسعات ١ و٢ و٣ لتر، مع مسحوق التهليم وفلتر كاره للماء ونظام حماية الشفط المركزي.',
+        nav=[('film', 'فيلم'), ('intro', 'مقدمة'), ('stats', 'أرقام'), ('gallery', 'المعرض'), ('sizes', 'الأحجام'), ('filters', 'الفلاتر'), ('catalog', 'الكتالوج'), ('order', 'السعر')],
+        filters_h='الفلاتر',
+        catalog_h='الكتالوج',
+        catalog_lead='تنزيل الكتالوج من قسم طلب عرض السعر.',
         stats_h='أرقام أساسية',
         stats=[
             ('١، ٢ و٣ لتر', 'سعات الكيس'),
@@ -334,7 +354,7 @@ SPECS = {
                            ('Dual filter', 'Prevents the reduction of pressure drop in the surgery that use the electrocautery device.'),
                            ('mechanical filter', 'It has the lowest pressure drop among existing filters')]),
         '3': dict(name='3 Liter Disposable Suction Liner Bag',
-                  vol='Volume: 3 Liters in single, up to 8 liters in single row mode on the base',
+                  vol='Volume: 3 Liters in single, up to 12 liters in single row mode on the base',
                   char='Characteristic: Single-use (disposable) design, Contains gel powder, hydrophobic filter, suitable with all suction devices, has central suction protection system',
                   types='Types of filter: Filters used in Abadis single-use suction bags are produced in 3 types that prevent liquids from overflowing.',
                   dim='Product Dimensions: Diameter: 11 cm, Height: 39 cm', weight='Product Weight : 123–200 g',
@@ -469,77 +489,79 @@ def code_tables(lang, pfx):
       <div class="code-table-wrap"><table class="code-table"><thead><tr>{th}</tr></thead><tbody>{''.join(body)}</tbody></table></div>
       <div class="code-cards">{''.join(cards)}</div>
     </div>''')
+        blocks.append(spec_one(size, lang, pfx))
     return f'<div class="size-jump">{"".join(jump)}</div>' + ''.join(blocks)
 
 
-def spec_blocks(lang, pfx):
+def spec_one(size, lang, pfx):
     ui = UI[lang]
-    parts = []
-    for size in ('1', '2', '3'):
-        s = SPECS[lang][size]
-        cards = []
-        def card(title, body, span=''):
-            return f'<article class="spec-card {span}"><h3>{esc(title)}</h3><p>{body}</p></article>'
-        # Keep the live sentence intact (meas only retouches digits / isolates runs).
-        keys = ['vol', 'char', 'types', 'dim', 'dim_d', 'dim_h', 'weight', 'pack', 'packdim', 'qty', 'carton']
-        labels = {
-            'fa': dict(vol='حجم ساکشن', char='مشخصات', types='فیلترها', dim='ابعاد محصول', weight='وزن محصول', pack='نحوه بسته بندی', packdim='ابعاد بسته بندی هر محصول', qty='تعداد در هر کارتن', carton='ابعاد کارتن'),
-            'en': dict(vol='Volume', char='Characteristic', types='Types of filter', dim='Product Dimensions', weight='Product Weight', pack='Packaging Type', packdim='Individual Package Dimensions', qty='Quantity per Carton', carton='Carton Dimensions'),
-            'ar': dict(vol='حجم الشفط', char='المواصفات', types='أنواع الفلاتر', dim='أبعاد المنتج', dim_d='القطر', dim_h='الارتفاع', weight='وزن المنتج', pack='نوع التغليف', packdim='أبعاد تغليف كل منتج', qty='الكمية في كل كرتون', carton='أبعاد الكرتون'),
-        }[lang]
-        for key in keys:
-            if key not in s:
-                continue
-            cards.append(card(labels.get(key, key), meas(s[key], lang), 'span-2' if key in ('char', 'types', 'vol') else ''))
-        if s.get('filters'):
-            lis = ''.join(f'<li><strong>{meas(n, lang)}</strong>{meas(d, lang)}</li>' for n, d in s['filters'])
-            fh = {'en': 'Filter Name', 'ar': 'اسم الفلتر'}[lang]
-            if lang == 'en':
-                lis = '<li><strong>Description</strong></li>' + lis
-            if lang == 'ar':
-                lis = '<li><strong>مواصفات الفلتر</strong></li>' + lis
-            cards.append(f'<article class="spec-card span-2"><h3>{esc(fh)}</h3><ol class="filter-list">{lis}</ol></article>')
-        uses = []
-        for icon, label in s['uses']:
-            if icon == 'lipo':
-                ic = LIPO_SVG
-            else:
-                ic = f'<img src="{pfx}assets/img/use/{icon}.webp" width="72" height="72" alt="" loading="lazy" decoding="async">'
-            uses.append(f'<span class="use">{ic}{esc(digits(label, lang))}</span>')
-        cards.append(f'<article class="spec-card span-2"><h3>{esc(s["uses_h"])}</h3><div class="uses">{"".join(uses)}</div></article>')
-        if s.get('sterile_p'):
-            merits = ''.join(f'<li>{meas(m, lang)}</li>' for m in s['merits'])
-            cards.append(
-                f'<article class="spec-card span-2 sterile"><h3>{esc(s["sterile_h"])}</h3>'
-                f'<p>{meas(s["sterile_p"], lang)}</p><h3>{esc(s["merits_h"])}</h3><ul>{merits}</ul></article>'
-            )
-        if ui['how']:
-            cards.append(
-                f'<article class="spec-card span-2"><p>{esc(ui["how"].replace("صفحه", "§").replace("الصفحة", "§"))}</p></article>'
-            )
-        # The how-to sentence must keep the word صفحه / الصفحة plus the link, verbatim around the anchor.
-        if ui['how']:
-            cards.pop()
-            if lang == 'fa':
-                how = 'برای مشاهده نحوه استفاده از کیسه ساکشن ها به این <a href="' + ui['guide_href'] + '">صفحه</a> مراجعه نمایید .'
-            else:
-                how = 'اذهب إلى هذه <a href="' + ui['guide_href'] + '">الصفحة</a> لمعرفة كيفية استخدام أكياس الشفط.'
-            cards.append(f'<article class="spec-card span-2"><p>{how}</p></article>')
-        label = {'fa': 'مشخصات محصول:', 'en': 'Product Specifications', 'ar': 'مواصفات المنتج:'}[lang]
-        extra = ''
-        if lang == 'en' and size == '2':
-            extra = '<p>2 Liter Single-Use Disposable Suction Liner Bag</p>'
-        elif lang == 'en' and size == '3':
-            extra = '<p>3 Liter Single-Use Disposable Suction Liner Bag</p>'
-        elif lang == 'ar' and size == '1':
-            extra = '<p>كيس الشفط بحجم لتر واحد</p><p>أبعاد المنتج:</p>'
-        elif lang == 'ar':
-            extra = '<p>أبعاد المنتج:</p>'
-        parts.append(
-            f'<section class="spec-group" id="spec-{size}"><h3>{esc(digits(s["name"], lang))}</h3>'
-            f'<p>{esc(label)}</p>{extra}<div class="spec-grid">{"".join(cards)}</div></section>'
+    s = SPECS[lang][size]
+    cards = []
+    def card(title, body, span=''):
+        return f'<article class="spec-card {span}"><h3>{esc(title)}</h3><p>{body}</p></article>'
+    keys = ['vol', 'char', 'types', 'dim', 'dim_d', 'dim_h', 'weight', 'pack', 'packdim', 'qty', 'carton']
+    labels = {
+        'fa': dict(vol='حجم ساکشن', char='مشخصات', types='فیلترها', dim='ابعاد محصول', weight='وزن محصول', pack='نحوه بسته بندی', packdim='ابعاد بسته بندی هر محصول', qty='تعداد در هر کارتن', carton='ابعاد کارتن'),
+        'en': dict(vol='Volume', char='Characteristic', types='Types of filter', dim='Product Dimensions', weight='Product Weight', pack='Packaging Type', packdim='Individual Package Dimensions', qty='Quantity per Carton', carton='Carton Dimensions'),
+        'ar': dict(vol='حجم الشفط', char='المواصفات', types='أنواع الفلاتر', dim='أبعاد المنتج', dim_d='القطر', dim_h='الارتفاع', weight='وزن المنتج', pack='نوع التغليف', packdim='أبعاد تغليف كل منتج', qty='الكمية في كل كرتون', carton='أبعاد الكرتون'),
+    }[lang]
+    for key in keys:
+        if key not in s:
+            continue
+        cards.append(card(labels.get(key, key), meas(s[key], lang), 'span-2' if key in ('char', 'types', 'vol') else ''))
+    uses = []
+    for icon, label in s['uses']:
+        if icon == 'lipo':
+            ic = LIPO_SVG
+        else:
+            ic = f'<img src="{pfx}assets/img/use/{icon}.webp" width="72" height="72" alt="" loading="lazy" decoding="async">'
+        uses.append(f'<span class="use">{ic}{esc(digits(label, lang))}</span>')
+    cards.append(f'<article class="spec-card span-2"><h3>{esc(s["uses_h"])}</h3><div class="uses">{"".join(uses)}</div></article>')
+    if s.get('sterile_p'):
+        merits = ''.join(f'<li>{meas(m, lang)}</li>' for m in s['merits'])
+        cards.append(
+            f'<article class="spec-card span-2 sterile"><h3>{esc(s["sterile_h"])}</h3>'
+            f'<p>{meas(s["sterile_p"], lang)}</p><h3>{esc(s["merits_h"])}</h3><ul>{merits}</ul></article>'
         )
-    return ''.join(parts)
+    if lang == 'fa':
+        how = 'برای مشاهده نحوه استفاده از کیسه ساکشن ها به این <a href="' + ui['guide_href'] + '">صفحه</a> مراجعه نمایید .'
+        cards.append(f'<article class="spec-card span-2"><p>{how}</p></article>')
+    elif ui.get('how'):
+        how = 'اذهب إلى هذه <a href="' + ui['guide_href'] + '">الصفحة</a> لمعرفة كيفية استخدام أكياس الشفط.'
+        cards.append(f'<article class="spec-card span-2"><p>{how}</p></article>')
+    label = {'fa': 'مشخصات محصول:', 'en': 'Product Specifications', 'ar': 'مواصفات المنتج:'}[lang]
+    extra = ''
+    if lang == 'en' and size == '2':
+        extra = '<p>2 Liter Single-Use Disposable Suction Liner Bag</p>'
+    elif lang == 'en' and size == '3':
+        extra = '<p>3 Liter Single-Use Disposable Suction Liner Bag</p>'
+    elif lang == 'ar' and size == '1':
+        extra = '<p>كيس الشفط بحجم لتر واحد</p><p>أبعاد المنتج:</p>'
+    elif lang == 'ar':
+        extra = '<p>أبعاد المنتج:</p>'
+    return (
+        f'<section class="spec-group" id="spec-{size}"><h3>{esc(digits(s["name"], lang))}</h3>'
+        f'<p>{esc(label)}</p>{extra}<div class="spec-grid">{"".join(cards)}</div></section>'
+    )
+
+
+def filters_block(lang):
+    ui = UI[lang]
+    intro = SPECS[lang]['1']['types']
+    cards = [f'<article class="spec-card span-2"><p>{meas(intro, lang)}</p></article>']
+    filt = SPECS[lang]['1'].get('filters')
+    if filt:
+        lis = ''.join(f'<li><strong>{meas(n, lang)}</strong>{meas(d, lang)}</li>' for n, d in filt)
+        fh = {'en': 'Filter Name', 'ar': 'اسم الفلتر'}[lang]
+        if lang == 'en':
+            lis = '<li><strong>Description</strong></li>' + lis
+        if lang == 'ar':
+            lis = '<li><strong>مواصفات الفلتر</strong></li>' + lis
+        cards.append(f'<article class="spec-card span-2"><h3>{esc(fh)}</h3><ol class="filter-list">{lis}</ol></article>')
+    return f'''<section class="bag-block" id="filters"><div class="wrap">
+    <h2>{esc(ui["filters_h"])}</h2>
+    <div class="spec-grid">{"".join(cards)}</div>
+  </div></section>'''
 
 
 GALLERY = [
@@ -613,7 +635,7 @@ def main_html(lang, pfx):
         export = f'<a class="btn-ghost" href="{ui["export_href"]}">{esc(ui["export"])}</a>'
     still = f'{pfx}assets/img/products/3d/p01-cinematic-v12-still.webp'
     return f'''<main id="main">
-  <div class="cin-track" id="film" data-cin-root data-cin-module="{pfx}assets/js/p01-cinematic-page.js" data-tone="dark">
+  <div class="cin-track" id="film" data-cin-root data-cin-module="{pfx}assets/js/p01-cinematic-page.js?v={V}" data-tone="dark">
     <div class="cin-stage">
       <div class="cin-view">
         <canvas aria-hidden="true"></canvas>
@@ -627,7 +649,7 @@ def main_html(lang, pfx):
         <p class="cin-hint">{esc(ui["hint"])}</p>
         <div class="cin-cta">
           <a class="btn-primary" href="{ui["quote_href"]}">{esc(ui["quote"])}</a>
-          <a class="btn-ghost" href="#specs">{esc(ui["specs"])}</a>
+          <a class="btn-ghost" href="#sizes">{esc(ui["specs"])}</a>
           <button class="cin-pause" type="button" data-cin-pause aria-pressed="false" aria-label="{esc(ui["pause"])}">{PAUSE}</button>
         </div>
       </div>
@@ -640,6 +662,10 @@ def main_html(lang, pfx):
       <a class="btn-primary" href="{ui["quote_href"]}">{esc(ui["quote"])}</a>
     </div>
   </nav>
+  <section class="bag-block bag-intro" id="intro"><div class="wrap">
+    <h2>{esc(ui["intro_h"])}</h2>
+    <p class="bag-lead">{esc(ui["intro_p"])}</p>
+  </div></section>
   <section class="bag-block" id="stats"><div class="wrap">
     <h2>{esc(ui["stats_h"])}</h2>
     <div class="stat-grid">{stats}</div>
@@ -654,9 +680,10 @@ def main_html(lang, pfx):
     <p class="bag-lead">{meas(ui["sizes_lead"], lang)}</p>
     {code_tables(lang, pfx)}
   </div></section>
-  <section class="bag-block" id="specs"><div class="wrap">
-    <h2>{esc(ui["spec_h"])}</h2>
-    {spec_blocks(lang, pfx)}
+  {filters_block(lang)}
+  <section class="bag-block" id="catalog"><div class="wrap">
+    <h2>{esc(ui["catalog_h"])}</h2>
+    <p class="bag-lead">{esc(ui["catalog_lead"])}</p>
   </div></section>
   <section class="bag-close" id="order"><div class="wrap"><div class="panel">
     <h2>{esc(ui["close_h"])}</h2>
@@ -698,8 +725,10 @@ def rebuild(lang):
         UI['en']['desc'],
     )
     html_s = re.sub(r'\n?<link rel="stylesheet" href="[^"]+/(?:factory-3d|product-3d-pilot|suction-bag-apple)\.css[^"]*">', '', html_s)
+    html_s = re.sub(r'suction-bag-page\.css\?v=[^"]+', f'suction-bag-page.css?v={V}', html_s)
+    html_s = re.sub(r'suction-bag-ui\.js\?v=[^"]+', f'suction-bag-ui.js?v={V}', html_s)
     if 'suction-bag-page.css' not in html_s:
-        html_s = html_s.replace('</head>', f'<link rel="stylesheet" href="{pfx}assets/css/suction-bag-page.css?v=20261109d">\n</head>', 1)
+        html_s = html_s.replace('</head>', f'<link rel="stylesheet" href="{pfx}assets/css/suction-bag-page.css?v={V}">\n</head>', 1)
     if 'importmap' not in html_s:
         imap = ('<script type="importmap">{"imports":{"three":"' + pfx +
                 'assets/vendor/three/build/three.module.js","three/addons/":"' + pfx +
@@ -716,7 +745,7 @@ def rebuild(lang):
     html_s = re.sub(r'\n?<script type="module">.*?</script>', '', html_s, flags=re.S)
     html_s = re.sub(r'\n?<script type="module" src="[^"]*suction-bag-1l[^"]*"[^>]*>\s*</script>', '', html_s)
     if 'suction-bag-ui.js' not in html_s:
-        html_s = html_s.replace('</body>', f'<script src="{pfx}assets/js/suction-bag-ui.js?v=20261109b" defer></script>\n</body>', 1)
+        html_s = html_s.replace('</body>', f'<script src="{pfx}assets/js/suction-bag-ui.js?v={V}" defer></script>\n</body>', 1)
     # drop a second h1 if the shell ever had one outside main — it should not
     path.write_text(html_s, encoding='utf-8')
     print(lang, 'h1', html_s.count('<h1>'), 'apple', 'suction-bag-1l-apple' in html_s, 'bytes', path.stat().st_size)
