@@ -62,15 +62,29 @@ function buildApprovedBag(THREE) {
     roughness: 0.48,
     metalness: 0.02,
   });
+  // Frosted translucent liner — matches product photos / Hamid refs (inner tube visible)
   const bagMat = new THREE.MeshPhysicalMaterial({
-    color: 0xe8f2f3,
-    roughness: 0.55,
+    color: 0xeef6f7,
+    roughness: 0.42,
     metalness: 0,
     transparent: true,
-    opacity: 0.7,
-    transmission: 0.18,
-    thickness: 1.4,
+    opacity: 0.42,
+    transmission: 0.62,
+    thickness: 2.2,
+    ior: 1.42,
+    attenuationColor: new THREE.Color(0xd8ecee),
+    attenuationDistance: 18,
+    depthWrite: false,
     side: THREE.DoubleSide,
+  });
+  const rimMat = new THREE.MeshStandardMaterial({
+    color: 0xd5e8ea,
+    roughness: 0.28,
+    metalness: 0.05,
+    transparent: true,
+    opacity: 0.22,
+    depthWrite: false,
+    side: THREE.FrontSide,
   });
 
   // Pillow-dome lid (Hamid ref / 881a968e + 9182584b)
@@ -101,10 +115,28 @@ function buildApprovedBag(THREE) {
   tan.position.set(1.6, 22.2, -7.2);
   lidG.add(tan);
 
+  // Inner hydrophobic filter tube (visible through frosted liner)
+  const filterTube = new THREE.Mesh(
+    new THREE.CylinderGeometry(1.55, 1.85, 16, 24),
+    new THREE.MeshStandardMaterial({ color: 0x0a7072, roughness: 0.55, metalness: 0.04 }),
+  );
+  filterTube.position.set(-1.2, 1.5, 0.4);
+  bagG.add(filterTube);
+  const filterCage = new THREE.Mesh(
+    new THREE.CylinderGeometry(2.35, 2.55, 5.5, 10, 1, true),
+    new THREE.MeshStandardMaterial({ color: 0x0c8588, roughness: 0.5, metalness: 0.06, transparent: true, opacity: 0.85 }),
+  );
+  filterCage.position.set(-1.2, 6.2, 0.4);
+  bagG.add(filterCage);
+
   // 1L liner proportions: Ø11 × H15.5 cm (scene units ~ matching suction-bag-1l-3d)
   const liner = new THREE.Mesh(new THREE.CylinderGeometry(10.2, 9.4, 28, 48, 1, true), bagMat);
   liner.position.y = -2;
   bagG.add(liner);
+  // Subtle fresnel rim shell (slightly larger, low opacity)
+  const rim = new THREE.Mesh(new THREE.CylinderGeometry(10.45, 9.65, 28, 48, 1, true), rimMat);
+  rim.position.y = -2;
+  bagG.add(rim);
   const bottom = new THREE.Mesh(new THREE.CircleGeometry(9.4, 48), bagMat);
   bottom.rotation.x = Math.PI / 2;
   bottom.position.y = -16;
@@ -152,6 +184,30 @@ function setupLights(THREE, scene) {
   scene.add(floor);
 }
 
+
+async function applyEnv(THREE, renderer, scene) {
+  try {
+    const { RoomEnvironment } = await import('../vendor/three/examples/jsm/environments/RoomEnvironment.js');
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    pmrem.dispose();
+  } catch (e) {
+    // Fallback: soft gradient cube so transmission is not flat gray
+    const c = document.createElement('canvas');
+    c.width = c.height = 64;
+    const ctx = c.getContext('2d');
+    const g = ctx.createLinearGradient(0, 0, 0, 64);
+    g.addColorStop(0, '#cfe8ea');
+    g.addColorStop(0.55, '#6a9ea4');
+    g.addColorStop(1, '#142428');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, 64, 64);
+    const tex = new THREE.CanvasTexture(c);
+    tex.mapping = THREE.EquirectangularReflectionMapping;
+    scene.environment = tex;
+  }
+}
+
 async function mountHero(root) {
   const canvas = root.querySelector('canvas');
   const poster = root.querySelector('.bag-hero-poster');
@@ -161,20 +217,23 @@ async function mountHero(root) {
     return;
   }
   const { THREE } = await loadThree();
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.75));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
   const scene = new THREE.Scene();
   setupLights(THREE, scene);
+  await applyEnv(THREE, renderer, scene);
   const mob = matchMedia('(max-width:700px),(pointer:coarse)').matches;
   const camera = new THREE.PerspectiveCamera(mob ? 34 : 28, 1, 0.5, 600);
   const bag = buildApprovedBag(THREE);
   scene.add(bag);
-  // Whole bag (lid+body) ~55-65% of the band ABOVE the headline (~42% of full hero height on mobile)
+  // Keep whole bag in the UPPER stage band (CSS clips stage above the copy)
   const fit = fitCamera(THREE, camera, bag, {
-    fill: mob ? 0.48 : 0.55,
-    pad: mob ? 1.12 : 1.08,
-    preferY: mob ? 9 : 6,
+    fill: mob ? 0.72 : 0.68,
+    pad: mob ? 1.06 : 1.05,
+    preferY: mob ? 2 : 1.5,
   });
   let baseDist = fit.dist;
 
@@ -185,8 +244,8 @@ async function mountHero(root) {
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
     const fov = (camera.fov * Math.PI) / 180;
-    const fill = mob ? 0.46 : 0.54;
-    baseDist = Math.abs((fit.maxDim / fill) / 2 / Math.tan(fov / 2)) * (mob ? 1.14 : 1.08);
+    const fill = mob ? 0.70 : 0.66;
+    baseDist = Math.abs((fit.maxDim / fill) / 2 / Math.tan(fov / 2)) * (mob ? 1.08 : 1.05);
   }
   resize();
   new ResizeObserver(resize).observe(root);
@@ -204,10 +263,10 @@ async function mountHero(root) {
     const elev = 0.18 + 0.04 * Math.sin(u * Math.PI * 2);
     const dist = baseDist * (1.0 + 0.03 * Math.sin(u * Math.PI * 2));
     // Look above origin so the bag sits in the upper hero band, clear of the headline
-    const targetY = mob ? 10.5 : 7;
+    const targetY = mob ? 1.2 : 1.0;
     camera.position.set(
       Math.cos(ang) * dist * Math.cos(elev),
-      targetY + 1.5 + Math.sin(elev) * dist * 0.32,
+      targetY + 2 + Math.sin(elev) * dist * 0.28,
       Math.sin(ang) * dist * Math.cos(elev),
     );
     camera.lookAt(0, targetY, 0);
@@ -265,11 +324,14 @@ async function mountStory(root) {
   }
 
   const { THREE } = await loadThree();
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.75));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
   const scene = new THREE.Scene();
   setupLights(THREE, scene);
+  await applyEnv(THREE, renderer, scene);
   const mob = matchMedia('(max-width:700px),(pointer:coarse)').matches;
   const camera = new THREE.PerspectiveCamera(mob ? 34 : 28, 1, 0.5, 500);
   const bag = buildApprovedBag(THREE);

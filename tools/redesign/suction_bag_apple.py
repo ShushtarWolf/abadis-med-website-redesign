@@ -1,7 +1,7 @@
 """Apple-style 1L suction bag page sections (FA/EN/AR). Additions/reorder only."""
 import html as _h
 
-V = '20261109l'
+V = '20261109r'
 
 
 def esc(s):
@@ -238,12 +238,14 @@ def gallery(p, lang='fa'):
     c = COPY[lang]
     # Real photos + clean single-view sketches only (no catalog sheets)
     items = [
-        ('assets/img/p/p1-main.webp', None, c['poster_alt'], 900, 900),
-        ('assets/img/p/p1-g1.webp', 'assets/img/p/p1-g1-t.webp', None, 1543, 1600),
-        ('assets/img/p/p1-g2.webp', 'assets/img/p/p1-g2-t.webp', None, 1600, 1067),
-        ('assets/img/p/p1-g3.webp', 'assets/img/p/p1-g3-t.webp', None, 1600, 1067),
-        ('assets/img/p/p1-g4.webp', 'assets/img/p/p1-g4-t.webp', None, 1600, 1067),
-        ('assets/img/p/p1-g5.webp', 'assets/img/p/p1-g5-t.webp', None, 1254, 1254),
+        # Original light-studio photos only (no cutouts / no black boxes)
+        ('assets/img/p/p1-g2.webp', None, None, 1600, 1067),
+        ('assets/img/p/p1-g1.webp', None, None, 1543, 1600),
+        ('assets/img/p/p1-g3.webp', None, None, 1600, 1067),
+        ('assets/img/p/p1-g4.webp', None, None, 1600, 1067),
+        ('assets/img/p/p1-g5.webp', None, None, 1254, 1254),
+        # Original black-studio hero photo on matching dark card
+        ('assets/img/p/p1-main.webp', None, 'studio-main', 900, 900),
         ('assets/img/products/3d/p01-1l-liner-light.webp', 'assets/img/products/3d/p01-1l-liner-dark.webp', 'studio', 1067, 1200),
         ('assets/img/products/3d/p01-sketch-wire-light.webp', 'assets/img/products/3d/p01-sketch-wire-dark.webp', 'wire', 889, 1000),
         ('assets/img/products/3d/p01-1l-liner-iso-light.webp', 'assets/img/products/3d/p01-1l-liner-iso-dark.webp', 'iso', 662, 662),
@@ -253,29 +255,27 @@ def gallery(p, lang='fa'):
     ]
     cards = []
     for light, dark, label, w, h in items:
-        if dark and dark.endswith('.webp') and 'products/3d' in dark:
+        theme_pair = bool(dark and dark.endswith('.webp') and 'products/3d' in dark)
+        extra_cls = ' bag-gal-item--studio' if label == 'studio-main' else ''
+        if theme_pair:
+            alt = c['gal_h'] + ' — ' + str(label)
             inner = (
-                f'<span class="theme-sketch"><img class="ts-light" src="{p}{light}" width="{w}" height="{h}" alt="" loading="lazy" decoding="async">'
+                f'<span class="theme-sketch"><img class="ts-light" src="{p}{light}" width="{w}" height="{h}" alt="{esc(alt)}" loading="lazy" decoding="async">'
                 f'<img class="ts-dark" src="{p}{dark}" width="{w}" height="{h}" alt="" loading="lazy" decoding="async" aria-hidden="true"></span>'
             )
             href = p + light
         else:
-            thumb = p + (dark if dark and not dark.startswith('assets/img/products') else light)
-            # for photos dark is thumb path
             if dark and dark.startswith('assets/img/p/'):
                 thumb = p + dark
                 href = p + light
             else:
                 thumb = p + light
                 href = p + light
-            alt = label or c['poster_alt']
-            if label in (None, 'studio', 'wire', 'iso', 'side', '3q', 'top'):
-                alt = c['poster_alt'] if label is None else (c['gal_h'] + ' — ' + str(label))
+            alt = c['poster_alt'] if label in (None, 'studio-main') else (c['gal_h'] + ' — ' + str(label))
             inner = f'<img src="{thumb}" width="{w}" height="{h}" alt="{esc(alt)}" loading="lazy" decoding="async">'
-        cap = ''
         cards.append(
-            f'<a class="bag-gal-item" href="{href}" data-gallery="apple-gal" data-w="{w}" data-h="{h}">'
-            f'<figure>{inner}{cap}</figure></a>'
+            f'<a class="bag-gal-item{extra_cls}" href="{href}" data-gallery="apple-gal" data-w="{w}" data-h="{h}">'
+            f'<figure>{inner}</figure></a>'
         )
     return (
         f'  <section class="section bag-gal" id="gallery"><div class="wrap">'
