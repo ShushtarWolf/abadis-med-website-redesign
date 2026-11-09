@@ -240,23 +240,7 @@
   .code-card dd { margin: 0; font-weight: 700; text-align: end; }
 }
 
-.yn {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 24px; height: 24px; line-height: 0; vertical-align: middle;
-  border: none !important;
-  transform: none !important;
-  background: none !important;
-}
-.yn svg, .yn .yn-ico { width: 18px; height: 18px; display: block; flex-shrink: 0; }
-.yn-yes {
-  color: #0e7475;
-  /* site.css draws a border “tick” on .yn-yes — disable on product pages */
-  width: 24px !important;
-  height: 24px !important;
-  border: none !important;
-  transform: none !important;
-}
-.yn-no { color: var(--muted); }
+/* yn icons: see site.css (--ico-check / shared SVG) */
 .lid { width: 36px; height: 14px; border-radius: 4px; display: inline-block; box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); }
 .lid-teal { background: #0a7e8c; }
 .lid-yellow { background: #e6c34a; }
@@ -342,18 +326,6 @@
   unicode-bidi: isolate;
   white-space: nowrap;
 }
-.page-bag .yn svg, .page-bag .yn .yn-ico { width: 18px; height: 18px; display: block; }
-.page-bag .yn-yes {
-  color: #0e7475;
-  display: inline-flex !important;
-  width: 24px !important;
-  height: 24px !important;
-  border: none !important;
-  border-right: none !important;
-  border-bottom: none !important;
-  transform: none !important;
-}
-.page-bag .yn-no { color: var(--muted); }
 .page-bag .code-card dd .yn { margin-inline-start: auto; }
 .page-bag #stats .stat-grid .stat,
 .page-bag #stats .stat-val,
