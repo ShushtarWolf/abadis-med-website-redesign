@@ -15,7 +15,7 @@ SITE = ROOT / 'site'
 FA_DIG = str.maketrans('0123456789', '۰۱۲۳۴۵۶۷۸۹')
 AR_DIG = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
 
-V = '20261109l'
+V = '20261109n'
 
 CHECK = ('<svg class="yn-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
          '<path d="M5.5 12.5 L9.5 16.5 L18.5 7.5" fill="none" stroke="currentColor" '

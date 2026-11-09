@@ -315,9 +315,9 @@ function frame(now){requestAnimationFrame(frame);
     Phone: v12's tall-phone scale (1.36), even when the caption band
     makes the stage wider, so the opening frame is not zoomed in.
     Desktop: a slightly longer lens so the base stays inside a 16:9 frame. */
- let fit = mob ? 1.68 : 1.46;
- /* Lid lift / sachet beat: pull back further on tall phones so lid stays in frame */
- if (mob && t > 0.2 && t < 0.58) fit = Math.max(fit, 1.88);
+ let fit = mob ? 1.72 : 1.46;
+ if (mob && t > 0.2 && t < 0.58) fit = Math.max(fit, 1.92);
+ if (mob && t >= 0.58) fit = Math.max(fit, 1.78);
  cp.sub(ct).multiplyScalar(fit).add(ct);
  /* Filter stays on underside; hide only once blood fills */
  if(fG){ fG.visible=t<.52; }
@@ -325,14 +325,14 @@ function frame(now){requestAnimationFrame(frame);
   * Filter beat: 3/4 from below looking into recessed housing — disc seated
   * inside teal seat, no ribs crossing face (cavity clipped).
   */
- if(filtLook&&t>.27&&t<.4){
+ /* Desktop-only filter close-up; on phones keep scroll keyframes so the bag stays in frame */
+ if(!mob&&filtLook&&t>.27&&t<.4){
   const w=seg(t,.28,.32)*(1-seg(t,.37,.4));
   filtLook.getWorldPosition(fW);
-  /* Near face-on into recessed pocket so teal lip frames disc as a clean ring */
   const nrm=V(0,-1,0).applyQuaternion(lidG.quaternion).normalize();
   const side=V(.25,0,.15).applyQuaternion(lidG.quaternion).normalize();
-  const dist=mob?95:110;
-  const goal=fW.clone().addScaledVector(nrm,dist).addScaledVector(side,mob?14:18);
+  const dist=110;
+  const goal=fW.clone().addScaledVector(nrm,dist).addScaledVector(side,18);
   cp.lerp(goal,w);
   ct.lerp(fW,w);
  }
