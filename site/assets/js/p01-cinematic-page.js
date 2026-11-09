@@ -310,7 +310,12 @@ function frame(now){requestAnimationFrame(frame);
   if(window.__drops){const dd=seg(t,.54,.62)*(1-seg(t,.66,.74));window.__drops.visible=dd>.04;window.__drops.children.forEach((d,i)=>{d.material.opacity=.15+.55*dd;d.position.y=HH*.9+Math.sin(tSec*3+i*1.7)*.8;d.scale.setScalar(.7+dd*.5);});}
  }
  sampleKF(t,cp,ct);
- if(mob){cp.sub(ct).multiplyScalar(Math.min(1.6,1/Math.max(.5,C.aspect))*.85).add(ct);}
+ /* Distance fit only — keyframes stay put.
+    Phone: v12's tall-phone scale (1.36), even when the caption band
+    makes the stage wider, so the opening frame is not zoomed in.
+    Desktop: a slightly longer lens so the base stays inside a 16:9 frame. */
+ const fit = mob ? 1.36 : 1.46;
+ cp.sub(ct).multiplyScalar(fit).add(ct);
  /* Filter stays on underside; hide only once blood fills */
  if(fG){ fG.visible=t<.52; }
  /*

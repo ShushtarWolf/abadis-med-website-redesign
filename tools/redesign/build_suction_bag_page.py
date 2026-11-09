@@ -699,7 +699,7 @@ def rebuild(lang):
     )
     html_s = re.sub(r'\n?<link rel="stylesheet" href="[^"]+/(?:factory-3d|product-3d-pilot|suction-bag-apple)\.css[^"]*">', '', html_s)
     if 'suction-bag-page.css' not in html_s:
-        html_s = html_s.replace('</head>', f'<link rel="stylesheet" href="{pfx}assets/css/suction-bag-page.css?v=20261109c">\n</head>', 1)
+        html_s = html_s.replace('</head>', f'<link rel="stylesheet" href="{pfx}assets/css/suction-bag-page.css?v=20261109d">\n</head>', 1)
     if 'importmap' not in html_s:
         imap = ('<script type="importmap">{"imports":{"three":"' + pfx +
                 'assets/vendor/three/build/three.module.js","three/addons/":"' + pfx +
