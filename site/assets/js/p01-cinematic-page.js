@@ -31,12 +31,12 @@ const under=new THREE.PointLight(0xfff8f2,.45,750,1.9);under.position.set(20,-30
 function radTex(stops){const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');const g=x.createRadialGradient(128,128,0,128,128,128);stops.forEach(s=>g.addColorStop(...s));x.fillStyle=g;x.fillRect(0,0,256,256);return new THREE.CanvasTexture(c);}
 function floorPlane(sz,tex,y){const m=new THREE.Mesh(new THREE.PlaneGeometry(sz,sz),new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.y=y;S.add(m);return m;}
 let floorTeal=null,floorDark=null,sr=null;
-if(floorMode==='studio'||floorMode==='hero'){
+if(floorMode==='hero'){
+ floorTeal=floorPlane(1100,radTex([[0,'rgba(46,127,150,.28)'],[.55,'rgba(46,127,150,.08)'],[1,'rgba(46,127,150,0)']]),-179);
+}else if(floorMode==='studio'){
  floorTeal=floorPlane(1100,radTex([[0,'rgba(46,127,150,.28)'],[.55,'rgba(46,127,150,.08)'],[1,'rgba(46,127,150,0)']]),-179);
  floorDark=floorPlane(300,radTex([[0,'rgba(0,0,0,.72)'],[.5,'rgba(0,0,0,.2)'],[1,'rgba(0,0,0,0)']]),-178.6);
- const srSz=floorMode==='hero'?220:650;
- const srOp=floorMode==='hero'?.2:.38;
- sr=new THREE.Mesh(new THREE.PlaneGeometry(srSz,srSz),new THREE.ShadowMaterial({opacity:srOp}));
+ sr=new THREE.Mesh(new THREE.PlaneGeometry(650,650),new THREE.ShadowMaterial({opacity:.38}));
 }else if(floorMode==='soft'){
 }else{
  R.shadowMap.enabled=false;key.castShadow=false;
@@ -53,8 +53,6 @@ function syncPageTone(){
   hemi.intensity=.85;
   key.intensity=1.35;
   fillL.intensity=1.35;
-  if(sr)sr.material.opacity=.2;
-  if(floorDark)floorDark.visible=true;
   S.background=null;
   return;
  }
