@@ -385,6 +385,12 @@ function frame(now){requestAnimationFrame(frame);
 
  C.position.copy(cp);C.lookAt(ct);const d=cp.distanceTo(ct);C.near=Math.max(1,d*.05);C.far=d+1500;C.updateProjectionMatrix();
  R.render(S,C);
+ if(window.__cin_profile_on){
+  const p=performance.now();
+  const prof=window.__cin_profile||{frames:[]};
+  if(prof.last)prof.frames.push(p-prof.last);
+  prof.last=p;window.__cin_profile=prof;
+ }
  if(!window.__cin_frame){window.__cin_frame=true;root.dispatchEvent(new CustomEvent('cin-frame',{bubbles:true}));}
 }
 

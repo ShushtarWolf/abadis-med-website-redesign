@@ -17,6 +17,15 @@
     root.classList.add('is-still');
   }
 
+  var film = document.getElementById('film');
+  var header = document.querySelector('.header');
+  if (film && header) {
+    var heroObs = new IntersectionObserver(function (entries) {
+      header.classList.toggle('past-hero', !entries[0].isIntersecting);
+    }, { threshold: 0, rootMargin: '-1px 0px 0px 0px' });
+    heroObs.observe(film);
+  }
+
   document.querySelectorAll('[data-gal]').forEach(function (gal) {
     var rail = gal.querySelector('.gal-rail');
     var cards = gal.querySelectorAll('.gal-card');

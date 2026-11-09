@@ -93,6 +93,14 @@
      directly underneath it, so nothing turns white-on-mint or teal-on-teal. */
   function tone() {
     if (!header) return;
+    const film = document.getElementById('film');
+    if (document.body.classList.contains('page-bag') && film) {
+      const fr = film.getBoundingClientRect();
+      if (fr.bottom > 72) {
+        zones.forEach((z) => z.classList.remove('on-light'));
+        return;
+      }
+    }
     const light = (root.dataset.theme || 'light') === 'light';
     const mobileMenu = menuBtnVisible();
     zones.forEach((z) => {
@@ -118,7 +126,9 @@
       if (ticking) return; ticking = true;
       requestAnimationFrame(() => {
         ticking = false;
-        header.classList.toggle('scrolled', scrollY > 24);
+        const film = document.getElementById('film');
+        const heroUp = document.body.classList.contains('page-bag') && film && film.getBoundingClientRect().bottom > 72;
+        header.classList.toggle('scrolled', scrollY > 24 && !heroUp);
         if (!header.classList.contains('open')) {
           header.querySelectorAll('.nav-item.open').forEach((el) => {
             el.classList.remove('open');
