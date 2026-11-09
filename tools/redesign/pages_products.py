@@ -708,11 +708,11 @@ def write_bag(write, lang):
         if size == '3':
             sterile = (f'<div class="sterile"><h3>{esc(ui["sterile_h"])}</h3><p>{esc(ui["sterile_p"])}</p></div>')
         if size == '1':
-            main_html = suction_bag_3d.s1_sketch_main(p, lang, gallery='s1')
+            # Original photo stays as main (parity); sketch is an added thumb.
+            main_html = suction_bag_3d.s1_photo_main(p, lang, gallery='s1')
             thumbs = (
                 f'<div class="gal-thumbs">'
-                f'<a href="{p}assets/img/p/{main_img}" data-gallery="s{size}" data-w="{w}" data-h="{h}" aria-label="{esc(title)}">'
-                f'<img src="{p}assets/img/p/{main_img}" width="{w}" height="{h}" alt="{esc(title)}" loading="lazy" decoding="async"></a>'
+                f'{suction_bag_3d.s1_sketch_thumb(p, lang, gallery="s1")}'
                 f'<a href="{p}assets/img/p/{dim}" data-gallery="s{size}" data-w="1254" data-h="1254">'
                 f'<img src="{p}assets/img/p/{dim_t}" width="480" height="480" alt="{esc(height)}" loading="lazy" decoding="async"></a>'
                 f'</div>'
@@ -748,8 +748,12 @@ def write_bag(write, lang):
     benefit = 'Benefits' if lang == 'en' else 'المزايا'
     b3d_lbl = '3D 1L Cutaway' if lang == 'en' else 'التشريح ثلاثي الأبعاد ١ لتر'
     tech_anchor = 'Technical specs' if lang == 'en' else 'المواصفات الفنية'
+    skg_anchor = '3D sketch gallery' if lang == 'en' else 'معرض الرسمات ثلاثية الأبعاد'
+    cin_anchor = 'Cinematic view' if lang == 'en' else 'عرض سينمائي'
     anchors = (f'<a href="#benefits">{esc(benefit)}</a>'
                f'<a href="#tech-drawings">{esc(tech_anchor)}</a>'
+               f'<a href="#sketch-gallery">{esc(skg_anchor)}</a>'
+               f'<a href="#cinematic">{esc(cin_anchor)}</a>'
                f'<a href="#bag-3d">{esc(b3d_lbl)}</a>'
                f'<a href="#s1">{esc(ui["sz1"])}{S.badge(lang, "order")}</a>'
                f'<a href="#s2">{esc(ui["sz2"])}{S.badge(lang, "order")}</a>'
@@ -769,6 +773,8 @@ def write_bag(write, lang):
             + f'  <nav class="anchors"><div class="wrap">{anchors}</div></nav>\n'
             + intro
             + suction_bag_3d.cad_tech_section(p, lang)
+            + suction_bag_3d.sketch_gallery_section(p, lang)
+            + suction_bag_3d.cinematic_section(p, lang)
             + suction_bag_3d.section(p, lang, skip_to='#s1', sec_id='bag-3d', tag_h='h2') + '\n'
             + '  <section class="section"><div class="wrap">\n' + '\n'.join(blocks) + '\n  </div></section>\n'
             + f'''  <section class="section section--alt" id="filters"><div class="wrap">
@@ -844,110 +850,117 @@ def patch_suction_bag_cleanup():
 
 
 def patch_product_3d_pilot_fa():
-    """Hand-built FA suction-bag page: theme sketch, CAD tech tab, deferred 3D gate."""
+    """Hand-built FA suction-bag page: parity photo + additive sketches/CAD/3D/cinematic."""
     from lib import SITE
     import suction_bag_3d
     path = SITE / 'products/suction-bag/index.html'
     html = path.read_text(encoding='utf-8')
     pfx = '../../'
+    V = suction_bag_3d.V
 
-    # CSS
-    if 'product-3d-pilot.css' not in html:
-        html = html.replace('</head>', suction_bag_3d.head(pfx).split('\n')[-1] + '\n</head>', 1)
-        # head() returns factory + product css; ensure both present
-        if 'factory-3d.css' in html and 'product-3d-pilot.css' not in html:
-            html = html.replace(
-                '</head>',
-                f'<link rel="stylesheet" href="{pfx}assets/css/product-3d-pilot.css?v={suction_bag_3d.V}">\n</head>',
-                1,
-            )
-    else:
-        html = re.sub(
-            r'product-3d-pilot\.css\?v=[^"]+',
-            f'product-3d-pilot.css?v={suction_bag_3d.V}',
-            html,
-        )
-
-    # Replace bag-3d section
-    html = re.sub(
-        r'\n?  <section class="f3d f3d--bag"[^>]*>.*?  </section>\n?',
-        '\n' + suction_bag_3d.section(pfx, 'fa', skip_to='#s1', sec_id='bag-3d', tag_h='h2') + '\n',
-        html,
-        count=1,
-        flags=re.S,
+    html = re.sub(r'<link rel="stylesheet" href="\.\./\.\./assets/css/product-3d-pilot\.css\?v=[^"]+">\n?', '', html)
+    html = re.sub(r'<link rel="stylesheet" href="\.\./\.\./assets/css/factory-3d\.css\?v=[^"]+">\n?', '', html)
+    html = html.replace(
+        '</head>',
+        f'<link rel="stylesheet" href="{pfx}assets/css/factory-3d.css?v={V}">\n'
+        f'<link rel="stylesheet" href="{pfx}assets/css/product-3d-pilot.css?v={V}">\n</head>',
+        1,
     )
 
-    # Scripts: gate instead of eager module
+    html = re.sub(r'\n?\s*<section class="f3d f3d--bag[^"]*"[^>]*>.*?</section>\s*', '\n', html, flags=re.S)
+    bag_sec = suction_bag_3d.section(pfx, 'fa', skip_to='#s1', sec_id='bag-3d', tag_h='h2')
+
+    def upsert_section(html, pattern, block):
+        if re.search(pattern, html, flags=re.S):
+            return re.sub(pattern, '\n' + block + '\n', html, count=1, flags=re.S)
+        return html
+
+    tech = suction_bag_3d.cad_tech_section(pfx, 'fa')
+    skg = suction_bag_3d.sketch_gallery_section(pfx, 'fa')
+    cin = suction_bag_3d.cinematic_section(pfx, 'fa')
+    html = upsert_section(html, r'\n?\s*<section class="section cad-tech" id="tech-drawings">.*?</section>\s*', tech)
+    html = upsert_section(html, r'\n?\s*<section class="section skg" id="sketch-gallery">.*?</section>\s*', skg)
+    html = upsert_section(html, r'\n?\s*<section class="section cin-sec" id="cinematic"[^>]*>.*?</section>\s*', cin)
+
+    if 'id="tech-drawings"' not in html or 'id="sketch-gallery"' not in html or 'id="cinematic"' not in html:
+        block = ''
+        if 'id="tech-drawings"' not in html:
+            block += tech
+        if 'id="sketch-gallery"' not in html:
+            block += skg
+        if 'id="cinematic"' not in html:
+            block += cin
+        html = html.replace(
+            '<div class="size-block" id="s1"',
+            block + bag_sec + '\n    <div class="size-block" id="s1"',
+            1,
+        )
+    else:
+        m = re.search(r'<section class="section cin-sec" id="cinematic"[^>]*>.*?</section>', html, flags=re.S)
+        if m and 'id="bag-3d"' not in html:
+            html = html[:m.end()] + '\n' + bag_sec + html[m.end():]
+        elif 'id="bag-3d"' not in html:
+            html = html.replace(
+                '<div class="size-block" id="s1"',
+                bag_sec + '\n    <div class="size-block" id="s1"',
+                1,
+            )
+
     html = re.sub(
-        r'\n?<script type="module" src="\.\./\.\./assets/js/suction-bag-1l-3d(?:-gate)?\.js\?v=[^"]+"></script>\n?',
+        r'\n?<script type="module" src="\.\./\.\./assets/js/suction-bag-1l[^"]+"[^>]*>\s*</script>\n?',
         '\n',
         html,
     )
-    if 'suction-bag-1l-3d-gate.js' not in html:
-        html = html.replace('</body>', suction_bag_3d.scripts(pfx) + '</body>', 1)
+    html = html.replace('</body>', suction_bag_3d.scripts(pfx) + '</body>', 1)
 
-    # Tech drawings after specs
-    if 'id="tech-drawings"' not in html:
-        tech = suction_bag_3d.cad_tech_section(pfx, 'fa')
-        html = html.replace(
-            '  </div></section>\n\n\n\n  <section class="f3d f3d--bag',
-            '  </div></section>\n' + tech + '\n  <section class="f3d f3d--bag',
-            1,
-        )
-        if 'id="tech-drawings"' not in html:
-            # fallback: insert before bag-3d id
+    for href, label in [
+        ('#tech-drawings', 'مشخصات فنی'),
+        ('#sketch-gallery', 'گالری طرح سه‌بعدی'),
+        ('#cinematic', 'نمای سینمایی'),
+    ]:
+        if f'href="{href}"' not in html:
             html = html.replace(
-                '<section class="f3d f3d--bag is-gated" id="bag-3d"',
-                tech + '<section class="f3d f3d--bag is-gated" id="bag-3d"',
+                '<a href="#specs">مشخصات</a>',
+                f'<a href="#specs">مشخصات</a><a href="{href}">{label}</a>',
                 1,
             )
 
-    # Anchor for tech drawings
-    if 'href="#tech-drawings"' not in html:
-        html = html.replace(
-            '<a href="#specs">مشخصات</a>',
-            '<a href="#specs">مشخصات</a><a href="#tech-drawings">مشخصات فنی</a>',
-            1,
-        )
-
-    # s1 main image → theme sketch (keep photo as first thumb)
-    if 'gal-main--sketch' not in html:
-        sketch = suction_bag_3d.s1_sketch_main(pfx, 'fa', gallery='s1')
+    if 'gal-main--sketch' in html:
         html = re.sub(
-            r'<a class="gal-main" href="\.\./\.\./assets/img/p/p1-main\.webp"[^>]*>.*?</a>',
-            sketch
-            + '\n            <a href="../../assets/img/p/p1-main.webp" data-gallery="s1" data-w="900" data-h="900" aria-label="نمایش بزرگ‌تر: عکس محصول کیسه ساکشن ۱ لیتری" style="display:none"></a>',
+            r'<a class="gal-main gal-main--sketch"[\s\S]*?</a>\s*'
+            r'(?:<a href="\.\./\.\./assets/img/p/p1-main\.webp"[^>]*style="display:none"></a>)?',
+            suction_bag_3d.s1_photo_main(pfx, 'fa', gallery='s1'),
             html,
             count=1,
-            flags=re.S,
         )
-        # Prefer injecting sketch before gal-thumbs and converting old main into a thumb
-        if 'gal-main--sketch' not in html:
-            m = re.search(
-                r'(<div class="size-media">\s*)(<a class="gal-main" href="[^"]*p1-main\.webp"[\s\S]*?</a>)(\s*<div class="gal-thumbs">)',
-                html,
-            )
-            if m:
-                old_main = m.group(2)
-                # demote old main to thumb
-                thumb = old_main.replace(' class="gal-main"', '').replace(' loading="eager"', ' loading="lazy"')
-                # simplify to thumb link if it has img
-                html = html[:m.start()] + m.group(1) + sketch + m.group(3).replace(
+    parts = html.split('id="s1"', 1)
+    if len(parts) > 1:
+        if 'id="s2"' in parts[1]:
+            body, after = parts[1].split('id="s2"', 1)
+            if 'gal-thumb--sketch' not in body:
+                body = body.replace(
                     '<div class="gal-thumbs">',
-                    '<div class="gal-thumbs">' + thumb,
+                    '<div class="gal-thumbs">' + suction_bag_3d.s1_sketch_thumb(pfx, 'fa', gallery='s1'),
                     1,
-                ) + html[m.end():]
+                )
+            html = parts[0] + 'id="s1"' + body + 'id="s2"' + after
+        elif 'gal-thumb--sketch' not in parts[1]:
+            html = parts[0] + 'id="s1"' + parts[1].replace(
+                '<div class="gal-thumbs">',
+                '<div class="gal-thumbs">' + suction_bag_3d.s1_sketch_thumb(pfx, 'fa', gallery='s1'),
+                1,
+            )
 
-    # Product schema image → sketch
     html = re.sub(
-        r'("image":\s*")https://abadis-med\.com/assets/img/og-image\.jpg(")',
-        r'\1https://abadis-med.com/assets/img/products/3d/p01-1l-liner-light.webp\2',
+        r'\s*<a href="\.\./\.\./assets/img/p/p1-main\.webp"[^>]*style="display:none"></a>',
+        '',
         html,
         count=1,
     )
 
     path.write_text(html, encoding='utf-8')
     return str(path.relative_to(SITE))
+
 
 
 def build(write):

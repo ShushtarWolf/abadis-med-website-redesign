@@ -9,7 +9,7 @@ Matches the exact visual & interactive architecture of factory_hero.py:
 import html as _h
 import json
 
-V = '20261109a'
+V = '20261109d'
 FA_DIGITS = str.maketrans('0123456789', '۰۱۲۳۴۵۶۷۸۹')
 AR_DIGITS = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
 
@@ -580,14 +580,6 @@ def head(p):
     )
 
 
-def scripts(p):
-    # Gate only — heavy Three.js module loads on user click (see suction-bag-1l-3d-gate.js).
-    return (
-        f'<script type="module" src="{p}assets/js/suction-bag-1l-3d-gate.js?v={V}" '
-        f'data-f3d-module="{p}assets/js/suction-bag-1l-3d.js?v={V}"></script>\n'
-    )
-
-
 def section(p, lang='fa', skip_to='#s1', sec_id='bag-3d', tag_h='h2'):
     t = T[lang]
     cfg = {
@@ -727,7 +719,7 @@ def cad_tech_section(p, lang='fa'):
     pdf = p + 'assets/docs/abadis-1l-suction-liner-technical-drawing.pdf'
     return (
         '  <section class="section cad-tech" id="tech-drawings">\n'
-        '    <div class="wrap reveal">\n'
+        '    <div class="wrap">\n'
         '      <div class="cad-tech-head">\n'
         '        <div>\n'
         '          <h2>' + esc(ui['h']) + '</h2>\n'
@@ -745,13 +737,203 @@ def cad_tech_section(p, lang='fa'):
     )
 
 
-def s1_sketch_main(p, lang, gallery='s1'):
-    """Theme-aware sketch used as the 1L size-block main image."""
+def s1_photo_main(p, lang, gallery='s1'):
+    """Original product photo as #s1 main (content parity — additions only)."""
+    ui = CAD_UI[lang]
+    labels = {
+        'fa': 'عکس محصول کیسه ساکشن ۱ لیتری',
+        'en': '1-litre suction bag product photo',
+        'ar': 'صورة منتج كيس الشفط سعة ١ لتر',
+    }
+    alt = labels[lang]
+    return (
+        '<a class="gal-main" href="' + p + 'assets/img/p/p1-main.webp" data-gallery="' + gallery +
+        '" data-w="900" data-h="900" aria-label="' + esc(ui['zoom']) + ': ' + esc(alt) + '">'
+        '<img src="' + p + 'assets/img/p/p1-main.webp" width="900" height="900" alt="' + esc(alt) +
+        '" loading="eager" decoding="async"></a>'
+    )
+
+
+def s1_sketch_thumb(p, lang, gallery='s1'):
+    """Theme-aware sketch as an extra gallery thumb (does not replace the photo)."""
     ui = CAD_UI[lang]
     light = 'assets/img/products/3d/p01-1l-liner-light.webp'
     dark = 'assets/img/products/3d/p01-1l-liner-dark.webp'
     return (
-        '<a class="gal-main gal-main--sketch" href="' + p + light + '" data-gallery="' + gallery +
+        '<a class="gal-thumb gal-thumb--sketch" href="' + p + light + '" data-gallery="' + gallery +
         '" data-w="1200" data-h="771" aria-label="' + esc(ui['zoom']) + ': ' + esc(ui['alt']) + '">'
-        + theme_sketch(p, light, dark, ui['alt'], w=1200, h=771, loading='eager') + '</a>'
+        + theme_sketch(p, light, dark, ui['alt'], w=240, h=154, loading='lazy', cls='gal-thumb-sketch')
+        + '</a>'
+    )
+
+
+# Back-compat alias used by older call sites — now returns photo main (parity).
+def s1_sketch_main(p, lang, gallery='s1'):
+    return s1_photo_main(p, lang, gallery)
+
+
+SKETCH_GAL = {
+    'fa': dict(
+        h='گالری طرح سه‌بعدی',
+        lead='زاویه‌ها و سبک‌های طرح مهندسی کیسه ساکشن ۱ لیتری — افزوده‌شده در کنار عکس‌های محصول.',
+        zoom='نمایش بزرگ‌تر',
+        items=[
+            ('p01-1l-liner-light.webp', 'p01-1l-liner-dark.webp', 'استودیو سه‌بعدی', 1067, 1200),
+            ('p01-sketch-wire-light.webp', 'p01-sketch-wire-dark.webp', 'خطی CAD', 889, 1000),
+            ('p01-gal-wire-light.webp', 'p01-gal-wire-dark.webp', 'وایر فریم', 1000, 656),
+            ('p01-gal-studio-light.webp', 'p01-gal-studio-dark.webp', 'چندزاویه استودیو', 1000, 656),
+            ('p01-gal-explode-light.webp', 'p01-gal-explode-dark.webp', 'انفجاری / برش', 1000, 656),
+            ('p01-gal-side.webp', 'p01-gal-side.webp', 'نمای جانبی', 750, 1000),
+            ('p01-gal-threeq.webp', 'p01-gal-threeq.webp', 'سه‌ربع', 750, 1000),
+            ('p01-gal-top.webp', 'p01-gal-top.webp', 'از بالا', 750, 1000),
+            ('p01-1l-liner-iso-light.webp', 'p01-1l-liner-iso-dark.webp', 'ایزومتریک فنی', 662, 662),
+        ],
+    ),
+    'en': dict(
+        h='3D sketch gallery',
+        lead='Angles and engineering sketch styles for the 1L suction liner — added alongside the product photos.',
+        zoom='Larger view',
+        items=[
+            ('p01-1l-liner-light.webp', 'p01-1l-liner-dark.webp', 'Studio 3D', 1067, 1200),
+            ('p01-sketch-wire-light.webp', 'p01-sketch-wire-dark.webp', 'CAD line', 889, 1000),
+            ('p01-gal-wire-light.webp', 'p01-gal-wire-dark.webp', 'Wireframe', 1000, 656),
+            ('p01-gal-studio-light.webp', 'p01-gal-studio-dark.webp', 'Multi-angle studio', 1000, 656),
+            ('p01-gal-explode-light.webp', 'p01-gal-explode-dark.webp', 'Exploded / cutaway', 1000, 656),
+            ('p01-gal-side.webp', 'p01-gal-side.webp', 'Side', 750, 1000),
+            ('p01-gal-threeq.webp', 'p01-gal-threeq.webp', 'Three-quarter', 750, 1000),
+            ('p01-gal-top.webp', 'p01-gal-top.webp', 'Top-down', 750, 1000),
+            ('p01-1l-liner-iso-light.webp', 'p01-1l-liner-iso-dark.webp', 'Technical isometric', 662, 662),
+        ],
+    ),
+    'ar': dict(
+        h='معرض الرسمات ثلاثية الأبعاد',
+        lead='زوايا وأنماط الرسم الهندسي لكيس الشفط سعة ١ لتر — مضافة إلى جانب صور المنتج.',
+        zoom='عرض أكبر',
+        items=[
+            ('p01-1l-liner-light.webp', 'p01-1l-liner-dark.webp', 'استوديو ثلاثي الأبعاد', 1067, 1200),
+            ('p01-sketch-wire-light.webp', 'p01-sketch-wire-dark.webp', 'خط CAD', 889, 1000),
+            ('p01-gal-wire-light.webp', 'p01-gal-wire-dark.webp', 'إطار سلكي', 1000, 656),
+            ('p01-gal-studio-light.webp', 'p01-gal-studio-dark.webp', 'زوايا متعددة', 1000, 656),
+            ('p01-gal-explode-light.webp', 'p01-gal-explode-dark.webp', 'تفجير / مقطع', 1000, 656),
+            ('p01-gal-side.webp', 'p01-gal-side.webp', 'جانبي', 750, 1000),
+            ('p01-gal-threeq.webp', 'p01-gal-threeq.webp', 'ثلاثة أرباع', 750, 1000),
+            ('p01-gal-top.webp', 'p01-gal-top.webp', 'من الأعلى', 750, 1000),
+            ('p01-1l-liner-iso-light.webp', 'p01-1l-liner-iso-dark.webp', 'منظور فني', 662, 662),
+        ],
+    ),
+}
+
+
+def sketch_gallery_section(p, lang='fa'):
+    """Multi-angle sketch gallery with lightbox (additions only)."""
+    ui = SKETCH_GAL[lang]
+    cards = []
+    for light, dark, label, w, h in ui['items']:
+        lp = 'assets/img/products/3d/' + light
+        dp = 'assets/img/products/3d/' + dark
+        alt = ui['h'] + ' — ' + label
+        cards.append(
+            '<a class="skg-card" href="' + p + lp + '" data-gallery="skg-1l" data-w="' + str(w) +
+            '" data-h="' + str(h) + '" aria-label="' + esc(ui['zoom']) + ': ' + esc(label) + '">'
+            '<figure>' + theme_sketch(p, lp, dp, alt, w=w, h=h) +
+            '<figcaption>' + esc(label) + '</figcaption></figure></a>'
+        )
+    return (
+        '  <section class="section skg" id="sketch-gallery">\n'
+        '    <div class="wrap">\n'
+        '      <div class="skg-head"><h2>' + esc(ui['h']) + '</h2>'
+        '<p>' + esc(ui['lead']) + '</p></div>\n'
+        '      <div class="skg-grid">' + ''.join(cards) + '</div>\n'
+        '    </div>\n'
+        '  </section>\n'
+    )
+
+
+CIN_UI = {
+    'fa': dict(
+        h='نمای سینمایی',
+        lead='مدار آرام دور کیسه ۱ لیتری با نورپردازی مهندسی و باز شدن جزئی درب برای نمایش رینگ و لاینر.',
+        play='پخش نمای سینمایی',
+        pause='توقف',
+        resume='ادامه',
+        note='مدل فقط پس از کلیک یا ورود به نما بارگذاری می‌شود. در صورت نبود WebGL، تصویر ثابت نمایش داده می‌شود.',
+        reduced='حرکت کاهش‌یافته فعال است — تصویر ثابت نمایش داده می‌شود.',
+        alt='نمای سینمایی کیسه ساکشن ۱ لیتری آبادیس',
+        nogl='موتور سه‌بعدی در این مرورگر در دسترس نیست. تصویر ثابت را ببینید.',
+    ),
+    'en': dict(
+        h='Cinematic view',
+        lead='A slow orbit around the 1L liner with engineering lighting and a gentle lid lift that reveals the collar and bag.',
+        play='Play cinematic view',
+        pause='Pause',
+        resume='Resume',
+        note='The 3D model loads only after you click or the section enters view. If WebGL is unavailable, a still image is shown.',
+        reduced='Reduced motion is on — showing a still frame.',
+        alt='Cinematic view of the Abadis 1L suction liner',
+        nogl='3D is not available in this browser. Showing a still image.',
+    ),
+    'ar': dict(
+        h='عرض سينمائي',
+        lead='مدار بطيء حول كيس ١ لتر بإضاءة هندسية ورفع خفيف للغطاء لإظهار الطوق والبطانة.',
+        play='تشغيل العرض السينمائي',
+        pause='إيقاف مؤقت',
+        resume='متابعة',
+        note='يُحمَّل النموذج فقط بعد النقر أو دخول القسم إلى الشاشة. عند غياب WebGL تُعرض صورة ثابتة.',
+        reduced='تقليل الحركة مفعّل — تُعرض إطار ثابت.',
+        alt='عرض سينمائي لكيس الشفط سعة ١ لتر من آباديس',
+        nogl='العرض ثلاثي الأبعاد غير متاح في هذا المتصفح. تُعرض صورة ثابتة.',
+    ),
+}
+
+ICO_PLAY = (
+    '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">'
+    '<path d="M8 5.14v13.72L19 12 8 5.14z"/></svg>'
+)
+ICO_PAUSE = (
+    '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">'
+    '<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>'
+)
+
+
+def cinematic_section(p, lang='fa'):
+    """Full-width cinematic orbit gate — loads Three.js only on demand."""
+    ui = CIN_UI[lang]
+    poster = p + 'assets/img/products/3d/p01-cinematic-poster.webp'
+    return (
+        '  <section class="section cin-sec" id="cinematic" aria-label="' + esc(ui['h']) + '">\n'
+        '    <div class="wrap cin-wrap">\n'
+        '      <div class="cin-head"><h2>' + esc(ui['h']) + '</h2>'
+        '<p>' + esc(ui['lead']) + '</p></div>\n'
+        '      <div class="cin-stage is-gated" data-cin-root'
+        ' data-cin-module="' + p + 'assets/js/suction-bag-1l-cinematic.js?v=' + V + '"'
+        ' data-cin-base="' + p + '3d-sketches/p01-cinematic/"'
+        ' data-cin-play="' + esc(ui['play']) + '"'
+        ' data-cin-pause="' + esc(ui['pause']) + '"'
+        ' data-cin-resume="' + esc(ui['resume']) + '"'
+        ' data-cin-reduced="' + esc(ui['reduced']) + '"'
+        ' data-cin-nogl="' + esc(ui['nogl']) + '">\n'
+        '        <div class="cin-gate">\n'
+        '          <img class="cin-poster" src="' + poster + '" width="1440" height="810" alt="' + esc(ui['alt']) +
+        '" loading="lazy" decoding="async">\n'
+        '          <button type="button" class="cin-start" data-cin-start>' + ICO_PLAY +
+        '<span>' + esc(ui['play']) + '</span></button>\n'
+        '          <p class="cin-note">' + esc(ui['note']) + '</p>\n'
+        '        </div>\n'
+        '        <canvas class="cin-gl" aria-hidden="true"></canvas>\n'
+        '        <div class="cin-bar" aria-hidden="true"></div>\n'
+        '        <button type="button" class="cin-toggle" data-cin-toggle hidden>' + ICO_PAUSE +
+        '<span>' + esc(ui['pause']) + '</span></button>\n'
+        '        <p class="cin-status" data-cin-status hidden></p>\n'
+        '      </div>\n'
+        '    </div>\n'
+        '  </section>\n'
+    )
+
+
+def scripts(p):
+    # Gate for interactive cutaway + cinematic loader (both deferred).
+    return (
+        f'<script type="module" src="{p}assets/js/suction-bag-1l-3d-gate.js?v={V}" '
+        f'data-f3d-module="{p}assets/js/suction-bag-1l-3d.js?v={V}"></script>\n'
+        f'<script type="module" src="{p}assets/js/suction-bag-1l-cinematic-gate.js?v={V}"></script>\n'
     )

@@ -876,19 +876,31 @@ def solution_main(p, lang, sol):
 
 
 def _card(p, lang, href_, title, sub, photo, kind, badge_html=''):
+    # Content parity: keep original PHOTO; add clean sketch as secondary (hover/toggle).
+    src = PHOTO.get(photo)
+    photo_html = (f'<img class="ph-photo" src="{p}{src}" alt="{esc(title)}" loading="lazy" decoding="async">' if src else '')
     pid = SKETCH_CARD.get(photo) if kind == 'product' else None
-    if pid:
+    if pid and photo_html:
+        light = f'{p}assets/img/products/3d/{pid}-light-card.webp'
+        dark = f'{p}assets/img/products/3d/{pid}-dark-card.webp'
+        sketch = (
+            f'<span class="theme-sketch ph-sketch" aria-hidden="true">'
+            f'<img class="ts-light" src="{light}" width="640" height="640" alt="" loading="lazy" decoding="async">'
+            f'<img class="ts-dark" src="{dark}" width="640" height="640" alt="" loading="lazy" decoding="async">'
+            f'</span>'
+        )
+        ph = f'<div class="ph ph--dual">{photo_html}{sketch}</div>'
+    elif pid:
         light = f'{p}assets/img/products/3d/{pid}-light-card.webp'
         dark = f'{p}assets/img/products/3d/{pid}-dark-card.webp'
         ph = (
             f'<div class="ph ph--sketch"><span class="theme-sketch">'
-            f'<img class="ts-light" src="{light}" width="640" height="411" alt="{esc(title)}" loading="lazy" decoding="async">'
-            f'<img class="ts-dark" src="{dark}" width="640" height="411" alt="" loading="lazy" decoding="async" aria-hidden="true">'
+            f'<img class="ts-light" src="{light}" width="640" height="640" alt="{esc(title)}" loading="lazy" decoding="async">'
+            f'<img class="ts-dark" src="{dark}" width="640" height="640" alt="" loading="lazy" decoding="async" aria-hidden="true">'
             f'</span></div>'
         )
     else:
-        src = PHOTO.get(photo)
-        ph = (f'<div class="ph"><img src="{p}{src}" alt="{esc(title)}" loading="lazy" decoding="async"></div>' if src else '')
+        ph = (f'<div class="ph">{photo_html}</div>' if photo_html else '')
     return (f'<a class="ps-card" href="{href_}">{ph}<span class="ps-card-top">{icons(p, kind)}{badge_html}</span>'
             f'<strong>{esc(title)}</strong><em>{esc(sub)}</em></a>')
 
