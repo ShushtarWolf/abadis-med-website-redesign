@@ -1,0 +1,209 @@
+/* Apple-style 1L suction bag product page. No emojis. Theme-aware. */
+:root{
+  --bag-teal:#05686b; --bag-teal-deep:#0a3d40; --bag-stage:#071416;
+  --bag-ink:var(--text,#0b2427); --bag-muted:var(--muted,#5a6e70);
+  --bag-pad:clamp(20px,4vw,48px);
+}
+[data-theme="dark"],[data-theme="noir"]{
+  --bag-stage:#05090b;
+}
+
+/* Sticky slim bar under header */
+.bag-sticky{
+  position:sticky; top:var(--header-h,64px); z-index:40;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:10px var(--bag-pad);
+  background:color-mix(in srgb, var(--bg,#fff) 88%, transparent);
+  backdrop-filter:blur(12px); border-bottom:1px solid rgba(5,104,107,.12);
+  transform:translateY(-120%); opacity:0; pointer-events:none;
+  transition:transform .35s ease, opacity .35s ease;
+}
+.bag-sticky.is-on{transform:none; opacity:1; pointer-events:auto}
+.bag-sticky strong{font-size:.95rem; font-weight:800}
+.bag-sticky .btn{padding:8px 14px; font-size:.88rem}
+
+/* Hero */
+.bag-hero{
+  position:relative; min-height:min(92vh,920px);
+  display:grid; align-items:end;
+  background:radial-gradient(120% 90% at 50% 40%,#0f1b20 0%,#05090b 55%,#020405 100%);
+  color:#eef6f6; overflow:hidden;
+}
+.bag-hero-stage{position:absolute; inset:0}
+.bag-hero-stage canvas,.bag-hero-stage .bag-hero-poster{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:contain;
+}
+.bag-hero-poster{object-fit:contain; background:#05090b; z-index:1}
+.bag-hero.is-gl .bag-hero-poster{opacity:0; pointer-events:none; transition:opacity .5s}
+.bag-hero-copy{
+  position:relative; z-index:3; padding:clamp(28px,6vh,72px) var(--bag-pad) clamp(36px,7vh,80px);
+  max-width:min(720px,92vw);
+}
+[dir="rtl"] .bag-hero-copy{margin-inline-start:auto}
+.bag-hero-kicker{margin:0 0 10px; font-size:.85rem; letter-spacing:.04em; color:#8eb8ba; font-weight:700}
+.bag-hero h1{
+  margin:0 0 12px; font-size:clamp(2rem,6vw,3.6rem); line-height:1.15; font-weight:800;
+  background:linear-gradient(180deg,#fff,#a9d9dc); -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.bag-hero-tag{margin:0 0 22px; font-size:clamp(1rem,2.2vw,1.25rem); color:#b7d0d2; max-width:36rem}
+.bag-hero-ctas{display:flex; flex-wrap:wrap; gap:12px}
+.bag-hero-ctas .btn-primary{
+  display:inline-flex; align-items:center; gap:8px; padding:14px 20px; border-radius:999px; border:0;
+  background:#05686b; color:#fff; font:inherit; font-weight:800; text-decoration:none;
+  box-shadow:0 10px 28px rgba(5,104,107,.35)
+}
+.bag-hero-ctas .btn-ghost{
+  display:inline-flex; align-items:center; gap:8px; padding:14px 20px; border-radius:999px;
+  border:1px solid rgba(127,220,221,.35); color:#e8f6f6; text-decoration:none; font-weight:700; background:transparent
+}
+.bag-hero-fade{
+  position:absolute; left:0; right:0; bottom:0; height:28%; z-index:2; pointer-events:none;
+  background:linear-gradient(transparent, rgba(2,4,5,.75));
+}
+
+/* Scroll story */
+.bag-story{position:relative}
+.bag-story-track{height:420vh; position:relative}
+.bag-story-pin{
+  position:sticky; top:0; height:100vh; height:100svh; overflow:hidden;
+  background:radial-gradient(120% 90% at 50% 40%,#0f1b20 0%,#05090b 60%,#020405 100%);
+  color:#eef6f6;
+}
+.bag-story-pin canvas,.bag-story-pin .bag-story-still{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:contain;
+}
+.bag-story-still{z-index:1; background:#05090b}
+.bag-story-pin.is-gl .bag-story-still{opacity:0; transition:opacity .4s}
+.bag-story-beats{position:absolute; inset:0; z-index:3; pointer-events:none}
+.bag-story-beat{
+  position:absolute; left:50%; transform:translate(-50%,0); width:min(720px,90vw); text-align:center;
+  opacity:0; transition:opacity .35s ease, transform .45s ease;
+}
+.bag-story-beat.is-on{opacity:1}
+.bag-story-beat.top{top:12vh}
+.bag-story-beat.bot{bottom:12vh}
+.bag-story-beat h2{
+  margin:0; font-size:clamp(1.6rem,4.8vw,3rem); font-weight:800; line-height:1.25;
+  text-shadow:0 2px 18px rgba(0,0,0,.85)
+}
+.bag-story-beat h2 em{font-style:normal; color:#5fc7cf}
+.bag-story-beat p{margin:10px 0 0; font-size:clamp(.95rem,2vw,1.15rem); color:#9fb8ba}
+.bag-story-beat .num{
+  display:inline-block; margin-top:12px; padding:6px 14px; border-radius:999px;
+  background:rgba(5,104,107,.28); border:1px solid rgba(127,220,221,.28);
+  font-weight:800; font-size:1.05rem; color:#dff6f7
+}
+.bag-story-bar{position:absolute; top:0; left:0; height:2px; width:100%; transform-origin:left center; transform:scaleX(0); background:#2e7f96; z-index:4}
+[dir="rtl"] .bag-story-bar{transform-origin:right center}
+
+/* Big numbers */
+.bag-stats{padding:clamp(36px,6vw,72px) 0}
+.bag-stats-grid{
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px;
+}
+@media (max-width:800px){.bag-stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.bag-stat{
+  text-align:center; padding:22px 14px; border-radius:18px;
+  border:1px solid rgba(5,104,107,.14); background:rgba(5,104,107,.04)
+}
+[data-theme="dark"] .bag-stat,[data-theme="noir"] .bag-stat{border-color:rgba(127,220,221,.16); background:rgba(127,220,221,.05)}
+.bag-stat b{display:block; font-size:clamp(1.4rem,3.5vw,2rem); font-weight:800; color:var(--bag-teal)}
+[data-theme="dark"] .bag-stat b,[data-theme="noir"] .bag-stat b{color:#7fdcdd}
+.bag-stat span{display:block; margin-top:6px; color:var(--bag-muted); font-size:.9rem}
+
+/* Gallery swipe */
+.bag-gal{padding:clamp(28px,5vw,56px) 0}
+.bag-gal-head{margin-bottom:16px}
+.bag-gal-head h2{margin:0 0 6px; font-size:clamp(1.5rem,3.5vw,2.2rem)}
+.bag-gal-head p{margin:0; color:var(--bag-muted)}
+.bag-gal-rail{
+  display:flex; gap:12px; overflow-x:auto; scroll-snap-type:x mandatory;
+  padding-bottom:8px; -webkit-overflow-scrolling:touch;
+}
+.bag-gal-rail::-webkit-scrollbar{height:6px}
+.bag-gal-rail::-webkit-scrollbar-thumb{background:rgba(5,104,107,.35); border-radius:99px}
+.bag-gal-item{
+  flex:0 0 min(78vw,320px); scroll-snap-align:start; border-radius:16px; overflow:hidden;
+  border:1px solid rgba(5,104,107,.14); background:#fff; text-decoration:none; color:inherit
+}
+[data-theme="dark"] .bag-gal-item,[data-theme="noir"] .bag-gal-item{background:#0b2427; border-color:rgba(127,220,221,.16)}
+.bag-gal-item img,.bag-gal-item .theme-sketch{width:100%; aspect-ratio:1; object-fit:contain; display:block; background:radial-gradient(circle at 50% 40%,#f3fafa,#e8f3f3 70%)}
+[data-theme="dark"] .bag-gal-item img,[data-theme="dark"] .bag-gal-item .theme-sketch{background:radial-gradient(circle at 50% 40%,#0f3034,#0b2427 70%)}
+.bag-gal-item figcaption{padding:10px 12px; font-size:.86rem; font-weight:700; color:var(--bag-muted)}
+
+/* Sizes row */
+.bag-sizes{padding:clamp(28px,5vw,56px) 0}
+.bag-sizes-grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px}
+@media (max-width:760px){.bag-sizes-grid{grid-template-columns:1fr}}
+.bag-size-card{
+  display:block; padding:20px; border-radius:18px; text-decoration:none; color:inherit;
+  border:1px solid rgba(5,104,107,.16); background:rgba(5,104,107,.04)
+}
+.bag-size-card:hover{border-color:rgba(5,104,107,.4)}
+.bag-size-card strong{display:block; font-size:1.35rem; font-weight:800}
+.bag-size-card em{display:block; margin-top:6px; font-style:normal; color:var(--bag-muted)}
+
+/* Compat */
+.bag-compat{padding:clamp(28px,5vw,56px) 0}
+.bag-compat-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px}
+@media (max-width:700px){.bag-compat-grid{grid-template-columns:1fr}}
+.bag-compat a{
+  display:block; padding:16px 18px; border-radius:14px; text-decoration:none; color:inherit;
+  border:1px solid rgba(5,104,107,.14); font-weight:700
+}
+
+/* Spec table → mobile cards */
+.spec-summary .spec-table-wrap{overflow-x:auto; -webkit-overflow-scrolling:touch}
+.spec-summary table{width:100%; border-collapse:collapse}
+@media (max-width:700px){
+  .spec-summary table, .spec-summary thead, .spec-summary tbody, .spec-summary th, .spec-summary td, .spec-summary tr{display:block; width:100%}
+  .spec-summary thead{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)}
+  .spec-summary tr{
+    margin:0 0 12px; padding:14px 16px; border-radius:14px;
+    border:1px solid rgba(5,104,107,.16); background:rgba(5,104,107,.04)
+  }
+  .spec-summary th[scope="row"]{
+    display:block; margin:0 0 4px; font-size:.8rem; font-weight:800; color:var(--bag-muted); border:0; background:transparent; padding:0
+  }
+  .spec-summary td{display:block; border:0; padding:0; font-size:.98rem; line-height:1.5; white-space:normal; overflow:visible; word-break:break-word}
+  .spec-summary .spec-table-wrap{overflow:visible}
+}
+
+/* Code tables horizontal scroll affordance */
+.table-scroll, .size-block .table-wrap, .size-block .table-responsive, table.codes{
+  display:block; max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch;
+  background:
+    linear-gradient(to left, rgba(5,104,107,.18), transparent 18px) right / 28px 100% no-repeat,
+    linear-gradient(to right, rgba(5,104,107,.18), transparent 18px) left / 28px 100% no-repeat;
+  background-attachment: local, local;
+}
+.size-block table{min-width:560px}
+
+/* Closing CTA */
+.bag-close{
+  padding:clamp(40px,7vw,80px) var(--bag-pad); text-align:center;
+  background:linear-gradient(180deg, rgba(5,104,107,.08), transparent);
+}
+.bag-close h2{margin:0 0 10px; font-size:clamp(1.5rem,3.5vw,2.2rem)}
+.bag-close p{margin:0 0 18px; color:var(--bag-muted)}
+.bag-close .cta-row{display:flex; flex-wrap:wrap; gap:12px; justify-content:center}
+
+/* Hide old gate overlays that cover intro; apple mode uses auto-load */
+.f3d--bag.apple-mode .f3d-gate{display:none !important}
+.f3d--bag.apple-mode.is-gated .f3d-dock,
+.f3d--bag.apple-mode.is-gated .f3d-tools,
+.f3d--bag.apple-mode.is-gated .f3d-hint,
+.f3d--bag.apple-mode.is-gated .f3d-prog,
+.f3d--bag.apple-mode.is-gated .f3d-labels,
+.f3d--bag.apple-mode.is-gated .f3d-subpins{visibility:visible; pointer-events:auto}
+.f3d--bag.apple-mode .f3d-intro{
+  opacity:1 !important; visibility:visible !important;
+  max-width:min(640px,92vw); padding:18px 20px; border-radius:16px;
+  background:rgba(4,17,19,.55); backdrop-filter:blur(6px)
+}
+.f3d--bag.apple-mode .f3d-h{font-size:clamp(1.5rem,4vw,2.4rem)}
+
+/* Section spacing Apple-like */
+.bag-section-head{margin-bottom:18px}
+.bag-section-head h2{margin:0 0 8px; font-size:clamp(1.5rem,3.5vw,2.2rem); font-weight:800}
+.bag-section-head p{margin:0; color:var(--bag-muted); max-width:40rem}
