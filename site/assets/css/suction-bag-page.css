@@ -10,38 +10,26 @@
 .page-bag h1, .page-bag h2, .page-bag h3 { letter-spacing: 0; font-weight: 800; line-height: 1.3; }
 .page-bag p, .page-bag li { line-height: 1.85; }
 
-/* header chips stay readable over the dark film and the light footer */
-.page-bag .lang-link,
-.page-bag .theme-toggle,
-.page-bag .menu-btn {
-  background: rgba(8, 28, 32, .45);
-  border-color: rgba(255, 255, 255, .45);
-}
-.page-bag .lang-switch.on-light .lang-link,
-.page-bag .theme-toggle.on-light,
-.page-bag .menu-btn.on-light {
-  background: rgba(255, 255, 255, .92);
-  border-color: rgba(6, 97, 99, .35);
-  color: #05686b;
-}
-
-/* ----- cinematic hero (v12). Stage is the approved dark studio in every theme. ----- */
-.cin-track { position: relative; height: 460vh; background: #05090b; }
-.cin-stage {
+/* ----- cinematic hero (v12): full-bleed on page background, no black studio box ----- */
+.page-bag .cin-track { position: relative; height: 460vh; background: var(--bg); color: var(--ink); }
+.page-bag .cin-stage {
   position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden;
   display: grid; grid-template-rows: minmax(0, 1fr) auto;
-  background: radial-gradient(120% 90% at 50% 40%, #0f1b20 0%, #05090b 60%, #020405 100%);
-  color: #f2f7f7;
+  background: var(--bg);
+  color: var(--ink);
 }
-.cin-view { position: relative; min-height: 0; background: inherit; }
-.cin-view canvas, .cin-still {
+.page-bag .cin-view { position: relative; min-height: 0; background: transparent; }
+.page-bag .cin-view canvas, .page-bag .cin-still {
   position: absolute; inset: 0; width: 100% !important; height: 100% !important;
   max-width: none !important; display: block;
 }
-.cin-still {
+.page-bag .cin-still {
   object-fit: contain; object-position: center center;
   background: transparent;
 }
+[data-theme="light"] .page-bag .cin-still { mix-blend-mode: screen; }
+[data-theme="dark"] .page-bag .cin-still,
+[data-theme="noir"] .page-bag .cin-still { mix-blend-mode: lighten; }
 /* The root is .cin-track[data-cin-root], not .cin-root — the old selector left the still on top. */
 [data-cin-root].is-playing .cin-still {
   opacity: 0; visibility: hidden; pointer-events: none;
@@ -56,9 +44,24 @@
 .cin-crumb { margin: 0 0 6px; font-size: 12px; line-height: 1.6; color: #9fb8ba; }
 .cin-crumb a { color: inherit; text-decoration: none; }
 .cin-crumb a:hover { text-decoration: underline; }
-.cin-copy h1 { margin: 0; font-size: clamp(22px, 6vw, 32px); line-height: 1.25; color: #fff; }
-.cin-beats { display: grid; min-height: 2.4em; margin-top: 4px; }
-.cin-beats .beat { grid-area: 1 / 1; margin: 0; opacity: 0; font-size: 15px; line-height: 1.7; color: #d5e6e7; }
+.page-bag .cin-copy h1 {
+  margin: 0; font-size: clamp(22px, 6vw, 32px); line-height: 1.25; color: var(--ink);
+}
+.page-bag .cin-beats { display: grid; min-height: 2.4em; margin-top: 4px; }
+.page-bag .cin-beats .beat {
+  grid-area: 1 / 1; margin: 0; opacity: 0; font-size: 15px; line-height: 1.7; color: var(--muted);
+}
+[data-theme="light"] .page-bag .cin-copy h1,
+[data-theme="light"] .page-bag .cin-beats .beat {
+  text-shadow: 0 0 22px color-mix(in srgb, var(--bg) 92%, transparent),
+    0 1px 2px color-mix(in srgb, var(--bg) 85%, transparent);
+}
+[data-theme="dark"] .page-bag .cin-copy h1,
+[data-theme="dark"] .page-bag .cin-beats .beat,
+[data-theme="noir"] .page-bag .cin-copy h1,
+[data-theme="noir"] .page-bag .cin-beats .beat {
+  text-shadow: 0 0 16px color-mix(in srgb, var(--bg) 70%, transparent);
+}
 .cin-hint { margin: 6px 0 0; font-size: 12px; color: #8aa; }
 .cin-cta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
 .cin-cta .btn-primary, .cin-cta .btn-ghost, .bag-sub .btn-primary, .bag-close .btn-primary, .bag-close .btn-ghost {
@@ -78,16 +81,16 @@
 .cin-root.is-still .cin-pause, .cin-root.is-still .cin-hint, .cin-root.is-still .cin-bar { display: none; }
 
 @media (min-width: 900px) {
-  .cin-stage { display: block; }
-  .cin-view { position: absolute; inset: 0; }
-  .cin-copy {
+  .page-bag .cin-stage { display: block; }
+  .page-bag .cin-view { position: absolute; inset: 0; }
+  .page-bag .cin-copy {
     position: absolute; z-index: 2; inset-inline-start: 28px; bottom: 28px;
-    width: min(440px, 36vw); margin: 0; border-radius: 20px;
+    width: min(440px, 36vw); margin: 0; border-radius: 0;
     padding: 28px 28px calc(24px + var(--abadis-banner, 0px));
-    background: rgba(5, 9, 11, .55); backdrop-filter: blur(10px);
+    background: transparent; backdrop-filter: none;
   }
-  .cin-copy h1 { font-size: clamp(34px, 3vw, 52px); }
-  .cin-beats .beat { font-size: 17px; }
+  .page-bag .cin-copy h1 { font-size: clamp(34px, 3vw, 52px); }
+  .page-bag .cin-beats .beat { font-size: 17px; }
 }
 
 /* ----- one sub-nav ----- */
@@ -262,13 +265,62 @@
 .spec-card.span-2 { grid-column: 1 / -1; }
 .filter-list { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 8px; }
 .filter-list li { background: var(--bg-2, var(--surface-2)); border-radius: 12px; padding: 10px 12px; }
-.uses { display: flex; flex-wrap: wrap; gap: 8px; }
-.use {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: var(--bg-2, var(--surface-2)); border-radius: 999px; padding: 6px 12px 6px 6px;
-  font-size: 13px; font-weight: 700;
+.page-bag .uses {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 6.5rem), 1fr));
+  gap: 10px;
+  width: 100%;
+  max-width: 100%;
 }
-.use img, .use svg { width: 36px; height: 36px; border-radius: 50%; background: #e8f3f3; object-fit: cover; }
+.page-bag .use {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 10px 8px 12px;
+  border-radius: 16px;
+  background: var(--surface-2, var(--bg-2));
+  color: var(--brand, #066163);
+  font-weight: 700;
+  box-sizing: border-box;
+}
+.page-bag .use-ic {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #e8f3f3;
+  display: grid;
+  place-items: center;
+}
+[data-theme="dark"] .page-bag .use-ic,
+[data-theme="noir"] .page-bag .use-ic {
+  background: #0a5456;
+  box-shadow: inset 0 0 0 1px rgba(159, 240, 228, .18);
+}
+.page-bag .use-ic img,
+.page-bag .use-ic svg {
+  width: 30px;
+  height: 30px;
+  border-radius: 0;
+  background: none;
+  object-fit: contain;
+}
+.page-bag .use-lbl {
+  display: block;
+  width: 100%;
+  text-align: center !important;
+  text-align-last: center !important;
+  text-justify: auto !important;
+  font-size: clamp(11px, 3.1vw, 13px);
+  line-height: 1.35;
+  hyphens: none;
+  overflow-wrap: normal;
+  word-break: normal;
+}
 
 /* closing panel */
 .bag-close { padding: 28px 0 48px; }
@@ -378,17 +430,27 @@ html[lang^="en"] .page-bag .filter-list li {
 .page-bag th, .page-bag td,
 .page-bag .code-card, .page-bag .code-card dt, .page-bag .code-card dd,
 .page-bag .size-jump a, .page-bag .size-jump strong, .page-bag .size-jump em,
-.page-bag .use, .page-bag .yn {
+.page-bag .use, .page-bag .use-lbl, .page-bag .yn {
   text-align: inherit;
   text-align-last: auto;
   text-justify: auto;
   hyphens: manual;
 }
+.page-bag .use-lbl {
+  text-align: center !important;
+  text-align-last: center !important;
+}
 
-/* ===== 20261109i: phone hero framing + theme tints ===== */
-@media (max-width: 700px) {
-  .cin-copy { padding-bottom: calc(6px + var(--abadis-banner, 0px)); }
-  .cin-stage { grid-template-rows: minmax(0, 1.12fr) auto; }
+/* ===== mobile: full-bleed canvas with caption overlay (no black caption band) ===== */
+@media (max-width: 899px) {
+  .page-bag .cin-stage { display: block; min-height: 100svh; }
+  .page-bag .cin-view { position: absolute; inset: 0; min-height: 100%; }
+  .page-bag .cin-copy {
+    position: absolute; z-index: 2; inset-inline: 0; bottom: 0;
+    padding: 8px 16px calc(10px + var(--abadis-banner, 0px));
+    pointer-events: none;
+  }
+  .page-bag .cin-copy > * { pointer-events: auto; }
 }
 
 /* pair slides: only one image, never stack */

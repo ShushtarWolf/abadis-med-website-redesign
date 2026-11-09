@@ -28,9 +28,21 @@ const hemi=new THREE.HemisphereLight(0xf0f6f7,0x1a1814,.85);S.add(hemi);
 const under=new THREE.PointLight(0xfff8f2,.45,750,1.9);under.position.set(20,-30,140);S.add(under);
 function radTex(stops){const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');const g=x.createRadialGradient(128,128,0,128,128,128);stops.forEach(s=>g.addColorStop(...s));x.fillStyle=g;x.fillRect(0,0,256,256);return new THREE.CanvasTexture(c);}
 function floorPlane(sz,tex,y){const m=new THREE.Mesh(new THREE.PlaneGeometry(sz,sz),new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.y=y;S.add(m);return m;}
-floorPlane(1100,radTex([[0,'rgba(46,127,150,.28)'],[.55,'rgba(46,127,150,.08)'],[1,'rgba(46,127,150,0)']]),-179);
-floorPlane(300,radTex([[0,'rgba(0,0,0,.72)'],[.5,'rgba(0,0,0,.2)'],[1,'rgba(0,0,0,0)']]),-178.6);
+const floorTeal=floorPlane(1100,radTex([[0,'rgba(46,127,150,.28)'],[.55,'rgba(46,127,150,.08)'],[1,'rgba(46,127,150,0)']]),-179);
+const floorDark=floorPlane(300,radTex([[0,'rgba(0,0,0,.72)'],[.5,'rgba(0,0,0,.2)'],[1,'rgba(0,0,0,0)']]),-178.6);
 const sr=new THREE.Mesh(new THREE.PlaneGeometry(650,650),new THREE.ShadowMaterial({opacity:.38}));sr.rotation.x=-Math.PI/2;sr.position.y=-178.4;sr.receiveShadow=true;S.add(sr);
+function syncPageTone(){
+ const t=document.documentElement.getAttribute('data-theme')||'light';
+ const light=t==='light';
+ R.toneMappingExposure=light?1.14:1.02;
+ S.environmentIntensity=light?.58:.42;
+ key.intensity=light?1.48:1.35;
+ fillL.intensity=light?1.45:1.35;
+ sr.material.opacity=light?.28:.38;
+ floorDark.visible=!light;
+}
+syncPageTone();
+document.addEventListener('themechange',syncPageTone);
 const TL=new THREE.TextureLoader();
 const filmT=TL.load(asset('tex/film-bump.jpg'));filmT.wrapS=filmT.wrapT=THREE.RepeatWrapping;filmT.repeat.set(5,4);
 const weaveT=TL.load(asset('tex/sachet-weave.jpg'));weaveT.wrapS=weaveT.wrapT=THREE.RepeatWrapping;weaveT.repeat.set(3,4);

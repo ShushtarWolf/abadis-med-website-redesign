@@ -7,7 +7,11 @@ The old apple / cutaway / product-viewer blocks are not reinserted.
 """
 import html
 import re
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from yn_icons import yn_no, yn_yes  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
 SITE = ROOT / 'site'
@@ -15,14 +19,8 @@ SITE = ROOT / 'site'
 FA_DIG = str.maketrans('0123456789', '۰۱۲۳۴۵۶۷۸۹')
 AR_DIG = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
 
-V = '20261109n'
+V = '20261109p'
 
-CHECK = ('<svg class="yn-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
-         '<path d="M5.5 12.5 L9.5 16.5 L18.5 7.5" fill="none" stroke="currentColor" '
-         'stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>')
-NO_DASH = ('<svg class="yn-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
-           '<path d="M6 12h12" fill="none" stroke="currentColor" stroke-width="2.2" '
-           'stroke-linecap="round"/></svg>')
 ARROW = ('<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
          '<path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" '
          'stroke-linecap="round" stroke-linejoin="round"/></svg>')
@@ -56,11 +54,9 @@ def meas(s, lang):
 
 def yn(flag, lang):
     if flag == 'yes':
-        label = {'fa': 'دارد', 'en': 'Yes', 'ar': 'نعم'}[lang]
-        return f'<span class="yn yn-yes" role="img" aria-label="{label}">{CHECK}</span>'
+        return yn_yes({'fa': 'دارد', 'en': 'Yes', 'ar': 'نعم'}[lang])
     if flag == 'no':
-        label = {'fa': 'ندارد', 'en': 'No', 'ar': 'لا'}[lang]
-        return f'<span class="yn yn-no" role="img" aria-label="{label}">{NO_DASH}</span>'
+        return yn_no({'fa': 'ندارد', 'en': 'No', 'ar': 'لا'}[lang])
     return esc(str(flag))
 
 
@@ -506,7 +502,10 @@ def render_uses(s, lang, pfx):
             ic = LIPO_SVG
         else:
             ic = f'<img src="{pfx}assets/img/use/{icon}.webp" width="72" height="72" alt="" loading="lazy" decoding="async">'
-        uses.append(f'<span class="use">{ic}{esc(digits(label, lang))}</span>')
+        uses.append(
+            f'<span class="use"><span class="use-ic" aria-hidden="true">{ic}</span>'
+            f'<span class="use-lbl">{esc(digits(label, lang))}</span></span>'
+        )
     return ''.join(uses)
 
 
@@ -701,7 +700,7 @@ def main_html(lang, pfx):
         export = f'<a class="btn-ghost" href="{ui["export_href"]}">{esc(ui["export"])}</a>'
     still = f'{pfx}assets/img/products/3d/p01-cinematic-v12-still.webp'
     return f'''<main id="main">
-  <div class="cin-track" id="film" data-cin-root data-cin-module="{pfx}assets/js/p01-cinematic-page.js?v={V}" data-tone="dark">
+  <div class="cin-track" id="film" data-cin-root data-cin-module="{pfx}assets/js/p01-cinematic-page.js?v={V}">
     <div class="cin-stage">
       <div class="cin-view">
         <canvas aria-hidden="true"></canvas>
