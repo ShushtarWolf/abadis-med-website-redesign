@@ -236,3 +236,54 @@
 }
 .yn-no { font-size: 18px; line-height: 1; font-weight: 700; }
 .yn-no { color: var(--muted); }
+
+
+/* ===== 20261109g: force Apple style + content-height gallery + LTR ===== */
+.page-bag .stat,
+.page-bag .gal-card,
+.page-bag .spec-card,
+.page-bag .code-card,
+.page-bag .size-jump a,
+.page-bag .gal-arrow,
+.page-bag .gal-dot {
+  border: none !important;
+  outline: none;
+  box-shadow: none;
+}
+.page-bag .stat,
+.page-bag .gal-card,
+.page-bag .spec-card,
+.page-bag .code-card,
+.page-bag .size-jump a {
+  background: var(--surface);
+}
+.page-bag .gal-rail {
+  align-items: flex-start !important;
+}
+.page-bag .gal-card {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  align-self: flex-start !important;
+}
+.page-bag .gal-card img {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 320px !important;
+  object-fit: contain !important;
+  display: block !important;
+}
+.page-bag .gal-card figcaption {
+  padding: 8px 12px 10px;
+}
+.page-bag, .page-bag * { overflow-wrap: anywhere; word-break: break-word; }
+.page-bag .stat, .page-bag .gal-card, .page-bag .spec-card, .page-bag .code-card, .page-bag .size-jump a, .page-bag .spec-card p, .page-bag .code-card div {
+  min-width: 0;
+}
+.page-bag bdi, .page-bag .ltr {
+  direction: ltr;
+  unicode-bidi: isolate;
+  white-space: nowrap;
+}
+.page-bag .yn svg { width: 16px; height: 16px; display: block; }
+.page-bag .yn-no { font-size: 18px; line-height: 1; font-weight: 700; color: var(--muted); }
