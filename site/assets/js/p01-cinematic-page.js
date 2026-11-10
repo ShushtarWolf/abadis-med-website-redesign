@@ -300,19 +300,29 @@ const KF=[
  [1,    V(80,14,495), V(0,-45,0)]
 ];
 let T=0,lastN=0;const cp=new THREE.Vector3(),ct=new THREE.Vector3();
-let trackH=1,trackTop=0,onScreen=true,rafId=0,looping=false;
-function measureTrack(){trackH=Math.max(1,root.offsetHeight-innerHeight);trackTop=root.getBoundingClientRect().top+scrollY;}
+let trackH=1,trackTop=0,onScreen=true,rafId=0,looping=false,measureQueued=false;
+const cinStage=root.querySelector('.cin-stage')||stage;
+function measureTrack(){
+ const stageH=(cinStage&&cinStage.offsetHeight)||innerHeight||1;
+ trackH=Math.max(1,root.offsetHeight-stageH);
+ trackTop=root.getBoundingClientRect().top+scrollY;
+}
+function requestMeasure(){
+ if(measureQueued)return;
+ measureQueued=true;
+ requestAnimationFrame(()=>{measureQueued=false;measureTrack();});
+}
 measureTrack();
-addEventListener('resize',measureTrack,{passive:true});
+addEventListener('resize',requestMeasure,{passive:true});
+if(window.visualViewport){
+ visualViewport.addEventListener('resize',requestMeasure,{passive:true});
+}
 if('IntersectionObserver' in window){
  new IntersectionObserver((ents)=>{onScreen=ents.some(e=>e.isIntersecting);if(onScreen)ensureLoop();},{root:null,threshold:0,rootMargin:'80px 0px'}).observe(root);
 }
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)ensureLoop();});
-const shortPin=()=>matchMedia('(max-width: 768px)').matches;
-let autoT=0,autoDone=false;
 function prog(){
  if(qp.has('t'))return +qp.get('t');
- if(shortPin())return autoT;
  const scrolled=Math.min(trackH,Math.max(0,scrollY-trackTop));
  return cl(scrolled/trackH);
 }
@@ -331,7 +341,6 @@ function frame(now){
  rafId=requestAnimationFrame(frame);
  if(paused){R.render(S,C);return;}
  const dt=Math.min(.1,(now-(lastN||now))/1000);lastN=now;
- if(shortPin() && !autoDone){autoT=Math.min(1,autoT+dt/7.5);if(autoT>=1)autoDone=true;}
  T+=(prog()-T)*(qp.has('t')?1:1-Math.exp(-dt*3.2));const t=T;
  const tSec=now*.001;
  if(bar)bar.style.width=(t*100)+'%';if(hint)hint.style.opacity=1-cl(t*18);

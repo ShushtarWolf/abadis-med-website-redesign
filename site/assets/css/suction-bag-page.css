@@ -37,11 +37,12 @@ body.page-bag .header:not(.past-hero)::before {
   position: relative; height: 280vh;
   background: #05090b; color: #f2f7f7;
 }
-/* Mobile: no long scroll-scrub pin. The film is one screen and autoplays in JS. */
+/* Mobile: normal-length scroll-scrub pin (~2 screens of track, ~2-3 swipes to pass). */
 @media (max-width: 768px) {
   .page-bag .cin-track {
-    height: 100svh;
-    height: 100dvh;
+    height: 200vh;
+    height: 200svh;
+    height: 200dvh;
   }
   html:has(body.page-bag) { scroll-behavior: auto; }
 }
@@ -762,9 +763,3 @@ html[dir="rtl"] .code-table td:first-child {
   touch-action: pan-x pan-y;
 }
 
-@media (max-width: 768px) {
-  .page-bag .cin-stage {
-    position: relative;
-    top: auto;
-  }
-}
