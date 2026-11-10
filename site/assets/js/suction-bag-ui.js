@@ -141,7 +141,7 @@
   function sectionEl(name, panel) {
     panel = panel || activePanel();
     if (!panel) return document.getElementById(name);
-    if (name === 'gallery' || name === 'specs' || name === 'uses' || name === 'codes') {
+    if (name === 'gallery' || name === 'specs' || name === 'uses' || name === 'codes' || name === 'size' || name === 'packaging' || name === 'catalog') {
       return panel.querySelector('[data-sec="' + name + '"]') || document.getElementById(name);
     }
     return document.getElementById(name);
@@ -232,7 +232,7 @@
   function isoModuleUrl() {
     var s = document.querySelector('script[src*="suction-bag-ui.js"]');
     if (!s) return '';
-    return s.src.replace(/suction-bag-ui\.js[^/]*$/, 'cad-iso-viewer.js?v=20261110v');
+    return s.src.replace(/suction-bag-ui\.js[^/]*$/, 'cad-iso-viewer.js?v=20261110w');
   }
   document.querySelectorAll('[data-iso]').forEach(function (frame) {
     var btn = frame.querySelector('.iso-load');
@@ -342,7 +342,7 @@
       setBagSize(b.getAttribute('data-size'), { hash: true });
     });
     b.addEventListener('keydown', function (e) {
-      var keys = { ArrowRight: 1, ArrowLeft: -1 };
+      var keys = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: 1, ArrowUp: -1 };
       if (!(e.key in keys)) return;
       var rtl = getComputedStyle(b).direction === 'rtl';
       var dir = keys[e.key] * (rtl ? -1 : 1);
@@ -362,7 +362,7 @@
       initVisibleTables();
       return;
     }
-    var m = h.match(/^s([123])(?:-(gallery|specs|uses|codes))?$/);
+    var m = h.match(/^s([123])(?:-(gallery|specs|uses|codes|size|packaging|catalog))?$/);
     if (m) {
       setBagSize(m[1], { hash: false, scrollSec: m[2] || null });
       return;
@@ -380,4 +380,12 @@
   window.addEventListener('hashchange', applyHash);
   window.addEventListener('resize', function () { initVisibleTables(); });
   window.addEventListener('load', function () { initVisibleTables(); setStickyOffset(); });
+
+  var pick = document.querySelector('.size-pick-vert');
+  var stage = document.getElementById('sizes');
+  if (pick && stage && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (ents) {
+      pick.classList.toggle('is-docked', ents.some(function (e) { return e.isIntersecting; }));
+    }, { root: null, threshold: 0, rootMargin: '-15% 0px -15% 0px' }).observe(stage);
+  }
 })();

@@ -763,3 +763,101 @@ html[dir="rtl"] .code-table td:first-child {
   touch-action: pan-x pan-y;
 }
 
+
+/* ===== 20261110w: shared features, vertical size switch, pack table ===== */
+.bag-features h3 { margin: 28px 0 10px; font-size: clamp(18px, 3.4vw, 22px); }
+.bag-features .feat-list { margin: 0 0 14px; padding-inline-start: 1.2em; max-width: 72ch; }
+.bag-features .feat-list li { margin: 0 0 8px; }
+.bag-features .bag-note { color: var(--muted); font-size: 14px; margin: 0 0 8px; }
+.size-stage {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+[dir="ltr"] .size-stage { grid-template-columns: minmax(0, 1fr) auto; }
+[dir="ltr"] .size-stage .size-pick-vert { order: 2; }
+.size-pick-vert {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px;
+  background: var(--surface-2, var(--bg-2, #eef3f3));
+  border-radius: 18px;
+  position: sticky;
+  top: var(--bag-sticky-top, 128px);
+  width: 132px;
+  margin: 0;
+  grid-template-columns: none;
+}
+.size-pick-vert .size-pick-btn { padding: 10px 8px; }
+.size-facts, .size-gal, .size-codes, .size-pack, .size-uses, .size-catalog, .size-sterile {
+  margin: 0 0 28px;
+  scroll-margin-top: var(--bag-anchor-pad, 140px);
+}
+.size-facts h3, .size-pack h3, .size-catalog h3, .size-sterile h3 {
+  margin: 0 0 10px; font-size: clamp(18px, 4vw, 22px);
+  scroll-margin-top: var(--bag-anchor-pad, 140px);
+}
+.size-fact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+}
+.size-fact {
+  background: var(--surface-2, var(--bg-2, #eef3f3));
+  border-radius: 16px;
+  padding: 14px 16px;
+}
+.size-fact-lbl { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+.size-fact-val { font-size: 16px; font-weight: 700; }
+.pack-table {
+  width: 100%;
+  min-width: 0 !important;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.pack-table th, .pack-table td {
+  text-align: start;
+  padding: 10px 12px;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+  vertical-align: top;
+  position: static !important;
+  left: auto !important;
+  right: auto !important;
+  box-shadow: none !important;
+  background: transparent;
+}
+.pack-table th { width: 42%; color: var(--muted); font-size: 13px; font-weight: 700; }
+.pack-table tr:last-child th, .pack-table tr:last-child td { border-bottom: 0; }
+
+.size-catalog .btn-ghost { margin: 0 8px 8px 0; display: inline-block; }
+.size-sterile { max-width: 72ch; }
+
+@media (max-width: 768px) {
+  .size-stage { display: block; }
+  .size-pick-vert {
+    position: fixed;
+    right: 8px;
+    top: 42%;
+    transform: translateY(-50%);
+    z-index: 30;
+    width: 72px;
+    padding: 4px;
+    margin: 0;
+    box-shadow: 0 8px 24px rgba(0,0,0,.16);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease;
+  }
+  .size-pick-vert.is-docked {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .size-pick-vert .size-pick-btn { padding: 8px 4px; }
+  .size-pick-vert .size-pick-btn strong { font-size: 13px; }
+  .size-pick-vert .size-pick-btn em { display: none; }
+  /* Keep photos clear of the floating switch. */
+  .page-bag .size-gal .gal-frame,
+  .page-bag .size-gal .gal-frame-slot { margin-inline-end: 0; }
+}

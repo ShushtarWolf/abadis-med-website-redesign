@@ -19,7 +19,7 @@ SITE = ROOT / 'site'
 FA_DIG = str.maketrans('0123456789', '۰۱۲۳۴۵۶۷۸۹')
 AR_DIG = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
 
-V = '20261110v'
+V = '20261110w'
 
 ARROW = ('<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
          '<path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" '
@@ -151,13 +151,13 @@ UI = {
     'fa': dict(
         h1='کیسه ساکشن یکبارمصرف',
         title='کیسه ساکشن یکبارمصرف — مخازن طبی آبادیس',
-        desc='کیسه ساکشن یکبار مصرف آبادیس در حجم‌های ۱، ۲ و ۳ لیتری؛ دارای پودر ژل‌کننده، فیلتر هیدروفوبیک و سیستم حفاظت از ساکشن مرکزی.',
+        desc='کیسه ساکشن یکبارمصرف آبادیس راهکاری ایمن و بهداشتی برای جمع‌آوری ترشحات و مایعات بدن در بیمارستان‌ها، آمبولانس‌ها و مراکز درمانی است.',
         crumb=('خانه', '../../', 'محصولات', '../../products/', 'کیسه ساکشن'),
         quote='درخواست قیمت', quote_href='../../contact/',
         specs='مشخصات', pause='توقف یا ادامه حرکت',
-        intro_h='معرفی کوتاه',
-        intro_p='کیسه ساکشن یکبار مصرف آبادیس در حجم‌های ۱، ۲ و ۳ لیتری؛ دارای پودر ژل‌کننده، فیلتر هیدروفوبیک و سیستم حفاظت از ساکشن مرکزی.',
-        nav=[('intro', 'معرفی'), ('stats', 'اعداد'), ('gallery', 'گالری'), ('specs', 'مشخصات'), ('uses', 'مصرف'), ('codes', 'کدها'), ('filters', 'فیلتر'), ('packaging', 'بسته‌بندی'), ('catalog', 'کاتالوگ'), ('order', 'قیمت')],
+        intro_h='کیسه ساکشن یکبارمصرف آبادیس',
+        intro_p='کیسه ساکشن یکبارمصرف آبادیس راهکاری ایمن و بهداشتی برای جمع‌آوری ترشحات و مایعات بدن در بیمارستان‌ها، آمبولانس‌ها و مراکز درمانی است. پودر ژل‌کننده داخل کیسه، مایعات را به ژل تبدیل می‌کند و خطر ریختن و آلودگی را کم می‌کند. فیلتر هیدروفوبیک هم از سرریز مایع به سمت دستگاه جلوگیری می‌کند و سیستم حفاظت از ساکشن مرکزی، دستگاه را ایمن نگه می‌دارد.',
+        nav=[('intro', 'معرفی'), ('features', 'مشخصات'), ('size', 'سایز'), ('gallery', 'تصاویر'), ('codes', 'کدها'), ('packaging', 'بسته‌بندی'), ('uses', 'مصرف'), ('catalog', 'کاتالوگ'), ('order', 'قیمت')],
         uses_h='موارد مصرف',
         packaging_h='بسته‌بندی و کارتن',
         filters_h='فیلترها',
@@ -170,15 +170,22 @@ UI = {
             ('۱۵٫۵\u00a0/\u00a0۲۴٫۵\u00a0/\u00a0۳۹', 'ارتفاع، سانتی\u200cمتر'),
             ('۴۵ عدد', 'در هر کارتن'),
         ],
-        gal_h='گالری',
+        gal_h='تصاویر محصول',
         gal_lead='عکس محصول، نماهای تک‌زاویه و طرح خطی ایزومتریک تعاملی.',
         iso_cap='طرح خطی ایزومتریک. برای چرخش، روی طرح بزنید و بکشید.',
         iso_load='نمایش طرح تعاملی',
         iso_filter_cap='طرح خطی ایزومتریک فیلتر قطع‌کننده جریان. برای چرخش، روی طرح بزنید و بکشید.',
         codes_h='کد محصول',
         sizes_h='سایزها',
-        sizes_lead='ظرفیت‌ها — ۱ لیتری، ۲ لیتری و ۳ لیتری. گالری، مشخصات، موارد مصرف و کد محصول هر سایز در زبانه همان سایز است.',
+        sizes_lead='ظرفیت‌ها — ۱ لیتری، ۲ لیتری و ۳ لیتری. تصاویر، جدول کدینگ، ابعاد و بسته‌بندی و موارد مصرف هر سایز در زبانه همان سایز است.',
         spec_h='مشخصات',
+        features_h='مشخصات و ویژگی‌ها',
+        size_facts_h='سایز',
+        pack_table_h='ابعاد، وزن و بسته‌بندی',
+        series_lbl='حالت سری',
+        vol_lbl='حجم',
+        diam_lbl='قطر',
+        height_lbl='ارتفاع',
         close_h='درخواست قیمت',
         close_p='برای انتخاب مدل، فیلتر و بسته‌بندی با فروش آبادیس در تماس باشید.',
         call='تماس با فروش',
@@ -198,18 +205,18 @@ UI = {
         ],
         hint='اسکرول کنید',
         prev='قبلی', next='بعدی',
-        still_alt='کیسه ساکشن ۱ لیتری آبادیس، درب فیروزه‌ای نشسته روی لبه کیسه',
+        still_alt='کیسه ساکشن ۲ لیتری آبادیس، درب فیروزه‌ای نشسته روی لبه کیسه',
     ),
     'en': dict(
         h1='Disposable Suction Bag',
         title='Disposable Suction Bag — Abadis Medical Reservoirs',
-        desc='Abadis single-use disposable suction liner bags in 1, 2 and 3 litres, with gel powder, a hydrophobic flow-stopper filter and central suction protection.',
+        desc='The Abadis disposable suction bag is a safe and hygienic solution for collecting body fluids and secretions in hospitals, ambulances and treatment centres.',
         crumb=('Home', '../../../en/', 'Products', '../', 'Disposable Suction Bag'),
         quote='Request quote', quote_href='../../contact-us/',
         specs='Specifications', pause='Pause or play motion',
-        intro_h='Overview',
-        intro_p='Abadis single-use disposable suction liner bags in 1, 2 and 3 litres, with gel powder, a hydrophobic flow-stopper filter and central suction protection.',
-        nav=[('intro', 'Overview'), ('stats', 'Numbers'), ('gallery', 'Gallery'), ('specs', 'Specs'), ('uses', 'Usage'), ('codes', 'Codes'), ('filters', 'Filters'), ('packaging', 'Packaging'), ('catalog', 'Catalog'), ('order', 'Quote')],
+        intro_h='Abadis disposable suction bag',
+        intro_p='The Abadis disposable suction bag is a safe and hygienic solution for collecting body fluids and secretions in hospitals, ambulances and treatment centres. The gelling powder inside the bag turns fluids into gel and reduces the risk of spills and contamination. The hydrophobic filter also prevents liquid overflowing toward the device, and the central suction protection system keeps the device safe.',
+        nav=[('intro', 'Overview'), ('features', 'Features'), ('size', 'Size'), ('gallery', 'Images'), ('codes', 'Codes'), ('packaging', 'Packaging'), ('uses', 'Usage'), ('catalog', 'Catalog'), ('order', 'Quote')],
         uses_h='Usage',
         packaging_h='Packaging & carton',
         filters_h='Filters',
@@ -222,15 +229,22 @@ UI = {
             ('15.5\u00a0/\u00a024.5\u00a0/\u00a039', 'Height, cm'),
             ('45 pcs', 'Per carton'),
         ],
-        gal_h='Gallery',
+        gal_h='Product images',
         gal_lead='Product photos, single-view drawings, and an interactive isometric line drawing.',
         iso_cap='Isometric line drawing. Tap the drawing and drag to rotate.',
         iso_load='View interactive drawing',
         iso_filter_cap='Isometric line drawing of the flow-stopper filter. Tap the drawing and drag to rotate.',
         codes_h='Product codes',
         sizes_h='Sizes',
-        sizes_lead='Capacities — 1 litre, 2 litre and 3 litre. Each tab holds that size’s gallery, specifications, uses and product codes.',
+        sizes_lead='Capacities — 1 litre, 2 litre and 3 litre. Each size holds its images, coding table, dimensions and packaging, and uses.',
         spec_h='Specifications',
+        features_h='Specifications and features',
+        size_facts_h='Size',
+        pack_table_h='Dimensions, weight and packaging',
+        series_lbl='Series mode',
+        vol_lbl='Volume',
+        diam_lbl='Diameter',
+        height_lbl='Height',
         close_h='Request a quote',
         close_p='Abadis sales can help with model, filter and packaging.',
         call='Call sales',
@@ -252,18 +266,18 @@ UI = {
         ],
         hint='Scroll',
         prev='Previous', next='Next',
-        still_alt='Abadis 1 litre suction liner with the teal lid seated on the bag rim',
+        still_alt='Abadis 2 litre suction liner with the teal lid seated on the bag rim',
     ),
     'ar': dict(
         h1='كيس الشفط',
         title='كيس الشفط — مخازن طبی آباديس',
-        desc='أكياس شفط آباديس ذات الاستعمال الواحد بسعات ١ و٢ و٣ لتر، مع مسحوق التهليم وفلتر كاره للماء ونظام حماية الشفط المركزي.',
+        desc='كيس الشفط أحادي الاستعمال من آباديس حل آمن وصحي لجمع المفرزات وسوائل الجسم في المستشفيات وسيارات الإسعاف ومراكز العلاج.',
         crumb=('الرئيسية', '../../', 'منتجات', '../منتجات/', 'كيس الشفط'),
         quote='طلب عرض سعر', quote_href='../اتصل-بنا/',
         specs='المواصفات', pause='إيقاف الحركة أو متابعتها',
-        intro_h='مقدمة',
-        intro_p='أكياس شفط آباديس ذات الاستعمال الواحد بسعات ١ و٢ و٣ لتر، مع مسحوق التهليم وفلتر كاره للماء ونظام حماية الشفط المركزي.',
-        nav=[('intro', 'مقدمة'), ('stats', 'أرقام'), ('gallery', 'المعرض'), ('specs', 'المواصفات'), ('uses', 'الاستخدام'), ('codes', 'الرموز'), ('filters', 'الفلاتر'), ('packaging', 'التغليف'), ('catalog', 'الكتالوج'), ('order', 'السعر')],
+        intro_h='كيس الشفط أحادي الاستعمال من آباديس',
+        intro_p='كيس الشفط أحادي الاستعمال من آباديس حل آمن وصحي لجمع المفرزات وسوائل الجسم في المستشفيات وسيارات الإسعاف ومراكز العلاج. يحوّل مسحوق التهليم داخل الكيس السوائل إلى هلام ويقلل خطر الانسكاب والتلوث. كما يمنع الفلتر الكاره للماء فيض السائل نحو الجهاز، ويُبقي نظام حماية الشفط المركزي الجهاز آمناً.',
+        nav=[('intro', 'مقدمة'), ('features', 'المواصفات'), ('size', 'الحجم'), ('gallery', 'الصور'), ('codes', 'الرموز'), ('packaging', 'التغليف'), ('uses', 'الاستخدام'), ('catalog', 'الكتالوج'), ('order', 'السعر')],
         uses_h='الاستخدامات',
         packaging_h='التغليف والكرتون',
         filters_h='الفلاتر',
@@ -276,15 +290,22 @@ UI = {
             ('١٥٫٥\u00a0/\u00a0٢٤٫٥\u00a0/\u00a0٣٩', 'الارتفاع، سم'),
             ('٤٥ قطعة', 'في كل كرتون'),
         ],
-        gal_h='المعرض',
+        gal_h='صور المنتج',
         gal_lead='صور المنتج ورسوم بزاوية واحدة ورسم خطّي أيزومتري تفاعلي.',
         iso_cap='رسم خطّي أيزومتري. اضغط على الرسم واسحب للدوران.',
         iso_load='عرض الرسم التفاعلي',
         iso_filter_cap='رسم خطّي أيزومتري لفلتر قطع التدفق. اضغط على الرسم واسحب للدوران.',
         codes_h='رموز المنتج',
         sizes_h='الأحجام',
-        sizes_lead='السعات — ١ لتر و٢ لتر و٣ لتر. المعرض والمواصفات والاستخدامات ورموز المنتج لكل سعة في تبويبها.',
+        sizes_lead='السعات — ١ لتر و٢ لتر و٣ لتر. صور كل سعة وجدول الرموز والأبعاد والتغليف والاستخدامات في تبويبها.',
         spec_h='مواصفات المنتج',
+        features_h='المواصفات والميزات',
+        size_facts_h='الحجم',
+        pack_table_h='الأبعاد والوزن والتغليف',
+        series_lbl='الوضع المتسلسل',
+        vol_lbl='السعة',
+        diam_lbl='القطر',
+        height_lbl='الارتفاع',
         close_h='طلب عرض سعر',
         close_p='فريق مبيعات آباديس يساعد في اختيار الموديل والفلتر والتعبئة.',
         call='اتصل بالمبيعات',
@@ -304,7 +325,7 @@ UI = {
         ],
         hint='مرّر للأسفل',
         prev='السابق', next='التالي',
-        still_alt='كيس شفط آباديس سعة ١ لتر مع غطاء فيروزي جالس على حافة الكيس',
+        still_alt='كيس شفط آباديس سعة ٢ لتر مع غطاء فيروزي جالس على حافة الكيس',
     ),
 }
 
@@ -619,6 +640,200 @@ def code_table_for(size, lang):
     )
 
 
+
+FEATURES = {
+    'fa': dict(
+        filters_h='فیلترهای کیسه ساکشن',
+        filters_lead='کیسه‌های ساکشن آبادیس بسته به نوع کاربرد با چند نوع فیلتر تولید می‌شوند. وظیفه‌ی همه‌ی آن‌ها جلوگیری از ورود مایعات به دستگاه ساکشن و حفظ ایمنی دستگاه است.',
+        filters=[
+            ('هیدروفوبیک', 'فیلتر متخلخل از جنس Porous Sintered که با رسیدن مایع به فیلتر، مسیر عبور را می‌بندد و از سرریز مایع به سمت دستگاه جلوگیری می‌کند.'),
+            ('مکانیکی', 'مناسب عمل‌های جراحی با حجم بالای چربی.'),
+            ('Dual', 'دارای لایه‌ای از پارچه‌ی ملت‌بلون (Meltblown) که فیلتر متخلخل را در برابر دود محافظت می‌کند و به کاهش افت فشار در مسیر مکش کمک می‌کند.'),
+            ('CIF', 'نوعی فیلتر متخلخل هیدروفوبیک با فرمولاسیون ویژه، مناسب عمل‌هایی که از الکتروکوتر استفاده می‌شود و دود زیادی تولید می‌کنند.'),
+        ],
+        codes_note='نوع فیلتر هر کد محصول در جدول کدینگ همان سایز مشخص شده است.',
+        powder_h='پودر جاذب (ژل‌کننده)',
+        powder_lead='داخل کیسه، پودر جاذبی قرار دارد که مایعات و ترشحات را در تماس به ژل تبدیل می‌کند. این ویژگی:',
+        powder=[
+            'از ریختن و پاشیده‌شدن مایع هنگام جابه‌جایی و حمل کیسه جلوگیری می‌کند.',
+            'خطر آلودگی محیط و تماس پرسنل با ترشحات را کاهش می‌دهد.',
+            'دفع ایمن‌تر پسماند عفونی را ممکن می‌کند.',
+        ],
+        shared_h='ویژگی‌های مشترک',
+        shared=[
+            'کیسه‌ی نرم پلی‌اتیلن، یکبارمصرف',
+            'حفاظت از ساکشن مرکزی',
+            'پورت بیمار با درپوش بنددار',
+            'سازگار با همه‌ی دستگاه‌های ساکشن پرتابل و مرکزی',
+        ],
+    ),
+    'en': dict(
+        filters_h='Suction-bag filters',
+        filters_lead='Abadis suction bags are produced with several filter types, depending on the application. All of them keep fluids out of the suction device and protect the device.',
+        filters=[
+            ('Hydrophobic', 'A porous filter made of Porous Sintered material that closes the path when liquid reaches the filter and prevents overflow toward the device.'),
+            ('Mechanical', 'Suitable for surgical procedures with a high volume of fat.'),
+            ('Dual', 'Has a layer of Meltblown fabric that protects the porous filter against smoke and helps reduce pressure drop in the suction path.'),
+            ('CIF', 'A hydrophobic porous filter with a special formulation, suitable for procedures that use an electrocautery unit and produce a large amount of smoke.'),
+        ],
+        codes_note='The filter type of each product code is shown in that size’s coding table.',
+        powder_h='Absorbent (gelling) powder',
+        powder_lead='Inside the bag is an absorbent powder that turns fluids and secretions into gel on contact. This:',
+        powder=[
+            'prevents liquid spilling and splashing when the bag is moved or carried.',
+            'reduces the risk of environmental contamination and of staff contact with secretions.',
+            'makes safer disposal of infectious waste possible.',
+        ],
+        shared_h='Shared features',
+        shared=[
+            'Soft polyethylene bag, single-use',
+            'Central suction protection',
+            'Patient port with a tethered cap',
+            'Compatible with all portable and central suction devices',
+        ],
+    ),
+    'ar': dict(
+        filters_h='فلاتر كيس الشفط',
+        filters_lead='تُنتج أكياس الشفط من آباديس بأنواع عدة من الفلاتر بحسب الاستخدام. ومهمة جميعها منع دخول السوائل إلى جهاز الشفط والحفاظ على سلامة الجهاز.',
+        filters=[
+            ('كاره للماء', 'فلتر مسامي من مادة Porous Sintered يغلق مسار العبور عند وصول السائل إلى الفلتر ويمنع فيض السائل نحو الجهاز.'),
+            ('ميكانيكي', 'مناسب للعمليات الجراحية ذات الحجم العالي من الدهون.'),
+            ('Dual', 'يحمل طبقة من قماش ملتبلون (Meltblown) تحمي الفلتر المسامي من الدخان وتساعد على تقليل انخفاض الضغط في مسار الشفط.'),
+            ('CIF', 'فلتر مسامي كاره للماء بتركيبة خاصة، مناسب للعمليات التي تستخدم جهاز الكي الكهربائي وتولّد دخاناً كثيراً.'),
+        ],
+        codes_note='يظهر نوع فلتر كل رمز منتج في جدول الترميز الخاص بذلك الحجم.',
+        powder_h='المسحوق الماص (المهلّم)',
+        powder_lead='داخل الكيس مسحوق ماص يحوّل السوائل والمفرزات عند التلامس إلى هلام. وهذه الميزة:',
+        powder=[
+            'تمنع انسكاب السائل وتناثره عند نقل الكيس وحمله.',
+            'تقلل خطر تلوث البيئة وملامسة العاملين للمفرزات.',
+            'تُتيح تخلصاً أكثر أماناً من النفايات المعدية.',
+        ],
+        shared_h='ميزات مشتركة',
+        shared=[
+            'كيس بولي إيثيلين ليّن، أحادي الاستعمال',
+            'حماية الشفط المركزي',
+            'منفذ المريض بغطاء مربوط',
+            'متوافق مع جميع أجهزة الشفط المحمولة والمركزية',
+        ],
+    ),
+}
+
+
+def features_block(lang):
+    ui = UI[lang]
+    f = FEATURES[lang]
+    items = ''.join(
+        f'<li><strong>{esc(n)}</strong> {meas(d, lang)}</li>' for n, d in f['filters']
+    )
+    powder = ''.join(f'<li>{esc(x)}</li>' for x in f['powder'])
+    shared = ''.join(f'<li>{esc(x)}</li>' for x in f['shared'])
+    return (
+        f'<section class="bag-block bag-features" id="features"><div class="wrap">'
+        f'<h2>{esc(ui["features_h"])}</h2>'
+        f'<h3>{esc(f["filters_h"])}</h3>'
+        f'<p class="bag-lead">{meas(f["filters_lead"], lang)}</p>'
+        f'<ul class="feat-list">{items}</ul>'
+        f'<p class="bag-note">{esc(f["codes_note"])}</p>'
+        f'<h3>{esc(f["powder_h"])}</h3>'
+        f'<p class="bag-lead">{esc(f["powder_lead"])}</p>'
+        f'<ul class="feat-list">{powder}</ul>'
+        f'<h3>{esc(f["shared_h"])}</h3>'
+        f'<ul class="feat-list feat-shared">{shared}</ul>'
+        f'</div></section>'
+    )
+
+
+SIZE_SPLIT = {
+    '1': {
+        'vol': {
+            'fa': 'یک لیتر',
+            'en': '1 liter',
+            'ar': 'لتر واحد',
+        },
+        'series': {'fa': None, 'en': None, 'ar': None},
+        'diam': {'fa': '۱۱ سانتی‌متر', 'en': '11 cm', 'ar': '١١ سم'},
+        'height': {'fa': '۱۵٫۵ سانتی‌متر', 'en': '15.5 cm', 'ar': '١٥٫٥ سم'},
+    },
+    '2': {
+        'vol': {
+            'fa': '۲ لیتر در حالت تکی',
+            'en': '2 Liter',
+            'ar': '2 لتر عند استخدام الواحد',
+        },
+        'series': {
+            'fa': 'تا ۸ لیتر در حالت سری یک ردیفه بر روی پایه',
+            'en': None,
+            'ar': 'حتى 8 لترات عند وضع مجموعة واحدة على القاعدة',
+        },
+        'diam': {'fa': '۱۱ سانتی‌متر', 'en': '11 cm', 'ar': '١١ سم'},
+        'height': {'fa': '۲۴٫۵ سانتی‌متر', 'en': '24.5 cm', 'ar': '٢٤٫٥ سم'},
+    },
+    '3': {
+        'vol': {
+            'fa': '۳ لیتر در حالت تکی',
+            'en': '3 Liters in single',
+            'ar': '3 لترات عند استخدام الواحد',
+        },
+        'series': {
+            'fa': 'تا ۱۲ لیتر در حالت سری یک ردیفه بر روی پایه',
+            'en': 'up to 12 liters in single row mode on the base',
+            'ar': 'حتى 12 لتراً عند وضع مجموعة واحدة على القاعدة',
+        },
+        'diam': {'fa': '۱۱ سانتی‌متر', 'en': '11 cm', 'ar': '١١ سم'},
+        'height': {'fa': '۳۹ سانتی‌متر', 'en': '39 cm', 'ar': '٣٩ سم'},
+    },
+}
+
+
+def size_facts(size, lang):
+    ui = UI[lang]
+    d = SIZE_SPLIT[size]
+    cells = [
+        (ui['vol_lbl'], d['vol'][lang]),
+        (ui['diam_lbl'], d['diam'][lang]),
+        (ui['height_lbl'], d['height'][lang]),
+    ]
+    if d['series'][lang]:
+        cells.append((ui['series_lbl'], d['series'][lang]))
+    td = ''.join(
+        f'<div class="size-fact"><span class="size-fact-lbl">{esc(lab)}</span>'
+        f'<b class="size-fact-val">{meas(val, lang)}</b></div>'
+        for lab, val in cells
+    )
+    return f'<div class="size-facts" id="s{size}-size" data-sec="size"><h3>{esc(ui["size_facts_h"])}</h3><div class="size-fact-grid">{td}</div></div>'
+
+
+def pack_table(size, lang):
+    ui = UI[lang]
+    s = SPECS[lang][size]
+    labels = spec_labels(lang)
+    keys = ['dim', 'dim_d', 'dim_h', 'weight', 'pack', 'packdim', 'qty', 'carton']
+    rows = []
+    for key in keys:
+        if key not in s:
+            continue
+        rows.append(f'<tr><th scope="row">{esc(labels.get(key, key))}</th><td>{meas(s[key], lang)}</td></tr>')
+    return (
+        f'<div class="size-pack" id="s{size}-packaging" data-sec="packaging">'
+        f'<h3>{esc(ui["pack_table_h"])}</h3>'
+        f'<table class="pack-table"><tbody>{"".join(rows)}</tbody></table>'
+        f'</div>'
+    )
+
+
+def sterile_block(size, lang):
+    s = SPECS[lang][size]
+    if not s.get('sterile_p'):
+        return ''
+    merits = ''.join(f'<li>{meas(m, lang)}</li>' for m in s['merits'])
+    return (
+        f'<div class="size-sterile" id="s{size}-sterile">'
+        f'<h3>{esc(s["sterile_h"])}</h3><p>{meas(s["sterile_p"], lang)}</p>'
+        f'<h3>{esc(s["merits_h"])}</h3><ul>{merits}</ul></div>'
+    )
+
+
 def size_picker(lang):
     ui = UI[lang]
     names = size_names()
@@ -632,11 +847,7 @@ def size_picker(lang):
             f'<strong>{names[size][lang]}</strong><em>{heights[size][lang]}</em></button>'
         )
     inner = ''.join(btns)
-    return (
-        f'<h2 id="sizes-h">{esc(ui["sizes_h"])}</h2>'
-        f'<p class="bag-lead">{meas(ui["sizes_lead"], lang)}</p>'
-        f'<div class="size-pick" role="tablist" aria-labelledby="sizes-h">{inner}</div>'
-    )
+    return f'<div class="size-pick size-pick-vert" role="tablist" aria-labelledby="sizes-h">{inner}</div>'
 
 
 GALLERIES = {
@@ -738,34 +949,45 @@ def size_sections(lang, pfx):
     for i, size in enumerate(('1', '2', '3')):
         s = SPECS[lang][size]
         hidden = '' if i == 0 else ' hidden'
+        facts = size_facts(size, lang)
         gal = (
             f'<div class="size-gal" id="s{size}-gallery" data-sec="gallery">'
             f'<h3>{esc(ui["gal_h"])}</h3>'
             f'{gallery_for(size, lang, pfx)}</div>'
-        )
-        specs = spec_one(size, lang, pfx)
-        specs = specs.replace(f'id="spec-{size}"', f'id="s{size}-specs" data-sec="specs"', 1)
-        uses = (
-            f'<div class="size-uses" id="s{size}-uses" data-sec="uses">'
-            f'<h3>{esc(s["uses_h"])}</h3>'
-            f'<div class="uses">{render_uses(s, lang, pfx)}</div></div>'
         )
         codes = (
             f'<div class="size-codes" id="s{size}-codes" data-sec="codes">'
             f'<h3>{esc(ui["codes_h"])}</h3>'
             f'{code_table_for(size, lang)}</div>'
         )
+        pack = pack_table(size, lang)
+        uses = (
+            f'<div class="size-uses" id="s{size}-uses" data-sec="uses">'
+            f'<h3>{esc(s["uses_h"])}</h3>'
+            f'<div class="uses">{render_uses(s, lang, pfx)}</div></div>'
+        )
+        cat = (
+            f'<div class="size-catalog" id="s{size}-catalog" data-sec="catalog">'
+            f'<h3>{esc(ui["catalog_h"])}</h3>'
+            f'<p class="bag-lead">{esc(ui["catalog_lead"])}</p>'
+            f'<a class="btn-ghost" href="{ui["catalog_href"]}" data-track="catalogue_download">{esc(ui["catalog"])}</a>'
+            f'<a class="btn-ghost" href="{ui["guide_href"]}">{esc(ui["guide"])}</a>'
+            f'</div>'
+        )
         chunks.append(
             f'<div class="bag-panel" role="tabpanel" id="s{size}" data-size="{size}" '
             f'aria-labelledby="tab-s{size}"{hidden}>'
-            f'{gal}{specs}{uses}{codes}'
+            f'{facts}{gal}{codes}{pack}{sterile_block(size, lang)}{uses}{cat}'
             f'</div>'
         )
     return (
         f'<section class="bag-block bag-sizes" id="sizes"><div class="wrap">'
+        f'<h2 id="sizes-h">{esc(ui["sizes_h"])}</h2>'
+        f'<p class="bag-lead">{meas(ui["sizes_lead"], lang)}</p>'
+        f'<div class="size-stage">'
         f'{size_picker(lang)}'
         f'<div class="size-panels">{"".join(chunks)}</div>'
-        f'</div></section>'
+        f'</div></div></section>'
     )
 
 
@@ -916,10 +1138,10 @@ def main_html(lang, pfx):
     export = ''
     if lang == 'en':
         export = f'<a class="btn-ghost" href="{ui["export_href"]}">{esc(ui["export"])}</a>'
-    still = f'{pfx}assets/img/products/3d/p01-cinematic-v12-still-studio.webp'
+    still = f'{pfx}assets/img/products/3d/p02-cinematic-v12-still-studio.webp'
     return (
         f'<main id="main">'
-        f'<div class="cin-track" id="film" data-cin-root data-cin-floors="hero" data-tone="dark" data-cin-module="{pfx}assets/js/p01-cinematic-page.js?v={V}">'
+        f'<div class="cin-track" id="film" data-cin-root data-cin-floors="hero" data-tone="dark" data-cin-module="{pfx}assets/js/p02-cinematic-page.js?v={V}">'
         f'<div class="cin-stage"><div class="cin-view">'
         f'<canvas aria-hidden="true"></canvas>'
         f'<img class="cin-still" src="{still}" width="900" height="1338" alt="{esc(ui["still_alt"])}" fetchpriority="high" decoding="async">'
@@ -937,17 +1159,8 @@ def main_html(lang, pfx):
         f'<h2>{esc(ui["intro_h"])}</h2>'
         f'<p class="bag-lead">{esc(ui["intro_p"])}</p>'
         f'</div></section>'
-        f'<section class="bag-block bag-stats" id="stats"><div class="wrap">'
-        f'<h2>{esc(ui["stats_h"])}</h2>'
-        f'<div class="stat-grid">{stats}</div>'
-        f'</div></section>'
+        f'{features_block(lang)}'
         f'{size_sections(lang, pfx)}'
-        f'{filters_block(lang, pfx)}'
-        f'{packaging_block(lang)}'
-        f'<section class="bag-block" id="catalog"><div class="wrap">'
-        f'<h2>{esc(ui["catalog_h"])}</h2>'
-        f'<p class="bag-lead">{esc(ui["catalog_lead"])}</p>'
-        f'</div></section>'
         f'<section class="bag-close" id="order"><div class="wrap"><div class="panel">'
         f'<h2>{esc(ui["close_h"])}</h2>'
         f'<p>{esc(ui["close_p"])}</p>'
