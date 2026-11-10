@@ -52,20 +52,28 @@ const mob=matchMedia('(max-width:700px),(pointer:coarse)').matches;
 const canvas=document.getElementById('gl'),stage=canvas.parentElement;
 const R=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});
 R.setPixelRatio(Math.min(devicePixelRatio,mob?1.75:2));
-R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=0.80;
+R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.05;
 const S=new THREE.Scene(),C=new THREE.PerspectiveCamera(mob?32:28,1,.2,2000);
 const bg=document.createElement('canvas');bg.width=bg.height=1024;const bx=bg.getContext('2d'),grad=bx.createRadialGradient(512,440,10,512,440,730);
 grad.addColorStop(0,'#35434c');grad.addColorStop(.55,'#19262f');grad.addColorStop(1,'#091219');
 bx.fillStyle=grad;bx.fillRect(0,0,1024,1024);
 const backdrop=new THREE.CanvasTexture(bg);backdrop.colorSpace=THREE.SRGBColorSpace;S.background=backdrop;
 const pm=new THREE.PMREMGenerator(R),env=new RoomEnvironment();
-S.environment=pm.fromScene(env,.04).texture;S.environmentIntensity=0.55;env.dispose();pm.dispose();
-const lights=[[80,55,40,0xfff6ee,1.45],[-50,40,70,0xe7f3f8,0.7],[10,20,-80,0xd0e4ef,0.55]];
-for(const [x,y,z,color,intensity] of lights){const l=new THREE.DirectionalLight(color,intensity);l.position.set(x,y,z);S.add(l);}
-S.add(new THREE.HemisphereLight(0xeef4f8,0x1a2830,.45));
+S.environment=pm.fromScene(env,.04).texture;S.environmentIntensity=0.45;env.dispose();pm.dispose();
+R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;
+// Front-right key so the C-channel inner wall catches light and the
+// floor stays darker; matches the official 3/4 lighting.
+const key=new THREE.DirectionalLight(0xfff6ee,1.75);key.position.set(48,70,72);key.castShadow=true;
+key.shadow.mapSize.set(2048,2048);key.shadow.camera.near=20;key.shadow.camera.far=500;
+key.shadow.camera.left=-90;key.shadow.camera.right=90;key.shadow.camera.top=90;key.shadow.camera.bottom=-90;
+key.shadow.bias=-0.0008;S.add(key);
+const fill=new THREE.DirectionalLight(0xe8f2fa,0.32);fill.position.set(-40,40,70);S.add(fill);
+const rim=new THREE.DirectionalLight(0xd0e4ef,0.45);rim.position.set(10,20,-80);S.add(rim);
+S.add(new THREE.HemisphereLight(0xeef4f8,0x1a2830,.40));
 
-const bodyMat=new THREE.MeshStandardMaterial({
-  color:0x2470a6,roughness:.52,metalness:.04,envMapIntensity:0.62
+const bodyMat=new THREE.MeshPhysicalMaterial({
+  color:0x1f6aa3,roughness:.38,metalness:.03,
+  clearcoat:.18,clearcoatRoughness:.38,envMapIntensity:0.55
 });
 
 const root=new THREE.Group();S.add(root);
@@ -81,7 +89,7 @@ new GLTFLoader().load('p15-canister-clamp.glb',g=>{
   g.scene.traverse(o=>{if(!o.isMesh)return;
     let geo=o.geometry.clone().applyMatrix4(o.matrixWorld);
     geo.deleteAttribute('normal');geo=mergeVertices(geo,1e-5);geo=toCreasedNormals(geo,Math.PI/3);
-    const m=new THREE.Mesh(geo,bodyMat);m.name=o.name||'body';root.add(m);
+    const m=new THREE.Mesh(geo,bodyMat);m.name=o.name||'body';m.castShadow=m.receiveShadow=true;root.add(m);
     triangles+=geo.index?geo.index.count/3:geo.attributes.position.count/3;
   });
   const box=new THREE.Box3().setFromObject(root);
@@ -109,7 +117,7 @@ const KF=[
 const qp=new URLSearchParams(location.search),beats=[...document.querySelectorAll('.beat')];
 if(qp.has('look')){beats.forEach(b=>b.style.display='none');const h=document.getElementById('hint');if(h)h.style.display='none';}
 const LOOK={
-  photo:[76,5.5,360,[0,2,0]],
+  photo:[66,6,248,[0,1,0]],
   set:[-24,12,295,[0,2,0]],
   holes:[-26,14,290,[0,2,0]],
   front:[0,6,330,[0,8,0]],
