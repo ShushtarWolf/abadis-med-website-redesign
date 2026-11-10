@@ -19,7 +19,7 @@ SITE = ROOT / 'site'
 FA_DIG = str.maketrans('0123456789', '۰۱۲۳۴۵۶۷۸۹')
 AR_DIG = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
 
-V = '20261110s'
+V = '20261110t'
 
 ARROW = ('<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
          '<path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" '
@@ -157,7 +157,7 @@ UI = {
         specs='مشخصات', pause='توقف یا ادامه حرکت',
         intro_h='معرفی کوتاه',
         intro_p='کیسه ساکشن یکبار مصرف آبادیس در حجم‌های ۱، ۲ و ۳ لیتری؛ دارای پودر ژل‌کننده، فیلتر هیدروفوبیک و سیستم حفاظت از ساکشن مرکزی.',
-        nav=[('intro', 'معرفی'), ('stats', 'اعداد'), ('gallery', 'گالری'), ('s1', '۱ لیتری'), ('s2', '۲ لیتری'), ('s3', '۳ لیتری'), ('filters', 'فیلتر'), ('packaging', 'بسته‌بندی'), ('catalog', 'کاتالوگ'), ('order', 'قیمت')],
+        nav=[('intro', 'معرفی'), ('stats', 'اعداد'), ('gallery', 'گالری'), ('specs', 'مشخصات'), ('uses', 'مصرف'), ('codes', 'کدها'), ('filters', 'فیلتر'), ('packaging', 'بسته‌بندی'), ('catalog', 'کاتالوگ'), ('order', 'قیمت')],
         uses_h='موارد مصرف',
         packaging_h='بسته‌بندی و کارتن',
         filters_h='فیلترها',
@@ -177,7 +177,7 @@ UI = {
         iso_filter_cap='طرح خطی ایزومتریک فیلتر قطع‌کننده جریان. برای چرخش، روی طرح بزنید و بکشید.',
         codes_h='کد محصول',
         sizes_h='سایزها',
-        sizes_lead='ظرفیت ها — ۱ لیتری، ۲ لیتری و ۳ لیتری. کد محصول و IRC در هر بخش.',
+        sizes_lead='ظرفیت‌ها — ۱ لیتری، ۲ لیتری و ۳ لیتری. گالری، مشخصات، موارد مصرف و کد محصول هر سایز در زبانه همان سایز است.',
         spec_h='مشخصات',
         close_h='درخواست قیمت',
         close_p='برای انتخاب مدل، فیلتر و بسته‌بندی با فروش آبادیس در تماس باشید.',
@@ -187,7 +187,7 @@ UI = {
         guide='راهنمای استفاده کاربر نهایی',
         guide_href='../../install-guide/end-user/',
         how='برای مشاهده نحوه استفاده از کیسه ساکشن ها به این صفحه مراجعه نمایید .',
-        heads=['کد محصول', 'IRC', 'سایز', 'نوع فیلتر', 'پودر', 'استریل', 'رنگ درب'],
+        heads=['کد محصول', 'IRC', 'نوع فیلتر', 'هیدروفوبیک', 'پودر جاذب', 'رنگ درب', 'استریل'],
         beats=[
             ('.12', '.23', 'پورت بیمار با درپوش بنددار'),
             ('.26', '.37', 'فیلتر قطع‌کننده زیر پورت خلأ از سرریز جلوگیری می‌کند'),
@@ -209,7 +209,7 @@ UI = {
         specs='Specifications', pause='Pause or play motion',
         intro_h='Overview',
         intro_p='Abadis single-use disposable suction liner bags in 1, 2 and 3 litres, with gel powder, a hydrophobic flow-stopper filter and central suction protection.',
-        nav=[('intro', 'Overview'), ('stats', 'Numbers'), ('gallery', 'Gallery'), ('s1', '1 L'), ('s2', '2 L'), ('s3', '3 L'), ('filters', 'Filters'), ('packaging', 'Packaging'), ('catalog', 'Catalog'), ('order', 'Quote')],
+        nav=[('intro', 'Overview'), ('stats', 'Numbers'), ('gallery', 'Gallery'), ('specs', 'Specs'), ('uses', 'Usage'), ('codes', 'Codes'), ('filters', 'Filters'), ('packaging', 'Packaging'), ('catalog', 'Catalog'), ('order', 'Quote')],
         uses_h='Usage',
         packaging_h='Packaging & carton',
         filters_h='Filters',
@@ -229,7 +229,7 @@ UI = {
         iso_filter_cap='Isometric line drawing of the flow-stopper filter. Tap the drawing and drag to rotate.',
         codes_h='Product codes',
         sizes_h='Sizes',
-        sizes_lead='Capacity — 1 Liter, 2 Liter and 3 Liter. Product codes in each section.',
+        sizes_lead='Capacities — 1 litre, 2 litre and 3 litre. Each tab holds that size’s gallery, specifications, uses and product codes.',
         spec_h='Specifications',
         close_h='Request a quote',
         close_p='Abadis sales can help with model, filter and packaging.',
@@ -241,7 +241,7 @@ UI = {
         export='Export enquiry',
         export_href='../../export/#quote',
         how='',
-        heads=['Product code', 'Powder', 'Filter type', 'Suction bag', 'Sterile', 'Door'],
+        heads=['Product code', 'IRC', 'Filter type', 'Hydrophobic', 'Absorbent powder', 'Lid color', 'Sterile', 'Suction bag'],
         beats=[
             ('.12', '.23', 'PATIENT port with tethered cap'),
             ('.26', '.37', 'The flow stopper filter under the VACUUM port stops overflow'),
@@ -263,7 +263,7 @@ UI = {
         specs='المواصفات', pause='إيقاف الحركة أو متابعتها',
         intro_h='مقدمة',
         intro_p='أكياس شفط آباديس ذات الاستعمال الواحد بسعات ١ و٢ و٣ لتر، مع مسحوق التهليم وفلتر كاره للماء ونظام حماية الشفط المركزي.',
-        nav=[('intro', 'مقدمة'), ('stats', 'أرقام'), ('gallery', 'المعرض'), ('s1', '١ لتر'), ('s2', '٢ لتر'), ('s3', '٣ لتر'), ('filters', 'الفلاتر'), ('packaging', 'التغليف'), ('catalog', 'الكتالوج'), ('order', 'السعر')],
+        nav=[('intro', 'مقدمة'), ('stats', 'أرقام'), ('gallery', 'المعرض'), ('specs', 'المواصفات'), ('uses', 'الاستخدام'), ('codes', 'الرموز'), ('filters', 'الفلاتر'), ('packaging', 'التغليف'), ('catalog', 'الكتالوج'), ('order', 'السعر')],
         uses_h='الاستخدامات',
         packaging_h='التغليف والكرتون',
         filters_h='الفلاتر',
@@ -283,7 +283,7 @@ UI = {
         iso_filter_cap='رسم خطّي أيزومتري لفلتر قطع التدفق. اضغط على الرسم واسحب للدوران.',
         codes_h='رموز المنتج',
         sizes_h='الأحجام',
-        sizes_lead='السعات — ١ لتر و٢ لتر و٣ لتر. رمز المنتج وIRC في كل قسم.',
+        sizes_lead='السعات — ١ لتر و٢ لتر و٣ لتر. المعرض والمواصفات والاستخدامات ورموز المنتج لكل سعة في تبويبها.',
         spec_h='مواصفات المنتج',
         close_h='طلب عرض سعر',
         close_p='فريق مبيعات آباديس يساعد في اختيار الموديل والفلتر والتعبئة.',
@@ -293,7 +293,7 @@ UI = {
         guide='دليل المستخدم النهائي',
         guide_href='../دليل-التركيب/',
         how='اذهب إلى هذه الصفحة لمعرفة كيفية استخدام أكياس الشفط.',
-        heads=['رمز المنتج', 'IRC', 'السعة', 'نوع الفلتر', 'المسحوق', 'معقّم', 'لون الغطاء'],
+        heads=['رمز المنتج', 'IRC', 'نوع الفلتر', 'كاره للماء', 'المسحوق الماص', 'لون الغطاء', 'معقّم'],
         beats=[
             ('.12', '.23', 'منفذ المريض بغطاء مربوط'),
             ('.26', '.37', 'فلتر قطع الفيضان تحت منفذ التفريغ يمنع الفيض'),
@@ -528,41 +528,47 @@ def iso_still(pfx, mid, theme):
     return f'{pfx}assets/img/products/cad-iso/{mid}-iso-{theme}.webp'
 
 
-def iso_frame(lang, pfx, kind='liner'):
+def iso_frame(lang, pfx, size='1'):
     ui = UI[lang]
-    if kind == 'filter':
-        mid = 'p12-inline-filter'
-        cap = ui['iso_filter_cap']
-        glbs = f'data-iso-id="{mid}" data-iso-src="{pfx}3d-sketches/cad-line-sketches/models/{mid}.glb"'
-        stills = (
-            f'<img class="iso-still iso-still-light" src="{iso_still(pfx, mid, "light")}" alt="{esc(cap)}" width="900" height="1125" loading="lazy" decoding="async">'
-            f'<img class="iso-still iso-still-dark" src="{iso_still(pfx, mid, "dark")}" alt="" width="900" height="1125" loading="lazy" decoding="async" aria-hidden="true">'
-        )
-        return (
-            f'<div class="iso-frame gal-frame" data-iso data-iso-kind="filter" {glbs}>'
-            f'{stills}'
-            f'<button class="iso-load" type="button">{esc(ui["iso_load"])}</button>'
-            f'</div>'
-        )
-    ids = {'1': 'p01-1l-liner', '2': 'p02-2l-liner', '3': 'p03-3l-liner'}
-    attrs = ['data-iso', 'data-iso-kind="liner"', 'data-iso-size="1"']
-    for sz, mid in ids.items():
-        attrs.append(f'data-iso-id-{sz}="{mid}"')
-        attrs.append(f'data-iso-src-{sz}="{pfx}3d-sketches/cad-line-sketches/models/{mid}.glb"')
-        attrs.append(f'data-iso-still-{sz}-light="{iso_still(pfx, mid, "light")}"')
-        attrs.append(f'data-iso-still-{sz}-dark="{iso_still(pfx, mid, "dark")}"')
+    mid = {'1': 'p01-1l-liner', '2': 'p02-2l-liner', '3': 'p03-3l-liner'}[str(size)]
     cap = ui['iso_cap']
-    mid = ids['1']
     stills = (
         f'<img class="iso-still iso-still-light" src="{iso_still(pfx, mid, "light")}" alt="{esc(cap)}" width="900" height="1125" loading="lazy" decoding="async">'
         f'<img class="iso-still iso-still-dark" src="{iso_still(pfx, mid, "dark")}" alt="" width="900" height="1125" loading="lazy" decoding="async" aria-hidden="true">'
     )
     return (
-        f'<div class="iso-frame gal-frame" {" ".join(attrs)}>'
+        f'<div class="iso-frame gal-frame" data-iso data-iso-kind="liner" data-iso-size="{size}" '
+        f'data-iso-id="{mid}" data-iso-src="{pfx}3d-sketches/cad-line-sketches/models/{mid}.glb">'
         f'{stills}'
         f'<button class="iso-load" type="button">{esc(ui["iso_load"])}</button>'
         f'</div>'
     )
+
+
+DASH = '—'
+
+HYDRO_YES = {'هیدروفوبیک', 'Hydrophobic', 'كاره للماء'}
+HYDRO_NO = {'×', 'مکانیکی', 'Mechanical', 'ميكانيكي'}
+
+
+def hydro_flag(kind):
+    if kind in HYDRO_YES:
+        return 'yes'
+    if kind in HYDRO_NO:
+        return 'no'
+    return None
+
+
+def cell_or_dash(value, lang):
+    if value in (None, '', '_', DASH):
+        return DASH
+    if value in ('yes', 'no'):
+        return yn(value, lang)
+    if value == '×':
+        return esc('×')
+    if re.search(r'[A-Za-z0-9]', value):
+        return f'<bdi dir="ltr">{esc(digits(value, lang))}</bdi>'
+    return esc(digits(value, lang))
 
 
 def code_table_for(size, lang):
@@ -571,46 +577,45 @@ def code_table_for(size, lang):
     rows = rows_src[size]
     sterile = any(r[5] is not None for r in rows)
     if lang == 'en':
-        heads = ['Product code', 'Powder', 'Filter type', 'Suction bag']
+        heads = ui['heads'][:6]
         if sterile:
-            heads.append('Sterile')
-        heads.append('Door')
+            heads.append(ui['heads'][6])
+        heads.append(ui['heads'][7])
     else:
-        heads = ui['heads'][:5]
+        heads = ui['heads'][:6]
         if sterile:
-            heads.append(ui['heads'][5])
-        heads.append(ui['heads'][6])
+            heads.append(ui['heads'][6])
     th = ''.join(f'<th scope="col">{esc(h)}</th>' for h in heads)
     body = []
     for row in rows:
         if lang == 'en':
-            code, _irc, _sz, kind, powder, ster, lidk, bag = row
-            pairs = [
-                (heads[0], f'<bdi dir="ltr">{esc(code)}</bdi>'),
-                (heads[1], yn(powder, lang)),
-                (heads[2], cell_text(kind, lang)),
-                (heads[3], esc(bag)),
-            ]
-            if sterile:
-                pairs.append((heads[4], '—' if ster is None else yn(ster, lang)))
-            pairs.append((heads[-1], lid(lidk, lang)))
+            code, irc, _sz, kind, powder, ster, lidk, bag = row
         else:
-            code, irc, sz, kind, powder, ster, lidk = row
-            pairs = [
-                (heads[0], f'<bdi dir="ltr">{esc(code)}</bdi>'),
-                (heads[1], f'<bdi dir="ltr">{esc(irc)}</bdi>'),
-                (heads[2], esc(digits(sz, lang))),
-                (heads[3], cell_text(kind, lang)),
-                (heads[4], yn(powder, lang)),
-            ]
-            if sterile:
-                pairs.append((heads[5], '—' if ster is None else yn(ster, lang)))
-            pairs.append((heads[-1], lid(lidk, lang)))
+            code, irc, _sz, kind, powder, ster, lidk = row
+            bag = None
+        pairs = [
+            (heads[0], f'<bdi dir="ltr">{esc(code)}</bdi>'),
+            (heads[1], cell_or_dash(irc, lang)),
+            (heads[2], cell_or_dash(kind, lang)),
+            (heads[3], cell_or_dash(hydro_flag(kind), lang)),
+            (heads[4], yn(powder, lang)),
+            (heads[5], lid(lidk, lang)),
+        ]
+        if sterile:
+            ster_h = ui['heads'][6] if lang != 'en' else 'Sterile'
+            pairs.append((ster_h, DASH if ster is None else yn(ster, lang)))
+        if lang == 'en':
+            pairs.append((heads[-1], esc(bag)))
         cells = [v for _, v in pairs]
         body.append('<tr>' + ''.join(f'<td>{c}</td>' for c in cells) + '</tr>')
     return (
-        f'<div class="code-table-wrap"><table class="code-table">'
-        f'<thead><tr>{th}</tr></thead><tbody>{"".join(body)}</tbody></table></div>'
+        f'<div class="code-table-shell" data-table-scroll>'
+        f'<div class="code-table-wrap">'
+        f'<table class="code-table">'
+        f'<thead><tr>{th}</tr></thead><tbody>{"".join(body)}</tbody></table>'
+        f'</div>'
+        f'<span class="code-table-fade" aria-hidden="true"></span>'
+        f'</div>'
     )
 
 
@@ -620,45 +625,177 @@ def size_picker(lang):
     heights = size_heights()
     btns = []
     for i, size in enumerate(('1', '2', '3')):
-        sel = ' aria-selected="true"' if i == 0 else ' aria-selected="false"'
+        sel = 'true' if i == 0 else 'false'
         btns.append(
-            f'<button class="size-pick-btn" type="button" data-size="{size}"{sel}>'
+            f'<button class="size-pick-btn" type="button" role="tab" id="tab-s{size}" '
+            f'data-size="{size}" aria-controls="s{size}" aria-selected="{sel}" tabindex="{0 if i == 0 else -1}">'
             f'<strong>{names[size][lang]}</strong><em>{heights[size][lang]}</em></button>'
         )
     inner = ''.join(btns)
     return (
-        f'<section class="bag-block bag-sizes-pick" id="sizes"><div class="wrap">'
-        f'<h2>{esc(ui["sizes_h"])}</h2>'
+        f'<h2 id="sizes-h">{esc(ui["sizes_h"])}</h2>'
         f'<p class="bag-lead">{meas(ui["sizes_lead"], lang)}</p>'
-        f'<div class="size-pick" role="tablist" aria-label="{esc(ui["sizes_h"])}">{inner}</div>'
-        f'</div></section>'
+        f'<div class="size-pick" role="tablist" aria-labelledby="sizes-h">{inner}</div>'
     )
+
+
+GALLERIES = {
+    '1': [
+        ('p1-g2.webp', False, {
+            'fa': 'نمای کنار کیسه ساکشن و درب فیروزه‌ای با درپوش بنددار',
+            'en': 'Side view of the suction liner and teal lid with tethered cap',
+            'ar': 'منظر جانبي لكيس الشفط والغطاء الفيروزي مع غطاء مربوط',
+        }),
+        ('p1-g1.webp', False, {
+            'fa': 'نمای زیر درب: پورت بیمار و نشان VACUUM',
+            'en': 'Underside of the lid: patient port and the VACUUM mark',
+            'ar': 'الجهة السفلى للغطاء: منفذ المريض وعلامة VACUUM',
+        }),
+        ('p1-g4.webp', False, {
+            'fa': 'سه کیسه ساکشن کنار هم با شیلنگ، نصب سری',
+            'en': 'Three suction liners side by side with tubing, series mounting',
+            'ar': 'ثلاثة أكياس شفط جنباً إلى جنب مع الأنابيب، تركيب متسلسل',
+        }),
+        ('p1-g3.webp', False, {
+            'fa': 'کیسه ساکشن کنار مخزن مدرج پلی‌کربنات',
+            'en': 'Suction liner beside the graduated polycarbonate canister',
+            'ar': 'كيس الشفط بجانب الخزان المدرج من البولي كربونات',
+        }),
+    ],
+    '2': [
+        ('p2-g1.webp', False, {
+            'fa': 'درب و فیلتر کیسه ساکشن ۲ لیتری از نمای جانبی',
+            'en': 'Side view of the 2-litre suction liner lid and filter',
+            'ar': 'منظر جانبي لغطاء وفلتر كيس الشفط سعة ٢ لتر',
+        }),
+        ('p2-g2.webp', False, {
+            'fa': 'کیسه ساکشن ۲ لیتری آبادیس داخل مخزن مدرج با شلنگ',
+            'en': '2-litre Abadis suction liner inside the graduated canister with tubing',
+            'ar': 'كيس الشفط آباديس سعة ٢ لتر داخل الخزان المدرج مع الأنابيب',
+        }),
+        ('p2-g3.webp', False, {
+            'fa': 'اتصال شلنگ‌ها به درب کیسه ساکشن ۲ لیتری',
+            'en': 'Tubing connected to the lid of the 2-litre suction liner',
+            'ar': 'توصيل الأنابيب بغطاء كيس الشفط سعة ٢ لتر',
+        }),
+        ('p2-g4.webp', True, {
+            'fa': 'ابعاد کیسه ساکشن ۲ لیتری: قطر ۱۱ و ارتفاع ۲۴٫۵ سانتی‌متر',
+            'en': '2-litre suction liner dimensions: diameter 11 cm and height 24.5 cm',
+            'ar': 'أبعاد كيس الشفط سعة ٢ لتر: القطر ١١ سم والارتفاع ٢٤٫٥ سم',
+        }),
+    ],
+    '3': [
+        ('p3-g1.webp', False, {
+            'fa': 'کیسه ساکشن ۳ لیتری آبادیس در کنار مخزن مدرج',
+            'en': '3-litre Abadis suction liner beside the graduated canister',
+            'ar': 'كيس الشفط آباديس سعة ٣ لتر بجانب الخزان المدرج',
+        }),
+        ('p3-g2.webp', False, {
+            'fa': 'درب کیسه ساکشن ۳ لیتری در کنار مخزن',
+            'en': '3-litre suction liner lid beside the canister',
+            'ar': 'غطاء كيس الشفط سعة ٣ لتر بجانب الخزان',
+        }),
+        ('p3-g3.webp', False, {
+            'fa': 'نمای درب و مخزن مدرج ۳ لیتری',
+            'en': 'Lid and graduated 3-litre canister',
+            'ar': 'منظر الغطاء والخزان المدرج سعة ٣ لتر',
+        }),
+        ('p3-g4.webp', False, {
+            'fa': 'مخزن مدرج و کیسه ساکشن ۳ لیتری از نمای افقی',
+            'en': 'Graduated canister and 3-litre suction liner, horizontal view',
+            'ar': 'الخزان المدرج وكيس الشفط سعة ٣ لتر من منظر أفقي',
+        }),
+        ('p3-g5.webp', True, {
+            'fa': 'ابعاد کیسه ساکشن ۳ لیتری: قطر ۱۱ و ارتفاع ۳۹ سانتی‌متر',
+            'en': '3-litre suction liner dimensions: diameter 11 cm and height 39 cm',
+            'ar': 'أبعاد كيس الشفط سعة ٣ لتر: القطر ١١ سم والارتفاع ٣٩ سم',
+        }),
+    ],
+}
+
+LINER_VIEWS = {
+    '1': [
+        ('front', 'نمای روبه‌رو', 'Front view', 'المنظر الأمامي', 'p01-1l-liner'),
+        ('top', 'نمای بالا', 'Top view', 'المنظر العلوي', 'p01-1l-liner'),
+    ],
+}
+
+
+def gallery_for(size, lang, pfx):
+    ui = UI[lang]
+    cards = []
+    for name, contain, alts in GALLERIES[size]:
+        alt = esc(alts[lang])
+        klass = 'gal-card gal-contain' if contain else 'gal-card'
+        loading = 'eager' if not cards else 'lazy'
+        cards.append(
+            f'<figure class="{klass}"><div class="gal-frame">'
+            f'<img src="{pfx}assets/img/p/{name}" alt="{alt}" width="1200" height="800" loading="{loading}" decoding="async">'
+            f'</div><figcaption>{alt}</figcaption></figure>'
+        )
+    for view, fa, en, ar, mid in LINER_VIEWS.get(size, []):
+        cap = {'fa': fa, 'en': en, 'ar': ar}[lang]
+        light = f'{pfx}assets/img/products/3d/{mid}-{view}-light.webp'
+        dark = f'{pfx}assets/img/products/3d/{mid}-{view}-dark.webp'
+        cards.append(
+            f'<figure class="gal-card gal-pair"><div class="gal-frame">'
+            f'<img class="gal-light" src="{light}" alt="{esc(cap)}" width="800" height="700" loading="lazy" decoding="async">'
+            f'<img class="gal-dark" src="{dark}" alt="" width="800" height="700" loading="lazy" decoding="async" aria-hidden="true">'
+            f'</div><figcaption>{esc(cap)}</figcaption></figure>'
+        )
+    cap = ui['iso_cap']
+    cards.append(
+        f'<figure class="gal-card gal-iso gal-contain"><div class="gal-frame-slot">'
+        f'{iso_frame(lang, pfx, size)}</div><figcaption>{esc(cap)}</figcaption></figure>'
+    )
+    gal_o = '<div class="gal" data-gal>'
+    rail = f'<div class="gal-rail">{"".join(cards)}</div>'
+    nav = (
+        f'<div class="gal-nav">'
+        f'<button class="gal-arrow gal-prev" type="button" aria-label="{esc(ui["prev"])}">{ARROW}</button>'
+        f'<div class="gal-dots"></div>'
+        f'<button class="gal-arrow gal-next" type="button" aria-label="{esc(ui["next"])}">{ARROW}</button>'
+        f'</div></div>'
+    )
+    return gal_o + rail + nav
 
 
 def size_sections(lang, pfx):
     ui = UI[lang]
     chunks = []
-    for size in ('1', '2', '3'):
+    for i, size in enumerate(('1', '2', '3')):
         s = SPECS[lang][size]
+        hidden = '' if i == 0 else ' hidden'
+        gal = (
+            f'<div class="size-gal" id="s{size}-gallery" data-sec="gallery">'
+            f'<h3>{esc(ui["gal_h"])}</h3>'
+            f'{gallery_for(size, lang, pfx)}</div>'
+        )
+        specs = spec_one(size, lang, pfx)
+        specs = specs.replace(f'id="spec-{size}"', f'id="s{size}-specs" data-sec="specs"', 1)
         uses = (
-            f'<div class="size-uses">'
+            f'<div class="size-uses" id="s{size}-uses" data-sec="uses">'
             f'<h3>{esc(s["uses_h"])}</h3>'
             f'<div class="uses">{render_uses(s, lang, pfx)}</div></div>'
         )
         codes = (
-            f'<div class="size-codes" id="codes-{size}">'
+            f'<div class="size-codes" id="s{size}-codes" data-sec="codes">'
             f'<h3>{esc(ui["codes_h"])}</h3>'
             f'{code_table_for(size, lang)}</div>'
         )
         chunks.append(
-            f'<section class="bag-size" id="s{size}">'
-            f'<div class="wrap">'
-            f'{spec_one(size, lang, pfx)}'
-            f'{uses}'
-            f'{codes}'
-            f'</div></section>'
+            f'<div class="bag-panel" role="tabpanel" id="s{size}" data-size="{size}" '
+            f'aria-labelledby="tab-s{size}"{hidden}>'
+            f'{gal}{specs}{uses}{codes}'
+            f'</div>'
         )
-    return '\n  '.join(chunks)
+    return (
+        f'<section class="bag-block bag-sizes" id="sizes"><div class="wrap">'
+        f'{size_picker(lang)}'
+        f'<div class="size-panels">{"".join(chunks)}</div>'
+        f'</div></section>'
+    )
+
 
 
 def render_uses(s, lang, pfx):
@@ -769,7 +906,6 @@ def packaging_block(lang):
     <div class="pack-tiers">{"".join(chunks)}</div>
   </div></section>'''
 
-
 def filters_block(lang, pfx="../../"):
     ui = UI[lang]
     intro = SPECS[lang]['1']['types']
@@ -783,71 +919,14 @@ def filters_block(lang, pfx="../../"):
         if lang == 'ar':
             lis = '<li><strong>مواصفات الفلتر</strong></li>' + lis
         cards.append(f'<article class="spec-card span-2"><h3>{esc(fh)}</h3><ol class="filter-list">{lis}</ol></article>')
-    return f'''<section class="bag-block" id="filters"><div class="wrap">
-    <h2>{esc(ui["filters_h"])}</h2>
-    <div class="filter-iso">{iso_frame(lang, pfx, "filter")}<p class="iso-cap">{esc(ui["iso_filter_cap"])}</p></div>
-    <div class="spec-grid">{"".join(cards)}</div>
-  </div></section>'''
-
-
-GALLERY = [
-    ('p1-g2.webp', None, {
-        'fa': 'نمای کنار کیسه ساکشن و درب فیروزه‌ای با درپوش بنددار',
-        'en': 'Side view of the suction liner and teal lid with tethered cap',
-        'ar': 'منظر جانبي لكيس الشفط والغطاء الفيروزي مع غطاء مربوط',
-    }),
-    ('p1-g1.webp', None, {
-        'fa': 'نمای زیر درب: پورت بیمار و نشان VACUUM',
-        'en': 'Underside of the lid: patient port and the VACUUM mark',
-        'ar': 'الجهة السفلى للغطاء: منفذ المريض وعلامة VACUUM',
-    }),
-    ('p1-g4.webp', None, {
-        'fa': 'سه کیسه ساکشن کنار هم با شیلنگ، نصب سری',
-        'en': 'Three suction liners side by side with tubing, series mounting',
-        'ar': 'ثلاثة أكياس شفط جنباً إلى جنب مع الأنابيب، تركيب متسلسل',
-    }),
-    ('p1-g3.webp', None, {
-        'fa': 'کیسه ساکشن کنار مخزن مدرج پلی‌کربنات',
-        'en': 'Suction liner beside the graduated polycarbonate canister',
-        'ar': 'كيس الشفط بجانب الخزان المدرج من البولي كربونات',
-    }),
-]
-
-
-def gallery(lang, pfx):
-    cards = []
-    for name, _dark, alts in GALLERY:
-        alt = esc(alts[lang])
-        cards.append(
-            f'<figure class="gal-card"><div class="gal-frame"><img src="{pfx}assets/img/p/{name}" alt="{alt}" width="1200" height="800" loading="lazy" decoding="async"></div><figcaption>{alt}</figcaption></figure>'
-        )
-    for view, fa, en, ar in (
-        ('front', 'نمای روبه‌رو', 'Front view', 'المنظر الأمامي'),
-        ('top', 'نمای بالا', 'Top view', 'المنظر العلوي'),
-    ):
-        cap = {'fa': fa, 'en': en, 'ar': ar}[lang]
-        light = f'{pfx}assets/img/products/3d/p01-1l-liner-{view}-light.webp'
-        dark = f'{pfx}assets/img/products/3d/p01-1l-liner-{view}-dark.webp'
-        cards.append(
-            f'<figure class="gal-card gal-pair"><div class="gal-frame">'
-            f'<img class="gal-light" src="{light}" alt="{esc(cap)}" width="800" height="700" loading="lazy" decoding="async">'
-            f'<img class="gal-dark" src="{dark}" alt="" width="800" height="700" loading="lazy" decoding="async" aria-hidden="true">'
-            f'</div><figcaption>{esc(cap)}</figcaption></figure>'
-        )
-    ui = UI[lang]
-    cap = ui['iso_cap']
-    cards.append(
-        f'<figure class="gal-card gal-iso gal-contain"><div class="gal-frame-slot">'
-        f'{iso_frame(lang, pfx, "liner")}</div><figcaption>{esc(cap)}</figcaption></figure>'
+    h2 = esc(ui['filters_h'])
+    grid = ''.join(cards)
+    return (
+        f'<section class="bag-block" id="filters"><div class="wrap">'
+        f'<h2>{h2}</h2>'
+        f'<div class="spec-grid">{grid}</div>'
+        f'</div></section>'
     )
-    return f'''<div class="gal" data-gal>
-      <div class="gal-rail">{''.join(cards)}</div>
-      <div class="gal-nav">
-        <button class="gal-arrow gal-prev" type="button" aria-label="{esc(ui["prev"])}">{ARROW}</button>
-        <div class="gal-dots"></div>
-        <button class="gal-arrow gal-next" type="button" aria-label="{esc(ui["next"])}">{ARROW}</button>
-      </div>
-    </div>'''
 
 
 def main_html(lang, pfx):
@@ -866,60 +945,50 @@ def main_html(lang, pfx):
     if lang == 'en':
         export = f'<a class="btn-ghost" href="{ui["export_href"]}">{esc(ui["export"])}</a>'
     still = f'{pfx}assets/img/products/3d/p01-cinematic-v12-still-studio.webp'
-    return f'''<main id="main">
-  <div class="cin-track" id="film" data-cin-root data-cin-floors="hero" data-tone="dark" data-cin-module="{pfx}assets/js/p01-cinematic-page.js?v={V}">
-    <div class="cin-stage">
-      <div class="cin-view">
-        <canvas aria-hidden="true"></canvas>
-        <img class="cin-still" src="{still}" width="900" height="1338" alt="{esc(ui["still_alt"])}" fetchpriority="high" decoding="async">
-        <div class="cin-bar" aria-hidden="true"></div>
-      </div>
-      <div class="cin-copy">
-        <h1>{esc(ui["h1"])}</h1>
-        <div class="cin-beats">{beats}</div>
-      </div>
-    </div>
-  </div>
-  <nav class="bag-sub" aria-label="{esc(ui["specs"])}">
-    <div class="wrap bag-sub-row">
-      <div class="bag-sub-scroller">{nav}</div>
-      <button class="bag-sub-hint" type="button" aria-label="{esc(ui["next"])}">{ARROW}</button>
-      <a class="btn-primary" href="{ui["quote_href"]}">{esc(ui["quote"])}</a>
-    </div>
-  </nav>
-  <section class="bag-block bag-intro" id="intro"><div class="wrap">
-    <h2>{esc(ui["intro_h"])}</h2>
-    <p class="bag-lead">{esc(ui["intro_p"])}</p>
-  </div></section>
-  <section class="bag-block bag-stats" id="stats"><div class="wrap">
-    <h2>{esc(ui["stats_h"])}</h2>
-    <div class="stat-grid">{stats}</div>
-  </div></section>
-  <section class="bag-block" id="gallery"><div class="wrap">
-    <h2>{esc(ui["gal_h"])}</h2>
-    <p class="bag-lead">{esc(ui["gal_lead"])}</p>
-    {gallery(lang, pfx)}
-  </div></section>
-  {size_picker(lang)}
-  {size_sections(lang, pfx)}
-  {filters_block(lang, pfx)}
-  {packaging_block(lang)}
-  <section class="bag-block" id="catalog"><div class="wrap">
-    <h2>{esc(ui["catalog_h"])}</h2>
-    <p class="bag-lead">{esc(ui["catalog_lead"])}</p>
-  </div></section>
-  <section class="bag-close" id="order"><div class="wrap"><div class="panel">
-    <h2>{esc(ui["close_h"])}</h2>
-    <p>{esc(ui["close_p"])}</p>
-    <div class="cta-row">
-      <a class="btn-primary" href="{ui["quote_href"]}">{esc(ui["quote"])}</a>
-      <a class="btn-ghost" href="tel:+982192001017">{esc(ui["call"])}</a>
-      <a class="btn-ghost" href="{ui["catalog_href"]}" data-track="catalogue_download">{esc(ui["catalog"])}</a>
-      {export}
-      <a class="btn-ghost" href="{ui["guide_href"]}">{esc(ui["guide"])}</a>
-    </div>
-  </div></div></section>
-</main>'''
+    return (
+        f'<main id="main">'
+        f'<div class="cin-track" id="film" data-cin-root data-cin-floors="hero" data-tone="dark" data-cin-module="{pfx}assets/js/p01-cinematic-page.js?v={V}">'
+        f'<div class="cin-stage"><div class="cin-view">'
+        f'<canvas aria-hidden="true"></canvas>'
+        f'<img class="cin-still" src="{still}" width="900" height="1338" alt="{esc(ui["still_alt"])}" fetchpriority="high" decoding="async">'
+        f'<div class="cin-bar" aria-hidden="true"></div>'
+        f'</div>'
+        f'<div class="cin-copy"><h1>{esc(ui["h1"])}</h1><div class="cin-beats">{beats}</div></div>'
+        f'</div></div>'
+        f'<nav class="bag-sub" aria-label="{esc(ui["specs"])}">'
+        f'<div class="wrap bag-sub-row">'
+        f'<div class="bag-sub-scroller">{nav}</div>'
+        f'<button class="bag-sub-hint" type="button" aria-label="{esc(ui["next"])}">{ARROW}</button>'
+        f'<a class="btn-primary" href="{ui["quote_href"]}">{esc(ui["quote"])}</a>'
+        f'</div></nav>'
+        f'<section class="bag-block bag-intro" id="intro"><div class="wrap">'
+        f'<h2>{esc(ui["intro_h"])}</h2>'
+        f'<p class="bag-lead">{esc(ui["intro_p"])}</p>'
+        f'</div></section>'
+        f'<section class="bag-block bag-stats" id="stats"><div class="wrap">'
+        f'<h2>{esc(ui["stats_h"])}</h2>'
+        f'<div class="stat-grid">{stats}</div>'
+        f'</div></section>'
+        f'{size_sections(lang, pfx)}'
+        f'{filters_block(lang, pfx)}'
+        f'{packaging_block(lang)}'
+        f'<section class="bag-block" id="catalog"><div class="wrap">'
+        f'<h2>{esc(ui["catalog_h"])}</h2>'
+        f'<p class="bag-lead">{esc(ui["catalog_lead"])}</p>'
+        f'</div></section>'
+        f'<section class="bag-close" id="order"><div class="wrap"><div class="panel">'
+        f'<h2>{esc(ui["close_h"])}</h2>'
+        f'<p>{esc(ui["close_p"])}</p>'
+        f'<div class="cta-row">'
+        f'<a class="btn-primary" href="{ui["quote_href"]}">{esc(ui["quote"])}</a>'
+        f'<a class="btn-ghost" href="tel:+982192001017">{esc(ui["call"])}</a>'
+        f'<a class="btn-ghost" href="{ui["catalog_href"]}" data-track="catalogue_download">{esc(ui["catalog"])}</a>'
+        f'{export}'
+        f'<a class="btn-ghost" href="{ui["guide_href"]}">{esc(ui["guide"])}</a>'
+        f'</div></div></div></section>'
+        f'</main>'
+    )
+
 
 
 PAGES = {

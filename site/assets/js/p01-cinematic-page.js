@@ -300,7 +300,15 @@ const KF=[
  [1,    V(80,14,495), V(0,-45,0)]
 ];
 let T=0,lastN=0;const cp=new THREE.Vector3(),ct=new THREE.Vector3();
-function prog(){if(qp.has('t'))return +qp.get('t');const total=Math.max(1,root.offsetHeight-innerHeight);const scrolled=Math.min(total,Math.max(0,-root.getBoundingClientRect().top));return cl(scrolled/total);}
+let trackH=1,trackTop=0,onScreen=true,rafId=0,looping=false;
+function measureTrack(){trackH=Math.max(1,root.offsetHeight-innerHeight);trackTop=root.getBoundingClientRect().top+scrollY;}
+measureTrack();
+addEventListener('resize',measureTrack,{passive:true});
+if('IntersectionObserver' in window){
+ new IntersectionObserver((ents)=>{onScreen=ents.some(e=>e.isIntersecting);if(onScreen)ensureLoop();},{root:null,threshold:0,rootMargin:'80px 0px'}).observe(root);
+}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)ensureLoop();});
+function prog(){if(qp.has('t'))return +qp.get('t');const scrolled=Math.min(trackH,Math.max(0,scrollY-trackTop));return cl(scrolled/trackH);}
 function sampleKF(t,outP,outT){
  let a=KF[0],b=KF[KF.length-1];
  for(let n=0;n<KF.length-1;n++)if(t>=KF[n][0]&&t<=KF[n+1][0]){a=KF[n];b=KF[n+1];break;}
@@ -310,7 +318,10 @@ function sampleKF(t,outP,outT){
 let paused=false;
 const pauseBtn=root.querySelector('[data-cin-pause]');
 if(pauseBtn)pauseBtn.addEventListener('click',()=>{paused=!paused;pauseBtn.setAttribute('aria-pressed',paused?'true':'false');root.classList.toggle('is-paused',paused);});
-function frame(now){requestAnimationFrame(frame);
+function ensureLoop(){if(looping||stillCapture)return;looping=true;rafId=requestAnimationFrame(frame);}
+function frame(now){
+ if(!onScreen||document.hidden){looping=false;rafId=0;return;}
+ rafId=requestAnimationFrame(frame);
  if(paused){R.render(S,C);return;}
  const dt=Math.min(.1,(now-(lastN||now))/1000);lastN=now;T+=(prog()-T)*(qp.has('t')?1:1-Math.exp(-dt*3.2));const t=T;
  const tSec=now*.001;
@@ -400,6 +411,6 @@ if(stillCapture){
 }else{
  root.classList.remove('is-still');
  root.classList.add('is-playing');
- requestAnimationFrame(frame);
+ ensureLoop();
 }
 }
