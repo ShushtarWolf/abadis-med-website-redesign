@@ -34,8 +34,16 @@ body.page-bag .header:not(.past-hero)::before {
 
 /* ----- cinematic hero: lit studio, full-bleed; caption overlays (no band) ----- */
 .page-bag .cin-track {
-  position: relative; height: 460vh;
+  position: relative; height: 280vh;
   background: #05090b; color: #f2f7f7;
+}
+/* Mobile: no long scroll-scrub pin. The film is one screen and autoplays in JS. */
+@media (max-width: 768px) {
+  .page-bag .cin-track {
+    height: 100svh;
+    height: 100dvh;
+  }
+  html:has(body.page-bag) { scroll-behavior: auto; }
 }
 .page-bag .cin-stage {
   position: sticky; top: 0;
@@ -193,11 +201,12 @@ body.page-bag .header:not(.past-hero)::before {
 .bag-stats { padding-top: 28px; }
 @media (min-width: 800px) { .stat-grid { grid-template-columns: repeat(4, 1fr); } }
 
-.gal { position: relative; }
+.gal { position: relative; touch-action: pan-y; }
 .gal-rail {
   display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory;
   scroll-padding-inline: 16px; padding: 4px 16px 4px;
   scrollbar-width: none; align-items: flex-start;
+  touch-action: pan-x pan-y;
 }
 .gal-rail::-webkit-scrollbar { display: none; }
 .gal-card {
@@ -597,7 +606,10 @@ html[lang^="en"] .page-bag .filter-list li {
 [data-theme="noir"] .iso-frame .iso-still-dark { display: block !important; }
 .iso-frame canvas {
   position: absolute; inset: 0; width: 100% !important; height: 100% !important;
-  display: block; touch-action: none;
+  display: block; touch-action: pan-y;
+}
+.iso-frame.is-live, .iso-frame.is-live canvas {
+  touch-action: none;
 }
 .iso-frame:not(.is-live) canvas { visibility: hidden; }
 .iso-frame.is-live .iso-still, .iso-frame.is-live .iso-load { display: none !important; }
@@ -720,4 +732,39 @@ html[dir="rtl"] .code-table td:first-child {
     font-size: 11px;
   }
   .page-bag .lid { width: 28px; height: 12px; }
+}
+
+/* Keep the closing CTA and footer clear of the fixed chat launcher. */
+@media (max-width: 768px) {
+  body.page-bag .site-footer {
+    padding-bottom: calc(26px + env(safe-area-inset-bottom, 0px) + 72px);
+  }
+}
+
+/* Vertical swipes over tabs/buttons must scroll the page, not stick the gesture
+   to the control (the size picker sat in the lower half after the hero and
+   made iPhone scrolling feel stuck around intro / key numbers). */
+.page-bag .size-pick,
+.page-bag .size-pick-btn,
+.page-bag .stat-grid,
+.page-bag .bag-intro,
+.page-bag .bag-close,
+.page-bag .bag-close a,
+.page-bag .bag-close button,
+.page-bag .cin-cta,
+.page-bag .cin-cta a,
+.page-bag .cin-stage canvas,
+.page-bag .bag-sub,
+.page-bag .bag-sub .btn-primary {
+  touch-action: pan-y;
+}
+.page-bag .bag-sub-scroller {
+  touch-action: pan-x pan-y;
+}
+
+@media (max-width: 768px) {
+  .page-bag .cin-stage {
+    position: relative;
+    top: auto;
+  }
 }

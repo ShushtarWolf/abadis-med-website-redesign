@@ -161,8 +161,15 @@
     if (!scroller || !link) return;
     var s = scroller.getBoundingClientRect();
     var r = link.getBoundingClientRect();
-    if (r.left < s.left + 10 || r.right > s.right - 10) {
-      link.scrollIntoView({ inline: 'center', block: 'nearest', behavior: reduced ? 'auto' : 'smooth' });
+    if (r.left >= s.left + 10 && r.right <= s.right - 10) return;
+    /* Scroll only the horizontal subnav. link.scrollIntoView() also moves the
+       document (sticky item + block:nearest) and was snapping iPhone scroll
+       back to intro / the quote CTA. */
+    var left = scroller.scrollLeft + (r.left + r.right) / 2 - (s.left + s.right) / 2;
+    if (typeof scroller.scrollTo === 'function') {
+      scroller.scrollTo({ left: left, behavior: reduced ? 'auto' : 'smooth' });
+    } else {
+      scroller.scrollLeft = left;
     }
   }
   function spy() {
@@ -184,9 +191,33 @@
       }
     });
   }
+  /* Ignore click if a vertical swipe ended on sticky chrome (otherwise a flick
+     up the page jumps back to معرفی / اعداد and feels stuck). */
+  var ptr = {x: 0, y: 0, dragged: false};
+  function markDown(x, y) { ptr = {x: x, y: y, dragged: false}; }
+  function markMove(x, y) {
+    if (Math.abs(y - ptr.y) > 12 || Math.abs(x - ptr.x) > 12) ptr.dragged = true;
+  }
+  document.addEventListener('pointerdown', function (e) { markDown(e.clientX, e.clientY); }, {passive: true});
+  document.addEventListener('pointermove', function (e) { markMove(e.clientX, e.clientY); }, {passive: true});
+  document.addEventListener('touchstart', function (e) {
+    var t = e.changedTouches[0];
+    if (t) markDown(t.clientX, t.clientY);
+  }, {passive: true});
+  document.addEventListener('touchmove', function (e) {
+    var t = e.changedTouches[0];
+    if (t) markMove(t.clientX, t.clientY);
+  }, {passive: true});
+  document.addEventListener('click', function (e) {
+    if (!ptr.dragged) return;
+    if (!e.target.closest('.bag-sub a, .bag-sub button, .site-header a, .site-header button, .size-pick-btn, .gal-dots button, .gal-prev, .gal-next, .bag-close a, .cin-cta a')) return;
+    e.preventDefault();
+    e.stopPropagation();
+  }, true);
   if (links.length) {
     links.forEach(function (a) {
       a.addEventListener('click', function (e) {
+        if (ptr && ptr.dragged) { e.preventDefault(); return; }
         var id = a.getAttribute('href').slice(1);
         var el = sectionEl(id);
         if (!el) return;
@@ -201,7 +232,7 @@
   function isoModuleUrl() {
     var s = document.querySelector('script[src*="suction-bag-ui.js"]');
     if (!s) return '';
-    return s.src.replace(/suction-bag-ui\.js[^/]*$/, 'cad-iso-viewer.js?v=20261110t');
+    return s.src.replace(/suction-bag-ui\.js[^/]*$/, 'cad-iso-viewer.js?v=20261110u');
   }
   document.querySelectorAll('[data-iso]').forEach(function (frame) {
     var btn = frame.querySelector('.iso-load');

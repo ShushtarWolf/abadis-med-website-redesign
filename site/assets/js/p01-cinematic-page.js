@@ -308,7 +308,14 @@ if('IntersectionObserver' in window){
  new IntersectionObserver((ents)=>{onScreen=ents.some(e=>e.isIntersecting);if(onScreen)ensureLoop();},{root:null,threshold:0,rootMargin:'80px 0px'}).observe(root);
 }
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)ensureLoop();});
-function prog(){if(qp.has('t'))return +qp.get('t');const scrolled=Math.min(trackH,Math.max(0,scrollY-trackTop));return cl(scrolled/trackH);}
+const shortPin=()=>matchMedia('(max-width: 768px)').matches;
+let autoT=0,autoDone=false;
+function prog(){
+ if(qp.has('t'))return +qp.get('t');
+ if(shortPin())return autoT;
+ const scrolled=Math.min(trackH,Math.max(0,scrollY-trackTop));
+ return cl(scrolled/trackH);
+}
 function sampleKF(t,outP,outT){
  let a=KF[0],b=KF[KF.length-1];
  for(let n=0;n<KF.length-1;n++)if(t>=KF[n][0]&&t<=KF[n+1][0]){a=KF[n];b=KF[n+1];break;}
@@ -323,7 +330,9 @@ function frame(now){
  if(!onScreen||document.hidden){looping=false;rafId=0;return;}
  rafId=requestAnimationFrame(frame);
  if(paused){R.render(S,C);return;}
- const dt=Math.min(.1,(now-(lastN||now))/1000);lastN=now;T+=(prog()-T)*(qp.has('t')?1:1-Math.exp(-dt*3.2));const t=T;
+ const dt=Math.min(.1,(now-(lastN||now))/1000);lastN=now;
+ if(shortPin() && !autoDone){autoT=Math.min(1,autoT+dt/7.5);if(autoT>=1)autoDone=true;}
+ T+=(prog()-T)*(qp.has('t')?1:1-Math.exp(-dt*3.2));const t=T;
  const tSec=now*.001;
  if(bar)bar.style.width=(t*100)+'%';if(hint)hint.style.opacity=1-cl(t*18);
  beats.forEach(b=>{const f=.028;const o=Math.min(cl((t-b.a)/f),cl((b.b-t)/f));b.e.style.opacity=o;b.e.style.transform=`translateY(${(1-o)*10}px)`;});

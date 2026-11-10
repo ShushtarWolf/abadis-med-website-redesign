@@ -19,7 +19,7 @@ SITE = ROOT / 'site'
 FA_DIG = str.maketrans('0123456789', '۰۱۲۳۴۵۶۷۸۹')
 AR_DIG = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
 
-V = '20261110t'
+V = '20261110u'
 
 ARROW = ('<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
          '<path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" '
@@ -678,11 +678,6 @@ GALLERIES = {
             'en': 'Tubing connected to the lid of the 2-litre suction liner',
             'ar': 'توصيل الأنابيب بغطاء كيس الشفط سعة ٢ لتر',
         }),
-        ('p2-g4.webp', True, {
-            'fa': 'ابعاد کیسه ساکشن ۲ لیتری: قطر ۱۱ و ارتفاع ۲۴٫۵ سانتی‌متر',
-            'en': '2-litre suction liner dimensions: diameter 11 cm and height 24.5 cm',
-            'ar': 'أبعاد كيس الشفط سعة ٢ لتر: القطر ١١ سم والارتفاع ٢٤٫٥ سم',
-        }),
     ],
     '3': [
         ('p3-g1.webp', False, {
@@ -705,21 +700,8 @@ GALLERIES = {
             'en': 'Graduated canister and 3-litre suction liner, horizontal view',
             'ar': 'الخزان المدرج وكيس الشفط سعة ٣ لتر من منظر أفقي',
         }),
-        ('p3-g5.webp', True, {
-            'fa': 'ابعاد کیسه ساکشن ۳ لیتری: قطر ۱۱ و ارتفاع ۳۹ سانتی‌متر',
-            'en': '3-litre suction liner dimensions: diameter 11 cm and height 39 cm',
-            'ar': 'أبعاد كيس الشفط سعة ٣ لتر: القطر ١١ سم والارتفاع ٣٩ سم',
-        }),
     ],
 }
-
-LINER_VIEWS = {
-    '1': [
-        ('front', 'نمای روبه‌رو', 'Front view', 'المنظر الأمامي', 'p01-1l-liner'),
-        ('top', 'نمای بالا', 'Top view', 'المنظر العلوي', 'p01-1l-liner'),
-    ],
-}
-
 
 def gallery_for(size, lang, pfx):
     ui = UI[lang]
@@ -732,16 +714,6 @@ def gallery_for(size, lang, pfx):
             f'<figure class="{klass}"><div class="gal-frame">'
             f'<img src="{pfx}assets/img/p/{name}" alt="{alt}" width="1200" height="800" loading="{loading}" decoding="async">'
             f'</div><figcaption>{alt}</figcaption></figure>'
-        )
-    for view, fa, en, ar, mid in LINER_VIEWS.get(size, []):
-        cap = {'fa': fa, 'en': en, 'ar': ar}[lang]
-        light = f'{pfx}assets/img/products/3d/{mid}-{view}-light.webp'
-        dark = f'{pfx}assets/img/products/3d/{mid}-{view}-dark.webp'
-        cards.append(
-            f'<figure class="gal-card gal-pair"><div class="gal-frame">'
-            f'<img class="gal-light" src="{light}" alt="{esc(cap)}" width="800" height="700" loading="lazy" decoding="async">'
-            f'<img class="gal-dark" src="{dark}" alt="" width="800" height="700" loading="lazy" decoding="async" aria-hidden="true">'
-            f'</div><figcaption>{esc(cap)}</figcaption></figure>'
         )
     cap = ui['iso_cap']
     cards.append(
