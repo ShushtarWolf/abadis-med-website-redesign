@@ -1,54 +1,48 @@
 # P14 — Portable suction base (trolley)
 
-## Geometry source — not original factory CAD
-Hamid supplied a Grok-built reconstruction at https://zinc-cliff-horizon-solar.grok.me (DuoVac 80 / “Dual-canister suction stand”). He sent it as the stand. The page is a five-caster mobile base, a square upright, two collection jars at an illustrative 2 L scale, a vacuum regulator, and yellow / green / grey tubing, matched to his photograph, plus a drawing marked 80 cm tall. It includes explode and X-ray views, and a Download GLB (true scale, metres).
+## Provenance
+stand modeled from Hamid's supplied design; canisters = genuine Abadis 2L CAD with official print.
 
-This cinematic uses that published geometry as-is. No invented parts. Genuine P05 2 L canister CAD was not swapped in. Only materials, lights and cameras are presentation choices. The explode is a presentation pose of the existing parts, using the source offsets (jars part sideways, regulator lifts). Collected-volume fluid is a page slider, not a product part, and is omitted (exported at 0). Selection rings and the on-page dimension sprite are presentation-only and are omitted.
+پایه از طرح تهیه‌شده توسط حمید مدل‌سازی شده؛ مخازن = CAD اصلی ۲ لیتری آبادیس با چاپ رسمی.
 
-The GLB is generated in the browser from `assets/scene-TVCgftDd.js` (part constants, builders, `exportGlb`). Cached copies, Hamid’s photograph and drawing, the official product photograph, the page download `duovac-80-page.glb`, and this millimetre export live in `/workspace/_qa_stand/`.
+## Stand geometry — not original factory CAD
+Hamid supplied a Grok-built reconstruction at https://zinc-cliff-horizon-solar.grok.me (DuoVac 80). Base, square upright, vacuum regulator, and yellow / green / grey tubing are used as-is from that design. No invented stand parts. Materials, lights and cameras are presentation choices. The explode is a presentation pose of the existing parts (jars part sideways, regulator lifts), using the source offsets. Collected-volume fluid, selection rings and the on-page 80 cm sprite remain omitted.
+
+## Canisters — genuine P05 2 L CAD with official print
+Hamid chose to replace the two illustrative Grok jars with the approved genuine 2 L reusable canister CAD, the same mesh and photo-derived print texture as `p05-2l-cinematic` (commit `1ce00c11`).
+
+- Source mesh: `site/3d-sketches/p05-2l-cinematic/p05-2l-canister-cad.glb` (SHA256 `96086aeb53390d8bc85387c8bd98ba64dbeec072535e8b368256cbe27feb87f3`), identical to commit `1ce00c11`.
+- Official print: `site/3d-sketches/p05-2l-cinematic/tex/official-2l-print.png` (SHA256 `495ab3cd53661b9273f053e79a7d66e1559e7f87ba0469f7ced4e32be13c5e3c`), extracted from official photograph AMR_4901, same mapping as the approved 2 L cinematic (front exterior only; no mirrored inner/back print).
+- Official canister code **0402012**. CAD extents Ø 12.9 × H 27.0 cm including the rear collar-mount (vessel body is an open tall 2 L polycarbonate jar). All 1,194 source triangles per canister are retained (vessel 534; collar-mount 660). No scaled, smoothed, clipped or invented canister triangles.
+- Both canisters sit on the stand at the same axis positions as the Grok jars (x = ±102 mm, z = 0) and the same seat (bottom y = 235 mm), upright, at true CAD scale. Print faces +Z (forward), matching the official trolley photograph and the P05 2 L cinematic. No spacing or seat-height shift was required.
 
 ## Official product identity
-Hamid’s photograph is the same official Abadis product photograph as `assets/img/c/227665fb9960.webp` on the Stands & Holders page (`/products/stand/`, EN `/en/products/base-and-holder/`). Official names:
+Hamid’s photograph is the official Abadis product photograph `assets/img/c/227665fb9960.webp` on `/products/stand/` and `/en/products/base-and-holder/`.
 
 - FA: پایه ساکشن پرتابل (ترولی)
 - EN: Portable suction base (trolley)
-- Inventory: P14 (پایه ساکشن پرتابل ترولی ۴ مخزنه)
-- Catalog codes: 060401 Abadis short portable suction base (trolley) / پایه ساکشن پرتابل کوتاه (ترولی) آبادیس; 060402 Abadis long portable suction base (trolley) / پایه ساکشن پرتابل بلند (ترولی) آبادیس
+- Inventory: P14
+- Catalog codes: 060401 short / 060402 long
 
-Official listed specifications: holds up to four 3-litre canisters (12 litres) at once; the regulator and the ON/OFF valve can be fitted; light and easy to move. The official catalog does not print a height or a base span.
+Official listed specifications: holds up to four 3-litre canisters (12 litres); the regulator and the ON/OFF valve can be fitted; light and easy to move. The official catalog does not print a height or a base span. This is not P06 and not P15 / 060503 / 060504.
 
-This is not P06 (complete wall suction package) and not P15 / the wall canister clamp or rear portable clamp (060503, 060504).
+## Fit notes — nothing invented
+- No intersection with the upright, base or regulator. At jar height the main post is 40 × 40 mm; clearance from the genuine vessel wall to the post face is 20.5 mm, and from the collar-mount to the post face 17.5 mm. (The upright AABB looks tighter, 7.5 mm, only because a 60 mm square collar sits higher on the post, above the jar rim.)
+- Closest approach to the supplied tubing is about 14.7 mm (mesh-to-mesh). Some tube vertices hover over the open mouth; they do not intersect the vessel wall.
+- Genuine CAD is an open vessel: no lid and no mouth ports. The supplied yellow / green / grey lines still end at the former Grok lid-port locations, about 8 mm above the genuine rim and well inside the mouth (radial about 20–32 mm vs inner rim 60 mm). They no longer meet a port. Lines were not rerouted; no ports, lids or fittings were added.
+- The genuine rear collar-mount is kept in its original assembled pose, facing −Z (opposite the official print). The supplied stand has no hook, clamp or bracket that engages this collar. The collar sits in open air behind each vessel and does not contact the upright, base, regulator or lines.
 
-## Shown defaults versus official catalog numbers
-The DuoVac 80 page, as opened, shows:
-
-- height 80 cm, floor to crown
-- base: five casters, about 48 cm across
-- jars: two, illustrative 2 L scale
-- lines: yellow circuit, green overflow, grey supply
-- “Other sizes are matched by eye.”
-- “Jar numbers aren’t readable in the photos, so the 0.5–2.0 L marks are illustrative.”
-
-Those are the dimensions of this mesh, with the following measured extents:
-
-- labelled height 80 cm; model crown 80.5 cm (hose / tube radius past the 80 cm line)
-- labelled base “about 48 cm”; model five-caster footprint about 50.7 × 47.3 cm (not a perfect circle)
-- overall extents 76.7 × 46.8 × 80.5 cm (W × D × H), including side tubing
-
-Mismatches with the official catalog / photo page:
-
-- Official text: up to four 3 L jars. Official photograph (and this model) show two jars at an illustrative 2 L scale.
-- Official catalog has short (060401) and long (060402) trolleys but does not print 80 cm, so this model is not silently assigned to one of those codes.
-- Official photograph does show readable jar marks and the Abadis logo; the DuoVac page still treats the 0.5–2.0 L marks as illustrative because “numbers aren’t readable in the photos.” This cinematic keeps that honest label and does not invent official print.
-
-## Grok jars versus genuine P05 2 L canister CAD
-Not swapped in. The supplied jars are simple clear cylinders (body Ø 11.0 × H 24.0 cm) with a teal lid, green tick marks, and a ring-and-cross emblem. Genuine approved P05 2 L canister CAD is a wider, taller vessel (extents Ø 12.9 × H 27.0 cm) with the characteristic rear collar-mount and the official photo print. The two are visibly different in proportion and in missing / extra parts.
+## Shown stand defaults versus official catalog
+- Labelled height 80 cm; model crown 80.5 cm (hose / tube radius past the 80 cm line). Official catalog prints no height, so the model is not assigned to short vs long.
+- Labelled base “about 48 cm”; five-caster footprint about 50.7 × 47.3 cm.
+- Official text: up to four 3 L jars. Official photograph and this model show two jars. Those jars are now genuine 2 L CAD, not the earlier illustrative Grok cylinders.
+- Overall stand extents, including side tubing: 76.7 × 46.8 × 80.5 cm (W × D × H).
 
 ## Units and parts
-Source download: GLB in metres. The site file `p14-suction-stand.glb` is the same mesh in millimetres (× 1000). Parts: `base`, `upright`, `canister-l`, `canister-r`, `regulator`, `lines`.
+Site file `p14-suction-stand.glb` is in millimetres. Parts: `base`, `upright`, `canister-l` (genuine vessel + collar-mount), `canister-r` (same), `regulator`, `lines`.
 
-SHA256 of the millimetre GLB: `49d9cedfb888a248414f001eeddd72052311d310da3c3a6c83114916625f38e5`.
-Model extents: 767 × 468 × 805 mm (W × D × H). 16,498 triangles.
+SHA256 of the millimetre GLB: `9771cf70e5958f9a09de497368be467aedd0777fbd6626307e650a2027b4f9ad`.
+Model extents: 767 × 468 × 805 mm (W × D × H). 14,142 triangles.
 
 ## Presentation
-Approved cinematic typography, vendor Three.js, 1800vh scroll track, cubic pose easing, exp(-dt*3.2) damping, no idle drift or sway. Polar camera interpolation. Materials are approximate real-time finishes, not factory optical specifications. Soft studio backdrop and contact shadow are presentation only. Jar volume marks are illustrative, as on the supplied page.
+Approved cinematic typography, vendor Three.js, 1800vh scroll track, cubic pose easing, exp(-dt*3.2) damping, no idle drift or sway. Polar camera interpolation. Canister materials and official-print shader match the approved p05-2l-cinematic. Soft studio backdrop and contact shadow are presentation only.

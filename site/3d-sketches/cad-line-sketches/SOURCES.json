@@ -198,12 +198,12 @@
     "inventory": "P12"
   },
   "p14-suction-stand": {
-    "provenance": "MODELED FROM HAMID'S SUPPLIED STAND DESIGN (DuoVac 80 / zinc-cliff-horizon-solar.grok.me) at the page's shown 80 cm height and about-48 cm five-caster base; NOT original factory CAD. Official product is the portable suction trolley (P14), codes 060401 short / 060402 long. Official catalog does not print 80 cm and lists up to four 3 L jars; the official photograph (227665fb9960, same as Hamid's photo) and this model show two illustrative 2 L jars. Jar marks are illustrative. Genuine P05 2 L CAD was not swapped in.",
+    "provenance": "STAND modeled from Hamid's supplied design (DuoVac 80 / zinc-cliff-horizon-solar.grok.me) at the page's shown 80 cm height and about-48 cm five-caster base; NOT original factory CAD. CANISTERS = genuine Abadis 2 L CAD with official print, the same mesh and photo-derived print texture as approved p05-2l-cinematic (commit 1ce00c11, code 0402012). Official product is the portable suction trolley (P14), codes 060401 short / 060402 long. Official catalog does not print 80 cm and lists up to four 3 L jars; the official photograph (227665fb9960) shows two jars. Genuine CAD is an open vessel + rear collar-mount (no lid). Supplied lines still end at the former Grok lid-port locations and were not rerouted. Rear collar-mount faces aft and does not engage a stand hook.",
     "parts": {
       "base": 2948,
       "upright": 742,
-      "canister-l": 2372,
-      "canister-r": 2372,
+      "canister-l": 1194,
+      "canister-r": 1194,
       "regulator": 1872,
       "lines": 6192
     },
@@ -219,7 +219,7 @@
         256.41
       ]
     ],
-    "sha256": "49d9cedfb888a248414f001eeddd72052311d310da3c3a6c83114916625f38e5",
+    "sha256": "9771cf70e5958f9a09de497368be467aedd0777fbd6626307e650a2027b4f9ad",
     "nominalOfficialMm": null,
     "suppliedDesignMm": [
       480,
@@ -232,11 +232,17 @@
     ],
     "factoryCAD": false,
     "inventedParts": false,
-    "jarMarksIllustrative": true,
+    "jarMarksIllustrative": false,
     "productCodes": [
       "060401",
       "060402"
     ],
-    "inventory": "P14"
+    "inventory": "P14",
+    "genuineCanisters": "P05 2L CAD + official AMR_4901 print (commit 1ce00c11)",
+    "canisterExtentsMm": [
+      129,
+      270,
+      150.23
+    ]
   }
 }
