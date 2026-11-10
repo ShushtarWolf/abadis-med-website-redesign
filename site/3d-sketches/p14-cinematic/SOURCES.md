@@ -1,63 +1,32 @@
-# P14 — Portable suction base (trolley)
+# P14 — Portable suction trolley — sources
 
-## Provenance
-stand from Hamid's supplied design; canisters = genuine Abadis 2L CAD with official print; liners = approved 2L suction bag with two sachets.
+Official identity: پایه ساکشن پرتابل (ترولی) / Portable suction base (trolley). Product codes 060401 (short) and 060402 (long). Official photograph `227665fb9960`. Official catalog drawing prints ارتفاع ۸۰ سانتی‌متر (H 80 cm).
 
-پایه از طرح تهیه‌شده توسط حمید مدل‌سازی شده؛ مخازن = CAD اصلی ۲ لیتری آبادیس با چاپ رسمی؛ لاینرها = کیسه ساکشن ۲ لیتری تأییدشده با دو ساشه.
+**Provenance:** stand rebuilt to match the official Abadis trolley photo and drawing (H 80 cm); canisters = genuine 2L CAD; liners = approved 2L bag.
 
-## Stand geometry — not original factory CAD
-Hamid supplied a Grok-built reconstruction at https://zinc-cliff-horizon-solar.grok.me (DuoVac 80). Base, square upright, vacuum regulator, and yellow / green / grey tubing are used as-is from that design. No invented stand parts. Materials, lights and cameras are presentation choices. The explode is a presentation pose of the existing parts (lid and bag lift out of each canister, jars part sideways, regulator lifts), using the source offsets. Collected-volume fluid, selection rings and the on-page 80 cm sprite remain omitted.
+The Grok DuoVac 80 geometry (5-arm base, thin faceted tubes, stick-arm regulator) did not match the official product. This rebuild follows the official photo and drawing as the source of truth for the stand. No factory CAD exists for the trolley itself. The two canisters remain genuine Abadis 2 L vessel CAD with the official print; each holds the approved P02 2 L liner (lid seated on the rim, bag hanging inside). Two sealed sachets and the recessed filter are cinematic-only presentation geometry and are not in this GLB or the CAD-line plate.
 
-## Canisters — genuine P05 2 L CAD with official print
-Hamid chose to replace the two illustrative Grok jars with the approved genuine 2 L reusable canister CAD, the same mesh and photo-derived print texture as `p05-2l-cinematic` (commit `1ce00c11`).
+## Stand (reconstructed from the official photo and drawing)
 
-- Source mesh: `site/3d-sketches/p05-2l-cinematic/p05-2l-canister-cad.glb` (SHA256 `96086aeb53390d8bc85387c8bd98ba64dbeec072535e8b368256cbe27feb87f3`), identical to commit `1ce00c11`.
-- Official print: `site/3d-sketches/p05-2l-cinematic/tex/official-2l-print.png` (SHA256 `495ab3cd53661b9273f053e79a7d66e1559e7f87ba0469f7ced4e32be13c5e3c`), extracted from official photograph AMR_4901, same mapping as the approved 2 L cinematic (front exterior only; no mirrored inner/back print).
-- Official canister code **0402012**. CAD extents Ø 12.9 × H 27.0 cm including the rear collar-mount (vessel body is an open tall 2 L polycarbonate jar). All 1,194 source triangles per canister are retained (vessel 534; collar-mount 660). No scaled, smoothed, clipped or invented canister triangles.
-- Both canisters sit on the stand at the same axis positions as the Grok jars (x = ±102 mm, z = 0) and the same seat (bottom y = 235 mm), upright, at true CAD scale. Print faces +Z (forward), matching the official trolley photograph and the P05 2 L cinematic. No spacing or seat-height shift was required.
+- Four-arm X base of square white tube, about 40 cm caster-to-caster span (from the official photo’s base-to-jar proportion; the earlier 48 cm figure was the Grok span), with four black twin-wheel casters.
+- Square white post. A pale-green collar at lid height and a small front badge, as in the official photo.
+- Canisters sit high and close to the pole. Their genuine rear collar-mounts face the upright and engage a simple holder/clamp modelled from the part visible in the official photo (not an invented fitting). Prints face forward/outward: logo on the outer side, volume scale toward the pole, matching the official photo. The left canister is yawed −48° (logo to the outer-front); its collar-mount then points inward and slightly aft rather than straight at the pole — print match was prioritised. The right canister stays at +72° so the mount faces the pole and the print already matches. The right liner is yawed 180° on the vessel so the genuine PATIENT / VACUUM ports follow the official serial circuit.
+- Tubes are rebuilt as smooth `TubeGeometry` (24 radial segments, Catmull-Rom paths), not the original 9-sided Grok strings:
+  - short yellow patient stub on **left PATIENT**;
+  - thick yellow arch, **left VACUUM → right PATIENT** (serial link, left jar then right);
+  - yellow loop from the arch up into the underside of the regulator;
+  - short green overflow loop on **right VACUUM**;
+  - clear/grey supply hose from the top inlet of the regulator, looping down the left side.
+  Ends sleeve the genuine P02 nipples. No free dangling tails.
+- Regulator on top of the pole: off-white/grey body, round front gauge, large ribbed knob to the right, inlet fitting on top, outlet barb underneath — reconstructed from the official photo and drawing, not factory CAD.
+- Official drawing height is 80 cm floor to top. This model is about 812 mm to the top of the inlet/hose (12 mm over, honest). Official catalog lists up to four 3 L jars; this model follows the official photo (two 2 L).
 
-## Liners — approved P02 2 L suction bag with two sachets
-Hamid's answer on the open-canister / tube gap was to place the matching suction bag inside the lid / canister. Each genuine 2 L canister now holds the approved P02 2 L liner, reused as-is from `p02-cinematic` (commit `f54d8451` for the two-sachet correction; mesh from `p02-2l-cad.glb`, SHA256 `ccf6517709c90d79b83c62d681acea35c90bb9041ca319a29179653b09ebdbc4`).
+## Canisters and liners (unchanged genuine CAD)
 
-- Parts seated in each canister, in the approved P02 local frame: lid, liner collar, bag, tethered cap. The lid seating face at local y = 0 rests on the P05 rim (local y = 0, inner r = 60.00, outer r = 61.50). The bag hangs inside (bottom y = −268, 2 mm above the vessel floor at y = −270). The liner collar (r max 59.07) fits inside the mouth. Approved P02 orientation is kept: PATIENT port (tethered cap) at +Z, world tops L (−101.74, 514.84, 33.10) and R (102.26, 514.84, 33.10); VACUUM port (recessed flow-stopper filter underneath, as in official photos and the approved P02 lid) at local ≈ (33.41, −30.41), world tops L (−68.59, 516.42, −30.41) and R (135.41, 516.42, −30.41).
-- Two sealed absorbent sachets and the recessed filter disc are the same approved P02 presentation geometry (no sachet or filter CAD). They are built in the cinematic with the approved P02 materials, textures, solid-deck underside and photo-exception disc at (30, −16, −28). They are not baked into the site GLB / CAD-line plate.
-- Genuine CAD is not altered. The lid skirt at y ≈ −23 has r ≈ 60.33 mm versus the vessel inner mouth r = 60.00 mm (0.33 mm overlap). This is reported, not patched.
+- Canisters: genuine P05 2 L CAD, official print (`official-2l-print.png`), same shader as p05-2l-cinematic.
+- Liners: approved P02 2 L bag CAD (lid, collar, bag, cap). The tethered cap is folded down onto the lid deck so it does not stand up beside the patient port (the official trolley photo shows no upright cap).
+- SHA256 of the millimetre GLB: `4b1ebbc66e7d69249b3003768ce697ac1b70cfd3e765f3e2e3745aa82c34ed88`.
 
-## Official product identity
+## Explode
 
-Hamid’s photograph is the official Abadis product photograph `assets/img/c/227665fb9960.webp` on `/products/stand/` and `/en/products/base-and-holder/`.
-
-- FA: پایه ساکشن پرتابل (ترولی)
-- EN: Portable suction base (trolley)
-- Inventory: P14
-- Catalog codes: 060401 short / 060402 long
-
-Official listed specifications: holds up to four 3-litre canisters (12 litres); the regulator and the ON/OFF valve can be fitted; light and easy to move. The official catalog does not print a height or a base span. This is not P06 and not P15 / 060503 / 060504.
-
-## Fit notes — nothing invented
-- No intersection with the upright, base or regulator. At jar height the main post is 40 × 40 mm; clearance from the genuine vessel wall to the post face is 20.5 mm, and from the collar-mount to the post face 17.5 mm. (The upright AABB looks tighter, 7.5 mm, only because a 60 mm square collar sits higher on the post, above the jar rim.)
-- Closest approach of tubing to the vessel wall remains clear (about 14–16 mm mesh-to-mesh away from the seated ends); tubes do not intersect the vessel, upright, or each other except at the existing lines_2 / lines_4 tee and where the retracted lines_3 meets the yellow-circuit crown.
-- Hamid approved rerouting the supplied jar-side ends into the genuine P02 lid ports. Only the paths near those ends were bent; radius, colour and the rest of each run are unchanged. No parts or fittings were added. Circuit, following official photograph 227665fb9960 and the serial fill (left jar then right):
-  - Yellow `lines_1` (left outward) seats on **left PATIENT** — patient inlet.
-  - Yellow `lines_2` seats on **left VACUUM** and **right PATIENT** — serial link (left vacuum → right patient). The existing yellow `lines_4` spur still tees into the crown of this loop and runs toward the regulator (lines_4 has no jar-side end, so it was not bent into right VACUUM).
-  - Green `lines_5` (right outward) seats on **right VACUUM** — overflow hose as in the official trolley photograph, hanging outboard; it is not a run to the regulator.
-  - Yellow `lines_3` (the extra Grok back loop) had no remaining genuine port (three jar-side ends per side vs two lid ports) and was retracted into a short U under the yellow-circuit crown, meeting `lines_2`. No fitting was invented.
-  - Grey `lines_6` / `lines_7` (regulator wand) are unchanged.
-- Each seated end is a circular section of the original radius (~5.2–5.5 mm OD), approaching the vertical nipple from above and covering about 3 mm of the stem. Tethered patient caps stay in the approved open/flipped CAD pose and do not block the ports.
-- During the explode, tube ends stay with the stand and detach cleanly as each lid and bag lift out of the canister.
-- The genuine rear collar-mount is kept in its original assembled pose, facing −Z (opposite the official print). The supplied stand has no hook, clamp or bracket that engages this collar. The collar sits in open air behind each vessel and does not contact the upright, base, regulator or lines.
-
-## Shown stand defaults versus official catalog
-- Labelled height 80 cm; model crown 80.5 cm (hose / tube radius past the 80 cm line). Official catalog prints no height, so the model is not assigned to short vs long.
-- Labelled base “about 48 cm”; five-caster footprint about 50.7 × 47.3 cm.
-- Official text: up to four 3 L jars. Official photograph and this model show two jars. Those jars are now genuine 2 L CAD, not the earlier illustrative Grok cylinders.
-- Overall stand extents, including side tubing: 76.7 × 46.8 × 80.5 cm (W × D × H).
-
-## Units and parts
-Site file `p14-suction-stand.glb` is in millimetres. Parts: `base`, `upright`, `canister-l` (genuine vessel + collar-mount + seated P02 liner: lid, collar, bag, cap), `canister-r` (same), `regulator`, `lines`.
-
-SHA256 of the millimetre GLB: `56a9e36ac928f6fab13e68df756074146d23c5b40a8ff7faedc319c1c58eed71`.
-Model extents: 767 × 468 × 805 mm (W × D × H). 44,182 triangles (stand 11,754 + two liners 15,020 CAD triangles each, including the 1,194 canister triangles).
-
-## Presentation
-Approved cinematic typography, vendor Three.js, 1800vh scroll track, cubic pose easing, exp(-dt*3.2) damping, no idle drift or sway. Polar camera interpolation. Canister materials and official-print shader match the approved p05-2l-cinematic. Liner materials, recessed filter and two sealed sachets match the approved p02-cinematic. Soft studio backdrop and contact shadow are presentation only. Close-up hooks: `?look=print-l`, `print-r`, `print-l-tight`, `print-r-tight`, `collar`, `ports-l`, `ports-r`, `tubes-l`, `tubes-r`, `ports-l-top`, `ports-r-top`.
+Lid and bag lift out of each canister; tube ends stay with the stand and detach cleanly; jars part sideways; regulator lifts.

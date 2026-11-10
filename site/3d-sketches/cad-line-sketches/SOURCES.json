@@ -198,40 +198,40 @@
     "inventory": "P12"
   },
   "p14-suction-stand": {
-    "provenance": "STAND modeled from Hamid's supplied design (DuoVac 80 / zinc-cliff-horizon-solar.grok.me) at the page's shown 80 cm height and about-48 cm five-caster base; NOT original factory CAD. CANISTERS = genuine Abadis 2 L CAD with official print, the same mesh and photo-derived print texture as approved p05-2l-cinematic (commit 1ce00c11, code 0402012). LINERS = approved 2 L suction bag with two sachets, the same genuine P02 CAD (lid, collar, cap, bag) as approved p02-cinematic (commit f54d8451); each liner is seated in a 2 L canister with the lid on the rim and the bag hanging inside. Official product is the portable suction trolley (P14), codes 060401 short / 060402 long. Official catalog does not print 80 cm and lists up to four 3 L jars; the official photograph (227665fb9960) shows two jars. Two sealed sachets and the recessed flow-stopper disc are presentation geometry from the approved P02 cinematic (no sachet/filter CAD) and appear in the cinematic, not this CAD-line plate. Supplied jar-side tube ends were bent (radius and the rest of each path kept) to seat in the genuine lid ports: yellow lines_1 on left PATIENT (patient in); yellow lines_2 on left VACUUM and right PATIENT (serial link, left then right); green lines_5 on right VACUUM (overflow hose, official photo). Vacuum-to-regulator remains the existing yellow lines_4 spur teed on the serial loop (lines_4 has no jar-side end). The extra Grok back loop (lines_3) had no remaining port and was retracted under the yellow-circuit crown; no fitting invented. Rear collar-mount faces aft and does not engage a stand hook. Lid skirt at y~-23 has r~60.33 mm versus the vessel inner mouth r=60.00 mm (0.33 mm genuine-CAD overlap, not altered).",
+    "provenance": "stand rebuilt to match the official Abadis trolley photo and drawing (H 80 cm); canisters = genuine 2L CAD; liners = approved 2L bag. The Grok DuoVac 80 5-arm base, thin faceted tubes and stick-arm regulator were replaced. 4-arm square-tube X base, four twin-wheel casters, ~40 cm span (official photo proportion; earlier 48 cm was the Grok span). Genuine rear collar-mounts face the pole and engage a holder modelled from the official photo. Prints face forward/outward (logo outer, scale inner). Tubes are smooth thick hoses seated in the genuine P02 lid ports: yellow patient stub on left PATIENT; yellow arch left VACUUM to right PATIENT (serial); yellow loop to the regulator; short green overflow on right VACUUM; grey supply hose from the top inlet. Regulator, green collar and fittings are reconstructed from the official photo and drawing, not factory CAD. Model height is about 812 mm versus the official drawing 80 cm. Official catalog lists up to four 3 L jars; this model follows the official photo (two 2 L). The left canister is yawed −48° so the official print faces outer-front as in the photo; its collar-mount then points inward and slightly aft rather than straight at the pole (print match was prioritised). The right canister remains at +72°, mount facing the pole.",
     "parts": {
-      "base": 2948,
-      "upright": 742,
+      "base": 2648,
+      "upright": 656,
       "canister-l": 16214,
       "canister-r": 16214,
-      "regulator": 1872,
-      "lines": 6192
+      "regulator": 1348,
+      "lines": 20032
     },
     "bounds_mm": [
       [
-        -378.72,
-        1.26,
-        -211.4
+        -195.48,
+        0,
+        -174.26
       ],
       [
-        388.32,
-        806.32,
-        256.41
+        181.82,
+        812.41,
+        176.11
       ]
     ],
-    "sha256": "56a9e36ac928f6fab13e68df756074146d23c5b40a8ff7faedc319c1c58eed71",
+    "sha256": "4b1ebbc66e7d69249b3003768ce697ac1b70cfd3e765f3e2e3745aa82c34ed88",
     "nominalOfficialMm": null,
     "suppliedDesignMm": [
       480,
       800
     ],
     "modelExtentsMm": [
-      767,
-      468,
-      805
+      377,
+      350,
+      812
     ],
     "factoryCAD": false,
-    "inventedParts": false,
+    "inventedParts": "Stand (base, post, holders, regulator, tubes) reconstructed from the official photo and drawing; not factory CAD. Holder is the visible official clamp, not a free invention. Canisters and liners are unchanged genuine/approved CAD.",
     "jarMarksIllustrative": false,
     "productCodes": [
       "060401",
@@ -247,16 +247,40 @@
     "genuineLiners": "P02 2L CAD lid/collar/bag/cap (commit f54d8451) seated in each canister; two sachets + recessed filter are approved P02 presentation geometry",
     "linePortFit": {
       "snapped": false,
-      "reroutedJarEnds": true,
-      "thresholdMm": 5,
+      "rebuiltTubes": true,
       "mapping": [
-        {"line": "lines_1 yellow L-outward", "port": "L PATIENT", "role": "patient inlet"},
-        {"line": "lines_2 yellow L", "port": "L VACUUM", "role": "serial link (left vacuum)"},
-        {"line": "lines_2 yellow R", "port": "R PATIENT", "role": "serial link (right patient)"},
-        {"line": "lines_5 green R-outward", "port": "R VACUUM", "role": "overflow hose (official photo); not a run to the regulator"},
-        {"line": "lines_4 yellow spur", "port": null, "role": "existing tee on the serial loop, still runs toward the regulator (no jar-side end to bend)"},
-        {"line": "lines_3 yellow back loop", "port": null, "role": "RETRACTED under the lines_2 crown; no remaining genuine port; no fitting invented"}
+        {
+          "line": "yellow patient stub",
+          "port": "L PATIENT",
+          "role": "patient inlet"
+        },
+        {
+          "line": "yellow arch L",
+          "port": "L VACUUM",
+          "role": "serial link (left vacuum)"
+        },
+        {
+          "line": "yellow arch R",
+          "port": "R PATIENT",
+          "role": "serial link (right patient)"
+        },
+        {
+          "line": "yellow regulator loop",
+          "port": "regulator underside",
+          "role": "vacuum to regulator (tees off the arch, as in the official photo)"
+        },
+        {
+          "line": "green overflow",
+          "port": "R VACUUM",
+          "role": "short overflow loop, official photo"
+        },
+        {
+          "line": "grey supply",
+          "port": "regulator top inlet",
+          "role": "wall-vacuum supply hose"
+        }
       ]
-    }
+    },
+    "bytes": 1465428
   }
 }

@@ -9,7 +9,7 @@
 @font-face{font-family:Kalameh;src:url(../../assets/fonts/kalameh/KalamehWeb-FaNum-Bold.woff2) format("woff2");font-weight:700}
 @font-face{font-family:Kalameh;src:url(../../assets/fonts/kalameh/KalamehWeb-FaNum-ExtraBold.woff2) format("woff2");font-weight:800}
 *{box-sizing:border-box}html,body{margin:0;background:radial-gradient(120% 90% at 50% 40%,#28343b 0%,#111a20 60%,#080f14 100%) fixed,#04080a;color:#f2f7f7;font-family:Kalameh,Tahoma,sans-serif}
-.provenance{position:absolute;top:12px;left:4vw;right:4vw;text-align:center;font-size:11px;line-height:1.45;color:#a4bfc2;pointer-events:none;z-index:2}.provenance .en{font-family:Inter,"Segoe UI",Arial,sans-serif;direction:ltr}
+.provenance{position:absolute;bottom:14px;left:4vw;right:4vw;text-align:center;font-size:10px;line-height:1.4;color:#8aa3a6;pointer-events:none;z-index:2}.provenance .en{font-family:Inter,"Segoe UI",Arial,sans-serif;direction:ltr;font-size:10px}
 .track{height:1800vh;position:relative}
 .stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
 #gl{position:absolute;inset:0;width:100%;height:100%;display:block}
@@ -26,22 +26,22 @@
 @media(min-width:701px){.hint{left:7vw;transform:none}}
 .bar{position:absolute;top:0;left:0;height:2px;background:#2e7f96;width:0}
 .beat.closing h1{font-size:clamp(24px,4.2vw,52px)}
-@media(max-width:700px){.provenance{font-size:10px;top:8px;line-height:1.35}.beat h1{font-size:clamp(24px,7.4vw,42px)}.beat.top{top:max(100px,12vh)}.beat.closing{top:max(110px,13vh)}.beat.closing h1{font-size:clamp(22px,6.8vw,36px)}}
+@media(max-width:700px){.provenance{font-size:9px;bottom:10px;line-height:1.35}.beat h1{font-size:clamp(24px,7.4vw,42px)}.beat.top{top:max(100px,12vh)}.beat.closing{top:max(110px,13vh)}.beat.closing h1{font-size:clamp(22px,6.8vw,36px)}}
 </style>
 <script type="importmap">{"imports":{"three":"../../assets/vendor/three/build/three.module.js","three/addons/":"../../assets/vendor/three/examples/jsm/"}}</script>
 </head>
 <body>
 <div class="track"><div class="stage">
 <canvas id="gl"></canvas>
-<div class="provenance">پایه از طرح تهیه‌شده توسط حمید مدل‌سازی شده؛ مخازن = CAD اصلی ۲ لیتری آبادیس با چاپ رسمی؛ لاینرها = کیسه ساکشن ۲ لیتری تأییدشده با دو ساشه<div class="en">stand from Hamid's supplied design; canisters = genuine Abadis 2L CAD with official print; liners = approved 2L suction bag with two sachets</div></div>
+<div class="provenance">پایه بازسازی‌شده مطابق عکس و نقشه رسمی آبادیس (ارتفاع ۸۰ سانتی‌متر)؛ مخازن = CAD اصلی ۲ لیتری؛ لاینرها = کیسه ۲ لیتری تأییدشده<div class="en">stand rebuilt to match the official Abadis trolley photo and drawing (H 80 cm); canisters = genuine 2L CAD; liners = approved 2L bag</div></div>
 <div class="vig"></div><div class="bar" id="bar"></div>
 <div class="beat top" data-a="0" data-b=".16"><h1>پایه ساکشن پرتابل آبادیس</h1><p>Abadis Portable Suction Trolley</p></div>
-<div class="beat bot" data-a=".18" data-b=".32"><h2>پایه متحرک با <em>پنج چرخ</em></h2><p>Five-caster mobile base · about 48 cm across</p></div>
+<div class="beat bot" data-a=".18" data-b=".32"><h2>پایه <em>چهاربازویی</em> با چهار چرخ</h2><p>Four-arm X base · four twin-wheel casters · about 40 cm across</p></div>
 <div class="beat bot" data-a=".34" data-b=".48"><h2>مخازن ۲ لیتری با <em>کیسه ساکشن</em></h2><p>Genuine 2 L CAD canisters · approved 2 L liner, lid and two sachets seated in each</p></div>
 <div class="beat bot" data-a=".50" data-b=".62"><h2>رگولاتور <em>خلأ</em></h2><p>Vacuum regulator · official fittings include a regulator and an ON/OFF valve</p></div>
 <div class="beat bot" data-a=".64" data-b=".74"><h2>مدار زرد، سرریز <em>سبز</em>، تغذیه خاکستری</h2><p>Yellow circuit · green overflow · grey supply</p></div>
 <div class="beat bot" data-a=".76" data-b=".87"><h2>جداسازی؛ <em>کیسه و درب</em> از مخزن بیرون می‌آیند</h2><p>Exploded · lid and bag lift out of each canister, tube ends detach cleanly, jars part sideways, regulator lifts</p></div>
-<div class="beat top closing" style="top:max(88px,11vh)" data-a=".89" data-b="1.05"><h1>پایه ساکشن پرتابل آبادیس</h1><p lang="fa" style="direction:rtl;font-family:Kalameh,Tahoma,sans-serif">کدهای ۰۶۰۴۰۱ (کوتاه) و ۰۶۰۴۰۲ (بلند)</p><p>Product codes 060401 / 060402 · supplied design H 80 cm · canisters = genuine 2 L CAD with official print · liners = approved 2 L bag with two sachets</p></div>
+<div class="beat top closing" style="top:max(88px,11vh)" data-a=".89" data-b="1.05"><h1>پایه ساکشن پرتابل آبادیس</h1><p lang="fa" style="direction:rtl;font-family:Kalameh,Tahoma,sans-serif">کدهای ۰۶۰۴۰۱ (کوتاه) و ۰۶۰۴۰۲ (بلند)</p><p>Product codes 060401 / 060402 · official drawing H 80 cm · stand rebuilt from the official photo and drawing · canisters = genuine 2 L CAD · liners = approved 2 L bag</p></div>
 <img class="logo" id="logo" src="../../assets/img/abadis-logo-white.svg" alt="Abadis Med">
 <div class="hint" id="hint">اسکرول کنید · Scroll<i></i></div>
 </div></div>
@@ -67,6 +67,14 @@ S.environment=pm.fromScene(env,.04).texture;S.environmentIntensity=1.15;env.disp
 const lights=[[-200,400,280,0xfff4e9,3.0],[220,140,160,0xe8f6ff,1.8],[40,260,-300,0xc0e8f7,2.4]];
 for(const [x,y,z,color,intensity] of lights){const l=new THREE.DirectionalLight(color,intensity);l.position.set(x,y,z);S.add(l);}
 S.add(new THREE.HemisphereLight(0xf2f8ff,0x27303a,.8));
+const _qp0=new URLSearchParams(location.search);
+if(_qp0.get('bg')==='white'||_qp0.get('look')==='photo'){
+  S.background=new THREE.Color(0xe6e8ea);
+  S.environmentIntensity=1.0;
+  R.toneMappingExposure=1.0;
+  const pv=document.querySelector('.provenance'); if(pv) pv.style.display='none';
+}
+
 
 function paintMat(color,opts={}){
   return new THREE.MeshPhysicalMaterial({color,roughness:opts.roughness??.28,metalness:opts.metalness??0,clearcoat:opts.clearcoat??.45,clearcoatRoughness:opts.clearcoatRoughness??.3,envMapIntensity:1.05,side:THREE.DoubleSide,...opts});
@@ -202,8 +210,8 @@ function seatSachets(bagG){
  const rot=new THREE.Euler(0,.6,0);
  [ -1,1].forEach((side,i)=>{
   const pouch=makeSachet();pouch.name=`SealedAbsorbentSachet${i+1}`;
-  const offset=new THREE.Vector3(side*19,0,0).applyEuler(rot);
-  pouch.rotation.copy(rot);pouch.position.copy(offset);pouch.position.y+=-264;
+  const offset=new THREE.Vector3(side*18,0,side*4).applyEuler(rot);
+  pouch.rotation.copy(rot);pouch.position.copy(offset);pouch.position.y+=-145;
   bagG.add(pouch);
  });
 }
@@ -249,12 +257,21 @@ new GLTFLoader().load('p14-suction-stand.glb',g=>{
       if(can){const wp=new THREE.Vector3();can.getWorldPosition(wp);parentGrp.position.copy(wp);REST[part].copy(wp);}
     }
     let dest=parentGrp;
+    const relTo= (obj,can)=>{const r=new THREE.Matrix4();r.copy(can.matrixWorld).invert().multiply(obj.matrixWorld);return r;};
+    let canNode=null;
+    if(isCan){canNode=o;while(canNode&&canNode.name!==part)canNode=canNode.parent;}
     if(isCan&&(isLinerNode(o.parent&&o.parent.name)||isLinerPart(o.name))){
       dest=parentGrp.getObjectByName('liner');
-      if(!dest){dest=new THREE.Group();dest.name='liner';parentGrp.add(dest);}
+      if(!dest){
+        dest=new THREE.Group();dest.name='liner';
+        let linerNode=o;while(linerNode&&linerNode.name!=='liner')linerNode=linerNode.parent;
+        if(linerNode&&canNode)dest.applyMatrix4(relTo(linerNode,canNode));
+        parentGrp.add(dest);
+      }
     }
     let geo=o.geometry.clone();
     if(!isCan)geo.applyMatrix4(o.matrixWorld);
+    const canMeshRel=(isCan&&canNode&&!isLinerPart(o.name)&&!isLinerNode(o.name))?relTo(o,canNode):null;
     const bn=baseName(o.name);
     let mat,m;
     if(isCan&&isVessel(o.name)){
@@ -268,10 +285,10 @@ new GLTFLoader().load('p14-suction-stand.glb',g=>{
         if(exterior){outer.fill(1,i,i+3);outerTriangles++;}
       }
       geo.setAttribute('printOuter',new THREE.BufferAttribute(outer,1));
-      mat=pc;m=new THREE.Mesh(geo,mat);m.name=o.name;dest.add(m);
+      mat=pc;m=new THREE.Mesh(geo,mat);m.name=o.name;if(canMeshRel)m.applyMatrix4(canMeshRel);dest.add(m);
     }else if(isCan&&isCollar(o.name)){
       geo.deleteAttribute('normal');geo=mergeVertices(geo,1e-5);geo=toCreasedNormals(geo,Math.PI/3);
-      mat=mountPC;m=new THREE.Mesh(geo,mat);m.name=o.name;dest.add(m);
+      mat=mountPC;m=new THREE.Mesh(geo,mat);m.name=o.name;if(canMeshRel)m.applyMatrix4(canMeshRel);dest.add(m);
     }else if(isCan&&bn==='lid'){
       geo=clipFilterCavity(prepSmooth(geo),30,-28,13.5,-24,-2);
       m=new THREE.Mesh(geo,LM.lid);m.castShadow=true;m.name='lid';dest.add(m);
@@ -297,7 +314,7 @@ new GLTFLoader().load('p14-suction-stand.glb',g=>{
     triangles+=geo.index?geo.index.count/3:geo.attributes.position.count/3;
   });
   const box=new THREE.Box3().setFromObject(root);
-  window.__cad={triangles,parts:Object.keys(groups),bounds:box.getSize(new THREE.Vector3()).toArray(),source:'stand from Hamid\'s supplied design; canisters = genuine Abadis 2L CAD with official print; liners = approved 2L suction bag with two sachets (P02 commit f54d8451)'};
+  window.__cad={triangles,parts:Object.keys(groups),bounds:box.getSize(new THREE.Vector3()).toArray(),source:'stand rebuilt to match the official Abadis trolley photo and drawing (H 80 cm); canisters = genuine 2L CAD; liners = approved 2L bag'};
   window.__branding={outerTriangles,innerInkTriangles:0,source:'official AMR_4901 2L photo',mapping:'front exterior only, no mirrored inner/back print, same as p05-2l-cinematic'};
   cadReady=true;markReady();
 },undefined,e=>{console.error(e);window.__ready='error';});
@@ -306,34 +323,35 @@ const ease=x=>{x=cl(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;};
 // Product-film path around the official-photo three-quarter, then base, jars, regulator, tubing, explode, return.
 // Polar interpolation; no chord through the stand; no idle drift or sway. Distances in millimetres.
 const KF=[
-  [0,    18, 10, 2550, 500],
-  [.15,  16,  9, 2500, 500],
+  [0,     8,  9, 2100, 400],
+  [.15,  10,  8, 2050, 400],
   [.24,  48,  8, 1200,  90],
   [.31,  55,  6, 1150,  80],
-  [.40,   8, 10, 2150, 340],
-  [.48,   6,  9, 2100, 340],
-  [.56, -22, 16, 1400, 680],
-  [.62, -18, 14, 1350, 690],
-  [.70,  12, 11, 2400, 350],
-  [.80,  28, 14, 2700, 400],
-  [.88,  26, 13, 2650, 400],
-  [.94,  18, 10, 2550, 530],
-  [1,    18, 10, 2550, 530]
+  [.40,   8,  8, 2000, 400],
+  [.48,   6,  7, 1950, 400],
+  [.56, -22, 14, 1300, 720],
+  [.62, -18, 12, 1250, 730],
+  [.70,  12,  9, 2200, 420],
+  [.80,  22, 12, 2500, 420],
+  [.88,  20, 11, 2450, 420],
+  [.94,   8,  9, 2100, 400],
+  [1,     8,  9, 2100, 400]
 ];
 const qp=new URLSearchParams(location.search),beats=[...document.querySelectorAll('.beat')];
 if(qp.has('look')){beats.forEach(b=>b.style.display='none');const h=document.getElementById('hint');if(h)h.style.display='none';}
 const LOOK={
-  'print-l':[8,6,380,[-102,390,0]],
-  'print-r':[-8,6,380,[102,390,0]],
-  'print-l-tight':[4,4,260,[-102,400,20]],
-  'print-r-tight':[-4,4,260,[102,400,20]],
-  'collar':[165,8,520,[0,400,-20]],
-  'ports-l':[28,22,210,[-102,515,8]],
-  'ports-r':[-28,22,210,[102,515,8]],
-  'tubes-l':[-38,16,260,[-108,516,20]],
-  'tubes-r':[38,16,260,[108,516,20]],
-  'ports-l-top':[10,72,200,[-85,520,0]],
-  'ports-r-top':[-10,72,200,[85,520,0]]
+  'photo':[26,8,1950,[0,400,0]],
+  'print-l':[18,6,360,[-100,460,0]],
+  'print-r':[-18,6,360,[100,460,0]],
+  'print-l-tight':[8,4,250,[-100,470,20]],
+  'print-r-tight':[-8,4,250,[100,470,20]],
+  'collar':[165,8,500,[0,520,-10]],
+  'ports-l':[32,22,200,[-100,612,8]],
+  'ports-r':[-32,22,200,[100,612,8]],
+  'tubes-l':[-36,16,250,[-110,614,20]],
+  'tubes-r':[36,16,250,[110,614,20]],
+  'ports-l-top':[10,72,200,[-85,618,0]],
+  'ports-r-top':[-10,72,200,[85,618,0]]
 };
 const cp=new THREE.Vector3(),ct=new THREE.Vector3();let T=0,last=0;
 function sample(t){
