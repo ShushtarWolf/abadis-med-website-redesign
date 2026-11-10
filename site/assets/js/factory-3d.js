@@ -671,6 +671,13 @@ function init(sec) {
   const controls = new OrbitControls(camera, canvas);
   controls.enabled = false; controls.enableDamping = true; controls.dampingFactor = 0.08;
   controls.maxDistance = 170; controls.minDistance = 6; controls.maxPolarAngle = Math.PI * 0.495;
+  // OrbitControls.connect() sets canvas.style.touchAction = 'none', which blocks iOS page scroll.
+  const setTouchPan = (allowPageScroll) => {
+    const action = allowPageScroll ? 'pan-y' : 'none';
+    canvas.style.touchAction = action;
+    stage.style.touchAction = action;
+  };
+  setTouchPan(true);
 
   const intro = $('.f3d-intro'), dock = $('.f3d-dock'), dockToggle = $('.f3d-dock-toggle'), dockToggleLbl = $('.f3d-dock-toggle-lbl');
   const pStep = $('.f3d-step'), pTitle = $('.f3d-title'), subChipsEl = $('.f3d-subchips'), pSpec = $('.f3d-subspec');
@@ -826,6 +833,7 @@ function init(sec) {
     explore = on;
     tween = null;
     sec.classList.toggle('is-ex', on);
+    setTouchPan(!on);
     resize();
     controls.enabled = on; exLabel.textContent = on ? cfg.back : cfg.explore;
     if (on) {
@@ -847,9 +855,20 @@ function init(sec) {
     lastExToggle = performance.now();
     e.preventDefault(); e.stopPropagation(); setExplore(!explore);
   }
-  exBtn.addEventListener('pointerup', (e) => { if (e.pointerType === 'touch' || e.pointerType === 'pen') toggleExplore(e); });
+  // Click-only with debounce: a pointerup+click pair can double-toggle or swallow the tap on iOS.
   exBtn.addEventListener('click', toggleExplore);
-  $('.f3d-skip').addEventListener('click', () => { if (explore) setExplore(false); });
+  const skipBtn = $('.f3d-skip');
+  let lastSkip = 0;
+  skipBtn.addEventListener('click', (e) => {
+    if (performance.now() - lastSkip < 280) { e.preventDefault(); return; }
+    lastSkip = performance.now();
+    if (explore) setExplore(false);
+    const about = document.getElementById('about');
+    if (!about) return;
+    e.preventDefault();
+    about.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+    try { history.replaceState(null, '', '#about'); } catch (_) {}
+  });
   pills.forEach((b) => b.addEventListener('click', () => {
     const i = +b.dataset.i;
     if (!isNarrow()) setCollapsed(false);
