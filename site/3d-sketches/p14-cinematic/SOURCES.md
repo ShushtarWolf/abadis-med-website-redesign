@@ -36,14 +36,15 @@ Official listed specifications: holds up to four 3-litre canisters (12 litres); 
 
 ## Fit notes — nothing invented
 - No intersection with the upright, base or regulator. At jar height the main post is 40 × 40 mm; clearance from the genuine vessel wall to the post face is 20.5 mm, and from the collar-mount to the post face 17.5 mm. (The upright AABB looks tighter, 7.5 mm, only because a 60 mm square collar sits higher on the post, above the jar rim.)
-- Closest approach of tubing to the vessel wall remains about 14.7 mm (mesh-to-mesh); tubes do not intersect the vessel or the seated liner.
-- After the approved lids were seated, jar-side line endpoints were compared with the genuine PATIENT and VACUUM port mouths. A snap was allowed only if an endpoint already lay within 5 mm of a port. None did, so no endpoint was moved and no hoses or fittings were invented.
-  - Yellow `lines_1` (left outward) → left PATIENT: 12.67 mm (Δ +12.16, −2.75, +2.24).
-  - Green `lines_5` (right outward) → right PATIENT: 13.40 mm (Δ −13.30, −0.43, +1.57).
-  - Yellow `lines_3` (back circuit) → left VACUUM: 18.94 mm; right VACUUM: 50.20 mm (the unrotated P02 lid places the right VACUUM outboard at x = 135.41, while that tube ends inboard at x ≈ 85.8).
-  - Yellow `lines_2` (mid circuit) is about 24 mm from the nearest PATIENT on each side and does not meet VACUUM either.
-  - Grey `lines_6` / `lines_7` are the regulator wand and do not approach a lid port.
-- The supplied stand has three jar-side endpoints per canister (front / mid / back) versus two genuine lid ports. Tube height already nearly matches the port tops (a few millimetres in Y); the miss is in XZ.
+- Closest approach of tubing to the vessel wall remains clear (about 14–16 mm mesh-to-mesh away from the seated ends); tubes do not intersect the vessel, upright, or each other except at the existing lines_2 / lines_4 tee and where the retracted lines_3 meets the yellow-circuit crown.
+- Hamid approved rerouting the supplied jar-side ends into the genuine P02 lid ports. Only the paths near those ends were bent; radius, colour and the rest of each run are unchanged. No parts or fittings were added. Circuit, following official photograph 227665fb9960 and the serial fill (left jar then right):
+  - Yellow `lines_1` (left outward) seats on **left PATIENT** — patient inlet.
+  - Yellow `lines_2` seats on **left VACUUM** and **right PATIENT** — serial link (left vacuum → right patient). The existing yellow `lines_4` spur still tees into the crown of this loop and runs toward the regulator (lines_4 has no jar-side end, so it was not bent into right VACUUM).
+  - Green `lines_5` (right outward) seats on **right VACUUM** — overflow hose as in the official trolley photograph, hanging outboard; it is not a run to the regulator.
+  - Yellow `lines_3` (the extra Grok back loop) had no remaining genuine port (three jar-side ends per side vs two lid ports) and was retracted into a short U under the yellow-circuit crown, meeting `lines_2`. No fitting was invented.
+  - Grey `lines_6` / `lines_7` (regulator wand) are unchanged.
+- Each seated end is a circular section of the original radius (~5.2–5.5 mm OD), approaching the vertical nipple from above and covering about 3 mm of the stem. Tethered patient caps stay in the approved open/flipped CAD pose and do not block the ports.
+- During the explode, tube ends stay with the stand and detach cleanly as each lid and bag lift out of the canister.
 - The genuine rear collar-mount is kept in its original assembled pose, facing −Z (opposite the official print). The supplied stand has no hook, clamp or bracket that engages this collar. The collar sits in open air behind each vessel and does not contact the upright, base, regulator or lines.
 
 ## Shown stand defaults versus official catalog
@@ -55,7 +56,7 @@ Official listed specifications: holds up to four 3-litre canisters (12 litres); 
 ## Units and parts
 Site file `p14-suction-stand.glb` is in millimetres. Parts: `base`, `upright`, `canister-l` (genuine vessel + collar-mount + seated P02 liner: lid, collar, bag, cap), `canister-r` (same), `regulator`, `lines`.
 
-SHA256 of the millimetre GLB: `e5da7888a7ba75edd7eda269f43520057bd55f93ad54496713fa8ea37e812855`.
+SHA256 of the millimetre GLB: `56a9e36ac928f6fab13e68df756074146d23c5b40a8ff7faedc319c1c58eed71`.
 Model extents: 767 × 468 × 805 mm (W × D × H). 44,182 triangles (stand 11,754 + two liners 15,020 CAD triangles each, including the 1,194 canister triangles).
 
 ## Presentation

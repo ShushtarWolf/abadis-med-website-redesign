@@ -198,7 +198,7 @@
     "inventory": "P12"
   },
   "p14-suction-stand": {
-    "provenance": "STAND modeled from Hamid's supplied design (DuoVac 80 / zinc-cliff-horizon-solar.grok.me) at the page's shown 80 cm height and about-48 cm five-caster base; NOT original factory CAD. CANISTERS = genuine Abadis 2 L CAD with official print, the same mesh and photo-derived print texture as approved p05-2l-cinematic (commit 1ce00c11, code 0402012). LINERS = approved 2 L suction bag with two sachets, the same genuine P02 CAD (lid, collar, cap, bag) as approved p02-cinematic (commit f54d8451); each liner is seated in a 2 L canister with the lid on the rim and the bag hanging inside. Official product is the portable suction trolley (P14), codes 060401 short / 060402 long. Official catalog does not print 80 cm and lists up to four 3 L jars; the official photograph (227665fb9960) shows two jars. Two sealed sachets and the recessed flow-stopper disc are presentation geometry from the approved P02 cinematic (no sachet/filter CAD) and appear in the cinematic, not this CAD-line plate. Supplied yellow/green lines do not meet the genuine lid PATIENT (tethered cap, +Z) or VACUUM (filter underneath, ~33.4, -30.4) ports - closest approaches 12.7 mm (left yellow to PATIENT) and 13.4 mm (right green to PATIENT); mid and back endpoints are 19-50 mm off. Lines were not snapped or rerouted; no hoses or fittings were invented. The Grok stand has three jar-side endpoints per side versus two genuine lid ports. Rear collar-mount faces aft and does not engage a stand hook. Lid skirt at y~-23 has r~60.33 mm versus the vessel inner mouth r=60.00 mm (0.33 mm genuine-CAD overlap, not altered).",
+    "provenance": "STAND modeled from Hamid's supplied design (DuoVac 80 / zinc-cliff-horizon-solar.grok.me) at the page's shown 80 cm height and about-48 cm five-caster base; NOT original factory CAD. CANISTERS = genuine Abadis 2 L CAD with official print, the same mesh and photo-derived print texture as approved p05-2l-cinematic (commit 1ce00c11, code 0402012). LINERS = approved 2 L suction bag with two sachets, the same genuine P02 CAD (lid, collar, cap, bag) as approved p02-cinematic (commit f54d8451); each liner is seated in a 2 L canister with the lid on the rim and the bag hanging inside. Official product is the portable suction trolley (P14), codes 060401 short / 060402 long. Official catalog does not print 80 cm and lists up to four 3 L jars; the official photograph (227665fb9960) shows two jars. Two sealed sachets and the recessed flow-stopper disc are presentation geometry from the approved P02 cinematic (no sachet/filter CAD) and appear in the cinematic, not this CAD-line plate. Supplied jar-side tube ends were bent (radius and the rest of each path kept) to seat in the genuine lid ports: yellow lines_1 on left PATIENT (patient in); yellow lines_2 on left VACUUM and right PATIENT (serial link, left then right); green lines_5 on right VACUUM (overflow hose, official photo). Vacuum-to-regulator remains the existing yellow lines_4 spur teed on the serial loop (lines_4 has no jar-side end). The extra Grok back loop (lines_3) had no remaining port and was retracted under the yellow-circuit crown; no fitting invented. Rear collar-mount faces aft and does not engage a stand hook. Lid skirt at y~-23 has r~60.33 mm versus the vessel inner mouth r=60.00 mm (0.33 mm genuine-CAD overlap, not altered).",
     "parts": {
       "base": 2948,
       "upright": 742,
@@ -209,7 +209,7 @@
     },
     "bounds_mm": [
       [
-        -378.49,
+        -378.72,
         1.26,
         -211.4
       ],
@@ -219,7 +219,7 @@
         256.41
       ]
     ],
-    "sha256": "e5da7888a7ba75edd7eda269f43520057bd55f93ad54496713fa8ea37e812855",
+    "sha256": "56a9e36ac928f6fab13e68df756074146d23c5b40a8ff7faedc319c1c58eed71",
     "nominalOfficialMm": null,
     "suppliedDesignMm": [
       480,
@@ -247,14 +247,15 @@
     "genuineLiners": "P02 2L CAD lid/collar/bag/cap (commit f54d8451) seated in each canister; two sachets + recessed filter are approved P02 presentation geometry",
     "linePortFit": {
       "snapped": false,
+      "reroutedJarEnds": true,
       "thresholdMm": 5,
-      "closest": [
-        {"line": "lines_1 yellow L-outward", "port": "L PATIENT", "distMm": 12.67, "deltaMm": [12.16, -2.75, 2.24]},
-        {"line": "lines_5 green R-outward", "port": "R PATIENT", "distMm": 13.40, "deltaMm": [-13.30, -0.43, 1.57]},
-        {"line": "lines_3 yellow L-back", "port": "L VACUUM", "distMm": 18.94, "deltaMm": [17.24, 0.10, -7.85]},
-        {"line": "lines_3 yellow R-back", "port": "R VACUUM", "distMm": 50.20, "deltaMm": [49.58, 0.10, -7.85]},
-        {"line": "lines_2 yellow circuit L", "port": "L PATIENT (nearest)", "distMm": 23.80},
-        {"line": "lines_2 yellow circuit R", "port": "R PATIENT (nearest)", "distMm": 24.11}
+      "mapping": [
+        {"line": "lines_1 yellow L-outward", "port": "L PATIENT", "role": "patient inlet"},
+        {"line": "lines_2 yellow L", "port": "L VACUUM", "role": "serial link (left vacuum)"},
+        {"line": "lines_2 yellow R", "port": "R PATIENT", "role": "serial link (right patient)"},
+        {"line": "lines_5 green R-outward", "port": "R VACUUM", "role": "overflow hose (official photo); not a run to the regulator"},
+        {"line": "lines_4 yellow spur", "port": null, "role": "existing tee on the serial loop, still runs toward the regulator (no jar-side end to bend)"},
+        {"line": "lines_3 yellow back loop", "port": null, "role": "RETRACTED under the lines_2 crown; no remaining genuine port; no fitting invented"}
       ]
     }
   }
