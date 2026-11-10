@@ -19,7 +19,7 @@ SITE = ROOT / 'site'
 FA_DIG = str.maketrans('0123456789', '۰۱۲۳۴۵۶۷۸۹')
 AR_DIG = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
 
-V = '20261109w'
+V = '20261110a'
 
 ARROW = ('<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
          '<path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" '
@@ -656,8 +656,9 @@ def gallery(lang, pfx):
     cards = []
     for name, _dark, alts in GALLERY:
         alt = esc(alts[lang])
+        klass = 'gal-card gal-contain' if name == 'p1-g5.webp' else 'gal-card'
         cards.append(
-            f'<figure class="gal-card"><div class="gal-frame"><img src="{pfx}assets/img/p/{name}" alt="{alt}" width="1200" height="800" loading="lazy" decoding="async"></div><figcaption>{alt}</figcaption></figure>'
+            f'<figure class="{klass}"><div class="gal-frame"><img src="{pfx}assets/img/p/{name}" alt="{alt}" width="1200" height="800" loading="lazy" decoding="async"></div><figcaption>{alt}</figcaption></figure>'
         )
     for view, fa, en, ar in (
         ('front', 'نمای روبه‌رو', 'Front view', 'المنظر الأمامي'),

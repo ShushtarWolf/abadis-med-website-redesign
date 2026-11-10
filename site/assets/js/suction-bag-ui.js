@@ -31,14 +31,23 @@
     var cards = gal.querySelectorAll('.gal-card');
     var dots = gal.querySelector('.gal-dots');
     if (!rail || !cards.length || !dots) return;
+    // Rebuild dots so a warm cache or a second init cannot leave a single stale pip.
+    dots.replaceChildren();
+    function scrollToCard(i) {
+      var card = cards[i];
+      if (!card) return;
+      // Visual midpoint, so RTL and LTR both land on the same slide.
+      var railBox = rail.getBoundingClientRect();
+      var cardBox = card.getBoundingClientRect();
+      var delta = (cardBox.left + cardBox.width / 2) - (railBox.left + railBox.width / 2);
+      rail.scrollBy({ left: delta, behavior: reduced ? 'auto' : 'smooth' });
+    }
     cards.forEach(function (_, i) {
       var b = document.createElement('button');
       b.type = 'button';
       b.className = 'gal-dot';
       b.setAttribute('aria-label', String(i + 1));
-      b.addEventListener('click', function () {
-        cards[i].scrollIntoView({ inline: 'center', block: 'nearest', behavior: reduced ? 'auto' : 'smooth' });
-      });
+      b.addEventListener('click', function () { scrollToCard(i); });
       dots.appendChild(b);
     });
     function current() {
@@ -52,21 +61,34 @@
       });
       return best;
     }
-    function paint() {
-      var i = current();
+    function paint(i) {
+      if (i == null) i = current();
       dots.querySelectorAll('.gal-dot').forEach(function (d, n) {
         if (n === i) d.setAttribute('aria-current', 'true');
         else d.removeAttribute('aria-current');
       });
     }
-    rail.addEventListener('scroll', function () { requestAnimationFrame(paint); }, { passive: true });
+    rail.addEventListener('scroll', function () { requestAnimationFrame(function () { paint(); }); }, { passive: true });
     paint();
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        var best = null, ratio = 0;
+        entries.forEach(function (e) {
+          if (e.intersectionRatio > ratio) { ratio = e.intersectionRatio; best = e.target; }
+        });
+        if (!best || ratio < 0.45) return;
+        var i = Array.prototype.indexOf.call(cards, best);
+        if (i >= 0) paint(i);
+      }, { root: rail, threshold: [0.45, 0.6, 0.75, 0.9] });
+      cards.forEach(function (card) { io.observe(card); });
+    }
     function go(dir) {
       var i = Math.min(cards.length - 1, Math.max(0, current() + dir));
-      cards[i].scrollIntoView({ inline: 'center', block: 'nearest', behavior: reduced ? 'auto' : 'smooth' });
+      scrollToCard(i);
     }
     var prev = gal.querySelector('.gal-prev');
     var next = gal.querySelector('.gal-next');
+    // dir is in DOM order, so قبلی / Previous always steps to the prior slide in RTL and LTR.
     if (prev) prev.addEventListener('click', function () { go(-1); });
     if (next) next.addEventListener('click', function () { go(1); });
   });
