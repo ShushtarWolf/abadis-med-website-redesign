@@ -26,22 +26,22 @@
 @media(min-width:701px){.hint{left:7vw;transform:none}}
 .bar{position:absolute;top:0;left:0;height:2px;background:#2e7f96;width:0}
 .beat.closing h1{font-size:clamp(24px,4.2vw,52px)}
-@media(max-width:700px){.provenance{font-size:10px;top:8px;line-height:1.35}.beat h1{font-size:clamp(24px,7.4vw,42px)}.beat.top{top:max(86px,11vh)}.beat.closing{top:max(96px,12vh)}.beat.closing h1{font-size:clamp(22px,6.8vw,36px)}}
+@media(max-width:700px){.provenance{font-size:10px;top:8px;line-height:1.35}.beat h1{font-size:clamp(24px,7.4vw,42px)}.beat.top{top:max(100px,12vh)}.beat.closing{top:max(110px,13vh)}.beat.closing h1{font-size:clamp(22px,6.8vw,36px)}}
 </style>
 <script type="importmap">{"imports":{"three":"../../assets/vendor/three/build/three.module.js","three/addons/":"../../assets/vendor/three/examples/jsm/"}}</script>
 </head>
 <body>
 <div class="track"><div class="stage">
 <canvas id="gl"></canvas>
-<div class="provenance">پایه از طرح تهیه‌شده توسط حمید مدل‌سازی شده؛ مخازن = CAD اصلی ۲ لیتری آبادیس با چاپ رسمی<div class="en">stand modeled from Hamid's supplied design; canisters = genuine Abadis 2L CAD with official print</div></div>
+<div class="provenance">پایه از طرح تهیه‌شده توسط حمید مدل‌سازی شده؛ مخازن = CAD اصلی ۲ لیتری آبادیس با چاپ رسمی؛ لاینرها = کیسه ساکشن ۲ لیتری تأییدشده با دو ساشه<div class="en">stand from Hamid's supplied design; canisters = genuine Abadis 2L CAD with official print; liners = approved 2L suction bag with two sachets</div></div>
 <div class="vig"></div><div class="bar" id="bar"></div>
 <div class="beat top" data-a="0" data-b=".16"><h1>پایه ساکشن پرتابل آبادیس</h1><p>Abadis Portable Suction Trolley</p></div>
 <div class="beat bot" data-a=".18" data-b=".32"><h2>پایه متحرک با <em>پنج چرخ</em></h2><p>Five-caster mobile base · about 48 cm across</p></div>
-<div class="beat bot" data-a=".34" data-b=".48"><h2>ستون مربعی و مخازن <em>۲ لیتری اصلی</em></h2><p>Square upright · genuine 2 L CAD canisters with official print</p></div>
+<div class="beat bot" data-a=".34" data-b=".48"><h2>مخازن ۲ لیتری با <em>کیسه ساکشن</em></h2><p>Genuine 2 L CAD canisters · approved 2 L liner, lid and two sachets seated in each</p></div>
 <div class="beat bot" data-a=".50" data-b=".62"><h2>رگولاتور <em>خلأ</em></h2><p>Vacuum regulator · official fittings include a regulator and an ON/OFF valve</p></div>
 <div class="beat bot" data-a=".64" data-b=".74"><h2>مدار زرد، سرریز <em>سبز</em>، تغذیه خاکستری</h2><p>Yellow circuit · green overflow · grey supply</p></div>
-<div class="beat bot" data-a=".76" data-b=".87"><h2>جداسازی مونتاژ؛ <em>مخازن و رگولاتور</em></h2><p>Exploded · jars part sideways, regulator lifts</p></div>
-<div class="beat top closing" style="top:max(88px,11vh)" data-a=".89" data-b="1.05"><h1>پایه ساکشن پرتابل آبادیس</h1><p lang="fa" style="direction:rtl;font-family:Kalameh,Tahoma,sans-serif">کدهای ۰۶۰۴۰۱ (کوتاه) و ۰۶۰۴۰۲ (بلند)</p><p>Product codes 060401 / 060402 · supplied design H 80 cm · canisters = genuine 2 L CAD with official print</p></div>
+<div class="beat bot" data-a=".76" data-b=".87"><h2>جداسازی؛ <em>کیسه و درب</em> از مخزن بیرون می‌آیند</h2><p>Exploded · lid and bag lift out of each canister, jars part sideways, regulator lifts</p></div>
+<div class="beat top closing" style="top:max(88px,11vh)" data-a=".89" data-b="1.05"><h1>پایه ساکشن پرتابل آبادیس</h1><p lang="fa" style="direction:rtl;font-family:Kalameh,Tahoma,sans-serif">کدهای ۰۶۰۴۰۱ (کوتاه) و ۰۶۰۴۰۲ (بلند)</p><p>Product codes 060401 / 060402 · supplied design H 80 cm · canisters = genuine 2 L CAD with official print · liners = approved 2 L bag with two sachets</p></div>
 <img class="logo" id="logo" src="../../assets/img/abadis-logo-white.svg" alt="Abadis Med">
 <div class="hint" id="hint">اسکرول کنید · Scroll<i></i></div>
 </div></div>
@@ -110,13 +110,115 @@ for(const m of [pc,mountPC]){m.onBeforeCompile=shader=>{
  }else shader.fragmentShader=shader.fragmentShader.replace('#include <opaque_fragment>',glassAlpha+'\n#include <opaque_fragment>');
 };m.customProgramCacheKey=()=>m===pc?'clear-pc-official-2l-photo-ink-v1':'clear-pc-edge-alpha-v1';}
 
+const cl=x=>Math.min(1,Math.max(0,x));
+
+const TL=new THREE.TextureLoader();
+const filmT=TL.load('../p02-cinematic/tex/film-bump.jpg');filmT.wrapS=filmT.wrapT=THREE.RepeatWrapping;filmT.repeat.set(5,4);
+const weaveT=TL.load('../p02-cinematic/tex/sachet-weave.jpg');weaveT.wrapS=weaveT.wrapT=THREE.RepeatWrapping;weaveT.repeat.set(3,4);
+const TEAL=0x0a6176;
+const ppMicro=TL.load('../p02-cinematic/tex/pp-micro-bump.jpg');ppMicro.wrapS=ppMicro.wrapT=THREE.RepeatWrapping;ppMicro.repeat.set(14,14);
+const filtDiff=TL.load('../p02-cinematic/tex/filter-diffuse.jpg');filtDiff.wrapS=filtDiff.wrapT=THREE.ClampToEdgeWrapping;
+const filtBump=TL.load('../p02-cinematic/tex/filter-bump.jpg');filtBump.wrapS=filtBump.wrapT=THREE.ClampToEdgeWrapping;
+const LM={
+ lid:new THREE.MeshPhysicalMaterial({color:TEAL,roughness:.62,metalness:.01,clearcoat:.08,clearcoatRoughness:.7,sheen:.08,sheenColor:0x4a9aa6,envMapIntensity:.45,bumpMap:ppMicro,bumpScale:mob?.45:.7,roughnessMap:ppMicro,side:THREE.FrontSide}),
+ lidIn:new THREE.MeshPhysicalMaterial({color:0x085a6c,roughness:.7,metalness:.01,clearcoat:.05,clearcoatRoughness:.8,side:THREE.BackSide,envMapIntensity:.35,polygonOffset:true,polygonOffsetFactor:2,polygonOffsetUnits:2,bumpMap:ppMicro,bumpScale:.45}),
+ bag:new THREE.MeshPhysicalMaterial({color:0xeef3f4,roughness:.62,metalness:0,transparent:true,opacity:.16,bumpMap:filmT,bumpScale:mob?2.8:3.6,roughnessMap:filmT,side:THREE.DoubleSide,depthWrite:false,clearcoat:.12,clearcoatRoughness:.65}),
+ bagIn:new THREE.MeshPhysicalMaterial({color:0xe4ecee,roughness:.85,transparent:true,opacity:.08,side:THREE.BackSide,depthWrite:false}),
+ sachet:new THREE.MeshPhysicalMaterial({color:0xf3f3ef,roughness:.85,bumpMap:weaveT,bumpScale:1.2,map:weaveT,sheen:.6,sheenColor:0xffffff})
+};
+const filtMat=new THREE.MeshStandardMaterial({color:0xffffff,roughness:.95,metalness:0,map:filtDiff,bumpMap:filtBump,bumpScale:3.2,roughnessMap:filtBump,envMapIntensity:.15,side:THREE.DoubleSide});
+function clipFilterCavity(geo,cx,cz,rMax,y0,y1){
+ const src=geo.index?geo.toNonIndexed():geo.clone(),p=src.attributes.position,out=[];
+ const planes=[{n:[0,1,0],d:y1},{n:[0,-1,0],d:-y0}];
+ for(let j=0;j<48;j++){const a=j/48*Math.PI*2,n=[Math.cos(a),0,Math.sin(a)];planes.push({n,d:rMax+n[0]*cx+n[2]*cz});}
+ const emit=poly=>{for(let j=1;j<poly.length-1;j++)out.push(...poly[0],...poly[j],...poly[j+1]);};
+ function split(poly,plane){const inn=[],ext=[],n=plane.n,d=plane.d;
+  const dist=v=>v[0]*n[0]+v[1]*n[1]+v[2]*n[2]-d;
+  for(let j=0;j<poly.length;j++){const a=poly[j],b=poly[(j+1)%poly.length],da=dist(a),db=dist(b),ia=da<=0,ib=db<=0;
+   (ia?inn:ext).push(a);
+   if(ia!==ib){const k=da/(da-db),v=a.map((x,i)=>x+(b[i]-x)*k);inn.push(v);ext.push(v);}
+  }return [inn,ext];
+ }
+ for(let i=0;i<p.count;i+=3){
+  let poly=[0,1,2].map(j=>[p.getX(i+j),p.getY(i+j),p.getZ(i+j)]);
+  const xs=poly.map(v=>v[0]),ys=poly.map(v=>v[1]),zs=poly.map(v=>v[2]);
+  if(Math.max(...xs)<cx-rMax||Math.min(...xs)>cx+rMax||Math.max(...zs)<cz-rMax||Math.min(...zs)>cz+rMax||Math.max(...ys)<y0||Math.min(...ys)>y1){emit(poly);continue;}
+  for(const plane of planes){const [inn,ext]=split(poly,plane);if(ext.length>=3)emit(ext);poly=inn;if(poly.length<3)break;}
+ }
+ let result=new THREE.BufferGeometry();result.setAttribute('position',new THREE.Float32BufferAttribute(out,3));result=mergeVertices(result,2e-4);result.computeVertexNormals();return result;
+}
+function tuckBagTop(g){
+ const p=g.attributes.position;
+ for(let i=0;i<p.count;i++){const y=p.getY(i);if(y<-30)continue;
+  const k=(y+30)/6; const x=p.getX(i),z=p.getZ(i),r=Math.hypot(x,z);
+  const ny=y+k*7, nr=Math.min(r,55.2+ (1-k)*(r-55.2));
+  if(r>1e-3){p.setX(i,x/r*nr);p.setZ(i,z/r*nr);} p.setY(i,ny);}
+ p.needsUpdate=true;g.computeVertexNormals();return g;
+}
+function clampCollar(g){
+ const p=g.attributes.position;
+ for(let i=0;i<p.count;i++){const y=p.getY(i),x=p.getX(i),z=p.getZ(i),r=Math.hypot(x,z);
+  const sk=55.9+cl((y+23)/10)*4.5-0.8; if(r>sk){p.setX(i,x/r*sk);p.setZ(i,z/r*sk);}}
+ p.needsUpdate=true;g.computeVertexNormals();return g;
+}
+function cleanBag(geo){let g=geo.clone();['normal','uv','uv1','tangent','color'].forEach(a=>g.deleteAttribute(a));g=mergeVertices(g,1e-3);
+ const ix=g.index.array,out=[],seen=new Set();for(let i=0;i<ix.length;i+=3){const t=[ix[i],ix[i+1],ix[i+2]];if(t[0]===t[1]||t[1]===t[2]||t[0]===t[2])continue;const k=[...t].sort((a,b)=>a-b).join();if(seen.has(k))continue;seen.add(k);out.push(...t);}
+ g.setIndex(out);return toCreasedNormals(g,Math.PI/2.4);}
+function prepSmooth(geo){let g=geo.clone();['uv1','tangent','color'].forEach(a=>g.deleteAttribute(a));
+ if(g.attributes.normal)g.deleteAttribute('normal');
+ if(g.index)g=mergeVertices(g,2e-4);
+ g.computeVertexNormals(); return g;}
+function cylUV(g,y0,y1){const p=g.attributes.position,uv=new Float32Array(p.count*2);for(let i=0;i<p.count;i++){uv[i*2]=Math.atan2(p.getZ(i),p.getX(i))/(2*Math.PI)+.5;uv[i*2+1]=(p.getY(i)-y0)/(y1-y0);}g.setAttribute('uv',new THREE.BufferAttribute(uv,2));return g;}
+function makeSachet(){
+ const sg=new THREE.BoxGeometry(34,7,46,10,2,12);const ps=sg.attributes.position;
+ for(let i=0;i<ps.count;i++){const x=ps.getX(i)/17,z=ps.getZ(i)/23;ps.setY(i,ps.getY(i)*Math.max(.12,(1-x*x)*(1-Math.pow(Math.max(0,z),6))));}
+ sg.computeVertexNormals();const pouch=new THREE.Group();
+ const smh=new THREE.Mesh(sg,LM.sachet);smh.castShadow=true;pouch.add(smh);
+ const seal=new THREE.Mesh(new THREE.BoxGeometry(34,1,6),new THREE.MeshPhysicalMaterial({color:0xdedfdc,roughness:.5,transparent:true,opacity:.85,bumpMap:weaveT,bumpScale:2}));seal.position.z=25.5;pouch.add(seal);
+ return pouch;
+}
+function addApprovedLidExtras(lidG,geo){
+ const sh=new THREE.Shape();
+ const N=72; for(let i=0;i<=N;i++){const a=i/N*Math.PI*2;const x=Math.cos(a)*51,y=Math.sin(a)*51; if(i===0)sh.moveTo(x,y); else sh.lineTo(x,y);}
+ const hole=new THREE.Path();
+ for(let i=0;i<=N;i++){const a=i/N*Math.PI*2;const x=30+Math.cos(a)*12.5,y=28+Math.sin(a)*12.5; if(i===0)hole.moveTo(x,y); else hole.lineTo(x,y);}
+ sh.holes.push(hole);
+ const deckGeo=new THREE.ShapeGeometry(sh,12);
+ const deck=new THREE.Mesh(deckGeo,LM.lid);deck.rotation.x=-Math.PI/2;deck.position.y=-3.0;lidG.add(deck);
+ const deck2=new THREE.Mesh(deckGeo,LM.lid);deck2.rotation.x=-Math.PI/2;deck2.position.y=-6.5;lidG.add(deck2);
+ const deckIn=new THREE.Mesh(deckGeo,LM.lidIn);deckIn.rotation.x=-Math.PI/2;deckIn.position.y=-3.15;lidG.add(deckIn);
+ const seal=new THREE.Mesh(new THREE.CylinderGeometry(51.6,54.6,17,72,1,true),LM.lidIn);seal.position.y=-14;lidG.add(seal);
+ const fG=new THREE.Group();fG.name='PhotoFilter';
+ const seatFloor=new THREE.Mesh(new THREE.CylinderGeometry(11.6,11.6,1.8,48),LM.lid);seatFloor.position.y=-2.8;
+ const seatLip=new THREE.Mesh(new THREE.TorusGeometry(10.9,1.5,12,48),LM.lid);seatLip.rotation.x=Math.PI/2;seatLip.position.y=1.6;
+ const seatWall=new THREE.Mesh(new THREE.CylinderGeometry(11.2,11.5,3.2,48,1,true),LM.lid);seatWall.position.y=0.2;
+ const ao=new THREE.Mesh(new THREE.RingGeometry(8.6,11.8,48),new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.42,depthWrite:false,side:THREE.DoubleSide}));
+ ao.rotation.x=-Math.PI/2;ao.position.y=-1.9;ao.renderOrder=2;
+ const disc=new THREE.Mesh(new THREE.CylinderGeometry(9.4,9.4,4.0,48),filtMat);disc.position.y=0.0;
+ fG.add(seatFloor,seatWall,seatLip,ao,disc);
+ fG.position.set(30,-16.0,-28);fG.rotation.x=Math.PI;lidG.add(fG);
+}
+function seatSachets(bagG){
+ const rot=new THREE.Euler(0,.6,0);
+ [ -1,1].forEach((side,i)=>{
+  const pouch=makeSachet();pouch.name=`SealedAbsorbentSachet${i+1}`;
+  const offset=new THREE.Vector3(side*19,0,0).applyEuler(rot);
+  pouch.rotation.copy(rot);pouch.position.copy(offset);pouch.position.y+=-264;
+  bagG.add(pouch);
+ });
+}
+
 const root=new THREE.Group();S.add(root);
 const groups={};
 const REST={};
 const EXPLODE={'canister-l':[-180,0,0],'canister-r':[180,0,0],'regulator':[0,160,0],'base':[0,0,0],'upright':[0,0,0],'lines':[0,0,0]};
 const lineMats=[];
-const isVessel=n=>n==='vessel'||(n&&n.startsWith('vessel'));
-const isCollar=n=>n==='collar-mount'||(n&&n.startsWith('collar-mount'));
+const baseName=n=>(n||'').replace(/_\d+$/,'');
+const isVessel=n=>baseName(n)==='vessel';
+const isCollar=n=>baseName(n)==='collar-mount';
+const isLinerNode=n=>baseName(n)==='liner';
+const isLinerPart=n=>['lid','collar','bag','cap'].includes(baseName(n));
+const LINER_LIFT=170;
 
 const sc=document.createElement('canvas');sc.width=sc.height=256;const sx=sc.getContext('2d');
 const sg=sx.createRadialGradient(128,128,10,128,128,128);
@@ -136,15 +238,27 @@ new GLTFLoader().load('p14-suction-stand.glb',g=>{
     if(!groups[part]){
       const grp=new THREE.Group();grp.name=part;root.add(grp);groups[part]=grp;
       if(isCan){
-        const wp=new THREE.Vector3();o.parent.getWorldPosition(wp);
+        let can=o;while(can&&can.name!==part)can=can.parent;
+        const wp=new THREE.Vector3();(can||o.parent).getWorldPosition(wp);
         grp.position.copy(wp);REST[part]=wp.clone();
       }else REST[part]=new THREE.Vector3();
     }
+    let parentGrp=groups[part];
+    if(isCan){
+      let can=o;while(can&&can.name!==part)can=can.parent;
+      if(can){const wp=new THREE.Vector3();can.getWorldPosition(wp);parentGrp.position.copy(wp);REST[part].copy(wp);}
+    }
+    let dest=parentGrp;
+    if(isCan&&(isLinerNode(o.parent&&o.parent.name)||isLinerPart(o.name))){
+      dest=parentGrp.getObjectByName('liner');
+      if(!dest){dest=new THREE.Group();dest.name='liner';parentGrp.add(dest);}
+    }
     let geo=o.geometry.clone();
     if(!isCan)geo.applyMatrix4(o.matrixWorld);
-    geo.deleteAttribute('normal');geo=mergeVertices(geo,isCan?1e-5:1e-4);geo=toCreasedNormals(geo,Math.PI/3);
-    let mat;
+    const bn=baseName(o.name);
+    let mat,m;
     if(isCan&&isVessel(o.name)){
+      geo.deleteAttribute('normal');geo=mergeVertices(geo,1e-5);geo=toCreasedNormals(geo,Math.PI/3);
       const pos=geo.attributes.position,outer=new Float32Array(pos.count);
       for(let i=0;i<pos.count;i+=3){
         const a=new THREE.Vector3().fromBufferAttribute(pos,i),b=new THREE.Vector3().fromBufferAttribute(pos,i+1),c=new THREE.Vector3().fromBufferAttribute(pos,i+2);
@@ -154,20 +268,40 @@ new GLTFLoader().load('p14-suction-stand.glb',g=>{
         if(exterior){outer.fill(1,i,i+3);outerTriangles++;}
       }
       geo.setAttribute('printOuter',new THREE.BufferAttribute(outer,1));
-      mat=pc;
-    }else if(isCan&&isCollar(o.name)) mat=mountPC;
-    else mat=studioMat(o.material);
-    if(part==='lines')lineMats.push(mat);
-    const m=new THREE.Mesh(geo,mat);m.name=isCan?o.name:part;groups[part].add(m);
+      mat=pc;m=new THREE.Mesh(geo,mat);m.name=o.name;dest.add(m);
+    }else if(isCan&&isCollar(o.name)){
+      geo.deleteAttribute('normal');geo=mergeVertices(geo,1e-5);geo=toCreasedNormals(geo,Math.PI/3);
+      mat=mountPC;m=new THREE.Mesh(geo,mat);m.name=o.name;dest.add(m);
+    }else if(isCan&&bn==='lid'){
+      geo=clipFilterCavity(prepSmooth(geo),30,-28,13.5,-24,-2);
+      m=new THREE.Mesh(geo,LM.lid);m.castShadow=true;m.name='lid';dest.add(m);
+      const inn=new THREE.Mesh(geo,LM.lidIn);inn.renderOrder=1;dest.add(inn);
+      addApprovedLidExtras(dest,geo);
+    }else if(isCan&&bn==='bag'){
+      geo=cleanBag(geo);tuckBagTop(geo);cylUV(geo,-268,-24);
+      m=new THREE.Mesh(geo,LM.bag);m.renderOrder=5;m.name='bag';dest.add(m);
+      const mi=new THREE.Mesh(geo,LM.bagIn);mi.renderOrder=4;dest.add(mi);
+      seatSachets(dest);
+    }else if(isCan&&bn==='collar'){
+      geo=clampCollar(prepSmooth(geo));
+      m=new THREE.Mesh(geo,LM.lid);m.castShadow=true;m.name='collar';dest.add(m);
+    }else if(isCan&&bn==='cap'){
+      geo=prepSmooth(geo);
+      m=new THREE.Mesh(geo,LM.lid);m.castShadow=true;m.name='cap';dest.add(m);
+    }else{
+      geo.deleteAttribute('normal');geo=mergeVertices(geo,1e-4);geo=toCreasedNormals(geo,Math.PI/3);
+      mat=studioMat(o.material);
+      if(part==='lines')lineMats.push(mat);
+      m=new THREE.Mesh(geo,mat);m.name=part;dest.add(m);
+    }
     triangles+=geo.index?geo.index.count/3:geo.attributes.position.count/3;
   });
   const box=new THREE.Box3().setFromObject(root);
-  window.__cad={triangles,parts:Object.keys(groups),bounds:box.getSize(new THREE.Vector3()).toArray(),source:'Stand from Hamid supplied DuoVac 80 design; canisters = genuine Abadis 2L CAD with official print (commit 1ce00c11)'};
+  window.__cad={triangles,parts:Object.keys(groups),bounds:box.getSize(new THREE.Vector3()).toArray(),source:'stand from Hamid\'s supplied design; canisters = genuine Abadis 2L CAD with official print; liners = approved 2L suction bag with two sachets (P02 commit f54d8451)'};
   window.__branding={outerTriangles,innerInkTriangles:0,source:'official AMR_4901 2L photo',mapping:'front exterior only, no mirrored inner/back print, same as p05-2l-cinematic'};
   cadReady=true;markReady();
 },undefined,e=>{console.error(e);window.__ready='error';});
 
-const cl=x=>Math.min(1,Math.max(0,x));
 const ease=x=>{x=cl(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;};
 // Product-film path around the official-photo three-quarter, then base, jars, regulator, tubing, explode, return.
 // Polar interpolation; no chord through the stand; no idle drift or sway. Distances in millimetres.
@@ -193,7 +327,13 @@ const LOOK={
   'print-r':[-8,6,380,[102,390,0]],
   'print-l-tight':[4,4,260,[-102,400,20]],
   'print-r-tight':[-4,4,260,[102,400,20]],
-  'collar':[165,8,520,[0,400,-20]]
+  'collar':[165,8,520,[0,400,-20]],
+  'ports-l':[28,22,210,[-102,515,8]],
+  'ports-r':[-28,22,210,[102,515,8]],
+  'tubes-l':[-38,16,260,[-108,516,20]],
+  'tubes-r':[38,16,260,[108,516,20]],
+  'ports-l-top':[10,72,200,[-85,520,0]],
+  'ports-r-top':[-10,72,200,[85,520,0]]
 };
 const cp=new THREE.Vector3(),ct=new THREE.Vector3();let T=0,last=0;
 function sample(t){
@@ -220,7 +360,8 @@ function frame(now){requestAnimationFrame(frame);const dt=Math.min(.1,(now-(last
   const max=document.documentElement.scrollHeight-innerHeight;const target=qp.has('t')?cl(+qp.get('t')):cl(scrollY/Math.max(1,max));
   T+=(target-T)*(qp.has('t')?1:1-Math.exp(-dt*3.2));sample(T);
   const explode=explodeAmount(T);
-  for(const [name,grp] of Object.entries(groups)){const e=EXPLODE[name]||[0,0,0];const r=REST[name]||new THREE.Vector3();grp.position.set(r.x+e[0]*explode,r.y+e[1]*explode,r.z+e[2]*explode);}
+  for(const [name,grp] of Object.entries(groups)){const e=EXPLODE[name]||[0,0,0];const r=REST[name]||new THREE.Vector3();grp.position.set(r.x+e[0]*explode,r.y+e[1]*explode,r.z+e[2]*explode);
+    const liner=grp.getObjectByName('liner');if(liner)liner.position.y=explode*LINER_LIFT;}
   const lineOp=1-explode*.72;
   for(const m of lineMats){m.transparent=lineOp<.98;m.opacity=lineOp;m.depthWrite=lineOp>.98;}
   for(const b of beats){const a=+b.dataset.a,z=+b.dataset.b,o=Math.min(a<=0?1:cl((T-a)/.035),cl((z-T)/.035));b.style.opacity=o;b.style.transform=`translate(-50%,${(1-o)*14}px)`;}
