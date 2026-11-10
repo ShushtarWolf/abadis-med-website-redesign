@@ -16,7 +16,7 @@ This mesh is therefore a reconstruction: Hamid's Grok front profile, side steps 
 
 - Overall extents: 46 × 87 × 18 mm (W × L × D). Depth 18 mm is estimated.
 - C-frame back plate, left lip, closed top and bottom rails, and two through-holes: from the official set photograph.
-- Front body as a rounded “pillow” column (~25 mm wide) with mid-height side steps and a recessed ABADIS plaque: from the official 3/4 product photograph and the Grok letter outlines.
+- Front body as a rounded “pillow” column (~24.5 mm wide) with a shallow mid-height side step (about 3 mm inset, from the official set-photo silhouette) and a recessed rectangular ABADIS plaque with raised/embossed letters: from the official photographs and the Grok letter outlines.
 - Provenance label, used on the cinematic and the sketch: “reconstructed from Hamid's Grok design, corrected to official photos/drawing”.
 
 No invented mounting hardware. The genuine P05 canister collar-mount hook is about 52 mm wide, while this clamp's pocket is about 16 mm; a simple slide-in engagement is not clear from the CAD, so the cinematic does not show an assembled canister.

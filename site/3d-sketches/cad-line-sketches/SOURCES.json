@@ -286,7 +286,7 @@
     "p15-canister-clamp": {
     "provenance": "reconstructed from Hamid's Grok design, corrected to official photos/drawing (crane-blaze-orbit-eagle.grok.me). Official catalog drawing prints W 4.6 x L 8.7 cm, 11.5 g. Depth 18 mm is estimated (not printed on the official drawing). Grok's 26 mm figure is the front-face width, not the official 4.6 cm overall width. C-frame back plate and two mounting holes from the official set photo. Not original factory CAD.",
     "parts": {
-      "body": 26330
+      "body": 27259
     },
     "bounds_mm": [
       [
@@ -300,7 +300,7 @@
         9.0
       ]
     ],
-    "sha256": "1760c741bd35df90d2b907e73734b008850de6fd95e3df9c8d053d811991e8b7",
+    "sha256": "804dc99f3ee83a36369b3a569ee06cb9dff793dabaf894fa9e8dfab5a50fb104",
     "nominalOfficialMm": [
       46,
       87
@@ -319,7 +319,7 @@
     "inventedParts": false,
     "productCode": "060503",
     "inventory": "P15",
-    "bytes": 1896688,
+    "bytes": 1963580,
     "depthNote": "18 mm depth is estimated; official drawing does not print depth"
   }
 }
