@@ -863,11 +863,27 @@ function init(sec) {
     if (performance.now() - lastSkip < 280) { e.preventDefault(); return; }
     lastSkip = performance.now();
     if (explore) setExplore(false);
-    const about = document.getElementById('about');
-    if (!about) return;
+    // About pages have no #about: jump to the next sibling after .f3d, else #about.
+    const target = sec.nextElementSibling || document.getElementById('about');
     e.preventDefault();
-    about.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
-    try { history.replaceState(null, '', '#about'); } catch (_) {}
+    if (!target) return;
+    const root = document.documentElement;
+    const sel = document.scrollingElement || root;
+    const prev = root.style.scrollBehavior;
+    const prevOY = root.style.overflowY;
+    root.style.scrollBehavior = 'auto';
+    // html { scroll-behavior:smooth } plus overflow-x:clip can cancel a same-turn jump.
+    root.style.overflowY = 'auto';
+    const y = target.getBoundingClientRect().top + (sel.scrollTop || window.scrollY || 0);
+    sel.scrollTop = y;
+    window.scrollTo(0, y);
+    requestAnimationFrame(() => {
+      root.style.scrollBehavior = prev;
+      root.style.overflowY = prevOY;
+    });
+    if (target.id) {
+      try { history.replaceState(null, '', '#' + target.id); } catch (_) {}
+    }
   });
   pills.forEach((b) => b.addEventListener('click', () => {
     const i = +b.dataset.i;
