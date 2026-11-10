@@ -644,11 +644,6 @@ GALLERY = [
         'en': 'Suction liner beside the graduated polycarbonate canister',
         'ar': 'كيس الشفط بجانب الخزان المدرج من البولي كربونات',
     }),
-    ('p1-g5.webp', None, {
-        'fa': 'طرح خطی تک‌نما با قطر ۱۱ و ارتفاع ۱۵٫۵ سانتی‌متر',
-        'en': 'Single-view line drawing marked 11 cm across and 15.5 cm high',
-        'ar': 'رسم بزاوية واحدة يوضح قطر ١١ سم وارتفاع ١٥٫٥ سم',
-    }),
 ]
 
 
@@ -656,9 +651,8 @@ def gallery(lang, pfx):
     cards = []
     for name, _dark, alts in GALLERY:
         alt = esc(alts[lang])
-        klass = 'gal-card gal-contain' if name == 'p1-g5.webp' else 'gal-card'
         cards.append(
-            f'<figure class="{klass}"><div class="gal-frame"><img src="{pfx}assets/img/p/{name}" alt="{alt}" width="1200" height="800" loading="lazy" decoding="async"></div><figcaption>{alt}</figcaption></figure>'
+            f'<figure class="gal-card"><div class="gal-frame"><img src="{pfx}assets/img/p/{name}" alt="{alt}" width="1200" height="800" loading="lazy" decoding="async"></div><figcaption>{alt}</figcaption></figure>'
         )
     for view, fa, en, ar in (
         ('front', 'نمای روبه‌رو', 'Front view', 'المنظر الأمامي'),
