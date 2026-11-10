@@ -1,164 +1,200 @@
 {
- "p01-1l-liner": {
-  "parts": {
-   "lid": 3949,
-   "collar": 316,
-   "bag": 596,
-   "cap": 60
+  "p01-1l-liner": {
+    "parts": {
+      "lid": 3949,
+      "collar": 316,
+      "bag": 596,
+      "cap": 60
+    },
+    "bounds_mm": [
+      [
+        -66.5,
+        -178.0,
+        -66.39
+      ],
+      [
+        77.68,
+        20.43,
+        66.31
+      ]
+    ],
+    "sha256": "f9967989f16b71443e8ab091c4c0d3a5feb3a12fdae50fc0f85b198657b5db60"
   },
-  "bounds_mm": [
-   [
-    -66.5,
-    -178.0,
-    -66.39
-   ],
-   [
-    77.68,
-    20.43,
-    66.31
-   ]
-  ],
-  "sha256": "f9967989f16b71443e8ab091c4c0d3a5feb3a12fdae50fc0f85b198657b5db60"
- },
- "p02-2l-liner": {
-  "parts": {
-   "lid": 3976,
-   "collar": 284,
-   "bag": 596,
-   "cap": 56
+  "p02-2l-liner": {
+    "parts": {
+      "lid": 3976,
+      "collar": 284,
+      "bag": 596,
+      "cap": 56
+    },
+    "bounds_mm": [
+      [
+        -66.5,
+        -268.0,
+        -66.39
+      ],
+      [
+        77.68,
+        20.77,
+        66.31
+      ]
+    ],
+    "sha256": "72c904fe749b89301d9df035ee51685ae4b2e060aaaabb4fbd376ac46f69145e"
   },
-  "bounds_mm": [
-   [
-    -66.5,
-    -268.0,
-    -66.39
-   ],
-   [
-    77.68,
-    20.77,
-    66.31
-   ]
-  ],
-  "sha256": "72c904fe749b89301d9df035ee51685ae4b2e060aaaabb4fbd376ac46f69145e"
- },
- "p05-1l-canister": {
-  "parts": {
-   "vessel": 542,
-   "collar-mount": 552
+  "p05-1l-canister": {
+    "parts": {
+      "vessel": 542,
+      "collar-mount": 552
+    },
+    "bounds_mm": [
+      [
+        -64.5,
+        -183.0,
+        -85.73
+      ],
+      [
+        64.5,
+        0.0,
+        64.5
+      ]
+    ],
+    "sha256": "7b07516bb79d1a101bcfd823e88f9c82418dbf8a5d28b8c6aeeb0ac83f799bbf"
   },
-  "bounds_mm": [
-   [
-    -64.5,
-    -183.0,
-    -85.73
-   ],
-   [
-    64.5,
-    0.0,
-    64.5
-   ]
-  ],
-  "sha256": "7b07516bb79d1a101bcfd823e88f9c82418dbf8a5d28b8c6aeeb0ac83f799bbf"
- },
- "p05-2l-canister": {
-  "parts": {
-   "vessel": 534,
-   "collar-mount": 660
+  "p05-2l-canister": {
+    "parts": {
+      "vessel": 534,
+      "collar-mount": 660
+    },
+    "bounds_mm": [
+      [
+        -64.5,
+        -270.0,
+        -85.73
+      ],
+      [
+        64.5,
+        0.0,
+        64.5
+      ]
+    ],
+    "sha256": "22d86998a0a78a49bac43935cd889d66feb7d190cf163213aa4ae6859f58644d"
   },
-  "bounds_mm": [
-   [
-    -64.5,
-    -270.0,
-    -85.73
-   ],
-   [
-    64.5,
-    0.0,
-    64.5
-   ]
-  ],
-  "sha256": "22d86998a0a78a49bac43935cd889d66feb7d190cf163213aa4ae6859f58644d"
- },
- "p05-3l-canister": {
-  "parts": {
-   "vessel": 534,
-   "collar-mount": 660
+  "p05-3l-canister": {
+    "parts": {
+      "vessel": 534,
+      "collar-mount": 660
+    },
+    "bounds_mm": [
+      [
+        -64.5,
+        -420.0,
+        -85.73
+      ],
+      [
+        64.5,
+        0.0,
+        64.5
+      ]
+    ],
+    "sha256": "3113d1599d22224321f12e76fdcc6527f53af58f09e21df8fb01718cdbabfd3b"
   },
-  "bounds_mm": [
-   [
-    -64.5,
-    -420.0,
-    -85.73
-   ],
-   [
-    64.5,
-    0.0,
-    64.5
-   ]
-  ],
-  "sha256": "3113d1599d22224321f12e76fdcc6527f53af58f09e21df8fb01718cdbabfd3b"
- },
- "p03-3l-liner": {
-  "provenance": "SIZE-ADAPTED RECONSTRUCTION based on approved P02 2L CAD and manufacturer nominal dimensions; NOT original 3L CAD",
-  "parts": {
-   "lid": 14084,
-   "collar": 284,
-   "bag": 596,
-   "cap": 56
+  "p03-3l-liner": {
+    "provenance": "SIZE-ADAPTED RECONSTRUCTION based on approved P02 2L CAD and manufacturer nominal dimensions; NOT original 3L CAD",
+    "parts": {
+      "lid": 14084,
+      "collar": 284,
+      "bag": 596,
+      "cap": 56
+    },
+    "bounds_mm": [
+      [
+        -66.53,
+        -413.0,
+        -66.39
+      ],
+      [
+        77.77,
+        20.76,
+        66.35
+      ]
+    ],
+    "sha256": "4afe099cfc2a0297524fb3c027afcdb0c63145db66e5ed701cde8fa6ac104627",
+    "nominalDimensionsMm": [
+      110,
+      390
+    ],
+    "bodyHeightMm": 389,
+    "illustrativeSachets": 3,
+    "sachetsAreCAD": false,
+    "filterInSketch": false,
+    "bodyHeightMethod": "244 mm actual parent body + (390-245) nominal difference =389 mm; neck and rounded floor shape preserved; rigid lid/cap/collar unchanged"
   },
-  "bounds_mm": [
-   [
-    -66.53,
-    -413.0,
-    -66.39
-   ],
-   [
-    77.77,
-    20.76,
-    66.35
-   ]
-  ],
-  "sha256": "4afe099cfc2a0297524fb3c027afcdb0c63145db66e5ed701cde8fa6ac104627",
-  "nominalDimensionsMm": [
-   110,
-   390
-  ],
-  "bodyHeightMm": 389,
-  "illustrativeSachets": 3,
-  "sachetsAreCAD": false,
-  "filterInSketch": false,
-  "bodyHeightMethod": "244 mm actual parent body + (390-245) nominal difference =389 mm; neck and rounded floor shape preserved; rigid lid/cap/collar unchanged"
- },
- "p11-disc-filter": {
-  "provenance": "MODELED FROM HAMID'S SUPPLIED FILTER DESIGN (Discform / yellow-scarlet-cherry-craft.grok.me) at the page's shown 5.00 x 4.45 cm defaults; NOT original factory CAD. Official catalog drawing of the same part prints Ø 5.8 x L 5.8 cm, 16.6 g.",
-  "parts": {
-   "housing": 10368,
-   "ribs": 288
+  "p11-disc-filter": {
+    "provenance": "MODELED FROM HAMID'S SUPPLIED FILTER DESIGN (Discform / yellow-scarlet-cherry-craft.grok.me) at the page's shown 5.00 x 4.45 cm defaults; NOT original factory CAD. Official catalog drawing of the same part prints Ø 5.8 x L 5.8 cm, 16.6 g.",
+    "parts": {
+      "housing": 10368,
+      "ribs": 288
+    },
+    "bounds_mm": [
+      [
+        -25.0,
+        -22.25,
+        -25.0
+      ],
+      [
+        25.0,
+        22.25,
+        25.0
+      ]
+    ],
+    "sha256": "57d4fcaee4618dc9859947e919c07b4e543e73fd28f80ecb201ae5d28e693f74",
+    "nominalOfficialMm": [
+      58,
+      58
+    ],
+    "suppliedDesignMm": [
+      50,
+      44.5
+    ],
+    "factoryCAD": false,
+    "inventedMembrane": false,
+    "productCode": "040501",
+    "inventory": "P11"
   },
-  "bounds_mm": [
-   [
-    -25.0,
-    -22.25,
-    -25.0
-   ],
-   [
-    25.0,
-    22.25,
-    25.0
-   ]
-  ],
-  "sha256": "57d4fcaee4618dc9859947e919c07b4e543e73fd28f80ecb201ae5d28e693f74",
-  "nominalOfficialMm": [
-   58,
-   58
-  ],
-  "suppliedDesignMm": [
-   50,
-   44.5
-  ],
-  "factoryCAD": false,
-  "inventedMembrane": false,
-  "productCode": "040501",
-  "inventory": "P11"
- }
+  "p12-inline-filter": {
+    "provenance": "MODELED FROM HAMID'S SUPPLIED FILTER DESIGN (Clearline / cloud-lark-beacon-cobalt.grok.me) at the page's shown 3.0 x 7.2 cm defaults; NOT original factory CAD. Official catalog drawing of the same part prints Ø 3.0 x L 7.2 cm, 10.5 g. Length and diameter match; weight is official-drawing only.",
+    "parts": {
+      "inlet": 1296,
+      "inletCap": 1728,
+      "barrel": 576,
+      "outletCap": 1728,
+      "outlet": 1440,
+      "cartridge": 720
+    },
+    "bounds_mm": [
+      [
+        -36.0,
+        -15.0,
+        -15.0
+      ],
+      [
+        36.0,
+        15.0,
+        15.0
+      ]
+    ],
+    "sha256": "72ce1ff0975c76acdb8c85c7f8980ea2b1423f433f3c3216b43141fa88fbe45d",
+    "nominalOfficialMm": [
+      30,
+      72
+    ],
+    "suppliedDesignMm": [
+      30,
+      72
+    ],
+    "factoryCAD": false,
+    "inventedParts": false,
+    "productCode": "040502",
+    "inventory": "P12"
+  }
 }
