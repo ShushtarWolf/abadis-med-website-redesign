@@ -671,6 +671,13 @@ function init(sec) {
   const controls = new OrbitControls(camera, canvas);
   controls.enabled = false; controls.enableDamping = true; controls.dampingFactor = 0.08;
   controls.maxDistance = 170; controls.minDistance = 6; controls.maxPolarAngle = Math.PI * 0.495;
+  // OrbitControls.connect() sets canvas.style.touchAction = 'none', which blocks iOS page scroll.
+  const setTouchPan = (allowPageScroll) => {
+    const action = allowPageScroll ? 'pan-y' : 'none';
+    canvas.style.touchAction = action;
+    stage.style.touchAction = action;
+  };
+  setTouchPan(true);
 
   const intro = $('.f3d-intro'), dock = $('.f3d-dock'), dockToggle = $('.f3d-dock-toggle'), dockToggleLbl = $('.f3d-dock-toggle-lbl');
   const pStep = $('.f3d-step'), pTitle = $('.f3d-title'), subChipsEl = $('.f3d-subchips'), pSpec = $('.f3d-subspec');
@@ -826,6 +833,7 @@ function init(sec) {
     explore = on;
     tween = null;
     sec.classList.toggle('is-ex', on);
+    setTouchPan(!on);
     resize();
     controls.enabled = on; exLabel.textContent = on ? cfg.back : cfg.explore;
     if (on) {
@@ -847,7 +855,7 @@ function init(sec) {
     lastExToggle = performance.now();
     e.preventDefault(); e.stopPropagation(); setExplore(!explore);
   }
-  exBtn.addEventListener('pointerup', (e) => { if (e.pointerType === 'touch' || e.pointerType === 'pen') toggleExplore(e); });
+  // Click-only with debounce: a pointerup+click pair can double-toggle or swallow the tap on iOS.
   exBtn.addEventListener('click', toggleExplore);
   const skipBtn = $('.f3d-skip');
   let lastSkip = 0;
@@ -855,14 +863,24 @@ function init(sec) {
     if (performance.now() - lastSkip < 280) { e.preventDefault(); return; }
     lastSkip = performance.now();
     if (explore) setExplore(false);
-    let target = sec.nextElementSibling;
-    while (target && !(target.getBoundingClientRect().height > 0 || target.offsetHeight > 0)) {
-      target = target.nextElementSibling;
-    }
-    if (!target) target = document.getElementById('about');
-    if (!target) return;
+    // About pages have no #about: jump to the next sibling after .f3d, else #about.
+    const target = sec.nextElementSibling || document.getElementById('about');
     e.preventDefault();
-    target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+    if (!target) return;
+    const root = document.documentElement;
+    const sel = document.scrollingElement || root;
+    const prev = root.style.scrollBehavior;
+    const prevOY = root.style.overflowY;
+    root.style.scrollBehavior = 'auto';
+    // html { scroll-behavior:smooth } plus overflow-x:clip can cancel a same-turn jump.
+    root.style.overflowY = 'auto';
+    const y = target.getBoundingClientRect().top + (sel.scrollTop || window.scrollY || 0);
+    sel.scrollTop = y;
+    window.scrollTo(0, y);
+    requestAnimationFrame(() => {
+      root.style.scrollBehavior = prev;
+      root.style.overflowY = prevOY;
+    });
     if (target.id) {
       try { history.replaceState(null, '', '#' + target.id); } catch (_) {}
     }
