@@ -128,5 +128,37 @@
   "sachetsAreCAD": false,
   "filterInSketch": false,
   "bodyHeightMethod": "244 mm actual parent body + (390-245) nominal difference =389 mm; neck and rounded floor shape preserved; rigid lid/cap/collar unchanged"
+ },
+ "p11-disc-filter": {
+  "provenance": "MODELED FROM HAMID'S SUPPLIED FILTER DESIGN (Discform / yellow-scarlet-cherry-craft.grok.me) at the page's shown 5.00 x 4.45 cm defaults; NOT original factory CAD. Official catalog drawing of the same part prints Ø 5.8 x L 5.8 cm, 16.6 g.",
+  "parts": {
+   "housing": 10368,
+   "ribs": 288
+  },
+  "bounds_mm": [
+   [
+    -25.0,
+    -22.25,
+    -25.0
+   ],
+   [
+    25.0,
+    22.25,
+    25.0
+   ]
+  ],
+  "sha256": "57d4fcaee4618dc9859947e919c07b4e543e73fd28f80ecb201ae5d28e693f74",
+  "nominalOfficialMm": [
+   58,
+   58
+  ],
+  "suppliedDesignMm": [
+   50,
+   44.5
+  ],
+  "factoryCAD": false,
+  "inventedMembrane": false,
+  "productCode": "040501",
+  "inventory": "P11"
  }
 }
