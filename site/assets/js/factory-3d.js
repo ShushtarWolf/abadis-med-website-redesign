@@ -849,7 +849,24 @@ function init(sec) {
   }
   exBtn.addEventListener('pointerup', (e) => { if (e.pointerType === 'touch' || e.pointerType === 'pen') toggleExplore(e); });
   exBtn.addEventListener('click', toggleExplore);
-  $('.f3d-skip').addEventListener('click', () => { if (explore) setExplore(false); });
+  const skipBtn = $('.f3d-skip');
+  let lastSkip = 0;
+  skipBtn.addEventListener('click', (e) => {
+    if (performance.now() - lastSkip < 280) { e.preventDefault(); return; }
+    lastSkip = performance.now();
+    if (explore) setExplore(false);
+    let target = sec.nextElementSibling;
+    while (target && !(target.getBoundingClientRect().height > 0 || target.offsetHeight > 0)) {
+      target = target.nextElementSibling;
+    }
+    if (!target) target = document.getElementById('about');
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+    if (target.id) {
+      try { history.replaceState(null, '', '#' + target.id); } catch (_) {}
+    }
+  });
   pills.forEach((b) => b.addEventListener('click', () => {
     const i = +b.dataset.i;
     if (!isNarrow()) setCollapsed(false);
