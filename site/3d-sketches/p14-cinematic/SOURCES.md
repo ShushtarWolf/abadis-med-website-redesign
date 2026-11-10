@@ -10,7 +10,7 @@ The Grok DuoVac 80 geometry (5-arm base, thin faceted tubes, stick-arm regulator
 
 - Four-arm X base of square white tube, about 40 cm caster-to-caster span (from the official photo’s base-to-jar proportion; the earlier 48 cm figure was the Grok span), with four black twin-wheel casters.
 - Square white post. A pale-green collar at lid height and a small front badge, as in the official photo.
-- Canisters sit high and close to the pole. Their genuine rear collar-mounts face the upright and engage a simple holder/clamp modelled from the part visible in the official photo (not an invented fitting). Prints face forward/outward: logo on the outer side, volume scale toward the pole, matching the official photo. The left canister is yawed −48° (logo to the outer-front); its collar-mount then points inward and slightly aft rather than straight at the pole — print match was prioritised. The right canister stays at +72° so the mount faces the pole and the print already matches. The right liner is yawed 180° on the vessel so the genuine PATIENT / VACUUM ports follow the official serial circuit.
+- Canisters sit high and close to the pole. Their genuine rear collar-mounts face the upright and engage a simple holder/clamp modelled from the part visible in the official photo (not an invented fitting). Prints face forward/outward: logo on the outer side, volume scale toward the pole, matching the official photo. The left canister is yawed −24° (logo clearly on the front-left at the official-photo camera); its collar-mount then points inward and slightly aft rather than straight at the pole — print match was prioritised. The right canister stays at +72° so the mount faces the pole and the print already matches. The right liner is yawed 180° on the vessel so the genuine PATIENT / VACUUM ports follow the official serial circuit.
 - Tubes are rebuilt as smooth `TubeGeometry` (24 radial segments, Catmull-Rom paths), not the original 9-sided Grok strings:
   - short yellow patient stub on **left PATIENT**;
   - thick yellow arch, **left VACUUM → right PATIENT** (serial link, left jar then right);
@@ -25,7 +25,7 @@ The Grok DuoVac 80 geometry (5-arm base, thin faceted tubes, stick-arm regulator
 
 - Canisters: genuine P05 2 L CAD, official print (`official-2l-print.png`), same shader as p05-2l-cinematic.
 - Liners: approved P02 2 L bag CAD (lid, collar, bag, cap). The tethered cap is folded down onto the lid deck so it does not stand up beside the patient port (the official trolley photo shows no upright cap).
-- SHA256 of the millimetre GLB: `4b1ebbc66e7d69249b3003768ce697ac1b70cfd3e765f3e2e3745aa82c34ed88`.
+- SHA256 of the millimetre GLB: `d9f8fa7531087d42ec110ac46a7b7e5f388e30edb0263fd183c545e83615993b`.
 
 ## Explode
 

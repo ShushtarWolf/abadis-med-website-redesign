@@ -198,7 +198,7 @@
     "inventory": "P12"
   },
   "p14-suction-stand": {
-    "provenance": "stand rebuilt to match the official Abadis trolley photo and drawing (H 80 cm); canisters = genuine 2L CAD; liners = approved 2L bag. The Grok DuoVac 80 5-arm base, thin faceted tubes and stick-arm regulator were replaced. 4-arm square-tube X base, four twin-wheel casters, ~40 cm span (official photo proportion; earlier 48 cm was the Grok span). Genuine rear collar-mounts face the pole and engage a holder modelled from the official photo. Prints face forward/outward (logo outer, scale inner). Tubes are smooth thick hoses seated in the genuine P02 lid ports: yellow patient stub on left PATIENT; yellow arch left VACUUM to right PATIENT (serial); yellow loop to the regulator; short green overflow on right VACUUM; grey supply hose from the top inlet. Regulator, green collar and fittings are reconstructed from the official photo and drawing, not factory CAD. Model height is about 812 mm versus the official drawing 80 cm. Official catalog lists up to four 3 L jars; this model follows the official photo (two 2 L). The left canister is yawed −48° so the official print faces outer-front as in the photo; its collar-mount then points inward and slightly aft rather than straight at the pole (print match was prioritised). The right canister remains at +72°, mount facing the pole.",
+    "provenance": "stand rebuilt to match the official Abadis trolley photo and drawing (H 80 cm); canisters = genuine 2L CAD; liners = approved 2L bag. The Grok DuoVac 80 5-arm base, thin faceted tubes and stick-arm regulator were replaced. 4-arm square-tube X base, four twin-wheel casters, ~40 cm span (official photo proportion; earlier 48 cm was the Grok span). Genuine rear collar-mounts face the pole and engage a holder modelled from the official photo. Prints face forward/outward (logo outer, scale inner). Tubes are smooth thick hoses seated in the genuine P02 lid ports: yellow patient stub on left PATIENT; yellow arch left VACUUM to right PATIENT (serial); yellow loop to the regulator; short green overflow on right VACUUM; grey supply hose from the top inlet. Regulator, green collar and fittings are reconstructed from the official photo and drawing, not factory CAD. Model height is about 812 mm versus the official drawing 80 cm. Official catalog lists up to four 3 L jars; this model follows the official photo (two 2 L). The left canister is yawed −24° so the official print’s logo is clearly visible on the front-left at the official-photo camera; its collar-mount then points inward and slightly aft rather than straight at the pole (print match was prioritised). The right canister remains at +72°, mount facing the pole. The CAD-line sketch draws the official 2 L print as a circle-with-cross logo and graduation ticks, positioned to match the model print.",
     "parts": {
       "base": 2648,
       "upright": 656,
@@ -209,7 +209,7 @@
     },
     "bounds_mm": [
       [
-        -195.48,
+        -184.28,
         0,
         -174.26
       ],
@@ -219,14 +219,14 @@
         176.11
       ]
     ],
-    "sha256": "4b1ebbc66e7d69249b3003768ce697ac1b70cfd3e765f3e2e3745aa82c34ed88",
+    "sha256": "d9f8fa7531087d42ec110ac46a7b7e5f388e30edb0263fd183c545e83615993b",
     "nominalOfficialMm": null,
     "suppliedDesignMm": [
       480,
       800
     ],
     "modelExtentsMm": [
-      377,
+      366,
       350,
       812
     ],
@@ -281,6 +281,6 @@
         }
       ]
     },
-    "bytes": 1465428
+    "bytes": 1465420
   }
 }

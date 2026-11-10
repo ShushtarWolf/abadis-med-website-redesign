@@ -113,6 +113,7 @@ function build(p){
    const cr=new THREE.LineSegments(ed.cg,lm),crH=new THREE.LineSegments(ed.cg,hm);const sg=new THREE.BufferGeometry();const sl=new THREE.LineSegments(sg,lm),slH=new THREE.LineSegments(sg,hm);
    [cr,crH,sl,slH].forEach(l=>{l.frustumCulled=false;scene.add(l)});cr.renderOrder=sl.renderOrder=2;crH.renderOrder=slH.renderOrder=3;it.parts.push({ed,sl,crH,slH})});
   if(p.adapted&&p.id==='p03-3l-liner')addIllustrativePouches(it);
+  if(p.id==='p14-suction-stand')addP14PrintLines(it,g.scene);
   // floor rings (presentation only, not product geometry). Omitted on P14 so the
   // official-drawing-style 3/4 elevation is not crossed by concentric ellipses.
   if(p.id!=='p14-suction-stand'){const rg=new THREE.Group();for(const r of[1.05,1.45,1.9]){const pts=[];const R0=Math.max(sz.x,sz.z)*.5*r;for(let a=0;a<=96;a++){const t=a/96*Math.PI*2;pts.push(new THREE.Vector3(c.x+Math.cos(t)*R0,box.min.y,c.z+Math.sin(t)*R0))}rg.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),M.ring))}scene.add(rg);}
@@ -131,6 +132,52 @@ function addIllustrativePouches(it){
   pouch.rotation.y=i===2?1.57:.6;const offset=i===2?new THREE.Vector3(0,7,-20):new THREE.Vector3((i===0?-1:1)*19,0,0).applyEuler(pouch.rotation);pouch.position.copy(offset);pouch.position.y-=409;it.scene.add(pouch);
  }it.illustrativeSachets=3;
 }
+
+function addP14PrintLines(it,gltfScene){
+  // Official-drawing-style canister print: circle-with-cross logo and graduation
+  // ticks, placed to match the genuine 2 L official print (logo at local +Z,
+  // scales at ±49°, logo centre 76 mm below the rim) after each vessel's yaw.
+  const c=pal();
+  const mat=new THREE.LineBasicMaterial({color:c.teal,depthTest:true,transparent:true,opacity:.95});
+  it.p14PrintMat=mat;
+  const grp=new THREE.Group();grp.name='p14-print-lines';it.scene.add(grp);
+  const R=62.2, LOGO_R=26, LOGO_DY=-76.4, SCALE_ANG=49*Math.PI/180, SCALE_Y0=-36, SCALE_Y1=-258;
+  const isV=n=>n==='vessel'||(n&&n.startsWith('vessel'));
+  const jars=[];gltfScene.updateMatrixWorld(true);
+  gltfScene.traverse(o=>{
+    if(!o.isMesh||!isV(o.name))return;
+    const p=new THREE.Vector3();o.getWorldPosition(p);
+    const e=new THREE.Euler().setFromRotationMatrix(o.matrixWorld,'YXZ');
+    jars.push({cx:p.x,cy:p.y,cz:p.z,yaw:e.y});
+  });
+  const wrap=d=>{while(d>Math.PI)d-=Math.PI*2;while(d<-Math.PI)d+=Math.PI*2;return d};
+  const onTan=(j,ang,y,s,t=0)=>{
+    const rad=new THREE.Vector3(Math.sin(ang),0,Math.cos(ang));
+    const th=new THREE.Vector3(Math.cos(ang),0,-Math.sin(ang));
+    return new THREE.Vector3(j.cx,j.cy+y+t,j.cz).add(rad.multiplyScalar(R)).add(th.multiplyScalar(s));
+  };
+  const addPts=(pts,closed)=>{
+    const g=new THREE.BufferGeometry().setFromPoints(closed?pts.concat([pts[0]]):pts);
+    const l=new THREE.Line(g,mat);l.renderOrder=6;l.frustumCulled=false;grp.add(l);
+  };
+  for(const j of jars){
+    const logoA=j.yaw;
+    const poleAz=Math.atan2(-j.cx,-j.cz);
+    const a1=logoA+SCALE_ANG,a2=logoA-SCALE_ANG;
+    const scaleA=Math.abs(wrap(a1-poleAz))<Math.abs(wrap(a2-poleAz))?a1:a2;
+    const circ=[];for(let i=0;i<=48;i++){const t=i/48*Math.PI*2;circ.push(onTan(j,logoA,LOGO_DY,LOGO_R*Math.sin(t),LOGO_R*Math.cos(t)))}
+    addPts(circ,false);
+    addPts([onTan(j,logoA,LOGO_DY,-LOGO_R,0),onTan(j,logoA,LOGO_DY,LOGO_R,0)],false);
+    addPts([onTan(j,logoA,LOGO_DY,0,-LOGO_R),onTan(j,logoA,LOGO_DY,0,LOGO_R)],false);
+    addPts([onTan(j,scaleA,SCALE_Y0,0),onTan(j,scaleA,SCALE_Y1,0)],false);
+    const span=SCALE_Y0-SCALE_Y1, d=wrap(logoA-scaleA), sDir=d>=0?1:-1;
+    for(let k=0;k<=20;k++){
+      const y=SCALE_Y1+span*(k/20), len=k%5===0?9:4.5;
+      addPts([onTan(j,scaleA,y,0),onTan(j,scaleA,y,sDir*len)],false);
+    }
+  }
+}
+
 function inkMat(it,geo,p,mesh){
  // Genuine size-specific official photo print (same texture/mapping as the approved cinematic). Exterior wall only.
  // On P14 the two vessels are translated; unwrap around each vessel's own axis / rim.
@@ -209,7 +256,7 @@ function buildDims(it){const g=it.dimG,box=it.dimBox,p=it.dimP;while(g.children.
 function checkReady(){window.__sketchQA=items.map(x=>({id:x.p.id,ready:!!x.ready,adapted:!!x.p.adapted,illustrativeSachets:x.illustrativeSachets||0,dimensions:x.p.dim||null}));if(items.every(x=>x.ready&&(!x.needInk||x.inkReady)))requestAnimationFrame(()=>requestAnimationFrame(()=>window.__ready=true))}
 function setView(it,v){const VV=it.p.id==='p14-suction-stand'?{iso:[16,7],front:[0,0],side:[90,0],top:[0,89]}:(it.p.print&&!it.p.vesselPrint)?{...VIEWS,iso:[14,16],scale:[0,0]}:VIEWS;it.view=v;if(it.dimG)it.dimG.visible=v!=='top'&&v!=='scale'&&v!=='side';const[az,el]=VV[v]||VV.iso;const a=THREE.MathUtils.degToRad(az),e=THREE.MathUtils.degToRad(el);const d=it.rad*4;
  it.cam.position.set(it.center.x+d*Math.sin(a)*Math.cos(e),it.center.y+d*Math.sin(e),it.center.z+d*Math.cos(a)*Math.cos(e));it.cam.up.set(0,1,0);if(el>80)it.cam.up.set(0,0,-1);it.cam.zoom=1;it.ctl.target.copy(it.center);if(v==='scale'){const t=it.center.clone();t.y=it.box.max.y-it.rad*.55;it.cam.position.x+=t.x-it.center.x;it.cam.position.y+=t.y-it.center.y;it.ctl.target.copy(t)}resize(it);it.ctl.update();it.dirty=true}
-function applyTheme(it){const c=pal(),M=it.mats;if(!M.fill)return;M.fill.color.set(c.bg);M.fillA.color.set(c.fill);M.ink.color.set(c.ink);M.teal.color.set(c.teal);M.inkH.color.set(c.ink);M.tealH.color.set(c.teal);M.inkH.opacity=M.tealH.opacity=c.hid;M.ring.color.set(c.ring);if(it.inkM)it.inkM.color.set(c.bg);if(it.inkMats)it.inkMats.forEach(m=>m.color.set(c.bg));if(it.inkU)it.inkU.uInkCol.value.setHex(c.teal,THREE.LinearSRGBColorSpace);if(it.illustrativeMaterial)it.illustrativeMaterial.color.set(c.teal);if(it.dimG)buildDims(it);
+function applyTheme(it){const c=pal(),M=it.mats;if(!M.fill)return;M.fill.color.set(c.bg);M.fillA.color.set(c.fill);M.ink.color.set(c.ink);M.teal.color.set(c.teal);M.inkH.color.set(c.ink);M.tealH.color.set(c.teal);M.inkH.opacity=M.tealH.opacity=c.hid;M.ring.color.set(c.ring);if(it.inkM)it.inkM.color.set(c.bg);if(it.inkMats)it.inkMats.forEach(m=>m.color.set(c.bg));if(it.inkU)it.inkU.uInkCol.value.setHex(c.teal,THREE.LinearSRGBColorSpace);if(it.illustrativeMaterial)it.illustrativeMaterial.color.set(c.teal);if(it.p14PrintMat)it.p14PrintMat.color.set(c.teal);if(it.dimG)buildDims(it);
  if(!plate)it.R.setClearColor(c.bg,1);else it.R.setClearColor(0,0);it.dirty=true}
 function resize(it){const w=it.host.clientWidth,h=it.host.clientHeight;it.R.setSize(w,h,false);const asp=w/h,r=(it.rad||100)*(plate?(it.p.id==='p11-disc-filter'?1.9:it.p.id==='p12-inline-filter'?2.15:it.p.id==='p14-suction-stand'?1.65:1.4):1.22)*(it.view==='scale'?.6:1);const hh=asp>1?r:r/asp;it.cam.left=-hh*asp;it.cam.right=hh*asp;it.cam.top=hh;it.cam.bottom=-hh;it.cam.updateProjectionMatrix();it.dirty=true}
 function frame(){for(const it of items){if(!it.ready)continue;if(spin){it.ctl.autoRotate=true;it.ctl.autoRotateSpeed=1.2}else it.ctl.autoRotate=false;it.ctl.update();
