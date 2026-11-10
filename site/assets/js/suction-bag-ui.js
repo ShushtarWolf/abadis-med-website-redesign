@@ -146,4 +146,89 @@
     window.addEventListener('scroll', function () { requestAnimationFrame(spy); }, { passive: true });
     spy();
   }
+
+  function isoModuleUrl() {
+    var s = document.querySelector('script[src*="suction-bag-ui.js"]');
+    if (!s) return '';
+    return s.src.replace(/suction-bag-ui\.js[^/]*$/, 'cad-iso-viewer.js?v=20261110s');
+  }
+  function themeKey() {
+    var t = document.documentElement.getAttribute('data-theme');
+    return (t === 'dark' || t === 'noir') ? 'dark' : 'light';
+  }
+  function applyIsoStill(frame, size) {
+    if (frame.getAttribute('data-iso-kind') !== 'liner' || !size) return;
+    var light = frame.getAttribute('data-iso-still-' + size + '-light');
+    var dark = frame.getAttribute('data-iso-still-' + size + '-dark');
+    var imgL = frame.querySelector('.iso-still-light');
+    var imgD = frame.querySelector('.iso-still-dark');
+    if (light && imgL) imgL.src = light;
+    if (dark && imgD) imgD.src = dark;
+    frame.setAttribute('data-iso-size', size);
+  }
+  function currentIsoId(frame) {
+    if (frame.getAttribute('data-iso-kind') === 'filter') return frame.getAttribute('data-iso-id');
+    var size = frame.getAttribute('data-iso-size') || '1';
+    return frame.getAttribute('data-iso-id-' + size);
+  }
+  function currentIsoSrc(frame) {
+    if (frame.getAttribute('data-iso-kind') === 'filter') return frame.getAttribute('data-iso-src');
+    var size = frame.getAttribute('data-iso-size') || '1';
+    return frame.getAttribute('data-iso-src-' + size);
+  }
+  document.querySelectorAll('[data-iso]').forEach(function (frame) {
+    var btn = frame.querySelector('.iso-load');
+    if (!btn) return;
+    if (reduced || !webgl()) {
+      frame.classList.add('is-still-only');
+      btn.hidden = true;
+      return;
+    }
+    btn.addEventListener('click', function () {
+      if (frame._iso || frame.classList.contains('is-loading')) return;
+      frame.classList.add('is-loading');
+      var url = isoModuleUrl();
+      import(url).then(function (mod) {
+        frame._iso = mod.mount(frame, { id: currentIsoId(frame), url: currentIsoSrc(frame) });
+        frame.classList.remove('is-loading');
+      }).catch(function () {
+        frame.classList.remove('is-loading');
+        frame.classList.add('is-still-only');
+      });
+    });
+  });
+  function setBagSize(size, scroll) {
+    document.querySelectorAll('.size-pick-btn').forEach(function (b) {
+      if (b.getAttribute('data-size') === size) b.setAttribute('aria-selected', 'true');
+      else b.setAttribute('aria-selected', 'false');
+    });
+    document.querySelectorAll('[data-iso-kind="liner"]').forEach(function (frame) {
+      applyIsoStill(frame, size);
+      if (frame._iso) {
+        frame._iso.setModel(currentIsoId(frame), currentIsoSrc(frame));
+      }
+    });
+    if (scroll) {
+      var el = document.getElementById('s' + size);
+      if (el) el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+    }
+  }
+  document.querySelectorAll('.size-pick-btn').forEach(function (b) {
+    b.addEventListener('click', function () { setBagSize(b.getAttribute('data-size'), true); });
+  });
+  /* Keep the iso size in step if the reader scrolls the sections by hand. */
+  var sizeSecs = ['1', '2', '3'].map(function (s) { return document.getElementById('s' + s); }).filter(Boolean);
+  if (sizeSecs.length && 'IntersectionObserver' in window) {
+    var sizeIo = new IntersectionObserver(function (entries) {
+      var best = null, ratio = 0;
+      entries.forEach(function (e) {
+        if (e.isIntersecting && e.intersectionRatio > ratio) { ratio = e.intersectionRatio; best = e.target; }
+      });
+      if (!best) return;
+      var id = best.id || '';
+      if (id.charAt(0) === 's') setBagSize(id.slice(1), false);
+    }, { rootMargin: '-30% 0px -45% 0px', threshold: [0.2, 0.4, 0.6] });
+    sizeSecs.forEach(function (el) { sizeIo.observe(el); });
+  }
+
 })();

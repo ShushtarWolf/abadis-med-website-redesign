@@ -19,7 +19,7 @@ SITE = ROOT / 'site'
 FA_DIG = str.maketrans('0123456789', '۰۱۲۳۴۵۶۷۸۹')
 AR_DIG = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
 
-V = '20261110a'
+V = '20261110s'
 
 ARROW = ('<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
          '<path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" '
@@ -157,7 +157,7 @@ UI = {
         specs='مشخصات', pause='توقف یا ادامه حرکت',
         intro_h='معرفی کوتاه',
         intro_p='کیسه ساکشن یکبار مصرف آبادیس در حجم‌های ۱، ۲ و ۳ لیتری؛ دارای پودر ژل‌کننده، فیلتر هیدروفوبیک و سیستم حفاظت از ساکشن مرکزی.',
-        nav=[('intro', 'معرفی'), ('stats', 'اعداد'), ('gallery', 'گالری'), ('sizes', 'سایزها'), ('uses', 'مصرف'), ('packaging', 'بسته‌بندی'), ('filters', 'فیلتر'), ('catalog', 'کاتالوگ'), ('order', 'قیمت')],
+        nav=[('intro', 'معرفی'), ('stats', 'اعداد'), ('gallery', 'گالری'), ('s1', '۱ لیتری'), ('s2', '۲ لیتری'), ('s3', '۳ لیتری'), ('filters', 'فیلتر'), ('packaging', 'بسته‌بندی'), ('catalog', 'کاتالوگ'), ('order', 'قیمت')],
         uses_h='موارد مصرف',
         packaging_h='بسته‌بندی و کارتن',
         filters_h='فیلترها',
@@ -171,7 +171,11 @@ UI = {
             ('۴۵ عدد', 'در هر کارتن'),
         ],
         gal_h='گالری',
-        gal_lead='عکس محصول و نماهای تک‌زاویه.',
+        gal_lead='عکس محصول، نماهای تک‌زاویه و طرح خطی ایزومتریک تعاملی.',
+        iso_cap='طرح خطی ایزومتریک. برای چرخش، روی طرح بزنید و بکشید.',
+        iso_load='نمایش طرح تعاملی',
+        iso_filter_cap='طرح خطی ایزومتریک فیلتر قطع‌کننده جریان. برای چرخش، روی طرح بزنید و بکشید.',
+        codes_h='کد محصول',
         sizes_h='سایزها',
         sizes_lead='ظرفیت ها — ۱ لیتری، ۲ لیتری و ۳ لیتری. کد محصول و IRC در هر بخش.',
         spec_h='مشخصات',
@@ -205,7 +209,7 @@ UI = {
         specs='Specifications', pause='Pause or play motion',
         intro_h='Overview',
         intro_p='Abadis single-use disposable suction liner bags in 1, 2 and 3 litres, with gel powder, a hydrophobic flow-stopper filter and central suction protection.',
-        nav=[('intro', 'Overview'), ('stats', 'Numbers'), ('gallery', 'Gallery'), ('sizes', 'Sizes'), ('uses', 'Usage'), ('packaging', 'Packaging'), ('filters', 'Filters'), ('catalog', 'Catalog'), ('order', 'Quote')],
+        nav=[('intro', 'Overview'), ('stats', 'Numbers'), ('gallery', 'Gallery'), ('s1', '1 L'), ('s2', '2 L'), ('s3', '3 L'), ('filters', 'Filters'), ('packaging', 'Packaging'), ('catalog', 'Catalog'), ('order', 'Quote')],
         uses_h='Usage',
         packaging_h='Packaging & carton',
         filters_h='Filters',
@@ -219,7 +223,11 @@ UI = {
             ('45 pcs', 'Per carton'),
         ],
         gal_h='Gallery',
-        gal_lead='Product photos and single-view drawings.',
+        gal_lead='Product photos, single-view drawings, and an interactive isometric line drawing.',
+        iso_cap='Isometric line drawing. Tap the drawing and drag to rotate.',
+        iso_load='View interactive drawing',
+        iso_filter_cap='Isometric line drawing of the flow-stopper filter. Tap the drawing and drag to rotate.',
+        codes_h='Product codes',
         sizes_h='Sizes',
         sizes_lead='Capacity — 1 Liter, 2 Liter and 3 Liter. Product codes in each section.',
         spec_h='Specifications',
@@ -255,7 +263,7 @@ UI = {
         specs='المواصفات', pause='إيقاف الحركة أو متابعتها',
         intro_h='مقدمة',
         intro_p='أكياس شفط آباديس ذات الاستعمال الواحد بسعات ١ و٢ و٣ لتر، مع مسحوق التهليم وفلتر كاره للماء ونظام حماية الشفط المركزي.',
-        nav=[('intro', 'مقدمة'), ('stats', 'أرقام'), ('gallery', 'المعرض'), ('sizes', 'الأحجام'), ('uses', 'الاستخدام'), ('packaging', 'التغليف'), ('filters', 'الفلاتر'), ('catalog', 'الكتالوج'), ('order', 'السعر')],
+        nav=[('intro', 'مقدمة'), ('stats', 'أرقام'), ('gallery', 'المعرض'), ('s1', '١ لتر'), ('s2', '٢ لتر'), ('s3', '٣ لتر'), ('filters', 'الفلاتر'), ('packaging', 'التغليف'), ('catalog', 'الكتالوج'), ('order', 'السعر')],
         uses_h='الاستخدامات',
         packaging_h='التغليف والكرتون',
         filters_h='الفلاتر',
@@ -269,9 +277,13 @@ UI = {
             ('٤٥ قطعة', 'في كل كرتون'),
         ],
         gal_h='المعرض',
-        gal_lead='صور المنتج ورسوم بزاوية واحدة.',
+        gal_lead='صور المنتج ورسوم بزاوية واحدة ورسم خطّي أيزومتري تفاعلي.',
+        iso_cap='رسم خطّي أيزومتري. اضغط على الرسم واسحب للدوران.',
+        iso_load='عرض الرسم التفاعلي',
+        iso_filter_cap='رسم خطّي أيزومتري لفلتر قطع التدفق. اضغط على الرسم واسحب للدوران.',
+        codes_h='رموز المنتج',
         sizes_h='الأحجام',
-        sizes_lead='ظرفیت ها — ۱ لیتری، 2 لیتری، 3 لیتری. السعات ١ لتر و٢ لتر و٣ لتر.',
+        sizes_lead='السعات — ١ لتر و٢ لتر و٣ لتر. رمز المنتج وIRC في كل قسم.',
         spec_h='مواصفات المنتج',
         close_h='طلب عرض سعر',
         close_p='فريق مبيعات آباديس يساعد في اختيار الموديل والفلتر والتعبئة.',
@@ -495,6 +507,160 @@ def code_tables(lang, pfx):
     return f'<div class="size-jump">{"".join(jump)}</div>' + ''.join(blocks)
 
 
+
+def size_names():
+    return {
+        '1': {'fa': '۱ لیتری', 'en': '1 litre', 'ar': '١ لتر'},
+        '2': {'fa': '۲ لیتری', 'en': '2 litres', 'ar': '٢ لتر'},
+        '3': {'fa': '۳ لیتری', 'en': '3 litres', 'ar': '٣ لتر'},
+    }
+
+
+def size_heights():
+    return {
+        '1': {'fa': 'ارتفاع ۱۵٫۵ سانتی‌متر', 'en': 'Height 15.5 cm', 'ar': 'الارتفاع ١٥٫٥ سم'},
+        '2': {'fa': 'ارتفاع ۲۴٫۵ سانتی‌متر', 'en': 'Height 24.5 cm', 'ar': 'الارتفاع ٢٤٫٥ سم'},
+        '3': {'fa': 'ارتفاع ۳۹ سانتی‌متر', 'en': 'Height 39 cm', 'ar': 'الارتفاع ٣٩ سم'},
+    }
+
+
+def iso_still(pfx, mid, theme):
+    return f'{pfx}assets/img/products/cad-iso/{mid}-iso-{theme}.webp'
+
+
+def iso_frame(lang, pfx, kind='liner'):
+    ui = UI[lang]
+    if kind == 'filter':
+        mid = 'p12-inline-filter'
+        cap = ui['iso_filter_cap']
+        glbs = f'data-iso-id="{mid}" data-iso-src="{pfx}3d-sketches/cad-line-sketches/models/{mid}.glb"'
+        stills = (
+            f'<img class="iso-still iso-still-light" src="{iso_still(pfx, mid, "light")}" alt="{esc(cap)}" width="900" height="1125" loading="lazy" decoding="async">'
+            f'<img class="iso-still iso-still-dark" src="{iso_still(pfx, mid, "dark")}" alt="" width="900" height="1125" loading="lazy" decoding="async" aria-hidden="true">'
+        )
+        return (
+            f'<div class="iso-frame gal-frame" data-iso data-iso-kind="filter" {glbs}>'
+            f'{stills}'
+            f'<button class="iso-load" type="button">{esc(ui["iso_load"])}</button>'
+            f'</div>'
+        )
+    ids = {'1': 'p01-1l-liner', '2': 'p02-2l-liner', '3': 'p03-3l-liner'}
+    attrs = ['data-iso', 'data-iso-kind="liner"', 'data-iso-size="1"']
+    for sz, mid in ids.items():
+        attrs.append(f'data-iso-id-{sz}="{mid}"')
+        attrs.append(f'data-iso-src-{sz}="{pfx}3d-sketches/cad-line-sketches/models/{mid}.glb"')
+        attrs.append(f'data-iso-still-{sz}-light="{iso_still(pfx, mid, "light")}"')
+        attrs.append(f'data-iso-still-{sz}-dark="{iso_still(pfx, mid, "dark")}"')
+    cap = ui['iso_cap']
+    mid = ids['1']
+    stills = (
+        f'<img class="iso-still iso-still-light" src="{iso_still(pfx, mid, "light")}" alt="{esc(cap)}" width="900" height="1125" loading="lazy" decoding="async">'
+        f'<img class="iso-still iso-still-dark" src="{iso_still(pfx, mid, "dark")}" alt="" width="900" height="1125" loading="lazy" decoding="async" aria-hidden="true">'
+    )
+    return (
+        f'<div class="iso-frame gal-frame" {" ".join(attrs)}>'
+        f'{stills}'
+        f'<button class="iso-load" type="button">{esc(ui["iso_load"])}</button>'
+        f'</div>'
+    )
+
+
+def code_table_for(size, lang):
+    ui = UI[lang]
+    rows_src = {'fa': FA_ROWS, 'en': EN_ROWS, 'ar': AR_ROWS}[lang]
+    rows = rows_src[size]
+    sterile = any(r[5] is not None for r in rows)
+    if lang == 'en':
+        heads = ['Product code', 'Powder', 'Filter type', 'Suction bag']
+        if sterile:
+            heads.append('Sterile')
+        heads.append('Door')
+    else:
+        heads = ui['heads'][:5]
+        if sterile:
+            heads.append(ui['heads'][5])
+        heads.append(ui['heads'][6])
+    th = ''.join(f'<th scope="col">{esc(h)}</th>' for h in heads)
+    body = []
+    for row in rows:
+        if lang == 'en':
+            code, _irc, _sz, kind, powder, ster, lidk, bag = row
+            pairs = [
+                (heads[0], f'<bdi dir="ltr">{esc(code)}</bdi>'),
+                (heads[1], yn(powder, lang)),
+                (heads[2], cell_text(kind, lang)),
+                (heads[3], esc(bag)),
+            ]
+            if sterile:
+                pairs.append((heads[4], '—' if ster is None else yn(ster, lang)))
+            pairs.append((heads[-1], lid(lidk, lang)))
+        else:
+            code, irc, sz, kind, powder, ster, lidk = row
+            pairs = [
+                (heads[0], f'<bdi dir="ltr">{esc(code)}</bdi>'),
+                (heads[1], f'<bdi dir="ltr">{esc(irc)}</bdi>'),
+                (heads[2], esc(digits(sz, lang))),
+                (heads[3], cell_text(kind, lang)),
+                (heads[4], yn(powder, lang)),
+            ]
+            if sterile:
+                pairs.append((heads[5], '—' if ster is None else yn(ster, lang)))
+            pairs.append((heads[-1], lid(lidk, lang)))
+        cells = [v for _, v in pairs]
+        body.append('<tr>' + ''.join(f'<td>{c}</td>' for c in cells) + '</tr>')
+    return (
+        f'<div class="code-table-wrap"><table class="code-table">'
+        f'<thead><tr>{th}</tr></thead><tbody>{"".join(body)}</tbody></table></div>'
+    )
+
+
+def size_picker(lang):
+    ui = UI[lang]
+    names = size_names()
+    heights = size_heights()
+    btns = []
+    for i, size in enumerate(('1', '2', '3')):
+        sel = ' aria-selected="true"' if i == 0 else ' aria-selected="false"'
+        btns.append(
+            f'<button class="size-pick-btn" type="button" data-size="{size}"{sel}>'
+            f'<strong>{names[size][lang]}</strong><em>{heights[size][lang]}</em></button>'
+        )
+    inner = ''.join(btns)
+    return (
+        f'<section class="bag-block bag-sizes-pick" id="sizes"><div class="wrap">'
+        f'<h2>{esc(ui["sizes_h"])}</h2>'
+        f'<p class="bag-lead">{meas(ui["sizes_lead"], lang)}</p>'
+        f'<div class="size-pick" role="tablist" aria-label="{esc(ui["sizes_h"])}">{inner}</div>'
+        f'</div></section>'
+    )
+
+
+def size_sections(lang, pfx):
+    ui = UI[lang]
+    chunks = []
+    for size in ('1', '2', '3'):
+        s = SPECS[lang][size]
+        uses = (
+            f'<div class="size-uses">'
+            f'<h3>{esc(s["uses_h"])}</h3>'
+            f'<div class="uses">{render_uses(s, lang, pfx)}</div></div>'
+        )
+        codes = (
+            f'<div class="size-codes" id="codes-{size}">'
+            f'<h3>{esc(ui["codes_h"])}</h3>'
+            f'{code_table_for(size, lang)}</div>'
+        )
+        chunks.append(
+            f'<section class="bag-size" id="s{size}">'
+            f'<div class="wrap">'
+            f'{spec_one(size, lang, pfx)}'
+            f'{uses}'
+            f'{codes}'
+            f'</div></section>'
+        )
+    return '\n  '.join(chunks)
+
+
 def render_uses(s, lang, pfx):
     uses = []
     for icon, label in s['uses']:
@@ -604,7 +770,7 @@ def packaging_block(lang):
   </div></section>'''
 
 
-def filters_block(lang):
+def filters_block(lang, pfx="../../"):
     ui = UI[lang]
     intro = SPECS[lang]['1']['types']
     cards = [f'<article class="spec-card span-2"><p>{meas(intro, lang)}</p></article>']
@@ -619,6 +785,7 @@ def filters_block(lang):
         cards.append(f'<article class="spec-card span-2"><h3>{esc(fh)}</h3><ol class="filter-list">{lis}</ol></article>')
     return f'''<section class="bag-block" id="filters"><div class="wrap">
     <h2>{esc(ui["filters_h"])}</h2>
+    <div class="filter-iso">{iso_frame(lang, pfx, "filter")}<p class="iso-cap">{esc(ui["iso_filter_cap"])}</p></div>
     <div class="spec-grid">{"".join(cards)}</div>
   </div></section>'''
 
@@ -668,6 +835,11 @@ def gallery(lang, pfx):
             f'</div><figcaption>{esc(cap)}</figcaption></figure>'
         )
     ui = UI[lang]
+    cap = ui['iso_cap']
+    cards.append(
+        f'<figure class="gal-card gal-iso gal-contain"><div class="gal-frame-slot">'
+        f'{iso_frame(lang, pfx, "liner")}</div><figcaption>{esc(cap)}</figcaption></figure>'
+    )
     return f'''<div class="gal" data-gal>
       <div class="gal-rail">{''.join(cards)}</div>
       <div class="gal-nav">
@@ -728,14 +900,10 @@ def main_html(lang, pfx):
     <p class="bag-lead">{esc(ui["gal_lead"])}</p>
     {gallery(lang, pfx)}
   </div></section>
-  <section class="bag-block" id="sizes"><div class="wrap">
-    <h2>{esc(ui["sizes_h"])}</h2>
-    <p class="bag-lead">{meas(ui["sizes_lead"], lang)}</p>
-    {code_tables(lang, pfx)}
-  </div></section>
-  {uses_block(lang, pfx)}
+  {size_picker(lang)}
+  {size_sections(lang, pfx)}
+  {filters_block(lang, pfx)}
   {packaging_block(lang)}
-  {filters_block(lang)}
   <section class="bag-block" id="catalog"><div class="wrap">
     <h2>{esc(ui["catalog_h"])}</h2>
     <p class="bag-lead">{esc(ui["catalog_lead"])}</p>
