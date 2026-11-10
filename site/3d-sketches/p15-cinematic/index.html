@@ -96,25 +96,25 @@ const ease=x=>{x=cl(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;};
 // Mid-scroll turns left-front to show the C-frame pocket and the two holes.
 // Polar interpolation; no chord through the part; no idle drift or sway.
 const KF=[
-  [0,    54,  7, 305,  16],
-  [.16,  54,  7, 300,  16],
-  [.28,  68,  7, 255,   6],
-  [.36,  70,  6, 250,   6],
+  [0,    62,  6, 310,  16],
+  [.16,  62,  6, 305,  16],
+  [.28,  70,  6, 260,   6],
+  [.36,  72,  6, 255,   6],
   [.48, -24, 12, 295,   2],
   [.62, -26, 14, 290,   2],
-  [.74,   8,  8, 305,   8],
-  [.86,  48,  8, 305,  16],
-  [1,    54,  7, 305,  16]
+  [.74,   8,  8, 310,   8],
+  [.86,  56,  6, 310,  16],
+  [1,    62,  6, 310,  16]
 ];
 const qp=new URLSearchParams(location.search),beats=[...document.querySelectorAll('.beat')];
 if(qp.has('look')){beats.forEach(b=>b.style.display='none');const h=document.getElementById('hint');if(h)h.style.display='none';}
 const LOOK={
-  photo:[54,7,305,[0,16,0]],
+  photo:[76,5.5,360,[0,2,0]],
   set:[-24,12,295,[0,2,0]],
   holes:[-26,14,290,[0,2,0]],
   front:[0,6,330,[0,8,0]],
   side:[90,6,310,[0,8,0]],
-  threeq:[54,7,305,[0,16,0]]
+  threeq:[62,6,310,[0,16,0]]
 };
 const cp=new THREE.Vector3(),ct=new THREE.Vector3();let T=0,last=0,lookOn=false;
 function applyLook(name){
