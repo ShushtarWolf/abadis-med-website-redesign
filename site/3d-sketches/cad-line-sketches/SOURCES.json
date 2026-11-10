@@ -196,5 +196,47 @@
     "inventedParts": false,
     "productCode": "040502",
     "inventory": "P12"
+  },
+  "p14-suction-stand": {
+    "provenance": "MODELED FROM HAMID'S SUPPLIED STAND DESIGN (DuoVac 80 / zinc-cliff-horizon-solar.grok.me) at the page's shown 80 cm height and about-48 cm five-caster base; NOT original factory CAD. Official product is the portable suction trolley (P14), codes 060401 short / 060402 long. Official catalog does not print 80 cm and lists up to four 3 L jars; the official photograph (227665fb9960, same as Hamid's photo) and this model show two illustrative 2 L jars. Jar marks are illustrative. Genuine P05 2 L CAD was not swapped in.",
+    "parts": {
+      "base": 2948,
+      "upright": 742,
+      "canister-l": 2372,
+      "canister-r": 2372,
+      "regulator": 1872,
+      "lines": 6192
+    },
+    "bounds_mm": [
+      [
+        -378.49,
+        1.26,
+        -211.4
+      ],
+      [
+        388.32,
+        806.32,
+        256.41
+      ]
+    ],
+    "sha256": "49d9cedfb888a248414f001eeddd72052311d310da3c3a6c83114916625f38e5",
+    "nominalOfficialMm": null,
+    "suppliedDesignMm": [
+      480,
+      800
+    ],
+    "modelExtentsMm": [
+      767,
+      468,
+      805
+    ],
+    "factoryCAD": false,
+    "inventedParts": false,
+    "jarMarksIllustrative": true,
+    "productCodes": [
+      "060401",
+      "060402"
+    ],
+    "inventory": "P14"
   }
 }

@@ -38,7 +38,7 @@ html:has(body.plate),body.plate{background:transparent}
 </head>
 <body>
 <header>
- <div><h1>اسکچ خطی CAD محصولات آبادیس</h1><p class="en">Abadis Med — 5 original CAD designs + 1 size-adapted reconstruction + 2 supplied filter designs</p></div>
+ <div><h1>اسکچ خطی CAD محصولات آبادیس</h1><p class="en">Abadis Med — 5 original CAD designs + 1 size-adapted reconstruction + 2 supplied filter designs + 1 supplied stand design</p></div>
  <div class="tools">
   <button id="th" aria-pressed="false">حالت تیره / Dark</button>
   <button id="hid" aria-pressed="true">خطوط پنهان / Hidden lines</button>
@@ -47,10 +47,10 @@ html:has(body.plate),body.plate{background:transparent}
 </header>
 <nav id="nav"><a href="#all" data-id="all">همه طرح‌ها / All designs</a></nav><main id="grid"></main>
 <footer>
- <div>پنج طرح پیشین بر پایهٔ CAD اصلی هستند؛ فیلتر و ساشه‌های بدون CAD در آن‌ها همچنان حذف شده‌اند. طرح ششم، کیسه ۳ لیتری، بازسازی اندازه‌ای است نه CAD اصلی. طرح‌های هفتم و هشتم، فیلتر دیسکی و فیلتر قطع‌کننده جریان، از طرح تهیه‌شده توسط حمید مدل‌سازی شده‌اند؛ نه CAD اصلی کارخانه.</div>
- <div class="en">Five original designs retain genuine CAD and their existing non-CAD omissions. The sixth, 3 L liner, is a size-adapted reconstruction, NOT original 3L CAD. The seventh and eighth, the antibacterial disc filter and the flow-stopper filter, are modeled from Hamid's supplied filter designs, not original factory CAD. Nominal dimensions are identified separately from model extents.</div>
+ <div>پنج طرح پیشین بر پایهٔ CAD اصلی هستند؛ فیلتر و ساشه‌های بدون CAD در آن‌ها همچنان حذف شده‌اند. طرح ششم، کیسه ۳ لیتری، بازسازی اندازه‌ای است نه CAD اصلی. طرح‌های هفتم تا نهم — دو فیلتر و پایه ساکشن پرتابل — از طرح تهیه‌شده توسط حمید مدل‌سازی شده‌اند؛ نه CAD اصلی کارخانه. علائم حجم روی مخازن پایه نمایشی است.</div>
+ <div class="en">Five original designs retain genuine CAD and their existing non-CAD omissions. The sixth, 3 L liner, is a size-adapted reconstruction, NOT original 3L CAD. The seventh through ninth — two filters and the portable suction trolley — are modeled from Hamid's supplied designs, not original factory CAD. Jar volume marks on the stand are illustrative. Nominal dimensions are identified separately from model extents.</div>
 <p>دریافت برگه‌های ثابت روشن و تیره / Static Light &amp; Dark sheets</p>
-<nav aria-label="Static sketch downloads"><a href="sheets/abadis-cad-line-sketches-light.pdf" download>Light · PDF (5 pages)</a><a href="sheets/abadis-cad-line-sketches-light-p1.png" download>Light · PNG 1</a><a href="sheets/abadis-cad-line-sketches-light-p2.png" download>Light · PNG 2</a><a href="sheets/abadis-cad-line-sketches-light-p3.png" download>Light · PNG 3</a><a href="sheets/abadis-cad-line-sketches-light-p4.png" download>Light · PNG 4</a><a href="sheets/abadis-cad-line-sketches-light-p5.png" download>Light · PNG 5</a><a href="sheets/abadis-cad-line-sketches-dark.pdf" download>Dark · PDF (5 pages)</a><a href="sheets/abadis-cad-line-sketches-dark-p1.png" download>Dark · PNG 1</a><a href="sheets/abadis-cad-line-sketches-dark-p2.png" download>Dark · PNG 2</a><a href="sheets/abadis-cad-line-sketches-dark-p3.png" download>Dark · PNG 3</a><a href="sheets/abadis-cad-line-sketches-dark-p4.png" download>Dark · PNG 4</a><a href="sheets/abadis-cad-line-sketches-dark-p5.png" download>Dark · PNG 5</a></nav>
+<nav aria-label="Static sketch downloads"><a href="sheets/abadis-cad-line-sketches-light.pdf" download>Light · PDF (6 pages)</a><a href="sheets/abadis-cad-line-sketches-light-p1.png" download>Light · PNG 1</a><a href="sheets/abadis-cad-line-sketches-light-p2.png" download>Light · PNG 2</a><a href="sheets/abadis-cad-line-sketches-light-p3.png" download>Light · PNG 3</a><a href="sheets/abadis-cad-line-sketches-light-p4.png" download>Light · PNG 4</a><a href="sheets/abadis-cad-line-sketches-light-p5.png" download>Light · PNG 5</a><a href="sheets/abadis-cad-line-sketches-light-p6.png" download>Light · PNG 6</a><a href="sheets/abadis-cad-line-sketches-dark.pdf" download>Dark · PDF (6 pages)</a><a href="sheets/abadis-cad-line-sketches-dark-p1.png" download>Dark · PNG 1</a><a href="sheets/abadis-cad-line-sketches-dark-p2.png" download>Dark · PNG 2</a><a href="sheets/abadis-cad-line-sketches-dark-p3.png" download>Dark · PNG 3</a><a href="sheets/abadis-cad-line-sketches-dark-p4.png" download>Dark · PNG 4</a><a href="sheets/abadis-cad-line-sketches-dark-p5.png" download>Dark · PNG 5</a><a href="sheets/abadis-cad-line-sketches-dark-p6.png" download>Dark · PNG 6</a></nav>
 </footer>
 <script type="module">
 import * as THREE from 'three';
@@ -64,7 +64,8 @@ const P=[
  {id:'p05-2l-canister',fa:'مخزن ساکشن ۲ لیتری قابل استفاده مجدد',en:'P05 · 2 L reusable canister · 0402012',accent:['collar-mount'],print:'tex/official-2l-print.png',ph:270,rot:-0.2,dy:0,faM:'بدنه و یقه/پایه نصب از CAD «2L pit» · چاپ لوگو و درجه‌بندی از عکس رسمی',enM:'Vessel and collar / rear mount from CAD “2L pit” · logo and volume scale from the official 2 L photo print'},
  {id:'p05-3l-canister',fa:'مخزن ساکشن ۳ لیتری قابل استفاده مجدد',en:'P05 · 3 L reusable canister · 0402013',accent:['collar-mount'],print:'tex/official-3l-print.png',ph:420,rot:3.3,dy:0,faM:'بدنه و یقه/پایه نصب از CAD «3L pit» · چاپ لوگو و درجه‌بندی از عکس رسمی',enM:'Vessel and collar / rear mount from CAD “3L pit” · logo and volume scale from the official 3 L photo print'},
  {id:'p11-disc-filter',fa:'فیلتر آنتی‌باکتریال دیسکی',en:'P11 · Antibacterial disc filter · 040501',adapted:true,accent:['ribs'],dim:{fa:'قطر ۵٫۰۰ × طول ۴٫۴۵ سانتی‌متر (طرح تهیه‌شده)',en:'Ø 5.00 × L 4.45 cm',src:'supplied-design'},faM:'مدل‌سازی‌شده از طرح فیلتر تهیه‌شده توسط حمید (Discform)؛ نه CAD اصلی کارخانه · بدون غشای اختراعی',enM:'Modeled from Hamid\'s supplied filter design (Discform); not original factory CAD · geometry at the page\'s shown 5.00 × 4.45 cm defaults · no invented membrane · official catalog drawing prints Ø 5.8 × L 5.8 cm, 16.6 g'},
- {id:'p12-inline-filter',fa:'فیلتر قطع کننده جریان (مسدود شونده)',en:'P12 · Flow-stopper filter (shutoff) · 040502',adapted:true,accent:['cartridge'],dim:{fa:'قطر ۳٫۰ × طول ۷٫۲ سانتی‌متر (طرح تهیه‌شده، مطابق نقشه رسمی)',en:'Ø 3.0 × L 7.2 cm',src:'supplied-design'},faM:'مدل‌سازی‌شده از طرح فیلتر تهیه‌شده توسط حمید (Clearline)؛ نه CAD اصلی کارخانه · قاب شفاف، درپوش پره‌دار، مغزی سفید، ساقهٔ ورودی بلندتر و خروجی کوتاه‌تر',enM:'Modeled from Hamid\'s supplied filter design (Clearline); not original factory CAD · geometry at the page\'s shown 3.0 × 7.2 cm defaults, which match the official catalog drawing · official drawing also prints 10.5 g · no invented parts'}];
+ {id:'p12-inline-filter',fa:'فیلتر قطع کننده جریان (مسدود شونده)',en:'P12 · Flow-stopper filter (shutoff) · 040502',adapted:true,accent:['cartridge'],dim:{fa:'قطر ۳٫۰ × طول ۷٫۲ سانتی‌متر (طرح تهیه‌شده، مطابق نقشه رسمی)',en:'Ø 3.0 × L 7.2 cm',src:'supplied-design'},faM:'مدل‌سازی‌شده از طرح فیلتر تهیه‌شده توسط حمید (Clearline)؛ نه CAD اصلی کارخانه · قاب شفاف، درپوش پره‌دار، مغزی سفید، ساقهٔ ورودی بلندتر و خروجی کوتاه‌تر',enM:'Modeled from Hamid\'s supplied filter design (Clearline); not original factory CAD · geometry at the page\'s shown 3.0 × 7.2 cm defaults, which match the official catalog drawing · official drawing also prints 10.5 g · no invented parts'},
+ {id:'p14-suction-stand',fa:'پایه ساکشن پرتابل (ترولی)',en:'P14 · Portable suction base (trolley) · 060401 / 060402',adapted:true,accent:['regulator','lines'],dim:{fa:'ارتفاع ۸۰ سانتی‌متر · پایه حدود ۴۸ سانتی‌متر (طرح تهیه‌شده)',en:'H 80 cm · base about 48 cm',src:'supplied-design'},faM:'مدل‌سازی‌شده از طرح پایه تهیه‌شده توسط حمید (DuoVac 80)؛ نه CAD اصلی کارخانه · دو مخزن در مقیاس نمایشی ۲ لیتری · علائم حجم نمایشی است · سایر اندازه‌ها با چشم منطبق شده‌اند',enM:'Modeled from Hamid\'s supplied stand design (DuoVac 80); not original factory CAD · official photograph matches site asset 227665fb9960 · official catalog lists short 060401 and long 060402 but does not print 80 cm · official text says up to four 3 L jars; this model follows the official photo of two illustrative 2 L jars · jar marks illustrative · other sizes matched by eye · genuine P05 2 L CAD not swapped in'}];
 const qs=new URLSearchParams(location.search),plate=qs.get('plate');
 if(plate)document.body.classList.add('plate');
 const VIEWS={iso:[38,24],front:[0,0],side:[90,0],top:[0,89]};
@@ -99,7 +100,7 @@ function build(p){
  card.querySelectorAll('.vb button').forEach(b=>b.onclick=()=>{card.querySelectorAll('.vb button').forEach(x=>x.setAttribute('aria-pressed',x===b));setView(it,b.dataset.v)});
  new GLTFLoader().load('models/'+p.id+'.glb',g=>{
   g.scene.updateMatrixWorld(true);const box=new THREE.Box3().setFromObject(g.scene);it.box=box;
-  const sz=box.getSize(new THREE.Vector3());card.querySelector('.dim').textContent=`${p.id==="p11-disc-filter"||p.id==="p12-inline-filter"?"Supplied-design model extents":p.adapted?"Adapted model extents":"CAD extents"} ≈ ${sz.x.toFixed(0)} × ${sz.z.toFixed(0)} × ${sz.y.toFixed(0)} mm (W × D × H)`;
+  const sz=box.getSize(new THREE.Vector3());card.querySelector('.dim').textContent=`${p.id==="p11-disc-filter"||p.id==="p12-inline-filter"||p.id==="p14-suction-stand"?"Supplied-design model extents":p.adapted?"Adapted model extents":"CAD extents"} ≈ ${sz.x.toFixed(0)} × ${sz.z.toFixed(0)} × ${sz.y.toFixed(0)} mm (W × D × H)`;
   const c=box.getCenter(new THREE.Vector3());it.center=c;it.rad=box.getBoundingSphere(new THREE.Sphere()).radius;
   const M=it.mats={fill:new THREE.MeshBasicMaterial({polygonOffset:true,polygonOffsetFactor:1,polygonOffsetUnits:1,side:THREE.DoubleSide}),
    fillA:new THREE.MeshBasicMaterial({polygonOffset:true,polygonOffsetFactor:1,polygonOffsetUnits:1,side:THREE.DoubleSide}),
@@ -154,9 +155,22 @@ function buildDims(it){const g=it.dimG,box=it.dimBox,p=it.dimP;while(g.children.
  // Dimension annotations are drawn in neutral ink, outside the product, so they cannot read as product print.
  let vb=box;it.scene.traverse(o=>{if(o.isMesh&&(o.userData.part==='vessel'||o.userData.part==='bag'))vb=new THREE.Box3().setFromObject(o)});
  const cx=(vb.min.x+vb.max.x)/2,cz=(vb.min.z+vb.max.z)/2,D=vb.max.x-vb.min.x,R=D/2,y0=vb.min.y,y1=p.id==='p03-3l-liner'?-24:p.dim?box.max.y:vb.max.y,H=y1-y0;
- const hTxt=p.dim?p.dim.en.split('×')[1].trim():'H ≈ '+(H/10).toFixed(1)+' cm (CAD)',dTxt=p.dim?p.dim.en.split('×')[0].trim()+' cm':'Ø ≈ '+(D/10).toFixed(1)+' cm (CAD)';
+ const dimX=p.dim&&p.dim.en.includes('×')?p.dim.en.split('×'):null,hTxt=dimX?dimX[1].trim():p.dim?p.dim.en:'H ≈ '+(H/10).toFixed(1)+' cm (CAD)',dTxt=dimX?dimX[0].trim()+' cm':'Ø ≈ '+(D/10).toFixed(1)+' cm (CAD)';
  const m=new THREE.LineBasicMaterial({color:c.ink,depthTest:false,transparent:true,opacity:.75});const L=(a,b)=>{const l=new THREE.Line(new THREE.BufferGeometry().setFromPoints([a,b]),m);l.renderOrder=8;g.add(l)};
  const V=(x,y,z)=>new THREE.Vector3(x,y,z),ar=4;
+ if(p.id==='p14-suction-stand'){
+  // Standing trolley: labelled 80 cm height (floor to crown) and "about 48 cm" base, official-drawing layout.
+  const y0=0,y1=800,xl=Math.min(vb.min.x,box.min.x)-36,yt=box.max.y+28;
+  L(V(xl,y0,cz),V(xl,y1,cz));L(V(vb.min.x-3,y0,cz),V(xl-6,y0,cz));L(V(0,y1,cz),V(xl-6,y1,cz));
+  L(V(xl,y0,cz),V(xl-ar*.6,y0+ar*1.6,cz));L(V(xl,y0,cz),V(xl+ar*.6,y0+ar*1.6,cz));L(V(xl,y1,cz),V(xl-ar*.6,y1-ar*1.6,cz));L(V(xl,y1,cz),V(xl+ar*.6,y1-ar*1.6,cz));
+  const baseHalf=240; // labelled "about 48 cm"
+  const yb=-28;
+  L(V(-baseHalf,yb,cz),V(baseHalf,yb,cz));L(V(-baseHalf,8,cz),V(-baseHalf,yb-6,cz));L(V(baseHalf,8,cz),V(baseHalf,yb-6,cz));
+  L(V(-baseHalf,yb,cz),V(-baseHalf+ar*1.6,yb+ar*.6,cz));L(V(-baseHalf,yb,cz),V(-baseHalf+ar*1.6,yb-ar*.6,cz));L(V(baseHalf,yb,cz),V(baseHalf-ar*1.6,yb+ar*.6,cz));L(V(baseHalf,yb,cz),V(baseHalf-ar*1.6,yb-ar*.6,cz));
+  const s1=label('H 80 cm',col,bg),s2=label('Base ≈ 48 cm',col,bg),k=it.rad*(plate?.08:.06);for(const s of[s1,s2])s.scale.set(k*s.userData.asp,k,1);
+  s1.position.set(xl-8-k*s1.userData.asp*.5,(y0+y1)/2,cz);s2.position.set(cx,yb-k*.85,cz);g.add(s1,s2);
+  it.card.querySelector('.dimn').innerHTML=`ابعاد طرح تهیه‌شده: ${p.dim.fa} <span class="en">· Supplied-design ${p.dim.en} (other sizes matched by eye) · official catalog does not print a height · official weight / span not listed · jar marks illustrative</span>`;it.dirty=true;return;
+ }
  if(p.id==='p12-inline-filter'){
   // Horizontal inline filter: length along X above the part, diameter along Y to the left (official-drawing layout).
   const xl=vb.min.x-16,yt=box.max.y+14;
@@ -182,7 +196,7 @@ function setView(it,v){const VV=it.p.print?{...VIEWS,iso:[14,16],scale:[0,0]}:VI
  it.cam.position.set(it.center.x+d*Math.sin(a)*Math.cos(e),it.center.y+d*Math.sin(e),it.center.z+d*Math.cos(a)*Math.cos(e));it.cam.up.set(0,1,0);if(el>80)it.cam.up.set(0,0,-1);it.cam.zoom=1;it.ctl.target.copy(it.center);if(v==='scale'){const t=it.center.clone();t.y=it.box.max.y-it.rad*.55;it.cam.position.x+=t.x-it.center.x;it.cam.position.y+=t.y-it.center.y;it.ctl.target.copy(t)}resize(it);it.ctl.update();it.dirty=true}
 function applyTheme(it){const c=pal(),M=it.mats;if(!M.fill)return;M.fill.color.set(c.bg);M.fillA.color.set(c.fill);M.ink.color.set(c.ink);M.teal.color.set(c.teal);M.inkH.color.set(c.ink);M.tealH.color.set(c.teal);M.inkH.opacity=M.tealH.opacity=c.hid;M.ring.color.set(c.ring);if(it.inkM)it.inkM.color.set(c.bg);if(it.inkU)it.inkU.uInkCol.value.setHex(c.teal,THREE.LinearSRGBColorSpace);if(it.illustrativeMaterial)it.illustrativeMaterial.color.set(c.teal);if(it.dimG)buildDims(it);
  if(!plate)it.R.setClearColor(c.bg,1);else it.R.setClearColor(0,0);it.dirty=true}
-function resize(it){const w=it.host.clientWidth,h=it.host.clientHeight;it.R.setSize(w,h,false);const asp=w/h,r=(it.rad||100)*(plate?(it.p.id==='p11-disc-filter'?1.9:it.p.id==='p12-inline-filter'?2.15:1.4):1.22)*(it.view==='scale'?.6:1);const hh=asp>1?r:r/asp;it.cam.left=-hh*asp;it.cam.right=hh*asp;it.cam.top=hh;it.cam.bottom=-hh;it.cam.updateProjectionMatrix();it.dirty=true}
+function resize(it){const w=it.host.clientWidth,h=it.host.clientHeight;it.R.setSize(w,h,false);const asp=w/h,r=(it.rad||100)*(plate?(it.p.id==='p11-disc-filter'?1.9:it.p.id==='p12-inline-filter'?2.15:it.p.id==='p14-suction-stand'?1.65:1.4):1.22)*(it.view==='scale'?.6:1);const hh=asp>1?r:r/asp;it.cam.left=-hh*asp;it.cam.right=hh*asp;it.cam.top=hh;it.cam.bottom=-hh;it.cam.updateProjectionMatrix();it.dirty=true}
 function frame(){for(const it of items){if(!it.ready)continue;if(spin){it.ctl.autoRotate=true;it.ctl.autoRotateSpeed=1.2}else it.ctl.autoRotate=false;it.ctl.update();
  if(it.dirty){const dir=new THREE.Vector3();it.cam.getWorldDirection(dir);for(const pt of it.parts){const ng=new THREE.BufferGeometry().setFromPoints(silhouette(pt.ed,dir));pt.sl.geometry.dispose();pt.sl.geometry=pt.slH.geometry=ng;pt.crH.visible=pt.slH.visible=hidden}it.R.render(it.scene,it.cam);it.dirty=false}}requestAnimationFrame(frame)}
 (plate?P.filter(p=>p.id===plate):P).forEach(build);frame();
