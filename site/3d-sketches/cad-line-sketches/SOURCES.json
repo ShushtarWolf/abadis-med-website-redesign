@@ -321,5 +321,43 @@
     "inventory": "P15",
     "bytes": 1961996,
     "depthNote": "18 mm depth is estimated; official drawing does not print depth"
+  },
+  "p16-porous-filter": {
+    "provenance": "reconstructed from Hamid's Grok design, corrected to official photos/drawing (cloud-zenith-spruce-lark.grok.me). Official drawing prints height 29.5 mm. Outer \u00d8 20 mm and inner \u00d8 12 mm are Grok estimates from the official product photograph (same image as abadis-med.com #mot / 3f3b9e7efaa7); they are not printed on the official catalog page, and the drawing's top OD figure is cropped in the supplied scan. 0.5 mm rim fillet from the Grok profile. Fine porosity is a surface appearance, not carved holes. Not original factory CAD.",
+    "parts": {
+      "body": 6144
+    },
+    "bounds_mm": [
+      [
+        -10,
+        -14.75,
+        -10
+      ],
+      [
+        10,
+        14.75,
+        10
+      ]
+    ],
+    "sha256": "2f503bfac27bda5c69074abf2d578e2b47b96d51204b8d95ca1f6b9c427d0e1f",
+    "nominalOfficialMm": [
+      29.5
+    ],
+    "suppliedDesignMm": [
+      20,
+      29.5,
+      20
+    ],
+    "modelExtentsMm": [
+      20,
+      29.5,
+      20
+    ],
+    "factoryCAD": false,
+    "inventedParts": false,
+    "productCode": "011103",
+    "inventory": "P16",
+    "bytes": 141444,
+    "dimensionNote": "Height 29.5 mm is official. Outer \u00d8 20 mm and inner \u00d8 12 mm are photo estimates."
   }
 }
