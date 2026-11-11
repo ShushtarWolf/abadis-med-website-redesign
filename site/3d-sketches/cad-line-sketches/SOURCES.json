@@ -371,8 +371,6 @@
       "patient-connector-taper": 48,
       "patient-connector-body": 32,
       "patient-connector-neck": 80,
-      "vacuum-sleeve-cuff": 40,
-      "vacuum-sleeve-bore": 40,
       "reg-body": 256,
       "reg-hex": 24,
       "vac-nut-body": 256,
@@ -398,17 +396,17 @@
     },
     "bounds_mm": [
       [
-        -164.73362731933594,
+        -173.228515625,
         -270,
         -93.62410146576674
       ],
       [
         165.57068342493508,
-        81.50601196289062,
+        74.57051849365234,
         100.81925538672681
       ]
     ],
-    "sha256": "6545323f418dbaebac3a5a66f2591517854212efaa2d1cfab3eec45256d45434",
+    "sha256": "92bc882ef06948897402ae408001da95a3728e4a6a38c2355af25df63d4a7e64",
     "nominalOfficialMm": [],
     "packageDimensionsCm": [
       12.2,
@@ -416,8 +414,8 @@
     ],
     "officialWeightG": 377,
     "modelExtentsMm": [
-      330.304310744271,
-      351.5060119628906,
+      338.79919904993505,
+      344.57051849365234,
       194.44335685249354
     ],
     "factoryCAD": false,
@@ -425,7 +423,7 @@
     "inventedParts": false,
     "productCode": "0402202",
     "inventory": "P17",
-    "bytes": 831576,
-    "dimensionNote": "No official dimensioned drawing of the set was supplied. 12.2 × 27 cm is the official individual package size of the 2 L canister, not a measured body claim. Official weight 377 g. Regulator scale is matched to official-photo width/height ratios versus the canister; the gauge housing is a short black ring. Hose sizes are photo estimates. Green patient connector reconstructed from the official catalog photo; both hoses sleeve onto the genuine P02 lid spigots."
+    "bytes": 826184,
+    "dimensionNote": "No official dimensioned drawing of the set was supplied. 12.2 × 27 cm is the official individual package size of the 2 L canister, not a measured body claim. Official weight 377 g. Regulator scale is matched to official-photo width/height ratios versus the canister; the gauge housing is a short black ring. Hose sizes are photo estimates. Green patient connector reconstructed from the official catalog photo; both hoses sleeve onto the genuine P02 lid spigots. Hose exits follow the official photograph: the patient hose leaves left and slightly up in one smooth loop; the vacuum hose drops at the right lid edge with no separate cuff."
   }
 }
