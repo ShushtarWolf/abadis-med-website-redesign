@@ -402,12 +402,12 @@
         -93.62410146576674
       ],
       [
-        164.77245084206112,
+        165.57068342493508,
         79.26487731933594,
         100.81925538672681
       ]
     ],
-    "sha256": "a20261cb648e873b7165139bcdd4c0ef9d471996cee7618b4584ed05472d0283",
+    "sha256": "473de63bc7dabe419a96ba8db7e95a916d885112f9d2e2a0d6479ff95a2f7391",
     "nominalOfficialMm": [],
     "packageDimensionsCm": [
       12.2,
@@ -415,7 +415,7 @@
     ],
     "officialWeightG": 377,
     "modelExtentsMm": [
-      320.33427945534237,
+      321.1325120382163,
       349.26487731933594,
       194.44335685249354
     ],
@@ -424,7 +424,7 @@
     "inventedParts": false,
     "productCode": "0402202",
     "inventory": "P17",
-    "bytes": 859064,
-    "dimensionNote": "No official dimensioned drawing of the set was supplied. 12.2 × 27 cm is the official individual package size of the 2 L canister, not a measured body claim. Official weight 377 g. Regulator and hose sizes are photo estimates."
+    "bytes": 859312,
+    "dimensionNote": "No official dimensioned drawing of the set was supplied. 12.2 × 27 cm is the official individual package size of the 2 L canister, not a measured body claim. Official weight 377 g. Regulator scale is matched to official-photo width/height ratios versus the canister; the gauge housing is a short black ring. Hose sizes are photo estimates."
   }
 }

@@ -24,11 +24,16 @@
 .hint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font-size:13px;color:#8aa;letter-spacing:.3px;display:flex;flex-direction:column;align-items:center;gap:6px}
 .hint i{width:1px;height:28px;background:linear-gradient(#8aa,transparent)}
 @media(min-width:701px){.hint{left:7vw;transform:none}}
+.beat.bot.side{left:auto;right:5vw;transform:none;width:min(420px,36vw);text-align:right;bottom:9vh}
 @media(max-width:700px){
   .beat.top{top:max(92px,12vh)}
-  .beat h1{font-size:clamp(22px,7.4vw,34px)}
-  .credit{max-width:88vw;bottom:58px}
-  .hint{bottom:14px}
+  .beat.top.side{width:min(300px,90vw);right:4vw}
+  .beat.bot.side{width:min(300px,90vw);right:4vw;bottom:118px}
+  .beat h1{font-size:clamp(20px,6.6vw,30px);line-height:1.2}
+  .beat h2{font-size:clamp(18px,5.6vw,26px)}
+  .beat p{margin:4px 0 0;font-size:13px;line-height:1.35}
+  .credit{left:4vw;right:4vw;max-width:none;bottom:10px}
+  .hint{left:4vw;right:auto;transform:none;bottom:102px;align-items:flex-start}
 }
 .bar{position:absolute;top:0;left:0;height:2px;background:#2e7f96;width:0}
 .credit{position:absolute;left:4vw;bottom:10px;font:400 10px/1.4 Inter,"Segoe UI",Arial,sans-serif;color:#6e8688;direction:ltr;pointer-events:none;max-width:46vw}
@@ -40,9 +45,9 @@
 <canvas id="gl"></canvas>
 <div class="provenance">مخزن = CAD اصلی ۲ لیتری با چاپ رسمی · لاینر = کیسه ۲ لیتری تأییدشده · تنظیم‌کننده و شلنگ‌ها بازسازی‌شده از عکس و کاتالوگ رسمی · نه CAD اصلی کارخانه برای قطعات بازسازی‌شده<div class="en">Canister = genuine 2 L CAD with official print · liner = approved 2 L bag · regulator and hoses reconstructed from official photos/catalog · reconstructed parts are not factory CAD</div></div>
 <div class="vig"></div><div class="bar" id="bar"></div>
-<div class="beat top side" data-a="0" data-b=".17"><h1>ساکشن دیواری آبادیس</h1><p>Abadis Wall Suction · model VR-A1</p></div>
+<div class="beat top side" data-a="0" data-b=".17"><h1>ساکشن دیواری آبادیس</h1><p>Abadis Wall Suction</p><p>model VR-A1</p></div>
 <div class="beat bot" data-a=".20" data-b=".36"><h2>مخزن ۲ لیتری با <em>چاپ رسمی</em></h2><p>Genuine 2 L CAD · official AMR_4901 print · product code 0402012</p></div>
-<div class="beat bot" data-a=".38" data-b=".54"><h2>تنظیم‌کننده <em>نیکل-کروم</em></h2><p>Reconstructed from official catalog close-ups · analogue gauge in BAR and mmHg · REG/OFF</p></div>
+<div class="beat bot side" data-a=".38" data-b=".54"><h2>تنظیم‌کننده <em>نیکل-کروم</em></h2><p>Reconstructed from official catalog close-ups · analogue gauge in BAR and mmHg · REG/OFF</p></div>
 <div class="beat bot" data-a=".56" data-b=".72"><h2>درب و شلنگ روی <em>لاینر تأییدشده</em></h2><p>Genuine 2 L lid and bag · fittings and hoses reconstructed from the official product photo</p></div>
 <div class="beat top side" style="top:max(96px,12vh)" data-a=".88" data-b="1.05"><h1>ساکشن دیواری آبادیس</h1><p lang="fa" style="direction:rtl;font-family:Kalameh,Tahoma,sans-serif">مدل VR-A1 · کد ۰۴۰۲۲۰۲ (۲ لیتر) · وزن رسمی ۳۷۷ گرم</p><p>Model VR-A1 · 2 L code 0402202 · official weight 377 g · family 0402201 / 0402203</p></div>
 <img class="logo" id="logo" src="../../assets/img/abadis-logo-white.svg" alt="Abadis Med">
@@ -93,7 +98,7 @@ const maps={
 for(const t of Object.values(maps)){t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;}
 
 // Official 2 L lid colour sampled from p2-main / p2-g1 (white/black studio, median ≈ 3,114,140).
-const TEAL=0x08525f;
+const TEAL=0x013e56;
 const pc=new THREE.MeshPhysicalMaterial({color:0xf3f8fa,roughness:.075,metalness:0,transmission:0,transparent:true,opacity:.48,depthWrite:false,thickness:2.4,ior:1.586,attenuationColor:0xd9eef0,attenuationDistance:650,clearcoat:.5,clearcoatRoughness:.12,envMapIntensity:.95,side:THREE.DoubleSide});
 const mountPC=pc.clone();mountPC.roughness=.16;mountPC.opacity=.56;mountPC.thickness=3.4;
 let cadReady=false,inkReady=false;
@@ -123,8 +128,8 @@ for(const m of [pc,mountPC]){m.onBeforeCompile=shader=>{
   }else shader.fragmentShader=shader.fragmentShader.replace('#include <opaque_fragment>',glassAlpha+'\n#include <opaque_fragment>');
 };m.customProgramCacheKey=()=>m===pc?'clear-pc-official-2l-photo-ink-p17':'clear-pc-edge-alpha-v1';}
 
-const lidMat=new THREE.MeshPhysicalMaterial({color:TEAL,roughness:.42,metalness:.02,clearcoat:.22,clearcoatRoughness:.5,sheen:.1,sheenColor:0x4a9aa6,envMapIntensity:.55,bumpMap:ppMicro,bumpScale:mob?.4:.65,side:THREE.FrontSide});
-const lidIn=new THREE.MeshPhysicalMaterial({color:0x085a6c,roughness:.55,metalness:.01,clearcoat:.12,clearcoatRoughness:.7,side:THREE.BackSide,envMapIntensity:.35,polygonOffset:true,polygonOffsetFactor:2,polygonOffsetUnits:2,bumpMap:ppMicro,bumpScale:.4});
+const lidMat=new THREE.MeshPhysicalMaterial({color:TEAL,roughness:.56,metalness:.02,clearcoat:.04,clearcoatRoughness:.75,sheen:0,envMapIntensity:.10,bumpMap:ppMicro,bumpScale:mob?.4:.65,side:THREE.FrontSide});
+const lidIn=new THREE.MeshPhysicalMaterial({color:0x013848,roughness:.62,metalness:.01,clearcoat:.04,clearcoatRoughness:.8,side:THREE.BackSide,envMapIntensity:.12,polygonOffset:true,polygonOffsetFactor:2,polygonOffsetUnits:2,bumpMap:ppMicro,bumpScale:.4});
 const bagMat=new THREE.MeshPhysicalMaterial({color:0xeef3f4,roughness:.62,metalness:0,transparent:true,opacity:.16,bumpMap:filmT,bumpScale:mob?2.8:3.6,roughnessMap:filmT,side:THREE.DoubleSide,depthWrite:false,clearcoat:.12,clearcoatRoughness:.65});
 const hoseMat=new THREE.MeshPhysicalMaterial({color:0x426028,roughness:.58,metalness:0,clearcoat:.05,clearcoatRoughness:.7,bumpMap:hoseBump,bumpScale:.4,roughnessMap:hoseBump,envMapIntensity:.18});
 const chrome=new THREE.MeshPhysicalMaterial({color:0xd4d8dc,metalness:.95,roughness:.18,clearcoat:.4,clearcoatRoughness:.2,envMapIntensity:1.15});
