@@ -283,7 +283,7 @@
     },
     "bytes": 1465420
   },
-    "p15-canister-clamp": {
+  "p15-canister-clamp": {
     "provenance": "reconstructed from Hamid's Grok design, corrected to official photos/drawing (crane-blaze-orbit-eagle.grok.me). Official catalog drawing prints W 4.6 x L 8.7 cm, 11.5 g. Depth 18 mm is estimated (not printed on the official drawing). Grok's 26 mm figure is the front-face width, not the official 4.6 cm overall width. C-frame back plate and two mounting holes from the official set photo. Not original factory CAD.",
     "parts": {
       "body": 27237
@@ -323,7 +323,7 @@
     "depthNote": "18 mm depth is estimated; official drawing does not print depth"
   },
   "p16-porous-filter": {
-    "provenance": "reconstructed from Hamid's Grok design, corrected to official photos/drawing (cloud-zenith-spruce-lark.grok.me). Official drawing prints height 29.5 mm. Outer \u00d8 20 mm and inner \u00d8 12 mm are Grok estimates from the official product photograph (same image as abadis-med.com #mot / 3f3b9e7efaa7); they are not printed on the official catalog page, and the drawing's top OD figure is cropped in the supplied scan. 0.5 mm rim fillet from the Grok profile. Fine porosity is a surface appearance, not carved holes. Not original factory CAD.",
+    "provenance": "reconstructed from Hamid's Grok design, corrected to official photos/drawing (cloud-zenith-spruce-lark.grok.me). Official drawing prints height 29.5 mm. Outer Ø 20 mm and inner Ø 12 mm are Grok estimates from the official product photograph (same image as abadis-med.com #mot / 3f3b9e7efaa7); they are not printed on the official catalog page, and the drawing's top OD figure is cropped in the supplied scan. 0.5 mm rim fillet from the Grok profile. Fine porosity is a surface appearance, not carved holes. Not original factory CAD.",
     "parts": {
       "body": 6144
     },
@@ -358,7 +358,7 @@
     "productCode": "011103",
     "inventory": "P16",
     "bytes": 141444,
-    "dimensionNote": "Height 29.5 mm is official. Outer \u00d8 20 mm and inner \u00d8 12 mm are photo estimates."
+    "dimensionNote": "Height 29.5 mm is official. Outer Ø 20 mm and inner Ø 12 mm are photo estimates."
   },
   "p17-wall-suction": {
     "provenance": "2 L wall suction VR-A1 (0402202): genuine P05 2 L canister CAD + official 2 L print; genuine approved P02 2 L liner (lid, collar, bag; cap omitted to match the official assembled photo). Regulator, gauge face, VAC nut, knob markings, elbows and hoses reconstructed from official catalog photographs and the official product cutout, following the layout of Hamid's Grok design (winter-rose-lunar-pepper.grok.me). No official dimensioned drawing of the set was supplied. Hospital console and O2 terminal omitted (not Abadis parts). Reconstructed parts are not factory CAD. No invented parts.",
@@ -371,7 +371,7 @@
       "patient-elbow-bend": 672,
       "patient-elbow-sock-a": 80,
       "patient-elbow-sock-b": 80,
-      "vacuum-sleeve": 80,
+      "vacuum-elbow-bend": 896,
       "reg-body": 256,
       "reg-hex": 24,
       "vac-nut-body": 256,
@@ -397,17 +397,17 @@
     },
     "bounds_mm": [
       [
-        -93.61637491961599,
+        -155.56182861328125,
         -270,
         -93.62410146576674
       ],
       [
-        176.29202344584334,
-        86.78646087646484,
+        164.77245084206112,
+        79.26487731933594,
         100.81925538672681
       ]
     ],
-    "sha256": "ecb5f229e328ba348fef38a0f7d2c4225c79af6144f1602888f1f1bfeefbc1c8",
+    "sha256": "a20261cb648e873b7165139bcdd4c0ef9d471996cee7618b4584ed05472d0283",
     "nominalOfficialMm": [],
     "packageDimensionsCm": [
       12.2,
@@ -415,8 +415,8 @@
     ],
     "officialWeightG": 377,
     "modelExtentsMm": [
-      269.90839836545933,
-      356.78646087646484,
+      320.33427945534237,
+      349.26487731933594,
       194.44335685249354
     ],
     "factoryCAD": false,
@@ -424,7 +424,7 @@
     "inventedParts": false,
     "productCode": "0402202",
     "inventory": "P17",
-    "bytes": 842260,
+    "bytes": 859064,
     "dimensionNote": "No official dimensioned drawing of the set was supplied. 12.2 × 27 cm is the official individual package size of the 2 L canister, not a measured body claim. Official weight 377 g. Regulator and hose sizes are photo estimates."
   }
 }

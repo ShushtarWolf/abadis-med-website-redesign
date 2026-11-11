@@ -18,7 +18,8 @@
 
 ## Colour and finish
 - Lid teal sampled from official 2 L lid photographs (p2-main / p2-g1); rendered darker than the raw mid so ACES tone-mapping does not lift it to baby-blue.
-- Hose green sampled from the official wall-suction cutout (mid ≈ 117, 151, 81).
+- Hose green sampled from the official wall-suction cutout (mid ≈ 117, 151, 81). The cinematic base colour is darkened so ACES tone-mapping lands on that mid (the raw mid lifted to a pale mint). Hose OD is a photo estimate of 13 mm, measured against the genuine 123 mm vessel OD in the official cutout.
+- The silver circular socket labelled O₂ in the official catalog photograph is a hospital bed-head oxygen terminal, not an Abadis part. Official components are a metal regulator, a fluid-blocking filter, a suction canister with connectors, and a wall clamp. The O₂ terminal is omitted.
 - VAC-nut gold sampled from the official catalog close-up (median ≈ 196, 153, 31).
 - Gauge scales (BAR / mmHg), VAC / “see no Oil”, LO / H / “vacuum regulator”, and REG are copied from the official catalog close-ups. No brand name is invented where the photo lettering is not reliably readable.
 - Chrome, black knob knurling and a faint longitudinal hose bump are surface finishes of reconstructed parts, not new geometry.

@@ -15,15 +15,21 @@
 #gl{position:absolute;inset:0;width:100%;height:100%;display:block}
 .vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 45%,transparent 45%,rgba(0,0,0,.55) 85%,rgba(0,0,0,.85) 100%)}
 .beat{position:absolute;left:50%;transform:translate(-50%,0);width:min(920px,92vw);text-align:center;opacity:0;pointer-events:none;will-change:opacity,transform}
-.beat.top{top:7vh}.beat.bot{bottom:7vh}
-.beat h1{margin:0;font-size:clamp(28px,5.2vw,68px);font-weight:800;letter-spacing:-.5px;line-height:1.25;background:linear-gradient(180deg,#fff,#a9d9dc);-webkit-background-clip:text;background-clip:text;color:transparent}
-.beat h1,.beat h2{text-shadow:0 2px 18px rgba(0,0,0,.85)}.beat h2{margin:0;font-size:clamp(22px,3.8vw,48px);font-weight:800;line-height:1.3}
+.beat.top{top:max(68px,8vh)}.beat.top.side{left:auto;right:5vw;transform:none;width:min(640px,54vw);text-align:right}.beat.bot{bottom:7vh}
+.beat h1{margin:0;font-size:clamp(26px,4.6vw,60px);font-weight:800;letter-spacing:-.5px;line-height:1.25;background:linear-gradient(180deg,#fff,#a9d9dc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.beat h1,.beat h2{text-shadow:0 2px 18px rgba(0,0,0,.85)}.beat h2{margin:0;font-size:clamp(20px,3.4vw,44px);font-weight:800;line-height:1.3}
 .beat h2 em{font-style:normal;color:#5fc7cf}
 .beat p{margin:10px 0 0;font:500 clamp(13px,1.4vw,17px)/1.45 Inter,"Segoe UI",Arial,sans-serif;color:#9fb8ba;direction:ltr;letter-spacing:.2px}
 .logo{position:absolute;right:4vw;bottom:4vh;width:min(190px,44vw);opacity:0}
 .hint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font-size:13px;color:#8aa;letter-spacing:.3px;display:flex;flex-direction:column;align-items:center;gap:6px}
 .hint i{width:1px;height:28px;background:linear-gradient(#8aa,transparent)}
 @media(min-width:701px){.hint{left:7vw;transform:none}}
+@media(max-width:700px){
+  .beat.top{top:max(92px,12vh)}
+  .beat h1{font-size:clamp(22px,7.4vw,34px)}
+  .credit{max-width:88vw;bottom:58px}
+  .hint{bottom:14px}
+}
 .bar{position:absolute;top:0;left:0;height:2px;background:#2e7f96;width:0}
 .credit{position:absolute;left:4vw;bottom:10px;font:400 10px/1.4 Inter,"Segoe UI",Arial,sans-serif;color:#6e8688;direction:ltr;pointer-events:none;max-width:46vw}
 </style>
@@ -34,11 +40,11 @@
 <canvas id="gl"></canvas>
 <div class="provenance">مخزن = CAD اصلی ۲ لیتری با چاپ رسمی · لاینر = کیسه ۲ لیتری تأییدشده · تنظیم‌کننده و شلنگ‌ها بازسازی‌شده از عکس و کاتالوگ رسمی · نه CAD اصلی کارخانه برای قطعات بازسازی‌شده<div class="en">Canister = genuine 2 L CAD with official print · liner = approved 2 L bag · regulator and hoses reconstructed from official photos/catalog · reconstructed parts are not factory CAD</div></div>
 <div class="vig"></div><div class="bar" id="bar"></div>
-<div class="beat top" data-a="0" data-b=".17"><h1>ساکشن دیواری آبادیس</h1><p>Abadis Wall Suction · model VR-A1</p></div>
+<div class="beat top side" data-a="0" data-b=".17"><h1>ساکشن دیواری آبادیس</h1><p>Abadis Wall Suction · model VR-A1</p></div>
 <div class="beat bot" data-a=".20" data-b=".36"><h2>مخزن ۲ لیتری با <em>چاپ رسمی</em></h2><p>Genuine 2 L CAD · official AMR_4901 print · product code 0402012</p></div>
 <div class="beat bot" data-a=".38" data-b=".54"><h2>تنظیم‌کننده <em>نیکل-کروم</em></h2><p>Reconstructed from official catalog close-ups · analogue gauge in BAR and mmHg · REG/OFF</p></div>
 <div class="beat bot" data-a=".56" data-b=".72"><h2>درب و شلنگ روی <em>لاینر تأییدشده</em></h2><p>Genuine 2 L lid and bag · fittings and hoses reconstructed from the official product photo</p></div>
-<div class="beat top" style="top:max(96px,12vh)" data-a=".88" data-b="1.05"><h1>ساکشن دیواری آبادیس</h1><p lang="fa" style="direction:rtl;font-family:Kalameh,Tahoma,sans-serif">مدل VR-A1 · کد ۰۴۰۲۲۰۲ (۲ لیتر) · وزن رسمی ۳۷۷ گرم</p><p>Model VR-A1 · 2 L code 0402202 · official weight 377 g · family 0402201 / 0402203</p></div>
+<div class="beat top side" style="top:max(96px,12vh)" data-a=".88" data-b="1.05"><h1>ساکشن دیواری آبادیس</h1><p lang="fa" style="direction:rtl;font-family:Kalameh,Tahoma,sans-serif">مدل VR-A1 · کد ۰۴۰۲۲۰۲ (۲ لیتر) · وزن رسمی ۳۷۷ گرم</p><p>Model VR-A1 · 2 L code 0402202 · official weight 377 g · family 0402201 / 0402203</p></div>
 <img class="logo" id="logo" src="../../assets/img/abadis-logo-white.svg" alt="Abadis Med">
 <div class="hint" id="hint">اسکرول کنید · Scroll<i></i></div>
 <div class="credit">Package 12.2 × 27 cm is the official individual package size, not a measured body claim. No official dimensioned drawing of the set was supplied. Hospital console and O₂ terminal omitted — they are not Abadis parts.</div>
@@ -120,7 +126,7 @@ for(const m of [pc,mountPC]){m.onBeforeCompile=shader=>{
 const lidMat=new THREE.MeshPhysicalMaterial({color:TEAL,roughness:.42,metalness:.02,clearcoat:.22,clearcoatRoughness:.5,sheen:.1,sheenColor:0x4a9aa6,envMapIntensity:.55,bumpMap:ppMicro,bumpScale:mob?.4:.65,side:THREE.FrontSide});
 const lidIn=new THREE.MeshPhysicalMaterial({color:0x085a6c,roughness:.55,metalness:.01,clearcoat:.12,clearcoatRoughness:.7,side:THREE.BackSide,envMapIntensity:.35,polygonOffset:true,polygonOffsetFactor:2,polygonOffsetUnits:2,bumpMap:ppMicro,bumpScale:.4});
 const bagMat=new THREE.MeshPhysicalMaterial({color:0xeef3f4,roughness:.62,metalness:0,transparent:true,opacity:.16,bumpMap:filmT,bumpScale:mob?2.8:3.6,roughnessMap:filmT,side:THREE.DoubleSide,depthWrite:false,clearcoat:.12,clearcoatRoughness:.65});
-const hoseMat=new THREE.MeshPhysicalMaterial({color:0x759751,roughness:.48,metalness:0,clearcoat:.18,clearcoatRoughness:.55,bumpMap:hoseBump,bumpScale:.45,roughnessMap:hoseBump,envMapIntensity:.4});
+const hoseMat=new THREE.MeshPhysicalMaterial({color:0x426028,roughness:.58,metalness:0,clearcoat:.05,clearcoatRoughness:.7,bumpMap:hoseBump,bumpScale:.4,roughnessMap:hoseBump,envMapIntensity:.18});
 const chrome=new THREE.MeshPhysicalMaterial({color:0xd4d8dc,metalness:.95,roughness:.18,clearcoat:.4,clearcoatRoughness:.2,envMapIntensity:1.15});
 const chromeSoft=new THREE.MeshPhysicalMaterial({color:0xc8ccd0,metalness:.9,roughness:.3,envMapIntensity:1});
 const brass=new THREE.MeshPhysicalMaterial({color:0xc4991f,metalness:.85,roughness:.28,envMapIntensity:.9});
@@ -146,6 +152,7 @@ const named={
   'patient-elbow-sock-a':()=>hoseMat,
   'patient-elbow-sock-b':()=>hoseMat,
   'vacuum-sleeve':()=>hoseMat,
+  'vacuum-elbow-bend':()=>hoseMat,
   'reg-body':()=>chrome,
   'reg-hex':()=>chromeSoft,
   'vac-nut-body':()=>brass,
@@ -210,33 +217,34 @@ new GLTFLoader().load('p17-wall-suction.glb',g=>{
 const cl=x=>Math.min(1,Math.max(0,x));
 const ease=x=>{x=cl(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;};
 // Product-film path. Opening is the official catalog-cutout viewpoint
-// (front, slightly raised) with the title above the hose loop. Mid-scroll
-// holds the official print, then moves to the regulator, then a three-
-// quarter of the set, and returns. Polar interpolation; no idle drift.
+// (front, slightly raised) pulled back so the title stays clear of the
+// left hose loop. Mid-scroll holds the official print, then moves to the
+// regulator, then a three-quarter of the set, and returns.
+// Polar interpolation; no idle drift.
 // [scroll, azimuth deg, elevation deg, distance, targetX, targetY, targetZ]
 const KF=[
-  [0,    8, 11, 980,  40, -110, 0],
-  [.16,  8, 11, 970,  40, -110, 0],
+  [0,    8, 13, 1240,  20, -150, 0],
+  [.16,  8, 13, 1220,  20, -150, 0],
   [.28, 12, 16, 820,   8,  -40, 20],
   [.38, 14, 18, 800,   8,  -30, 20],
-  [.50, 18, 12, 280, 155,  -40,-28],
-  [.62, 18, 12, 270, 155,  -40,-28],
+  [.50, 62, 12, 260, 142,  -38, -8],
+  [.62, 62, 12, 250, 142,  -38, -8],
   [.76,-28, 10, 920,  40, -120, 0],
-  [.88,  8, 11, 970,  40, -110, 0],
-  [1,    8, 11, 980,  40, -110, 0]
+  [.88,  8, 13, 1220,  20, -150, 0],
+  [1,    8, 13, 1240,  20, -150, 0]
 ];
 const qp=new URLSearchParams(location.search),beats=[...document.querySelectorAll('.beat')];
 if(qp.has('look')){beats.forEach(b=>b.style.display='none');const h=document.getElementById('hint');if(h)h.style.display='none';const p=document.querySelector('.provenance');if(p)p.style.display='none';const c=document.querySelector('.credit');if(c)c.style.display='none';const l=document.getElementById('logo');if(l)l.style.display='none';}
 const LOOK={
-  photo:[8,11,860,[40,-110,0]],
-  set:[72,14,230,[148,-40,-16]],
-  drawing:[8,11,860,[40,-110,0]],
-  front:[0,8,880,[40,-120,0]],
-  side:[90,6,900,[40,-120,0]],
-  threeq:[38,16,900,[40,-110,0]],
-  lid:[10,28,420,[0,0,20]],
+  photo:[8,11,820,[20,-100,0]],
+  set:[62,12,260,[142,-38,-8]],
+  drawing:[8,11,820,[20,-100,0]],
+  front:[0,8,880,[20,-120,0]],
+  side:[90,6,900,[20,-120,0]],
+  threeq:[38,16,900,[20,-110,0]],
+  lid:[8,24,480,[0,10,20]],
   print:[8,8,520,[0,-80,20]],
-  wide:[8,11,1800,[40,-80,0]]
+  wide:[8,11,1800,[20,-80,0]]
 };
 const cp=new THREE.Vector3(),ct=new THREE.Vector3();let T=0,last=0;
 function applyLook(name){
@@ -260,7 +268,7 @@ function frame(now){requestAnimationFrame(frame);const dt=Math.min(.1,(now-(last
   const max=document.documentElement.scrollHeight-innerHeight;const target=qp.has('t')?cl(+qp.get('t')):cl(scrollY/Math.max(1,max));
   T+=(target-T)*(qp.has('t')||qp.has('look')?1:1-Math.exp(-dt*3.2));
   if(!(qp.has('look')&&applyLook(qp.get('look')))) sample(T);
-  for(const b of beats){const a=+b.dataset.a,z=+b.dataset.b,o=Math.min(a<=0?1:cl((T-a)/.035),cl((z-T)/.035));b.style.opacity=o;b.style.transform=`translate(-50%,${(1-o)*14}px)`;}
+  for(const b of beats){const a=+b.dataset.a,z=+b.dataset.b,o=Math.min(a<=0?1:cl((T-a)/.035),cl((z-T)/.035));b.style.opacity=o;b.style.transform=b.classList.contains('side')?`translateY(${(1-o)*14}px)`:`translate(-50%,${(1-o)*14}px)`;}
   document.getElementById('bar').style.width=T*100+'%';document.getElementById('hint').style.opacity=1-cl(T*18);document.getElementById('logo').style.opacity=cl((T-.94)/.03);
   C.position.copy(cp);C.lookAt(ct);const dist=cp.distanceTo(ct);C.near=Math.max(1,dist*.01);C.far=dist+2500;C.updateProjectionMatrix();
   window.__qa={t:T,requested:target,camera:cp.toArray(),target:ct.toArray()};R.render(S,C);
