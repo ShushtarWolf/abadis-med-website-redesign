@@ -132,6 +132,7 @@ const lidMat=new THREE.MeshPhysicalMaterial({color:TEAL,roughness:.56,metalness:
 const lidIn=new THREE.MeshPhysicalMaterial({color:0x013848,roughness:.62,metalness:.01,clearcoat:.04,clearcoatRoughness:.8,side:THREE.BackSide,envMapIntensity:.12,polygonOffset:true,polygonOffsetFactor:2,polygonOffsetUnits:2,bumpMap:ppMicro,bumpScale:.4});
 const bagMat=new THREE.MeshPhysicalMaterial({color:0xeef3f4,roughness:.62,metalness:0,transparent:true,opacity:.16,bumpMap:filmT,bumpScale:mob?2.8:3.6,roughnessMap:filmT,side:THREE.DoubleSide,depthWrite:false,clearcoat:.12,clearcoatRoughness:.65});
 const hoseMat=new THREE.MeshPhysicalMaterial({color:0x426028,roughness:.58,metalness:0,clearcoat:.05,clearcoatRoughness:.7,bumpMap:hoseBump,bumpScale:.4,roughnessMap:hoseBump,envMapIntensity:.18});
+const connMat=new THREE.MeshPhysicalMaterial({color:0x063c14,roughness:.48,metalness:0,clearcoat:.06,clearcoatRoughness:.65,envMapIntensity:.16});
 const chrome=new THREE.MeshPhysicalMaterial({color:0xd4d8dc,metalness:.95,roughness:.18,clearcoat:.4,clearcoatRoughness:.2,envMapIntensity:1.15});
 const chromeSoft=new THREE.MeshPhysicalMaterial({color:0xc8ccd0,metalness:.9,roughness:.3,envMapIntensity:1});
 const brass=new THREE.MeshPhysicalMaterial({color:0xc4991f,metalness:.85,roughness:.28,envMapIntensity:.9});
@@ -153,11 +154,13 @@ const named={
   bag:()=>bagMat,
   'patient-hose':()=>hoseMat,
   'vacuum-hose':()=>hoseMat,
-  'patient-elbow-bend':()=>hoseMat,
-  'patient-elbow-sock-a':()=>hoseMat,
-  'patient-elbow-sock-b':()=>hoseMat,
   'vacuum-sleeve':()=>hoseMat,
-  'vacuum-elbow-bend':()=>hoseMat,
+  'vacuum-sleeve-cuff':()=>hoseMat,
+  'vacuum-sleeve-bore':()=>{const m=hoseMat.clone();m.side=THREE.BackSide;return m;},
+  'patient-connector-taper':()=>connMat,
+  'patient-connector-body':()=>connMat,
+  'patient-connector-knurl':()=>connMat,
+  'patient-connector-neck':()=>connMat,
   'reg-body':()=>chrome,
   'reg-hex':()=>chromeSoft,
   'vac-nut-body':()=>brass,
@@ -247,7 +250,7 @@ const LOOK={
   front:[0,8,880,[20,-120,0]],
   side:[90,6,900,[20,-120,0]],
   threeq:[38,16,900,[20,-110,0]],
-  lid:[8,24,480,[0,10,20]],
+  lid:[12,28,320,[0,16,28]],
   print:[8,8,520,[0,-80,20]],
   wide:[8,11,1800,[20,-80,0]]
 };

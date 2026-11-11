@@ -13,7 +13,7 @@
 ## Geometry, labelled honestly
 - **Canister (vessel + collar/rear bracket):** genuine 2 L CAD from `2L pit.partlens`, unchanged, same mesh as approved P05 (`p05-2l-canister-cad.glb`). Official 2 L print from AMR_4901 (middle vessel) is applied in the cinematic with the approved P05 mapping — front exterior only, no invented artwork.
 - **Liner (lid, collar, bag):** genuine approved 2 L suction-bag CAD (`p02-2l-cad.glb`). The original port cap is omitted because the official assembled photograph shows hose fittings on the ports, not the cap. Yaw only (photo-estimated, so the two genuine lid barbs sit left and right on the front of the lid).
-- **Regulator, gauge face, VAC-nut lettering, knob markings, REG button, elbows and hoses:** reconstructed from the official catalog close-ups and the official product cutout, following the layout of Hamid's Grok design (https://winter-rose-lunar-pepper.grok.me). Grok geometry was extracted (no build-mode export prompt was needed) and then corrected to the official photographs. Regulator size is a **photo estimate** matched to official-photo ratios versus the 123 mm vessel OD (gauge width / canister width ≈ 0.327). The gauge housing is the official short black ring, not a long can. Hose OD (13 mm) is a photo estimate. Perspective makes horizontal and vertical px/mm differ. Not factory CAD.
+- **Regulator, gauge face, VAC-nut lettering, knob markings, REG button, green patient connector and hoses:** reconstructed from the official catalog close-ups and the official product cutout, following the layout of Hamid's Grok design (https://winter-rose-lunar-pepper.grok.me). Grok geometry was extracted (no build-mode export prompt was needed) and then corrected to the official photographs. Regulator size is a **photo estimate** matched to official-photo ratios versus the 123 mm vessel OD (gauge width / canister width ≈ 0.327). The gauge housing is the official short black ring, not a long can. Hose OD (13 mm) is a photo estimate. Perspective makes horizontal and vertical px/mm differ. Not factory CAD.
 - No invented fluid, no carved filter lattice, no hospital furniture. The fluid-blocking filter described in the official copy is not visible as separate geometry in the official photograph and is not invented here.
 
 ## Colour and finish
@@ -27,3 +27,9 @@
 ## Presentation
 - 1800vh track, `exp(-dt*3.2)` damping, no idle drift or sway. Opening camera is the official catalog-cutout viewpoint, with titles kept clear of the hose loop and the canister.
 - Package dimensions and the official 377 g weight are identified separately from model extents.
+
+## v4 — lid-port hose seating
+- Hoses now sleeve onto the genuine P02 2 L lid spigots (CAD port positions unchanged; only hose start, a short open hose cuff, and the reconstructed green connector are added).
+- A green knurled patient connector, reconstructed from the official wall-suction catalog photograph (not factory CAD), sleeves over the genuine left (patient) spigot; a short length of the blue stem remains visible. The patient hose sleeves over that connector and leaves up-left into a wide left loop; the free end sits beside the left of the lid and does not cross it (the thin blue loops on the official lid are cap tethers already in the genuine lid mesh).
+- The vacuum hose sleeves directly over the genuine right (shallow, rim-pointing) lid spigot. No extra coloured vacuum connector is added — none is visible as a separate fitting in the official photograph. The hose then clears the toothed rim and follows the official U down the right of the vessel to the regulator barb (bottom just above the vessel floor).
+- v3 regulator scale, short gauge housing, deep teal lid under ACES, and mobile layout are unchanged.

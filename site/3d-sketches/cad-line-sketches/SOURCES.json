@@ -361,17 +361,18 @@
     "dimensionNote": "Height 29.5 mm is official. Outer Ø 20 mm and inner Ø 12 mm are photo estimates."
   },
   "p17-wall-suction": {
-    "provenance": "2 L wall suction VR-A1 (0402202): genuine P05 2 L canister CAD + official 2 L print; genuine approved P02 2 L liner (lid, collar, bag; cap omitted to match the official assembled photo). Regulator, gauge face, VAC nut, knob markings, elbows and hoses reconstructed from official catalog photographs and the official product cutout, following the layout of Hamid's Grok design (winter-rose-lunar-pepper.grok.me). No official dimensioned drawing of the set was supplied. Hospital console and O2 terminal omitted (not Abadis parts). Reconstructed parts are not factory CAD. No invented parts.",
+    "provenance": "2 L wall suction VR-A1 (0402202): genuine P05 2 L canister CAD + official 2 L print; genuine approved P02 2 L liner (lid, collar, bag; cap omitted to match the official assembled photo). Regulator, gauge face, VAC nut, knob markings, the green patient connector, and hoses reconstructed from official catalog photographs and the official product cutout, following the layout of Hamid's Grok design (winter-rose-lunar-pepper.grok.me). The green knurled patient connector is reconstructed from the official catalog photograph and sleeves over the genuine left lid spigot; the vacuum hose sleeves directly over the genuine right (shallow) lid spigot — no extra coloured vacuum connector is visible in the official photo. No official dimensioned drawing of the set was supplied. Hospital console and O2 terminal omitted (not Abadis parts). Reconstructed parts are not factory CAD. No invented parts.",
     "parts": {
       "vessel": 534,
       "collar-mount": 660,
       "lid": 14084,
       "collar": 284,
       "bag": 596,
-      "patient-elbow-bend": 672,
-      "patient-elbow-sock-a": 80,
-      "patient-elbow-sock-b": 80,
-      "vacuum-elbow-bend": 896,
+      "patient-connector-taper": 48,
+      "patient-connector-body": 32,
+      "patient-connector-neck": 80,
+      "vacuum-sleeve-cuff": 40,
+      "vacuum-sleeve-bore": 40,
       "reg-body": 256,
       "reg-hex": 24,
       "vac-nut-body": 256,
@@ -397,17 +398,17 @@
     },
     "bounds_mm": [
       [
-        -155.56182861328125,
+        -164.73362731933594,
         -270,
         -93.62410146576674
       ],
       [
         165.57068342493508,
-        79.26487731933594,
+        81.50601196289062,
         100.81925538672681
       ]
     ],
-    "sha256": "473de63bc7dabe419a96ba8db7e95a916d885112f9d2e2a0d6479ff95a2f7391",
+    "sha256": "6545323f418dbaebac3a5a66f2591517854212efaa2d1cfab3eec45256d45434",
     "nominalOfficialMm": [],
     "packageDimensionsCm": [
       12.2,
@@ -415,8 +416,8 @@
     ],
     "officialWeightG": 377,
     "modelExtentsMm": [
-      321.1325120382163,
-      349.26487731933594,
+      330.304310744271,
+      351.5060119628906,
       194.44335685249354
     ],
     "factoryCAD": false,
@@ -424,7 +425,7 @@
     "inventedParts": false,
     "productCode": "0402202",
     "inventory": "P17",
-    "bytes": 859312,
-    "dimensionNote": "No official dimensioned drawing of the set was supplied. 12.2 × 27 cm is the official individual package size of the 2 L canister, not a measured body claim. Official weight 377 g. Regulator scale is matched to official-photo width/height ratios versus the canister; the gauge housing is a short black ring. Hose sizes are photo estimates."
+    "bytes": 831576,
+    "dimensionNote": "No official dimensioned drawing of the set was supplied. 12.2 × 27 cm is the official individual package size of the 2 L canister, not a measured body claim. Official weight 377 g. Regulator scale is matched to official-photo width/height ratios versus the canister; the gauge housing is a short black ring. Hose sizes are photo estimates. Green patient connector reconstructed from the official catalog photo; both hoses sleeve onto the genuine P02 lid spigots."
   }
 }
