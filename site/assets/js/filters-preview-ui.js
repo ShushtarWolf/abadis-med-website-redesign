@@ -46,10 +46,6 @@
   picks.forEach(function (a) {
     a.addEventListener('click', function (e) { jumpTo(a, e); });
   });
-  document.querySelectorAll('.flt-hero-card[href^="#"]').forEach(function (a) {
-    a.addEventListener('click', function (e) { jumpTo(a, e); });
-  });
-
   function viewerUrl() {
     var s = document.querySelector('script[src*="filters-preview-ui.js"]');
     if (!s) return '../../assets/js/filters-viewer.js';
