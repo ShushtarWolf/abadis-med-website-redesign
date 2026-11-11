@@ -359,5 +359,72 @@
     "inventory": "P16",
     "bytes": 141444,
     "dimensionNote": "Height 29.5 mm is official. Outer \u00d8 20 mm and inner \u00d8 12 mm are photo estimates."
+  },
+  "p17-wall-suction": {
+    "provenance": "2 L wall suction VR-A1 (0402202): genuine P05 2 L canister CAD + official 2 L print; genuine approved P02 2 L liner (lid, collar, bag; cap omitted to match the official assembled photo). Regulator, gauge face, VAC nut, knob markings, elbows and hoses reconstructed from official catalog photographs and the official product cutout, following the layout of Hamid's Grok design (winter-rose-lunar-pepper.grok.me). No official dimensioned drawing of the set was supplied. Hospital console and O2 terminal omitted (not Abadis parts). Reconstructed parts are not factory CAD. No invented parts.",
+    "parts": {
+      "vessel": 534,
+      "collar-mount": 660,
+      "lid": 14084,
+      "collar": 284,
+      "bag": 596,
+      "patient-elbow-bend": 672,
+      "patient-elbow-sock-a": 80,
+      "patient-elbow-sock-b": 80,
+      "vacuum-sleeve": 80,
+      "reg-body": 256,
+      "reg-hex": 24,
+      "vac-nut-body": 256,
+      "vac-nut-face": 64,
+      "vac-nut-back": 48,
+      "vac-nut-boss": 128,
+      "vac-nut-nipple": 96,
+      "knob-body": 256,
+      "knob-knurl": 1280,
+      "knob-face": 48,
+      "reg-barb": 80,
+      "reg-barb-ridge": 512,
+      "reg-button-body": 128,
+      "reg-button-face": 32,
+      "gauge-nipple": 80,
+      "gauge-housing": 192,
+      "gauge-bezel": 960,
+      "gauge-face": 64,
+      "needle-blade": 16,
+      "needle-hub": 352,
+      "patient-hose": 5120,
+      "vacuum-hose": 5120
+    },
+    "bounds_mm": [
+      [
+        -93.61637491961599,
+        -270,
+        -93.62410146576674
+      ],
+      [
+        176.29202344584334,
+        86.78646087646484,
+        100.81925538672681
+      ]
+    ],
+    "sha256": "ecb5f229e328ba348fef38a0f7d2c4225c79af6144f1602888f1f1bfeefbc1c8",
+    "nominalOfficialMm": [],
+    "packageDimensionsCm": [
+      12.2,
+      27
+    ],
+    "officialWeightG": 377,
+    "modelExtentsMm": [
+      269.90839836545933,
+      356.78646087646484,
+      194.44335685249354
+    ],
+    "factoryCAD": false,
+    "mixedProvenance": true,
+    "inventedParts": false,
+    "productCode": "0402202",
+    "inventory": "P17",
+    "bytes": 842260,
+    "dimensionNote": "No official dimensioned drawing of the set was supplied. 12.2 × 27 cm is the official individual package size of the 2 L canister, not a measured body claim. Official weight 377 g. Regulator and hose sizes are photo estimates."
   }
 }
