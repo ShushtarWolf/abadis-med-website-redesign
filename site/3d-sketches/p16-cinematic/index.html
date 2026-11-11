@@ -64,29 +64,29 @@ const backdrop=new THREE.CanvasTexture(bg);backdrop.colorSpace=THREE.SRGBColorSp
 const pm=new THREE.PMREMGenerator(R),env=new RoomEnvironment();
 S.environment=pm.fromScene(env,.04).texture;S.environmentIntensity=0.32;env.dispose();pm.dispose();
 R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;
-const key=new THREE.DirectionalLight(0xfff6ee,1.45);key.position.set(16,58,28);key.castShadow=true;
+const key=new THREE.DirectionalLight(0xf7f7f7,1.42);key.position.set(16,58,28);key.castShadow=true;
 key.shadow.mapSize.set(2048,2048);key.shadow.camera.near=10;key.shadow.camera.far=220;
 key.shadow.camera.left=-50;key.shadow.camera.right=50;key.shadow.camera.top=50;key.shadow.camera.bottom=-50;
 key.shadow.bias=-0.0008;S.add(key);
-const fill=new THREE.DirectionalLight(0xf0ece6,0.28);fill.position.set(-28,30,36);S.add(fill);
-const rim=new THREE.DirectionalLight(0xf0ece6,0.40);rim.position.set(8,16,-60);S.add(rim);
-S.add(new THREE.HemisphereLight(0xf7f4ee,0x5a554c,.74));
-// Soft warm light down the bore so the interior reads as flatter beige, not a hard side gradient.
-const boreFill=new THREE.DirectionalLight(0xf0ebe3,0.52);boreFill.position.set(4,80,4);S.add(boreFill);
-const boreBounce=new THREE.DirectionalLight(0xf2eee6,0.40);boreBounce.position.set(-16,50,-18);S.add(boreBounce);
-S.add(new THREE.AmbientLight(0xf3efe8,0.16));
+const fill=new THREE.DirectionalLight(0xe9e9ea,0.32);fill.position.set(-28,30,36);S.add(fill);
+const rim=new THREE.DirectionalLight(0xeeeeee,0.38);rim.position.set(8,16,-60);S.add(rim);
+S.add(new THREE.HemisphereLight(0xf5f5f6,0x555558,.74));
+// Soft cool fill down the bore so the interior stays a flatter neutral grey, not a hard side gradient.
+const boreFill=new THREE.DirectionalLight(0xf0f0f1,0.52);boreFill.position.set(4,80,4);S.add(boreFill);
+const boreBounce=new THREE.DirectionalLight(0xe8e8ea,0.40);boreBounce.position.set(-16,50,-18);S.add(boreBounce);
+S.add(new THREE.AmbientLight(0xececec,0.14));
 
 const clipPlane=new THREE.Plane(new THREE.Vector3(1,0,0),40);
 const bodyMat=applySinteredGrain(new THREE.MeshPhysicalMaterial({
-  color:0xf5f2eb,
+  color:0xf1f1f1,
   roughness:.90, metalness:0, envMapIntensity:0.14,
   clearcoat:0, clearcoatRoughness:1,
   side:THREE.DoubleSide, clippingPlanes:[clipPlane]
 }),{mobile:mob});
 const capMat=applySinteredGrain(new THREE.MeshPhysicalMaterial({
-  color:0xe8e4dc, roughness:.90, metalness:0, envMapIntensity:0.12,
+  color:0xe6e6e8, roughness:.90, metalness:0, envMapIntensity:0.12,
   clippingPlanes:[clipPlane], side:THREE.DoubleSide
-}),{mobile:mob, amp:0.03, bump:0.04, warm:0.45});
+}),{mobile:mob, amp:0.05, bump:0.02, pore:0.10});
 
 const root=new THREE.Group();S.add(root);
 const sc=document.createElement('canvas');sc.width=sc.height=256;const sx=sc.getContext('2d');
