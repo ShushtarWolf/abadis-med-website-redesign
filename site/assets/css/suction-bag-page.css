@@ -291,7 +291,56 @@ body.page-bag .header:not(.past-hero)::before {
 .code-table th { font-size: 12px; color: var(--muted); font-weight: 700; }
 .code-cards { display: none !important; }
 
-/* yn icons: see site.css (--ico-check / shared SVG) */
+/* yn / check icons are scoped here so the bag page works without main's site.css. */
+.page-bag {
+  --ico-check: #0e7475;
+  --ico-dash: var(--muted, #5a7a7c);
+  --ico-check-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5.5 12.5 L9.5 16.5 L18.5 7.5' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --ico-dash-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12h12' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+.page-bag[data-theme="noir"], [data-theme="noir"] .page-bag { --ico-check: #7fdcdd; }
+.page-bag .yn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  line-height: 0;
+  vertical-align: middle;
+  border: none !important;
+  transform: none !important;
+  background: none !important;
+}
+.page-bag .yn-yes { color: var(--ico-check); }
+.page-bag .yn-no { color: var(--ico-dash); }
+.page-bag .yn svg, .page-bag .yn .yn-ico {
+  width: 18px;
+  height: 18px;
+  display: block;
+  flex-shrink: 0;
+}
+.page-bag .yn-yes:empty::before,
+.page-bag .yn-yes:not(:has(.yn-ico))::before,
+.page-bag .yn-no:empty::before,
+.page-bag .yn-no:not(:has(.yn-ico))::before {
+  content: "";
+  width: 18px;
+  height: 18px;
+  display: block;
+  background-color: currentColor;
+}
+.page-bag .yn-yes:empty::before,
+.page-bag .yn-yes:not(:has(.yn-ico))::before {
+  mask: var(--ico-check-mask) center / contain no-repeat;
+  -webkit-mask: var(--ico-check-mask) center / contain no-repeat;
+}
+.page-bag .yn-no:empty::before,
+.page-bag .yn-no:not(:has(.yn-ico))::before {
+  mask: var(--ico-dash-mask) center / contain no-repeat;
+  -webkit-mask: var(--ico-dash-mask) center / contain no-repeat;
+}
+.page-bag .yn-yes:has(.yn-ico)::before, .page-bag .yn-no:has(.yn-ico)::before { display: none; }
+
 .lid { width: 36px; height: 14px; border-radius: 4px; display: inline-block; box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); }
 .lid-teal { background: #0a7e8c; }
 .lid-yellow { background: #e6c34a; }
@@ -860,4 +909,46 @@ html[dir="rtl"] .code-table td:first-child {
   /* Keep photos clear of the floating switch. */
   .page-bag .size-gal .gal-frame,
   .page-bag .size-gal .gal-frame-slot { margin-inline-end: 0; }
+}
+
+.page-bag .bag-kicker {
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 14px;
+  letter-spacing: .02em;
+}
+.page-bag .benefit-grid {
+  display: grid;
+  gap: 12px;
+  margin: 8px 0 22px;
+}
+@media (min-width: 800px) {
+  .page-bag .benefit-grid { grid-template-columns: 1fr 1fr; }
+}
+.page-bag .benefit-card {
+  background: var(--surface, var(--bg-2, #eef3f3));
+  border-radius: 16px;
+  padding: 18px 18px 16px;
+}
+.page-bag .benefit-card h3 { margin: 0 0 8px; font-size: 17px; }
+.page-bag .benefit-card p { margin: 0; color: var(--ink); }
+.page-bag .glance-table a { color: inherit; text-underline-offset: 2px; }
+.page-bag .related-grid {
+  display: grid;
+  gap: 12px;
+}
+@media (min-width: 700px) {
+  .page-bag .related-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.page-bag .related-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  background: var(--surface, var(--bg-2, #eef3f3));
+  border-radius: 16px;
+  padding: 20px 18px;
+  font-weight: 700;
+}
+.page-bag .related-card:hover, .page-bag .related-card:focus-visible {
+  background: var(--surface-2, #e4eeee);
 }

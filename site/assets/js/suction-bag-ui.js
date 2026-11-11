@@ -37,6 +37,40 @@
   setStickyOffset();
   window.addEventListener('resize', setStickyOffset);
 
+  /* Header contrast over the cinematic film. Owns this when
+     window.ABADIS_BAG_FILM_HEADER is set, so site.js can skip the same work. */
+  window.ABADIS_BAG_FILM_HEADER = true;
+  (function filmHeader() {
+    if (!document.body.classList.contains('page-bag')) return;
+    var headerEl = document.getElementById('header') || header;
+    if (!headerEl) return;
+    var zones = headerEl.querySelectorAll('.logo, .nav, .menu-btn, .theme-toggle, .lang-switch');
+    function filmUp() {
+      var f = document.getElementById('film');
+      return !!(f && f.getBoundingClientRect().bottom > 72);
+    }
+    function apply() {
+      if (!filmUp()) return;
+      zones.forEach(function (z) { z.classList.remove('on-light'); });
+      headerEl.classList.remove('scrolled');
+    }
+    var ticking = false;
+    function on() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          ticking = false;
+          apply();
+        });
+      });
+    }
+    window.addEventListener('scroll', on, { passive: true });
+    window.addEventListener('resize', on, { passive: true });
+    on();
+  })();
+
+
   function initGallery(gal) {
     var rail = gal.querySelector('.gal-rail');
     var cards = gal.querySelectorAll('.gal-card');
@@ -232,7 +266,7 @@
   function isoModuleUrl() {
     var s = document.querySelector('script[src*="suction-bag-ui.js"]');
     if (!s) return '';
-    return s.src.replace(/suction-bag-ui\.js[^/]*$/, 'cad-iso-viewer.js?v=20261110w');
+    return s.src.replace(/suction-bag-ui\.js[^/]*$/, 'cad-iso-viewer.js?v=20261111e');
   }
   document.querySelectorAll('[data-iso]').forEach(function (frame) {
     var btn = frame.querySelector('.iso-load');

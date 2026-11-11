@@ -94,7 +94,11 @@
   function tone() {
     if (!header) return;
     const film = document.getElementById('film');
-    if (document.body.classList.contains('page-bag') && film) {
+    /* When the bag page owns header-over-film, skip so we do not double-apply. */
+    if (window.ABADIS_BAG_FILM_HEADER && document.body.classList.contains('page-bag') && film && film.getBoundingClientRect().bottom > 72) {
+      return;
+    }
+    if (!window.ABADIS_BAG_FILM_HEADER && document.body.classList.contains('page-bag') && film) {
       const fr = film.getBoundingClientRect();
       if (fr.bottom > 72) {
         zones.forEach((z) => z.classList.remove('on-light'));
@@ -128,7 +132,9 @@
         ticking = false;
         const film = document.getElementById('film');
         const heroUp = document.body.classList.contains('page-bag') && film && film.getBoundingClientRect().bottom > 72;
-        header.classList.toggle('scrolled', scrollY > 24 && !heroUp);
+        if (!(window.ABADIS_BAG_FILM_HEADER && heroUp)) {
+          header.classList.toggle('scrolled', scrollY > 24 && !heroUp);
+        }
         if (!header.classList.contains('open')) {
           header.querySelectorAll('.nav-item.open').forEach((el) => {
             el.classList.remove('open');
