@@ -48,6 +48,7 @@ import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {mergeVertices} from 'three/addons/utils/BufferGeometryUtils.js';
+import {applySinteredGrain} from './sintered-grain.js';
 
 const mob=matchMedia('(max-width:700px),(pointer:coarse)').matches;
 const canvas=document.getElementById('gl'),stage=canvas.parentElement;
@@ -63,49 +64,29 @@ const backdrop=new THREE.CanvasTexture(bg);backdrop.colorSpace=THREE.SRGBColorSp
 const pm=new THREE.PMREMGenerator(R),env=new RoomEnvironment();
 S.environment=pm.fromScene(env,.04).texture;S.environmentIntensity=0.32;env.dispose();pm.dispose();
 R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;
-const key=new THREE.DirectionalLight(0xfff6ee,1.65);key.position.set(28,48,40);key.castShadow=true;
+const key=new THREE.DirectionalLight(0xfff6ee,1.45);key.position.set(16,58,28);key.castShadow=true;
 key.shadow.mapSize.set(2048,2048);key.shadow.camera.near=10;key.shadow.camera.far=220;
 key.shadow.camera.left=-50;key.shadow.camera.right=50;key.shadow.camera.top=50;key.shadow.camera.bottom=-50;
 key.shadow.bias=-0.0008;S.add(key);
-const fill=new THREE.DirectionalLight(0xe8f2fa,0.36);fill.position.set(-36,24,40);S.add(fill);
+const fill=new THREE.DirectionalLight(0xf0ece6,0.28);fill.position.set(-28,30,36);S.add(fill);
 const rim=new THREE.DirectionalLight(0xf0ece6,0.40);rim.position.set(8,16,-60);S.add(rim);
-S.add(new THREE.HemisphereLight(0xf4f6f8,0x243038,.48));
+S.add(new THREE.HemisphereLight(0xf7f4ee,0x5a554c,.74));
+// Soft warm light down the bore so the interior reads as flatter beige, not a hard side gradient.
+const boreFill=new THREE.DirectionalLight(0xf0ebe3,0.52);boreFill.position.set(4,80,4);S.add(boreFill);
+const boreBounce=new THREE.DirectionalLight(0xf2eee6,0.40);boreBounce.position.set(-16,50,-18);S.add(boreBounce);
+S.add(new THREE.AmbientLight(0xf3efe8,0.16));
 
-function sinteredMaps(){
-  const s=1024,c=document.createElement('canvas');c.width=c.height=s;const x=c.getContext('2d');
-  x.fillStyle='#f2f1ed';x.fillRect(0,0,s,s);
-  const img=x.getImageData(0,0,s,s),d=img.data;
-  let seed=1;const rnd=()=> (seed=(seed*1664525+1013904223)>>>0)/4294967296;
-  for(let i=0;i<s*s;i++){
-    const v=-6+rnd()*12,j=i*4;
-    d[j]=Math.max(0,Math.min(255,d[j]+v+(rnd()-.5)*4));
-    d[j+1]=Math.max(0,Math.min(255,d[j+1]+v+(rnd()-.5)*3));
-    d[j+2]=Math.max(0,Math.min(255,d[j+2]+v-1+(rnd()-.5)*3));
-  }
-  x.putImageData(img,0,0);
-  const albedo=new THREE.CanvasTexture(c);albedo.colorSpace=THREE.SRGBColorSpace;
-  albedo.wrapS=albedo.wrapT=THREE.RepeatWrapping;albedo.anisotropy=8;
-  const rc=document.createElement('canvas');rc.width=rc.height=s;const rx=rc.getContext('2d');
-  const rimg=rx.createImageData(s,s);seed=7;
-  for(let i=0;i<s*s;i++){
-    const g=200+((seed=(seed*1664525+1013904223)>>>0)/4294967296)*40;
-    rimg.data[i*4]=rimg.data[i*4+1]=rimg.data[i*4+2]=g;rimg.data[i*4+3]=255;
-  }
-  rx.putImageData(rimg,0,0);
-  const rough=new THREE.CanvasTexture(rc);rough.wrapS=rough.wrapT=THREE.RepeatWrapping;
-  return {albedo,rough};
-}
 const clipPlane=new THREE.Plane(new THREE.Vector3(1,0,0),40);
-const bodyMat=new THREE.MeshPhysicalMaterial({
-  color:0xf4f4f2,
-  roughness:.90, metalness:0, envMapIntensity:0.16,
-  clearcoat:.02, clearcoatRoughness:.9,
+const bodyMat=applySinteredGrain(new THREE.MeshPhysicalMaterial({
+  color:0xf5f2eb,
+  roughness:.90, metalness:0, envMapIntensity:0.14,
+  clearcoat:0, clearcoatRoughness:1,
   side:THREE.DoubleSide, clippingPlanes:[clipPlane]
-});
-const capMat=new THREE.MeshPhysicalMaterial({
-  color:0xe8e4dc, roughness:.88, metalness:0, envMapIntensity:0.18,
+}),{mobile:mob});
+const capMat=applySinteredGrain(new THREE.MeshPhysicalMaterial({
+  color:0xe8e4dc, roughness:.90, metalness:0, envMapIntensity:0.12,
   clippingPlanes:[clipPlane], side:THREE.DoubleSide
-});
+}),{mobile:mob, amp:0.03, bump:0.04, warm:0.45});
 
 const root=new THREE.Group();S.add(root);
 const sc=document.createElement('canvas');sc.width=sc.height=256;const sx=sc.getContext('2d');
@@ -143,18 +124,18 @@ const ease=x=>{x=cl(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;};
 const KF=[
   [0,    14, 22, 110,  10],
   [.16,  14, 22, 108,  10],
-  [.28,   4,  6,  96,   6],
-  [.40,   4,  6,  94,   6],
-  [.52, -72, 12, 102,   0],
-  [.66, -72, 12, 100,   0],
-  [.78, -10, 50,  84,   4],
+  [.28,   6, 15, 118,   2],
+  [.40,   6, 15, 116,   2],
+  [.52, -72, 12, 120,   0],
+  [.66, -72, 12, 118,   0],
+  [.78, -10, 50, 102,   0],
   [.90,  14, 22, 108,  10],
   [1,    14, 22, 110,  10]
 ];
 const qp=new URLSearchParams(location.search),beats=[...document.querySelectorAll('.beat')];
 if(qp.has('look')){beats.forEach(b=>b.style.display='none');const h=document.getElementById('hint');if(h)h.style.display='none';}
 const LOOK={
-  photo:[4,6,78,[0,0,0]],
+  photo:[6,15,86,[0,1,0]],
   set:[-10,50,66,[0,2,0]],
   drawing:[14,22,78,[0,-1,0]],
   cut:[-72,12,84,[0,0,0]],
