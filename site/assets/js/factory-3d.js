@@ -671,11 +671,29 @@ function init(sec) {
   const controls = new OrbitControls(camera, canvas);
   controls.enabled = false; controls.enableDamping = true; controls.dampingFactor = 0.08;
   controls.maxDistance = 170; controls.minDistance = 6; controls.maxPolarAngle = Math.PI * 0.495;
-  // OrbitControls.connect() sets canvas.style.touchAction = 'none', which blocks iOS page scroll.
+  // Stay disconnected until free explore: connect() forces touch-action:none on the canvas and
+  // keeps passive-blocking listeners alive — both break vertical page scroll on real iOS Safari.
+  controls.disconnect();
+  const isIosTouch = () => /iP(hone|ad|od)/.test(navigator.userAgent)
+    || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   const setTouchPan = (allowPageScroll) => {
-    const action = allowPageScroll ? 'pan-y' : 'none';
-    canvas.style.touchAction = action;
-    stage.style.touchAction = action;
+    const pan = allowPageScroll ? 'pan-y' : 'none';
+    [sec, stage].forEach((el) => { el.style.touchAction = allowPageScroll ? 'pan-y' : 'auto'; });
+    if (allowPageScroll) {
+      canvas.style.touchAction = 'pan-y';
+      canvas.style.pointerEvents = 'none';
+    } else {
+      canvas.style.touchAction = 'none';
+      canvas.style.pointerEvents = 'auto';
+    }
+    if (isIosTouch() && allowPageScroll) {
+      requestAnimationFrame(() => {
+        if (!explore) {
+          [sec, stage, canvas].forEach((el) => { el.style.touchAction = pan; });
+          canvas.style.pointerEvents = 'none';
+        }
+      });
+    }
   };
   setTouchPan(true);
 
@@ -824,18 +842,30 @@ function init(sec) {
   const stationScroll = (i) => { const m = sec.offsetHeight - innerHeight; return sec.getBoundingClientRect().top + scrollY + m * (0.25 + STEP * (i + 0.5)); };
   const goStation = (i) => { sT = Math.min(1, Math.max(0, 0.25 + STEP * (i + 0.5))); const y = stationScroll(i); (document.scrollingElement || document.documentElement).scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' }); };
 
-  // Lock page scroll during free explore. iOS Safari ignores overflow:hidden on <html>,
-  // so touches on the 3D view would scroll the page instead of orbiting the model.
-  stage.addEventListener('touchmove', (e) => {
-    if (explore && !e.target.closest('.f3d-dock,.f3d-tools')) e.preventDefault();
-  }, { passive: false });
+  // While exploring, block vertical scroll only on the WebGL layer (iOS ignores overflow:hidden on html).
+  const blockExploreScroll = (e) => {
+    if (!explore) return;
+    if (e.target.closest('.f3d-dock,.f3d-tools')) return;
+    e.preventDefault();
+  };
+  canvas.addEventListener('touchmove', blockExploreScroll, { passive: false });
+  stage.addEventListener('touchmove', blockExploreScroll, { passive: false });
   function setExplore(on) {
     explore = on;
     tween = null;
     sec.classList.toggle('is-ex', on);
-    setTouchPan(!on);
+    if (on) {
+      controls.connect();
+      controls.enabled = true;
+      controls.update();
+      setTouchPan(false);
+    } else {
+      controls.enabled = false;
+      controls.disconnect();
+      setTouchPan(true);
+    }
     resize();
-    controls.enabled = on; exLabel.textContent = on ? cfg.back : cfg.explore;
+    exLabel.textContent = on ? cfg.back : cfg.explore;
     if (on) {
       const stI = lastIdx >= 0 ? lastIdx : 0;
       if (lastIdx < 0) { lastIdx = 0; renderStationUI(0); }
