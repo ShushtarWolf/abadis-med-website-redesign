@@ -35,15 +35,19 @@
     window.addEventListener('resize', spy, {passive: true});
     spy();
   }
+  function jumpTo(a, e) {
+    var el = document.getElementById((a.getAttribute('href') || '').slice(1));
+    if (!el) return;
+    if (e) e.preventDefault();
+    var top = el.getBoundingClientRect().top + window.scrollY - pad();
+    window.scrollTo({top: Math.max(0, top), behavior: reduced ? 'auto' : 'smooth'});
+    try { history.replaceState(null, '', a.getAttribute('href')); } catch (err) {}
+  }
   picks.forEach(function (a) {
-    a.addEventListener('click', function (e) {
-      var el = document.getElementById((a.getAttribute('href') || '').slice(1));
-      if (!el) return;
-      e.preventDefault();
-      var top = el.getBoundingClientRect().top + window.scrollY - pad();
-      window.scrollTo({top: Math.max(0, top), behavior: reduced ? 'auto' : 'smooth'});
-      try { history.replaceState(null, '', a.getAttribute('href')); } catch (err) {}
-    });
+    a.addEventListener('click', function (e) { jumpTo(a, e); });
+  });
+  document.querySelectorAll('.flt-hero-card[href^="#"]').forEach(function (a) {
+    a.addEventListener('click', function (e) { jumpTo(a, e); });
   });
 
   function viewerUrl() {
