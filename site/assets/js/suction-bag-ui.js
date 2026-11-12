@@ -278,7 +278,7 @@
   }
 
   function isoModuleUrl() {
-    return bagModuleUrl('cad-iso-viewer.js?v=20261111f', '');
+    return bagModuleUrl('cad-iso-viewer.js?v=20261112c', '');
   }
   document.querySelectorAll('[data-iso]').forEach(function (frame) {
     var btn = frame.querySelector('.iso-load');
