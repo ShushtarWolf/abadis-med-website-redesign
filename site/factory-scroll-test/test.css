@@ -1,0 +1,49 @@
+/* On-phone factory scroll diagnosis. Not used by About pages. */
+html.f3d-test, body.f3d-test { margin: 0; }
+.f3d-test-bar {
+  position: relative; z-index: 40; background: #0b2f30; color: #e8f3f3;
+  font: 600 13px/1.45 Kalameh, Tahoma, sans-serif; padding: 8px 14px 10px;
+}
+.f3d-test-bar a { color: #8ff0e6; }
+.f3d-test-bar p { margin: 4px 0 0; font-weight: 500; opacity: .92; }
+.f3d-test-after {
+  min-height: 120vh; padding: 28px 20px 80px; background: #f3fafa; color: #0b2f30;
+  font-family: Kalameh, Tahoma, sans-serif;
+}
+.f3d-test-after h2 { font-size: 1.6rem; margin: 0 0 10px; }
+#f3d-debug {
+  position: fixed; z-index: 9999; inset-inline-start: 8px; top: max(8px, env(safe-area-inset-top, 0px));
+  width: min(280px, calc(100vw - 16px));
+  background: rgba(8, 22, 24, .86); color: #f4fffe; border: 1px solid rgba(143,240,230,.45);
+  border-radius: 10px; padding: 7px 8px 8px; font: 600 11px/1.35 ui-monospace, Menlo, Tahoma, sans-serif;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  pointer-events: auto; touch-action: manipulation;
+  box-shadow: 0 8px 24px rgba(0,0,0,.28);
+}
+#f3d-debug b { color: #8ff0e6; }
+#f3d-debug .vars { display: flex; gap: 4px; margin: 0 0 6px; }
+#f3d-debug .vars a {
+  flex: 1; text-align: center; text-decoration: none; color: #0b2f30; background: #cfeeee;
+  border-radius: 6px; padding: 4px 0; font-weight: 800; font-size: 12px;
+}
+#f3d-debug .vars a.is-on { background: #ffb300; color: #1a0e00; }
+#f3d-debug .row { white-space: normal; overflow-wrap: anywhere; }
+#f3d-debug .ok { color: #8ff0e6; }
+#f3d-debug .bad { color: #ffb3a0; }
+
+/* B: no factory overflow override, and cancel site.css overflow-x:clip so iOS
+   can use the default viewport scroller instead of an html/body/main scroller. */
+html.f3d-test-B, html.f3d-test-B body, html.f3d-test-B main {
+  overflow: visible !important;
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+}
+
+/* D: stage ignores pointer/touch during scrollytelling; buttons and dock stay tappable. */
+html.f3d-test-D .f3d:not(.is-ex) .f3d-stage { pointer-events: none !important; }
+html.f3d-test-D .f3d:not(.is-ex) .f3d-tools,
+html.f3d-test-D .f3d:not(.is-ex) .f3d-tools *,
+html.f3d-test-D .f3d:not(.is-ex) .f3d-dock,
+html.f3d-test-D .f3d:not(.is-ex) .f3d-dock * {
+  pointer-events: auto !important;
+}
