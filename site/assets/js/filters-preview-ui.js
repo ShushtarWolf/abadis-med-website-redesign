@@ -49,7 +49,7 @@
   function viewerUrl() {
     var s = document.querySelector('script[src*="filters-preview-ui.js"]');
     if (!s) return '../../assets/js/filters-viewer.js';
-    return s.src.replace(/filters-preview-ui\.js[^/]*$/, 'filters-viewer.js');
+    return s.src.replace(/filters-preview-ui\.js/, 'filters-viewer.js');
   }
   document.querySelectorAll('[data-solid]').forEach(function (frame) {
     var btn = frame.querySelector('.solid-load');

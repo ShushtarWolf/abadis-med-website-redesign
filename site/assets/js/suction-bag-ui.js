@@ -266,7 +266,7 @@
   function isoModuleUrl() {
     var s = document.querySelector('script[src*="suction-bag-ui.js"]');
     if (!s) return '';
-    return s.src.replace(/suction-bag-ui\.js[^/]*$/, 'cad-iso-viewer.js?v=20261111e');
+    return s.src.replace(/suction-bag-ui\.js[^/]*$/, 'cad-iso-viewer.js?v=20261112b');
   }
   document.querySelectorAll('[data-iso]').forEach(function (frame) {
     var btn = frame.querySelector('.iso-load');

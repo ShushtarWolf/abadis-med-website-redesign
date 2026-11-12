@@ -113,7 +113,7 @@ function posePart(group,kind){
 const PRODUCTS=[
   {id:'p11',kind:'disc',src:url('../../3d-sketches/p11-cinematic/p11-disc-filter.glb')},
   {id:'p12',kind:'inline',src:url('../../3d-sketches/p12-cinematic/p12-inline-filter.glb')},
-  {id:'p16',kind:'porous',src:url('../../3d-sketches/p16-cinematic/p16-porous-filter.glb')}
+  {id:'p16',kind:'porous',src:url('../../3d-sketches/p16-cinematic/p16-porous-filter.glb?v=20261112b')}
 ];
 
 const parts=[];
