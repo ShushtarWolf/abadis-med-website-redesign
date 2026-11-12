@@ -13,26 +13,25 @@ html.f3d-test, body.f3d-test { margin: 0; }
 .f3d-test-after h2 { font-size: 1.6rem; margin: 0 0 10px; }
 #f3d-debug {
   position: fixed; z-index: 9999; inset-inline-start: 8px; top: max(8px, env(safe-area-inset-top, 0px));
-  width: min(280px, calc(100vw - 16px));
+  width: min(300px, calc(100vw - 16px));
   background: rgba(8, 22, 24, .86); color: #f4fffe; border: 1px solid rgba(143,240,230,.45);
-  border-radius: 10px; padding: 7px 8px 8px; font: 600 11px/1.35 ui-monospace, Menlo, Tahoma, sans-serif;
+  border-radius: 10px; padding: 7px 8px 8px; font: 600 10.5px/1.35 ui-monospace, Menlo, Tahoma, sans-serif;
   -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
   pointer-events: auto; touch-action: manipulation;
   box-shadow: 0 8px 24px rgba(0,0,0,.28);
 }
 #f3d-debug b { color: #8ff0e6; }
-#f3d-debug .vars { display: flex; gap: 4px; margin: 0 0 6px; }
+#f3d-debug .vars { display: flex; flex-wrap: wrap; gap: 4px; margin: 0 0 6px; }
 #f3d-debug .vars a {
-  flex: 1; text-align: center; text-decoration: none; color: #0b2f30; background: #cfeeee;
-  border-radius: 6px; padding: 4px 0; font-weight: 800; font-size: 12px;
+  flex: 1 1 18%; text-align: center; text-decoration: none; color: #0b2f30; background: #cfeeee;
+  border-radius: 6px; padding: 4px 0; font-weight: 800; font-size: 11px;
 }
 #f3d-debug .vars a.is-on { background: #ffb300; color: #1a0e00; }
 #f3d-debug .row { white-space: normal; overflow-wrap: anywhere; }
 #f3d-debug .ok { color: #8ff0e6; }
 #f3d-debug .bad { color: #ffb3a0; }
 
-/* B: no factory overflow override, and cancel site.css overflow-x:clip so iOS
-   can use the default viewport scroller instead of an html/body/main scroller. */
+/* B: no factory overflow override, cancel site.css overflow-x:clip */
 html.f3d-test-B, html.f3d-test-B body, html.f3d-test-B main {
   overflow: visible !important;
   overflow-x: visible !important;
@@ -47,3 +46,66 @@ html.f3d-test-D .f3d:not(.is-ex) .f3d-dock,
 html.f3d-test-D .f3d:not(.is-ex) .f3d-dock * {
   pointer-events: auto !important;
 }
+
+/* E phone fallback: no sticky, no tall track, no overflow overrides, default touch-action */
+html.f3d-test-E, html.f3d-test-E body, html.f3d-test-E main,
+html.f3d-test-E:has(.f3d), html.f3d-test-E:has(.f3d) body, html.f3d-test-E:has(.f3d) main {
+  overflow: visible !important;
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+  touch-action: auto !important;
+}
+@media (pointer: coarse), (max-width: 820px) {
+  html.f3d-test-E .f3d,
+  html.f3d-test-E .f3d.f3d-autotour {
+    height: 100svh !important;
+    max-height: 100svh !important;
+    position: relative !important;
+    touch-action: auto !important;
+  }
+  html.f3d-test-E .f3d-stage,
+  html.f3d-test-E .f3d.f3d-autotour .f3d-stage {
+    position: relative !important;
+    top: auto !important;
+    height: 100svh !important;
+    max-height: 100svh !important;
+    touch-action: auto !important;
+  }
+  html.f3d-test-E .f3d:not(.is-ex) .f3d-gl {
+    pointer-events: none !important;
+    touch-action: auto !important;
+  }
+  html.f3d-test-E .f3d.is-ex .f3d-gl { pointer-events: auto !important; }
+  html.f3d-test-E .f3d-dock { pointer-events: auto !important; }
+  html.f3d-test-E .f3d-tools,
+  html.f3d-test-E .f3d-tour-nav { pointer-events: auto !important; z-index: 9; }
+}
+html.f3d-test-E .f3d.f3d-autotour { height: 100svh !important; max-height: 100svh !important; touch-action: auto !important; }
+html.f3d-test-E .f3d.f3d-autotour .f3d-stage { position: relative !important; top: auto !important; height: 100svh !important; touch-action: auto !important; }
+html.f3d-test-E .f3d.f3d-autotour:not(.is-ex) .f3d-gl { pointer-events: none !important; touch-action: auto !important; }
+
+.f3d-tour-nav { display: none; }
+.f3d-autotour .f3d-tour-nav,
+html.is-f3d-autotour .f3d-tour-nav {
+  display: flex; gap: 8px; justify-content: center; margin-top: 8px;
+}
+.f3d-tour-nav button {
+  font: inherit; font-size: 13px; font-weight: 700; padding: 8px 14px; border-radius: 999px;
+  border: 1px solid rgba(14,140,140,.35); background: rgba(255,255,255,.92); color: #0b2f30; cursor: pointer;
+  pointer-events: auto; touch-action: manipulation;
+}
+
+/* G: compositing layer for sticky WebGL + no html overflow override */
+html.f3d-test-G .f3d-stage, html.f3d-test-G .f3d-gl {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Z control page */
+.f3d-test-z-blocks { font-family: Kalameh, Tahoma, sans-serif; color: #0b2f30; }
+.f3d-test-z-blocks section {
+  min-height: 85vh; padding: 88px 24px 40px; display: flex; flex-direction: column; justify-content: center;
+}
+.f3d-test-z-blocks section:nth-child(odd) { background: #e8f3f3; }
+.f3d-test-z-blocks section:nth-child(even) { background: #f7fbfb; }

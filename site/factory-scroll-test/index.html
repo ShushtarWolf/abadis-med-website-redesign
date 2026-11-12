@@ -5,15 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#e8f3f3">
-  <title>Factory scroll test (internal) — Abadis Med</title>
+  <title>Factory scroll test A–G (internal) — Abadis Med</title>
   <script>
     (function () {
       var v = (new URLSearchParams(location.search).get('v') || 'A').toUpperCase();
-      if (!/^[ABCD]$/.test(v)) v = 'A';
+      if (v === 'Z' && !/z\.html/i.test(location.pathname)) { location.replace('z.html?v=Z'); return; }
+      if (v === 'OLD1' && !/old1\.html/i.test(location.pathname)) { location.replace('old1.html?v=OLD1'); return; }
+      if (v === 'OLD2' && !/old2\.html/i.test(location.pathname)) { location.replace('old2.html?v=OLD2'); return; }
+      if (v === 'OLD3' && !/old3\.html/i.test(location.pathname)) { location.replace('old3.html?v=OLD3'); return; }
       var d = document.documentElement;
       d.dataset.f3dTest = v;
       d.dataset.theme = 'light';
       d.classList.add('js', 'f3d-test', 'f3d-test-' + v);
+      window.__F3D_TEST = v;
     })();
   </script>
   <link rel="icon" href="../favicon.ico" sizes="any">
@@ -21,14 +25,14 @@
   <link rel="preload" href="../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../assets/css/site.css?v=20261109o">
   <link rel="stylesheet" href="../assets/css/factory-3d.css?v=20261112f">
-  <link rel="stylesheet" href="./test.css?v=20261112t1">
-  <script src="./test.js?v=20261112t1" defer></script>
+  <link rel="stylesheet" href="./test.css?v=20261112t2">
+  <script src="./test.js?v=20261112t2" defer></script>
 </head>
 <body>
   <div class="f3d-test-bar">
-    <strong>Factory scroll test</strong> — internal, noindex.
-    Open A, B, C, or D on iPhone Safari, swipe up through the factory, then screenshot the dark badge.
-    <p>A current &nbsp; B no overflow override &nbsp; C no OrbitControls until explore &nbsp; D stage pointer-events none</p>
+    <strong>Factory scroll test A–G</strong> — internal, noindex.
+    Swipe up through the factory, then screenshot the dark badge (page/anim, rAF, cam, intro op).
+    <p>A 12f &nbsp; B no overflow &nbsp; C no OrbitControls &nbsp; D stage pe none &nbsp; E phone auto-tour &nbsp; G render fix &nbsp; Z no factory &nbsp; old1 Oct31 &nbsp; old2 Nov5 homepage &nbsp; old3 Nov11 scroll fix</p>
   </div>
   <main id="main">
 <section class="f3d" id="plant" aria-label="آبادیس؛ خلق ارزش، اثرگذاری پایدار">
@@ -65,19 +69,25 @@
       <div class="f3d-hint f3d-glass">بکشید تا بچرخد • دو انگشت یا چرخ موس برای زوم • روی دستگاه‌ها یا دکمه‌های بالا بزنید</div>
     </div>
   </section>
-
     <section class="f3d-test-after" id="intro">
       <h2>بعد از کارخانه / After the factory</h2>
-      <p>If a swipe from the top reached this block, page scrolling works. Check the badge: page should say MOVED and anim should say ADVANCED.</p>
-      <p>اگر با کشیدن صفحه به این بخش رسیدید، اسکرول کار می‌کند. روی نشان تیره بالا، page باید MOVED و anim باید ADVANCED باشد.</p>
+      <p>If a swipe from the top reached this block, page scrolling works. Check the badge: page should say MOVED. On A–D at sT 0.18–0.23 the intro can still be visible (it hides at 0.235). Variant G hides it earlier on mobile. Watch cam / intro op / rAF / renders.</p>
     </section>
+
   </main>
-  <script type="module">
+    <script type="module">
     const v = document.documentElement.dataset.f3dTest || 'A';
-    const src = v === 'C'
-      ? './factory-3d-C.js?v=20261112t1'
-      : '../assets/js/factory-3d.js?v=20261112f';
+    const map = {{
+      C: './factory-3d-C.js?v=20261112t2',
+      E: './factory-3d-E.js?v=20261112t2',
+      G: './factory-3d-G.js?v=20261112t2',
+      OLD1: './old1.js?v=20261112t2',
+      OLD2: './old2.js?v=20261112t2',
+      OLD3: './old3.js?v=20261112t2',
+    }};
+    const src = map[v] || '../assets/js/factory-3d.js?v=20261112f';
     import(src);
   </script>
+
 </body>
 </html>
