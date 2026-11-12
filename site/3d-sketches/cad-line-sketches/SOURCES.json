@@ -323,9 +323,9 @@
     "depthNote": "18 mm depth is estimated; official drawing does not print depth"
   },
   "p16-porous-filter": {
-    "provenance": "reconstructed from Hamid's Grok design, corrected to official photos/drawing (cloud-zenith-spruce-lark.grok.me). Official drawing prints height 29.5 mm. Outer Ø 20 mm and inner Ø 12 mm are Grok estimates from the official product photograph (same image as abadis-med.com #mot / 3f3b9e7efaa7); they are not printed on the official catalog page, and the drawing's top OD figure is cropped in the supplied scan. 0.5 mm rim fillet from the Grok profile. Fine porosity is a surface appearance, not carved holes. Not original factory CAD.",
+    "provenance": "reconstructed from Hamid's Grok design, corrected to official photos/drawing (cloud-zenith-spruce-lark.grok.me). Official drawing prints height 29.5 mm. Outer Ø 20 mm and inner Ø 12 mm are Grok estimates from the official product photograph (same image as abadis-med.com #mot / 3f3b9e7efaa7); they are not printed on the official catalog page, and the drawing's top OD figure is cropped in the supplied scan. 0.5 mm rim fillet from the Grok profile. Fine porosity is a surface appearance, not carved holes. v4 (Hamid, Nov 2026: 'one side of this filter has no hole, it is closed'): the bore is blind, open at the top end the official drawing shows and closed flat at the bottom, matching the closed flat ends visible on the official product photograph. Closed-end thickness ≈ 4 mm, bore depth ≈ 25.5 mm and the 1 mm bore-floor radius are estimates; they are not printed on the official drawing. Not original factory CAD.",
     "parts": {
-      "body": 6144
+      "body": 7680
     },
     "bounds_mm": [
       [
@@ -339,7 +339,7 @@
         10
       ]
     ],
-    "sha256": "2f503bfac27bda5c69074abf2d578e2b47b96d51204b8d95ca1f6b9c427d0e1f",
+    "sha256": "693b0f734f15acbcf02714ec8d3a0c38616979742f7e686a596124fa920980ff",
     "nominalOfficialMm": [
       29.5
     ],
@@ -357,8 +357,17 @@
     "inventedParts": false,
     "productCode": "011103",
     "inventory": "P16",
-    "bytes": 141444,
-    "dimensionNote": "Height 29.5 mm is official. Outer Ø 20 mm and inner Ø 12 mm are photo estimates."
+    "bytes": 179504,
+    "dimensionNote": "Height 29.5 mm is official. Outer Ø 20 mm and inner Ø 12 mm are photo estimates. Blind bore: open top, closed flat bottom; closed-end thickness ≈ 4 mm and bore depth ≈ 25.5 mm are estimates.",
+    "estimatedMm": {
+      "outerD": 20,
+      "innerD": 12,
+      "closedEnd": 4,
+      "boreDepth": 25.5,
+      "boreFloorRadius": 1
+    },
+    "openEnd": "top (+Y), as on the official drawing",
+    "closedEnd": "bottom (-Y), flat"
   },
   "p17-wall-suction": {
     "provenance": "2 L wall suction VR-A1 (0402202): genuine P05 2 L canister CAD + official 2 L print; genuine approved P02 2 L liner (lid, collar, bag; cap omitted to match the official assembled photo). Regulator, gauge face, VAC nut, knob markings, the green patient connector, and hoses reconstructed from official catalog photographs and the official product cutout, following the layout of Hamid's Grok design (winter-rose-lunar-pepper.grok.me). The green knurled patient connector is reconstructed from the official catalog photograph and sleeves over the genuine left lid spigot; the vacuum hose sleeves directly over the genuine right (shallow) lid spigot — no extra coloured vacuum connector is visible in the official photo. No official dimensioned drawing of the set was supplied. Hospital console and O2 terminal omitted (not Abadis parts). Reconstructed parts are not factory CAD. No invented parts. Official VR-A1 / 2 L lid photographs are the source of truth for the ports on this product: the genuine CAD patient barb (~60°, short) is photo-corrected in this P17 lid copy to ~33° elevation (photograph 30–40°) and slightly lengthened; the genuine CAD vacuum tube (~14° at the back-right rim) is photo-corrected to ~30° so the mid-right blue taper reads in the front view. Same wells and azimuths; not newly invented ports. The P02 product files are unchanged. v7 seats the vacuum hose over the blue taper tip and restores the lid dome to genuine CAD around the ports, keeping only the photo-corrected barb shafts.",

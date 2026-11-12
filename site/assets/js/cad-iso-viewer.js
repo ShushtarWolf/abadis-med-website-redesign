@@ -11,7 +11,7 @@ const META = {
   'p03-3l-liner': {accent:['lid','collar','cap'], dim:'Ø 11 cm × H 39 cm', pouches:true},
   'p12-inline-filter': {accent:['cartridge'], dim:'Ø 3.0 cm × L 7.2 cm', inline:true},
   'p11-disc-filter': {accent:['ribs'], dim:'Ø 5.8 cm × L 5.8 cm'},
-  'p16-porous-filter': {accent:[], dim:'Ø 18.2 mm × H 29.5 mm'}
+  'p16-porous-filter': {accent:[], dim:'Ø 20 mm (est.) × H 29.5 mm'}
 };
 
 function pal() {

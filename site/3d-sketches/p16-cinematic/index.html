@@ -36,7 +36,7 @@
 <div class="beat top" data-a="0" data-b=".17"><h1>فیلتر متخلخل آبادیس</h1><p>Abadis Porous Filter</p></div>
 <div class="beat bot" data-a=".20" data-b=".36"><h2>لولهٔ <em>پلی‌اتیلن سنگین</em></h2><p>Sintered UHMW-PE tube · matte off-white</p></div>
 <div class="beat bot" data-a=".40" data-b=".54"><h2>ارتفاع رسمی <em>۲۹٫۵ میلی‌متر</em></h2><p>Official drawing height 29.5 mm · Ø 20 × ID 12 mm estimated from the official photo</p></div>
-<div class="beat bot" data-a=".56" data-b=".74"><h2>دیواره و <em>سوراخ سراسری</em></h2><p>Half-cut · 4 mm wall and through-bore · source geometry only</p></div>
+<div class="beat bot" data-a=".56" data-b=".74"><h2>دیواره و <em>ته بسته</em></h2><p>Half-cut · 4 mm wall · bore open at the top, closed flat end below (≈4 mm, estimated) · source geometry only</p></div>
 <div class="beat bot" data-a=".76" data-b=".88"><h2>تخلخل ریز، <em>نه سوراخ مدل‌سازی‌شده</em></h2><p>Fine porosity is a surface appearance, not carved holes</p></div>
 <div class="beat top" style="top:max(92px,12vh)" data-a=".90" data-b="1.05"><h1>فیلتر متخلخل آبادیس</h1><p lang="fa" style="direction:rtl;font-family:Kalameh,Tahoma,sans-serif">کد محصول ۰۱۱۱۰۳</p><p>Product code 011103 · official height 29.5 mm</p></div>
 <img class="logo" id="logo" src="../../assets/img/abadis-logo-white.svg" alt="Abadis Med">
@@ -96,9 +96,20 @@ sx.fillStyle=sg;sx.fillRect(0,0,256,256);
 const shadow=new THREE.Mesh(new THREE.PlaneGeometry(48,36),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(sc),transparent:true,depthWrite:false}));
 shadow.rotation.x=-Math.PI/2;shadow.position.y=-16.2;S.add(shadow);
 
-// Cutaway cap is the source tube profile, shown only during the mid-story
-// half-cut; it is not a new part.
-const cap=new THREE.Mesh(new THREE.PlaneGeometry(8.05,29.5),capMat);
+// Cutaway cap is the source part's section (v4 blind bore: open top, closed
+// flat bottom), shown only during the mid-story half-cut; it is not a new part.
+// Section numbers match build_filter_v4: H 29.5 official; Ø20/Ø12, 4 mm
+// closed end, 1 mm floor radius and 0.5 mm rim fillets are estimates.
+function sectionShape(){
+  const H=29.5,Ro=10,Ri=6,o=.5,yb=-H/2,yt=H/2,yf=yb+4,fr=1,sh=new THREE.Shape(),pts=[];
+  const arc=(cx,cy,a0,a1,r,n=6)=>{for(let k=0;k<=n;k++){const a=a0+(a1-a0)*k/n;pts.push([cx+r*Math.cos(a),cy+r*Math.sin(a)]);}};
+  arc(-Ro+o,yb+o,Math.PI,1.5*Math.PI,o); arc(Ro-o,yb+o,-.5*Math.PI,0,o);
+  arc(Ro-o,yt-o,0,.5*Math.PI,o); arc(Ri+o,yt-o,.5*Math.PI,Math.PI,o);
+  arc(Ri-fr,yf+fr,0,-.5*Math.PI,fr,8); arc(-Ri+fr,yf+fr,-.5*Math.PI,-Math.PI,fr,8);
+  arc(-Ri-o,yt-o,0,.5*Math.PI,o); arc(-Ro+o,yt-o,.5*Math.PI,Math.PI,o);
+  sh.moveTo(...pts[0]);for(const q of pts.slice(1))sh.lineTo(...q);sh.closePath();return sh;
+}
+const cap=new THREE.Mesh(new THREE.ShapeGeometry(sectionShape()),capMat);
 cap.rotation.y=Math.PI/2;cap.position.x=0.02;cap.visible=false;root.add(cap);
 
 new GLTFLoader().load('p16-porous-filter.glb',g=>{
@@ -141,7 +152,8 @@ const LOOK={
   cut:[-72,12,84,[0,0,0]],
   front:[0,6,80,[0,-1,0]],
   side:[90,6,80,[0,0,0]],
-  threeq:[38,24,80,[0,-1,0]]
+  threeq:[38,24,80,[0,-1,0]],
+  base:[30,-38,80,[0,0,0]]
 };
 const cp=new THREE.Vector3(),ct=new THREE.Vector3();let T=0,last=0,lookOn=false;
 function applyLook(name){
