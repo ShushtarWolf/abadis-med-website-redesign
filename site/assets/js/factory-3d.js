@@ -842,14 +842,24 @@ function init(sec) {
   const stationScroll = (i) => { const m = sec.offsetHeight - innerHeight; return sec.getBoundingClientRect().top + scrollY + m * (0.25 + STEP * (i + 0.5)); };
   const goStation = (i) => { sT = Math.min(1, Math.max(0, 0.25 + STEP * (i + 0.5))); const y = stationScroll(i); (document.scrollingElement || document.documentElement).scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' }); };
 
-  // While exploring, block vertical scroll only on the WebGL layer (iOS ignores overflow:hidden on html).
+  // Attach a non-passive touchmove only while free explore is on. A {passive:false}
+  // listener left on the 100svh sticky stage during scrollytelling blocks native
+  // vertical paging on iOS Safari and WhatsApp WKWebView even when the handler
+  // does not call preventDefault.
   const blockExploreScroll = (e) => {
-    if (!explore) return;
     if (e.target.closest('.f3d-dock,.f3d-tools')) return;
     e.preventDefault();
   };
-  canvas.addEventListener('touchmove', blockExploreScroll, { passive: false });
-  stage.addEventListener('touchmove', blockExploreScroll, { passive: false });
+  const exploreScrollOpts = { passive: false };
+  const bindExploreScroll = (on) => {
+    if (on) {
+      canvas.addEventListener('touchmove', blockExploreScroll, exploreScrollOpts);
+      stage.addEventListener('touchmove', blockExploreScroll, exploreScrollOpts);
+    } else {
+      canvas.removeEventListener('touchmove', blockExploreScroll, exploreScrollOpts);
+      stage.removeEventListener('touchmove', blockExploreScroll, exploreScrollOpts);
+    }
+  };
   function setExplore(on) {
     explore = on;
     tween = null;
@@ -859,9 +869,11 @@ function init(sec) {
       controls.enabled = true;
       controls.update();
       setTouchPan(false);
+      bindExploreScroll(true);
     } else {
       controls.enabled = false;
       controls.disconnect();
+      bindExploreScroll(false);
       setTouchPan(true);
     }
     resize();
