@@ -271,11 +271,12 @@ function p16Section(it,c,col,bg,k){
  L([Ro+1.2,yb],[xr+2,yb]);L([Ro+1.2,yf],[xr+2,yf]);L([Ro+1.2,yt],[xr+2,yt]);
  vdim(yb,yf);vdim(yf,yt);
  const a1=label('≈ 4 mm (est.)',col,bg),a2=label('bore ≈ 25.5 mm (est.)',col,bg),a3=label('Ø 12 mm (est.)',col,bg);
- for(const s of[a1,a2,a3]){s.scale.set(k*.8*s.userData.asp,k*.8,1);s.renderOrder=9;}
- a1.position.set(xr+2+k*.8*a1.userData.asp*.5,(yb+yf)/2,z);a2.position.set(xr+2+k*.8*a2.userData.asp*.5,(yf+yt)/2,z);
+ const ks=k*(plate?.8:1.5); // card view frames the section 1.7× wider, so its labels scale with it
+ for(const s of[a1,a2,a3]){s.scale.set(ks*s.userData.asp,ks,1);s.renderOrder=9;}
+ a1.position.set(xr+2+ks*a1.userData.asp*.5,(yb+yf)/2,z);a2.position.set(xr+2+ks*a2.userData.asp*.5,(yf+yt)/2,z);
  // ID across the mouth, inside the bore
  L([-Ri,yt-5],[Ri,yt-5]);L([-Ri,yt-5],[-Ri+ar*.7,yt-5+ar*.25]);L([-Ri,yt-5],[-Ri+ar*.7,yt-5-ar*.25]);L([Ri,yt-5],[Ri-ar*.7,yt-5+ar*.25]);L([Ri,yt-5],[Ri-ar*.7,yt-5-ar*.25]);
- a3.position.set(0,yt-5-k*.8*.9,z);
+ a3.position.set(0,yt-5-ks*.9,z);
  g.add(a1,a2,a3);
 }
 function p15FeatureEdges(geo){
@@ -452,7 +453,7 @@ function setView(it,v){const VV=it.p.id==='p17-wall-suction'?{iso:[28,16],front:
  it.cam.position.set(it.center.x+d*Math.sin(a)*Math.cos(e),it.center.y+d*Math.sin(e),it.center.z+d*Math.cos(a)*Math.cos(e));it.cam.up.set(0,1,0);if(Math.abs(el)>80)it.cam.up.set(0,0,-1);it.cam.zoom=1;it.ctl.target.copy(it.center);if(v==='scale'){const t=it.center.clone();t.y=it.box.max.y-it.rad*.55;it.cam.position.x+=t.x-it.center.x;it.cam.position.y+=t.y-it.center.y;it.ctl.target.copy(t)}resize(it);it.ctl.update();it.dirty=true}
 function applyTheme(it){const c=pal(),M=it.mats;if(!M.fill)return;M.fill.color.set(c.bg);M.fillA.color.set(c.fill);M.ink.color.set(c.ink);M.teal.color.set(c.teal);M.inkH.color.set(c.ink);M.tealH.color.set(c.teal);M.inkH.opacity=M.tealH.opacity=c.hid;M.ring.color.set(c.ring);if(it.inkM)it.inkM.color.set(c.bg);if(it.inkMats)it.inkMats.forEach(m=>m.color.set(c.bg));if(it.inkU)it.inkU.uInkCol.value.setHex(c.teal,THREE.LinearSRGBColorSpace);if(it.illustrativeMaterial)it.illustrativeMaterial.color.set(c.teal);if(it.p14PrintMat)it.p14PrintMat.color.set(c.teal);if(it.p15LetterMat)it.p15LetterMat.color.set(c.teal);if(it.dimG)buildDims(it);
  if(!plate)it.R.setClearColor(c.bg,1);else it.R.setClearColor(0,0);it.dirty=true}
-function resize(it){const w=it.host.clientWidth,h=it.host.clientHeight;it.R.setSize(w,h,false);const asp=w/h,r=(it.rad||100)*(plate?(it.p.id==='p11-disc-filter'?1.9:it.p.id==='p12-inline-filter'?2.15:it.p.id==='p14-suction-stand'?1.65:it.p.id==='p15-canister-clamp'?1.52:it.p.id==='p16-porous-filter'?2.15:it.p.id==='p17-wall-suction'?1.7:1.4):1.22)*(it.view==='scale'?.6:1);const hh=asp>1?r:r/asp;it.cam.left=-hh*asp;it.cam.right=hh*asp;it.cam.top=hh;it.cam.bottom=-hh;it.cam.updateProjectionMatrix();it.dirty=true}
+function resize(it){const w=it.host.clientWidth,h=it.host.clientHeight;it.R.setSize(w,h,false);const asp=w/h,r=(it.rad||100)*(plate?(it.p.id==='p11-disc-filter'?1.9:it.p.id==='p12-inline-filter'?2.15:it.p.id==='p14-suction-stand'?1.65:it.p.id==='p15-canister-clamp'?1.52:it.p.id==='p16-porous-filter'?2.15:it.p.id==='p17-wall-suction'?1.7:1.4):1.22)*(it.view==='scale'?.6:(it.view==='section'&&!plate)?1.7:1);const hh=asp>1?r:r/asp;it.cam.left=-hh*asp;it.cam.right=hh*asp;it.cam.top=hh;it.cam.bottom=-hh;it.cam.updateProjectionMatrix();it.dirty=true}
 function frame(){for(const it of items){if(!it.ready)continue;if(spin){it.ctl.autoRotate=true;it.ctl.autoRotateSpeed=1.2}else it.ctl.autoRotate=false;it.ctl.update();
  if(it.dirty){const dir=new THREE.Vector3();it.cam.getWorldDirection(dir);for(const pt of it.parts){const ng=new THREE.BufferGeometry().setFromPoints(silhouette(pt.ed,dir));pt.sl.geometry.dispose();pt.sl.geometry=pt.slH.geometry=ng;pt.crH.visible=pt.slH.visible=hidden&&!it.secOn&&it.view!=='base';pt.sl.visible=!it.secOn}it.R.render(it.scene,it.cam);it.dirty=false}}requestAnimationFrame(frame)}
 (plate?P.filter(p=>p.id===plate):P).forEach(build);frame();
