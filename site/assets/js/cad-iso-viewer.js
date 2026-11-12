@@ -11,7 +11,7 @@ const META = {
   'p03-3l-liner': {accent:['lid','collar','cap'], dim:'Ø 11 cm × H 39 cm', pouches:true},
   'p12-inline-filter': {accent:['cartridge'], dim:'Ø 3.0 cm × L 7.2 cm', inline:true},
   'p11-disc-filter': {accent:['ribs'], dim:'Ø 5.8 cm × L 5.8 cm'},
-  'p16-porous-filter': {accent:[], dim:'Ø 20 mm (est.) × H 29.5 mm'}
+  'p16-porous-filter': {accent:[], dim:'Ø 20 mm (est.) × H 29.5 mm', rims:{r:10, y:[14.75, -14.75]}}
 };
 
 function pal() {
@@ -263,6 +263,19 @@ function loadModel(it, id, url) {
       crH.renderOrder = slH.renderOrder = 3;
       it.parts.push({ed, sl, crH, slH});
     });
+    if (it.meta.rims) {
+      // Solid P16 cylinder: its flat-end rims meet a 0.5 mm edge round, so they
+      // are below the crease angle; draw the two end rims as feature edges, as
+      // the CAD line sketch does.
+      const {r, y} = it.meta.rims, rp = [];
+      for (const yy of y) for (let a = 0; a < 96; a++) {
+        const t0 = a / 96 * Math.PI * 2, t1 = (a + 1) / 96 * Math.PI * 2;
+        rp.push(new THREE.Vector3(Math.cos(t0) * r, yy, Math.sin(t0) * r), new THREE.Vector3(Math.cos(t1) * r, yy, Math.sin(t1) * r));
+      }
+      const rgeo = new THREE.BufferGeometry().setFromPoints(rp);
+      const rl = new THREE.LineSegments(rgeo, M.ink), rlH = new THREE.LineSegments(rgeo, M.inkH);
+      rl.renderOrder = 2; rlH.renderOrder = 3; it.scene.add(rl, rlH);
+    }
     if (it.meta.pouches) addPouches(it);
     const sz = box.getSize(new THREE.Vector3());
     const rg = new THREE.Group();
