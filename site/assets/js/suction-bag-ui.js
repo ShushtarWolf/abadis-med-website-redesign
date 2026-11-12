@@ -9,11 +9,25 @@
       return !!(window.WebGL2RenderingContext && (c.getContext('webgl2') || c.getContext('webgl')));
     } catch (e) { return false; }
   }
+  /* import() is resolved against this script's URL, not the page URL.
+     Page-relative data-cin-module paths (especially EN's extra ../) can
+     walk above a GitHub Pages subpath and 404. Resolve as a sibling of
+     this file, the same way isoModuleUrl() does. */
+  function bagModuleUrl(file, fallback) {
+    var s = document.querySelector('script[src*="suction-bag-ui.js"]');
+    if (!s || !s.src) return fallback !== undefined ? fallback : file;
+    return s.src.replace(/suction-bag-ui\.js[^/]*$/, file);
+  }
   if (root && !reduced && webgl()) {
     var src = root.getAttribute('data-cin-module');
-    import(src).then(function (m) { return m.mount(root); }).catch(function () {
+    var resolved = src ? bagModuleUrl(src.replace(/^.*\//, ''), src) : '';
+    if (resolved) {
+      import(resolved).then(function (m) { return m.mount(root); }).catch(function () {
+        root.classList.add('is-still');
+      });
+    } else {
       root.classList.add('is-still');
-    });
+    }
   } else if (root) {
     root.classList.add('is-still');
   }
@@ -264,9 +278,7 @@
   }
 
   function isoModuleUrl() {
-    var s = document.querySelector('script[src*="suction-bag-ui.js"]');
-    if (!s) return '';
-    return s.src.replace(/suction-bag-ui\.js[^/]*$/, 'cad-iso-viewer.js?v=20261111e');
+    return bagModuleUrl('cad-iso-viewer.js?v=20261111f', '');
   }
   document.querySelectorAll('[data-iso]').forEach(function (frame) {
     var btn = frame.querySelector('.iso-load');
