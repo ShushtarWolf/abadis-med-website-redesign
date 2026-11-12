@@ -374,3 +374,79 @@
     margin-bottom: 2px;
   }
 }
+
+/* ----- Specs + coding tables -------------------------------------------
+   The bag page forces .code-table { min-width: 720px } (560px on small
+   screens) for its 6-column liner coding table. This preview is
+   page-bag + page-filters, so that min-width hid the «کد کالا» column
+   on a 390px phone and broke the table into stacked fragments. A
+   2-column filters coding table must fit the viewport as a real table. */
+.page-filters .code-table {
+  min-width: 0 !important;
+  width: 100% !important;
+  table-layout: auto;
+}
+.page-filters .code-table th,
+.page-filters .code-table td {
+  position: static !important;
+  left: auto !important;
+  right: auto !important;
+  box-shadow: none !important;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+.page-filters .code-table thead th {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.page-filters .code-table th:last-child,
+.page-filters .code-table td:last-child {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.page-filters .code-table-fade {
+  display: none;
+}
+
+.page-filters .pack-table {
+  min-width: 0 !important;
+  width: 100%;
+}
+.page-filters .pack-table th {
+  width: 42%;
+  max-width: 16rem;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: none;
+}
+@media (max-width: 720px) {
+  .page-filters .pack-table,
+  .page-filters .pack-table tbody,
+  .page-filters .pack-table tr,
+  .page-filters .pack-table th,
+  .page-filters .pack-table td {
+    display: block;
+    width: 100%;
+    max-width: none;
+  }
+  .page-filters .pack-table th {
+    width: 100%;
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+  .page-filters .pack-table td {
+    padding-top: 4px;
+    padding-bottom: 12px;
+  }
+  .page-filters .pack-table tr {
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--ink) 8%, transparent);
+  }
+  .page-filters .pack-table tr:last-child {
+    box-shadow: none;
+  }
+  .page-filters .pack-table tr:last-child td { border-bottom: 0; }
+}
