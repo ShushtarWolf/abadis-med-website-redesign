@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Factory history snapshots (noindex)</title>
+  <style>
+    body{margin:0;font:16px/1.55 Kalameh,Tahoma,sans-serif;background:#0a1518;color:#e7f4f4;padding:24px;max-width:880px}
+    a{color:#8fdada}
+    h1{font-weight:600;font-size:22px}
+    article{border:1px solid rgba(120,210,210,.25);border-radius:14px;padding:16px 18px;margin:16px 0;background:rgba(8,28,32,.6)}
+    .when{color:#9fb8b8;font-size:13px}
+    table{border-collapse:collapse;width:100%;font-size:13px;margin:18px 0}
+    th,td{border:1px solid rgba(120,210,210,.25);padding:6px 8px;text-align:left;vertical-align:top}
+    th{background:rgba(14,140,140,.15)}
+    .note{color:#c7dcdc}
+    code{font-size:12px}
+  </style>
+</head>
+<body>
+  <h1>Factory 3D history snapshots</h1>
+  <p>Internal, noindex. These are <b>faithful FA homepage copies</b> from the named commits — header, homepage CSS/JS, self-hosted three.js, factory files, fonts, logos — not the later test harness. Below-fold videos larger than 3&nbsp;MB were omitted so the Pages deploy stays small; the factory hero and its assets are complete. Paths are local to each folder.</p>
+  <p>Please open each link in iPhone Safari (not WhatsApp). A small chip at the bottom-left reports canvas size and WebGL status. It does not hook animation frames or change the factory code.</p>
+  
+      <article>
+        <h2>14437fd4</h2>
+        <p class="when">29 Oct 2026, 01:44 Asia/Tehran</p>
+        <h3>Approved first Factory 3D hero</h3>
+        <p>The commit Hamid, Navid, and Alireza approved (task-117). 500vh wireframe, one draw-on ShaderMaterial, self-hosted three.js r170, no import map, no solid machines, no flag texture.</p>
+        <p class="links">
+          <a href="./14437fd4/">Open snapshot (original jsDelivr GSAP)</a><br>
+          <a href="./14437fd4/index-localgsap.html">Same snapshot, GSAP hosted locally</a>
+        </p>
+      </article>
+      <article>
+        <h2>662dafe5</h2>
+        <p class="when">29 Oct 2026, 14:42 Asia/Tehran (tree unchanged through 30 Oct — no 30 Oct commits)</p>
+        <h3>End of 29 Oct: machines + Golshan 19 street</h3>
+        <p>d428eaa8 machines + 43f20664 street + this callout fix. Still 500vh, still the wireframe shader + LineBasic silhouettes. This is the frozen 30 Oct state.</p>
+        <p class="links">
+          <a href="./662dafe5/">Open snapshot (original jsDelivr GSAP)</a><br>
+          <a href="./662dafe5/index-localgsap.html">Same snapshot, GSAP hosted locally</a>
+        </p>
+      </article>
+      <article>
+        <h2>54b6a4bd</h2>
+        <p class="when">31 Oct 2026, 15:03 Asia/Tehran</p>
+        <h3>Early 31 Oct, before 900vh / station holds</h3>
+        <p>Solid machine meshes (MeshBasic + a second shader) and a 1024×590 canvas flag from the self-hosted logo. Track is still 500vh. The next commit, bf15d170, lengthens the track to 900vh; ed41b452 adds station holds.</p>
+        <p class="links">
+          <a href="./54b6a4bd/">Open snapshot (original jsDelivr GSAP)</a><br>
+          <a href="./54b6a4bd/index-localgsap.html">Same snapshot, GSAP hosted locally</a>
+        </p>
+      </article>
+      <article>
+        <h2>24ec345c</h2>
+        <p class="when">31 Oct 2026, 21:17 Asia/Tehran</p>
+        <h3>Last homepage factory before 1 Nov 1060vh / 6 stations</h3>
+        <p>900vh, upper-floor polish, more solid meshes. Immediate next factory change is d9b96178 (1 Nov 00:42): 1060vh and a 6th cleanroom station.</p>
+        <p class="links">
+          <a href="./24ec345c/">Open snapshot (original jsDelivr GSAP)</a><br>
+          <a href="./24ec345c/index-localgsap.html">Same snapshot, GSAP hosted locally</a>
+        </p>
+      </article>
+  <h2>What changed in the renderer</h2>
+  <p class="note">Three.js has been <b>self-hosted</b> at <code>assets/js/three.module.js</code> (r170) since the first factory commit, with <code>OrbitControls.js</code> importing <code>./three.module.js</code>. There is no import map and no unpkg/jsDelivr/esm.sh three.js in any of these eras. A blocked three.js CDN cannot be why the factory canvas is blank — unless a later test page introduced one, which these snapshots do not.</p>
+  <table>
+    <tr><th></th><th>14437fd4 (approved)</th><th>662dafe5 (29–30 Oct)</th><th>54b6a4bd (31 Oct 15:03)</th><th>24ec345c (31 Oct 21:17)</th></tr>
+    <tr><th>Track height</th><td>500vh</td><td>500vh</td><td>500vh</td><td>900vh (1060vh starts at d9b96178)</td></tr>
+    <tr><th>three.js</th><td>r170, local, no import map</td><td>same</td><td>same</td><td>same</td></tr>
+    <tr><th>Renderer</th><td>antialias true, alpha true, pixelRatio min(dPR, 1.75), no powerPreference</td><td>same</td><td>same</td><td>same</td></tr>
+    <tr><th>Materials</th><td>one ShaderMaterial (draw-on wireframe) + LineBasic</td><td>same + wireframe operator silhouettes</td><td>+ MeshBasic solid machines, second shader, CanvasTexture flag (1024×590, logo SVG local)</td><td>more MeshBasic / CanvasTexture; still no MeshStandard, no RoomEnvironment, no PMREM, no HDR, no shadows, no post-processing</td></tr>
+    <tr><th>JS size</th><td>16 KB</td><td>34 KB</td><td>46 KB</td><td>59 KB</td></tr>
+    <tr><th>External CDN</th><td colspan="4">Homepage GSAP + ScrollTrigger from cdn.jsdelivr.net only (logo-scroll / slogans). Factory 3D does not use GSAP. Each snapshot has a local-GSAP twin to test Iranian LTE filtering of jsDelivr.</td></tr>
+  </table>
+  <p class="note">iOS GPU: these snapshots never used PMREM or MeshStandard. Memory risk, if any, is antialias + pixelRatio 1.75 + growing mesh counts after 54b6a4bd, not an HDR environment. A context loss would be reported in the chip as “CONTEXT LOST” or “no-gl”.</p>
+  <p class="note">The Oct 28/29 approval recorded in our notes is for this exact Interactive 3D Factory Scrollytelling Hero, deployed live at <code>14437fd4</code>. There were no git commits on 30 Oct. o1 in the earlier test harness was already the heavier 31 Oct 21:17 tree, not this approval build, and it ran inside the harness rather than the real homepage.</p>
+</body>
+</html>

@@ -1,0 +1,46 @@
+/* Footer scroll-in motion (inspired by pakshoma.com).
+   Adds motion only: the footer's content, colours, layout and size are untouched.
+   The footer starts slightly tipped back (top edge fixed, bottom edge leaning away)
+   and straightens as it scrolls into view; scrolling up reverses it.
+   - Modern browsers: pure CSS scroll-driven animation (animation-timeline: view()).
+   - Others (e.g. older Safari): footer-motion.js sets the same transform on scroll.
+   - Phones (<=760px): footer-motion.js always drives it (same range in every browser,
+     incl. iOS Safari, plus light smoothing so a fast flick still shows the motion).
+     The CSS rule below is only the no-JS backup for phones.
+   - prefers-reduced-motion: no motion at all.
+   Drop-in: link this file after site.css and include footer-motion.js (defer). */
+
+.site-footer {
+  --fm-tilt: -22deg;   /* desktop start angle: bottom edge leans away, like pakshoma.com (theirs is ~45deg on an inset card; subtler here for a full-width footer) */
+  --fm-scale: .94;     /* desktop start scale */
+  transform-origin: 50% 0;
+  backface-visibility: hidden;
+}
+@media (max-width: 760px) {
+  .site-footer { --fm-tilt: -20deg; --fm-scale: .94; } /* phones: clearly visible */
+}
+
+@keyframes fm-footer-in {
+  from { transform: perspective(1000px) rotateX(var(--fm-tilt)) scale(var(--fm-scale)); }
+  to   { transform: none; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    html:not(.fm-js) .site-footer {
+      animation: fm-footer-in linear both;
+      animation-timeline: view();
+      /* flat just before the footer has fully entered (or fills the screen) */
+      animation-range: entry 0% entry 92%;
+    }
+    @media (max-width: 760px) {
+      /* phones: from the footer's top edge at the screen bottom until it is ~30% from the top */
+      html:not(.fm-js) .site-footer { animation-range: cover 0% cover 70svh; }
+    }
+  }
+  html.fm-js .site-footer { will-change: transform; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-footer { animation: none !important; transform: none !important; }
+}

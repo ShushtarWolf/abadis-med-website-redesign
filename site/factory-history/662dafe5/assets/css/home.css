@@ -1,0 +1,872 @@
+/* Home page — Zagros hero + logo carousel + section rhythm */
+.home-page { overflow-x: clip; }
+
+/* Soften Zagros exit into the home page surface (not the CSR painted bg) */
+body.home .zh-exit {
+  background: linear-gradient(180deg, rgba(243,250,250,0), var(--bg, #f3fafa));
+}
+[data-theme="dark"] body.home .zh-exit {
+  background: linear-gradient(180deg, rgba(11,36,39,0), var(--bg, #0b2427));
+}
+[data-theme="noir"] body.home .zh-exit {
+  background: linear-gradient(180deg, rgba(19,18,31,0), var(--bg, #13121f));
+}
+
+.home-zagros-hero .btn-ghost {
+  color: var(--brand);
+  border-color: color-mix(in srgb, var(--brand) 35%, transparent);
+}
+
+.home-calc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 28px;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 28px 26px;
+}
+.home-calc h2 { font-size: clamp(1.4rem, 3vw, 1.85rem); font-weight: 900; margin: 6px 0 10px; }
+.home-calc p { color: var(--ink-2); max-width: 40rem; margin: 0; }
+
+/* ---------- customers logo carousel (bare logos, center-focus) ---------- */
+.logo-carousel {
+  --lc-fade: var(--bg);
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  /* Let center-logo glow breathe into the section; only clip horizontally */
+  overflow: visible;
+  isolation: isolate;
+}
+#customers.section { --lc-fade: var(--bg); }
+#customers.section--alt { --lc-fade: var(--bg-2); }
+/* Extra vertical room so scaled center + teal glow never hard-clips */
+#customers.section { overflow: visible; }
+#customers .wrap { overflow: visible; }
+/* Extra section air so glow never meets a hard sibling edge */
+#customers.section { padding-block: 72px 80px; }
+@media (max-width: 620px) {
+  #customers.section { padding-block: 56px 64px; }
+}
+
+.logo-carousel-track {
+  /* overflow:visible so glow isn't hard-clipped (page uses overflow-x:clip) */
+  overflow: visible;
+  padding: 72px 0 80px;
+  touch-action: pan-y; /* horizontal drag handled in JS; allow vertical page scroll */
+  cursor: grab;
+  min-width: 0;
+}
+.logo-carousel-track:active { cursor: grabbing; }
+.logo-carousel-strip {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  width: max-content;
+  will-change: transform;
+  user-select: none;
+  -webkit-user-select: none;
+  overflow: visible;
+}
+.logo-carousel-strip img { pointer-events: none; -webkit-user-drag: none; }
+
+/* Soft edge fades (RTL/LTR: left + right physical edges) */
+.logo-carousel::before,
+.logo-carousel::after {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  width: min(72px, 18%);
+  z-index: 2;
+  pointer-events: none;
+}
+.logo-carousel::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--lc-fade) 10%, transparent);
+}
+.logo-carousel::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--lc-fade) 10%, transparent);
+}
+@media (min-width: 561px) {
+  .logo-carousel::before { left: 48px; }  /* clear arrow buttons */
+  .logo-carousel::after { right: 48px; }
+}
+
+.home-logo {
+  position: relative;
+  flex: 0 0 110px;
+  width: 110px;
+  height: 110px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+  opacity: 0.38;
+  filter: grayscale(1) brightness(0.95);
+  transform: scale(0.78) translateY(4px);
+  transition:
+    opacity .45s cubic-bezier(.22, 1, .36, 1),
+    filter .45s cubic-bezier(.22, 1, .36, 1),
+    transform .45s cubic-bezier(.22, 1, .36, 1);
+  will-change: transform, opacity;
+}
+.home-logo img {
+  position: relative;
+  z-index: 1;
+  max-width: 92%;
+  max-height: 92%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+/* Soft radial glow — fades to 0 inside track padding (room ~56–74px beyond logo) */
+.home-logo.is-center::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 200%;
+  height: 200%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--brand) 40%, transparent) 0%,
+    color-mix(in srgb, var(--brand) 18%, transparent) 38%,
+    transparent 72%
+  );
+  z-index: 0;
+  pointer-events: none;
+}
+.home-logo.is-center {
+  opacity: 1;
+  filter: none;
+  transform: scale(1.2) translateY(-4px);
+  z-index: 1;
+}
+.home-logo.is-center img {
+  filter: none;
+}
+
+.logo-carousel-btn {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  color: var(--ink);
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  z-index: 3;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.logo-carousel-btn:hover { background: var(--surface); }
+.logo-carousel-btn:disabled { opacity: .35; cursor: default; }
+
+.home-logo-cta { margin-top: 18px; text-align: center; }
+
+/* Theme tweaks for glow + fades */
+[data-theme="dark"] .home-logo { opacity: 0.42; filter: grayscale(1) brightness(1.05); }
+[data-theme="dark"] .home-logo.is-center { opacity: 1; filter: none; }
+[data-theme="dark"] .home-logo.is-center::after {
+  background: radial-gradient(
+    circle closest-side,
+    color-mix(in srgb, var(--brand) 50%, transparent) 0%,
+    color-mix(in srgb, var(--brand) 24%, transparent) 40%,
+    transparent 72%
+  );
+}
+[data-theme="dark"] .home-logo.is-center img { filter: none; }
+[data-theme="noir"] .home-logo { opacity: 0.4; filter: grayscale(1) brightness(1.08); }
+[data-theme="noir"] .home-logo.is-center { opacity: 1; filter: none; }
+[data-theme="noir"] .home-logo.is-center::after {
+  background: radial-gradient(
+    circle closest-side,
+    color-mix(in srgb, var(--brand) 48%, transparent) 0%,
+    rgba(167, 139, 250, .28) 38%,
+    transparent 72%
+  );
+}
+[data-theme="noir"] .home-logo.is-center img { filter: none; }
+
+@media (max-width: 900px) {
+  .home-logo { flex-basis: 96px; width: 96px; height: 96px; }
+  .home-logo.is-center { transform: scale(1.18) translateY(-4px); }
+  .logo-carousel-strip { gap: 22px; }
+}
+@media (max-width: 560px) {
+  .logo-carousel { grid-template-columns: 1fr; }
+  .logo-carousel-btn { display: none; } /* swipe on phones */
+  .logo-carousel::before,
+  .logo-carousel::after { width: min(48px, 16%); }
+  .logo-carousel::before { left: 0; }
+  .logo-carousel::after { right: 0; }
+  .home-logo { flex-basis: 88px; width: 88px; height: 88px; }
+  .logo-carousel-strip { gap: 18px; }
+  .logo-carousel-track { padding-block: 64px 72px; }
+  .home-calc { padding: 22px 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.home .zh-hint { display: none; }
+  .home-logo { transition: none; }
+  .logo-carousel-strip { transition: none; }
+}
+
+/* ---------- first screen: graded operating-room clip, its own section (make_hero_video.py) ----------
+   Separate from the Zagros scene below. Wide: blurred graded fill + centred band of the portrait
+   clip feathered into it. Tall: plain full-bleed cover. Dark/noir: darker grade + tinted veil. */
+.home-or { position: relative; min-height: 100svh; overflow: hidden; isolation: isolate; }
+.home-or-media { position: absolute; inset: 0; z-index: -1; background: #d9cfc1; }
+.home-or-fill {
+  position: absolute; inset: -40px; width: calc(100% + 80px); height: calc(100% + 80px); max-width: none;
+  object-fit: cover; object-position: 50% 30%; filter: blur(28px) saturate(.9); opacity: .9;
+}
+.home-or-video {
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: min(100%, 64vw); height: 100%; max-width: none; display: block;
+  object-fit: cover; object-position: 50% 34%;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
+}
+video:not([controls])::-webkit-media-controls,
+video:not([controls])::-webkit-media-controls-panel,
+video:not([controls])::-webkit-media-controls-play-button,
+video:not([controls])::-webkit-media-controls-start-playback-button,
+video:not([controls])::-webkit-media-controls-overlay-play-button,
+video:not([controls])::-webkit-media-controls-enclosure,
+video:not([controls])::-webkit-media-controls-overlay-enclosure,
+video:not([controls])::-internal-media-controls-overlay-cast-button {
+  display: none !important;
+  -webkit-appearance: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+video.home-or-video:not(.is-playing),
+video.home-or-fill:not(.is-playing) {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+.home-or-veil {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 26%, rgba(243,240,233,.78) 0%, rgba(243,240,233,.42) 55%, rgba(243,240,233,0) 100%),
+    linear-gradient(180deg, rgba(232,228,220,.25) 0%, rgba(232,228,220,0) 40%, rgba(168,134,100,.16) 100%);
+}
+.home-or-copy { position: relative; min-height: 100svh; align-content: start; }
+@media (max-aspect-ratio: 4/5) {
+  .home-or-video { width: 100%; object-position: 50% 32%; -webkit-mask-image: none; mask-image: none; }
+  .home-or-fill { display: none; }
+}
+[data-theme="dark"] .home-or-media { background: #0b2427; }
+[data-theme="noir"] .home-or-media { background: #13121f; }
+[data-theme="dark"] .home-or-video, [data-theme="dark"] .home-or-fill { filter: brightness(.5) saturate(.85); }
+[data-theme="dark"] .home-or-fill { filter: blur(28px) brightness(.45); }
+[data-theme="noir"] .home-or-video { filter: brightness(.45) saturate(.7) hue-rotate(-10deg); }
+[data-theme="noir"] .home-or-fill { filter: blur(28px) brightness(.4) saturate(.7); }
+[data-theme="dark"] .home-or-veil {
+  background: radial-gradient(ellipse 70% 55% at 50% 26%, rgba(8,30,34,.72) 0%, rgba(8,30,34,.35) 60%, rgba(8,30,34,.1) 100%);
+}
+[data-theme="noir"] .home-or-veil {
+  background: radial-gradient(ellipse 70% 55% at 50% 26%, rgba(14,10,32,.74) 0%, rgba(14,10,32,.36) 60%, rgba(14,10,32,.1) 100%);
+}
+
+/* live-site hero copy (verbatim) + cert buttons */
+.home-or-copy h1 { max-width: 22ch; margin-inline: auto; }
+.home-or-certs { justify-content: center; flex-wrap: wrap; }
+/* Seam into the Zagros scene: a vertically mirrored replica of the scene's first frame (same bg-dry
+   cover mapping + the same dusk/veil layers per theme), faded in toward the bottom. Its bottom row is
+   pixel-identical to the Zagros stage's top row, so scrolling across shows no edge in any theme. */
+.home-or-seam {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 100vh; height: 100lvh; z-index: 0;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, transparent 45%, rgba(0,0,0,.5) 72%, #000 92%);
+  mask-image: linear-gradient(180deg, transparent 0%, transparent 45%, rgba(0,0,0,.5) 72%, #000 92%);
+}
+.home-or-mirror { position: absolute; inset: 0; transform: scaleY(-1); background: #e8e4dc; overflow: hidden; }
+[data-theme="dark"] .home-or-mirror { background: #0b2427; }
+[data-theme="noir"] .home-or-mirror { background: #13121f; }
+.home-or-copy { z-index: 1; }
+
+/* home: embedded «دایال عملی» calculator (ShushtarWolf) */
+.home-dial { padding-top: 56px; padding-bottom: 40px; }
+.home-dial .intro { background: none; padding: 0 20px 8px; }
+.home-dial .intro h2 { font-size: clamp(1.5rem, 4vw, 2.4rem); font-weight: 900; line-height: 1.3; margin-bottom: 8px; }
+.home-dial .intro h2 em { font-style: normal; color: var(--teal); }
+.home-dial-more { text-align: center; margin-top: 8px; }
+
+/* brief §2: product-first hero (headline + sub-line + 2 CTAs + real product photo over the OR clip) */
+.home-or--product { min-height: min(100svh, 820px); display: grid; align-items: center; }
+.home-or--product .home-or-veil { background: linear-gradient(270deg, rgba(243,250,250,.94) 0%, rgba(243,250,250,.8) 45%, rgba(243,250,250,.25) 100%); }
+[data-theme="dark"] .home-or--product .home-or-veil { background: linear-gradient(270deg, rgba(6,23,25,.94) 0%, rgba(6,23,25,.78) 45%, rgba(6,23,25,.3) 100%); }
+[data-theme="noir"] .home-or--product .home-or-veil { background: linear-gradient(270deg, rgba(10,10,18,.94) 0%, rgba(10,10,18,.78) 45%, rgba(10,10,18,.3) 100%); }
+.home-hero-grid { display: grid; grid-template-columns: 1.35fr .65fr; gap: 32px; align-items: center; padding-top: 110px; padding-bottom: 56px; position: relative; z-index: 1; }
+.home-hero-copy h1 { font-size: clamp(1.75rem, 3.6vw, 3rem); font-weight: 900; line-height: 1.45; color: var(--ink); margin: 0 0 16px; max-width: 24ch; }
+.home-hero-sub { font-size: clamp(1rem, 1.5vw, 1.2rem); line-height: 1.9; color: var(--ink-2); max-width: 46ch; margin: 0 0 22px; text-align: justify; }
+.home-hero-copy .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-start; }
+.home-hero-product { margin: 0; display: grid; place-items: center; }
+.home-hero-product img { width: auto; height: auto; max-width: 100%; max-height: min(58svh, 520px); filter: drop-shadow(0 24px 40px rgba(6,40,42,.28)); }
+@media (max-width: 760px) {
+  .home-hero-grid { grid-template-columns: 1fr; padding-top: 96px; gap: 8px; text-align: start; }
+  .home-hero-product { order: -1; }
+  .home-hero-product img { max-height: 34svh; }
+  .home-or--product .home-or-veil { background: linear-gradient(180deg, rgba(243,250,250,.55) 0%, rgba(243,250,250,.92) 40%); }
+  [data-theme="dark"] .home-or--product .home-or-veil { background: linear-gradient(180deg, rgba(6,23,25,.5) 0%, rgba(6,23,25,.92) 40%); }
+  [data-theme="noir"] .home-or--product .home-or-veil { background: linear-gradient(180deg, rgba(10,10,18,.5) 0%, rgba(10,10,18,.92) 40%); }
+}
+.cert-card { display: grid; gap: 10px; justify-items: center; padding: 16px; text-align: center; }
+.cert-card img { width: 100%; max-height: 300px; object-fit: contain; border-radius: 8px; background: #fff; }
+.use-list { columns: 2; column-gap: 24px; }
+.use-list li { break-inside: avoid; }
+@media (max-width: 760px) { .home-or--product { align-items: start; } .home-hero-product img { aspect-ratio: 555 / 554; } }
+
+/* ===== Alireza review home (hx hero, video slot, impact, values, quick buttons, memberships) ===== */
+.hx { position: relative; overflow: hidden; isolation: isolate; min-height: min(100svh, 860px); display: grid; align-items: center;
+  background: radial-gradient(120% 90% at 20% 30%, #0e7475 0%, #066163 38%, #023a3c 75%, #01292b 100%); color: #e8f3f3; }
+[data-theme="noir"] .hx { background: radial-gradient(120% 90% at 20% 30%, #1c1a2e 0%, #13121f 50%, #07060d 100%); }
+.hx-bg { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.hx-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(232,243,243,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(232,243,243,.07) 1px, transparent 1px); background-size: 44px 44px; -webkit-mask-image: radial-gradient(70% 70% at 30% 50%, #000, transparent); mask-image: radial-gradient(70% 70% at 30% 50%, #000, transparent); }
+.hx-ring { position: absolute; left: 22%; top: 50%; border-radius: 50%; border: 1px solid rgba(127,220,221,.28); transform: translate(-50%, -50%); }
+.hx-ring--a { width: min(560px, 90vw); aspect-ratio: 1; border-style: dashed; animation: hx-spin 60s linear infinite; }
+.hx-ring--b { width: min(420px, 70vw); aspect-ratio: 1; border-color: rgba(232,243,243,.18); animation: hx-spin 40s linear infinite reverse; }
+.hx-scan { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 0%, rgba(127,220,221,.08) 50%, transparent 100%); background-size: 100% 240px; animation: hx-scan 7s linear infinite; }
+@keyframes hx-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+@keyframes hx-scan { from { background-position: 0 -240px; } to { background-position: 0 100vh; } }
+.hx-inner { display: grid; grid-template-columns: 1.2fr .8fr; gap: 34px; align-items: center; padding-top: 110px; padding-bottom: 60px; }
+.hx-kicker { color: #7fdcdd; font-weight: 800; letter-spacing: .02em; margin: 0 0 10px; }
+.hx h1 { font-size: clamp(1.75rem, 3.6vw, 3rem); font-weight: 900; line-height: 1.45; margin: 0 0 14px; color: #fff; max-width: 24ch; }
+.hx-sub { color: #c9dfe0; font-size: clamp(1rem, 1.5vw, 1.18rem); line-height: 1.9; max-width: 46ch; text-align: justify; margin: 0 0 22px; }
+.hx .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.hx .btn-primary { background: #e8f3f3; color: #015F61; }
+.hx .btn-ghost { border-color: rgba(232,243,243,.6); color: #fff; }
+.hx-product { position: relative; margin: 0; display: grid; place-items: center; }
+.hx-glow { position: absolute; width: 70%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, rgba(127,220,221,.45), transparent 65%); filter: blur(10px); }
+.hx-product img { position: relative; width: auto; height: auto; max-width: min(100%, 460px); max-height: min(56svh, 500px); filter: drop-shadow(0 30px 40px rgba(0,0,0,.35)); animation: hx-float 6s ease-in-out infinite; }
+@keyframes hx-float { 50% { transform: translateY(-10px); } }
+@media (max-width: 760px) {
+  .hx-inner { grid-template-columns: 1fr; padding-top: 96px; padding-bottom: 40px; gap: 20px; }
+  .hx-product { order: -1; }
+  .hx-product img { max-height: min(36svh, 280px); }
+  .hx-ring { left: 50%; top: 28%; }
+}
+@media (prefers-reduced-motion: reduce) { .hx-ring, .hx-scan, .hx-product img { animation: none; } }
+.video-slot { margin: 0; position: relative; border-radius: 18px; overflow: hidden; border: 1px dashed var(--brand); background: var(--surface-2); }
+.video-slot img { display: block; width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; opacity: .9; }
+.video-slot figcaption { position: absolute; inset-inline: 12px; bottom: 12px; padding: 6px 12px; border-radius: 10px; background: rgba(1,41,43,.72); color: #e8f3f3; font-size: .88rem; text-align: center; }
+.impact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
+.impact-mark { width: 120px; height: auto; object-fit: cover; object-position: left; aspect-ratio: 1; filter: brightness(0) invert(1); opacity: .9; }
+/* Scroll-growth emblem (approved animation B). currentColor follows --on-deep in light, dark and noir. */
+.impact-mark.logo-grow { display: block; width: 120px; height: 120px; aspect-ratio: 1; filter: none; opacity: .92; color: var(--on-deep); overflow: visible; }
+.logo-grow path, .logo-grow circle { will-change: stroke-dashoffset, transform; }
+.slogan { margin: 14px 0 0; font-size: clamp(1.4rem, 3vw, 2.2rem); font-weight: 900; line-height: 1.7; }
+.slogan-line { display: block; opacity: 0; transform: translateY(14px); transition: opacity .7s ease, transform .7s ease; transition-delay: calc(var(--i) * .25s); }
+.reveal.in .slogan-line, .reveal.is-in .slogan-line, .reveal.visible .slogan-line { opacity: 1; transform: none; }
+.impact-counter { padding: 24px; border-radius: 18px; border: 1px solid rgba(127,220,221,.25); background: rgba(255,255,255,.04); }
+[data-theme="noir"] .impact-counter { border-color: rgba(196,181,253,.28); }
+.impact-num {
+  display: flex; justify-content: flex-start; position: relative;
+  margin: 4px 0 8px; min-height: 1.2em;
+  font-size: clamp(1.85rem, 7.4vw, 3.35rem); font-weight: 900; line-height: 1;
+  color: var(--deep-accent); font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1;
+}
+.odo { display: inline-flex; align-items: stretch; direction: ltr; unicode-bidi: isolate; height: 1.2em; user-select: none; }
+.odo-cell, .odo-sep { text-shadow: 0 0 28px color-mix(in srgb, var(--deep-accent) 42%, transparent); }
+.odo-col {
+  position: relative; flex: 0 0 auto; height: 1.2em; overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+}
+.odo-strip { display: block; }
+.odo-cell { display: flex; align-items: center; justify-content: center; height: 1.2em; line-height: 1; }
+.odo-sep { display: flex; align-items: center; height: 1.2em; line-height: 1; padding-inline: 0.02em; }
+.impact-unit { display: block; color: var(--on-deep); font-weight: 700; }
+.impact-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 28px; }
+.impact-stat { padding: 16px 12px; border-radius: 16px; border: 1px solid rgba(127,220,221,.25); background: rgba(255,255,255,.04); text-align: center; }
+[data-theme="noir"] .impact-stat { border-color: rgba(196,181,253,.28); }
+.impact-stat strong { display: block; color: var(--deep-accent); font-size: clamp(1.25rem, 2.2vw, 1.7rem); font-weight: 900; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.impact-stat-unit { display: block; margin-top: 2px; color: var(--on-deep); font-weight: 800; font-size: .9rem; }
+.impact-stat-label { display: block; margin-top: 6px; color: var(--on-deep-muted); font-size: .8rem; line-height: 1.65; }
+.impact-stat.reveal { transition-delay: calc(var(--i, 0) * 70ms); }
+@media (max-width: 900px) { .impact-stats { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .impact-stats { grid-template-columns: 1fr; } }
+@media (max-width: 760px) { .impact-inner { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .slogan-line { opacity: 1; transform: none; transition: none; } }
+
+/* Homepage unified boxes: solutions/products and articles/news. Horizontal snap, no mobile stack. */
+.h-box {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 16px 14px 18px;
+  box-shadow: var(--shadow);
+}
+.h-box .ps-tabs { margin-bottom: 14px; }
+.h-box .path-ico img { width: 36px; height: 36px; }
+.h-box .ps-tabs a[aria-selected="true"] .path-ico img { filter: brightness(0) invert(1); }
+.h-box .ps-tabs a:focus-visible,
+.h-rail-btn:focus-visible,
+.h-dot:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.h-rail {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: "prev scroller next" "dots dots dots";
+  gap: 8px 10px;
+  align-items: center;
+}
+.h-rail-btn[data-ps-prev] { grid-area: prev; }
+.h-scroller { grid-area: scroller; }
+.h-rail-btn[data-ps-next] { grid-area: next; }
+.h-dots { grid-area: dots; }
+.h-rail-btn {
+  width: 42px; height: 42px; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--surface-2); color: var(--brand); display: grid; place-items: center;
+  padding: 0; cursor: pointer;
+}
+.h-rail-btn:disabled { opacity: .35; cursor: default; }
+[dir="rtl"] .h-rail-btn svg { transform: scaleX(-1); }
+.h-scroller {
+  min-width: 0;
+  container-type: inline-size;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+.h-scroller::-webkit-scrollbar { display: none; }
+.h-track { display: flex; flex-wrap: nowrap; gap: 12px; width: max-content; }
+.h-track > .ps-card,
+.h-track > .post-card {
+  flex: 0 0 calc(100cqi - 28px);
+  width: calc(100cqi - 28px);
+  scroll-snap-align: start;
+  min-width: 0;
+}
+.h-dots { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 4px; }
+.h-dot {
+  width: 8px; height: 8px; border: 0; padding: 0; border-radius: 999px;
+  background: color-mix(in srgb, var(--brand) 28%, transparent); cursor: pointer;
+}
+.h-dot[aria-current="true"], .h-dot.is-on { background: var(--brand); width: 18px; }
+.h-all { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 0; }
+.h-all .btn { min-height: 42px; }
+.h-box .post-card .tag {
+  align-self: flex-start; font-size: .74rem; font-weight: 800; line-height: 1.6;
+  color: var(--chip-ink); background: var(--chip-bg); border-radius: 999px; padding: 2px 8px;
+}
+.h-box.ps-root:not(.js-ps):has(#news:target) .ps-panel,
+.h-box.ps-root:not(.js-ps):has(#articles:target) .ps-panel { display: none; }
+.h-box.ps-root:not(.js-ps):has(#news:target) #news,
+.h-box.ps-root:not(.js-ps):has(#articles:target) #articles { display: block; }
+#news, #articles, #by-product, #by-solution { scroll-margin-top: 120px; }
+@media (min-width: 720px) {
+  .h-track > .ps-card,
+  .h-track > .post-card { flex-basis: calc((100cqi - 12px) / 2); width: calc((100cqi - 12px) / 2); }
+}
+@media (min-width: 1100px) {
+  .h-track > .ps-card,
+  .h-track > .post-card { flex-basis: calc((100cqi - 24px) / 3); width: calc((100cqi - 24px) / 3); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .h-scroller { scroll-behavior: auto; }
+}
+.grid.g-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+@media (max-width: 900px) { .grid.g-4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .grid.g-4 { grid-template-columns: 1fr; } }
+.value { padding: 18px; } .value h3 { margin: 0 0 6px; color: var(--brand); font-size: 1.05rem; } .value p { margin: 0; text-align: justify; }
+.quick-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.quick-btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--brand); font-weight: 800; font-size: .95rem; text-decoration: none; }
+.quick-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.quick-btn:hover { border-color: var(--brand); }
+.member-logos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 14px; }
+.member-logos li { display: grid; place-items: center; padding: 12px; border-radius: 14px; background: #fff; border: 1px solid var(--line); aspect-ratio: 3/2; }
+.member-logos img { max-width: 100%; max-height: 70px; width: auto; height: auto; object-fit: contain; }
+
+
+/* ===== mobile-home-15 fixes (Designer, Oct 2026) ===== */
+
+/* #1 Slogan: keep all three lines (به شما / به طبیعت / به جهان) visible and cycle highlight */
+.slogan.slogan-rotator {
+  position: relative;
+}
+.slogan.slogan-rotator .slogan-line--main {
+  display: block;
+  opacity: 1;
+  transform: none;
+}
+.slogan.slogan-rotator .slogan-rotate {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.18em;
+  margin-top: 0.25em;
+}
+.slogan.slogan-rotator .slogan-rotate .slogan-line {
+  display: block;
+  opacity: 0.74;
+  transform: none;
+  transition: opacity .45s ease, transform .45s ease, color .45s ease;
+}
+.slogan.slogan-rotator .slogan-rotate .slogan-line.is-on {
+  opacity: 1;
+  color: #5eead4;
+  transform: translateX(-4px);
+}
+[dir="ltr"] .slogan.slogan-rotator .slogan-rotate .slogan-line.is-on {
+  transform: translateX(4px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .slogan.slogan-rotator .slogan-rotate .slogan-line {
+    position: static; opacity: 1; transform: none; transition: none;
+    display: block;
+  }
+  .slogan.slogan-rotator .slogan-rotate { display: block; min-height: 0; }
+}
+
+/* #2 Quick pills: center icon+label; sec-mark no longer double-renders after site.css fix */
+.quick-btn {
+  justify-content: center;
+  text-align: center;
+  min-height: 44px;
+  padding-inline: 18px;
+}
+.quick-btn .sec-mark {
+  display: inline-grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+/* #3/#4 Tabs sit cleanly above rail — no overlap on card image */
+.h-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow: hidden; /* clip broken next-card peek at box edges */
+}
+.h-box .ps-tabs {
+  position: relative;
+  z-index: 2;
+  margin: 0 0 16px;
+  flex: none;
+}
+.h-box .ps-panel {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+@media (max-width: 560px) {
+  .h-box .ps-tabs {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+  .h-box .ps-tabs a {
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
+    box-sizing: border-box;
+  }
+}
+
+/* #5 View-all CTAs: equal width, tighter under dots, sensible RTL arrow */
+.h-all {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin: 12px 0 0;
+  padding-top: 2px;
+}
+.h-all .btn {
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 14px;
+  font-size: .88rem;
+  box-sizing: border-box;
+}
+@media (min-width: 560px) {
+  .h-all {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    justify-items: center;
+  }
+  .h-all .btn { width: min(100%, 420px); }
+}
+[dir="rtl"] .h-all .btn {
+  flex-direction: row-reverse;
+}
+.ps-root .h-all { grid-template-columns: 1fr !important; justify-items: center; }
+.ps-root .h-all [data-ps-cta] { display: none !important; }
+.ps-root .h-all [data-ps-cta][hidden] { display: none !important; }
+.ps-root:not(.js-ps)[data-ps-default="product"] .h-all [data-ps-cta="product"]:not([hidden]),
+.ps-root:not(.js-ps)[data-ps-default="solution"] .h-all [data-ps-cta="solution"]:not([hidden]),
+.ps-root:not(.js-ps)[data-ps-default="news"] .h-all [data-ps-cta="news"]:not([hidden]),
+.ps-root:not(.js-ps)[data-ps-default="articles"] .h-all [data-ps-cta="articles"]:not([hidden]),
+.ps-root.is-tab-product .h-all [data-ps-cta="product"]:not([hidden]),
+.ps-root.is-tab-solution .h-all [data-ps-cta="solution"]:not([hidden]),
+.ps-root.is-tab-news .h-all [data-ps-cta="news"]:not([hidden]),
+.ps-root.is-tab-articles .h-all [data-ps-cta="articles"]:not([hidden]) {
+  display: inline-flex !important;
+}
+.h-all [hidden] { display: none !important; }
+
+/* #6 Cookie bar must not cover hero CTAs */
+@media (max-width: 760px) {
+  body:has(.consent-bar) .hx {
+    padding-bottom: calc(132px + env(safe-area-inset-bottom, 0px));
+  }
+  body:has(.consent-bar) .hx .hero-actions {
+    margin-bottom: 8px;
+  }
+}
+
+/* #8/#9 Hero CTAs: stack full-width, equal widths; fit first screen */
+@media (max-width: 760px) {
+  .hx {
+    min-height: auto;
+  }
+  .hx-inner {
+    padding-top: 88px;
+    padding-bottom: 28px;
+    gap: 14px;
+  }
+  .hx-product img {
+    max-height: min(28svh, 220px);
+  }
+  .hx-sub {
+    font-size: .95rem;
+    line-height: 1.75;
+    margin-bottom: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .hx .hero-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    width: 100%;
+  }
+  .hx .hero-actions .btn {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 44px;
+    justify-content: center;
+  }
+}
+
+/* #10 Product carousel: clean rail edges, no broken peek */
+@media (max-width: 719px) {
+  .h-track > .ps-card,
+  .h-track > .post-card {
+    flex: 0 0 100cqi;
+    width: 100cqi;
+  }
+}
+.h-scroller {
+  border-radius: 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.h-rail-btn {
+  z-index: 2;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+/* #11 Memberships title: keep «ها» with stem */
+#memberships .section-head h2,
+#memberships .section-head .eyebrow {
+  white-space: nowrap;
+}
+
+/* #12 Customers: tighten empty band; readable logos; no bottom clip */
+@media (max-width: 560px) {
+  #customers.section { padding-block: 32px 36px; }
+  #customers .section-head { margin-bottom: 8px; }
+  #customers .section-head p { margin-top: 4px; }
+  #customers .home-logo-cta { margin-top: 8px; }
+  .logo-carousel { margin-top: 0; }
+  /* Enough room for center scale + glow; not a tall empty band */
+  .logo-carousel-track { padding-block: 40px 44px; }
+  .logo-carousel-strip { gap: 14px; }
+  .logo-carousel::before,
+  .logo-carousel::after { width: min(32px, 10%); }
+  /* Beat theme-specific opacity (dark/noir) that kept logos ghosted */
+  .home-logo,
+  [data-theme="dark"] .home-logo,
+  [data-theme="noir"] .home-logo {
+    flex-basis: 84px;
+    width: 84px;
+    height: 84px;
+    opacity: 0.84;
+    filter: grayscale(0.2) brightness(1);
+    transform: scale(0.94) translateY(0);
+  }
+  .home-logo.is-center,
+  [data-theme="dark"] .home-logo.is-center,
+  [data-theme="noir"] .home-logo.is-center {
+    opacity: 1;
+    filter: none;
+    transform: scale(1.16) translateY(-2px);
+    z-index: 1;
+  }
+}
+
+/* #13 Video placeholder + impact gap */
+.video-slot {
+  max-width: 100%;
+}
+.video-slot img {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center 40%;
+}
+@media (max-width: 760px) {
+  #about.section { padding-bottom: 28px; }
+  #impact.section { padding-top: 36px; }
+  .impact-inner { gap: 18px; }
+  .impact-mark.logo-grow {
+    width: 88px;
+    height: 88px;
+  }
+  .impact-slogan {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+/* #15 Value cards / goals: avoid awkward orphans */
+.value h3 {
+  text-wrap: balance;
+  line-height: 1.45;
+}
+
+/* ===== mobile-home-16-18 (Designer, Oct 2026) — Hamid Siamak screenshot ===== */
+
+/* #16 Quick pills: full-width stacked + centered on ~390px (kill left-shift / empty right gap) */
+@media (max-width: 560px) {
+  #quick.section {
+    padding-inline: 0;
+  }
+  #quick .quick-row,
+  .quick-row {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  #quick .quick-btn,
+  .quick-btn {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+    margin-inline: 0;
+  }
+}
+
+/* #17 «مقاله و اخبار» heading: keep full title on-screen in RTL mobile */
+@media (max-width: 560px) {
+  #stories.section {
+    overflow-x: clip;
+  }
+  #stories .wrap {
+    max-width: 100%;
+    box-sizing: border-box;
+    padding-inline: max(16px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+  }
+  #stories .section-head {
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    margin-inline: 0;
+    padding-inline: 0;
+    overflow: visible;
+  }
+  #stories .section-head h2 {
+    max-width: 100%;
+    box-sizing: border-box;
+    margin-inline: 0;
+    padding-inline: 2px; /* glyph overhang safety for Persian marks */
+    overflow-wrap: anywhere;
+    word-break: normal;
+    line-height: 1.4;
+  }
+}
+
+/* #18 Sticky header overlap helper: rails stay under the fixed header stacking context */
+@media (max-width: 760px) {
+  #products .h-box,
+  #products .h-rail,
+  #products .ps-card,
+  #products .h-rail-btn {
+    z-index: auto;
+  }
+  #products .ps-card,
+  #products .h-track > .ps-card {
+    position: relative;
+    z-index: 0;
+  }
+}
+
+/* Contain product/news rails so max-content tracks cannot shift the page horizontally
+   (was making pills look left-shifted and clipping RTL section titles on the right). */
+@media (max-width: 760px) {
+  .home-page,
+  body.home {
+    overflow-x: clip;
+    max-width: 100%;
+  }
+  #products.section,
+  #stories.section,
+  #products .wrap,
+  #stories .wrap,
+  #products .h-box,
+  #stories .h-box {
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: clip;
+  }
+  #products .h-rail,
+  #stories .h-rail {
+    max-width: 100%;
+    min-width: 0;
+  }
+  #products .h-scroller,
+  #stories .h-scroller {
+    max-width: 100%;
+    min-width: 0;
+  }
+}
