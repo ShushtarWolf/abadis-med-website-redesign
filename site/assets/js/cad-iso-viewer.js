@@ -11,7 +11,7 @@ const META = {
   'p03-3l-liner': {accent:['lid','collar','cap'], dim:'Ø 11 cm × H 39 cm', pouches:true},
   'p12-inline-filter': {accent:['cartridge'], dim:'Ø 3.0 cm × L 7.2 cm', inline:true},
   'p11-disc-filter': {accent:['ribs'], dim:'Ø 5.8 cm × L 5.8 cm'},
-  'p16-porous-filter': {accent:[], dim:'Ø 20 mm (est.) × H 29.5 mm', rims:{r:10, y:[14.75, -14.75]}}
+  'p16-porous-filter': {accent:[], dim:'Ø 20 mm (est.) × H 29.5 mm', rims:[[10, 14.75], [6, 14.75], [10, -14.75]]}
 };
 
 function pal() {
@@ -264,11 +264,11 @@ function loadModel(it, id, url) {
       it.parts.push({ed, sl, crH, slH});
     });
     if (it.meta.rims) {
-      // Solid P16 cylinder: its flat-end rims meet a 0.5 mm edge round, so they
-      // are below the crease angle; draw the two end rims as feature edges, as
-      // the CAD line sketch does.
-      const {r, y} = it.meta.rims, rp = [];
-      for (const yy of y) for (let a = 0; a < 96; a++) {
+      // P16 blind-bore filter: the rims meet 0.5 mm fillets, so they fall below
+      // the crease angle. Draw them as feature edges ([radius, y] in mm), as the
+      // CAD line sketch does: open top outer + inner rim, closed bottom outer rim.
+      const rp = [];
+      for (const [r, yy] of it.meta.rims) for (let a = 0; a < 96; a++) {
         const t0 = a / 96 * Math.PI * 2, t1 = (a + 1) / 96 * Math.PI * 2;
         rp.push(new THREE.Vector3(Math.cos(t0) * r, yy, Math.sin(t0) * r), new THREE.Vector3(Math.cos(t1) * r, yy, Math.sin(t1) * r));
       }

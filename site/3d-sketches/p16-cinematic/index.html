@@ -34,9 +34,9 @@
 <div class="provenance">بازسازی‌شده از طرح حمید در گروک، اصلاح‌شده مطابق عکس‌ها و نقشه رسمی · نه CAD اصلی کارخانه<div class="en">Reconstructed from Hamid's Grok design, corrected to official photos/drawing · not original factory CAD</div></div>
 <div class="vig"></div><div class="bar" id="bar"></div>
 <div class="beat top" data-a="0" data-b=".17"><h1>فیلتر متخلخل آبادیس</h1><p>Abadis Porous Filter</p></div>
-<div class="beat bot" data-a=".20" data-b=".36"><h2>استوانهٔ <em>پلی‌اتیلن سنگین</em></h2><p>Sintered UHMW-PE cylinder · matte off-white</p></div>
-<div class="beat bot" data-a=".40" data-b=".54"><h2>ارتفاع رسمی <em>۲۹٫۵ میلی‌متر</em></h2><p>Official drawing height 29.5 mm · Ø 20 mm estimated from the official photo</p></div>
-<div class="beat bot" data-a=".56" data-b=".74"><h2>بدنهٔ <em>توپر و متخلخل</em></h2><p>Solid sintered body · flat ends · the pores swell shut when wet and stop liquid</p></div>
+<div class="beat bot" data-a=".20" data-b=".36"><h2>استوانهٔ توخالی <em>پلی‌اتیلن سنگین</em></h2><p>Sintered UHMW-PE hollow cylinder, closed at one end · matte off-white</p></div>
+<div class="beat bot" data-a=".40" data-b=".54"><h2>ارتفاع رسمی <em>۲۹٫۵ میلی‌متر</em></h2><p>Official drawing height 29.5 mm · Ø 20 × ID 12 mm estimated from the official photo</p></div>
+<div class="beat bot" data-a=".56" data-b=".74"><h2>دیواره و <em>ته بسته</em></h2><p>Half-cut · 4 mm wall · bore open at the top, closed flat end below (≈4 mm, estimated) · source geometry only</p></div>
 <div class="beat bot" data-a=".76" data-b=".88"><h2>تخلخل ریز، <em>نه سوراخ مدل‌سازی‌شده</em></h2><p>Fine porosity is a surface appearance, not carved holes</p></div>
 <div class="beat top" style="top:max(92px,12vh)" data-a=".90" data-b="1.05"><h1>فیلتر متخلخل آبادیس</h1><p lang="fa" style="direction:rtl;font-family:Kalameh,Tahoma,sans-serif">کد محصول ۰۱۱۱۰۳</p><p>Product code 011103 · official height 29.5 mm</p></div>
 <img class="logo" id="logo" src="../../assets/img/abadis-logo-white.svg" alt="Abadis Med">
@@ -55,6 +55,7 @@ const canvas=document.getElementById('gl'),stage=canvas.parentElement;
 const R=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});
 R.setPixelRatio(Math.min(devicePixelRatio,mob?1.75:2));
 R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.12;
+R.localClippingEnabled=true;
 const S=new THREE.Scene(),C=new THREE.PerspectiveCamera(mob?32:28,1,.2,800);
 const bg=document.createElement('canvas');bg.width=bg.height=1024;const bx=bg.getContext('2d'),grad=bx.createRadialGradient(512,440,10,512,440,730);
 grad.addColorStop(0,'#35434c');grad.addColorStop(.55,'#19262f');grad.addColorStop(1,'#091219');
@@ -70,17 +71,22 @@ key.shadow.bias=-0.0008;S.add(key);
 const fill=new THREE.DirectionalLight(0xe9e9ea,0.32);fill.position.set(-28,30,36);S.add(fill);
 const rim=new THREE.DirectionalLight(0xeeeeee,0.38);rim.position.set(8,16,-60);S.add(rim);
 S.add(new THREE.HemisphereLight(0xf5f5f6,0x555558,.74));
-// Soft cool top fill and bounce so the flat end face stays a neutral grey-white, not a hard gradient.
-const topFill=new THREE.DirectionalLight(0xf0f0f1,0.52);topFill.position.set(4,80,4);S.add(topFill);
-const topBounce=new THREE.DirectionalLight(0xe8e8ea,0.40);topBounce.position.set(-16,50,-18);S.add(topBounce);
+// Soft cool fill down the bore so the interior stays a flatter neutral grey, not a hard side gradient.
+const boreFill=new THREE.DirectionalLight(0xf0f0f1,0.52);boreFill.position.set(4,80,4);S.add(boreFill);
+const boreBounce=new THREE.DirectionalLight(0xe8e8ea,0.40);boreBounce.position.set(-16,50,-18);S.add(boreBounce);
 S.add(new THREE.AmbientLight(0xececec,0.14));
 
+const clipPlane=new THREE.Plane(new THREE.Vector3(1,0,0),40);
 const bodyMat=applySinteredGrain(new THREE.MeshPhysicalMaterial({
   color:0xf1f1f1,
   roughness:.90, metalness:0, envMapIntensity:0.14,
   clearcoat:0, clearcoatRoughness:1,
-  side:THREE.FrontSide
+  side:THREE.DoubleSide, clippingPlanes:[clipPlane]
 }),{mobile:mob});
+const capMat=applySinteredGrain(new THREE.MeshPhysicalMaterial({
+  color:0xe6e6e8, roughness:.90, metalness:0, envMapIntensity:0.12,
+  clippingPlanes:[clipPlane], side:THREE.DoubleSide
+}),{mobile:mob, amp:0.05, bump:0.02, pore:0.10});
 
 const root=new THREE.Group();S.add(root);
 const sc=document.createElement('canvas');sc.width=sc.height=256;const sx=sc.getContext('2d');
@@ -90,6 +96,21 @@ sx.fillStyle=sg;sx.fillRect(0,0,256,256);
 const shadow=new THREE.Mesh(new THREE.PlaneGeometry(48,36),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(sc),transparent:true,depthWrite:false}));
 shadow.rotation.x=-Math.PI/2;shadow.position.y=-16.2;S.add(shadow);
 
+// Cutaway cap is the source part's section (v4 blind bore: open top, closed
+// flat bottom), shown only during the mid-story half-cut; it is not a new part.
+// Section numbers match build_filter_v4: H 29.5 official; Ø20/Ø12, 4 mm
+// closed end, 1 mm floor radius and 0.5 mm rim fillets are estimates.
+function sectionShape(){
+  const H=29.5,Ro=10,Ri=6,o=.5,yb=-H/2,yt=H/2,yf=yb+4,fr=1,sh=new THREE.Shape(),pts=[];
+  const arc=(cx,cy,a0,a1,r,n=6)=>{for(let k=0;k<=n;k++){const a=a0+(a1-a0)*k/n;pts.push([cx+r*Math.cos(a),cy+r*Math.sin(a)]);}};
+  arc(-Ro+o,yb+o,Math.PI,1.5*Math.PI,o); arc(Ro-o,yb+o,-.5*Math.PI,0,o);
+  arc(Ro-o,yt-o,0,.5*Math.PI,o); arc(Ri+o,yt-o,.5*Math.PI,Math.PI,o);
+  arc(Ri-fr,yf+fr,0,-.5*Math.PI,fr,8); arc(-Ri+fr,yf+fr,-.5*Math.PI,-Math.PI,fr,8);
+  arc(-Ri-o,yt-o,0,.5*Math.PI,o); arc(-Ro+o,yt-o,.5*Math.PI,Math.PI,o);
+  sh.moveTo(...pts[0]);for(const q of pts.slice(1))sh.lineTo(...q);sh.closePath();return sh;
+}
+const cap=new THREE.Mesh(new THREE.ShapeGeometry(sectionShape()),capMat);
+cap.rotation.y=Math.PI/2;cap.position.x=0.02;cap.visible=false;root.add(cap);
 
 new GLTFLoader().load('p16-porous-filter.glb',g=>{
   let triangles=0;g.scene.updateMatrixWorld(true);
@@ -106,12 +127,11 @@ new GLTFLoader().load('p16-porous-filter.glb',g=>{
 
 const V=(x,y,z)=>new THREE.Vector3(x,y,z),cl=x=>Math.min(1,Math.max(0,x));
 const ease=x=>{x=cl(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;};
-// Product-film path. Opening is the official-drawing 3/4 onto the flat top
-// end. Mid-scroll turns to the official standing-photo angle, then a flank
-// view of the solid body, then a high view of the flat end, and back. Polar
+// Product-film path. Opening is the official-drawing 3/4, looking into the
+// bore. Mid-scroll turns to the official standing-photo angle, then a
+// half-cut to show the 4 mm wall, then a mouth-on view, and back. Polar
 // interpolation; no chord through the part; no idle drift or sway. Titles
-// sit at the top or bottom so they stay clear of the short cylinder.
-// v5: the part is solid (no bore, per Hamid 2026-11-12); no cutaway is shown.
+// sit at the top or bottom so they stay clear of the short tube.
 const KF=[
   [0,    14, 22, 110,  10],
   [.16,  14, 22, 108,  10],
@@ -129,12 +149,11 @@ const LOOK={
   photo:[6,15,86,[0,1,0]],
   set:[-10,50,66,[0,2,0]],
   drawing:[14,22,78,[0,-1,0]],
-  flank:[-72,12,84,[0,0,0]],
+  cut:[-72,12,84,[0,0,0]],
   front:[0,6,80,[0,-1,0]],
   side:[90,6,80,[0,0,0]],
   threeq:[38,24,80,[0,-1,0]],
-  end:[30,-38,80,[0,0,0]],
-  top:[0,89,80,[0,0,0]]
+  base:[30,-38,80,[0,0,0]]
 };
 const cp=new THREE.Vector3(),ct=new THREE.Vector3();let T=0,last=0,lookOn=false;
 function applyLook(name){
@@ -157,6 +176,10 @@ function frame(now){requestAnimationFrame(frame);const dt=Math.min(.1,(now-(last
   const max=document.documentElement.scrollHeight-innerHeight;const target=qp.has('t')?cl(+qp.get('t')):cl(scrollY/Math.max(1,max));
   T+=(target-T)*(qp.has('t')?1:1-Math.exp(-dt*3.2));
   if(qp.has('look')&&applyLook(qp.get('look'))) lookOn=true; else sample(T);
+  // Half-cut only in the mid-story beat, using a clip plane on the source solid.
+  const cut=lookOn&&qp.get('look')==='cut'?1:cl((T-.56)/.04)*cl((.74-T)/.04);
+  clipPlane.constant=THREE.MathUtils.lerp(40,0.02,cut);
+  cap.visible=cut>0.15;
   for(const b of beats){const a=+b.dataset.a,z=+b.dataset.b,o=Math.min(a<=0?1:cl((T-a)/.035),cl((z-T)/.035));b.style.opacity=o;b.style.transform=`translate(-50%,${(1-o)*14}px)`;}
   document.getElementById('bar').style.width=T*100+'%';document.getElementById('hint').style.opacity=1-cl(T*18);document.getElementById('logo').style.opacity=cl((T-.94)/.03);
   C.position.copy(cp);C.lookAt(ct);const dist=cp.distanceTo(ct);C.near=Math.max(.2,dist*.01);C.far=dist+400;C.updateProjectionMatrix();
