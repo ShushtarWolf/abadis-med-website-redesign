@@ -1,0 +1,167 @@
+/* Canister product page, on top of suction-bag-page.css (page-bag). Apple-like, borderless. */
+
+/* Hero: vertical 1 / 2 / 3 L switch that drives the canister film */
+.page-canister .cin-size {
+  position: absolute; z-index: 3;
+  inset-inline-end: clamp(10px, 3vw, 36px); top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 6px; border-radius: 22px;
+  background: rgba(10, 20, 24, .42);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+}
+.page-canister .cin-size-btn {
+  appearance: none; border: 0; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  min-width: 64px; min-height: 44px; padding: 8px 10px; border-radius: 16px;
+  background: transparent; color: #cfe2e3; font: inherit;
+  transition: background .2s ease, color .2s ease;
+}
+.page-canister .cin-size-btn strong { font-size: 14px; line-height: 1.2; }
+.page-canister .cin-size-btn em { font-style: normal; font-size: 11px; opacity: .72; line-height: 1.2; white-space: nowrap; }
+.page-canister .cin-size-btn[aria-pressed="true"] { background: rgba(255, 255, 255, .94); color: #06373a; }
+.page-canister .cin-size-btn:focus-visible { outline: 2px solid #5eead4; outline-offset: 2px; }
+@media (max-width: 700px) {
+  .page-canister .cin-size { flex-direction: row; top: auto; transform: none; inset-inline-end: auto; inset-inline-start: 14px; bottom: calc(150px + env(safe-area-inset-bottom, 0px) + var(--abadis-banner, 0px)); padding: 4px; gap: 4px; border-radius: 18px; }
+  .page-canister .cin-size-btn { min-width: 56px; padding: 6px 8px; border-radius: 14px; }
+  .page-canister .cin-size-btn em { display: none; }
+}
+.page-canister .cin-copy .ps-hero-badge:empty { display: none; }
+.page-canister .cin-crumb a { color: inherit; }
+
+/* Original sections, regrouped */
+.page-canister .can-docs { padding-top: 0; }
+.page-canister .can-docs .doc-links a { border: 0; }
+.page-canister .size-block h2 { margin: 0 0 16px; }
+.page-canister .size-block .size-grid { gap: clamp(16px, 3vw, 36px); }
+.page-canister .size-block .gal-main,
+.page-canister .size-block .gal-main img { border: 0; border-radius: 22px; }
+.page-canister .size-block .table-wrap,
+.page-canister .size-codes .table-wrap { border: 0; border-radius: 18px; overflow: auto; }
+.page-canister .size-block .table-wrap table,
+.page-canister .size-codes .table-wrap table { border: 0; }
+.page-canister .can-range-nav { padding-bottom: 0; }
+.page-canister .can-range-nav h2 { font-size: clamp(20px, 4vw, 26px); margin: 0 0 12px; }
+.page-canister .range-nav a { border: 0; background: color-mix(in srgb, var(--ink, #10292b) 6%, transparent); }
+.page-canister .range-nav a:hover { background: color-mix(in srgb, var(--ink, #10292b) 11%, transparent); }
+
+/* Gallery: diagrams and kit close-ups sit on a white plate in every theme */
+.page-canister .gal-diagram .gal-frame { background: #fff; }
+
+/* Solid 3D viewer, same 3-layer pattern as the filters page */
+.page-canister .size-solid { margin: 0 0 22px; }
+.page-canister .size-solid h3 { margin: 0 0 10px; font-size: clamp(18px, 4vw, 22px); }
+.page-canister .solid-variant {
+  display: inline-flex; gap: 4px; padding: 4px; margin: 0 0 12px; border-radius: 999px;
+  background: color-mix(in srgb, var(--ink, #10292b) 7%, transparent);
+}
+.page-canister .solid-variant button {
+  appearance: none; border: 0; cursor: pointer; font: inherit; font-size: 13px; font-weight: 600;
+  min-height: 40px; padding: 8px 14px; border-radius: 999px; background: transparent; color: var(--ink, #10292b);
+}
+.page-canister .solid-variant button[aria-pressed="true"] { background: #0e7475; color: #fff; }
+.page-canister .solid-variant bdi { opacity: .8; font-weight: 500; }
+.page-canister .solid-stack { position: relative; }
+.page-canister .solid-frame {
+  position: relative; aspect-ratio: 16 / 10; max-width: 900px; margin: 0 auto;
+  border-radius: 28px; overflow: hidden; border: 0; outline: none;
+  background: radial-gradient(120% 90% at 50% 40%, #1a2a30 0%, #0a1216 70%);
+  touch-action: pan-y;
+}
+.page-canister .solid-frame[hidden] { display: none; }
+[data-theme="light"] .page-canister .solid-frame { background: radial-gradient(120% 90% at 50% 42%, #eef6f6 0%, #d8e8e8 70%); }
+[data-theme="noir"] .page-canister .solid-frame { background: radial-gradient(120% 90% at 50% 40%, #1c1730 0%, #0c0a14 70%); }
+@media (max-width: 700px) { .page-canister .solid-frame { aspect-ratio: 4 / 3.4; border-radius: 22px; } .page-canister .solid-caption { font-size: 11px; top: 8px; } }
+.page-canister .solid-frame .solid-still {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block;
+}
+.page-canister .solid-frame .solid-still-dark { display: none; }
+[data-theme="dark"] .page-canister .solid-frame .solid-still-light,
+[data-theme="noir"] .page-canister .solid-frame .solid-still-light { display: none !important; }
+[data-theme="dark"] .page-canister .solid-frame .solid-still-dark,
+[data-theme="noir"] .page-canister .solid-frame .solid-still-dark { display: block !important; }
+.page-canister .solid-frame canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; display: block; }
+.page-canister .solid-frame.is-live .solid-still,
+.page-canister .solid-frame.is-live .solid-load { display: none !important; }
+.page-canister .solid-load {
+  position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 2;
+  display: inline-flex; align-items: center; gap: 8px;
+  appearance: none; border: 0; border-radius: 999px; padding: 10px 18px; min-height: 44px;
+  font: inherit; font-size: 14px; font-weight: 700; background: #0e7475; color: #fff; cursor: pointer; white-space: nowrap;
+}
+.page-canister .solid-load svg { width: 18px; height: 18px; flex: none; }
+.page-canister .solid-frame.is-loading .solid-load { opacity: .6; pointer-events: none; }
+.page-canister .solid-frame.is-still-only .solid-load { display: none !important; }
+.page-canister .solid-caption {
+  position: absolute; inset-inline: 0; top: 12px; margin: 0; padding: 0 18px; z-index: 2;
+  text-align: center; font-size: 12px; line-height: 1.6; color: #9fb8ba; pointer-events: none;
+}
+[data-theme="light"] .page-canister .solid-caption { color: #4b6466; }
+.page-canister .solid-frame.is-live .solid-caption { opacity: .7; }
+
+/* Set variant (0402102 / 0402103) */
+.page-canister .size-set {
+  margin: 8px 0 26px; padding: clamp(18px, 3vw, 30px); border-radius: 28px;
+  background: color-mix(in srgb, #0e7475 7%, transparent);
+  scroll-margin-top: var(--bag-anchor-pad, 140px);
+}
+.page-canister .size-set h3 { margin: 0 0 8px; font-size: clamp(19px, 4vw, 24px); }
+.page-canister .size-set h4 { margin: 18px 0 10px; font-size: 15px; }
+.page-canister .set-tag {
+  display: inline-block; margin: 0 0 8px; padding: 4px 12px; border-radius: 999px;
+  background: #0e7475; color: #fff; font-size: 12px; font-weight: 700;
+}
+.page-canister .set-note, .page-canister .spec-src { margin: 12px 0 0; font-size: 12.5px; line-height: 1.7; color: var(--muted, #5c7173); }
+
+/* Tech specs: Specifications / CAD drawings tabs */
+.page-canister .size-tech { margin: 0 0 18px; scroll-margin-top: var(--bag-anchor-pad, 140px); }
+.page-canister .size-tech h3 { margin: 0 0 10px; font-size: clamp(18px, 4vw, 22px); }
+.page-canister .spec-tabs {
+  display: inline-flex; gap: 4px; padding: 4px; margin: 0 0 14px; border-radius: 999px;
+  background: color-mix(in srgb, var(--ink, #10292b) 7%, transparent);
+}
+.page-canister .spec-tabs [role="tab"] {
+  appearance: none; border: 0; cursor: pointer; font: inherit; font-size: 14px; font-weight: 600;
+  min-height: 40px; padding: 8px 16px; border-radius: 999px; background: transparent; color: var(--ink, #10292b);
+}
+.page-canister .spec-tabs [role="tab"][aria-selected="true"] { background: var(--bg, #fff); box-shadow: 0 1px 6px rgba(0, 0, 0, .12); }
+[data-theme="dark"] .page-canister .spec-tabs [role="tab"][aria-selected="true"],
+[data-theme="noir"] .page-canister .spec-tabs [role="tab"][aria-selected="true"] { background: rgba(255, 255, 255, .14); box-shadow: none; }
+.page-canister .cad-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 560px) { .page-canister .cad-grid { grid-template-columns: 1fr; } }
+.page-canister .cad-fig { margin: 0; padding: 14px; border-radius: 22px; background: #fff; }
+[data-theme="dark"] .page-canister .cad-fig { background: #0a2425; }
+[data-theme="noir"] .page-canister .cad-fig { background: #141222; }
+.page-canister .cad-fig img { display: block; width: 100%; height: auto; max-height: 420px; object-fit: contain; }
+.page-canister .cad-fig .cad-dark { display: none; }
+[data-theme="dark"] .page-canister .cad-fig .cad-light, [data-theme="noir"] .page-canister .cad-fig .cad-light { display: none; }
+[data-theme="dark"] .page-canister .cad-fig .cad-dark, [data-theme="noir"] .page-canister .cad-fig .cad-dark { display: block; }
+.page-canister .cad-fig figcaption { margin-top: 8px; font-size: 13px; color: var(--muted, #5c7173); text-align: center; }
+
+/* Film links */
+.page-canister .film-row { margin: 14px 0 0; }
+.page-canister .film-link { display: inline-flex; align-items: center; gap: 8px; }
+.page-canister .film-link svg { width: 14px; height: 14px; flex: none; }
+
+/* Keep all three size buttons clear of the sticky sub-nav. */
+@media (min-width: 769px) {
+  .page-canister .size-pick-vert { top: var(--bag-anchor-pad, 140px); }
+}
+/* Borderless: the regrouped original blocks drop the old card frame. */
+.page-canister .size-block { border: 0 !important; box-shadow: none !important; background: transparent !important; padding: 0 !important; }
+.page-canister .film-link,
+.page-canister .film-link:hover {
+  border: 0 !important; outline: none; text-decoration: none;
+  min-height: 44px; padding: 10px 18px; border-radius: 999px;
+  background: color-mix(in srgb, #0e7475 12%, transparent); color: var(--ink, #10292b);
+  font-weight: 600; font-size: 14px;
+}
+.page-canister .film-link:hover { background: color-mix(in srgb, #0e7475 20%, transparent); }
+.page-canister .film-link:focus-visible { outline: 2px solid #0e7475; outline-offset: 2px; }
+
+/* Mobile: the floating size switch docks on the right; keep the size facts clear of it. */
+@media (max-width: 768px) {
+  .page-canister .bag-panel > .size-facts,
+  .page-canister .size-set > h3, .page-canister .size-set > p, .page-canister .size-set > h4,
+  .page-canister .size-set > .size-fact-grid { padding-right: 70px; }
+  .page-canister .size-set { padding-left: 16px; padding-right: 8px; }
+}
