@@ -440,5 +440,69 @@
     "inventory": "P17",
     "bytes": 826552,
     "dimensionNote": "No official dimensioned drawing of the set was supplied. 12.2 × 27 cm is the official individual package size of the 2 L canister, not a measured body claim. Official weight 377 g. Regulator scale is matched to official-photo width/height ratios versus the canister; the gauge housing is a short black ring. Hose sizes are photo estimates. Green patient connector reconstructed from the official catalog photo; both hoses sleeve onto the genuine P02 lid spigots. Hose exits follow the official photograph: the patient hose leaves left and slightly up in one smooth loop; the vacuum hose drops at the right lid edge with no separate cuff. Official photographs are the source of truth for the lid ports: the patient barb is photo-corrected from the genuine CAD ~60° to ~33° (photo 30–40°) and slightly lengthened; the vacuum tube is photo-corrected from ~14° to ~30°. Same wells and azimuths; P02 files unchanged. v7: the vacuum hose now sleeves over the photo-corrected blue taper tip (it had been peeling off at the rim) and drops down the right side with no cuff or arch. The lid dome is restored to genuine CAD around the ports so the morph fold is removed; only the barb shafts and a thin neck blend are photo-corrected."
+  },
+  "p05-2l-set": {
+    "provenance": "0402102 2 L canister with accessories: genuine P05 2 L canister CAD (2L/3L pit.partlens; vessel and collar-mount copied verbatim, position-hash round-trip exact) + official 2 L print; photo-derived hose and fittings set 050103 (silicone hose 13x7 300 mm per official drawing; T connector 030402 5.6 cm and connector 030403 6 cm per official catalog; shapes from official photos 18.jpg, 20.jpg, 23.jpg, AMR_4789; colours sampled from photos; estimated). Hose lies on the floor in front of the canister (presentation). No liner, lid or filter is added. No official photo of the exact 0402102 pack exists; the pairing is inferred from the official weights (set minus bare canister = 24-25 g, hose set 050103 = 25 g). Not factory CAD for the hose set.",
+    "parts": {
+      "vessel": 534,
+      "collar-mount": 660,
+      "silicone-hose-13x7": 6000,
+      "silicone-hose-bore": 2400,
+      "hose-end-t": 40,
+      "hose-end-connector": 40,
+      "t-connector-0": 160,
+      "t-connector-1": 880,
+      "t-connector-2": 880,
+      "t-connector-3": 960,
+      "yellow-connector-0": 320,
+      "yellow-connector-1": 384,
+      "yellow-connector-2": 320
+    },
+    "bounds_mm": [
+      [
+        -176.36,
+        -270.05,
+        -85.73
+      ],
+      [
+        175.68,
+        0.0,
+        175.12
+      ]
+    ],
+    "sha256": "44c25756f24a6c1d8c9a6a35c89dda5f84e61cb54e9d8783edc7a6ac8fdfb10b",
+    "source_canister_glb": "site/3d-sketches/p05-2l-cinematic/p05-2l-canister-cad.glb"
+  },
+  "p05-3l-set": {
+    "provenance": "0402103 3 L canister with accessories: genuine P05 3 L canister CAD (2L/3L pit.partlens; vessel and collar-mount copied verbatim, position-hash round-trip exact) + official 3 L print; photo-derived hose and fittings set 050103 (silicone hose 13x7 300 mm per official drawing; T connector 030402 5.6 cm and connector 030403 6 cm per official catalog; shapes from official photos 18.jpg, 20.jpg, 23.jpg, AMR_4789; colours sampled from photos; estimated). Hose lies on the floor in front of the canister (presentation). No liner, lid or filter is added. No official photo of the exact 0402103 pack exists; the pairing is inferred from the official weights (set minus bare canister = 24-25 g, hose set 050103 = 25 g). Not factory CAD for the hose set.",
+    "parts": {
+      "vessel": 534,
+      "collar-mount": 660,
+      "silicone-hose-13x7": 6000,
+      "silicone-hose-bore": 2400,
+      "hose-end-t": 40,
+      "hose-end-connector": 40,
+      "t-connector-0": 160,
+      "t-connector-1": 880,
+      "t-connector-2": 880,
+      "t-connector-3": 960,
+      "yellow-connector-0": 320,
+      "yellow-connector-1": 384,
+      "yellow-connector-2": 320
+    },
+    "bounds_mm": [
+      [
+        -176.36,
+        -420.05,
+        -85.73
+      ],
+      [
+        175.68,
+        0.0,
+        175.12
+      ]
+    ],
+    "sha256": "0d94d6680d4c8bb1c5eee03c6eeb7a028a066332919e428b901086a392f6d0c0",
+    "source_canister_glb": "site/3d-sketches/p05-3l-cinematic/p05-3l-canister-cad.glb"
   }
 }
