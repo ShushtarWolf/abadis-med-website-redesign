@@ -1,0 +1,508 @@
+{
+  "p01-1l-liner": {
+    "parts": {
+      "lid": 3949,
+      "collar": 316,
+      "bag": 596,
+      "cap": 60
+    },
+    "bounds_mm": [
+      [
+        -66.5,
+        -178.0,
+        -66.39
+      ],
+      [
+        77.68,
+        20.43,
+        66.31
+      ]
+    ],
+    "sha256": "f9967989f16b71443e8ab091c4c0d3a5feb3a12fdae50fc0f85b198657b5db60"
+  },
+  "p02-2l-liner": {
+    "parts": {
+      "lid": 3976,
+      "collar": 284,
+      "bag": 596,
+      "cap": 56
+    },
+    "bounds_mm": [
+      [
+        -66.5,
+        -268.0,
+        -66.39
+      ],
+      [
+        77.68,
+        20.77,
+        66.31
+      ]
+    ],
+    "sha256": "72c904fe749b89301d9df035ee51685ae4b2e060aaaabb4fbd376ac46f69145e"
+  },
+  "p05-1l-canister": {
+    "parts": {
+      "vessel": 542,
+      "collar-mount": 552
+    },
+    "bounds_mm": [
+      [
+        -64.5,
+        -183.0,
+        -85.73
+      ],
+      [
+        64.5,
+        0.0,
+        64.5
+      ]
+    ],
+    "sha256": "7b07516bb79d1a101bcfd823e88f9c82418dbf8a5d28b8c6aeeb0ac83f799bbf"
+  },
+  "p05-2l-canister": {
+    "parts": {
+      "vessel": 534,
+      "collar-mount": 660
+    },
+    "bounds_mm": [
+      [
+        -64.5,
+        -270.0,
+        -85.73
+      ],
+      [
+        64.5,
+        0.0,
+        64.5
+      ]
+    ],
+    "sha256": "22d86998a0a78a49bac43935cd889d66feb7d190cf163213aa4ae6859f58644d"
+  },
+  "p05-3l-canister": {
+    "parts": {
+      "vessel": 534,
+      "collar-mount": 660
+    },
+    "bounds_mm": [
+      [
+        -64.5,
+        -420.0,
+        -85.73
+      ],
+      [
+        64.5,
+        0.0,
+        64.5
+      ]
+    ],
+    "sha256": "3113d1599d22224321f12e76fdcc6527f53af58f09e21df8fb01718cdbabfd3b"
+  },
+  "p03-3l-liner": {
+    "provenance": "SIZE-ADAPTED RECONSTRUCTION based on approved P02 2L CAD and manufacturer nominal dimensions; NOT original 3L CAD",
+    "parts": {
+      "lid": 14084,
+      "collar": 284,
+      "bag": 596,
+      "cap": 56
+    },
+    "bounds_mm": [
+      [
+        -66.53,
+        -413.0,
+        -66.39
+      ],
+      [
+        77.77,
+        20.76,
+        66.35
+      ]
+    ],
+    "sha256": "4afe099cfc2a0297524fb3c027afcdb0c63145db66e5ed701cde8fa6ac104627",
+    "nominalDimensionsMm": [
+      110,
+      390
+    ],
+    "bodyHeightMm": 389,
+    "illustrativeSachets": 3,
+    "sachetsAreCAD": false,
+    "filterInSketch": false,
+    "bodyHeightMethod": "244 mm actual parent body + (390-245) nominal difference =389 mm; neck and rounded floor shape preserved; rigid lid/cap/collar unchanged"
+  },
+  "p11-disc-filter": {
+    "provenance": "MODELED FROM HAMID'S SUPPLIED FILTER DESIGN (Discform / yellow-scarlet-cherry-craft.grok.me) at the page's shown 5.00 x 4.45 cm defaults; NOT original factory CAD. Official catalog drawing of the same part prints Ø 5.8 x L 5.8 cm, 16.6 g.",
+    "parts": {
+      "housing": 10368,
+      "ribs": 288
+    },
+    "bounds_mm": [
+      [
+        -25.0,
+        -22.25,
+        -25.0
+      ],
+      [
+        25.0,
+        22.25,
+        25.0
+      ]
+    ],
+    "sha256": "57d4fcaee4618dc9859947e919c07b4e543e73fd28f80ecb201ae5d28e693f74",
+    "nominalOfficialMm": [
+      58,
+      58
+    ],
+    "suppliedDesignMm": [
+      50,
+      44.5
+    ],
+    "factoryCAD": false,
+    "inventedMembrane": false,
+    "productCode": "040501",
+    "inventory": "P11"
+  },
+  "p12-inline-filter": {
+    "provenance": "MODELED FROM HAMID'S SUPPLIED FILTER DESIGN (Clearline / cloud-lark-beacon-cobalt.grok.me) at the page's shown 3.0 x 7.2 cm defaults; NOT original factory CAD. Official catalog drawing of the same part prints Ø 3.0 x L 7.2 cm, 10.5 g. Length and diameter match; weight is official-drawing only.",
+    "parts": {
+      "inlet": 1296,
+      "inletCap": 1728,
+      "barrel": 576,
+      "outletCap": 1728,
+      "outlet": 1440,
+      "cartridge": 720
+    },
+    "bounds_mm": [
+      [
+        -36.0,
+        -15.0,
+        -15.0
+      ],
+      [
+        36.0,
+        15.0,
+        15.0
+      ]
+    ],
+    "sha256": "72ce1ff0975c76acdb8c85c7f8980ea2b1423f433f3c3216b43141fa88fbe45d",
+    "nominalOfficialMm": [
+      30,
+      72
+    ],
+    "suppliedDesignMm": [
+      30,
+      72
+    ],
+    "factoryCAD": false,
+    "inventedParts": false,
+    "productCode": "040502",
+    "inventory": "P12"
+  },
+  "p14-suction-stand": {
+    "provenance": "stand rebuilt to match the official Abadis trolley photo and drawing (H 80 cm); canisters = genuine 2L CAD; liners = approved 2L bag. The Grok DuoVac 80 5-arm base, thin faceted tubes and stick-arm regulator were replaced. 4-arm square-tube X base, four twin-wheel casters, ~40 cm span (official photo proportion; earlier 48 cm was the Grok span). Genuine rear collar-mounts face the pole and engage a holder modelled from the official photo. Prints face forward/outward (logo outer, scale inner). Tubes are smooth thick hoses seated in the genuine P02 lid ports: yellow patient stub on left PATIENT; yellow arch left VACUUM to right PATIENT (serial); yellow loop to the regulator; short green overflow on right VACUUM; grey supply hose from the top inlet. Regulator, green collar and fittings are reconstructed from the official photo and drawing, not factory CAD. Model height is about 812 mm versus the official drawing 80 cm. Official catalog lists up to four 3 L jars; this model follows the official photo (two 2 L). The left canister is yawed −24° so the official print’s logo is clearly visible on the front-left at the official-photo camera; its collar-mount then points inward and slightly aft rather than straight at the pole (print match was prioritised). The right canister remains at +72°, mount facing the pole. The CAD-line sketch draws the official 2 L print as a circle-with-cross logo and graduation ticks, positioned to match the model print.",
+    "parts": {
+      "base": 2648,
+      "upright": 656,
+      "canister-l": 16214,
+      "canister-r": 16214,
+      "regulator": 1348,
+      "lines": 20032
+    },
+    "bounds_mm": [
+      [
+        -184.28,
+        0,
+        -174.26
+      ],
+      [
+        181.82,
+        812.41,
+        176.11
+      ]
+    ],
+    "sha256": "d9f8fa7531087d42ec110ac46a7b7e5f388e30edb0263fd183c545e83615993b",
+    "nominalOfficialMm": null,
+    "suppliedDesignMm": [
+      480,
+      800
+    ],
+    "modelExtentsMm": [
+      366,
+      350,
+      812
+    ],
+    "factoryCAD": false,
+    "inventedParts": "Stand (base, post, holders, regulator, tubes) reconstructed from the official photo and drawing; not factory CAD. Holder is the visible official clamp, not a free invention. Canisters and liners are unchanged genuine/approved CAD.",
+    "jarMarksIllustrative": false,
+    "productCodes": [
+      "060401",
+      "060402"
+    ],
+    "inventory": "P14",
+    "genuineCanisters": "P05 2L CAD + official AMR_4901 print (commit 1ce00c11)",
+    "canisterExtentsMm": [
+      129,
+      270,
+      150.23
+    ],
+    "genuineLiners": "P02 2L CAD lid/collar/bag/cap (commit f54d8451) seated in each canister; two sachets + recessed filter are approved P02 presentation geometry",
+    "linePortFit": {
+      "snapped": false,
+      "rebuiltTubes": true,
+      "mapping": [
+        {
+          "line": "yellow patient stub",
+          "port": "L PATIENT",
+          "role": "patient inlet"
+        },
+        {
+          "line": "yellow arch L",
+          "port": "L VACUUM",
+          "role": "serial link (left vacuum)"
+        },
+        {
+          "line": "yellow arch R",
+          "port": "R PATIENT",
+          "role": "serial link (right patient)"
+        },
+        {
+          "line": "yellow regulator loop",
+          "port": "regulator underside",
+          "role": "vacuum to regulator (tees off the arch, as in the official photo)"
+        },
+        {
+          "line": "green overflow",
+          "port": "R VACUUM",
+          "role": "short overflow loop, official photo"
+        },
+        {
+          "line": "grey supply",
+          "port": "regulator top inlet",
+          "role": "wall-vacuum supply hose"
+        }
+      ]
+    },
+    "bytes": 1465420
+  },
+  "p15-canister-clamp": {
+    "provenance": "reconstructed from Hamid's Grok design, corrected to official photos/drawing (crane-blaze-orbit-eagle.grok.me). Official catalog drawing prints W 4.6 x L 8.7 cm, 11.5 g. Depth 18 mm is estimated (not printed on the official drawing). Grok's 26 mm figure is the front-face width, not the official 4.6 cm overall width. C-frame back plate and two mounting holes from the official set photo. Not original factory CAD.",
+    "parts": {
+      "body": 27237
+    },
+    "bounds_mm": [
+      [
+        -23.0,
+        -43.5,
+        -9.0
+      ],
+      [
+        23.0,
+        43.5,
+        9.0
+      ]
+    ],
+    "sha256": "5d24e4c29154cdc873f4540352a262e38f5ce2990b09666b8891b8240c850d92",
+    "nominalOfficialMm": [
+      46,
+      87
+    ],
+    "suppliedDesignMm": [
+      46,
+      87,
+      18
+    ],
+    "modelExtentsMm": [
+      46,
+      87,
+      18
+    ],
+    "factoryCAD": false,
+    "inventedParts": false,
+    "productCode": "060503",
+    "inventory": "P15",
+    "bytes": 1961996,
+    "depthNote": "18 mm depth is estimated; official drawing does not print depth"
+  },
+  "p16-porous-filter": {
+    "provenance": "reconstructed from Hamid's Grok design, corrected to official photos/drawing (cloud-zenith-spruce-lark.grok.me). Official drawing prints height 29.5 mm. Outer Ø 20 mm and inner Ø 12 mm are Grok estimates from the official product photograph (same image as abadis-med.com #mot / 3f3b9e7efaa7); they are not printed on the official catalog page, and the drawing's top OD figure is cropped in the supplied scan. 0.5 mm rim fillet from the Grok profile. Fine porosity is a surface appearance, not carved holes. v4 (Hamid, Nov 2026: 'one side of this filter has no hole, it is closed'): the bore is blind, open at the top end the official drawing shows and closed flat at the bottom, matching the closed flat ends visible on the official product photograph. Closed-end thickness ≈ 4 mm, bore depth ≈ 25.5 mm and the 1 mm bore-floor radius are estimates; they are not printed on the official drawing. v6 (Hamid 2026-11-12: 'I was wrong, it does have a hole but the hole is closed on bottom'): the v5 solid cylinder (no bore) was reverted per Hamid 2026-11-12 and this v4 blind-bore geometry is restored unchanged (same GLB, SHA 693b0f73…). Not original factory CAD.",
+    "parts": {
+      "body": 7680
+    },
+    "bounds_mm": [
+      [
+        -10,
+        -14.75,
+        -10
+      ],
+      [
+        10,
+        14.75,
+        10
+      ]
+    ],
+    "sha256": "693b0f734f15acbcf02714ec8d3a0c38616979742f7e686a596124fa920980ff",
+    "nominalOfficialMm": [
+      29.5
+    ],
+    "suppliedDesignMm": [
+      20,
+      29.5,
+      20
+    ],
+    "modelExtentsMm": [
+      20,
+      29.5,
+      20
+    ],
+    "factoryCAD": false,
+    "inventedParts": false,
+    "productCode": "011103",
+    "inventory": "P16",
+    "bytes": 179504,
+    "dimensionNote": "Height 29.5 mm is official. Outer Ø 20 mm and inner Ø 12 mm are photo estimates. Blind bore: open top, closed flat bottom; closed-end thickness ≈ 4 mm and bore depth ≈ 25.5 mm are estimates. v5 solid reverted per Hamid 2026-11-12.",
+    "estimatedMm": {
+      "outerD": 20,
+      "innerD": 12,
+      "closedEnd": 4,
+      "boreDepth": 25.5,
+      "boreFloorRadius": 1
+    },
+    "openEnd": "top (+Y), as on the official drawing",
+    "closedEnd": "bottom (-Y), flat",
+    "history": [
+      "v1–v3: through-bore",
+      "v4: blind bore, open top, closed flat bottom (Hamid)",
+      "v5: solid, no bore (Hamid) — withdrawn",
+      "v6: v5 solid reverted per Hamid 2026-11-12; v4 blind bore restored"
+    ]
+  },
+  "p17-wall-suction": {
+    "provenance": "2 L wall suction VR-A1 (0402202): genuine P05 2 L canister CAD + official 2 L print; genuine approved P02 2 L liner (lid, collar, bag; cap omitted to match the official assembled photo). Regulator, gauge face, VAC nut, knob markings, the green patient connector, and hoses reconstructed from official catalog photographs and the official product cutout, following the layout of Hamid's Grok design (winter-rose-lunar-pepper.grok.me). The green knurled patient connector is reconstructed from the official catalog photograph and sleeves over the genuine left lid spigot; the vacuum hose sleeves directly over the genuine right (shallow) lid spigot — no extra coloured vacuum connector is visible in the official photo. No official dimensioned drawing of the set was supplied. Hospital console and O2 terminal omitted (not Abadis parts). Reconstructed parts are not factory CAD. No invented parts. Official VR-A1 / 2 L lid photographs are the source of truth for the ports on this product: the genuine CAD patient barb (~60°, short) is photo-corrected in this P17 lid copy to ~33° elevation (photograph 30–40°) and slightly lengthened; the genuine CAD vacuum tube (~14° at the back-right rim) is photo-corrected to ~30° so the mid-right blue taper reads in the front view. Same wells and azimuths; not newly invented ports. The P02 product files are unchanged. v7 seats the vacuum hose over the blue taper tip and restores the lid dome to genuine CAD around the ports, keeping only the photo-corrected barb shafts.",
+    "parts": {
+      "vessel": 534,
+      "collar-mount": 660,
+      "lid": 14084,
+      "collar": 284,
+      "bag": 596,
+      "patient-connector-taper": 48,
+      "patient-connector-body": 32,
+      "patient-connector-neck": 80,
+      "reg-body": 256,
+      "reg-hex": 24,
+      "vac-nut-body": 256,
+      "vac-nut-face": 64,
+      "vac-nut-back": 48,
+      "vac-nut-boss": 128,
+      "vac-nut-nipple": 96,
+      "knob-body": 256,
+      "knob-knurl": 1280,
+      "knob-face": 48,
+      "reg-barb": 80,
+      "reg-barb-ridge": 512,
+      "reg-button-body": 128,
+      "reg-button-face": 32,
+      "gauge-nipple": 80,
+      "gauge-housing": 192,
+      "gauge-bezel": 960,
+      "gauge-face": 64,
+      "needle-blade": 16,
+      "needle-hub": 352,
+      "patient-hose": 5120,
+      "vacuum-hose": 5120
+    },
+    "bounds_mm": [
+      [
+        -173.12071228027344,
+        -270,
+        -93.62410146576674
+      ],
+      [
+        165.57068342493508,
+        74.5094223022461,
+        100.81925538672681
+      ]
+    ],
+    "sha256": "488d784c702c140708b7e1a5a4e9bbb461d16fd2da151c9b2eb8be3ebf25bbb8",
+    "nominalOfficialMm": [],
+    "packageDimensionsCm": [
+      12.2,
+      27
+    ],
+    "officialWeightG": 377,
+    "modelExtentsMm": [
+      338.6913957052085,
+      344.5094223022461,
+      194.44335685249354
+    ],
+    "factoryCAD": false,
+    "mixedProvenance": true,
+    "inventedParts": false,
+    "productCode": "0402202",
+    "inventory": "P17",
+    "bytes": 826552,
+    "dimensionNote": "No official dimensioned drawing of the set was supplied. 12.2 × 27 cm is the official individual package size of the 2 L canister, not a measured body claim. Official weight 377 g. Regulator scale is matched to official-photo width/height ratios versus the canister; the gauge housing is a short black ring. Hose sizes are photo estimates. Green patient connector reconstructed from the official catalog photo; both hoses sleeve onto the genuine P02 lid spigots. Hose exits follow the official photograph: the patient hose leaves left and slightly up in one smooth loop; the vacuum hose drops at the right lid edge with no separate cuff. Official photographs are the source of truth for the lid ports: the patient barb is photo-corrected from the genuine CAD ~60° to ~33° (photo 30–40°) and slightly lengthened; the vacuum tube is photo-corrected from ~14° to ~30°. Same wells and azimuths; P02 files unchanged. v7: the vacuum hose now sleeves over the photo-corrected blue taper tip (it had been peeling off at the rim) and drops down the right side with no cuff or arch. The lid dome is restored to genuine CAD around the ports so the morph fold is removed; only the barb shafts and a thin neck blend are photo-corrected."
+  },
+  "p05-2l-set": {
+    "provenance": "0402102 2 L canister with accessories: genuine P05 2 L canister CAD (2L/3L pit.partlens; vessel and collar-mount copied verbatim, position-hash round-trip exact) + official 2 L print; photo-derived hose and fittings set 050103 (silicone hose 13x7 300 mm per official drawing; T connector 030402 5.6 cm and connector 030403 6 cm per official catalog; shapes from official photos 18.jpg, 20.jpg, 23.jpg, AMR_4789; colours sampled from photos; estimated). Hose lies on the floor in front of the canister (presentation). No liner, lid or filter is added. No official photo of the exact 0402102 pack exists; the pairing is inferred from the official weights (set minus bare canister = 24-25 g, hose set 050103 = 25 g). Not factory CAD for the hose set.",
+    "parts": {
+      "vessel": 534,
+      "collar-mount": 660,
+      "silicone-hose-13x7": 6000,
+      "silicone-hose-bore": 2400,
+      "hose-end-t": 40,
+      "hose-end-connector": 40,
+      "t-connector-0": 160,
+      "t-connector-1": 880,
+      "t-connector-2": 880,
+      "t-connector-3": 960,
+      "yellow-connector-0": 320,
+      "yellow-connector-1": 384,
+      "yellow-connector-2": 320
+    },
+    "bounds_mm": [
+      [
+        -176.36,
+        -270.05,
+        -85.73
+      ],
+      [
+        175.68,
+        0.0,
+        175.12
+      ]
+    ],
+    "sha256": "44c25756f24a6c1d8c9a6a35c89dda5f84e61cb54e9d8783edc7a6ac8fdfb10b",
+    "source_canister_glb": "site/3d-sketches/p05-2l-cinematic/p05-2l-canister-cad.glb"
+  },
+  "p05-3l-set": {
+    "provenance": "0402103 3 L canister with accessories: genuine P05 3 L canister CAD (2L/3L pit.partlens; vessel and collar-mount copied verbatim, position-hash round-trip exact) + official 3 L print; photo-derived hose and fittings set 050103 (silicone hose 13x7 300 mm per official drawing; T connector 030402 5.6 cm and connector 030403 6 cm per official catalog; shapes from official photos 18.jpg, 20.jpg, 23.jpg, AMR_4789; colours sampled from photos; estimated). Hose lies on the floor in front of the canister (presentation). No liner, lid or filter is added. No official photo of the exact 0402103 pack exists; the pairing is inferred from the official weights (set minus bare canister = 24-25 g, hose set 050103 = 25 g). Not factory CAD for the hose set.",
+    "parts": {
+      "vessel": 534,
+      "collar-mount": 660,
+      "silicone-hose-13x7": 6000,
+      "silicone-hose-bore": 2400,
+      "hose-end-t": 40,
+      "hose-end-connector": 40,
+      "t-connector-0": 160,
+      "t-connector-1": 880,
+      "t-connector-2": 880,
+      "t-connector-3": 960,
+      "yellow-connector-0": 320,
+      "yellow-connector-1": 384,
+      "yellow-connector-2": 320
+    },
+    "bounds_mm": [
+      [
+        -176.36,
+        -420.05,
+        -85.73
+      ],
+      [
+        175.68,
+        0.0,
+        175.12
+      ]
+    ],
+    "sha256": "0d94d6680d4c8bb1c5eee03c6eeb7a028a066332919e428b901086a392f6d0c0",
+    "source_canister_glb": "site/3d-sketches/p05-3l-cinematic/p05-3l-canister-cad.glb"
+  }
+}

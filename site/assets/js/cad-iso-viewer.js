@@ -11,8 +11,19 @@ const META = {
   'p03-3l-liner': {accent:['lid','collar','cap'], dim:'Ø 11 cm × H 39 cm', pouches:true},
   'p12-inline-filter': {accent:['cartridge'], dim:'Ø 3.0 cm × L 7.2 cm', inline:true},
   'p11-disc-filter': {accent:['ribs'], dim:'Ø 5.8 cm × L 5.8 cm'},
-  'p16-porous-filter': {accent:[], dim:'Ø 20 mm (est.) × H 29.5 mm', rims:[[10, 14.75], [6, 14.75], [10, -14.75]]}
+  'p16-porous-filter': {accent:[], dim:'Ø 20 mm (est.) × H 29.5 mm', rims:[[10, 14.75], [6, 14.75], [10, -14.75]]},
+  'p05-1l': {accent:['collar-mount'], dim:'Ø 13 cm × H 18 cm'},
+  'p05-2l': {accent:['collar-mount'], dim:'Ø 13.5 cm × H 27 cm'},
+  'p05-3l': {accent:['collar-mount'], dim:'Ø 13 cm × H 42 cm'},
+  'p05-2l-set': {accent:['collar-mount','hose-kit-050103'], dim:'', noRings:true, noDims:true},
+  'p05-3l-set': {accent:['collar-mount','hose-kit-050103'], dim:'', noRings:true, noDims:true}
 };
+
+// Accent by mesh name, or by a named parent group (the 0402102 / 0402103 hose set).
+function isAccent(o, accent) {
+  for (let n = o; n; n = n.parent) if (accent.includes(n.name)) return true;
+  return false;
+}
 
 function pal() {
   const t = document.documentElement.dataset.theme;
@@ -99,6 +110,7 @@ function addPouches(it) {
 function buildDims(it) {
   const g = it.dimG, box = it.dimBox, meta = it.meta;
   while (g.children.length) g.remove(g.children[0]);
+  if (meta.noDims) return;
   const c = pal(), col = '#' + c.ink.toString(16).padStart(6, '0'), bg = '#' + c.bg.toString(16).padStart(6, '0');
   let vb = box;
   it.scene.traverse(o => { if (o.isMesh && (o.userData.part === 'vessel' || o.userData.part === 'bag' || o.userData.part === 'barrel')) vb = new THREE.Box3().setFromObject(o); });
@@ -249,7 +261,7 @@ function loadModel(it, id, url) {
     g.scene.traverse(o => {
       if (!o.isMesh) return;
       const geo = o.geometry.clone().applyMatrix4(o.matrixWorld);
-      const acc = it.meta.accent.includes(o.name);
+      const acc = isAccent(o, it.meta.accent);
       const fm = new THREE.Mesh(geo, acc ? M.fillA : M.fill);
       fm.userData.part = o.name;
       it.scene.add(fm);
@@ -288,7 +300,7 @@ function loadModel(it, id, url) {
       }
       rg.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), M.ring));
     }
-    it.scene.add(rg);
+    if (!it.meta.noRings) it.scene.add(rg);
     it.dimG = new THREE.Group();
     it.scene.add(it.dimG);
     it.dimBox = box;

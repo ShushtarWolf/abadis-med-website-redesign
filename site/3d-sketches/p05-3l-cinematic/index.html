@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" type="image/png" href="../../assets/img/favicon-32.png">
+<title>مخزن ساکشن ۳ لیتری آبادیس | Abadis Med</title>
+<style>
+@font-face{font-family:Kalameh;src:url(../../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Kalameh;src:url(../../assets/fonts/kalameh/KalamehWeb-FaNum-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Kalameh;src:url(../../assets/fonts/kalameh/KalamehWeb-FaNum-ExtraBold.woff2) format("woff2");font-weight:800}
+*{box-sizing:border-box}html,body{margin:0;background:radial-gradient(120% 90% at 50% 40%,#28343b 0%,#111a20 60%,#080f14 100%) fixed,#04080a;color:#f2f7f7;font-family:Kalameh,Tahoma,sans-serif}
+.track{height:1800vh;position:relative}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block}
+.vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 45%,transparent 45%,rgba(0,0,0,.55) 85%,rgba(0,0,0,.85) 100%)}
+.beat{position:absolute;left:50%;transform:translate(-50%,0);width:min(900px,92vw);text-align:center;opacity:0;pointer-events:none;will-change:opacity,transform}
+.beat.top{top:11vh}.beat.bot{bottom:7vh}
+.beat h1{margin:0;font-size:clamp(32px,6vw,76px);font-weight:800;letter-spacing:-.5px;line-height:1.25;background:linear-gradient(180deg,#fff,#a9d9dc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.beat h1,.beat h2{text-shadow:0 2px 18px rgba(0,0,0,.85)}.beat h3{margin:0;font-size:clamp(17px,2vw,24px);font-weight:700;color:#cfdfe0;text-shadow:0 2px 14px #000}.beat h2{margin:0;font-size:clamp(26px,4.4vw,54px);font-weight:800;line-height:1.3}
+.beat h2 em{font-style:normal;color:#5fc7cf}
+.beat p{margin:10px 0 0;font:500 clamp(13px,1.4vw,17px)/1.4 Inter,"Segoe UI",Arial,sans-serif;color:#9fb8ba;direction:ltr;letter-spacing:.2px}
+.logo{position:absolute;right:4vw;bottom:4vh;width:min(190px,44vw);opacity:0}
+.hint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font-size:13px;color:#8aa;letter-spacing:.3px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.hint i{width:1px;height:28px;background:linear-gradient(#8aa,transparent)}
+@media(min-width:701px){.hint{left:7vw;transform:none}}
+.bar{position:absolute;top:0;left:0;height:2px;background:#2e7f96;width:0}
+</style>
+<script type="importmap">{"imports":{"three":"../../assets/vendor/three/build/three.module.js","three/addons/":"../../assets/vendor/three/examples/jsm/"}}</script>
+</head>
+<body>
+<div class="track"><div class="stage">
+<canvas id="gl"></canvas><div class="vig"></div><div class="bar" id="bar"></div>
+<div class="beat top" data-a="0" data-b=".19"><h1>مخزن ساکشن ۳ لیتری آبادیس</h1><p>Abadis 3 L Reusable Suction Canister</p></div>
+<div class="beat bot" data-a=".24" data-b=".38"><h2>دهانهٔ باز، <em>لبهٔ دقیق</em></h2><p>Open vessel · original CAD rim</p></div>
+<div class="beat bot" data-a=".46" data-b=".57"><h2>جزئیات <em>اتصال پشت مخزن</em></h2><p>Rear mounting geometry · true to the original</p></div>
+<div class="beat bot" data-a=".60" data-b=".69"><h2>پلی‌کربنات <em>شفاف</em></h2><p>Clear polycarbonate · a rigid, reusable vessel</p></div>
+<div class="beat bot" data-a=".71" data-b=".85"><h2>فرم واقعی <em>بدنه و کف</em></h2><p>Original vessel profile · no reshaping</p></div>
+<div class="beat top" style="top:8vh" data-a=".91" data-b="1.03"><h1>مخزن ساکشن آبادیس</h1><p lang="fa" style="direction:rtl;font-family:Kalameh,Tahoma,sans-serif">۳ لیتر · کد محصول ۰۴۰۲۰۱۳</p><p>3 L · Product code 0402013</p></div>
+<img class="logo" id="logo" src="../../assets/img/abadis-logo-white.svg" alt="Abadis Med">
+<div class="hint" id="hint">اسکرول کنید · Scroll<i></i></div>
+</div></div>
+
+<script type="module">
+import * as THREE from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {mergeVertices,toCreasedNormals} from 'three/addons/utils/BufferGeometryUtils.js';
+const mob=matchMedia('(max-width:700px),(pointer:coarse)').matches;
+const canvas=document.getElementById('gl'),stage=canvas.parentElement;
+const R=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});
+R.setPixelRatio(Math.min(devicePixelRatio,mob?1.75:2));R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.12;
+const S=new THREE.Scene(),C=new THREE.PerspectiveCamera(mob?32:28,1,1,2500);
+// Transmission must sample a real studio backdrop, not an empty alpha buffer.
+const bg=document.createElement('canvas');bg.width=bg.height=1024;const bx=bg.getContext('2d'),grad=bx.createRadialGradient(512,440,10,512,440,730);grad.addColorStop(0,'#35434c');grad.addColorStop(.55,'#19262f');grad.addColorStop(1,'#091219');bx.fillStyle=grad;bx.fillRect(0,0,1024,1024);const backdrop=new THREE.CanvasTexture(bg);backdrop.colorSpace=THREE.SRGBColorSpace;S.background=backdrop;
+const pm=new THREE.PMREMGenerator(R),env=new RoomEnvironment();
+S.environment=pm.fromScene(env,.04).texture;S.environmentIntensity=1.1;env.dispose();pm.dispose();
+const lights=[[-260,340,320,0xfff4e9,3.4],[220,100,150,0xe8f6ff,2.1],[40,250,-310,0xc0e8f7,3.0]];
+for(const [x,y,z,color,intensity] of lights){const l=new THREE.DirectionalLight(color,intensity);l.position.set(x,y,z);S.add(l);}
+S.add(new THREE.HemisphereLight(0xf2f8ff,0x27303a,.8));
+// The real CAD contains the inner and outer vessel surfaces. No replacement shell.
+const pc=new THREE.MeshPhysicalMaterial({color:0xf3f8fa,roughness:.075,metalness:0,transmission:0,transparent:true,opacity:.48,depthWrite:false,thickness:2.4,ior:1.586,attenuationColor:0xd9eef0,attenuationDistance:650,clearcoat:.5,clearcoatRoughness:.12,envMapIntensity:.95,side:THREE.DoubleSide});
+const mountPC=pc.clone();mountPC.roughness=.16;mountPC.opacity=.56;mountPC.thickness=3.4;
+// Thin clear PC: edge-weighted alpha makes the rear CAD mount readable through
+// the real wall. A real-time optical approximation, not a new shell or coating.
+// Genuine 3L manufacturer's print, extracted from AMR_4901-scaled-1.jpg.
+// No synthesized logo, type, graduation tick or volume number.
+let cadReady=false,inkReady=false;
+const markReady=()=>{if(cadReady&&inkReady)window.__ready=true;};
+const officialInk=new THREE.TextureLoader().load('tex/official-3l-print.png?v=3l-photo-1',()=>{inkReady=true;markReady();},undefined,e=>{console.error(e);window.__ready='error';});
+officialInk.colorSpace=THREE.SRGBColorSpace;officialInk.anisotropy=Math.min(16,R.capabilities.getMaxAnisotropy());
+for(const m of [pc,mountPC]){m.onBeforeCompile=shader=>{
+ const glassAlpha="diffuseColor.a *= .18 + .82 * pow(1. - abs(dot(normal, normalize(vViewPosition))), 2.2);";
+ if(m===pc){
+  shader.uniforms.uOfficialInk={value:officialInk};
+  shader.vertexShader=shader.vertexShader.replace('#include <common>','#include <common>\nattribute float printOuter; varying vec3 vInkPos; varying vec3 vInkWorld; varying float vInkOuter;').replace('#include <begin_vertex>','#include <begin_vertex>\nvInkPos=position;vInkWorld=(modelMatrix*vec4(position,1.)).xyz;vInkOuter=printOuter;');
+  shader.fragmentShader=shader.fragmentShader.replace('#include <common>','#include <common>\nuniform sampler2D uOfficialInk;varying vec3 vInkPos;varying vec3 vInkWorld;varying float vInkOuter;');
+  shader.fragmentShader=shader.fragmentShader.replace('#include <opaque_fragment>',glassAlpha+'\n#include <opaque_fragment>');
+  // Composite antialiased ink AFTER tone/color conversion. Mixing coverage
+  // before nonlinear ACES created bright PC fringes around genuine strokes.
+  shader.fragmentShader=shader.fragmentShader.replace('#include <colorspace_fragment>',`#include <colorspace_fragment>
+   vec2 inkUV=vec2(.5+atan(vInkPos.x,vInkPos.z)/6.28318530718,1.+vInkPos.y/420.);
+   vec4 ink=texture2D(uOfficialInk,inkUV);
+   // Existing outward-wall mask and geometric eye-facing gate: no inner,
+   // far-side mirrored, rim or mounting-bracket print. No new geometry.
+   float exteriorFacing=step(.02,dot(normalize(vec3(vInkPos.x,0.,vInkPos.z)),normalize(cameraPosition-vInkWorld)));
+   float inkA=ink.a*vInkOuter*exteriorFacing;
+   if(inkA>0.){
+    float printedAlpha=inkA+(1.-inkA)*gl_FragColor.a;
+    vec3 inkColor=linearToOutputTexel(vec4(ink.rgb,1.)).rgb;
+    gl_FragColor.rgb=(gl_FragColor.rgb*gl_FragColor.a*(1.-inkA)+inkColor*inkA)/max(printedAlpha,.00001);
+    gl_FragColor.a=printedAlpha;
+   }
+  `);
+ }else shader.fragmentShader=shader.fragmentShader.replace('#include <opaque_fragment>',glassAlpha+'\n#include <opaque_fragment>');
+};m.customProgramCacheKey=()=>m===pc?'clear-pc-official-3l-photo-ink-v1':'clear-pc-edge-alpha-v1';}
+const root=new THREE.Group();S.add(root);
+// Soft studio contact shadow only; not a product part.
+const sc=document.createElement('canvas');sc.width=sc.height=256;const sx=sc.getContext('2d');const sg=sx.createRadialGradient(128,128,10,128,128,128);sg.addColorStop(0,'rgba(0,0,0,.65)');sg.addColorStop(.48,'rgba(0,0,0,.22)');sg.addColorStop(1,'rgba(0,0,0,0)');sx.fillStyle=sg;sx.fillRect(0,0,256,256);
+const shadow=new THREE.Mesh(new THREE.PlaneGeometry(270,270),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(sc),transparent:true,depthWrite:false}));shadow.rotation.x=-Math.PI/2;shadow.position.y=-420.7;S.add(shadow);
+new GLTFLoader().load('p05-3l-canister-cad.glb',g=>{
+ let triangles=0;g.scene.traverse(o=>{if(!o.isMesh)return;
+  // Normals only: actual vertices and silhouette are untouched.
+  let geo=o.geometry.clone();geo.deleteAttribute('normal');geo=mergeVertices(geo,1e-5);geo=toCreasedNormals(geo,Math.PI/3);
+  if(o.name==='vessel'){
+   const pos=geo.attributes.position,outer=new Float32Array(pos.count);let outerTriangles=0;
+   for(let i=0;i<pos.count;i+=3){
+    const a=new THREE.Vector3().fromBufferAttribute(pos,i),b=new THREE.Vector3().fromBufferAttribute(pos,i+1),c=new THREE.Vector3().fromBufferAttribute(pos,i+2);
+    const n=b.clone().sub(a).cross(c.clone().sub(a)).normalize();
+    const radial=a.clone().add(b).add(c);radial.y=0;radial.normalize();
+    const exterior=n.dot(radial)>.95&&Math.abs(n.y)<.2;
+    if(exterior){outer.fill(1,i,i+3);outerTriangles++;}
+   }
+   geo.setAttribute('printOuter',new THREE.BufferAttribute(outer,1));
+   window.__branding={outerTriangles,innerInkTriangles:0,source:'official AMR_4901 3L photo',mapping:'front exterior only, no mirrored inner/back print'};
+  }
+  const m=new THREE.Mesh(geo,o.name==='vessel'?pc:mountPC);m.name=o.name;root.add(m);triangles+=geo.attributes.position.count/3;
+ });window.__cad={triangles,parts:root.children.map(o=>o.name),bounds:new THREE.Box3().setFromObject(root).getSize(new THREE.Vector3()).toArray()};cadReady=true;markReady();
+},undefined,e=>{console.error(e);window.__ready='error';});
+const V=(x,y,z)=>new THREE.Vector3(x,y,z),cl=x=>Math.min(1,Math.max(0,x));
+const ease=x=>{x=cl(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;};
+// Approved five-view film: readable front three-quarter, gently raised rim,
+// brief rear mount, low base, full product. Polar interpolation preserves
+// stand-off during the restrained out-and-back orbit; no chord through CAD.
+// [scroll, azimuth deg, elevation deg, distance, vertical focus]
+const KF=[
+ [0,-16,9,1540,-166],
+ [.16,-20,9,1525,-166],
+ [.30,-20,19,1480,-241],
+ [.36,-23,19,1480,-241],
+ [.48,-158,10,1450,-225],
+ [.54,-165,8,1450,-225],
+ [.72,-20,-3,1490,-246],
+ [.81,-16,-2,1505,-246],
+ [.93,-17,8,1540,-169],
+ [1,-16,9,1540,-166]
+];
+const qp=new URLSearchParams(location.search),beats=[...document.querySelectorAll('.beat')];
+const cp=new THREE.Vector3(),ct=new THREE.Vector3();let T=0,last=0;
+function sample(t){
+ let a=KF[0],b=KF.at(-1);for(let i=0;i<KF.length-1;i++)if(t>=KF[i][0]&&t<=KF[i+1][0]){a=KF[i];b=KF[i+1];break;}
+ const k=ease((t-a[0])/Math.max(.0001,b[0]-a[0])),mix=i=>THREE.MathUtils.lerp(a[i],b[i],k);
+ const az=THREE.MathUtils.degToRad(mix(1)),el=THREE.MathUtils.degToRad(mix(2));
+ // Portrait-safe stand-off holds the real silhouette and bracket inside frame.
+ const distance=mob?Math.max(1510+35*Math.pow(Math.sin(az),2),mix(3)*1.03):mix(3);
+ ct.set(0,mix(4),-10*Math.pow(Math.sin(az),2));cp.set(Math.sin(az)*Math.cos(el),Math.sin(el),Math.cos(az)*Math.cos(el)).multiplyScalar(distance).add(ct);
+}
+function resize(){R.setSize(stage.clientWidth,stage.clientHeight,false);C.aspect=stage.clientWidth/stage.clientHeight;C.updateProjectionMatrix();}new ResizeObserver(resize).observe(stage);resize();
+function frame(now){requestAnimationFrame(frame);const dt=Math.min(.1,(now-(last||now))/1000);last=now;
+ const max=document.documentElement.scrollHeight-innerHeight;const target=qp.has('t')?cl(+qp.get('t')):cl(scrollY/Math.max(1,max));T+=(target-T)*(qp.has('t')?1:1-Math.exp(-dt*3.2));sample(T);
+ for(const b of beats){const a=+b.dataset.a,z=+b.dataset.b,o=Math.min(cl((T-a)/.035),cl((z-T)/.035));b.style.opacity=o;b.style.transform=`translate(-50%,${(1-o)*14}px)`;}
+ document.getElementById('bar').style.width=T*100+'%';document.getElementById('hint').style.opacity=1-cl(T*18);document.getElementById('logo').style.opacity=cl((T-.94)/.03);
+ C.position.copy(cp);C.lookAt(ct);const dist=cp.distanceTo(ct);C.near=Math.max(1,dist*.01);C.far=dist+1800;C.updateProjectionMatrix();
+ window.__qa={t:T,requested:target,camera:cp.toArray(),target:ct.toArray()};R.render(S,C);
+}requestAnimationFrame(frame);
+</script>
+</body></html>
