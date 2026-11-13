@@ -15,7 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 SITE = ROOT / 'site'
 BASE = '8e1fad5f'
-V = '20261113a'
+V = '20261113b'
 FA_DIG = str.maketrans('0123456789', '۰۱۲۳۴۵۶۷۸۹')
 AR_DIG = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
 TO_LAT = str.maketrans('۰۱۲۳۴۵۶۷۸۹٠١٢٣٤٥٦٧٨٩', '01234567890123456789')
@@ -399,6 +399,18 @@ def main_html(lang, pfx, orig_main):
     ptab_nav = grab(r'<div class="ptab-nav" role="tablist">(.*?)</div>', orig_main).group(1)
     arts = dict(re.findall(r'<article class="ptab size-block" id="(\w+)">(.*?)</article>', orig_main, re.S))
     assert list(arts) == ['msk', 'sdv', 'collectioncup', 'lipo'], list(arts)
+    # Collection Cup 0402300: the archive had no photo; use the official one from
+    # abadis-med.com (wp-content/uploads/2026/11/Transparent-Container-with-White-Grid-Basket.png).
+    # FA keeps the official image as published; EN / AR use the same image with the
+    # Persian "coming soon" badge painted out to the white background.
+    cc_alt = {'fa': 'محفظه نمونه گیری(Collection Cup)',
+              'en': 'Abadis Collection Cup (code 0402300): transparent cup with a white mesh basket inside',
+              'ar': 'كوب جمع العينة آباديس (Collection Cup، رمز ٠٤٠٢٣٠٠): وعاء شفاف بداخله سلة شبكية بيضاء'}[lang]
+    cc_img = f'{pfx}assets/img/canister/collection-cup-0402300{"" if lang == "fa" else "-en"}.webp?v={V}'
+    cc_fig = (f'<a class="gal-main gal-cc" href="{cc_img}" data-gallery="collectioncup" data-w="1254" data-h="1254" '
+              f'aria-label="{esc(cc_alt)}"><img src="{cc_img}" width="1254" height="1254" loading="lazy" decoding="async" alt="{esc(cc_alt)}"></a>')
+    arts['collectioncup'], n_cc = re.subn(r'<div class="gal-main gal-missing">.*?</div>', lambda m: cc_fig, arts['collectioncup'], count=1, flags=re.S)
+    assert n_cc == 1
     tail = grab(r'(<section class="section ps-related" id="related-solutions">.*)</main>', orig_main).group(1)
     msk = arts['msk']
     msk_h2 = grab(r'<h2>.*?</h2>', msk).group(0)
