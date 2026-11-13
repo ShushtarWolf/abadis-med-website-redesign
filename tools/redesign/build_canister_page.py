@@ -419,7 +419,7 @@ def main_html(lang, pfx, orig_main):
         for k in ('sdv', 'collectioncup', 'lipo'))
     return (
         f'<main id="main">'
-        f'<div class="cin-track" id="film" data-cin-root data-cin-floors="hero" data-tone="dark" data-cin-module="{pfx}assets/js/p05-cinematic-page.js?v={V}">'
+        f'<div class="cin-track" id="film" data-cin-root data-cin-floors="hero" data-tone="dark" data-cin-module="./p05-cinematic-page.js?v={V}">'
         f'<div class="cin-stage"><div class="cin-view"><canvas aria-hidden="true"></canvas>'
         f'<img class="cin-still" src="{still}" width="900" height="1338" alt="{esc(ui["still_alt"])}" fetchpriority="high" decoding="async">'
         f'<div class="cin-bar" aria-hidden="true"></div></div>'
