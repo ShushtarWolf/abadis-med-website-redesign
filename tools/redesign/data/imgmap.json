@@ -7914,5 +7914,131 @@
   "http://abadis-med.com/wp-content/uploads/2026/10/آگهی-کیسه_های-ساکشن-دامپزشکی.png": {
     "ok": false,
     "err": "fetch-failed"
+  },
+  "https://abadis-wp-test.liara.run/wp-content/uploads/2026/11/20094.png": {
+    "ok": true,
+    "file": "cd3c34e6e1b34e0e.png",
+    "bytes": 525118,
+    "via": "live-2026-10-14"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/Smart-Factory-Analytics-in-Action-1.png": {
+    "ok": true,
+    "file": "150a0bd87e8b1456.png",
+    "bytes": 2130939,
+    "via": "live-2026-10-14"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/Cleanroom-Analytics-Dashboard-3.png": {
+    "ok": true,
+    "file": "0158bb6ee05b6d7a.png",
+    "bytes": 1863119,
+    "via": "live-2026-10-14"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/High-Tech-Analytics-Control-Room-2.png": {
+    "ok": true,
+    "file": "c481b975c4288280.png",
+    "bytes": 1956019,
+    "via": "live-2026-10-14"
+  },
+  "https://abadis-wp-test.liara.run/wp-content/uploads/2026/11/20084.png": {
+    "ok": true,
+    "file": "c20cf543f691277e.png",
+    "bytes": 412879,
+    "via": "live-2026-10-14"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/Microdrip-IV-Set-in-a-Clinical-Setting.png": {
+    "ok": true,
+    "file": "0993c288523acf60.png",
+    "bytes": 1784726,
+    "via": "live-2026-10-14"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/ChatGPT-Image-Nov-10-2026-03_39_20-PM-1.png": {
+    "ok": true,
+    "file": "5cfb2516424d82af.png",
+    "bytes": 1801175,
+    "via": "live-2026-10-14"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/ChatGPT-Image-Nov-10-2026-03_41_34-PM-1024x576.png": {
+    "ok": true,
+    "file": "69dc4d3114292646.png",
+    "bytes": 593358,
+    "via": "live-2026-10-14"
+  },
+  "https://abadis-wp-test.liara.run/wp-content/uploads/2026/11/20071.jpg": {
+    "ok": true,
+    "file": "f20c1cf7f4f95b9d.jpg",
+    "bytes": 133459,
+    "via": "live-2026-10-14"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/Hospital-IV-Infusion-Set-on-Reflective-Table.png": {
+    "ok": true,
+    "file": "7d9ae476ef73bad3.png",
+    "bytes": 1648924,
+    "via": "live-2026-10-14"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/IV-Infusion-Set-Component-Guide-1024x576.png": {
+    "ok": true,
+    "file": "b17b0869cbe328c3.png",
+    "bytes": 624958,
+    "via": "live-2026-10-14"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/Persian-Labeled-IV-Infusion-Set-Diagram-1024x683.png": {
+    "ok": true,
+    "file": "195b3a50936ad18e.png",
+    "bytes": 646062,
+    "via": "live-2026-10-14"
+  },
+  "https://abadis-wp-test.liara.run/wp-content/uploads/2026/11/20060.jpg": {
+    "ok": true,
+    "file": "a7e1dcf137bcfc80.jpg",
+    "bytes": 175880,
+    "via": "live-2026-10-14"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/Futuristic-Blue-Medical-Exhibition-Hall-1.png": {
+    "ok": true,
+    "file": "5073c44c27afaec2.png",
+    "bytes": 2026002,
+    "via": "live-2026-10-14"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/DSC_0860-2-768x513-1.jpg": {
+    "ok": true,
+    "file": "fffb83a5aa046970.jpg",
+    "bytes": 82416,
+    "via": "live-2026-10-14"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/Business-Conversation-at-Exhibition-Hall-1024x573.png": {
+    "ok": true,
+    "file": "701e6ba10e550806.png",
+    "bytes": 724358,
+    "via": "live-2026-10-14"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/ایران_مد-۲۰۲۶؛-نوآوری-در-سلامت-1024x576.png": {
+    "ok": true,
+    "file": "58e80a5f927efeb6.png",
+    "bytes": 691607,
+    "via": "live-2026-10-14"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/8-1.jpg": {
+    "ok": true,
+    "file": "7dbe09242e552f00.jpg",
+    "bytes": 223020,
+    "via": "live-2026-10-14"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/5-2.jpg": {
+    "ok": true,
+    "file": "4e097ec7b00fd37a.jpg",
+    "bytes": 232873,
+    "via": "live-2026-10-14"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/Formal-Ceremony-on-the-Blue-Stage.png": {
+    "ok": true,
+    "file": "5760f334424476b9.png",
+    "bytes": 2770649,
+    "via": "live-2026-10-14"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/10-1-1024x576.jpg": {
+    "ok": true,
+    "file": "ff0c83bdb6f9a6f2.jpg",
+    "bytes": 108688,
+    "via": "live-2026-10-14"
   }
 }

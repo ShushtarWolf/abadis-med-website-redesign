@@ -29,7 +29,7 @@ const FIELDS = 'id,date,date_gmt,modified,modified_gmt,slug,link,title,excerpt,c
 const LOCALES = [
   {
     id: 'fa',
-    rest: 'http://abadis-med.com/wp-json/wp/v2',
+    rest: process.env.ABADIS_WP_REST || 'http://abadis-med.com/wp-json/wp/v2',
     sitemap: 'http://abadis-med.com/post-sitemap.xml',
     feed: 'http://abadis-med.com/feed/',
     manifest: 'tools/redesign/data/posts.json',
@@ -85,6 +85,8 @@ modified news/academy posts into:
   tools/redesign/data/ar_posts.json
   tools/redesign/data/news-delta.json         last report
 Then regenerate HTML with:  python3 tools/redesign/build.py posts
+
+ABADIS_WP_REST, if set, overrides only the FA REST base (default unchanged).
 
 Exit 0 when the command finishes. Exit 1 on usage errors or a total fetch failure.
 `);
