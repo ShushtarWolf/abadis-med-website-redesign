@@ -1,0 +1,3513 @@
+{
+ "/arabic/author/a-kazemi/": {
+  "to": "/arabic/الاخبار/",
+  "type": "author",
+  "fallback": true
+ },
+ "/arabic/author/m-norouzi/": {
+  "to": "/arabic/الاخبار/",
+  "type": "author",
+  "fallback": true
+ },
+ "/arabic/author/na-hassanali/": {
+  "to": "/arabic/الاخبار/",
+  "type": "author",
+  "fallback": true
+ },
+ "/arabic/category/الأخبار/": {
+  "to": "/arabic/الاخبار/",
+  "type": "category"
+ },
+ "/arabic/jet-menu/elementor-mega-item-2549/": {
+  "to": "/arabic/",
+  "type": "jet-menu",
+  "fallback": true
+ },
+ "/arabic/jet-menu/elementor-mega-item-313/": {
+  "to": "/arabic/",
+  "type": "jet-menu",
+  "fallback": true
+ },
+ "/arabic/jet-menu/elementor-mega-item-315/": {
+  "to": "/arabic/",
+  "type": "jet-menu",
+  "fallback": true
+ },
+ "/arabic/الحاسبة/": {
+  "to": "/arabic/الحوسبة/",
+  "type": "page"
+ },
+ "/en/base-and-holder/": {
+  "to": "/en/products/base-and-holder/",
+  "type": "alias"
+ },
+ "/en/canisters/": {
+  "to": "/en/products/canisters/",
+  "type": "alias"
+ },
+ "/en/connections/": {
+  "to": "/en/products/connections/",
+  "type": "alias"
+ },
+ "/en/filters/": {
+  "to": "/en/products/filters/",
+  "type": "alias"
+ },
+ "/en/suction-bag/": {
+  "to": "/en/products/suction-bag/",
+  "type": "alias"
+ },
+ "/en/author/a-kazemi/": {
+  "to": "/en/blog/",
+  "type": "author",
+  "fallback": true
+ },
+ "/en/author/e-rostami/": {
+  "to": "/en/blog/",
+  "type": "author",
+  "fallback": true
+ },
+ "/en/author/n-sharafi/": {
+  "to": "/en/blog/",
+  "type": "author",
+  "fallback": true
+ },
+ "/en/author/na-hassanali/": {
+  "to": "/en/blog/",
+  "type": "author",
+  "fallback": true
+ },
+ "/en/author/s-kaseb/": {
+  "to": "/en/blog/",
+  "type": "author",
+  "fallback": true
+ },
+ "/en/category/blog/": {
+  "to": "/en/blog/",
+  "type": "category"
+ },
+ "/en/category/news/": {
+  "to": "/en/latest-news/",
+  "type": "category"
+ },
+ "/en/category/products/": {
+  "to": "/en/products/",
+  "type": "category"
+ },
+ "/en/category/products/accessories/": {
+  "to": "/en/products/",
+  "type": "category"
+ },
+ "/en/category/دسته‌بندی-نشده/": {
+  "to": "/en/blog/",
+  "type": "category"
+ },
+ "/en/representatives_01/": {
+  "to": "/en/representatives/",
+  "type": "cpt-representatives"
+ },
+ "/en/representatives_01/iraq/": {
+  "to": "/en/representatives/",
+  "type": "cpt-representatives"
+ },
+ "/en/jet-menu/elementor-mega-item-5599/": {
+  "to": "/en/",
+  "type": "jet-menu",
+  "fallback": true
+ },
+ "/en/jet-menu/mega-item-3248/": {
+  "to": "/en/",
+  "type": "jet-menu",
+  "fallback": true
+ },
+ "/en/jet-menu/mega-item-3252/": {
+  "to": "/en/",
+  "type": "jet-menu",
+  "fallback": true
+ },
+ "/en/jet-menu/mega-item-5600/": {
+  "to": "/en/",
+  "type": "jet-menu",
+  "fallback": true
+ },
+ "/en/a1-2/": {
+  "to": "/en/",
+  "type": "page"
+ },
+ "/en/canister-installation/": {
+  "to": "/en/installation-manual/",
+  "type": "page"
+ },
+ "/en/catalogue/": {
+  "to": "/en/center-download/",
+  "type": "page"
+ },
+ "/en/products/specialized-bags-waste-management/": {
+  "to": "/en/solutions/waste-management-pva/",
+  "type": "page"
+ },
+ "/en/representatives-3/": {
+  "to": "/en/representatives/",
+  "type": "page"
+ },
+ "/en/reservoir-calculator/": {
+  "to": "/en/calculator/",
+  "type": "page"
+ },
+ "/en/user-manuals/": {
+  "to": "/en/installation-manual/",
+  "type": "page"
+ },
+ "/en/دیگر-محصولات-2/": {
+  "to": "/en/products/other-products/",
+  "type": "page"
+ },
+ "/en/فوتر/": {
+  "to": "/en/",
+  "type": "page"
+ },
+ "/en/20-leading-scientific-journals-in-the-medical-device-industry/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/a-guide-to-purchasing-disposable-suction-liner-bags-for-healthcare-facilities/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/abadis-activities-during-the-corona-2/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/abadis-bridges-cooperation-between-iranmed-exhibition-and-baloot-e-dalahoo-association/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/abadis-international-negotiations-at-iran-health-2025/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/abadis-med-publishes-article-on-medium/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/abadis-medical-filters-maximum-safety-in-hospital-infection-control/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/abadis-medical-publishes-its-first-comprehensive-sustainability-report-up-to-march-2025/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/abadis-medical-reservoirs-in-iran-health-exhibition-on-medirence-website/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/abadis-medical-reservoirs-in-the-14th-isfahan-medical-equipment-exhibition/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/abadis-unveils-its-new-product-for-filtration/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/achievements-of-abadis-med-company-in-developing-disposable-suction-bags/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/assessment-of-hand-hygiene-compliance-among-healthcare-workers-in-zahedan-social-security-hospital-in-2023/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/business-intelligence-bi-transforming-the-medical-device-industry/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/control-of-corona-virus/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/definition-of-hospital-infections/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/disposable-suction-bags/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/disposable-suction-bottle-is-cost-effective-in-iran-or-not/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/disposable-suction-cups/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/disposable-suction-liner-bags-vs-reusable-ones/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/endotracheal-tube-fixation-enhancing-patient-safety-comfort-and-infection-control/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/evolvement-of-abadis-ideas-investment-fund-project-at-iran-health-international-exhibition/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/executive-guideline-for-the-disinfection-of-medical-tools-and-equipment/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/existing-standards-for-the-production-of-disposable-suction-liner-bags/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/existing-standards-in-the-production-of-medical-suction-tubes/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/fixture/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/from-the-operating-room-to-infection-control-the-role-of-suction-liners-in-veterinary-medicine/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/full-interview-with-the-ceo-of-abadis-on-radio-salamats-program-ta-soraya/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/honoring-ceremony-for-professor-valiollah-mehrabi/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/hospital-equipment/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/hospital-infection-surveillance-system-and-prevention-and-control-of-infection-associated-with-health-care-services/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/how-to-distinguish-corona-from-colds-and-flu/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/human-capital-development-at-abadis-med-co/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/improving-the-environmental-effects-of-nosocomial-infectious-effluents-by-using-disposable-suction-liner-bags/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/incidence-of-nosocomial-infections/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/infection-control-congress-report-2023/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/interview-of-managers-of-makhazen-tebi-abadis-with-medirence/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/interview-with-colleagues-and-managers-of-abadis-medical-reservoirs-in-iran-health-98-exhibition/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/introduction-of-disposable-suction-liner-bags-a-key-solution-by-abadis-for-preventing-nosocomial-infections/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/introduction-of-single-dose-suction-bag/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/iran-radio-interview-with-abadis-medical/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/mangement-of-hospital-infectious-waste/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/medical-engineering-monthly-interview-with-abadis-medical-reservoirs-strategic-consultant/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/new-products-makhazen-tebi-abadis/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/obtaining-europe-ce-certification/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/oral-hygiene-in-hospitals-from-essential-patient-care-to-specialized-medical-equipment/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/participation-of-abadis-medical-reservoirs-in-the-fourth-shiraz-medical-equipment-exhibition/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/photo-story-from-the-22nd-iran-health-international-exhibition-first-day/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/photo-story-of-abadis-participation-in-iran-health-international-exhibition-part-3/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/porous-filters-in-the-medical-industry/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/prevention-and-control-of-hospital-infections/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/publication-of-the-article-entitled-improving-the-environmental-effects-of-nosocomial-infectious-effluents-by-using-disposable-suction-liner-bags-in-the-journal-of-biomedical-and-allied-research/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/pva-film-in-the-medical-equipment-industry/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/report-of-the-23rd-iran-health-international-exhibition/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/report-of-the-international-medical-equipment-exhibition-of-uzbekistan-2023/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/report-on-the-10th-infection-control-congress/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/report-on-the-2018-infection-control-congress/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/reusable-suction-canisters-an-economical-choice-or-a-hidden-cost-for-hospitals/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/standardized-cleaning-procedures-for-reusable-suction-canisters-and-safe-handling-of-disposable-suction-liners-in-clinical-settings/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/super-absorbent-powder-in-the-medical-equipment-industry/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/the-critical-role-of-medical-grade-pvc-in-suction-tube-products/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/the-first-sustainability-report-of-abadis-medical-knowledge-based-company-up-to-the-end-of-2024/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/the-future-of-medical-devices-with-artificial-intelligence-technologies-transforming-healthcare/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/the-most-common-pathogens/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/the-presence-of-abadis-at-uzmedexpo/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/the-presence-of-makhazen-tebi-abadis-at-the-tabriz-medical-equipment-exhibition/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/the-presence-of-mkhazen-tebi-abadis-at-the-mashhad-medical-equipment-exhibition/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/the-report-of-the-second-salamat-bonyan-basic-health-exhibition/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/the-role-of-disposable-suction-bags-in-reducing-the-risk-of-hantavirus-transmission-in-hospitals/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/the-role-of-disposable-suction-liners-in-hospital-infectious-waste-management/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/the-role-of-knowledge-based-industries-in-achieving-green-governance/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/top-5-features-to-look-for-in-a-medical-suction-tube/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/types-of-hospital-infections/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/types-of-suction-devices/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/un-sdgs-and-infection-control/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/unveiling-of-abadis-fixture-product/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/urine-bag-buying-guide-types-features-and-selection-tips/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/water-conservation-through-abadis-disposable-suction-bags/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/what-are-antibacterial-filters-and-hydrophobic-filters/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/what-are-pva-film-bags-applications-benefits-and-their-role-in-infection-control/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/what-is-a-chest-bottle-types-applications-and-how-chest-drainage-systems-work/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/what-is-a-chest-tube/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/what-is-a-microdrip-set-uses-components-differences-from-macrodrip-sets/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/what-is-a-nelaton-catheter/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/what-is-a-sterile-disposable-suction-bag/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/what-is-a-suction-tube/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/what-is-a-suctioning-device/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/what-is-a-wall-suction-system/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/what-is-an-extension-tube/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/what-is-an-iv-infusion-set-a-comprehensive-guide-to-types-components-applications-and-safety-standards/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/what-is-an-oropharyngeal-airway-opa/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/what-is-hantavirus/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/what-is-suction-tube/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/why-disposable-suction-liner-bags-can-save-patients-lives/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/گیره-t-شکل/": {
+  "to": "/en/blog/",
+  "type": "post",
+  "fallback": true
+ },
+ "/en/tag/abadis-med/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/bio-medical-engineering/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/blood-infection/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/corona-virus-science/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/corona/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/corona_virus/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/disease-agents/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/disposable-suction-bag/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/disposable-suction-liner-bag/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/exhibition/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/fixer/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/infection-control/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/infection/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/intensive-care/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/interview/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/iran-health/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/medical-equipment/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/news/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/nosocomial-infection/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/pathogen/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/report/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/suction-device/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/urinary-tract-infection/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/virus/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/آنتی-سپتیک/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/ایران-هلث-۹۸/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/ایران-هلث/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/تجهیزات-بیمارستانی/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/تجهیزات-پزشکی/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/جلوگیری-از-عفونت/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/ساکشن-یک-بار-مصرف/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/سلامت-بیمار/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/شیلد-محافظ/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/عفونت-بیمارستانی/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/عفونت-دستگاه-ادراری/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/محصولات-بیمارستانی/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/مخازن-طبی-آبادیس/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/مراقبت-ویژه/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/مسئولیت-اجتماعی/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/مصاحبه/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/نمایشگاه-اصفهان/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/نمایشگاه-ایران-هلث/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/نمایشگاه/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/ویروس-کرونا/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/پیشگیری/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/چگالی-بروز/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/کرونا/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/کن/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/کنترل-عفونت/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/کیسه-ساکشن/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/en/tag/گزارش-تصویری/": {
+  "to": "/en/blog/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/راهنمای-استفاده-کاربر-نهایی/": {
+  "to": "/راهنمای-نصب/راهنمای-استفاده-کاربر-نهایی/",
+  "type": "alias"
+ },
+ "/ساکشن-تیوب/": {
+  "to": "/محصولات/ساکشن-تیوب/",
+  "type": "alias"
+ },
+ "/author/a-kazemi/": {
+  "to": "/مقالات/",
+  "type": "author",
+  "fallback": true
+ },
+ "/author/e-rostami/": {
+  "to": "/مقالات/",
+  "type": "author",
+  "fallback": true
+ },
+ "/author/m-norouzi/": {
+  "to": "/مقالات/",
+  "type": "author",
+  "fallback": true
+ },
+ "/author/n-sharafi/": {
+  "to": "/مقالات/",
+  "type": "author",
+  "fallback": true
+ },
+ "/author/na-hassanali/": {
+  "to": "/مقالات/",
+  "type": "author",
+  "fallback": true
+ },
+ "/category/accessories/": {
+  "to": "/محصولات/",
+  "type": "category"
+ },
+ "/category/blog/": {
+  "to": "/مقالات/",
+  "type": "category"
+ },
+ "/category/newss/": {
+  "to": "/آخرین-اخبار/",
+  "type": "category"
+ },
+ "/category/products/": {
+  "to": "/محصولات/",
+  "type": "category"
+ },
+ "/category/آگهی-ها/": {
+  "to": "/فرصت-های-همکاری/#jobs",
+  "type": "category"
+ },
+ "/category/دستهبندی-نشده/": {
+  "to": "/مقالات/",
+  "type": "category"
+ },
+ "/category/دستگاه-ساکشن/": {
+  "to": "/محصولات/",
+  "type": "category"
+ },
+ "/category/راهنمای-نصب/": {
+  "to": "/راهنمای-نصب/",
+  "type": "category"
+ },
+ "/_citynmg/آذربایجان-شرقی/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/آذربایجان-غربی/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/اردبیل/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/اصفهان/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/البرز/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/بوشهر/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/تهران/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/خراسان-رضوی/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/خوزستان/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/زنجان/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/سمنان/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/سیستان-و-بلوچستان/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/فارس/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/قزوین/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/قم/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/مازندران/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/مرکزی/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/هرمزگان/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/همدان/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/کردستان/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/کرمان/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/کرمانشاه/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/کهگیلویه-و-بویراحمد/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/گیلان/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_citynmg/یزد/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-city",
+  "fallback": true
+ },
+ "/_customers/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/ایرانیان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-eghbal/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-آتیه/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-آراد/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-آریا/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-آسیا/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-آپادانا/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-ابن-سینا/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-البرز/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-الزهرا-اصفهان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-الغدیر/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-امام-خمینی-کنگان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-امام-خمینی/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-امید-2/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-امید/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-ایرانشهر/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-بازرگانان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-بانک-ملی/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-باهنر-کرمان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-بعثت/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-بقیه-الله/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-بهارلو/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-بهبود/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-بهمن/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-بیستون-کرمانشاه/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-بین-المللی-میلاد-فردا/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-تخصصی-شهید-دکتر-لواسانی/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-تخصصی-مهر/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-تخصصی-و-فوق-تخصصی-آبان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-تخصصی-و-فوق-تخصصی-خاتم-الانب/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-تخصصی-و-فوق-تخصصی-دنا/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-تخصصی-و-فوق-تخصصی-شهید-آیت-ال/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-تخصصی-و-فوق-تخصصی-لاله/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-تخصصی-پارسا/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-تریتا/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-تندیس/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-تهران-پارس/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-تهران/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-توس/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-جم/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-جماران/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-حضرت-فاطمه-کرمان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-خیریه-صدیقه-الزهرا/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-دادگستری/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-دکتر-امامی/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-دکتر-مجیبیان-یزد/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-دکتر-میر/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-دی/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-سعدی/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-سلامت-فردا/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-سوانح-و-سوختگی-گناوه/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-سورنا/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-سوم-شعبان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-سید-الشهدا/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-سیدالشهدا-یزد/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-شفا-ساری/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-شمال/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-شهرام/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-شهریار/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-شهید-دکتر-رهنمون/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-شهید-دکتر-فقیهی/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-شهید-رجایی-کرج/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-شهید-شوریده/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-شهید-صادق-گنجی-براز-جان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-شهید-محلاتی-تبریز/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-شهید-مطهری/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-شهید-هاشمی-نژاد/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-شهید-چمران-شیراز/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-عارفیان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-عرفان-نیایش/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-عرفان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-علوی/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-غیاثی/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-فرشچیان-همدان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-فرمانیه/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-فوق-تخصصی-تخت-جمشید/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-فوق-تخصصی-شفا/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-فوق-تخصصی-صارم/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-فوق-تخصصی-غرضی-اصفهان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-فوق-تخصصی-مادر-و-کودک-غدیر/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-فوق-تخصصی-مدائن/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-فوق-تخصصی-مهر-اهواز/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-فوق-تخصصی-نور-افشار/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-فیض-اصفهان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-قلب-الزهرا/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-مادر-مشهد/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-مادران/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-محب-مهر/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-محب-کوثر/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-مرکز-طبی-کودکان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-مفرح/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-مهرآیین-لواسان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-مهراد/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-مهرگان-قزوین/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-مهرگان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-موقوفه-گودرز/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-میلاد-ارومیه/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-میلاد-اصفهان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-میلاد/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-نجمیه/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-نور-شهریار/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-نیکان-سپید/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-نیکان-غرب/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-نیکان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-ولیعصر-تبریز/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-پارسیان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-پاسارگاد/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-پاستورنو/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-پیامبران-تهران/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-چشم-پزشکی-بینا/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-چشم-پزشکی-دکتر-جوادی/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-کودکان-بهرامی/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-کیان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/بیمارستان-یاس/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/دانشگاه-علوم-پزشکی-و-خدمات-بهداشتی-درم-2/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/دانشگاه-علوم-پزشکی-و-خدمات-بهداشتی-درم-3/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/دانشگاه-علوم-پزشکی-و-خدمات-بهداشتی-درم/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/درمانگاه-تخصصی-پوست-و-مو-پری-سیما/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/درمانگاه-شبانه-روزی-درنیان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/دی-کلینیک-ولنجک/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/عرفان-سلامت/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مجتمع-درمانی-آزادی/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مرکز-آموزش-تحقیقاتی-و-درمانی-قلب-و-عروق/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مرکز-آموزش-درمانی-افضلی-پور-کرمان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مرکز-آموزش-درمانی-نمازی/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مرکز-آموزشی-درمانی-امام-خمینی/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مرکز-آموزشی-درمانی-حضرت-زینب/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مرکز-آموزشی-پژوهشی-و-درمانی-امیرالموم/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مرکز-آموزشی-پژوهشی-و-درمانی-دکتر-مسیح-د/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مرکز-تحقیقاتی-آموزش-درمانی-شهید-چمران/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مرکز-جراحی-فوق-تخصصی-دکتر-خیرخواه/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مرکز-جراحی-محدود-شقایق/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مرکز-جراحی-محدود-فاطمه-زهرا-س-شهرری/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مرکز-جراحی-محدود-نیاوران/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مرکز-جراحی-میرداماد/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مرکز-جراحی-پارسیان-کاشان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مرکز-درمانی-و-جراحی-درمان-بهار/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مرکز-ناباروری-مام/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مرکز-پزشکی-آموزشی-و-درمانی-شهدا-تجریش/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مرکز-پزشکی-آموزشی-و-درمانی-مهدیه/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مرکز-پزشکی-اموزش-درمانی-کودکان-مفید/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مرکز-پزشکی-حج-و-زیارت/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مرکز-پزشکی-سهند/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مرکز-پزشکی-و-درمانی-شهید-مصطفی-خمینی/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/مرکزپزشکی-پانزده-خرداد/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/موسسه-خیریه-محک/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/هتل-بیمارستان-گاندی/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/پبیمارستان-شهید-صدوقی/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/پژوهشگاه-رویان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/کسرا/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/کلینیک-جراحی-آلفا/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/کلینیک-رازی/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/کلینیک-زخم-التیام/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/کلینیک-شیان/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_customers/کلینیک-مرکزی-شهر/": {
+  "to": "/مشتریان-ما/",
+  "type": "cpt-customers",
+  "fallback": true
+ },
+ "/_downloadcenter/": {
+  "to": "/کاتالوگ/",
+  "type": "cpt-download"
+ },
+ "/_downloadcenter/installation-on-the-console/": {
+  "to": "/کاتالوگ/",
+  "type": "cpt-download",
+  "fallback": true
+ },
+ "/_downloadcenter/دستگاه-تزریق-چربی/": {
+  "to": "/کاتالوگ/",
+  "type": "cpt-download",
+  "fallback": true
+ },
+ "/_downloadcenter/راهنمای-نصب-مخازن-بر-روی-پایه-ترولی/": {
+  "to": "/کاتالوگ/",
+  "type": "cpt-download",
+  "fallback": true
+ },
+ "/_downloadcenter/راهنمای-نصب-مخازن-بر-روی-کنسول/": {
+  "to": "/کاتالوگ/",
+  "type": "cpt-download",
+  "fallback": true
+ },
+ "/_downloadcenter/ساکشن-تیوب/": {
+  "to": "/کاتالوگ/",
+  "type": "cpt-download",
+  "fallback": true
+ },
+ "/_downloadcenter/ساکشن-دیواری-بزرگسال/": {
+  "to": "/کاتالوگ/",
+  "type": "cpt-download",
+  "fallback": true
+ },
+ "/_downloadcenter/سواب-ساکشن-یکبار-مصرف/": {
+  "to": "/کاتالوگ/",
+  "type": "cpt-download",
+  "fallback": true
+ },
+ "/_downloadcenter/فیلترهای-مخازن-طبی-آبادیس/": {
+  "to": "/کاتالوگ/",
+  "type": "cpt-download",
+  "fallback": true
+ },
+ "/_downloadcenter/نگهدارنده-لوله-تراشه/": {
+  "to": "/کاتالوگ/",
+  "type": "cpt-download",
+  "fallback": true
+ },
+ "/_downloadcenter/کاتالوگ-جامع-آبادیس/": {
+  "to": "/کاتالوگ/",
+  "type": "cpt-download",
+  "fallback": true
+ },
+ "/_downloadcenter/کیسه-ساکشن-یکبار-مصرف/": {
+  "to": "/کاتالوگ/",
+  "type": "cpt-download",
+  "fallback": true
+ },
+ "/_franchise/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/بهسان-تجهیز-آبادیس/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/تجهیز-گستر-آبیدر/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/تجهیزات-پزشکی-پاکان-طبیب-آرمان/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/جام-جم/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/جهان-درمان-2/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/جهان-درمان/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/دانش-نو-اندیشان-بهپود/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/دانش-نواندیشان-بهپود/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/رادمان-تجهیز-آژمان/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/شرکت-حکیمان-فرجاد-قومس/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/شرکت-نیک-طب-2/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/شرکت-نیک-طب-3/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/شرکت-نیک-طب/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/مخازن-طبی-آبادیس-2/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/مخازن-طبی-آبادیس-3/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/مخازن-طبی-آبادیس-4/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/مخازن-طبی-آبادیس/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/مداوا-گستر-پاسارگاد/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/نیک-طب/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/هگمتان-طب/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/پردیس-طب-تجهیز/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/پویا-طب-معجزه/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/کاراطب/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/کالای-پزشکی-بوشهر-درمان/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/کران-مبتکران-طبرستان/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_franchise/کیمیا-گران-طب-سلامت-2/": {
+  "to": "/لیست-نمایندگان/",
+  "type": "cpt-franchise",
+  "fallback": true
+ },
+ "/_joboffers/": {
+  "to": "/فرصت-های-همکاری/#jobs",
+  "type": "cpt-joboffer"
+ },
+ "/jet-menu/mega-item-12670/": {
+  "to": "/",
+  "type": "jet-menu",
+  "fallback": true
+ },
+ "/jet-menu/mega-item-33/": {
+  "to": "/",
+  "type": "jet-menu",
+  "fallback": true
+ },
+ "/jet-menu/mega-item-34/": {
+  "to": "/",
+  "type": "jet-menu",
+  "fallback": true
+ },
+ "/محصولات/کیسه-های-تخصصی-و-مدیریت-پسماند-2/": {
+  "to": "/solutions/waste-management-pva/",
+  "type": "page"
+ },
+ "/محصولات/کیسه-های-تخصصی-و-مدیریت-پسماند/": {
+  "to": "/solutions/waste-management-pva/",
+  "type": "page"
+ },
+ "/20-ژورنال-معتبر-تجهیزات-پزشکی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/abadis-med-in-salamatbonyan-exhibition/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/abadismed-in-uzmedexpo/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/affordability-of-disposable-suction-bags/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/dr-mehrabi/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/fixture/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/hospital-infection-control-indicators/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/improving-the-environmental-effects-of-nosocomial-infectious-effluents-by-using-disposable-suction-liner-bagsfa/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/introducing-medical-engineering-sites/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/invitation-to-the-11th-congress-of-infection-control/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/iran-radio-interview-with-abadis-medical/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/iranhealth-iranmed/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/nurse-day-1402/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/nurse1404/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/salamat-bonyan-exhibition-report/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/strategicity-and-necessity-of-using-disposable-suction-bags-part-ii/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/suctiontube/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/the-beginning-of-the-school-year-in-abadis/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/the-environmental-effects-publication-of-article-of-improving/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/the-need-to-use-a-disposable-suction-bag/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/uzmedexpo2023reports/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/آبادیس-اجرای-بازاریابی-نسل-چهارم-و-پنج/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/آبادیس-در-روزهای-جنگ-رمضان؛-تداوم-خدمت/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/آبادیس-واسط-همکاری-نمایشگاه-ایرانمد/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/آبادیس-پیشنهادهای-جامع-خود-برای-اصلاح/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/آبادیس،-نخستین-شرکت-صنعت-تجهیزات-پزشک/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/آشنایی-با-اتحادیه-ها-و-تشکل-های-تجهیزات/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/آشنایی-با-دستگاه-ساکشن-دامپزشکی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/آغاز-فوری-عملیات-بازسازی-کارخانه-آباد/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/آینده-تجهیزات-پزشکی-با-هوش-مصنوعی؛-فنا/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/اثرات-کیسههای-ساکشن-یکبار-مصرف-آبادی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/اجرا-و-رعایت-توصیه-نامه-های-بهداشتی-ارا/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/اخذ-گواهی-ce-اتحادیه-اروپا/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/ارتقا-فرايند-بیولوژيک-تصفیه-خانه-فاضل/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/ارزيابي-و-تحليل-مواجهات-شغلی-کادر-درما/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/ارزیابی-مقایسهای-مدیریت-مصرف-آنتی-بی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/از-اتاق-عمل-تا-کنترل-عفونت؛-نقش-کیسه-ساک/": {
+  "to": "/مقالات/",
+  "type": "post"
+ },
+ "/اسامی-برندگان-مسابقه-روز-پرستار-سال-1400/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/استانداردهای-موجود-در-تولید-ساکشن-تیو/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/استانداردهای-موجود-در-تولید-کیسه-ساکش/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/استخدام-کارشناس-فروش-در-شرکت-دانشبنی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/استفاده-مخزن-های-ساکشن-دائم/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/اصول-و-مبانی-کنترل-عفونت-های-بیمارستان/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/اعلام-عدم-تمدید-عضویت-و-انتشار-نامه-سرگ/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/الگوی-مقاومت-آنتی-بیوتیکی-باکتریهای/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/امحا-زباله-های-بیمارستانی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/انتخاب-آبادیس-به-عنوان-فعالترین-شرکت-ت/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/انتخابات-اتحادیه-بازرگانان-تجهیزات-پ/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/انتشار-مقاله-مخازن-طبی-آبادیس-در-medium/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/انتشار-مقاله-مدیرعامل-مخازن-طبی-آبادی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/انتشار-کتاب-تاریخ-شفاهی-صنعت-تجهیزات/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/انواع-فیلترهای-کیسه-ساکشن/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/اهدا-جوایز-قرعه-کشی-روز-پرستار-سال-۹۸/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/اهداف-توسعه-پایدار-آبادیس/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/اولین-گزارش-اقدامات-توسعه-پایدار-آباد/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/اکستنشن-تیوب-چیست؟/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/ایران-هلث-1401/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/ایرانمد-۱۴۰۵؛-گردهمایی-فعالان-صنعت-ت/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/ایزو-در-صنعت-تجهیزات-پزشکی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/بازتاب-خبری-از-حضور-مخازن-طبی-آبادیس-د/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/بازخورد-کار-آماری-آبادیس-درباره-نمایش/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/برای-زندگی-ایستادهایم؛-ارسال-۸-خاور/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/برترین-شرکتهای-تجهیزات-پزشکی-در-سال/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/بررسی-آلودگی-های-قارچی-به-ويژه-عوامل-مو/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/بررسی-شاخصهای-میکروبی-و-شیمیایی-آب-و/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/بررسی-علل-ایجاد-پریتونیت-در-بخش-دیالیز/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/بررسی-فراوانی-پنومونی-ناشی-از-ونتیلات/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/بررسی-مشكلات-استفاده-از-وسايل-حفاظت-فر/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/بررسی-منابع-انسانی-در-آبادیس/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/بررسی-میزان-رعایت-بهداشت-دست-کارکنان-د/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/برگزاری-مجمع-عمومی-عادی-انجمن-شرکتها/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/بهداشت-دهان-در-بیمارستان؛-از-اهمیت-مرا/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/بیانیه-مدیران-مخازن-طبی-آبادیس-در-مورد/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/تبعیت-از-دستورالعمل-های-پیشگیری-کننده/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/تجهیزات-و-محصولات-بیمارستانی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/تجهیزات-و-ملزومات-پزشکی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/تجهیزات-پزشکی-مصرفی-و-ملزومات-پزشکی-مص/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/تجهیزات-پزشکی-یکبار-مصرف،-کنترل-عفونت/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/تست/": {
+  "to": "/آخرین-اخبار/",
+  "type": "post"
+ },
+ "/تصفیه-فاضلاب-بیمارستانی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/توسعه-پایدار-در-تجهیزات-پزشکی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/جلسات-مدیران-آبادیس-با-رؤسای-بیمارستا/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/جلسه-همفکری-جهت-بهبود-کنگره-کنترل-عفون/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/حذف-آنتیبیوتیک-ونکومایسین-با-استفاد/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/حضور-شرکت-مخازن-طبی-آبادیس-در-چهاردهمی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/حضور-مخازن-طبی-آبادیس-در-نمایشگاه-تجهی-2/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/حضور-مخازن-طبی-آبادیس-در-نمایشگاه-تجهی-3/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/حضور-مخازن-طبی-آبادیس-در-نمایشگاه-تجهی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/حفاظت-از-محیط-زیست-و-کنترل-عفونت؛-دستاو/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/حمایت-آبادیس-از-کارزار-مطالبات-معوق/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/دستاوردهای-شرکت-مخازن-طبی-آبادیس-در-تو/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/دستورالعمل-اجرایی-نحوه-ضدعفونی-ابزار/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/دستگاه-تزریق-چربی-چیست؟/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/دستگاه-ساکشن-چیست/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/دعوت-به-نشست-تخصصی-تولید-پایدار-در-شرای/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/دعوت-نامه-آبادیس-در-دوازدهمین-کنگره-کن/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/دعوت-نامه-حضور-در-کنگره-کنترل-عفونت-1401/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/دیدار-راهبردی-معاونت-بازرگانی-آبادیس/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/راهنمای-خرید-کیسه-ادرار-یورین-بگ/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/راهنمای-خرید-کیسه-ساکشن-یکبار-مصرف-برا/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/رسانه-ها-در-صنعت-سلامت،-دارو-و-تجهیزات-پ/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/رسیور-پزشکی-چیست؟/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/رنگبندی-کیسههای-زباله-بیمارستانی/": {
+  "to": "/مقالات/",
+  "type": "post"
+ },
+ "/رو-نمایی-از-محصول-جدید-آبادیس-در-حوزه-کن/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/رو-نمایی-از-محصولات-جدید-آبادیس-در-حوزه/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/روز-پرستار-سال-1403-آبادیس/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/رونمایی-از-محصول-جدید-آبادیس-در-حوزه-فی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/رونمایی-از-محصول-فیکسر-آبادیس/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/رونمایی-کیسه-ساکشن-یکبار-مصرف-با-فیلتر/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/رگولاتور-ساکشن-چیست/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/زباله-های-پلاستیکی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/ساکشن-دیواری-چیست؟/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/ساکشن-مرکزی-یا-ساکشن-پرتابل؟-راهنمای-ج/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/ساکشن-پرتابل-آمبولانسی-و-اهمیت-استفاد/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/ست-سرم-چیست؟-راهنمای-جامع-انواع،-اجزا،/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/سومین-دوره-نمایشگاه-ایرانمد-۲۰۲۵/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/سوند-نلاتون-چیست؟/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/سیستم-شستشوی-بیمار-و-ضدعفونی-کننده-تجھ/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/شرکت-دانشبنیان-صنعت-تجهیزات-پزشکی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/شرکت-مخازن-طبی-آبادیس-دانش-بنیان-شد/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/صرفه-جویی-۴۰-میلیون-لیتر-آب-با-کیسه-های/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/صورة-للمعرض-الدولي-الثاني-والعشرون-في/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/طبقه-بندی-تجهیزات-پزشکی-t1-تا-t4-و-فرصتها/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/طراحی-جدیدی-از-اکسسوری-های-آبادیس/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/طراحی-و-اجرای-دستورالعمل-مدیریت-مصرف-و/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/طراحی-و-پیادهسازی-سیستم-هوش-تجاری-بر/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/فعالیت-های-مخازن-طبی-آبادیس-در-بحران-کر/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/فیلتر-آنتیباکتریال-و-فیلتر-هیدروفوب/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/فیلتر-متخلخل-و-انواع-آن-فلزی-،پلیمری،ptfe/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/فیلتر-های-متخلخل-در-صنعت-پزشکی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/فیلترهای-آبادیس؛-حداکثر-ایمنی-در-کنتر/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/فیلم-pva-در-صنعت-تجهیزات-پزشکی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/فینگرتیپ-رابط-ساکشن-چیست؟/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/فیکسر-لوله-تراشه؛-ایمنی-بیشتر،-مراقبت/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/قرعه-کشی-بزرگ-روز-پرستار-۹۸-آبادیس/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/قیمت-کیسه-ساکشن-یکبار-مصرف؛-هر-آنچه-مدی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/لوله-هوا-ایروی-چیست؟/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/لیبل-اصالت-در-تجهیزات-پزشکی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/مجمع-عمومی-سالیانه-انجمن-تولیدکنندگا/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/مجمع-عمومی-عادی-بهطور-فوقا/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/مجمع-عمومی-عادی-سالیانه-انجمن-آمدال/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/مجمع-فوق-العاده-اتحادیه-تولیدکنندگا/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/مجمع-و-انتخابات-انجمن-آمدال/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/محصولات-جدید-مخازن-طبی-آبادیس-رونمایی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/محصولات-و-تجهیزات-پزشکی-پلیمری/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/مخزن-ساکشن-دائمی؛-انتخابی-اقتصادی-یا-ه/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/مخزن-ساکشن-چیست؟/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/مديريت-پسماند-هاى-عفونی-بيمارستان/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/مدیر-فروش/": {
+  "to": "/_joboffers/مدیر-فروش/",
+  "type": "post"
+ },
+ "/مذاکرات-بین-المللی-آبادیس-در-ایران-هلث-1/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/مصاحبه-با-همکاران-و-مدیران-مخازن-طبی-آب/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/مصاحبه-رئیس-هیئتمدیره-آبادیس-در-برنا/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/مصاحبه-شرکت-پیام-گستر-با-مدیران-آبادیس/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/مصاحبه-ماهنامه-مهندسی-پزشکی-با-مشاور-ا/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/مصاحبه-مدیران-آبادیس-با-خبرگزاری-اخبا/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/مصاحبه-مدیران-آبادیس-با-خبرگزاری-فارس/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/مصاحبه-مدیران-آبادیس-با-گروه-تمپا/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/مصاحبه-مدیران-مخازن-طبی-آبادیس-با-مدیر/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/معرفی-رشته-مهندسی-پزشکی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/معرفی-رشته-پرستاری-بازار-کار،-دانشگاه/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/معرفی-سایت-های-اینترنتی-خرید-آنلاین-تج/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/معرفی-کدینگ-محصولات-آبادیس/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/مقاله-مدیرعامل-مخازن-طبی-آبادیس-در-کنف/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/مقایسهی-نانو-واکسن-ها-و-واکسن-های-بر/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/منسوجات-پزشکی-چیست؟/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/میزان-دانش-مراقبت-در-پیشگیری-و-کنترل-پ/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/میکروست-چیست؟-کاربرد،-اجزا-و-تفاوت-با-م/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/نجات-زاگرس،مسئولیت-اجتماعی-آبادیس/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/نحوه-شست-و-شوی-مخازن-ساکشن-ثابت-و-مدیریت/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/نحوه-نصب-مخازن/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/نظام-مراقبت-عفونت-های-بیمارستانی-و-پیش/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/نظرات-دکتر-رئیسی-معاون-وزارت-بهداشت-در/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/نظرسنجی-آبادیس-از-ایران-مد-۱۴۰۳/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/نظرسنجی-آبادیس-از-ایران-هلث-1403/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/نقش-صنایع-دانشبنیان-در-تحقق-حکمرانی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/نقش-کیسه-ساکشن-یکبار-مصرف-در-مدیریت-پسم/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/نقش-کیسه-ساکشن-یکبارمصرف-در-کاهش-خطر/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/نمایشگاههای-تجهیزات-پزشکی-ایران/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/نمایشگاههای-تجهیزات-پزشکی-جهان/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/نیروی-فنی/": {
+  "to": "/فرصت-های-همکاری/#jobs",
+  "type": "post"
+ },
+ "/هزار-درخت-بلوط،-هزار-امید-برای-نجات-زاگ/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/هوش-تجاری-bi؛-تحول-هوشمند-صنعت-تجهیزات-پ/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/وبینار-آموزشی-نقش-هوش-مصنوعی-و-هوش-تج/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/وسایل-یکبار-مصرف-پزشکی-و-استاندارد/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/ویروس-هانتا-چیست؟/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/پاتوژن/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/پروانه-بهره-برداری-جدید-آبادیس-صادر-گر/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/پروتکل-جامع-فرآیند-ضد-عفونی-با-نور-فراب/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/پودر-جاذب-در-صنعت-تجهیزات-پزشکی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/چالشهای-مالی-در-صنعت-تجهیزات-پزشکی؛/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/چرا-مخازن-طبی-آبادیس-در-هیچیک-از-نم/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/چرا-کیسه-ساکشن-یکبار-مصرف-میتواند-جا/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/چست-باتل-چیست؟-آشنایی-با-انواع،-کاربرد/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/چست-تیوب-چیست؟/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/کاربرد-pvc-مدیکال-گرید-در-تولید-لوله-ساکش/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/کارشناس-تحقیقات-بازار/": {
+  "to": "/_joboffers/کارشناس-تحقیقات-بازار/",
+  "type": "post"
+ },
+ "/کارشناس-حسابداری/": {
+  "to": "/_joboffers/کارشناس-حسابداری/",
+  "type": "post"
+ },
+ "/کارشناس-صادرات/": {
+  "to": "/_joboffers/کارشناس-صادرات/",
+  "type": "post"
+ },
+ "/کارشناس-فروش-2/": {
+  "to": "/_joboffers/کارشناس-فروش/",
+  "type": "post"
+ },
+ "/کارشناس-فروش/": {
+  "to": "/_joboffers/کارشناس-فروش/",
+  "type": "post"
+ },
+ "/کارمند-وصول-مطالبات/": {
+  "to": "/_joboffers/کارمند-وصول-مطالبات/",
+  "type": "post"
+ },
+ "/کرونا،سرماخوردگی،آنفلونزا/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/کلاس-خطر-تجهیزات-پزشکی-چیست-؟/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/کنترل-عفونت-در-دندانپزشکی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/کنترل-عفونت-های-بیمارستانی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/کنترل-ویروس-کرونا/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/کیسه-pva-چیست؟-کاربردها،-مزایا-و-نقش-آن-در/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/کیسه-ساکشن-چیست/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/کیسه-ساکشن-یکبار-مصرف-استریل-چیست؟/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/گزارش-بیست-و-سومین-نمایشگاه-بین-المللی/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/گزارش-تصویری-از-حضور-آبادیس-در-نمایشگا-3/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/گزارش-حضور-آبادیس-در-کنگره-کنترل-عفونت/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/گزارش-حضور-شرکت-مخازن-طبی-آبادیس-در-ایر/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/گزارش-کنگره-بین-المللی-ایران-کلین-۱۴۰۳/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/گزارش-کنگره-کنترل-عفونت-1401/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/گزارش-کنگره-کنترل-عفونت-۱۳۹۷/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/گزارش-کنگره-کنترل-عفونت-۱۴۰۲/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/گفتوگوی-تیترکوتاه-با-مدیرعامل-شرکت-م/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/گفتوگوی-سرکار-خانم-دکتر-محرز-درباره/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/گفتوگوی-مدیرعامل-شرکت-دانشبنیان-آ/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/گفتوگوی-کامل-رادیو-سلامت-با-مدیرعامل/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/گیره-t-شکل/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/۱۷-مرداد؛-روز-خبرنگار-گرامی-باد/": {
+  "to": "/مقالات/",
+  "type": "post",
+  "fallback": true
+ },
+ "/۴-برند-تولیدکننده-کیسه-ساکشن-در-جهان-که/": {
+  "to": "/مقالات/",
+  "type": "post"
+ },
+ "/tag/آبادیس/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/آنتی-سپتیک/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/اخبار/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/امحا-زباله-های-بیمارستانی/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/انواع-عفونت-های-بیمارستانی/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/انواع-فیلتر-کیسه-ساکشن/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/ایران-هلث-۹۸/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/ایران-هلث/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/تجهیزات-بیمارستانی/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/تصفیه-فاضلاب-بیمارستانی/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/جلوگیری-از-عفونت/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/دانش-بنیان/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/دستگاه-ساکشن/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/روز-پرستار/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/روش-های-ضد-عفونی/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/رگولاتور-ساکشن/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/زباله-های-بیمارستانی/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/ساکشن-بیمارستانی/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/ساکشن-تک-شیشه/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/ساکشن-دائم/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/ساکشن-دو-شیشه/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/ساکشن-یک-بار-مصرف/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/سلامت-بیمار/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/شیلد-محافظ/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/عفونت-بیمارستانی/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/عفونت-خون/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/عفونت-دستگاه-ادراری/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/عفونت/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/علائم-ویروس-کرونا/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/عوامل-بیماری/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/فیکسر/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/قرعه-کشی/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/محصولات-بیمارستانی/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/مخازن-طبی-آبادیس/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/مخزن-ساکشن-چیست؟/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/مراقبت-ویژه/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/مسئولیت-اجتماعی/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/مصاحبه/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/معرفی-سایت/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/مقاله،-دانش-بنیان،-کیسه-ساکشن-یکبار-مص/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/مهندسی-پزشکی/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/میزان-بروز-عفونت-بیمارستانی/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/نمایشگاه-ایران-هلث/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/نمایشگاه-تجهیزات-پزشکی-ازبکستان/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/نمایشگاه/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/ویروس-کرونا-جدید/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/ویروس-کرونا/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/پاتوژن/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/پسا-کرونا/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/پیشگیری/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/چگالی-بروز/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/ژورنال/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/کرونا/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/کنترل-عفونت-بیمارستانی/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/کنترل-عفونت-در-بیمارستان/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/کنترل-عفونت-های-بیمارستانی-1/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/کنترل-عفونت-های-بیمارستانی/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/کنترل-عفونت/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/کیسه-ساکشن-چیست/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/کیسه-ساکشن-یکبار-مصرف/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/کیسه-ساکشن/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/گزارش-تصویری/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ },
+ "/tag/گزارش-ویژه/": {
+  "to": "/مقالات/",
+  "type": "tag",
+  "fallback": true
+ }
+}

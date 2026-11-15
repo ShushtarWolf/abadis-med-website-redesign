@@ -524,7 +524,7 @@
       state.choice = item.id;
       var product = findCatalog(item.id);
       var summary = product ? textOf(product.summary) + '\n' + textOf(product.applications) : '';
-      var href = product && product.links && product.links[0] ? urlOf(product.links[0]) : '/products/';
+      var href = product && product.links && product.links[0] ? urlOf(product.links[0]) : '/محصولات/';
       addMsg('bot', esc(summary).replace(/\n/g, '<br>') + linkLine(href, href) + (item.id === 'canisters-liners' || item.id === 'anesthesia-icu' || item.id === 'gastroenterology' || item.id === 'gynecology' ? '<br>' + esc(t().pickVolume) : '<br>' + ctaLine()));
       if (item.id === 'canisters-liners' || item.id === 'anesthesia-icu') {
         showChoices([
@@ -834,7 +834,7 @@
       return {
         id: 'admin-override-' + (r.id || idx),
         section: 'admin-override',
-        url: { fa: '/about/', en: '/en/about/', ar: '/ar/about/' },
+        url: { fa: '/درباره-ما/', en: '/en/about/', ar: '/ar/about/' },
         text: { fa: textFa, en: textFa, ar: textFa },
         keywords: (r.topic || '') + ' ' + (r.fact || '')
       };
@@ -1249,7 +1249,7 @@
         qToks.forEach(function (wt) { if (arToks.indexOf(wt) !== -1) overlap++; });
         if (overlap >= 2 || (qToks.length === 1 && overlap === 1 && (ar.topic || '').indexOf(qToks[0]) !== -1)) {
           if (state.cutoff) {
-            addMsg('bot', fmtMd(ar.fact) + linkLine('/about/', '/about/') + ctaLine());
+            addMsg('bot', fmtMd(ar.fact) + linkLine('/درباره-ما/', '/درباره-ما/') + ctaLine());
             showQuickPrompts();
             return true;
           }
@@ -1262,7 +1262,7 @@
       var navidBio = state.lang === 'en'
         ? '**Eng. Navid Hassanali — Co-Founder & VP of Commercial and Sales at Abadis Medical Canisters:**\n• **Role:** VP of Commercial & Sales, Board Member, and Co-Founder of the knowledge-based company Abadis Medical Canisters (`abadis-med.com`), leading all sales, marketing, provincial dealer networks, and customer relations.\n• **Education & Experience:** B.Sc. in Biomedical Engineering (Bioelectric) with **over 16 years of continuous management experience in the medical device industry** (since 1389 / 2010).\n• **Key Milestones:** Obtained exclusive representation of Daiken Japan disposable suction liners in 1389 (2010), pioneered the clinical culture of closed-system disposable suction liners across Iranian hospitals, and co-founded **Abadis Medical Canisters** in **1396 (2017)** to launch national production in Iran.\n*(Note on older news archives: the "13 years of management experience" figure appeared in a Khordad 1401 / June 2022 news interview 4 years ago, which corresponds to 16+ years today in 1405/2026.)*'
         : '**مهندس نوید حسنعلی — معاونت بازرگانی و فروش و هم‌بنیان‌گذار شرکت دانش‌بنیان مخازن طبی آبادیس:**\n• **سمت:** معاونت بازرگانی و فروش، عضو هیئت‌مدیره و هم‌بنیان‌گذار شرکت دانش‌بنیان مخازن طبی آبادیس (`abadis-med.com`) و مسئول کل فعالیت‌های فروش، بازاریابی، شبکه نمایندگان و ارتباط با مشتریان.\n• **تحصیلات و سابقه مدیریتی:** کارشناس مهندسی پزشکی (گرایش بیوالکتریک) با **بیش از ۱۶ سال سابقه مدیریتی مستمر در حوزه تجهیزات پزشکی** (از سال ۱۳۸۹ تا ۱۴۰۵).\n• **دستاوردها و پیشینه:** اخذ نمایندگی انحصاری کیسه ساکشن یکبارمصرف از شرکت دایکن ژاپن در سال ۱۳۸۹، فرهنگ‌سازی گسترده استفاده از محصولات کنترل عفونت و کیسه‌های ساکشن یکبارمصرف در بیمارستان‌های کشور، و هم‌بنیان‌گذاری شرکت دانش‌بنیان «مخازن طبی آبادیس» در سال ۱۳۹۶ و راه‌اندازی خط تولید ملی کیسه ساکشن.\n• **توضیح درباره تفاوت عدد ۱۳ سال در آرشیو اخبار با ۱۶ سال فعلی:** عدد «۱۳ سال سابقه مدیریتی» مربوط به مصاحبه خبری خرداد سال ۱۴۰۱ (۴ سال پیش) در آرشیو اخبار سایت است که با گذشت زمان تا سال ۱۴۰۵ به **بیش از ۱۶ سال سابقه مدیریتی در حوزه تجهیزات پزشکی** (و حدود ۱۰ سال از تأسیس شرکت مخازن طبی آبادیس در سال ۱۳۹۶) رسیده است.';
-      addMsg('bot', fmtMd(navidBio) + linkLine('/about/#team', '/about/#team') + ctaLine());
+      addMsg('bot', fmtMd(navidBio) + linkLine('/درباره-ما/#team', '/درباره-ما/#team') + ctaLine());
       showQuickPrompts();
       return true;
     }
@@ -1270,7 +1270,7 @@
       var alirezaBio = state.lang === 'en'
         ? '**Eng. Alireza Hassanali — CEO & Co-Founder of Abadis Medical Canisters:**\n• **Role:** Chief Executive Officer (CEO), Board Member, and Co-Founder of the knowledge-based company Abadis Medical Canisters (`abadis-med.com`).\n• **Background & Leadership:** Co-founded Abadis Medical Canisters in **1396 (2017)** building on the parent group Persia Medical Instruments (founded in **1385 / 2006**) and exclusive Daiken Japan representation (**1389 / 2010**).\n• **Research & Strategic Focus:** Author of scientific and international conference papers on Business Intelligence (BI) for liquidity and production planning in medical device manufacturing and Green Governance in hospital waste and water reduction; leads Abadis’s 3rd Five-Year Strategic Plan toward 1410.'
         : '**مهندس علیرضا حسنعلی — مدیرعامل و هم‌بنیان‌گذار شرکت دانش‌بنیان مخازن طبی آبادیس:**\n• **سمت:** مدیرعامل، عضو هیئت‌مدیره و هم‌بنیان‌گذار شرکت دانش‌بنیان مخازن طبی آبادیس (`abadis-med.com`).\n• **پیشینه و راهبری:** هم‌بنیان‌گذاری شرکت دانش‌بنیان مخازن طبی آبادیس در سال ۱۳۹۶ (با پشتوانه دو دهه فعالیت مجموعه مادر «ابزار درمان پرشیا» از سال ۱۳۸۵ و فعالیت تخصصی در حوزه کیسه ساکشن از سال ۱۳۸۹) و هدایت شرکت به جایگاه بزرگ‌ترین تولیدکننده کیسه ساکشن یکبارمصرف و اولین تولیدکننده فیلترهای قطع‌کننده جریان در ایران (همراه با ۱٬۲۸۴ مرکز درمانی فعال در سراسر کشور).\n• **فعالیت‌های علمی و راهبردی:** پژوهشگر و نویسنده مقالات علمی و کنفرانسی در زمینه «طراحی سیستم‌های هوش تجاری (BI) برای مدیریت نقدینگی و تصمیم‌گیری تولید در شرکت‌های تجهیزات پزشکی» و «حکمرانی سبز و نوآوری پایدار در کاهش مصرف آب و پسماند بیمارستانی»، و طراح سند چشم‌انداز راهبردی ۱۴۱۰ آبادیس.';
-      addMsg('bot', fmtMd(alirezaBio) + linkLine('/about/#team', '/about/#team') + ctaLine());
+      addMsg('bot', fmtMd(alirezaBio) + linkLine('/درباره-ما/#team', '/درباره-ما/#team') + ctaLine());
       showQuickPrompts();
       return true;
     }
@@ -1278,7 +1278,7 @@
       var abolfazlBio = state.lang === 'en'
         ? '**Mr. Abolfazl Hassanali — Chairman of the Board at Abadis Medical Canisters:**\n• **Role:** Chairman of the Board of Directors at the knowledge-based company Abadis Medical Canisters (`abadis-med.com`), overseeing corporate governance, sustainable development, and social responsibility initiatives including the Save Zagros campaign.'
         : '**جناب آقای ابوالفضل حسنعلی — رئیس هیئت‌مدیره شرکت دانش‌بنیان مخازن طبی آبادیس:**\n• **سمت:** رئیس هیئت‌مدیره شرکت دانش‌بنیان مخازن طبی آبادیس (`abadis-med.com`).\n• **محور فعالیت‌ها:** راهبری کلان هیئت‌مدیره، توسعه پایدار، حمایت از تولید دانش‌بنیان و پیشبرد مسئولیت‌های اجتماعی و انسان‌دوستانه آبادیس (از جمله پویش «نجات زاگرس» و کاشت بیش از ۲٬۰۰۰ نهال بلوط به نام مراکز درمانی همراه).';
-      addMsg('bot', fmtMd(abolfazlBio) + linkLine('/about/#team', '/about/#team') + ctaLine());
+      addMsg('bot', fmtMd(abolfazlBio) + linkLine('/درباره-ما/#team', '/درباره-ما/#team') + ctaLine());
       showQuickPrompts();
       return true;
     }
@@ -1315,7 +1315,7 @@
         : state.lang === 'ar'
         ? '**تعبئة وأبعاد كراتين منتجات آباديس:**\n• **أكياس الشفط ذات الاستعمال الواحد (١، ٢، ٣ لتر):** **٤٥ كيسًا في كل كرتون** (الكيس بفلتر ميكانيكي: ٣٠ في الكرتون).\n• **أنابيب الشفط (CH25، CH30، CH35):** **١٠٠ أنبوب في الكرتون**.'
         : '**تعداد در کارتن و ابعاد بسته‌بندی محصولات آبادیس:**\n• **کیسه ساکشن یکبارمصرف (۱، ۲ و ۳ لیتری):** در هر کارتن **۴۵ عدد** قرار دارد (مدل دارای فیلتر مکانیکی: **۳۰ عدد** در کارتن).\n• **ساکشن تیوب (CH25، CH30، CH35):** در هر کارتن **۱۰۰ عدد** قرار دارد.\n• **ابعاد کارتن‌ها:** کیسه ۱ و ۲ لیتری: ۴۴×۴۲٫۵×۵۷٫۵ سانتی‌متر | کیسه ۳ لیتری: ۴۹×۴۹×۴۹ سانتی‌متر | ساکشن تیوب: ۴۳٫۵×۴۴٫۵×۵۹ سانتی‌متر.';
-      addMsg('bot', fmtMd(cartTxt) + linkLine('/faq/', '/faq/') + ctaLine());
+      addMsg('bot', fmtMd(cartTxt) + linkLine('/پرسش-های-متداول/', '/پرسش-های-متداول/') + ctaLine());
       return true;
     }
 
@@ -1355,7 +1355,7 @@
         : state.lang === 'ar'
         ? 'تجمع آباديس كتالوجها في ثماني فئات:\n١. أكياس الشفط ذات الاستخدام الواحد\n٢. علبة الشفط\n٣. الحوامل والمثبتات\n٤. الوصلات\n٥. الفلاتر\n٦. أنبوب الشفط\n٧. نظافة الفم (فرشاة الشفط، المسحة الفموية، مثبّت أنبوب القصبة)\n٨. منتجات أخرى (المنظّم، كيس نفايات PVA، وعاء التجميع)'
         : 'محصولات آبادیس در هشت گروه است:\n۱. کیسه ساکشن یکبار مصرف\n۲. مخزن ساکشن\n۳. پایه و نگهدارنده‌ها\n۴. اتصالات\n۵. فیلتر\n۶. ساکشن تیوب\n۷. بهداشت دهان (مسواک ساکشن، سواب دهانی، فیکسر لوله تراشه)\n۸. سایر محصولات (رگولاتور، کیسه زباله PVA، رسیور یکبار مصرف)';
-      addMsg('bot', fmtMd(prodText) + linkLine('/products/', '/products/') + ctaLine());
+      addMsg('bot', fmtMd(prodText) + linkLine('/محصولات/', '/محصولات/') + ctaLine());
       showQuickPrompts();
       return true;
     }
