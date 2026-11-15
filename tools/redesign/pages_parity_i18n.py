@@ -82,12 +82,20 @@ def build_arabic_sdgs(write):
       </div>
     </div>
   </div></section>'''
-    for rel, can in (('arabic/sdgs/index.html', 'arabic/sdgs/'), ('arabic/sustainability/index.html', 'arabic/sdgs/')):
-        html = page(p, 'sdgs', 'التنمية المستدامة',
-                    'وثيقة التزام شركة خزانات آباديس الطبية بأهداف التنمية المستدامة للأمم المتحدة (UN SDGs)',
-                    body, lang='ar', fa_path='sdgs/', canonical_path=can,
-                    extra_head=head_css, html_attrs='data-slogan="t1"', scripts=motion_js)
-        write(rel, html)
+    html = page(p, 'sdgs', 'التنمية المستدامة',
+                'وثيقة التزام شركة خزانات آباديس الطبية بأهداف التنمية المستدامة للأمم المتحدة (UN SDGs)',
+                body, lang='ar', fa_path='sdgs/', canonical_path='arabic/sdgs/',
+                extra_head=head_css, html_attrs='data-slogan="t1"', scripts=motion_js)
+    write('arabic/sdgs/index.html', html)
+    write('arabic/sustainability/index.html', (
+        '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8">'
+        '<meta name="robots" content="noindex,nofollow">'
+        '<link rel="canonical" href="https://abadis-med.com/arabic/sdgs/">'
+        '<meta http-equiv="refresh" content="0; url=../sdgs/">'
+        '<title>التنمية المستدامة</title></head><body>'
+        '<p><a href="../sdgs/">التنمية المستدامة</a></p>'
+        '<script>location.replace("../sdgs/")</script></body></html>'
+    ))
 
 
 def build_arabic_csr(write):

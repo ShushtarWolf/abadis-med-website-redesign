@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>حاسبة التوفير — خزانات طبي آباديس</title>
-<meta name="description" content="احسب تقديرياً توفير الماء وتكلفة الغسيل والتعقيم ووقت الكادر عند استخدام أكياس الشفط آباديس ذات الاستخدام الواحد.">
+<meta name="description" content="قدّروا توفير الماء وتكلفة الغسيل والتعقيم ووقت الكادر عند استخدام أكياس الشفط آباديس ذات الاستخدام الواحد.">
 <!-- TODO(launch): remove this robots meta when the site is published on https://abadis-med.com/ -->
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#e8f3f3">
@@ -29,6 +29,7 @@
 <link rel="stylesheet" href="../../assets/css/consent.css">
 <link rel="stylesheet" href="../../assets/css/footer-motion.css">
 <script type="application/ld+json" data-abadis-ld>{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://abadis-med.com/#organization", "name": "خزانات طبي آباديس", "alternateName": "Abadis Med", "url": "https://abadis-med.com/arabic/", "logo": "https://abadis-med.com/assets/img/abadis-logo-teal.png", "description": "شركة قائمة على المعرفة لتصنيع أكياس الشفط أحادية الاستخدام ومستلزمات مكافحة العدوى", "telephone": "+982192001017", "sameAs": ["https://www.instagram.com/abadis.med/", "https://www.linkedin.com/company/abadis-medical-co/", "https://www.aparat.com/abadismed", "https://t.me/abadis_med"]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://abadis-med.com/arabic/"}, {"@type": "ListItem", "position": 2, "name": "خزانات طبي آباديس", "item": "https://abadis-med.com/arabic/الحوسبة/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/dial/dial.css?v=20261115a">
 </head>
 <body>
 <a class="skip" href="#main">تخطي إلى المحتوى</a>
@@ -50,34 +51,94 @@
   </button>
 </header>
 <main id="main">
-  <section class="page-hero">
-    <div class="wrap page-hero-with-mark">
-      <div class="page-hero-copy">
-      <p class="crumbs"><a href="../../arabic/">الرئيسية</a> › خزانات طبي آباديس</p>
-      <h1>حاسبة التوفير</h1>
-      <p class="lead">احسب تقديرياً توفير الماء وتكلفة الغسيل والتعقيم ووقت الكادر عند استخدام أكياس الشفط آباديس ذات الاستخدام الواحد.</p>
-      
-      </div>
-      <span class="sec-mark sec-mark--lg" aria-hidden="true"><img class="sec-mark-light" src="../../brand/section-logos/calculator-icon.svg" alt="" width="120" height="120" decoding="async"><img class="sec-mark-dark" src="../../brand/section-logos/calculator-icon-dark.svg" alt="" width="120" height="120" decoding="async"></span>
-    </div>
+<div class="dp-embed dp-page">
+<section class="intro" id="top">
+    <span class="sec-mark sec-mark--lg" aria-hidden="true"><img class="sec-mark-light" src="../../brand/section-logos/calculator-icon.svg" alt="" width="120" height="120" decoding="async"><img class="sec-mark-dark" src="../../brand/section-logos/calculator-icon-dark.svg" alt="" width="120" height="120" decoding="async"></span>
+    <div class="eyebrow">الحاسبة</div>
+    <h1>حاسبة التوفير من <em>آباديس</em></h1>
+    <p>أدر القرص باللمس أو بالفأرة، أو اكتب رقماً. تعرض ثلاث شاشات توفير الماء وتكلفة الغسيل والتعقيم ووقت الكادر معاً.</p>
   </section>
-  <section class="section"><div class="wrap prose reveal"><div class="calc-i18n card" data-calc-i18n style="padding:22px">
-  <fieldset class="qf-field" style="border:0;padding:0;margin:0 0 14px"><legend class="sr-only">بحسب عدد العمليات سنوياً</legend>
-    <label><input type="radio" name="ci-mode" value="surgery" checked> بحسب عدد العمليات سنوياً</label>
-    <label><input type="radio" name="ci-mode" value="beds"> بحسب عدد الأسِرّة</label></fieldset>
-  <div class="qf-grid">
-    <div class="qf-field" data-mode="surgery"><label for="ci-n">عدد العمليات الجراحية سنوياً</label><input id="ci-n" type="number" min="0" max="15000" step="100" value="1000" inputmode="numeric"></div>
-    <div class="qf-field" data-mode="beds" hidden><label for="ci-a">أسِرّة غرفة العمليات</label><input id="ci-a" type="number" min="0" max="700" value="10" inputmode="numeric"></div>
-    <div class="qf-field" data-mode="beds" hidden><label for="ci-b">أسِرّة ICU|CCU</label><input id="ci-b" type="number" min="0" max="700" value="10" inputmode="numeric"></div>
-    <div class="qf-field"><label for="ci-cur">عملة التكلفة</label><select id="ci-cur"><option value="none">إخفاء التكلفة</option><option value="IRT">IRT (تومان، تكلفة الوحدة في الحاسبة الإيرانية)</option><option value="custom">تكلفة وحدة مخصّصة (بعملتك)</option></select></div>
-    <div class="qf-field" id="ci-unit-row" hidden><label for="ci-unit">تكلفة دورة التنظيف الواحدة</label><input id="ci-unit" type="number" min="0" step="any" inputmode="decimal"><label for="ci-code">رمز العملة (مثل USD)</label><input id="ci-code" type="text" maxlength="3" autocomplete="off"></div>
-  </div>
-  <table class="spec-table" style="margin-top:16px" aria-live="polite"><tbody>
-    <tr><th scope="row">توفير الماء (لتر/سنة)</th><td id="ci-water">0</td></tr>
-    <tr id="ci-cost-row" hidden><th scope="row">توفير تكلفة الغسيل والتعقيم</th><td id="ci-cost">0</td></tr>
-    <tr><th scope="row">توفير وقت الكادر (ساعة/سنة)</th><td id="ci-hours">0</td></tr>
-  </tbody></table>
-</div></div></section>
+<section class="calc dial-sec" id="calc1" aria-labelledby="calc1-t">
+    <div class="calc-track"><div class="calc-pin"><div class="dev">
+      <div class="dev-head">
+        <div><div class="dev-tag">CH-1 · المدخل: عدد العمليات</div><h2 id="calc1-t">بحسب عدد العمليات الجراحية سنوياً</h2><p class="dev-hint" data-hint>أدر القرص باللمس أو بالفأرة، أو اكتب رقماً</p></div>
+        <div class="dev-ctl"><div class="chips" role="group" aria-label="قيم جاهزة">
+              <button class="chip" type="button" data-n="1000">١٬٠٠٠</button>
+              <button class="chip" type="button" data-n="5000">٥٬٠٠٠</button>
+              <button class="chip" type="button" data-n="10000">١٠٬٠٠٠</button>
+              <button class="chip" type="button" data-n="15000">١٥٬٠٠٠</button>
+            </div></div>
+      </div>
+      <div class="dev-body">
+        <div class="knob-area">
+            <div class="knob-wrap" tabindex="0" role="slider">
+              <svg class="knob-scale" viewBox="0 0 200 200" aria-hidden="true"><g class="ticks"></g><circle class="knob-track" cx="100" cy="100" r="93" pathLength="360" stroke-dasharray="300 360" transform="rotate(120 100 100)"/><circle class="knob-arc" cx="100" cy="100" r="93" pathLength="360" stroke-dasharray="0 360" transform="rotate(120 100 100)"/></svg>
+              <div class="knob" aria-hidden="true"><span class="knob-mark"></span></div>
+              <div class="knob-logo" aria-hidden="true">آباديس</div>
+            </div>
+            <div class="lcd"><div class="lcd-cell active"><span class="lbl"><span class="led"></span>عدد العمليات سنوياً</span><span class="odo" data-odo="n" data-digits="5" aria-hidden="true"></span><input class="odo-in" data-in="n" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" autocorrect="off" spellcheck="false" dir="ltr" aria-label="عدد العمليات سنوياً (٠ إلى ١٥٬٠٠٠)" /></div></div>
+          </div>
+        <div class="mon mon-w bezel" data-gauge="water"><div class="mon-screen">
+              <svg class="gauge" viewBox="0 0 132 86" aria-hidden="true"><g class="g-ticks"></g><path class="g-track" d="M14 76 A52 52 0 0 1 118 76" pathLength="100"/><path class="g-arc" d="M14 76 A52 52 0 0 1 118 76" pathLength="100" stroke-dasharray="0 100"/><line class="g-needle" x1="66" y1="76" x2="66" y2="34" transform="rotate(-90 66 76)"/><circle class="g-hub" cx="66" cy="76" r="4.5"/></svg>
+              <div class="mon-txt"><div class="mon-top"><span>توفير الماء</span><i>H₂O</i></div><div class="mon-val"><span class="odo" data-odo="water" data-digits="7"></span><small>لتر</small></div><div class="mon-sub" data-sub="tubs"></div></div>
+            </div></div>
+        <div class="mon mon-c bezel" data-gauge="cost"><div class="mon-screen">
+              <svg class="gauge" viewBox="0 0 132 86" aria-hidden="true"><g class="g-ticks"></g><path class="g-track" d="M14 76 A52 52 0 0 1 118 76" pathLength="100"/><path class="g-arc" d="M14 76 A52 52 0 0 1 118 76" pathLength="100" stroke-dasharray="0 100"/><line class="g-needle" x1="66" y1="76" x2="66" y2="34" transform="rotate(-90 66 76)"/><circle class="g-hub" cx="66" cy="76" r="4.5"/></svg>
+              <div class="mon-txt"><div class="mon-top"><span>تكلفة الغسيل والتعقيم</span><i>COST</i></div><div class="mon-val"><span class="odo" data-odo="cost" data-digits="13"></span><small>تومان</small></div><div class="mon-sub" data-sub="read"></div></div>
+            </div></div>
+        <div class="mon mon-h bezel" data-gauge="hours"><div class="mon-screen">
+              <svg class="gauge" viewBox="0 0 132 86" aria-hidden="true"><g class="g-ticks"></g><path class="g-track" d="M14 76 A52 52 0 0 1 118 76" pathLength="100"/><path class="g-arc" d="M14 76 A52 52 0 0 1 118 76" pathLength="100" stroke-dasharray="0 100"/><line class="g-needle" x1="66" y1="76" x2="66" y2="34" transform="rotate(-90 66 76)"/><circle class="g-hub" cx="66" cy="76" r="4.5"/></svg>
+              <div class="mon-txt"><div class="mon-top"><span>وقت الكادر</span><i>TIME</i></div><div class="mon-val"><span class="odo" data-odo="hours" data-digits="6"></span><small>ساعة</small></div><div class="mon-sub" data-sub="shifts"></div></div>
+            </div></div>
+        <div class="dev-sum bezel"><div class="sum-in"><p class="sum-text" data-sum></p><a class="hero-btn" href="tel:02192001017">التحدث مع أخصائي المبيعات</a></div></div>
+      </div>
+    </div></div></div>
+  </section>
+<section class="calc dial-sec" id="calc2" aria-labelledby="calc2-t">
+    <div class="calc-track"><div class="calc-pin"><div class="dev">
+      <div class="dev-head">
+        <div><div class="dev-tag">CH-2 · المدخل: عدد الأسرة</div><h2 id="calc2-t">بحسب عدد الأسرة</h2><p class="dev-hint" data-hint>الخطوة ١: اضبط عدد أسرة غرفة العمليات بتدوير القرص أو بكتابة الرقم</p></div>
+        <div class="dev-ctl"><div class="chips" role="group" aria-label="تركيبات جاهزة (أسرة غرفة العمليات + ICU|CCU)">
+              <button class="chip" type="button" data-a="10" data-b="10">١٠ + ١٠</button>
+              <button class="chip" type="button" data-a="20" data-b="10">٢٠ + ١٠</button>
+              <button class="chip" type="button" data-a="50" data-b="20">٥٠ + ٢٠</button>
+              <button class="chip" type="button" data-a="100" data-b="50">١٠٠ + ٥٠</button>
+              <button class="chip" type="button" data-a="300" data-b="100">٣٠٠ + ١٠٠</button>
+              <button class="chip" type="button" data-a="700" data-b="700">٧٠٠ + ٧٠٠</button>
+            </div><button class="confirm" type="button" data-confirm hidden></button></div>
+      </div>
+      <div class="dev-body">
+        <div class="knob-area">
+            <div class="knob-wrap" tabindex="0" role="slider">
+              <svg class="knob-scale" viewBox="0 0 200 200" aria-hidden="true"><g class="ticks"></g><circle class="knob-track" cx="100" cy="100" r="93" pathLength="360" stroke-dasharray="300 360" transform="rotate(120 100 100)"/><circle class="knob-arc" cx="100" cy="100" r="93" pathLength="360" stroke-dasharray="0 360" transform="rotate(120 100 100)"/></svg>
+              <div class="knob" aria-hidden="true"><span class="knob-mark"></span></div>
+              <div class="knob-logo" aria-hidden="true">آباديس</div>
+            </div>
+            <div class="lcd"><div class="lcd-cell" data-ch="a"><span class="hold">مثبَّت</span><span class="lbl"><span class="led"></span>أسرة غرفة العمليات</span><span class="odo" data-odo="a" data-digits="3" aria-hidden="true"></span><input class="odo-in" data-in="a" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" autocorrect="off" spellcheck="false" dir="ltr" aria-label="عدد أسرة غرفة العمليات (٠ إلى ٧٠٠)" /></div><div class="lcd-cell" data-ch="b"><span class="lbl"><span class="led"></span>أسرة ICU|CCU</span><span class="odo" data-odo="b" data-digits="3" aria-hidden="true"></span><input class="odo-in" data-in="b" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" autocorrect="off" spellcheck="false" dir="ltr" aria-label="عدد أسرة ICU|CCU (٠ إلى ٧٠٠)" /></div></div>
+          </div>
+        <div class="mon mon-w bezel" data-gauge="water"><div class="mon-screen">
+              <svg class="gauge" viewBox="0 0 132 86" aria-hidden="true"><g class="g-ticks"></g><path class="g-track" d="M14 76 A52 52 0 0 1 118 76" pathLength="100"/><path class="g-arc" d="M14 76 A52 52 0 0 1 118 76" pathLength="100" stroke-dasharray="0 100"/><line class="g-needle" x1="66" y1="76" x2="66" y2="34" transform="rotate(-90 66 76)"/><circle class="g-hub" cx="66" cy="76" r="4.5"/></svg>
+              <div class="mon-txt"><div class="mon-top"><span>توفير الماء</span><i>H₂O</i></div><div class="mon-val"><span class="odo" data-odo="water" data-digits="7"></span><small>لتر</small></div><div class="mon-sub" data-sub="tubs"></div></div>
+            </div></div>
+        <div class="mon mon-c bezel" data-gauge="cost"><div class="mon-screen">
+              <svg class="gauge" viewBox="0 0 132 86" aria-hidden="true"><g class="g-ticks"></g><path class="g-track" d="M14 76 A52 52 0 0 1 118 76" pathLength="100"/><path class="g-arc" d="M14 76 A52 52 0 0 1 118 76" pathLength="100" stroke-dasharray="0 100"/><line class="g-needle" x1="66" y1="76" x2="66" y2="34" transform="rotate(-90 66 76)"/><circle class="g-hub" cx="66" cy="76" r="4.5"/></svg>
+              <div class="mon-txt"><div class="mon-top"><span>تكلفة الغسيل والتعقيم</span><i>COST</i></div><div class="mon-val"><span class="odo" data-odo="cost" data-digits="11"></span><small>تومان</small></div><div class="mon-sub" data-sub="read"></div></div>
+            </div></div>
+        <div class="mon mon-h bezel" data-gauge="hours"><div class="mon-screen">
+              <svg class="gauge" viewBox="0 0 132 86" aria-hidden="true"><g class="g-ticks"></g><path class="g-track" d="M14 76 A52 52 0 0 1 118 76" pathLength="100"/><path class="g-arc" d="M14 76 A52 52 0 0 1 118 76" pathLength="100" stroke-dasharray="0 100"/><line class="g-needle" x1="66" y1="76" x2="66" y2="34" transform="rotate(-90 66 76)"/><circle class="g-hub" cx="66" cy="76" r="4.5"/></svg>
+              <div class="mon-txt"><div class="mon-top"><span>وقت الكادر</span><i>TIME</i></div><div class="mon-val"><span class="odo" data-odo="hours" data-digits="6"></span><small>ساعة</small></div><div class="mon-sub" data-sub="shifts"></div></div>
+            </div></div>
+        <div class="dev-sum bezel"><div class="sum-in"><p class="sum-text" data-sum></p><a class="hero-btn" href="tel:02192001017">التحدث مع أخصائي المبيعات</a></div></div>
+      </div>
+    </div></div></div>
+  </section>
+<section class="cta-band">
+    <h2>تحدثوا معنا لحساب يناسب مركزكم العلاجي</h2>
+    <p>أخصائيو مبيعات خزانات آباديس الطبية جاهزون للإجابة عن أسئلتكم.</p>
+    <a class="hero-btn" href="tel:02192001017">التحدث مع أخصائي المبيعات</a>
+    <p class="cta-sub">مركز الاتصال: <a href="tel:02192001017" dir="ltr">021-92001017</a> · <a href="../اتصل-بنا/">صفحة الاتصال</a></p>
+  </section>
+</div>
 </main>
 <footer class="site-footer">
   <div class="wrap foot-inner">
@@ -148,6 +209,7 @@
 <script src="../../assets/js/site.js?v=20261028p" defer></script>
 <script src="../../assets/js/consent.js" defer></script>
 <script src="../../assets/js/footer-motion.js" defer></script>
-<script src="../../assets/js/calc-i18n.js" defer></script>
+<script src="../../assets/dial/abadis-common.js?v=20261115a"></script>
+<script src="../../assets/dial/dial-practical.js?v=20261115a" defer></script>
 </body>
 </html>

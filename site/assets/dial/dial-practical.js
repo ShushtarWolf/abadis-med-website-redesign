@@ -3,6 +3,50 @@
 
     /* Practical dial: no scroll-scrub. The dial turns by touch/mouse drag (or arrow keys), the LCD value is typed directly,
        presets are one-tap shortcuts. Formulas, odometers, formatting and ranges all come from abadis-common.js (Abadis.F / Abadis.IN). */
+    function dialCopy(lang) {
+      if (lang === 'en') return {
+        tubs: (n) => '≈ <b>' + n + '</b> bathtubs of 200 litres (approximate)',
+        tubsEmpty: 'About the same as 200-litre bathtubs (approximate)',
+        shifts: (n) => '≈ <b>' + n + '</b> eight-hour shifts',
+        shiftsEmpty: 'About the same as eight-hour shifts',
+        sumSurg: (n, w, c, h) => 'With <b>' + n + '</b> surgeries a year: about <b>' + w + '</b> litres of water, <b>' + c + '</b> toman in washing and disinfection, and <b>' + h + '</b> hours of staff time.',
+        emptySurg: 'Turn the dial or type the number of surgeries per year.',
+        hintA: 'Step 1: set the number of operating-room beds by turning the dial or typing a number',
+        hintB: 'Step 2: set the number of ICU|CCU beds by turning the dial or typing a number',
+        sumBeds: (a, b, w, c, h) => 'With <b>' + a + '</b> operating-room beds and <b>' + b + '</b> ICU|CCU beds: about <b>' + w + '</b> litres of water, <b>' + c + '</b> toman in washing and disinfection, and <b>' + h + '</b> hours of staff time.',
+        emptyBeds: 'Turn the dial or type the number of beds.',
+        confirm: (n) => 'Save ' + n + ' operating-room beds and continue to step 2',
+        editBeds: 'Change the number of operating-room beds',
+      };
+      if (lang === 'ar') return {
+        tubs: (n) => '≈ <b>' + n + '</b> حوض استحمام سعة ٢٠٠ لتر (تقريبي)',
+        tubsEmpty: 'ما يعادل أحواض استحمام سعة ٢٠٠ لتر (تقريبي)',
+        shifts: (n) => '≈ <b>' + n + '</b> وردية عمل من ٨ ساعات',
+        shiftsEmpty: 'ما يعادل ورديات عمل من ٨ ساعات',
+        sumSurg: (n, w, c, h) => 'مع <b>' + n + '</b> عملية جراحية سنوياً: نحو <b>' + w + '</b> لتراً من الماء، و<b>' + c + '</b> تومان لتكلفة الغسيل والتعقيم، و<b>' + h + '</b> ساعة من وقت الكادر.',
+        emptySurg: 'أدر القرص أو اكتب عدد العمليات الجراحية سنوياً.',
+        hintA: 'الخطوة ١: اضبط عدد أسرة غرفة العمليات بتدوير القرص أو بكتابة الرقم',
+        hintB: 'الخطوة ٢: اضبط عدد أسرة ICU|CCU بتدوير القرص أو بكتابة الرقم',
+        sumBeds: (a, b, w, c, h) => 'مع <b>' + a + '</b> سرير غرفة عمليات و<b>' + b + '</b> سرير ICU|CCU: نحو <b>' + w + '</b> لتراً من الماء، و<b>' + c + '</b> تومان لتكلفة الغسيل والتعقيم، و<b>' + h + '</b> ساعة من وقت الكادر.',
+        emptyBeds: 'أدر القرص أو اكتب عدد الأسرة.',
+        confirm: (n) => 'تثبيت ' + n + ' سرير غرفة عمليات والانتقال إلى الخطوة ٢',
+        editBeds: 'تغيير عدد أسرة غرفة العمليات',
+      };
+      return {
+        tubs: (n) => '≈ <b>' + n + '</b> وان حمام ۲۰۰ لیتری (تقریبی)',
+        tubsEmpty: 'معادل وان حمام ۲۰۰ لیتری (تقریبی)',
+        shifts: (n) => '≈ <b>' + n + '</b> شیفت کاری ۸ ساعته',
+        shiftsEmpty: 'معادل شیفت کاری ۸ ساعته',
+        sumSurg: (n, w, c, h) => 'با <b>' + n + '</b> عمل جراحی در سال: حدود <b>' + w + '</b> لیتر آب، <b>' + c + '</b> تومان هزینه شست‌وشو و ضدعفونی و <b>' + h + '</b> ساعت از زمان کادر درمان.',
+        emptySurg: 'دایال را با لمس یا ماوس بچرخانید یا تعداد عمل جراحی در سال را تایپ کنید.',
+        hintA: 'مرحله ۱: تعداد تخت اتاق عمل را با چرخاندن دایال یا تایپ عدد تنظیم کنید',
+        hintB: 'مرحله ۲: تعداد تخت ICU|CCU را با چرخاندن دایال یا تایپ عدد تنظیم کنید',
+        sumBeds: (a, b, w, c, h) => 'با <b>' + a + '</b> تخت اتاق عمل و <b>' + b + '</b> تخت ICU|CCU: حدود <b>' + w + '</b> لیتر آب، <b>' + c + '</b> تومان هزینه شست‌وشو و ضدعفونی و <b>' + h + '</b> ساعت از زمان کادر درمان.',
+        emptyBeds: 'دایال را با لمس یا ماوس بچرخانید یا تعداد تخت را تایپ کنید.',
+        confirm: (n) => 'ثبت ' + n + ' تخت اتاق عمل و رفتن به مرحله ۲',
+        editBeds: 'تغییر تعداد تخت اتاق عمل',
+      };
+    }
     (() => {
       const A = Abadis, fa = A.fa, clamp = A.clamp;
       const NS = 'http://www.w3.org/2000/svg';
@@ -99,8 +143,9 @@
             if (confirmBtn) {
               st.mode = st.phase === 'a' ? (disp.a > 0 ? 'confirm' : '') : 'edit';
               confirmBtn.hidden = !st.mode; confirmBtn.dataset.mode = st.mode;
-              if (st.mode === 'confirm') confirmBtn.textContent = 'ثبت ' + fa(disp.a) + ' تخت اتاق عمل و رفتن به مرحله ۲ ←';
-              else if (st.mode === 'edit') confirmBtn.textContent = '↑ تغییر تعداد تخت اتاق عمل';
+              const Lc = dialCopy(A.lang || 'fa');
+              if (st.mode === 'confirm') confirmBtn.textContent = Lc.confirm(fa(disp.a));
+              else if (st.mode === 'edit') confirmBtn.textContent = Lc.editBeds;
             }
             /* slider semantics for the knob */
             const ak = active(), ai = A.IN[ak];
@@ -230,20 +275,21 @@
             g.arc.setAttribute('stroke-dasharray', (v * 100).toFixed(2) + ' 100');
             g.needle.setAttribute('transform', 'rotate(' + (-90 + v * 180).toFixed(2) + ' 66 76)');
           });
-          sub.tubs.innerHTML = s.W > 0 ? '≈ <b>' + fa(s.W / 200) + '</b> وان حمام ۲۰۰ لیتری (تقریبی)' : 'معادل وان حمام ۲۰۰ لیتری (تقریبی)';
+          const L = dialCopy(A.lang || 'fa');
+          sub.tubs.innerHTML = s.W > 0 ? L.tubs(fa(s.W / 200)) : L.tubsEmpty;
           sub.read.innerHTML = s.C >= 1e6 ? '≈ <b>' + A.readableToman(s.C) + '</b>' : '&nbsp;';
-          sub.shifts.innerHTML = s.H > 0 ? '≈ <b>' + fa(s.H / 8) + '</b> شیفت کاری ۸ ساعته' : 'معادل شیفت کاری ۸ ساعته';
+          sub.shifts.innerHTML = s.H > 0 ? L.shifts(fa(s.H / 8)) : L.shiftsEmpty;
           if (kind === 'surgery') {
             sum.innerHTML = s.disp.n > 0
-              ? 'با <b>' + fa(s.disp.n) + '</b> عمل جراحی در سال: حدود <b>' + fa(s.W) + '</b> لیتر آب، <b>' + fa(s.C) + '</b> تومان هزینه شست‌وشو و ضدعفونی و <b>' + fa(s.H) + '</b> ساعت از زمان کادر درمان.'
-              : 'دایال را با لمس یا ماوس بچرخانید یا تعداد عمل جراحی در سال را تایپ کنید.';
+              ? L.sumSurg(fa(s.disp.n), fa(s.W), fa(s.C), fa(s.H))
+              : L.emptySurg;
           } else {
             chA.classList.toggle('active', s.phase === 'a'); chB.classList.toggle('active', s.phase === 'b');
             chA.classList.toggle('held', s.phase === 'b'); chB.classList.toggle('idle', s.phase === 'a');
-            hint.textContent = s.phase === 'a' ? 'مرحله ۱: تعداد تخت اتاق عمل را با چرخاندن دایال یا تایپ عدد تنظیم کنید' : 'مرحله ۲: تعداد تخت ICU|CCU را با چرخاندن دایال یا تایپ عدد تنظیم کنید';
+            hint.textContent = s.phase === 'a' ? L.hintA : L.hintB;
             sum.innerHTML = (s.disp.a + s.disp.b) > 0
-              ? 'با <b>' + fa(s.disp.a) + '</b> تخت اتاق عمل و <b>' + fa(s.disp.b) + '</b> تخت ICU|CCU: حدود <b>' + fa(s.W) + '</b> لیتر آب، <b>' + fa(s.C) + '</b> تومان هزینه شست‌وشو و ضدعفونی و <b>' + fa(s.H) + '</b> ساعت از زمان کادر درمان.'
-              : 'دایال را با لمس یا ماوس بچرخانید یا تعداد تخت را تایپ کنید.';
+              ? L.sumBeds(fa(s.disp.a), fa(s.disp.b), fa(s.W), fa(s.C), fa(s.H))
+              : L.emptyBeds;
           }
         };
       }
