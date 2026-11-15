@@ -234,6 +234,7 @@ HUB_FAMILIES = {
         ('filters', 'filters/', 'فیلتر'),
         ('suction-tube', 'suction-tube/', 'ساکشن تیوب'),
         ('oral', 'oral-hygiene/', 'بهداشت دهان'),
+        ('waste', 'کیسه-های-تخصصی-و-مدیریت-پسماند/', 'کیسه های تخصصی و مدیریت پسماند'),
         ('other', 'other/', 'سایر محصولات'),
     ],
     'en': [
@@ -244,6 +245,7 @@ HUB_FAMILIES = {
         ('filters', 'filters/', 'Filter', 'Antibacterial Filter(Viral Filter), Flow stopper filter, Sintered Filter'),
         ('suction-tube', '../suction-tube/', 'Suction Tube', 'Suction Tube, Fingertip'),
         ('oral', 'oral-hygiene/', 'Oral Hygiene', 'Suction toothbrush, oral swab, endotracheal-tube fixer'),
+        ('waste', 'specialized-bags-waste-management/', 'Specialized Bags & Waste Management', 'PVA waste bag, disposable receiver'),
         ('other', 'other-products/', 'Other Products', 'Regulator, PVA waste bag, disposable receiver, Splash-Vac'),
     ],
     'ar': [
@@ -254,6 +256,7 @@ HUB_FAMILIES = {
         ('filters', '../الفلتر/', 'الفلاتر', ''),
         ('suction-tube', '../أنبوب-الشفط/', 'أنبوب الشفط', ''),
         ('oral', '../نظافة-الفم/', 'نظافة الفم', 'فرشاة الشفط، المسحة الفموية، مثبّت أنبوب القصبة'),
+        ('waste', '../أكياس-متخصصة-وإدارة-النفايات/', 'أكياس متخصصة وإدارة النفايات', 'كيس نفايات PVA ووعاء التجميع'),
         ('other', '../منتجات-اخری/', 'منتجات أخرى', 'المنظّم، كيس نفايات PVA، وعاء التجميع، Splash-Vac'),
     ],
 }
