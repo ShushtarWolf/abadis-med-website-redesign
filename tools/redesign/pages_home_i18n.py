@@ -8,7 +8,7 @@ AR_D = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
 
 T = {
  'en': dict(
-  root='en/', title='About us',
+  root='en/', title='Pioneer in Hospital Infection Control and Fluid Management',
   desc='Abadis Med, a knowledge-based company: disposable suction liner bags and solutions for managing hospital fluid and infectious waste.',
   kicker='Abadis Med · a knowledge-based group', h1='Pioneer in Hospital Infection Control & Fluid Management',
   sub='Iran’s first and largest knowledge-based manufacturer of closed-system disposable suction liner bags and hydrophobic shutoff filters — eliminating cross-contamination, canister washing water, and overflow damage across 1,284 healthcare centers in all 31 provinces.',
@@ -33,7 +33,7 @@ T = {
   mem_eb='Memberships', mem_h='Memberships', mem_alt='Abadis membership',
   cust_eb='Customers', cust_h='Customers', cust_btn='See the customer list', cust_href='our-customers/', prev='Previous', next='Next', cust_aria='Sample customers'),
  'ar': dict(
-  root='arabic/', title='اعرف المزيد عنا',
+  root='arabic/', title='الرائد في مكافحة العدوى وإدارة السوائل الطبية في المستشفيات',
   desc='شركة مخازن طبية آباديس المعرفية: أكياس الشفط ذات الاستعمال الواحد وحلول إدارة السوائل والنفايات المعدية في المستشفيات.',
   kicker='شركة مخازن طبية آباديس المعرفية', h1='الرائد في مكافحة العدوى وإدارة السوائل الطبية في المستشفيات',
   sub='أول وأكبر منتج معرفي لأكياس الشفط المغلقة ذات الاستخدام الواحد وفلاتر قطع التدفق في إيران؛ للقضاء على العدوى المتقاطعة وغسل الخزانات وطفح السوائل في ١٬٢٨٤ مركزاً علاجياً عبر جميع المحافظات الـ ٣١.',

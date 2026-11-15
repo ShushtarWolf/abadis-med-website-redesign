@@ -7,15 +7,23 @@
 
   const FA_DIGITS = '۰۱۲۳۴۵۶۷۸۹';
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
-  const fa = (n) => Math.round(n).toLocaleString('fa-IR');
-  const fa1 = (x) => x.toLocaleString('fa-IR', { maximumFractionDigits: 1 });
+  const lang = (document.documentElement.lang || 'fa').slice(0, 2);
+  const uiLang = lang === 'en' || lang === 'ar' ? lang : 'fa';
+  const loc = uiLang === 'en' ? 'en-US' : uiLang === 'ar' ? 'ar-EG' : 'fa-IR';
+  const fa = (n) => Math.round(n).toLocaleString(loc);
+  const fa1 = (x) => x.toLocaleString(loc, { maximumFractionDigits: 1 });
+  const MONEY = {
+    fa: [' هزار میلیارد تومان', ' میلیارد تومان', ' میلیون تومان', ' تومان'],
+    en: [' trillion toman', ' billion toman', ' million toman', ' toman'],
+    ar: [' تريليون تومان', ' مليار تومان', ' مليون تومان', ' تومان'],
+  }[uiLang];
   function readableToman(t) {
-    if (t >= 1e12) return fa1(t / 1e12) + ' هزار میلیارد تومان';
-    if (t >= 1e9) return fa1(t / 1e9) + ' میلیارد تومان';
-    if (t >= 1e6) return fa1(t / 1e6) + ' میلیون تومان';
-    return fa(t) + ' تومان';
+    if (t >= 1e12) return fa1(t / 1e12) + MONEY[0];
+    if (t >= 1e9) return fa1(t / 1e9) + MONEY[1];
+    if (t >= 1e6) return fa1(t / 1e6) + MONEY[2];
+    return fa(t) + MONEY[3];
   }
-  Object.assign(A, { clamp, fa, fa1, readableToman });
+  Object.assign(A, { clamp, fa, fa1, readableToman, lang: uiLang });
 
   /* formulas from Alireza, فرمول محاسبه گر: water × 9.971; surgery staff 1.6; beds cost OR 254 / ICU 65; beds staff 1.7 */
   /* Free-market USD from TGJU (price_dollar_rl, quoted in rial). toman = rial / 10.

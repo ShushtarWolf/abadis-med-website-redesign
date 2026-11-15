@@ -649,12 +649,18 @@ def dealers_widget(lang):
         f'<button type="button" data-prov="{esc(pv)}" aria-pressed="false">{esc(_pname(lang, pv))}</button>' if pv in have
         else f'<button type="button" class="none" disabled title="{esc(T["none"])}">{esc(_pname(lang, pv))}</button>'
         for pv in PROVINCES)
+    LABELS = {
+        'fa': {},
+        'en': {'مدیر عامل': 'Managing director', 'شماره تلفن': 'Phone', 'آدرس': 'Address', 'شرکت': 'Company'},
+        'ar': {'مدیر عامل': 'المدير العام', 'شماره تلفن': 'رقم الهاتف', 'آدرس': 'العنوان', 'شرکت': 'الشركة'},
+    }
     def row(k, v):
-        if 'تلفن' in k:
+        label = LABELS.get(lang, {}).get(k, k)
+        if 'تلفن' in k or label in ('Phone', 'رقم الهاتف'):
             num = re.sub(r'[^\d۰-۹]', '', v).translate(str.maketrans('۰۱۲۳۴۵۶۷۸۹', '0123456789'))
             v = f'<a href="tel:{num}" dir="ltr">{esc(v)}</a>'
         else: v = esc(v)
-        return f'<dt>{esc(k)}:</dt><dd>{v}</dd>'
+        return f'<dt>{esc(label)}:</dt><dd>{v}</dd>'
     out = []
     for g in groups:
         pv, ds = g['province'], g.get('dealers') or []
