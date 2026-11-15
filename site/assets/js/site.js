@@ -93,6 +93,18 @@
      directly underneath it, so nothing turns white-on-mint or teal-on-teal. */
   function tone() {
     if (!header) return;
+    const film = document.getElementById('film');
+    /* When the bag page owns header-over-film, skip so we do not double-apply. */
+    if (window.ABADIS_BAG_FILM_HEADER && document.body.classList.contains('page-bag') && film && film.getBoundingClientRect().bottom > 72) {
+      return;
+    }
+    if (!window.ABADIS_BAG_FILM_HEADER && document.body.classList.contains('page-bag') && film) {
+      const fr = film.getBoundingClientRect();
+      if (fr.bottom > 72) {
+        zones.forEach((z) => z.classList.remove('on-light'));
+        return;
+      }
+    }
     const light = (root.dataset.theme || 'light') === 'light';
     const mobileMenu = menuBtnVisible();
     zones.forEach((z) => {
@@ -118,7 +130,11 @@
       if (ticking) return; ticking = true;
       requestAnimationFrame(() => {
         ticking = false;
-        header.classList.toggle('scrolled', scrollY > 24);
+        const film = document.getElementById('film');
+        const heroUp = document.body.classList.contains('page-bag') && film && film.getBoundingClientRect().bottom > 72;
+        if (!(window.ABADIS_BAG_FILM_HEADER && heroUp)) {
+          header.classList.toggle('scrolled', scrollY > 24 && !heroUp);
+        }
         if (!header.classList.contains('open')) {
           header.querySelectorAll('.nav-item.open').forEach((el) => {
             el.classList.remove('open');
