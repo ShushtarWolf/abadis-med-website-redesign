@@ -1,0 +1,123 @@
+{
+ "pages": 496,
+ "by_type": {
+  "tag": 114,
+  "category": 14,
+  "pagination": 111,
+  "author": 13,
+  "customer": 156,
+  "dealer": 29,
+  "province": 25,
+  "download": 12,
+  "job-ad": 9,
+  "menu-template": 10,
+  "special": 3
+ },
+ "by_type_lang": {
+  "tag/fa": 63,
+  "category/fa": 8,
+  "pagination/fa": 81,
+  "author/fa": 5,
+  "tag/en": 51,
+  "category/en": 5,
+  "pagination/en": 24,
+  "author/en": 5,
+  "category/ar": 1,
+  "pagination/ar": 6,
+  "author/ar": 3,
+  "customer/fa": 156,
+  "dealer/fa": 27,
+  "province/fa": 25,
+  "download/fa": 12,
+  "job-ad/fa": 9,
+  "menu-template/fa": 3,
+  "menu-template/en": 4,
+  "menu-template/ar": 3,
+  "dealer/en": 2,
+  "special/fa": 1,
+  "special/en": 2
+ },
+ "aliases_removed": 385,
+ "failed": [],
+ "kept_redirects": [
+  {
+   "path": "/راهنمای-استفاده-کاربر-نهایی/",
+   "lang": "فارسی",
+   "title": "راهنمای استفاده کاربر نهایی",
+   "status": "آدرس تکراری در سایت اصلی (canonical آن جای دیگر است) — با ریدایرکت ۳۰۱ به «راهنمای استفاده کاربر نهایی» می‌رود"
+  },
+  {
+   "path": "/ساکشن-تیوب/",
+   "lang": "فارسی",
+   "title": "ساکشن تیوب",
+   "status": "آدرس تکراری در سایت اصلی (canonical آن جای دیگر است) — با ریدایرکت ۳۰۱ به «ساکشن تیوب» می‌رود"
+  },
+  {
+   "path": "/en/a1-2/",
+   "lang": "انگلیسی",
+   "title": "About us",
+   "status": "برگه تکراری/آزمایشی در سایت اصلی — با ریدایرکت ۳۰۱ به «About us» می‌رود"
+  },
+  {
+   "path": "/en/base-and-holder/",
+   "lang": "انگلیسی",
+   "title": "base and holder",
+   "status": "آدرس تکراری در سایت اصلی (canonical آن جای دیگر است) — با ریدایرکت ۳۰۱ به «Stands & Holders» می‌رود"
+  },
+  {
+   "path": "/en/canisters/",
+   "lang": "انگلیسی",
+   "title": "canisters",
+   "status": "آدرس تکراری در سایت اصلی (canonical آن جای دیگر است) — با ریدایرکت ۳۰۱ به «Suction Canister» می‌رود"
+  },
+  {
+   "path": "/en/connections/",
+   "lang": "انگلیسی",
+   "title": "connections",
+   "status": "آدرس تکراری در سایت اصلی (canonical آن جای دیگر است) — با ریدایرکت ۳۰۱ به «Connectors» می‌رود"
+  },
+  {
+   "path": "/en/filters/",
+   "lang": "انگلیسی",
+   "title": "filters",
+   "status": "آدرس تکراری در سایت اصلی (canonical آن جای دیگر است) — با ریدایرکت ۳۰۱ به «Filter» می‌رود"
+  },
+  {
+   "path": "/en/representatives-3/",
+   "lang": "انگلیسی",
+   "title": "Representatives",
+   "status": "برگه تکراری/آزمایشی در سایت اصلی — با ریدایرکت ۳۰۱ به «Representatives» می‌رود"
+  },
+  {
+   "path": "/en/suction-bag/",
+   "lang": "انگلیسی",
+   "title": "suction bag",
+   "status": "آدرس تکراری در سایت اصلی (canonical آن جای دیگر است) — با ریدایرکت ۳۰۱ به «Disposable Suction Bag» می‌رود"
+  },
+  {
+   "path": "/en/دیگر-محصولات-2/",
+   "lang": "انگلیسی",
+   "title": "Other Products",
+   "status": "برگه تکراری/آزمایشی در سایت اصلی — با ریدایرکت ۳۰۱ به «Other Products» می‌رود"
+  },
+  {
+   "path": "/en/فوتر/",
+   "lang": "انگلیسی",
+   "title": "About us",
+   "status": "برگه تکراری/آزمایشی در سایت اصلی — با ریدایرکت ۳۰۱ به «About us» می‌رود"
+  },
+  {
+   "path": "/arabic/الحاسبة/",
+   "lang": "عربی",
+   "title": "حاسبة التوفير",
+   "status": "برگه تکراری/آزمایشی در سایت اصلی — با ریدایرکت ۳۰۱ به «حاسبة التوفير» می‌رود"
+  },
+  {
+   "path": "/تست/",
+   "lang": "فارسی",
+   "title": "تست",
+   "status": "برگه تکراری/آزمایشی در سایت اصلی — با ریدایرکت ۳۰۱ به «آخرین اخبار» می‌رود"
+  }
+ ],
+ "redirect_rules": 322
+}
