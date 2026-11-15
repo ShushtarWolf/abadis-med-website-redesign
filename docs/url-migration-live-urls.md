@@ -11,13 +11,33 @@ found in the menus of all 82 live pages). Farsi checklist for the team: `docs/ur
 - live URLs: 818
 - matched (already identical): 157
 - moved to the live URL: 244 (+13 posts the live site merged into another post, kept at their own old slug with canonical to the post that replaced them)
-- missing (no redesign page, redirect stub + 301 to the nearest page): 416
-  - content not built yet: 21
-  - live duplicates / test pages: 21
-  - WordPress archives (tags, authors, categories, `_customers`, `_franchise`, `_citynmg`, `_downloadcenter`, jet-menu): 374
+- missing (no redesign page, redirect stub + 301 to the nearest page): the archives below are now real pages
+  - content not built yet: the article and manual URLs still listed under "Live pages with no redesign page"
+  - live duplicates / test pages: kept as 301s (canonical is another URL, or the WordPress test post `/تست/`)
+  - WordPress archives (tags, authors, categories, `_customers`, `_franchise`, `_citynmg`, `_downloadcenter`, jet-menu, `_joboffers`) and the old job-ad posts: real pages, including `/page/N/` and `/مقالات/N/` pagination
 - live 404 (ignored): 1
 - redesign-only pages (kept at their path): 130
-- page directories moved on this branch: 262; 301 rules: 718
+- archive and special pages added by `tools/redesign/pages_archives.py`: 496 (301 rules after this pass: 319)
+
+## Archives that are real pages
+
+`python3 tools/redesign/pages_archives.py` writes a page at each live archive URL (tags, categories, authors, customers, dealers, provinces, download-centre items, menu templates, the job-ad archive) plus the eight old job-ad posts. Pagination follows the live site: `/page/N/` on archives and `/مقالات/N/`, `/آخرین-اخبار/N/`, `/en/blog/N/`, `/en/latest-news/N/`, `/arabic/الاخبار/N/`. Each new page has `noindex, nofollow`, a self canonical, and a self hreflang. FA/EN/AR alternates are added only for author slugs that exist in more than one language.
+
+These three URLs are real pages as well:
+
+- `/محصولات/کیسه-های-تخصصی-و-مدیریت-پسماند/` lists کیسه زباله PVA (`/solutions/waste-management-pva/`) and رسیور یکبار مصرف
+- `/en/catalogue/` lists the English catalogue PDFs
+- `/en/reservoir-calculator/` serves the English calculator, with its own canonical
+
+301s that stay, because the live canonical is a different URL:
+
+- `/راهنمای-استفاده-کاربر-نهایی/`, `/ساکشن-تیوب/`
+- `/en/base-and-holder/`, `/en/canisters/`, `/en/connections/`, `/en/filters/`, `/en/suction-bag/`
+- `/تست/` (WordPress test post)
+- duplicate or test leaves: `/en/a1-2/`, `/en/representatives-3/`, `/en/دیگر-محصولات-2/`, `/en/فوتر/`, `/arabic/الحاسبة/`
+- `/محصولات/کیسه-های-تخصصی-و-مدیریت-پسماند-2/` (second copy of the waste-bag category)
+
+`/arabic/articles/` has no live page (404), so it is not paginated.
 
 ## Old redesign path -> live URL
 
@@ -292,9 +312,7 @@ found in the menus of all 82 live pages). Farsi checklist for the team: `docs/ur
 | live URL | temporary 301 target |
 |---|---|
 | `/en/canister-installation/` | `/en/installation-manual/` |
-| `/en/catalogue/` | `/en/center-download/` |
 | `/en/products/specialized-bags-waste-management/` | `/en/solutions/waste-management-pva/` |
-| `/en/reservoir-calculator/` | `/en/calculator/` |
 | `/en/user-manuals/` | `/en/installation-manual/` |
 | `/en/business-intelligence-bi-transforming-the-medical-device-industry/` | `/en/blog/` |
 | `/en/from-the-operating-room-to-infection-control-the-role-of-suction-liners-in-veterinary-medicine/` | `/en/blog/` |
@@ -304,7 +322,6 @@ found in the menus of all 82 live pages). Farsi checklist for the team: `docs/ur
 | `/en/what-is-a-microdrip-set-uses-components-differences-from-macrodrip-sets/` | `/en/blog/` |
 | `/en/what-is-an-iv-infusion-set-a-comprehensive-guide-to-types-components-applications-and-safety-standards/` | `/en/blog/` |
 | `/محصولات/کیسه-های-تخصصی-و-مدیریت-پسماند-2/` | `/solutions/waste-management-pva/` |
-| `/محصولات/کیسه-های-تخصصی-و-مدیریت-پسماند/` | `/solutions/waste-management-pva/` |
 | `/از-اتاق-عمل-تا-کنترل-عفونت؛-نقش-کیسه-ساک/` | `/مقالات/` |
 | `/ایرانمد-۱۴۰۵؛-گردهمایی-فعالان-صنعت-ت/` | `/مقالات/` |
 | `/رنگبندی-کیسههای-زباله-بیمارستانی/` | `/مقالات/` |
