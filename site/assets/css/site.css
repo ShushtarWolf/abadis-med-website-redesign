@@ -849,6 +849,24 @@ details.letter[open] summary { margin-bottom: 12px; }
 .prose figure img, .prose > img { border-radius: 16px; max-width: 100%; height: auto; display: block; margin-inline: auto; }
 .prose figcaption { color: var(--muted); font-size: .85rem; text-align: center; margin-top: 6px; }
 .prose table { min-width: 0; }
+/* Wide tables in FAQ answers and article prose. Desktop stays full width.
+   On a phone the wrapper scrolls sideways so columns are not clipped by
+   overflow-x:clip on the page, including RTL. */
+.table-scroll { display: block; max-width: 100%; min-width: 0; }
+@media (max-width: 800px) {
+  .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x pan-y;
+  }
+  .table-scroll > table {
+    width: max-content;
+    min-width: 40rem;
+    max-width: none;
+  }
+  .faq-item, .faq-a, .article.prose, .prose { min-width: 0; max-width: 100%; }
+}
 .prose .table-wrap { margin: 16px 0; }
 .mini-grid { display: grid; grid-template-columns: repeat(6, minmax(0,1fr)); gap: 12px; }
 @media (max-width: 1000px) { .mini-grid { grid-template-columns: repeat(3, minmax(0,1fr)); } }
