@@ -175,6 +175,19 @@ def rendered(obj, key='rendered'):
     return htmlmod.unescape(re.sub(r'<[^>]+>', '', v or '')).strip()
 
 
+def qtrans(s, lang):
+    """Keep one language from a qTranslate string. Empty if that language is empty."""
+    s = s or ''
+    if '[:' not in s:
+        return s
+    parts = re.findall(r'\[:([a-z]{2}|[a-z]{2}_[A-Z]{2})\](.*?)(?=\[:)', s, flags=re.S)
+    want = {'fa': 'fa', 'en': 'en', 'ar': 'ar'}.get(lang, lang)
+    for code, text in parts:
+        if code.startswith(want) and text.strip():
+            return text.strip()
+    return ''
+
+
 def plain(s):
     s = re.sub(r'<[^>]+>', ' ', s or '')
     return re.sub(r'\s+', ' ', htmlmod.unescape(s)).strip()
@@ -620,7 +633,7 @@ class Builder:
                 name = htmlmod.unescape(term.get('name') or '')
                 items = by_tag.get(term.get('id'), [])
                 h1 = H1[('tag', lang)](name)
-                self.listing(path, lang, h1, plain(term.get('description') or ''), items, 'tag',
+                self.listing(path, lang, h1, plain(qtrans(term.get('description') or '', lang)), items, 'tag',
                              [(ui['articles'], sec), (name, None)])
             for term in tax.get('categories') or []:
                 path = path_of(term.get('link') or '')
@@ -629,7 +642,7 @@ class Builder:
                 name = htmlmod.unescape(term.get('name') or '')
                 items = by_cat.get(term.get('id'), [])
                 h1 = H1[('category', lang)](name)
-                self.listing(path, lang, h1, plain(term.get('description') or ''), items, 'category',
+                self.listing(path, lang, h1, plain(qtrans(term.get('description') or '', lang)), items, 'category',
                              [(ui['articles'], sec), (name, None)])
             for user in tax.get('users') or []:
                 path = path_of(user.get('link') or '')
