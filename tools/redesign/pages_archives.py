@@ -356,16 +356,33 @@ def index_posts(rows):
 
 
 def local_images():
-    """FA post path -> best local thumbnail, when the generator already saved one."""
+    """Post path -> featured image URL, when the source post has one."""
     out = {}
     pj = DATA / 'posts.json'
-    if not pj.is_file():
-        return out
-    for p in json.load(open(pj, encoding='utf-8')):
-        path = path_of(p.get('path') or p.get('url') or '')
-        img = p.get('image') or ''
-        if img:
-            out[path] = img
+    if pj.is_file():
+        for p in json.load(open(pj, encoding='utf-8')):
+            path = path_of(p.get('path') or p.get('url') or '')
+            img = p.get('image') or ''
+            if img:
+                out[path] = img
+    ej = DATA / 'en_posts.json'
+    if ej.is_file():
+        for p in json.load(open(ej, encoding='utf-8')):
+            og = ((p.get('yoast_head_json') or {}).get('og_image') or [])
+            url = og[0].get('url') if og else ''
+            path = path_of(p.get('link') or '')
+            if path and url:
+                out[path] = url
+    aj = DATA / 'ar_featured.json'
+    if aj.is_file():
+        for path, url in json.load(open(aj, encoding='utf-8')).items():
+            if url:
+                out[path_of(path)] = url
+    extra = DATA / 'en_extra_featured.json'
+    if extra.is_file():
+        for path, url in json.load(open(extra, encoding='utf-8')).items():
+            if url and path_of(path) not in out:
+                out[path_of(path)] = url
     return out
 
 
@@ -494,15 +511,29 @@ class Builder:
         excerpt = clip(item.get('excerpt') or '')
         ph = ''
         src = img or self.images.get(item.get('path') or '')
-        local = best_img(src, 640) if src and not str(src).startswith('assets/') else None
-        if local:
-            ph = (f'<div class="ph"><img src="{esc(rel_link(from_dir, "/" + local["src"]))}" '
-                  f'width="{local["w"]}" height="{local["h"]}" alt="{esc(title)}" loading="lazy" decoding="async"></div>')
-        elif src and str(src).startswith('http'):
-            ph = (f'<div class="ph"><img src="{esc(src)}" alt="{esc(title)}" loading="lazy" decoding="async"></div>')
-        elif (SITE / FALLBACK).is_file():
-            ph = (f'<div class="ph txt"><img src="{esc(rel_link(from_dir, "/" + FALLBACK))}" '
-                  f'width="1280" height="720" alt="{esc(title)}" loading="lazy" decoding="async"></div>')
+        asset = src[1:] if src and src.startswith('/assets/') else src
+        if asset and asset.startswith('assets/'):
+            fp = SITE / asset.split('?', 1)[0]
+            dim = ''
+            if fp.is_file():
+                try:
+                    from PIL import Image
+                    with Image.open(fp) as im:
+                        dim = f' width="{im.size[0]}" height="{im.size[1]}"'
+                except OSError:
+                    dim = ''
+            ph = (f'<div class="ph"><img src="{esc(rel_link(from_dir, "/" + asset))}"{dim} '
+                  f'alt="{esc(title)}" loading="lazy" decoding="async"></div>')
+        else:
+            local = best_img(src, 640) if src else None
+            if local:
+                ph = (f'<div class="ph"><img src="{esc(rel_link(from_dir, "/" + local["src"]))}" '
+                      f'width="{local["w"]}" height="{local["h"]}" alt="{esc(title)}" loading="lazy" decoding="async"></div>')
+            elif src and str(src).startswith('http'):
+                ph = (f'<div class="ph"><img src="{esc(src)}" alt="{esc(title)}" loading="lazy" decoding="async"></div>')
+            elif (SITE / FALLBACK).is_file():
+                ph = (f'<div class="ph txt"><img src="{esc(rel_link(from_dir, "/" + FALLBACK))}" '
+                      f'width="1280" height="720" alt="{esc(title)}" loading="lazy" decoding="async"></div>')
         body = f'<div class="body">{meta}<h3>{esc(title)}</h3>'
         if excerpt:
             body += f'<p>{esc(excerpt)}</p>'
@@ -823,12 +854,13 @@ class Builder:
         lang = 'fa'
         h1 = 'کیسه های تخصصی و مدیریت پسماند'
         items = [
+            # Same photograph as the figure on the PVA product page.
             {'path': '/solutions/waste-management-pva/', 'title': 'کیسه زباله PVA',
-             'excerpt': ''},
+             'img': 'assets/img/c/pva-laundry-bag-900.webp'},
             {'path': '/محصولات/سایر-محصولات/#receiver', 'title': 'رسیور یکبار مصرف',
-             'excerpt': ''},
+             'img': 'assets/img/c/928b52ffc716-900.webp'},
         ]
-        cards = ''.join(self.card(path, it, lang) for it in items)
+        cards = ''.join(self.card(path, it, lang, it.get('img')) for it in items)
         trail = [('محصولات', rel_link(path, '/محصولات/')), (h1, None)]
         main = f'''{page_hero(self.prefix(path), trail, esc(h1), '', '', lang=lang)}
   <section class="section"><div class="wrap"><div class="post-grid">{cards}</div></div></section>'''
