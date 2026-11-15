@@ -11,7 +11,17 @@ python3 tools/redesign/build.py products   # one group: products | about | deale
                                            # contact | customers | experiences | downloads | install |
                                            # faq | careers | posts
 python3 tools/redesign/apply_shell.py      # re-apply shared header/footer to the hand-built pages
+python3 tools/redesign/url_migrate.py      # move pages to the live abadis-med.com URLs (build.py runs it last)
 ```
+
+**URLs = live site.** Every page is served at exactly the URL it has on https://abadis-med.com
+(Persian slugs for FA, e.g. `/محصولات/مخزن/`, `/درباره-ما/`, posts at `/<slug>/`; `/en/...`; `/arabic/...`).
+Generators still write the old working paths (`products/canister/`, `articles/<id>/` ...); `url_migrate.py`
+moves them, rewrites every link, canonical, hreflang, JSON-LD and the sitemap, leaves a redirect stub at the
+old path and regenerates `_redirects`, `liara_nginx.conf` and `redirects-nginx.conf` (301s). The map is in
+`url_migrate.py` (STATIC + posts.json slugs); live URLs with no redesign page are listed in
+`data/url_aliases.json`, the live inventory in `data/live_urls.csv`, applied moves in `data/url_moves.json`.
+New hand-built pages should link to the live URLs directly.
 
 Requires **Python 3.10+** and **Pillow** (`pip install pillow`).
 

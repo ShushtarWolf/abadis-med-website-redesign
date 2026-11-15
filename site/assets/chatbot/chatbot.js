@@ -172,14 +172,14 @@
     { id: 'infection-waste', fa: 'کنترل آلودگی و مدیریت پسماند', en: 'Contamination Control & Waste Management', ar: 'السيطرة على التلوث وإدارة النفايات' }
   ];
   var PRODUCTS = [
-    { id: 'liners', volume: true, fa: 'کیسه ساکشن یکبار مصرف', en: 'Disposable Suction Bag', ar: 'أكياس الشفط ذات الاستخدام الواحد', blurb: { fa: 'مدل‌های ۱، ۲ و ۳ لیتری', en: '1, 2 and 3 litre models', ar: 'موديلات ١ و٢ و٣ لتر' }, page: { fa: '/products/suction-bag/', en: '/en/products/suction-bag/', ar: '/arabic/كيس-الشفط/' } },
-    { id: 'canisters', fa: 'مخزن ساکشن', en: 'Suction Canister', ar: 'علبة الشفط', blurb: { fa: 'مخازن و سیستم‌های دیواری', en: 'Canisters and wall systems', ar: 'الخزانات والأنظمة الجدارية' }, page: { fa: '/products/canister/', en: '/en/products/canisters/', ar: '/arabic/خزانات/' } },
-    { id: 'stands', fa: 'پایه و نگهدارنده‌ها', en: 'Stands & Holders', ar: 'الحوامل والمثبتات', blurb: { fa: 'ترولی، پایه و گیره‌ها', en: 'Trolley, stand and clamps', ar: 'ترولي وقاعدة ومشابك' }, page: { fa: '/products/stand/', en: '/en/products/base-and-holder/', ar: '/arabic/تثبیت/' } },
-    { id: 'connectors', fa: 'اتصالات', en: 'Connectors', ar: 'الوصلات', blurb: { fa: 'کانکتورها و شیرها', en: 'Connectors and valves', ar: 'الوصلات والصمامات' }, page: { fa: '/products/connectors/', en: '/en/products/connections/', ar: '/arabic/الوصلات/' } },
-    { id: 'filters', fa: 'فیلتر', en: 'Filter', ar: 'الفلاتر', blurb: { fa: 'انواع فیلترهای حفاظتی', en: 'Protective filter types', ar: 'أنواع الفلاتر الواقية' }, page: { fa: '/products/filters/', en: '/en/products/filters/', ar: '/arabic/الفلتر/' } },
-    { id: 'tubes', fa: 'ساکشن تیوب', en: 'Suction Tube', ar: 'أنبوب الشفط', blurb: { fa: 'لوله‌ها و رابط‌های ساکشن', en: 'Tubes and suction connectors', ar: 'الأنابيب ووصلات الشفط' }, page: { fa: '/products/suction-tube/', en: '/en/suction-tube/', ar: '/arabic/أنبوب-الشفط/' } },
-    { id: 'oral', fa: 'بهداشت دهان', en: 'Oral Hygiene', ar: 'نظافة الفم', blurb: { fa: 'مسواک ساکشن، سواب دهانی، فیکسر لوله تراشه', en: 'Suction toothbrush, oral swab, tube fixer', ar: 'فرشاة الشفط والمسحة ومثبّت الأنبوب' }, page: { fa: '/products/oral-hygiene/', en: '/en/products/oral-hygiene/', ar: '/arabic/نظافة-الفم/' } },
-    { id: 'other', fa: 'سایر محصولات', en: 'Other Products', ar: 'منتجات أخرى', blurb: { fa: 'رگولاتور، کیسه زباله PVA، رسیور یکبار مصرف', en: 'Regulator, PVA waste bag, disposable receiver', ar: 'المنظّم وكيس نفايات PVA ووعاء التجميع' }, page: { fa: '/products/other/', en: '/en/products/other-products/', ar: '/arabic/منتجات-اخری/' } }
+    { id: 'liners', volume: true, fa: 'کیسه ساکشن یکبار مصرف', en: 'Disposable Suction Bag', ar: 'أكياس الشفط ذات الاستخدام الواحد', blurb: { fa: 'مدل‌های ۱، ۲ و ۳ لیتری', en: '1, 2 and 3 litre models', ar: 'موديلات ١ و٢ و٣ لتر' }, page: { fa: '/محصولات/کیسه-ساکشن/', en: '/en/products/suction-bag/', ar: '/arabic/كيس-الشفط/' } },
+    { id: 'canisters', fa: 'مخزن ساکشن', en: 'Suction Canister', ar: 'علبة الشفط', blurb: { fa: 'مخازن و سیستم‌های دیواری', en: 'Canisters and wall systems', ar: 'الخزانات والأنظمة الجدارية' }, page: { fa: '/محصولات/مخزن/', en: '/en/products/canisters/', ar: '/arabic/خزانات/' } },
+    { id: 'stands', fa: 'پایه و نگهدارنده‌ها', en: 'Stands & Holders', ar: 'الحوامل والمثبتات', blurb: { fa: 'ترولی، پایه و گیره‌ها', en: 'Trolley, stand and clamps', ar: 'ترولي وقاعدة ومشابك' }, page: { fa: '/محصولات/پایه/', en: '/en/products/base-and-holder/', ar: '/arabic/تثبیت/' } },
+    { id: 'connectors', fa: 'اتصالات', en: 'Connectors', ar: 'الوصلات', blurb: { fa: 'کانکتورها و شیرها', en: 'Connectors and valves', ar: 'الوصلات والصمامات' }, page: { fa: '/محصولات/اتصالات/', en: '/en/products/connections/', ar: '/arabic/الوصلات/' } },
+    { id: 'filters', fa: 'فیلتر', en: 'Filter', ar: 'الفلاتر', blurb: { fa: 'انواع فیلترهای حفاظتی', en: 'Protective filter types', ar: 'أنواع الفلاتر الواقية' }, page: { fa: '/محصولات/فیلترها/', en: '/en/products/filters/', ar: '/arabic/الفلتر/' } },
+    { id: 'tubes', fa: 'ساکشن تیوب', en: 'Suction Tube', ar: 'أنبوب الشفط', blurb: { fa: 'لوله‌ها و رابط‌های ساکشن', en: 'Tubes and suction connectors', ar: 'الأنابيب ووصلات الشفط' }, page: { fa: '/محصولات/ساکشن-تیوب/', en: '/en/suction-tube/', ar: '/arabic/أنبوب-الشفط/' } },
+    { id: 'oral', fa: 'بهداشت دهان', en: 'Oral Hygiene', ar: 'نظافة الفم', blurb: { fa: 'مسواک ساکشن، سواب دهانی، فیکسر لوله تراشه', en: 'Suction toothbrush, oral swab, tube fixer', ar: 'فرشاة الشفط والمسحة ومثبّت الأنبوب' }, page: { fa: '/محصولات/سواب-های-دهانی-و-نگهدارنده/', en: '/en/products/oral-swabs-tube-holders/', ar: '/arabic/نظافة-الفم/' } },
+    { id: 'other', fa: 'سایر محصولات', en: 'Other Products', ar: 'منتجات أخرى', blurb: { fa: 'رگولاتور، کیسه زباله PVA، رسیور یکبار مصرف', en: 'Regulator, PVA waste bag, disposable receiver', ar: 'المنظّم وكيس نفايات PVA ووعاء التجميع' }, page: { fa: '/محصولات/سایر-محصولات/', en: '/en/products/other-products/', ar: '/arabic/منتجات-اخری/' } }
   ];
 
   function fmt(n, lang) {
@@ -221,15 +221,15 @@
   }
 
   var PAGES = {
-    about: { fa: '/about/', en: '/en/about-us/', ar: '/arabic/من-نحن/' },
-    team: { fa: '/about/#team', en: '/en/about-us/#team', ar: '/arabic/من-نحن/#team' },
-    faq: { fa: '/faq/', en: '/en/faqs/', ar: '/arabic/پرسش-های-متداول/' },
-    products: { fa: '/products/', en: '/en/products/', ar: '/arabic/منتجات/' },
-    bag3d: { fa: '/products/suction-bag/#bag-3d', en: '/en/products/suction-bag/#bag-3d', ar: '/arabic/كيس-الشفط/#bag-3d' },
-    factory: { fa: '/about/#plant', en: '/en/about-us/#plant', ar: '/arabic/من-نحن/#plant' },
+    about: { fa: '/درباره-ما/', en: '/en/about-us/', ar: '/arabic/من-نحن/' },
+    team: { fa: '/درباره-ما/#team', en: '/en/about-us/#team', ar: '/arabic/من-نحن/#team' },
+    faq: { fa: '/پرسش-های-متداول/', en: '/en/faqs/', ar: '/arabic/پرسش-های-متداول/' },
+    products: { fa: '/محصولات/', en: '/en/products/', ar: '/arabic/منتجات/' },
+    bag3d: { fa: '/محصولات/کیسه-ساکشن/#bag-3d', en: '/en/products/suction-bag/#bag-3d', ar: '/arabic/كيس-الشفط/#bag-3d' },
+    factory: { fa: '/درباره-ما/#plant', en: '/en/about-us/#plant', ar: '/arabic/من-نحن/#plant' },
     green: { fa: '/green-family-map/', en: '/en/green-family-map/', ar: '/arabic/green-family-map/' },
-    customers: { fa: '/customers/', en: '/en/our-customers/', ar: '/arabic/customers/' },
-    sdgs: { fa: '/sdgs/', en: '/en/sdgs/', ar: '/arabic/sdgs/' },
+    customers: { fa: '/مشتریان-ما/', en: '/en/our-customers/', ar: '/arabic/customers/' },
+    sdgs: { fa: '/توسعه-پایدار/', en: '/en/sdgs/', ar: '/arabic/sdgs/' },
     dial: { fa: '/dial-practical/', en: '/en/calculator/', ar: '/arabic/الحوسبة/' },
     impact: { fa: '/#impact', en: '/en/#impact', ar: '/arabic/#impact' }
   };
@@ -560,7 +560,7 @@
     if (kind === 'product') {
       state.choice = item.id;
       var page = findProductPage(item.id);
-      var href = (item.page && (item.page[state.lang] || item.page.fa)) || '/products/';
+      var href = (item.page && (item.page[state.lang] || item.page.fa)) || '/محصولات/';
       var summary = item.blurb ? textOf(item.blurb) : '';
       if (page && page.sections && page.sections.length) {
         var bits = [];
@@ -899,7 +899,7 @@
       return {
         id: 'admin-override-' + (r.id || idx),
         section: 'admin-override',
-        url: { fa: '/about/', en: '/en/about-us/', ar: '/arabic/من-نحن/' },
+        url: { fa: '/درباره-ما/', en: '/en/about-us/', ar: '/arabic/من-نحن/' },
         text: { fa: textFa, en: textFa, ar: textFa },
         keywords: (r.topic || '') + ' ' + (r.fact || '')
       };

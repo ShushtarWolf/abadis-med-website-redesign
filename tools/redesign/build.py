@@ -73,3 +73,7 @@ if __name__ == '__main__':
     # SEO post-process (JSON-LD, alt text, canonical, self-hosted docs, 404, Liara nginx config)
     import seo_postprocess
     seo_postprocess.main()
+    # Live-identical URLs: move generated pages to the abadis-med.com paths (FA Persian slugs, /en/, /arabic/),
+    # rewrite links/canonicals/hreflang/sitemap, leave redirect stubs + 301 rules at the old paths.
+    import subprocess
+    subprocess.run([sys.executable, str(pathlib.Path(__file__).resolve().parent / 'url_migrate.py')], check=True)
