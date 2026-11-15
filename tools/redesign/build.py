@@ -44,6 +44,9 @@ except ImportError: pass
 try:
     import pages_export; GROUPS['export'] = pages_export.build
 except ImportError: pass
+try:
+    import pages_archives; GROUPS['archives'] = pages_archives.build
+except ImportError: pass
 
 if __name__ == '__main__':
     try:
