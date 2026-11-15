@@ -1,0 +1,82 @@
+/* Coming-soon pages (Academy + Game). Borderless centered hero.
+   Keeps site header/footer and light/dark/noir tokens. */
+body.coming-soon-page {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+body.coming-soon-page main#main {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+}
+.soon-hero {
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100svh;
+  padding: 128px 24px 96px;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+.soon-hero-inner {
+  text-align: center;
+  max-width: 36rem;
+  margin-inline: auto;
+}
+.soon-logo-wrap {
+  display: grid;
+  place-items: center;
+  margin: 0 auto 28px;
+  width: 180px;
+  height: 86px;
+  position: relative;
+}
+.soon-logo-wrap img {
+  grid-area: 1 / 1;
+  width: 180px;
+  height: auto;
+  max-height: 86px;
+  object-fit: contain;
+  margin-inline: auto;
+}
+.soon-logo-wrap .soon-logo-dark { display: none; }
+[data-theme="dark"] .soon-logo-wrap .soon-logo-light,
+[data-theme="noir"] .soon-logo-wrap .soon-logo-light { display: none; }
+[data-theme="dark"] .soon-logo-wrap .soon-logo-dark,
+[data-theme="noir"] .soon-logo-wrap .soon-logo-dark { display: block; }
+
+.soon-kicker {
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-size: .92rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+.soon-hero h1 {
+  margin: 0 0 14px;
+  color: var(--brand);
+  font-size: clamp(2.4rem, 8vw, 4.25rem);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.soon-sub {
+  margin: 0 auto;
+  max-width: 28rem;
+  color: var(--ink-2);
+  font-size: clamp(1.02rem, 2.2vw, 1.22rem);
+  font-weight: 500;
+  line-height: 1.7;
+}
+
+body.coming-soon-page .site-footer { flex-shrink: 0; }
+
+@media (max-width: 520px) {
+  .soon-hero { padding: 112px 20px 80px; }
+  .soon-logo-wrap { width: 148px; height: 70px; margin-bottom: 22px; }
+  .soon-logo-wrap img { width: 148px; max-height: 70px; }
+}
