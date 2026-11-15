@@ -135,15 +135,11 @@
   "type": "page"
  },
  "/en/canister-installation/": {
-  "to": "/en/installation-manual/",
+  "to": "/en/installation-manual/canister-installation/",
   "type": "page"
  },
  "/en/catalogue/": {
   "to": "/en/center-download/",
-  "type": "page"
- },
- "/en/products/specialized-bags-waste-management/": {
-  "to": "/en/solutions/waste-management-pva/",
   "type": "page"
  },
  "/en/representatives-3/": {
@@ -155,7 +151,7 @@
   "type": "page"
  },
  "/en/user-manuals/": {
-  "to": "/en/installation-manual/",
+  "to": "/en/installation-manual/user-manuals/",
   "type": "page"
  },
  "/en/دیگر-محصولات-2/": {
@@ -231,11 +227,6 @@
   "type": "post",
   "fallback": true
  },
- "/en/business-intelligence-bi-transforming-the-medical-device-industry/": {
-  "to": "/en/blog/",
-  "type": "post",
-  "fallback": true
- },
  "/en/control-of-corona-virus/": {
   "to": "/en/blog/",
   "type": "post",
@@ -292,11 +283,6 @@
   "fallback": true
  },
  "/en/fixture/": {
-  "to": "/en/blog/",
-  "type": "post",
-  "fallback": true
- },
- "/en/from-the-operating-room-to-infection-control-the-role-of-suction-liners-in-veterinary-medicine/": {
   "to": "/en/blog/",
   "type": "post",
   "fallback": true
@@ -387,11 +373,6 @@
   "fallback": true
  },
  "/en/obtaining-europe-ce-certification/": {
-  "to": "/en/blog/",
-  "type": "post",
-  "fallback": true
- },
- "/en/oral-hygiene-in-hospitals-from-essential-patient-care-to-specialized-medical-equipment/": {
   "to": "/en/blog/",
   "type": "post",
   "fallback": true
@@ -536,11 +517,6 @@
   "type": "post",
   "fallback": true
  },
- "/en/un-sdgs-and-infection-control/": {
-  "to": "/en/blog/",
-  "type": "post",
-  "fallback": true
- },
  "/en/unveiling-of-abadis-fixture-product/": {
   "to": "/en/blog/",
   "type": "post",
@@ -566,17 +542,7 @@
   "type": "post",
   "fallback": true
  },
- "/en/what-is-a-chest-bottle-types-applications-and-how-chest-drainage-systems-work/": {
-  "to": "/en/blog/",
-  "type": "post",
-  "fallback": true
- },
  "/en/what-is-a-chest-tube/": {
-  "to": "/en/blog/",
-  "type": "post",
-  "fallback": true
- },
- "/en/what-is-a-microdrip-set-uses-components-differences-from-macrodrip-sets/": {
   "to": "/en/blog/",
   "type": "post",
   "fallback": true
@@ -607,11 +573,6 @@
   "fallback": true
  },
  "/en/what-is-an-extension-tube/": {
-  "to": "/en/blog/",
-  "type": "post",
-  "fallback": true
- },
- "/en/what-is-an-iv-infusion-set-a-comprehensive-guide-to-types-components-applications-and-safety-standards/": {
   "to": "/en/blog/",
   "type": "post",
   "fallback": true
@@ -2079,12 +2040,8 @@
   "type": "jet-menu",
   "fallback": true
  },
- "/محصولات/کیسه-های-تخصصی-و-مدیریت-پسماند-2/": {
-  "to": "/solutions/waste-management-pva/",
-  "type": "page"
- },
  "/محصولات/کیسه-های-تخصصی-و-مدیریت-پسماند/": {
-  "to": "/solutions/waste-management-pva/",
+  "to": "/محصولات/کیسه-های-تخصصی-و-مدیریت-پسماند-2/",
   "type": "page"
  },
  "/20-ژورنال-معتبر-تجهیزات-پزشکی/": {
@@ -2266,10 +2223,6 @@
   "to": "/مقالات/",
   "type": "post",
   "fallback": true
- },
- "/از-اتاق-عمل-تا-کنترل-عفونت؛-نقش-کیسه-ساک/": {
-  "to": "/مقالات/",
-  "type": "post"
  },
  "/اسامی-برندگان-مسابقه-روز-پرستار-سال-1400/": {
   "to": "/مقالات/",
@@ -2594,10 +2547,6 @@
   "to": "/مقالات/",
   "type": "post",
   "fallback": true
- },
- "/رنگبندی-کیسههای-زباله-بیمارستانی/": {
-  "to": "/مقالات/",
-  "type": "post"
  },
  "/رو-نمایی-از-محصول-جدید-آبادیس-در-حوزه-کن/": {
   "to": "/مقالات/",
@@ -3190,10 +3139,6 @@
   "to": "/مقالات/",
   "type": "post",
   "fallback": true
- },
- "/۴-برند-تولیدکننده-کیسه-ساکشن-در-جهان-که/": {
-  "to": "/مقالات/",
-  "type": "post"
  },
  "/tag/آبادیس/": {
   "to": "/مقالات/",

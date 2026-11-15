@@ -115,14 +115,20 @@
     if (q.length < 2) { wall.classList.remove('searching'); res.textContent = ''; return; }
     for (var i = 0; i < N; i++) if (normd[i].indexOf(q) !== -1) hits.push(i);
     wall.classList.add('searching');
-    if (!hits.length) { res.textContent = 'موردی یافت نشد'; return; }
+    if (!hits.length) {
+      var lang = (document.documentElement.lang || 'fa').slice(0, 2);
+      res.textContent = lang === 'en' ? 'No match' : lang === 'ar' ? 'لا توجد نتيجة' : 'موردی یافت نشد';
+      return;
+    }
     hits.forEach(function (i) { nodes[i].classList.add('hit'); });
     at = 0; focusHit();
   }
   function focusHit() {
     var i = hits[at], el = nodes[i];
     el.classList.add('focus');
-    res.textContent = ZN.fa(at + 1) + ' از ' + ZN.fa(hits.length);
+    var langOf = (document.documentElement.lang || 'fa').slice(0, 2);
+    var ofWord = langOf === 'en' ? ' of ' : langOf === 'ar' ? ' من ' : ' از ';
+    res.textContent = ZN.fa(at + 1) + ofWord + ZN.fa(hits.length);
     var c = cols[el._col], mid = el.offsetTop + el.offsetHeight / 2;
     if (reduced) { wall.scrollTo({ top: Math.max(0, mid - wall.clientHeight / 2), behavior: 'auto' }); return; }
     // progress at which this name sits in the middle of the wall window, then scroll the page there

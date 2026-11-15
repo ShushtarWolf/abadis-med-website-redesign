@@ -217,7 +217,7 @@ UI = {
         specs='Specifications', pause='Pause or play motion',
         intro_h='Abadis disposable suction bag',
         intro_p='The Abadis disposable suction bag is a safe and hygienic solution for collecting body fluids and secretions in hospitals, ambulances and treatment centres. The gelling powder inside the bag turns fluids into gel and reduces the risk of spills and contamination. The hydrophobic filter also prevents liquid overflowing toward the device, and the central suction protection system keeps the device safe.',
-        nav=[('intro', 'Overview'), ('features', 'Features'), ('benefits', 'Benefits'), ('size', 'Size'), ('gallery', 'Images'), ('codes', 'Codes'), ('packaging', 'Packaging'), ('uses', 'Usage'), ('catalog', 'Catalog'), ('related', 'Related'), ('order', 'Quote')],
+        nav=[('intro', 'Overview'), ('features', 'Features'), ('benefits', 'Benefits'), ('specs', 'At a glance'), ('size', 'Size'), ('gallery', 'Images'), ('codes', 'Codes'), ('packaging', 'Packaging'), ('uses', 'Usage'), ('catalog', 'Catalog'), ('related', 'Related'), ('order', 'Quote')],
         uses_h='Usage',
         packaging_h='Packaging & carton',
         filters_h='Filters',
@@ -271,14 +271,14 @@ UI = {
     ),
     'ar': dict(
         h1='كيس الشفط',
-        title='كيس الشفط — مخازن طبی آباديس',
+        title='كيس الشفط — خزانات طبي آباديس',
         desc='كيس الشفط أحادي الاستعمال من آباديس حل آمن وصحي لجمع المفرزات وسوائل الجسم في المستشفيات وسيارات الإسعاف ومراكز العلاج.',
         crumb=('الرئيسية', '../../', 'منتجات', '../منتجات/', 'كيس الشفط'),
         quote='طلب عرض سعر', quote_href='../اتصل-بنا/',
         specs='المواصفات', pause='إيقاف الحركة أو متابعتها',
         intro_h='كيس الشفط أحادي الاستعمال من آباديس',
         intro_p='كيس الشفط أحادي الاستعمال من آباديس حل آمن وصحي لجمع المفرزات وسوائل الجسم في المستشفيات وسيارات الإسعاف ومراكز العلاج. يحوّل مسحوق التهليم داخل الكيس السوائل إلى هلام ويقلل خطر الانسكاب والتلوث. كما يمنع الفلتر الكاره للماء فيض السائل نحو الجهاز، ويُبقي نظام حماية الشفط المركزي الجهاز آمناً.',
-        nav=[('intro', 'مقدمة'), ('features', 'المواصفات'), ('benefits', 'الأثر'), ('size', 'الحجم'), ('gallery', 'الصور'), ('codes', 'الرموز'), ('packaging', 'التغليف'), ('uses', 'الاستخدام'), ('catalog', 'الكتالوج'), ('related', 'حلول'), ('order', 'السعر')],
+        nav=[('intro', 'مقدمة'), ('features', 'المواصفات'), ('benefits', 'الأثر'), ('specs', 'لمحة'), ('size', 'الحجم'), ('gallery', 'الصور'), ('codes', 'الرموز'), ('packaging', 'التغليف'), ('uses', 'الاستخدام'), ('catalog', 'الكتالوج'), ('related', 'حلول'), ('order', 'السعر')],
         uses_h='الاستخدامات',
         packaging_h='التغليف والكرتون',
         filters_h='الفلاتر',
@@ -1248,9 +1248,63 @@ def benefits_block(lang):
     )
 
 
+def glance_i18n(lang, pfx):
+    """Specs-at-a-glance for EN and AR. Same facts as the FA table."""
+    en = lang == 'en'
+    d = lambda s: digits(s, lang)
+    c1, c2 = d('0401111'), d('0401011')
+    if en:
+        models = (
+            f'1 litre (codes <a href="#s1" data-size="1"><bdi dir="ltr">{c1}</bdi></a>, '
+            f'<a href="#s1" data-size="1"><bdi dir="ltr">{c2}</bdi></a>), '
+            f'<a href="#s2" data-size="2">2 litre</a> (4 models plus <bdi dir="ltr">CIF</bdi>), '
+            f'<a href="#s3" data-size="3">3 litre</a> (7 models plus <bdi dir="ltr">CIF</bdi>). '
+            f'The full product-code and <bdi dir="ltr">IRC</bdi> table is in each section.'
+        )
+        rows = [
+            ('Models', models),
+            ('Capacity', '1, 2 and 3 litres'),
+            ('Bag dimensions', 'Diameter <bdi dir="ltr">11</bdi> cm; height: 1 litre <bdi dir="ltr">15.5</bdi>, 2 litre <bdi dir="ltr">24.5</bdi> and 3 litre <bdi dir="ltr">39</bdi> cm'),
+            ('Carton', '1 and 2 litre: <bdi dir="ltr">57.5 × 42.5 × 44 cm</bdi> · 3 litre: <bdi dir="ltr">49 × 49 × 49 cm</bdi> · usually <bdi dir="ltr">45</bdi> per carton (mechanical filter: <bdi dir="ltr">30</bdi>)'),
+            ('Compatibility', 'Fits portable and central suction units; single and series mounting on fixed (wall) and portable stands'),
+            ('Filtration', 'Hydrophobic, dual and mechanical; with or without gelling powder'),
+            ('Accessories', f'<a href="../filters/">Filters</a>, <a href="../base-and-holder/">Stands and holders</a>, <a href="../connections/">Connectors</a>, <a href="../canisters/">Canister</a>'),
+            ('Certificates', '<bdi dir="ltr">IMED, ISO, CE</bdi>'),
+            ('Catalogue and guide', f'<a href="../../wp-content/uploads/2021/12/suction-bag-catalog-En.pdf" data-track="catalogue_download">Catalogue (PDF)</a>, <a href="../../installation-manual/user-manuals/">End-user guide</a>'),
+        ]
+        h = 'Specifications at a glance'
+    else:
+        models = (
+            f'١ لتر (الرمزان <a href="#s1" data-size="1"><bdi dir="ltr">{c1}</bdi></a>، '
+            f'<a href="#s1" data-size="1"><bdi dir="ltr">{c2}</bdi></a>)، '
+            f'<a href="#s2" data-size="2">٢ لتر</a> (٤ نماذج إضافة إلى <bdi dir="ltr">CIF</bdi>)، '
+            f'<a href="#s3" data-size="3">٣ لتر</a> (٧ نماذج إضافة إلى <bdi dir="ltr">CIF</bdi>). '
+            f'جدول رمز المنتج و<bdi dir="ltr">IRC</bdi> الكامل في كل قسم.'
+        )
+        rows = [
+            ('النماذج', models),
+            ('السعة', '١ و٢ و٣ لتر'),
+            ('أبعاد الكيس', 'القطر <bdi dir="ltr">١١</bdi> سم؛ الارتفاع: ١ لتر <bdi dir="ltr">١٥٫٥</bdi>، ٢ لتر <bdi dir="ltr">٢٤٫٥</bdi> و٣ لتر <bdi dir="ltr">٣٩</bdi> سم'),
+            ('الكرتون', '١ و٢ لتر: <bdi dir="ltr">57.5 × 42.5 × 44 cm</bdi> · ٣ لتر: <bdi dir="ltr">49 × 49 × 49 cm</bdi> · عادة <bdi dir="ltr">٤٥</bdi> في الكرتون (الفلتر الميكانيكي: <bdi dir="ltr">٣٠</bdi>)'),
+            ('التوافق', 'يناسب أجهزة الشفط المحمولة والمركزية؛ تركيب مفرد ومتسلسل على قاعدة ثابتة (جدارية) ومحمولة'),
+            ('الترشيح', 'كاره للماء، ومزدوج، وميكانيكي؛ مع مسحوق التهليم أو من دونه'),
+            ('الملحقات', f'<a href="../الفلتر/">الفلاتر</a>، <a href="../تثبیت/">القواعد والحاملات</a>، <a href="../الوصلات/">الوصلات</a>، <a href="../خزانات/">الخزان</a>'),
+            ('الشهادات', '<bdi dir="ltr">IMED, ISO, CE</bdi>'),
+            ('الكتالوج والدليل', f'<a href="../../en/wp-content/uploads/2021/12/suction-bag-catalog-En.pdf" data-track="catalogue_download">الكتالوج (PDF)</a>، <a href="../دليل-التركيب/دليل-المستخدم/">دليل المستخدم النهائي</a>'),
+        ]
+        h = 'المواصفات في لمحة'
+    body = ''.join(f'<tr><th scope="row">{esc(label)}</th><td>{val}</td></tr>' for label, val in rows)
+    return (
+        f'<section class="bag-block bag-glance" id="specs"><div class="wrap">'
+        f'<h2>{esc(h)}</h2>'
+        f'<table class="pack-table glance-table"><tbody>{body}</tbody></table>'
+        f'</div></section>'
+    )
+
+
 def glance_block(lang, pfx):
     if lang != 'fa':
-        return ''
+        return glance_i18n(lang, pfx)
     fa = digits
     c1 = fa('0401111', 'fa')
     c2 = fa('0401011', 'fa')

@@ -3,11 +3,15 @@
   'use strict';
   var BASE = (document.currentScript && document.currentScript.src) ? document.currentScript.src.replace(/[^\/]*$/, '') : './';
   var FA = '۰۱۲۳۴۵۶۷۸۹';
+  var ARD = '٠١٢٣٤٥٦٧٨٩';
   function fa(n) {                         // 1232 -> ۱٬۲۳۲ (Persian digits, Arabic thousands separator U+066C)
+    var lang = (document.documentElement.lang || 'fa').slice(0, 2);
+    var digits = lang === 'en' ? '0123456789' : lang === 'ar' ? ARD : FA;
+    var sep = lang === 'en' ? ',' : '\u066C';
     var s = String(Math.max(0, Math.round(n))), out = '';
     for (var i = 0; i < s.length; i++) {
-      if (i && (s.length - i) % 3 === 0) out += '\u066C';
-      out += FA.charAt(+s.charAt(i));
+      if (i && (s.length - i) % 3 === 0) out += sep;
+      out += digits.charAt(+s.charAt(i));
     }
     return out;
   }
