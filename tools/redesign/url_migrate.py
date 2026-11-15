@@ -40,6 +40,7 @@ STATIC = {
     '/products/filters/': '/محصولات/فیلترها/',
     '/products/oral-hygiene/': '/محصولات/سواب-های-دهانی-و-نگهدارنده/',
     '/products/other/': '/محصولات/سایر-محصولات/',
+    '/products/waste-bags/': '/محصولات/کیسه-های-تخصصی-و-مدیریت-پسماند/',
     '/products/stand/': '/محصولات/پایه/',
     '/products/suction-bag/': '/محصولات/کیسه-ساکشن/',
     '/products/suction-tube/': '/محصولات/ساکشن-تیوب/',

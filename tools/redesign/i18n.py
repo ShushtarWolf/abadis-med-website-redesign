@@ -173,6 +173,7 @@ NAV = {
             ('filters', 'products/filters/', 'فیلتر'),
             ('suction-tube', 'products/suction-tube/', 'ساکشن تیوب'),
             ('oral', 'products/oral-hygiene/', 'بهداشت دهان'),
+            ('waste', 'products/waste-bags/', 'کیسه های تخصصی و مدیریت پسماند'),
             ('other', 'products/other/', 'سایر محصولات'),
         ]),
         ('solutions', 'solutions/', 'راهکارها', [
@@ -202,6 +203,7 @@ NAV = {
             ('filters', 'products/filters/', 'Filter'),
             ('suction-tube', 'suction-tube/', 'Suction Tube'),
             ('oral', 'products/oral-hygiene/', 'Oral Hygiene'),
+            ('waste', 'products/specialized-bags-waste-management/', 'Specialized Bags & Waste Management'),
             ('other', 'products/other-products/', 'Other Products'),
         ]),
         ('solutions', 'solutions/', 'Solutions', [
@@ -232,6 +234,7 @@ NAV = {
             ('filters', 'الفلتر/', 'الفلاتر'),
             ('suction-tube', 'أنبوب-الشفط/', 'أنبوب الشفط'),
             ('oral', 'نظافة-الفم/', 'نظافة الفم'),
+            ('waste', 'أكياس-متخصصة-وإدارة-النفايات/', 'أكياس متخصصة وإدارة النفايات'),
             ('other', 'منتجات-اخری/', 'منتجات أخرى'),
         ]),
         ('solutions', 'الحلول/', 'الحلول', [

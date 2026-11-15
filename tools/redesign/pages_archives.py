@@ -863,21 +863,38 @@ class Builder:
         self.reservoir()
 
     def waste_category(self):
-        path = '/محصولات/کیسه-های-تخصصی-و-مدیریت-پسماند/'
-        lang = 'fa'
-        h1 = 'کیسه های تخصصی و مدیریت پسماند'
-        items = [
-            # Same photograph as the figure on the PVA product page.
-            {'path': '/solutions/waste-management-pva/', 'title': 'کیسه زباله PVA',
-             'img': 'assets/img/c/pva-laundry-bag-900.webp'},
-            {'path': '/محصولات/سایر-محصولات/#receiver', 'title': 'رسیور یکبار مصرف',
-             'img': 'assets/img/c/928b52ffc716-900.webp'},
-        ]
-        cards = ''.join(self.card(path, it, lang, it.get('img')) for it in items)
-        trail = [('محصولات', rel_link(path, '/محصولات/')), (h1, None)]
-        main = f'''{page_hero(self.prefix(path), trail, esc(h1), '', '', lang=lang)}
-  <section class="section"><div class="wrap"><div class="post-grid">{cards}</div></div></section>'''
-        self.emit(path, lang, h1, h1, main, 'special', cur='products')
+        # Live FA category (page 19862) has an empty body. Cards must not use
+        # .reveal: iOS Safari skips the first IntersectionObserver callback when
+        # html/body use overflow-x:clip, which leaves this short page blank.
+        specs = (
+            ('/محصولات/کیسه-های-تخصصی-و-مدیریت-پسماند/', 'fa', 'کیسه های تخصصی و مدیریت پسماند',
+             'کیسه زباله PVA و رسیور یکبار مصرف',
+             [('محصولات', '/محصولات/')],
+             [('/محصولات/کیسه-های-تخصصی-و-مدیریت-پسماند-2/', 'کیسه زباله PVA', 'assets/img/c/pva-laundry-bag-900.webp'),
+              ('/محصولات/سایر-محصولات/#receiver', 'رسیور یکبار مصرف', 'assets/img/c/928b52ffc716-900.webp')]),
+            ('/en/products/specialized-bags-waste-management/', 'en', 'Specialized Bags & Waste Management',
+             'PVA waste bag and disposable receiver',
+             [('Products', '/en/products/')],
+             [('/en/products/specialized-bags-waste-management/#pva', 'PVA waste bag', 'assets/img/c/pva-laundry-bag-900.webp'),
+              ('/en/products/other-products/#receiver', 'Disposable receiver', 'assets/img/c/928b52ffc716-900.webp')]),
+            ('/arabic/أكياس-متخصصة-وإدارة-النفايات/', 'ar', 'أكياس متخصصة وإدارة النفايات',
+             'كيس نفايات PVA ووعاء التجميع',
+             [('منتجات', '/arabic/منتجات/')],
+             [('/arabic/كيس-نفايات-pva/', 'كيس نفايات PVA', 'assets/img/c/pva-laundry-bag-900.webp'),
+              ('/arabic/منتجات-اخری/#receiver', 'وعاء التجميع', 'assets/img/c/928b52ffc716-900.webp')]),
+        )
+        for path, lang, h1, lead, trail_bits, items in specs:
+            cards = []
+            for href, title, img in items:
+                cards.append(
+                    f'<a class="post-card" href="{esc(rel_link(path, href))}">'
+                    f'<div class="ph"><img src="{esc(rel_link(path, "/" + img))}" alt="{esc(title)}" loading="eager" decoding="async"></div>'
+                    f'<div class="body"><h3>{esc(title)}</h3><span class="go">{esc(UI[lang]["more"])}</span></div></a>'
+                )
+            trail = [(label, rel_link(path, dest)) for label, dest in trail_bits] + [(h1, None)]
+            main = f'''{page_hero(self.prefix(path), trail, esc(h1), esc(lead), '', lang=lang)}
+  <section class="section"><div class="wrap"><div class="post-grid arch-products">{''.join(cards)}</div></div></section>'''
+            self.emit(path, lang, h1, lead, main, 'special', cur='products')
 
     def catalogue(self):
         """Same PDFs the English download centre already publishes, at /en/catalogue/."""
