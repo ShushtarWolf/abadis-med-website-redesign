@@ -72,7 +72,7 @@
       </article>
   <h2>What changed in the renderer</h2>
   <p class="note">Three.js has been <b>self-hosted</b> at <code>assets/js/three.module.js</code> (r170) since the first factory commit, with <code>OrbitControls.js</code> importing <code>./three.module.js</code>. There is no import map and no unpkg/jsDelivr/esm.sh three.js in any of these eras. A blocked three.js CDN cannot be why the factory canvas is blank — unless a later test page introduced one, which these snapshots do not.</p>
-  <table>
+  <div class="table-scroll" tabindex="0"><table>
     <tr><th></th><th>14437fd4 (approved)</th><th>662dafe5 (29–30 Oct)</th><th>54b6a4bd (31 Oct 15:03)</th><th>24ec345c (31 Oct 21:17)</th></tr>
     <tr><th>Track height</th><td>500vh</td><td>500vh</td><td>500vh</td><td>900vh (1060vh starts at d9b96178)</td></tr>
     <tr><th>three.js</th><td>r170, local, no import map</td><td>same</td><td>same</td><td>same</td></tr>
@@ -80,7 +80,7 @@
     <tr><th>Materials</th><td>one ShaderMaterial (draw-on wireframe) + LineBasic</td><td>same + wireframe operator silhouettes</td><td>+ MeshBasic solid machines, second shader, CanvasTexture flag (1024×590, logo SVG local)</td><td>more MeshBasic / CanvasTexture; still no MeshStandard, no RoomEnvironment, no PMREM, no HDR, no shadows, no post-processing</td></tr>
     <tr><th>JS size</th><td>16 KB</td><td>34 KB</td><td>46 KB</td><td>59 KB</td></tr>
     <tr><th>External CDN</th><td colspan="4">Homepage GSAP + ScrollTrigger from cdn.jsdelivr.net only (logo-scroll / slogans). Factory 3D does not use GSAP. Each snapshot has a local-GSAP twin to test Iranian LTE filtering of jsDelivr.</td></tr>
-  </table>
+  </table></div>
   <p class="note">iOS GPU: these snapshots never used PMREM or MeshStandard. Memory risk, if any, is antialias + pixelRatio 1.75 + growing mesh counts after 54b6a4bd, not an HDR environment. A context loss would be reported in the chip as “CONTEXT LOST” or “no-gl”.</p>
   <p class="note">The Oct 28/29 approval recorded in our notes is for this exact Interactive 3D Factory Scrollytelling Hero, deployed live at <code>14437fd4</code>. There were no git commits on 30 Oct. o1 in the earlier test harness was already the heavier 31 Oct 21:17 tree, not this approval build, and it ran inside the harness rather than the real homepage.</p>
 </body>
