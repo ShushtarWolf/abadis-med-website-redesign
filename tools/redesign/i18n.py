@@ -331,7 +331,7 @@ _I18N_HREF_ALIASES = {
     '/en/products/oral-hygiene/': 'en/products/oral-hygiene/',
     '/en/canister-installation/': 'en/installation-manual/',
     '/en/user-manuals/': 'en/installation-manual/',
-    '/en/catalogue/': 'en/center-download/',
+    # /en/catalogue/ is its own page (the English catalogue). Do not fold it into the download centre.
     '/arabic/كيسه-ساكشن/': 'arabic/كيس-الشفط/',
     '/arabic/کیسه-ساکشن/': 'arabic/كيس-الشفط/',
     '/arabic/فيلترها/': 'arabic/الفلتر/',

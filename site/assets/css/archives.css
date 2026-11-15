@@ -1,0 +1,18 @@
+/* Archive, dealer, download and catalogue listings. Borderless, same radius as post cards. */
+.arch-pager { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 28px; }
+.arch-pager a, .arch-pager span {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 2.5rem; min-height: 2.5rem; padding: 0 12px;
+  border-radius: 999px; text-decoration: none;
+}
+.arch-pager a:hover { background: #e8f3f3; }
+[data-theme="dark"] .arch-pager a:hover,
+[data-theme="noir"] .arch-pager a:hover { background: rgba(255,255,255,.08); }
+.arch-pager .is-current { background: #066163; color: #fff; }
+.arch-cover { width: 100%; max-width: 720px; height: auto; border-radius: 20px; display: block; }
+.arch-rows { margin: 10px 0 0; padding: 0; list-style: none; }
+.arch-rows li { margin: 4px 0; }
+.arch-note { margin-top: 18px; opacity: .75; }
+.cat-grid .post-card .ph { background: #fff; }
+[data-theme="dark"] .cat-grid .post-card .ph,
+[data-theme="noir"] .cat-grid .post-card .ph { background: transparent; }
