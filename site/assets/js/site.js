@@ -194,12 +194,34 @@
 
   /* ---------- scroll reveal ---------- */
   const rev = document.querySelectorAll('.reveal');
+  const showInView = () => {
+    const vh = window.innerHeight || 0;
+    rev.forEach((e) => {
+      if (e.classList.contains('in')) return;
+      const r = e.getBoundingClientRect();
+      if (r.bottom > 0 && r.top < vh) e.classList.add('in');
+    });
+  };
   if (reduce || !('IntersectionObserver' in window)) rev.forEach((e) => e.classList.add('in'));
   else {
-    const io = new IntersectionObserver((en) => en.forEach((x) => {
+    // Percentage rootMargin throws on older WebKit. overflow-x:clip on html/body
+    // also makes iOS Safari skip the first intersection callback, so a short
+    // page whose only content is .reveal stays blank (opacity: 0).
+    let io = null;
+    const cb = (en) => en.forEach((x) => {
       if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); }
-    }), { rootMargin: '0px 0px -8% 0px' });
-    rev.forEach((e) => io.observe(e));
+    });
+    try { io = new IntersectionObserver(cb, { rootMargin: '0px 0px -8% 0px' }); }
+    catch (err) {
+      try { io = new IntersectionObserver(cb, { rootMargin: '0px 0px -40px 0px' }); }
+      catch (err2) { rev.forEach((e) => e.classList.add('in')); }
+    }
+    if (io) {
+      rev.forEach((e) => io.observe(e));
+      requestAnimationFrame(showInView);
+      window.addEventListener('load', showInView, { once: true });
+      setTimeout(showInView, 400);
+    }
   }
 
   /* sustainability counters — final value is already in the element */
