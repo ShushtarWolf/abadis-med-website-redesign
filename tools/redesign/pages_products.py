@@ -514,7 +514,9 @@ def prepare_family(slug):
     path = next(p for s, p, *_rest in FAMILIES if s == slug)
     h1, items = family(path)
     if slug == 'connectors':
-        items = [it for it in items if it['id'] != 'rgl']
+        _oh, oth = family('/محصولات/سایر-محصولات/')
+        have = {it['id'] for it in items}
+        items = items + [it for it in oth if it['id'] == 'splashvac' and it['id'] not in have]
     if slug == 'other':
         _h, conn = family('/محصولات/اتصالات/')
         rgl = next(it for it in conn if it['id'] == 'rgl')
@@ -532,6 +534,9 @@ def prepare_family(slug):
             'imgs': [], 'tables': [[['نام کالا', 'کد کالا'], ['دستگاه تزریق چربی', '']]],
             'force_missing': True,
         })
+        _oh, oth = family('/محصولات/سایر-محصولات/')
+        have = {it['id'] for it in items}
+        items = items + [it for it in oth if it['id'] == 'receiver' and it['id'] not in have]
     for it in items:
         if it['id'] in NO_PHOTO:
             it['imgs'] = []

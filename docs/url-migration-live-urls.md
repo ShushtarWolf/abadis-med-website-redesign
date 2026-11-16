@@ -300,6 +300,8 @@ These three URLs are real pages as well:
 | `/products/filters/` | `/محصولات/فیلترها/` |
 | `/products/oral-hygiene/` | `/محصولات/سواب-های-دهانی-و-نگهدارنده/` |
 | `/products/other/` | `/محصولات/سایر-محصولات/` |
+
+Product category labels and order follow the live products-page cards. These slugs are unchanged, and no new category 301 was added.
 | `/products/stand/` | `/محصولات/پایه/` |
 | `/products/suction-bag/` | `/محصولات/کیسه-ساکشن/` |
 | `/products/suction-tube/` | `/محصولات/ساکشن-تیوب/` |
