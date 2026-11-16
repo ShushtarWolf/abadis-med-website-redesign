@@ -227,37 +227,37 @@ HUB_UI = {
 # slug, href from the hub page, title, subtitle (FA subtitle is filled from the family pages)
 HUB_FAMILIES = {
     'fa': [
-        ('suction-bag', 'suction-bag/', 'کیسه ساکشن یکبار مصرف'),
-        ('canister', 'canister/', 'مخزن ساکشن'),
-        ('stand', 'stand/', 'پایه و نگهدارنده‌ها'),
-        ('connectors', 'connectors/', 'اتصالات'),
+        ('suction-bag', 'suction-bag/', 'کیسه های ساکشن'),
+        ('stand', 'stand/', 'پایه و نگهدارنده'),
         ('filters', 'filters/', 'فیلتر'),
         ('suction-tube', 'suction-tube/', 'ساکشن تیوب'),
-        ('oral', 'oral-hygiene/', 'بهداشت دهان'),
+        ('canister', 'canister/', 'مخازن و ظروف پزشکی'),
+        ('connectors', 'connectors/', 'اتصالات و ملزومات ساکشن'),
+        ('oral', 'oral-hygiene/', 'سواب های دهانی و نگهدارنده'),
         ('waste', 'کیسه-های-تخصصی-و-مدیریت-پسماند/', 'کیسه های تخصصی و مدیریت پسماند'),
         ('other', 'other/', 'سایر محصولات'),
     ],
     'en': [
-        ('suction-bag', 'suction-bag/', 'Disposable Suction Bag', '1 Liter, 2 Liter, 3 Liter'),
-        ('canister', 'canisters/', 'Suction Canister', 'Suction Canisters, Wall Suction, Collection Cup, Fat Collection Canister System'),
-        ('stand', 'base-and-holder/', 'Stands & Holders', 'Trolley, wall clamp, rear part of the portable clamp'),
-        ('connectors', 'connections/', 'Connectors', 'T connector, Connector, Silicone Slang, ON/OFF valve, Accessories'),
-        ('filters', 'filters/', 'Filter', 'Antibacterial Filter(Viral Filter), Flow stopper filter, Sintered Filter'),
-        ('suction-tube', '../suction-tube/', 'Suction Tube', 'Suction Tube, Fingertip'),
-        ('oral', 'oral-hygiene/', 'Oral Hygiene', 'Suction toothbrush, oral swab, endotracheal-tube fixer'),
-        ('waste', 'specialized-bags-waste-management/', 'Specialized Bags & Waste Management', 'PVA waste bag, disposable receiver'),
-        ('other', 'other-products/', 'Other Products', 'Regulator, PVA waste bag, disposable receiver, Splash-Vac'),
+        ('canister', 'canisters/', 'Medical Canisters', 'Suction canisters, wall suction, collection cup, kidney dish'),
+        ('connectors', 'connections/', 'Connections', 'Connector, regulator, valve, Splash-Vac'),
+        ('waste', 'specialized-bags-waste-management/', 'Specialized Bags & Waste Management', 'PVA waste bag'),
+        ('suction-tube', '../suction-tube/', 'Suction tube', 'Suction Tube, Fingertip'),
+        ('suction-bag', 'suction-bag/', 'Suction Bag', '1 Liter, 2 Liter, 3 Liter'),
+        ('stand', 'base-and-holder/', 'Base and Holder', 'Trolleys, wall bracket, rail bracket'),
+        ('filters', 'filters/', 'Filter', 'Antibacterial, flow stopper, sintered'),
+        ('oral', 'oral-swabs-tube-holders/', 'Oral Swabs & Tube Holders', 'Suction toothbrush, oral swab, tube holder'),
+        ('other', 'other-products/', 'Other Products', 'Suction brush, tube holder, kidney dish'),
     ],
     'ar': [
-        ('suction-bag', '../كيس-الشفط/', 'أكياس الشفط ذات الاستخدام الواحد', ''),
-        ('canister', '../خزانات/', 'علبة الشفط', 'خزانات الشفط، الشفط الجداري، كوب جمع العينة، جهاز جمع الدهون'),
-        ('stand', '../تثبیت/', 'الحوامل والمثبتات', 'قاعدة تثبيت شفط آباديس المحمولة (ترولي)، مشابك خزان الحائط، مشابك الخزان المحمول'),
+        ('suction-bag', '../كيس-الشفط/', 'كيس الشفط', ''),
+        ('canister', '../خزانات/', 'خزانات', ''),
+        ('stand', '../تثبیت/', 'تثبیت', ''),
         ('connectors', '../الوصلات/', 'الوصلات', ''),
-        ('filters', '../الفلتر/', 'الفلاتر', ''),
+        ('filters', '../الفلتر/', 'الفلتر', ''),
+        ('other', '../منتجات-اخری/', 'منتجات اخری', ''),
         ('suction-tube', '../أنبوب-الشفط/', 'أنبوب الشفط', ''),
-        ('oral', '../نظافة-الفم/', 'نظافة الفم', 'فرشاة الشفط، المسحة الفموية، مثبّت أنبوب القصبة'),
-        ('waste', '../أكياس-متخصصة-وإدارة-النفايات/', 'أكياس متخصصة وإدارة النفايات', 'كيس نفايات PVA ووعاء التجميع'),
-        ('other', '../منتجات-اخری/', 'منتجات أخرى', 'المنظّم، كيس نفايات PVA، وعاء التجميع، Splash-Vac'),
+        ('oral', '../نظافة-الفم/', 'مسحات الفم وحاملات الأنبوب', ''),
+        ('waste', '../أكياس-متخصصة-وإدارة-النفايات/', 'أكياس متخصصة وإدارة النفايات', ''),
     ],
 }
 # photo id, href from the hub, title, parent family
@@ -435,43 +435,43 @@ IMG_REPLACE = {
 # rel, prefix, canonical, products-crumb href, h1 override (None = Persian page title)
 OUT = {
     'stand': {
-        'fa': ('products/stand/index.html', '../../', 'products/stand/', '../', 'پایه و نگهدارنده‌ها'),
-        'en': ('en/products/base-and-holder/index.html', '../../../', 'en/products/base-and-holder/', '../', 'Stands & Holders'),
-        'ar': ('arabic/تثبیت/index.html', '../../', 'arabic/تثبیت/', '../منتجات/', 'الحوامل والمثبتات'),
+        'fa': ('products/stand/index.html', '../../', 'products/stand/', '../', 'پایه و نگهدارنده'),
+        'en': ('en/products/base-and-holder/index.html', '../../../', 'en/products/base-and-holder/', '../', 'Base and Holder'),
+        'ar': ('arabic/تثبیت/index.html', '../../', 'arabic/تثبیت/', '../منتجات/', 'تثبیت'),
     },
     'filters': {
         'fa': ('products/filters/index.html', '../../', 'products/filters/', '../', 'فیلتر'),
         'en': ('en/products/filters/index.html', '../../../', 'en/products/filters/', '../', 'Filter'),
-        'ar': ('arabic/الفلتر/index.html', '../../', 'arabic/الفلتر/', '../منتجات/', 'الفلاتر'),
+        'ar': ('arabic/الفلتر/index.html', '../../', 'arabic/الفلتر/', '../منتجات/', 'الفلتر'),
     },
     'suction-tube': {
         'fa': ('products/suction-tube/index.html', '../../', 'products/suction-tube/', '../', None),
-        'en': ('en/suction-tube/index.html', '../../', 'en/suction-tube/', '../products/', 'Suction Tube'),
+        'en': ('en/suction-tube/index.html', '../../', 'en/suction-tube/', '../products/', 'Suction tube'),
         'ar': ('arabic/أنبوب-الشفط/index.html', '../../', 'arabic/أنبوب-الشفط/', '../منتجات/', 'أنبوب الشفط'),
     },
     'canister': {
-        'fa': ('products/canister/index.html', '../../', 'products/canister/', '../', 'مخزن ساکشن'),
-        'en': ('en/products/canisters/index.html', '../../../', 'en/products/canisters/', '../', 'Suction Canister'),
+        'fa': ('products/canister/index.html', '../../', 'products/canister/', '../', 'مخازن و ظروف پزشکی'),
+        'en': ('en/products/canisters/index.html', '../../../', 'en/products/canisters/', '../', 'Medical Canisters'),
         'ar': ('arabic/خزانات/index.html', '../../', 'arabic/خزانات/', '../منتجات/', 'خزانات'),
     },
     'connectors': {
-        'fa': ('products/connectors/index.html', '../../', 'products/connectors/', '../', 'اتصالات'),
-        'en': ('en/products/connections/index.html', '../../../', 'en/products/connections/', '../', 'Connectors'),
+        'fa': ('products/connectors/index.html', '../../', 'products/connectors/', '../', 'اتصالات و ملزومات ساکشن'),
+        'en': ('en/products/connections/index.html', '../../../', 'en/products/connections/', '../', 'Connections'),
         'ar': ('arabic/الوصلات/index.html', '../../', 'arabic/الوصلات/', '../منتجات/', 'الوصلات'),
     },
     'other': {
         'fa': ('products/other/index.html', '../../', 'products/other/', '../', 'سایر محصولات'),
         'en': ('en/products/other-products/index.html', '../../../', 'en/products/other-products/', '../', 'Other Products'),
-        'ar': ('arabic/منتجات-اخری/index.html', '../../', 'arabic/منتجات-اخری/', '../منتجات/', 'منتجات أخرى'),
+        'ar': ('arabic/منتجات-اخری/index.html', '../../', 'arabic/منتجات-اخری/', '../منتجات/', 'منتجات اخری'),
     },
     'oral': {
-        'fa': ('products/oral-hygiene/index.html', '../../', 'products/oral-hygiene/', '../', 'بهداشت دهان'),
-        'en': ('en/products/oral-hygiene/index.html', '../../../', 'en/products/oral-hygiene/', '../', 'Oral Hygiene'),
-        'ar': ('arabic/نظافة-الفم/index.html', '../../', 'arabic/نظافة-الفم/', '../منتجات/', 'نظافة الفم'),
+        'fa': ('products/oral-hygiene/index.html', '../../', 'products/oral-hygiene/', '../', 'سواب های دهانی و نگهدارنده'),
+        'en': ('en/products/oral-swabs-tube-holders/index.html', '../../../', 'en/products/oral-swabs-tube-holders/', '../', 'Oral Swabs & Tube Holders'),
+        'ar': ('arabic/نظافة-الفم/index.html', '../../', 'arabic/نظافة-الفم/', '../منتجات/', 'مسحات الفم وحاملات الأنبوب'),
     },
     'suction-bag': {
-        'en': ('en/products/suction-bag/index.html', '../../../', 'en/products/suction-bag/', '../', 'Disposable Suction Bag'),
-        'ar': ('arabic/كيس-الشفط/index.html', '../../', 'arabic/كيس-الشفط/', '../منتجات/', 'أكياس الشفط ذات الاستخدام الواحد'),
+        'en': ('en/products/suction-bag/index.html', '../../../', 'en/products/suction-bag/', '../', 'Suction Bag'),
+        'ar': ('arabic/كيس-الشفط/index.html', '../../', 'arabic/كيس-الشفط/', '../منتجات/', 'كيس الشفط'),
     },
 }
 I18N_PATH = {
@@ -481,6 +481,7 @@ I18N_PATH = {
     ('en', 'products/connections/'): 'connectors',
     ('en', 'products/other-products/'): 'other',
     ('en', 'products/oral-hygiene/'): 'oral',
+    ('en', 'products/oral-swabs-tube-holders/'): 'oral',
     ('en', 'suction-tube/'): 'suction-tube',
     ('en', 'products/suction-bag/'): 'suction-bag',
     ('ar', 'تثبیت/'): 'stand',
@@ -517,7 +518,10 @@ def prepare_family(slug):
     path = next(p for s, p, *_rest in FAMILIES if s == slug)
     h1, items = family(path)
     if slug == 'connectors':
-        items = [it for it in items if it['id'] != 'rgl']
+        # Live اتصالات / Connections lists the regulator and Splash-Vac on this page.
+        _oh, oth = family('/محصولات/سایر-محصولات/')
+        have = {it['id'] for it in items}
+        items = items + [it for it in oth if it['id'] == 'splashvac' and it['id'] not in have]
     if slug == 'other':
         _h, conn = family('/محصولات/اتصالات/')
         rgl = next(it for it in conn if it['id'] == 'rgl')
@@ -535,6 +539,10 @@ def prepare_family(slug):
             'imgs': [], 'tables': [[['نام کالا', 'کد کالا'], ['دستگاه تزریق چربی', '']]],
             'force_missing': True,
         })
+        # Live مخزن / Medical Canisters / خزانات lists the disposable kidney dish here.
+        _oh, oth = family('/محصولات/سایر-محصولات/')
+        have = {it['id'] for it in items}
+        items = items + [it for it in oth if it['id'] == 'receiver' and it['id'] not in have]
     for it in items:
         if it['id'] in NO_PHOTO:
             it['imgs'] = []

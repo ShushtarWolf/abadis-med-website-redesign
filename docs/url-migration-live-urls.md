@@ -301,6 +301,8 @@ These three URLs are real pages as well:
 | `/products/filters/` | `/محصولات/فیلترها/` |
 | `/products/oral-hygiene/` | `/محصولات/سواب-های-دهانی-و-نگهدارنده/` |
 | `/products/other/` | `/محصولات/سایر-محصولات/` |
+
+Product category **labels and order** follow the live products-page cards (FA `/محصولات/`, EN `/en/products/`, AR `/arabic/منتجات/`), not the mobile menu. The slugs in the table above are unchanged. FA and EN do not list «سایر محصولات» / Other Products on the hub; those URLs stay, because the live site still publishes them. No new category 301 was added for R-002.
 | `/products/stand/` | `/محصولات/پایه/` |
 | `/products/suction-bag/` | `/محصولات/کیسه-ساکشن/` |
 | `/products/suction-tube/` | `/محصولات/ساکشن-تیوب/` |

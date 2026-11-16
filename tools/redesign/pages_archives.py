@@ -871,17 +871,17 @@ class Builder:
              'کیسه زباله PVA و رسیور یکبار مصرف',
              [('محصولات', '/محصولات/')],
              [('/محصولات/کیسه-های-تخصصی-و-مدیریت-پسماند-2/', 'کیسه زباله PVA', 'assets/img/c/pva-laundry-bag-900.webp'),
-              ('/محصولات/سایر-محصولات/#receiver', 'رسیور یکبار مصرف', 'assets/img/c/928b52ffc716-900.webp')]),
+              ('/محصولات/مخزن/#receiver', 'رسیور یکبار مصرف', 'assets/img/c/928b52ffc716-900.webp')]),
             ('/en/products/specialized-bags-waste-management/', 'en', 'Specialized Bags & Waste Management',
              'PVA waste bag and disposable receiver',
              [('Products', '/en/products/')],
              [('/en/products/specialized-bags-waste-management/#pva', 'PVA waste bag', 'assets/img/c/pva-laundry-bag-900.webp'),
-              ('/en/products/other-products/#receiver', 'Disposable receiver', 'assets/img/c/928b52ffc716-900.webp')]),
+              ('/en/products/canisters/#receiver', 'Disposable receiver', 'assets/img/c/928b52ffc716-900.webp')]),
             ('/arabic/أكياس-متخصصة-وإدارة-النفايات/', 'ar', 'أكياس متخصصة وإدارة النفايات',
              'كيس نفايات PVA ووعاء التجميع',
              [('منتجات', '/arabic/منتجات/')],
              [('/arabic/كيس-نفايات-pva/', 'كيس نفايات PVA', 'assets/img/c/pva-laundry-bag-900.webp'),
-              ('/arabic/منتجات-اخری/#receiver', 'وعاء التجميع', 'assets/img/c/928b52ffc716-900.webp')]),
+              ('/arabic/خزانات/#receiver', 'وعاء التجميع', 'assets/img/c/928b52ffc716-900.webp')]),
         )
         for path, lang, h1, lead, trail_bits, items in specs:
             cards = []
