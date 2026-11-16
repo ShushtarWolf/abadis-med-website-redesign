@@ -167,45 +167,56 @@ UI = {
     ),
 }
 
+# Names and order are the live products-page cards, not the mobile menu.
 CATALOG = [
     dict(slug='suction-bag', photo='suction-bag',
          href=L('products/suction-bag/', 'products/suction-bag/', 'كيس-الشفط/'),
-         title=L('کیسه ساکشن یکبار مصرف', 'Disposable Suction Bag', 'أكياس الشفط ذات الاستخدام الواحد'),
-         sub=L('مدل‌های ۱، ۲ و ۳ لیتری', '1, 2 and 3 litre models', 'موديلات ١ و٢ و٣ لتر')),
-    dict(slug='canister', photo='canister',
-         href=L('products/canister/', 'products/canisters/', 'خزانات/'),
-         title=L('مخزن ساکشن', 'Suction Canister', 'علبة الشفط'),
-         sub=L('مخازن و سیستم‌های دیواری', 'Canisters and wall systems', 'الخزانات والأنظمة الجدارية')),
+         title=L('کیسه های ساکشن', 'Suction Bag', 'كيس الشفط'),
+         sub=L('۱ لیتری، ۲ لیتری، ۳ لیتری', '1 Liter, 2 Liter, 3 Liter', '١ لتر، ٢ لتر، ٣ لتر')),
     dict(slug='stand', photo='stand',
          href=L('products/stand/', 'products/base-and-holder/', 'تثبیت/'),
-         title=L('پایه و نگهدارنده‌ها', 'Stands & Holders', 'الحوامل والمثبتات'),
-         sub=L('ترولی، پایه و گیره‌ها', 'Trolley, stand and clamps', 'ترولي وقاعدة ومشابك')),
-    dict(slug='connectors', photo='connectors',
-         href=L('products/connectors/', 'products/connections/', 'الوصلات/'),
-         title=L('اتصالات', 'Connectors', 'الوصلات'),
-         sub=L('کانکتورها و شیرها', 'Connectors and valves', 'الوصلات والصمامات')),
+         title=L('پایه و نگهدارنده', 'Base and Holder', 'تثبیت'),
+         sub=L('ترولی، گیره دیواری، پشت گیره', 'Trolleys, wall bracket, rail bracket', 'ترولي، مشبك جداري، الجزء الخلفي')),
     dict(slug='filters', photo='filters',
          href=L('products/filters/', 'products/filters/', 'الفلتر/'),
-         title=L('فیلتر', 'Filter', 'الفلاتر'),
-         sub=L('انواع فیلترهای حفاظتی', 'Protective filter types', 'أنواع الفلاتر الواقية')),
+         title=L('فیلتر', 'Filter', 'الفلتر'),
+         sub=L('آنتی‌باکتریال، قطع جریان، متخلخل', 'Antibacterial, flow stopper, sintered', 'مضاد للبكتيريا، قاطع التدفق، متخلخل')),
     dict(slug='suction-tube', photo='suction-tube',
          href=L('products/suction-tube/', 'suction-tube/', 'أنبوب-الشفط/'),
-         title=L('ساکشن تیوب', 'Suction Tube', 'أنبوب الشفط'),
-         sub=L('لوله‌ها و رابط‌های ساکشن', 'Tubes and suction connectors', 'الأنابيب ووصلات الشفط')),
+         title=L('ساکشن تیوب', 'Suction tube', 'أنبوب الشفط'),
+         sub=L('لوله ساکشن، فینگر تیپ', 'Suction Tube, Fingertip', 'أنبوب الشفط، طرف الإصبع')),
+    dict(slug='canister', photo='canister',
+         href=L('products/canister/', 'products/canisters/', 'خزانات/'),
+         title=L('مخازن و ظروف پزشکی', 'Medical Canisters', 'خزانات'),
+         sub=L('مخزن، ساکشن دیواری، محفظه نمونه‌گیری، رسیور', 'Suction canisters, wall suction, collection cup, kidney dish', 'خزانات الشفط، الشفط الجداري، كوب الجمع، الوعاء الكلوي')),
+    dict(slug='connectors', photo='connectors',
+         href=L('products/connectors/', 'products/connections/', 'الوصلات/'),
+         title=L('اتصالات و ملزومات ساکشن', 'Connections', 'الوصلات'),
+         sub=L('کانکتور، رگولاتور، شیر، Splash-Vac', 'Connector, regulator, valve, Splash-Vac', 'موصل، منظّم، صمام، Splash-Vac')),
     dict(slug='oral', photo='oral',
-         href=L('products/oral-hygiene/', 'products/oral-hygiene/', 'نظافة-الفم/'),
-         title=L('بهداشت دهان', 'Oral Hygiene', 'نظافة الفم'),
-         sub=L('مسواک ساکشن، سواب دهانی، فیکسر لوله تراشه', 'Suction toothbrush, oral swab, tube fixer', 'فرشاة الشفط والمسحة ومثبّت الأنبوب')),
+         href=L('products/oral-hygiene/', 'products/oral-swabs-tube-holders/', 'نظافة-الفم/'),
+         title=L('سواب های دهانی و نگهدارنده', 'Oral Swabs & Tube Holders', 'مسحات الفم وحاملات الأنبوب'),
+         sub=L('مسواک ساکشن، سواب دهانی، نگهدارنده لوله تراشه', 'Suction toothbrush, oral swab, tube holder', 'فرشاة الشفط، المسحة، حامل الأنبوب')),
     dict(slug='waste', photo='waste',
          href=L('products/waste-bags/', 'products/specialized-bags-waste-management/', 'أكياس-متخصصة-وإدارة-النفايات/'),
          title=L('کیسه های تخصصی و مدیریت پسماند', 'Specialized Bags & Waste Management', 'أكياس متخصصة وإدارة النفايات'),
-         sub=L('کیسه زباله PVA و رسیور یکبار مصرف', 'PVA waste bag and disposable receiver', 'كيس نفايات PVA ووعاء التجميع')),
+         sub=L('کیسه زباله PVA', 'PVA waste bag', 'كيس نفايات PVA')),
     dict(slug='other', photo='other',
          href=L('products/other/', 'products/other-products/', 'منتجات-اخری/'),
-         title=L('سایر محصولات', 'Other Products', 'منتجات أخرى'),
-         sub=L('رگولاتور، کیسه زباله PVA، رسیور یکبار مصرف', 'Regulator, PVA waste bag, disposable receiver', 'المنظّم وكيس نفايات PVA ووعاء التجميع')),
+         title=L('سایر محصولات', 'Other Products', 'منتجات اخری'),
+         sub=L('مسواک ساکشن، نگهدارنده، رسیور', 'Suction brush, tube holder, kidney dish', 'فرشاة الشفط، حامل الأنبوب، الوعاء الكلوي')),
 ]
 BY_SLUG = {c['slug']: c for c in CATALOG}
+ORDER = {
+    'fa': ['suction-bag', 'stand', 'filters', 'suction-tube', 'canister', 'connectors', 'oral', 'waste'],
+    'en': ['canister', 'connectors', 'waste', 'suction-tube', 'suction-bag', 'stand', 'filters', 'oral'],
+    'ar': ['suction-bag', 'canister', 'stand', 'connectors', 'filters', 'other',
+           'suction-tube', 'oral', 'waste'],
+}
+
+
+def catalog_for(lang):
+    return [BY_SLUG[s] for s in ORDER[lang]]
 
 PHOTO = {
     'suction-bag': 'assets/img/c/611f0398754f-640.webp',
@@ -877,7 +888,7 @@ def _card(p, lang, href_, title, sub, photo, kind, badge_html=''):
 def architecture(p, lang, default='product', layers=False):
     ui = UI[lang]
     prod_links = ''.join(
-        f'<li><a href="{prod_href(p, lang, c["slug"])}">{esc(c["title"][lang])}</a></li>' for c in CATALOG)
+        f'<li><a href="{prod_href(p, lang, c["slug"])}">{esc(c["title"][lang])}</a></li>' for c in catalog_for(lang))
     sol_links = ''.join(
         f'<li><a href="{sol_href(p, lang, s["slug"])}">{esc(s["title"][lang])}'
         f'{badge(lang, "future") if s["future"] else ""}</a></li>' for s in SOLS)
@@ -890,7 +901,7 @@ def architecture(p, lang, default='product', layers=False):
     <p class="ps-note">{esc(ui["note"])}</p>'''
     prod_cards = ''.join(
         _card(p, lang, prod_href(p, lang, c['slug']), c['title'][lang], c['sub'][lang], c['photo'], 'product', badge(lang, 'order'))
-        for c in CATALOG)
+        for c in catalog_for(lang))
     sol_cards = ''.join(
         _card(p, lang, sol_href(p, lang, s['slug']), s['title'][lang], s['sub'][lang], s['parts'][0]['photo'] or s['parts'][0]['slug'],
               'solution', badge(lang, 'future') if s['future'] else f'<span class="ps-state">{esc(ui["active"])}</span>')
@@ -966,7 +977,7 @@ def home_section(p, lang):
     tease = PHIL.teaser_html(lang, hub)
     prod_cards = ''.join(
         _card(p, lang, prod_href(p, lang, c['slug']), c['title'][lang], c['sub'][lang], c['photo'], 'product', badge(lang, 'order'))
-        for c in CATALOG)
+        for c in catalog_for(lang))
     sol_cards = ''.join(
         _card(p, lang, sol_href(p, lang, s['slug']), s['title'][lang], s['sub'][lang], s['parts'][0]['photo'] or s['parts'][0]['slug'],
               'solution', badge(lang, 'future') if s['future'] else f'<span class="ps-state">{esc(ui["active"])}</span>')
@@ -979,7 +990,7 @@ def home_section(p, lang):
         <a role="tab" id="tab-by-solution" href="#by-solution" data-ps-tab="solution" aria-selected="false" aria-controls="by-solution">{icons(p, "solution")}{esc(ui["by_s"])}</a>
       </div>
       <div class="ps-panel is-default" id="by-product" role="tabpanel" aria-labelledby="tab-by-product" data-ps-panel="product">
-        {carousel(prod_cards, len(CATALOG), ui["prev"], ui["next"], ui["rail_p"])}</div>
+        {carousel(prod_cards, len(catalog_for(lang)), ui["prev"], ui["next"], ui["rail_p"])}</div>
       <div class="ps-panel" id="by-solution" role="tabpanel" aria-labelledby="tab-by-solution" data-ps-panel="solution" hidden>
         {carousel(sol_cards, len(SOLS), ui["prev"], ui["next"], ui["rail_s"])}</div>
       <p class="h-all">
@@ -1113,10 +1124,13 @@ def assert_nav_catalog_sync():
         nav = {item[0]: item for item in NAV[lang]}
         prod = nav['products'][3]
         sol = nav['solutions'][3]
-        if [row[0] for row in prod] != [c['slug'] for c in CATALOG]:
-            raise SystemExit(f'NAV[{lang}] product slugs ≠ CATALOG order')
-        if [row[1] for row in prod] != [c['href'][lang] for c in CATALOG]:
-            raise SystemExit(f'NAV[{lang}] product hrefs ≠ CATALOG')
+        cats = catalog_for(lang)
+        if [row[0] for row in prod] != [c['slug'] for c in cats]:
+            raise SystemExit(f'NAV[{lang}] product slugs ≠ catalog order')
+        if [row[1] for row in prod] != [c['href'][lang] for c in cats]:
+            raise SystemExit(f'NAV[{lang}] product hrefs ≠ catalog')
+        if [row[2] for row in prod] != [c['title'][lang] for c in cats]:
+            raise SystemExit(f'NAV[{lang}] product labels ≠ catalog')
         if [row[0] for row in sol] != [s['slug'] for s in SOLS]:
             raise SystemExit(f'NAV[{lang}] solution slugs ≠ SOLS (possible menu swap)')
         if [row[1] for row in sol] != [sol_href[lang](s['slug']) for s in SOLS]:
