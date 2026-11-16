@@ -1444,6 +1444,8 @@ def faq(write):
     body = ''.join(f'<div class="faq-group reveal"><h2>{esc(t)}</h2>{faq_list(items, p)}</div>' for t, items in groups)
     nav = ''.join(f'<a href="#f{i}">{esc(t)}</a>' for i, (t, _) in enumerate(groups))
     body = ''.join(f'<div class="faq-group reveal" id="f{i}"><h2>{esc(t)}</h2>{faq_list(items, p)}</div>' for i, (t, items) in enumerate(groups))
+    from faq_images import inject_faq_html
+    body = inject_faq_html(body, p, 'fa')
     main = f'''{page_hero(p, [('پرسش های متداول', None)], 'پرسش های متداول')}
   <nav class="anchors" aria-label="بخش‌های صفحه"><div class="wrap">{nav}</div></nav>
   <section class="section"><div class="wrap" style="max-width:900px">{body}</div></section>'''

@@ -954,8 +954,20 @@ details.letter[open] summary { margin-bottom: 12px; }
 .faq-item summary::-webkit-details-marker { display: none; }
 .faq-item summary::after { content: "+"; color: var(--brand); font-weight: 900; font-size: 1.2rem; line-height: 1; }
 .faq-item[open] summary::after { content: "−"; }
-.faq-a { padding: 0 0 16px; color: var(--ink-2); }
+.faq-a { padding: 0 0 16px; color: var(--ink-2); min-width: 0; max-width: 100%; }
 .faq-a p { margin-bottom: 8px; }
+/* Answer diagrams. Do not clip .faq-item; native details open/close on iOS. */
+img.faq-answer-img,
+.faq-a img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 12px auto;
+  border-radius: 16px;
+  object-fit: contain;
+}
+.faq-a figure { margin: 12px auto; max-width: 100%; }
+.faq-a figcaption { color: var(--muted); font-size: .85rem; text-align: center; margin-top: 6px; }
 .faq-group + .faq-group { margin-top: 36px; }
 .faq-group h2 { font-size: 1.3rem; margin-bottom: 14px; }
 /* listing tools (search + show more) */
@@ -1465,6 +1477,8 @@ dd:has(> .soc-placeholder) {
 .teaser:hover .teaser-ph img { transform: scale(1.03); }
 @media (prefers-reduced-motion: reduce) { .teaser:hover .teaser-ph img { transform: none; } }
 .prose p img, .prose a img, .prose li img { border-radius: 14px; max-width: 100%; height: auto; }
+.prose img.faq-answer-img,
+img.faq-answer-img { border-radius: 16px; display: block; margin-inline: auto; }
 /* ---- brief: export page, quote form, spec summary, calculator method, data placeholders ---- */
 .ph-data { display: inline-block; padding: 1px 8px; border-radius: 6px; border: 1px dashed var(--brand); color: var(--brand); background: var(--chip-bg); font-size: .92em; }
 .spec-table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
