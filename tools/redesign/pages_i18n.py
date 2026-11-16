@@ -158,6 +158,9 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
     raw_content = wp.get('content', {}).get('rendered', '')
     desc = meta_description(title, wp.get('excerpt', {}).get('rendered', ''), raw_content, lang)
     body = clean_html(raw_content, lang=lang, prefix=p)
+    if site_path in ('faqs/', 'پرسش-های-متداول/'):
+        from faq_images import inject_faq_html
+        body = inject_faq_html(body, p, lang)
     if site_path in ('contact-us/', 'اتصل-بنا/'):
         from icons import decorate_contact_html
         body = decorate_contact_html(body)
