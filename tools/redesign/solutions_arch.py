@@ -169,9 +169,8 @@ UI = {
 
 # Names and order are the live products-page cards, not the mobile menu.
 # FA https://abadis-med.com/محصولات/   EN /en/products/   AR /arabic/منتجات/
-# AR live hub lists six cards. Tube, oral swabs and waste bags are not on it;
-# they follow, in FA order, under translated names. سایر محصولات / Other Products
-# stay as pages (live still publishes them) but are not FA or EN hub cards.
+# AR live hub once listed six core cards first; tube, oral, waste follow in FA order.
+# سایر محصولات / Other Products is a full hub family card in all three languages.
 CATALOG = [
     dict(slug='suction-bag', photo='suction-bag',
          href=L('products/suction-bag/', 'products/suction-bag/', 'كيس-الشفط/'),
@@ -192,11 +191,11 @@ CATALOG = [
     dict(slug='canister', photo='canister',
          href=L('products/canister/', 'products/canisters/', 'خزانات/'),
          title=L('مخازن و ظروف پزشکی', 'Medical Canisters', 'خزانات'),
-         sub=L('مخزن، ساکشن دیواری، محفظه نمونه‌گیری، رسیور', 'Suction canisters, wall suction, collection cup, kidney dish', 'خزانات الشفط، الشفط الجداري، كوب الجمع، الوعاء الكلوي')),
+         sub=L('مخزن، ساکشن دیواری، محفظه نمونه‌گیری', 'Suction canisters, wall suction, collection cup', 'خزانات الشفط، الشفط الجداري، كوب الجمع')),
     dict(slug='connectors', photo='connectors',
          href=L('products/connectors/', 'products/connections/', 'الوصلات/'),
          title=L('اتصالات و ملزومات ساکشن', 'Connections', 'الوصلات'),
-         sub=L('کانکتور، رگولاتور، شیر، Splash-Vac', 'Connector, regulator, valve, Splash-Vac', 'موصل، منظّم، صمام، Splash-Vac')),
+         sub=L('کانکتور، شیر، سری شلنگ و اتصالات', 'Connector, valve, hose and fitting set', 'موصل، صمام، مجموعة الخراطيم والوصلات')),
     dict(slug='oral', photo='oral',
          href=L('products/oral-hygiene/', 'products/oral-swabs-tube-holders/', 'نظافة-الفم/'),
          title=L('سواب های دهانی و نگهدارنده', 'Oral Swabs & Tube Holders', 'مسحات الفم وحاملات الأنبوب'),
@@ -206,14 +205,14 @@ CATALOG = [
          title=L('کیسه های تخصصی و مدیریت پسماند', 'Specialized Bags & Waste Management', 'أكياس متخصصة وإدارة النفايات'),
          sub=L('کیسه زباله PVA', 'PVA waste bag', 'كيس نفايات PVA')),
     dict(slug='other', photo='other',
-         href=L('products/other/', 'products/other-products/', 'منتجات-اخری/'),
+         href=L('محصولات/سایر-محصولات/', 'products/other-products/', 'منتجات-اخری/'),
          title=L('سایر محصولات', 'Other Products', 'منتجات اخری'),
          sub=L('مسواک ساکشن، نگهدارنده، رسیور', 'Suction brush, tube holder, kidney dish', 'فرشاة الشفط، حامل الأنبوب، الوعاء الكلوي')),
 ]
 BY_SLUG = {c['slug']: c for c in CATALOG}
 ORDER = {
-    'fa': ['suction-bag', 'stand', 'filters', 'suction-tube', 'canister', 'connectors', 'oral', 'waste'],
-    'en': ['canister', 'connectors', 'waste', 'suction-tube', 'suction-bag', 'stand', 'filters', 'oral'],
+    'fa': ['suction-bag', 'stand', 'filters', 'suction-tube', 'canister', 'connectors', 'other', 'oral', 'waste'],
+    'en': ['canister', 'connectors', 'other', 'waste', 'suction-tube', 'suction-bag', 'stand', 'filters', 'oral'],
     'ar': ['suction-bag', 'canister', 'stand', 'connectors', 'filters', 'other',
            'suction-tube', 'oral', 'waste'],
 }
@@ -242,7 +241,7 @@ PHOTO = {
     'suction-tube': 'assets/img/c/92b676038309-1600.webp',
     'canister': 'assets/img/c/38a87bcfaf85-1600.webp',
     'connectors': 'assets/img/c/9b6630cc8eaa-640.webp',
-    'other': 'assets/img/c/a75210c08710-1600.webp',
+    'other': 'assets/img/c/3fb9244fc73e-900.webp',
     'oral': 'assets/img/c/a75210c08710-1600.webp',
     'waste': 'assets/img/c/pva-laundry-bag-900.webp',
     'mesvak': 'assets/img/c/a75210c08710-1600.webp',
@@ -1303,9 +1302,6 @@ def stamp_product_html(html, p, lang, slug):
     html = badge_tabs(html, lang)
     html = badge_size_links(html, lang)
     html = badge_panel_heads(html, lang)
-    if slug == 'other' and 'id="pva"' not in html:
-        html = re.sub(r'(<div class="ptab-nav" role="tablist">.*?</div>)',
-                      lambda m: m.group(1) + pva_card(p, lang), html, count=1, flags=re.S)
     if 'id="related-solutions"' not in html:
         html = html.replace('</main>', related_section(p, lang, slug) + '</main>', 1)
     return html
