@@ -2012,3 +2012,4 @@ html { scroll-padding-top: var(--sticky-offset, 96px); }
 .site-footer .foot-cert-chip img { display: block; height: 33px; width: auto; margin: 0; }
 /* Official Daneshbonyan mark recoloured to the cert-strip lime (#D4DF9C) */
 .site-footer .foot-cert-chip img.cert-kb { height: 33px; width: auto; }
+.reveal-block > .photo-grid { margin-top: 18px; }
