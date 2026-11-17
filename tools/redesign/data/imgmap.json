@@ -10220,5 +10220,23 @@
     "file": "860334acd571fb96.png",
     "bytes": 537065,
     "via": "ok"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/Dr.-Mojtahedi-Abadis.jpg": {
+    "ok": true,
+    "file": "6d40f2491bcee295.jpg",
+    "bytes": 286220,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/24-2.jpg": {
+    "ok": true,
+    "file": "c7c8382c0d95913c.jpg",
+    "bytes": 213693,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/21-21.jpg": {
+    "ok": true,
+    "file": "189585c52c407339.jpg",
+    "bytes": 361352,
+    "via": "i18n-post-sync"
   }
 }
