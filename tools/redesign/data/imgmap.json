@@ -10238,5 +10238,33 @@
     "file": "189585c52c407339.jpg",
     "bytes": 361352,
     "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/wp-content/uploads/2019/02/معرفی-منابع-مهندسی-پزشکی-1024x512.png": {
+    "ok": true,
+    "file": "c155f364873acc9f.png",
+    "bytes": 624513
+  },
+  "http://abadis-med.com/wp-content/uploads/2019/02/معرفی-منابع-مهندسی-پزشکی.png": {
+    "ok": false,
+    "err": "fetch-failed"
+  },
+  "https://abadis-med.com/wp-content/uploads/2019/02/معرفی-منابع-مهندسی-پزشکی.png": {
+    "ok": true,
+    "file": "c155f364873acc9f.png",
+    "bytes": 624513
+  },
+  "http://abadis-med.com/wp-content/uploads/2019/02/معرفی-منابع-مهندسی-پزشکی-1024x512.png": {
+    "ok": false,
+    "err": "fetch-failed"
+  },
+  "https://abadis-med.com/wp-content/uploads/2019/02/Biomedical-Engineering-Websites-Infographic-1024x512.png": {
+    "ok": true,
+    "file": "af92c5a5f7392259.png",
+    "bytes": 590582
+  },
+  "https://abadis-med.com/wp-content/uploads/2019/02/Biomedical-Engineering-Websites-Infographic.png": {
+    "ok": true,
+    "file": "af92c5a5f7392259.png",
+    "bytes": 590582
   }
 }
