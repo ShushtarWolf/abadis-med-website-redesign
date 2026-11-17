@@ -6,6 +6,7 @@ import re
 import shutil
 from pathlib import Path
 from parity_apply import SITE, LIVE, V, read, write, replace_main, set_meta
+import team_order
 
 ROOT = SITE.parent
 
@@ -268,8 +269,8 @@ def _swap_photo(html, name, clip_html):
 def patch_about():
     en = SITE / 'en/about-us/index.html'
     s = read(en)
-    s, n1 = _swap_photo(s, 'Alireza Hassanali', _clip('Alireza Hassanali', 'alireza'))
-    s, n2 = _swap_photo(s, 'Navid Hassanali', _clip('Navid Hassanali', 'navid'))
+    # Team: photo cards in the live WP order, no videos (Hamid, 2026-11-17). See team_order.py.
+    s = team_order.rebuild_i18n_team(s, 'en'); n1 = n2 = 0
     if 'id="history"' not in s:
         s = s.replace('<h3>History and Background of Abadis Knowledge-Based Group</h3>',
                       '<h3 id="history">History and Background of Abadis Knowledge-Based Group</h3>', 1)
@@ -287,8 +288,7 @@ def patch_about():
 
     ar = SITE / 'arabic/من-نحن/index.html'
     s = read(ar)
-    s, n1 = _swap_photo(s, 'علیرضا حسنعلی', _clip('علیرضا حسنعلی', 'alireza'))
-    s, n2 = _swap_photo(s, 'نوید حسنعلی', _clip('نوید حسنعلی', 'navid'))
+    s = team_order.rebuild_i18n_team(s, 'ar'); n1 = n2 = 0
     if 'id="team"' not in s:
         s = s.replace('التعرف على الفريق التنفيذي', 'التعرف على الفريق التنفيذي', 1)
         s = re.sub(r'(<h2[^>]*>)(\s*التعرف على الفريق التنفيذي)', r'\1<span id="team"></span>\2', s, count=1)
