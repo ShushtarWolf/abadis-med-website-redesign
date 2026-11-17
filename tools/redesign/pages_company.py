@@ -1456,8 +1456,7 @@ def downloads(write):
         ph = f'<div class="ph">{pic}</div>' if pic else f'<div class="ph txt"><img src="{p}assets/img/abadis-logo-teal.png" width="658" height="309" alt=""></div>'
         cards.append(f'<a class="post-card dl-card reveal" href="{esc(bt["href"])}" target="_blank" rel="noopener">{ph.replace("class=\"ph\"", "class=\"ph\" style=\"aspect-ratio:1;background:#fff\"")}<div class="body"><h3>{esc(title)}</h3><span class="go">{esc(bt["text"])} (PDF) ↓</span></div></a>')
     main = f'''{page_hero(p, [('مرکز دانلود', None)], 'مرکز دانلود', 'کاتالوگ‌ها و راهنماهای محصولات مخازن طبی آبادیس')}
-  <section class="section"><div class="wrap"><div class="post-grid">{''.join(cards)}</div>
-  <p class="note" style="margin-top:20px">فایل‌ها مستقیماً از سرور abadis-med.com دریافت می‌شوند.</p></div></section>'''
+  <section class="section"><div class="wrap"><div class="post-grid">{''.join(cards)}</div></div></section>'''
     write('downloads/index.html', page(p, 'downloads', 'مرکز دانلود', 'دانلود کاتالوگ محصولات مخازن طبی آبادیس', main))
     return len(items)
 
