@@ -1,6 +1,6 @@
 """Build English (/en/) and Arabic (/arabic/) pages from REST snapshots."""
 from __future__ import annotations
-import json, pathlib, re, urllib.parse as u
+import html as html_module, json, pathlib, re, urllib.parse as u
 from lib import esc, best_img, SITE
 from layout import page, page_hero, crumbs
 import i18n as i18n_mod
@@ -93,26 +93,66 @@ def load_lang_posts(lang: str):
     return json.load(open(DATA / f'{lang}_posts.json', encoding='utf-8'))
 
 
-def _featured_url(wp):
-    og = (wp.get('yoast_head_json') or {}).get('og_image') or []
-    if og and isinstance(og[0], dict) and og[0].get('url'):
-        return og[0]['url']
-    raw = wp.get('content', {}).get('rendered', '') or ''
-    m = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', raw, flags=re.I)
-    return u.unquote(m.group(1)) if m else None
+FALLBACK_THUMB = 'assets/img/post-thumb-fallback.webp'
 
 
-def _card_ph(wp, title, p, w=640):
-    """Post-list thumbnail: featured media when archived, else the generic fallback."""
-    url = _featured_url(wp)
-    if url:
-        r = best_img(url, w) or best_img(url, 1400)
+_FEAT_URLS = None
+
+
+def _featured_media_urls(wp, lang):
+    global _FEAT_URLS
+    if _FEAT_URLS is None:
+        f = DATA / 'i18n_featured_urls.json'
+        _FEAT_URLS = json.loads(f.read_text(encoding='utf-8')) if f.exists() else {}
+    u = _FEAT_URLS.get(f'{lang}:{wp.get("id")}')
+    return [u] if u else []
+
+
+def wp_post_image(wp, w=640, lang=None):
+    """Featured / OG / first in-body image for a WordPress REST post record."""
+    urls = []
+    yj = wp.get('yoast_head_json') or {}
+    for o in yj.get('og_image') or []:
+        url = o.get('url')
+        if url:
+            urls.append(url)
+    raw = wp.get('content', {}).get('rendered') or ''
+    for m in re.findall(r'<img[^>]+src=["\']([^"\']+)["\']', raw):
+        urls.append(html_module.unescape(m))
+    if lang:
+        urls.extend(_featured_media_urls(wp, lang))
+    for url in urls:
+        if not url or 'gravatar.com' in url:
+            continue
+        r = best_img(url, w)
         if r:
-            return (f'<div class="ph"><img src="{p}{r["src"]}" width="{r["w"]}" height="{r["h"]}" '
-                    f'alt="{esc(title)}" loading="lazy" decoding="async"></div>')
-    fb = f'{p}assets/img/post-thumb-fallback.webp'
-    return (f'<div class="ph txt"><img src="{fb}" width="1280" height="720" '
-            f'alt="{esc(title)}" loading="lazy"></div>')
+            return r
+    if lang in ('en', 'ar'):
+        ovr = json.load(open(DATA / 'category_overrides.json', encoding='utf-8'))
+        fa_id = (ovr.get(f'{lang}_to_fa') or {}).get(str(wp.get('id')))
+        if fa_id:
+            import pages_posts
+            pages_posts.prepare()
+            for post in pages_posts.POSTS:
+                if str(post['id']) == str(fa_id):
+                    r = pages_posts.thumb('', post, w)
+                    if r:
+                        return r
+    return None
+
+
+def card_ph(p, wp, title, lang=None):
+    r = wp_post_image(wp, lang=lang)
+    alt = esc(title)
+    if r:
+        return (
+            f'<div class="ph"><img src="{p}{r["src"]}" width="{r["w"]}" height="{r["h"]}" '
+            f'alt="{alt}" loading="lazy" decoding="async">'
+        )
+    return (
+        f'<div class="ph txt"><img src="{p}{FALLBACK_THUMB}" width="1280" height="720" '
+        f'alt="{alt}" loading="lazy">'
+    )
 
 
 def page_by_slug(pages, slug):
@@ -361,7 +401,8 @@ def _write_post_index(write, lang, site_path, cur, label, items):
             aud_pills = ''.join(f'<span class="art-aud-tag" hidden>{esc(lbl)}</span>' for lbl in am['aud_labels'][:1])
             cards.append(
                 f'<a class="post-card reveal" href="{href}" data-name="{esc(title)}"{attrs}>'
-                f'{_card_ph(wp, title, p)}'
+                f'{card_ph(p, wp, title, lang)}'
+                '</div>'
                 f'<div class="body"><div class="card-meta">{cat_badges}<span class="art-ctype-badge art-ctype-badge--{esc(am["ctype"])}">{esc(am["ctype_label"])}</span></div>'
                 f'<div class="card-sub"><span class="art-card-time">{esc(am["rtime_badge"])}</span></div>{aud_pills}'
                 f'<h3>{esc(title)}</h3><p>{esc(desc)}</p>'
@@ -381,7 +422,8 @@ def _write_post_index(write, lang, site_path, cur, label, items):
             fmt_pills = ''.join(f'<span class="news-fmt-pill">{esc(lbl)}</span>' for lbl in nm['format_labels'][:2])
             cards.append(
                 f'<a class="post-card reveal" href="{href}" data-name="{esc(title)}"{attrs}>'
-                f'{_card_ph(wp, title, p)}'
+                f'{card_ph(p, wp, title, lang)}'
+                '</div>'
                 f'<div class="body"><div class="card-meta">{cat_badges}<span class="news-fmt-badge news-fmt-badge--{esc(nm["format"])}">{esc(nm["format_label"])}</span></div><div class="card-sub"></div>'
                 f'<h3>{esc(title)}</h3><p>{esc(desc)}</p>'
                 f'<span class="go">{esc(nm["card_cta"])}</span></div></a>'
@@ -389,7 +431,7 @@ def _write_post_index(write, lang, site_path, cur, label, items):
             continue
         cards.append(
             f'<a class="post-card reveal" href="{href}" data-name="{esc(title)}"{attrs}>'
-            f'{_card_ph(wp, title, p)}'
+            f'{card_ph(p, wp, title, lang)}</div>'
             f'<div class="body"><h3>{esc(title)}</h3><p>{esc(desc)}</p>'
             f'<span class="go">{esc(L["read_more"])}</span></div></a>'
         )
