@@ -35,10 +35,18 @@ def wp_clean_html(raw: str) -> str:
 
 
 def fetch_post(post_id: str) -> dict:
-    url = f'http://abadis-med.com/wp-json/wp/v2/posts/{post_id}?_fields=id,slug,link,title,excerpt,content,date,date_gmt,modified,modified_gmt,featured_media'
-    req = urllib.request.Request(url, headers={'User-Agent': UA, 'Accept': 'application/json'})
-    with urllib.request.urlopen(req, timeout=60) as r:
-        return json.loads(r.read().decode('utf-8'))
+    """WP REST post; tries https://www. first (bare http host is often down), then the old URL."""
+    q = f'/wp-json/wp/v2/posts/{post_id}?_fields=id,slug,link,title,excerpt,content,date,date_gmt,modified,modified_gmt,featured_media'
+    err = None
+    for base in ('https://www.abadis-med.com', 'http://abadis-med.com'):
+        for _ in range(3):
+            try:
+                req = urllib.request.Request(base + q, headers={'User-Agent': UA, 'Accept': 'application/json'})
+                with urllib.request.urlopen(req, timeout=60) as r:
+                    return json.loads(r.read().decode('utf-8'))
+            except Exception as e:  # noqa: BLE001
+                err = e
+    raise err
 
 
 def reload_imgmap():
