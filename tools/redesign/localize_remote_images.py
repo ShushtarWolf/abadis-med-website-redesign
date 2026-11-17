@@ -214,7 +214,7 @@ def card_covers():
                     src = post_cover(target) if target.is_file() else None
                     cache[target] = card_thumb(src) if src else None
                 r = cache[target]
-                return m.group(0) if not r else m.group(1) + m.group(2) + m.group(3) + retag(m.group(4), f, r)
+                return m.group(0) if not r else m.group(1) + m.group(2) + m.group(3).replace('class="ph txt"', 'class="ph"') + retag(m.group(4), f, r)
             t = FEAT.sub(sub, CARD.sub(sub, s))
             if t != s: f.write_text(t, encoding='utf-8'); n += 1
     print(n, 'EN/AR list pages got real card covers')
