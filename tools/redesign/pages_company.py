@@ -972,19 +972,29 @@ def csr(write):
         gal = [i for b in bs if b['t'] == 'gallery' for i in b['imgs']]
         g = ''.join(gallery_link(p, i['src'], 'g' + sid, i.get('alt', '')) for i in gal) + ''.join(gallery_link(p, (i.get('href') or i['src']) if (i.get('href') or '').endswith(('.jpg', '.png')) else i['src'], 'g' + sid, i.get('alt', '')) for i in imgs)
         cls = 'photo-grid tall contain' if sid == '55cd337' else 'photo-grid'
-        acts.append(f'<div class="reveal" style="margin-top:40px"><{tag} style="font-size:1.4rem;margin-bottom:12px">{esc(h["text"])}</{tag}><div class="prose">{body}</div>{vid}{f"<div class={chr(34)}{cls}{chr(34)}>{g}</div>" if g else ""}</div>')
+        # Photo grids stay outside `.reveal` so lazy images can load (opacity:0 on reveal blocks them in WebKit).
+        gal = f'<div class="{cls}">{g}</div>' if g else ''
+        acts.append(
+            f'<div class="reveal-block" style="margin-top:40px">'
+            f'<div class="reveal"><{tag} style="font-size:1.4rem;margin-bottom:12px">{esc(h["text"])}</{tag}>'
+            f'<div class="prose">{body}</div>{vid}</div>{gal}</div>'
+        )
     act_html = f'''  <section class="section" id="activities"><div class="wrap" style="max-width:980px">
     <span class="eyebrow">مسئولیت اجتماعی</span>
     {''.join(acts)}
   </div></section>'''
-    f = SITE / 'csr/index.html'; s = f.read_text(encoding='utf-8')
+    f = SITE / 'مسئولیت-اجتماعی/index.html'
+    if not f.is_file():
+        f = SITE / 'csr/index.html'
+    s = f.read_text(encoding='utf-8')
     block = '<!-- phase2:csr -->\n' + act_html + '\n<!-- /phase2:csr -->\n'
     if '<!-- phase2:csr -->' in s: s = re.sub(r'<!-- phase2:csr -->.*?<!-- /phase2:csr -->\n', lambda m: block, s, flags=re.S)
     else: s = s.replace('</main>', block + '</main>', 1)
     if 'id="lightbox"' not in s:
         from layout import LIGHTBOX
         s = s.replace('</main>\n', '</main>\n' + LIGHTBOX + '\n', 1)
-    write('csr/index.html', s)
+    live = 'مسئولیت-اجتماعی/index.html' if (SITE / 'مسئولیت-اجتماعی/index.html').is_file() else 'csr/index.html'
+    write(live, s)
 
 
 _SVG_PHONE_HERO = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>'

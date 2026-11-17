@@ -942,6 +942,7 @@ details.letter[open] summary { margin-bottom: 12px; }
 /* media / video */
 .video-frame { position: relative; aspect-ratio: 16/9; border-radius: 18px; overflow: hidden; background: #0b2e32; box-shadow: var(--shadow); }
 .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.reveal-block > .photo-grid { margin-top: 18px; }
 .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; margin: 18px 0; }
 .photo-grid a { display: block; aspect-ratio: 1; border-radius: 12px; overflow: hidden; background: var(--bg-2); }
 .photo-grid img { width: 100%; height: 100%; object-fit: cover; }
