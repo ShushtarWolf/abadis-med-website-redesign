@@ -26,6 +26,7 @@ UA = 'Mozilla/5.0 (AbadisRedesign image sync; info@abadis-med.com)'
 REMOTE = re.compile(r'^(?:https?:)?//(?:www\.)?abadis-med\.com/', re.I)
 ARTICLE = re.compile(r'<article\b[\s\S]*?</article>')
 CARD_PH = re.compile(r'<div class="ph\b[^"]*">\s*<img\b[^>]*>')
+LEAD_PH = re.compile(r'<div class="lead-img\b[^"]*">\s*<img\b[^>]*>')
 IMG = re.compile(r'<img\b[^>]*>')
 LINK_IMG = re.compile(r'(<a\b[^>]*\shref=")([^"]+)("[^>]*>\s*)(<img\b[^>]*>)')
 
@@ -74,6 +75,9 @@ def collect():
         for m in CARD_PH.finditer(s):
             src = attr(m.group(0), 'src')
             if src and REMOTE.match(html.unescape(src)): found.append((html.unescape(src), 640))
+        for m in LEAD_PH.finditer(s):
+            src = attr(m.group(0), 'src')
+            if src and REMOTE.match(html.unescape(src)): found.append((html.unescape(src), 1400))
         if found: todo[f] = found
     return todo
 
@@ -153,7 +157,13 @@ def add_lead_images():
                 continue
         h1 = re.search(r'<h1[^>]*>([\s\S]*?)</h1>', s)
         alt = html.escape(html.unescape(re.sub(r'<[^>]+>', '', h1.group(1))).strip(), quote=True) if h1 else ''
-        lead = f'<div class="lead-img"><img src="{html.escape(url, quote=True)}" alt="{alt}" loading="eager" decoding="async"></div>'
+        r = lib.best_img(url, 1400)
+        if r:
+            src = html.escape(rel(f, r['src']), quote=True)
+            wh = f' width="{r["w"]}" height="{r["h"]}"'
+            lead = f'<div class="lead-img"><img src="{src}"{wh} alt="{alt}" loading="eager" decoding="async"></div>'
+        else:
+            lead = f'<div class="lead-img"><img src="{html.escape(url, quote=True)}" alt="{alt}" loading="eager" decoding="async"></div>'
         s = s[:m.end(1)] + '\n' + lead + s[m.end(1):]
         f.write_text(s, encoding='utf-8'); n += 1
     print(n, 'EN/AR posts got their featured image')
@@ -265,6 +275,7 @@ def main():
             return a.replace('\x00', '')
         s1 = ARTICLE.sub(fix_article, s0)
         s1 = CARD_PH.sub(lambda m: re.sub(r'<img\b[^>]*>', lambda im: fix_img(im.group(0), 640), m.group(0)), s1)
+        s1 = LEAD_PH.sub(lambda m: re.sub(r'<img\b[^>]*>', lambda im: fix_img(im.group(0), 1400), m.group(0)), s1)
         if s1 != s0:
             f.write_text(s1, encoding='utf-8'); changed += 1
     (DATA / 'imgmap.json').write_text(json.dumps(imgmap, ensure_ascii=False, indent=2), encoding='utf-8')

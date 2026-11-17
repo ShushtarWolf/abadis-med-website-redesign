@@ -6,7 +6,7 @@ Post URL scheme (documented): `/en/<post-slug>/` and `/arabic/<post-slug>/`
 from __future__ import annotations
 import json, pathlib, re, urllib.parse as u
 from html import escape, unescape
-from lib import SITE_ORIGIN
+from lib import SITE_ORIGIN, rewrite_html
 
 DATA = pathlib.Path(__file__).resolve().parent / 'data'
 
@@ -547,6 +547,8 @@ def clean_html(html: str, lang: str = 'en', prefix: str = '../') -> str:
 
     h = re.sub(r'<img\b[^>]*>', img_sub, h, flags=re.I)
     h = re.sub(r'<video\b[^>]*>\s*</video>', '', h, flags=re.I)
+    # Self-host when a built WebP already exists; otherwise keep WP src for localize_remote_images.py.
+    h = rewrite_html(h, prefix, drop_missing_img=False)
     return h.strip()
 
 
