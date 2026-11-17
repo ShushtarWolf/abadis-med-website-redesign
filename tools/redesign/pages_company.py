@@ -306,7 +306,8 @@ def apply_live_about(body, lang):
         if end > a:
             body = body[:a] + intro + body[end + 4:]
     return body
-TEAM_VIDEOS = {'علیرضا حسنعلی': ('alireza', 'team-member'), 'نوید حسنعلی': ('navid', 'team-member-navid')}
+# Team cards: photos only, in the live abadis-med.com order (see team_order.py). Hamid, 2026-11-17.
+import team_order
 
 # About «مجوزها و گواهینامه‌ها»: Hamid's order. ISO, CE, export permits and
 # industrial-design filings stay inside the nearest group.
@@ -427,21 +428,6 @@ def regroup_i18n_certs(html, lang):
     return html[:start] + ''.join(parts) + new_region + html[end_i:]
 
 
-def _team_html(p, members, cls):
-    out = []
-    for m in members:
-        img = f'{p}assets/img/live/{m["file"]}.webp'
-        ph = f'<img src="{img}" alt="{esc(m["name"])} — {esc(m["role"])}" loading="lazy" decoding="async">'
-        if m['name'] in TEAM_VIDEOS:   # subtle clip: muted loop autoplay, no controls / play button
-            d, n = TEAM_VIDEOS[m['name']]; v = f'{p}assets/team-videos/{d}/{n}'
-            ph = (f'<video class="team-clip" autoplay muted loop playsinline webkit-playsinline '
-                  f'disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" '
-                  f'poster="{v}-poster.webp" aria-label="{esc(m["name"])}">'
-                  f'<source src="{v}.webm" type="video/webm"><source src="{v}.mp4" type="video/mp4"></video>')
-        out.append(f'<div class="member"><div class="av">{ph}</div><strong>{esc(m["name"])}</strong><span>{esc(m["role"])}</span></div>')
-    return f'<div class="team-grid {cls}">{"".join(out)}</div>'
-
-
 # Live «شرکای تجاری» / Business Partners (abadis-med.com/درباره-ما/ and /en/about-us/, 2026-10-27).
 # Arabic has no separate live partner block; its cards use the English page's wording.
 _PARTNER_H = {'fa': 'شرکای تجاری', 'en': 'Business Partners', 'ar': 'الشركاء التجاريون'}
@@ -544,7 +530,7 @@ def partners_section(lang, prefix):
 
 def about(write):
     """About page from the LIVE abadis-med.com/درباره-ما/ (data/about_live.json, fetched 2026-10-14).
-    Team order is exactly live: desktop list on desktop, mobile list on mobile (the live site has two)."""
+    Team order is exactly live (team_order.py): desktop list on desktop, mobile list on mobile (the live site has two)."""
     p = '../'; d = load('about_live.json')
     copy = about_copy('fa')
     lead = copy['intro'][0]
@@ -598,8 +584,7 @@ def about(write):
   {partners_section('fa', p)}
   <section class="section" id="team"><div class="wrap">
     <h2 class="reveal" style="margin-bottom:20px">آشنایی با تیم اجرایی</h2>
-    {_team_html(p, d['team']['desktop'], 'team--desktop')}
-    {_team_html(p, d['team']['mobile'], 'team--mobile')}
+    {team_order.fa_grids(p, d['team'])}
   </div></section>'''
     head_css, motion_js = about_motion_tags(p)
     write('about/index.html', page(p, 'about', 'آشنایی با ما', lead[:160], main, lightbox=True,
