@@ -672,6 +672,52 @@ def dealers_widget(lang):
     <p class="prov-legend"><span><i></i>{esc(T["has"])} ({_num(lang, len(have))} {esc(T["prov"])})</span><span><i class="none"></i>{esc(T["none"])}</span><span>{_num(lang, total)} {esc(T["n"])}</span></p>{note}
     <div class="prov-grid" id="dealerList">{"".join(out)}</div>'''
 
+INTL_REPS = {
+    # Source: live abadis-med.com /en/representatives/ and /arabic/قائمة-الممثلين/ (country list; empty countries have no published data).
+    'en': {'list': 'List of Countries', 'title': 'Country Representative for {}', 'empty': 'For this country, please contact the Abadis Med international sales team.',
+           'contact': 'Contact us', 'contact_href': 'en/contact-us/',
+           'labels': {'name': 'Company', 'tel': 'Tel', 'mail': 'Email', 'addr': 'Address', 'ceo': 'CEO', 'web': 'Website'},
+           'countries': [('uae', 'UAE', None),
+                         ('iraq', 'Iraq', {'name': 'MADAR ALSAHA', 'tel': '+964 776 433 8731', 'mail': 'madaar.medicalservice@gmail.com', 'addr': 'Palestine Street, near Maysaloon Square, Baghdad, Iraq', 'ceo': 'Dr. Zia', 'web': 'www.madaarmed.com'}),
+                         ('kenya', 'Kenya', None),
+                         ('oman', 'Oman', {'name': 'Gulf Innovation Gate', 'tel': '+968 7708 6660', 'mail': 'info@gulfinnovationgate.com', 'addr': 'Omani House restaurant, No. 105, First Floor, Al Maha St, Busher, Muscat, Sultanate of Oman', 'ceo': 'Dr. Abadi', 'web': 'www.gulfinnovationgate.com'}),
+                         ('tajikistan', 'Tajikistan', None),
+                         ('uganda', 'Uganda', None)]},
+    'ar': {'list': 'قائمة الدول', 'title': 'ممثل دولة {}', 'empty': 'لهذه الدولة، يرجى التواصل مع فريق المبيعات الدولية في آباديس.',
+           'contact': 'اتصل بنا', 'contact_href': 'arabic/اتصل-بنا/',
+           'labels': {'name': 'الشركة', 'tel': 'الهاتف', 'mail': 'البريد الإلكتروني', 'addr': 'العنوان', 'ceo': 'المدير العام', 'web': 'الموقع الإلكتروني'},
+           'countries': [('uae', 'الإمارات العربية المتحدة', None),
+                         ('iraq', 'العراق', {'tel': '+964 776 433 8731', 'mail': 'madaar.medicalservice@gmail.com', 'addr': 'شارع فلسطين، قرب ساحة الميسلون، بغداد، العراق', 'ceo': 'دكتور علي ضياء', 'web': 'www.madaarmed.com'}),
+                         ('kenya', 'كينيا', None),
+                         ('oman', 'عُمان', {'tel': '+968 7708 6660', 'mail': 'info@gulfinnovationgate.com', 'addr': 'مطعم البيت العُماني، رقم 105، الطابق الأول، شارع المها، بوشر، مسقط – سلطنة عُمان', 'ceo': 'الدكتور عبدي', 'web': 'www.gulfinnovationgate.com'}),
+                         ('tajikistan', 'طاجيكستان', None),
+                         ('uganda', 'أوغندا', None)]},
+}
+
+def intl_reps_widget(lang, p='../../'):
+    """International country representatives (EN/AR), as on the live site; Iran provinces stay on the FA dealers page."""
+    T = INTL_REPS[lang]; L = T['labels']
+    chips = ''.join(f'<a class="btn" href="#c-{k}" style="border-radius:999px;padding:6px 14px">{esc(n)}</a>' for k, n, _ in T['countries'])
+    out = []
+    for k, n, d in T['countries']:
+        if d:
+            rows = []
+            for f in ('name', 'tel', 'mail', 'addr', 'ceo', 'web'):
+                v = d.get(f)
+                if not v: continue
+                if f == 'tel': h = f'<a href="tel:{re.sub(r"[^+0-9]", "", v)}" dir="ltr">{esc(v)}</a>'
+                elif f == 'mail': h = f'<a href="mailto:{esc(v)}" dir="ltr">{esc(v)}</a>'
+                elif f == 'web': h = f'<a href="https://{esc(v)}" target="_blank" rel="noopener" dir="ltr">{esc(v)}</a>'
+                else: h = esc(v)
+                rows.append(f'<dt>{esc(L[f])}:</dt><dd>{h}</dd>')
+            body = f'<div class="dealer"><dl>{"".join(rows)}</dl></div>'
+        else:
+            body = f'<p class="prov-note">{esc(T["empty"])} <a href="{p}{T["contact_href"]}">{esc(T["contact"])}</a></p>'
+        out.append(f'<div class="card prov-group reveal" id="c-{k}"><h2>{esc(T["title"].format(n))}</h2>{body}</div>')
+    return f'''<h2 class="reveal" style="margin-bottom:16px">{esc(T["list"])}</h2>
+    <div class="prov-chips reveal" id="intlReps">{chips}</div>
+    <div class="prov-grid">{"".join(out)}</div>'''
+
 def dealers(write):
     p = '../'
     intro = load('dealers.json').get('intro') or 'لیست نمایندگان فروش محصولات مخازن طبی آبادیس در سراسر کشور'

@@ -253,11 +253,11 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
         title = {'en': 'Savings Calculator', 'ar': 'حاسبة التوفير'}[lang]
         extra_js = f'<script src="{p}assets/js/calc-i18n.js" defer></script>\n'
     if site_path in ('representatives/', 'قائمة-الممثلين/'):
-        from pages_company import dealers_widget
-        body = dealers_widget(lang)
+        from pages_company import intl_reps_widget
+        body = intl_reps_widget(lang, p)
         title = {'en': 'Representatives', 'ar': 'قائمة الممثلين'}[lang]
-        desc = {'en': 'Abadis Med sales representatives across the provinces of Iran: map, contacts and addresses.',
-                'ar': 'ممثلو مبيعات آباديس في محافظات إيران: الخريطة وأرقام الاتصال والعناوين.'}[lang]
+        desc = {'en': 'Abadis Med country representatives outside Iran: contacts and addresses.',
+                'ar': 'ممثلو آباديس في الدول خارج إيران: أرقام الاتصال والعناوين.'}[lang]
     after = ''
     if site_path in ('our-customers/', 'customers/'):
         from pages_company import customers_all
@@ -272,7 +272,7 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
   <section class="section"><div class="wrap prose reveal">{body}</div></section>'''
     else:
         trail = [(chip, None)]
-        wrap = '' if ('id="dealerList"' in body or 'class="sdg-page"' in body) else ' prose reveal'
+        wrap = '' if ('id="dealerList"' in body or 'id="intlReps"' in body or 'class="sdg-page"' in body) else ' prose reveal'
         sec = f'''
   <section class="section"><div class="wrap{wrap}">{body}</div></section>''' if body.strip() else ''
         _hero_mark = {
