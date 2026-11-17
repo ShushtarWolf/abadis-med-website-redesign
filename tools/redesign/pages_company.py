@@ -619,10 +619,13 @@ PROV_T = {
 }
 DEALER_T = {
  'fa': dict(n='نماینده', none='بدون نماینده', aria='نقشه نمایندگان آبادیس در استان‌های ایران', cap='برای دیدن نماینده، روی استان کلیک کنید.', src='مرز استان‌ها: geoBoundaries (CC BY 4.0)', list='لیست استان ها', has='دارای نماینده', prov='استان', title='نمایندگان استان {}', note=''),
- 'en': dict(n='representative(s)', none='no representative', aria='Map of Abadis representatives across the provinces of Iran', cap='Tap a province to see its representative.', src='Province borders: geoBoundaries (CC BY 4.0)', list='Provinces', has='Has a representative', prov='provinces', title='Representatives in {}', note='Representative names, phone numbers and addresses are shown as published on the Persian site.'),
- 'ar': dict(n='ممثل', none='لا يوجد ممثل', aria='خريطة ممثلي آباديس في محافظات إيران', cap='اضغط على المحافظة لعرض ممثلها.', src='حدود المحافظات: geoBoundaries (CC BY 4.0)', list='المحافظات', has='يوجد ممثل', prov='محافظة', title='ممثلو محافظة {}', note='تُعرض أسماء الممثلين وأرقامهم وعناوينهم كما نُشرت في الموقع الفارسي.'),
+ 'en': dict(n='representative(s)', none='no representative', aria='Map of Abadis representatives across the provinces of Iran', cap='Tap a province to see its representative.', src='Province borders: geoBoundaries (CC BY 4.0)', list='Provinces', has='Has a representative', prov='provinces', title='Representatives in {}', note=''),
+ 'ar': dict(n='ممثل', none='لا يوجد ممثل', aria='خريطة ممثلي آباديس في محافظات إيران', cap='اضغط على المحافظة لعرض ممثلها.', src='حدود المحافظات: geoBoundaries (CC BY 4.0)', list='المحافظات', has='يوجد ممثل', prov='محافظة', title='ممثلو محافظة {}', note=''),
 }
 def _num(lang, n): return fa(n) if lang == 'fa' else (str(n) if lang == 'en' else str(n).translate(str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')))
+def _num_text(lang, s):
+    s = s.translate(str.maketrans('۰۱۲۳۴۵۶۷۸۹', '0123456789'))
+    return s.translate(str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')) if lang == 'ar' else s
 def _pname(lang, n): return n if lang == 'fa' else PROV_T[lang].get(n, n)
 
 def _iran_map(have, counts, lang='fa'):
@@ -652,18 +655,26 @@ def dealers_widget(lang):
         'en': {'مدیر عامل': 'Managing director', 'شماره تلفن': 'Phone', 'آدرس': 'Address', 'شرکت': 'Company'},
         'ar': {'مدیر عامل': 'المدير العام', 'شماره تلفن': 'رقم الهاتف', 'آدرس': 'العنوان', 'شرکت': 'الشركة'},
     }
+    TR = load('dealers_i18n.json') if lang != 'fa' else {}
+    def _key(s): return re.sub(r'[\s،,()]+', '', s).translate(str.maketrans('۰۱۲۳۴۵۶۷۸۹', '0123456789'))
+    IDX = {sec: {_key(fa_txt): v for fa_txt, v in (TR.get(sec) or {}).items()} for sec in ('names', 'people', 'addresses')}
+    def tr(sec, v):
+        if lang == 'fa': return v
+        hit = IDX[sec].get(_key(v))
+        out = hit[lang] if hit else v
+        return _num_text(lang, out)
     def row(k, v):
         label = LABELS.get(lang, {}).get(k, k)
         if 'تلفن' in k or k == 'Phone' or label in ('Phone', 'رقم الهاتف'):
             num = re.sub(r'[^\d۰-۹]', '', v).translate(str.maketrans('۰۱۲۳۴۵۶۷۸۹', '0123456789'))
-            v = f'<a href="tel:{num}" dir="ltr">{esc(v)}</a>'
-        else: v = esc(v)
+            v = f'<a href="tel:{num}" dir="ltr">{esc(v if lang == "fa" else _num_text(lang, num))}</a>'
+        else: v = esc(tr('people' if k == 'مدیر عامل' else 'addresses' if k == 'آدرس' else 'names', v))
         return f'<dt>{esc(label)}:</dt><dd>{v}</dd>'
     out = []
     for g in groups:
         pv, ds = g['province'], g.get('dealers') or []
         title = (g.get('title') or T['title'].format(pv)) if lang == 'fa' else T['title'].format(_pname(lang, pv))
-        ents = ''.join(f'<div class="dealer"{"" if lang == "fa" else " lang=\"fa\" dir=\"rtl\""}><h3>{esc(d["name"])}</h3>' + (f'<dl>{"".join(row(k, v) for k, v in d.get("rows") or [])}</dl>' if d.get('rows') else '') + '</div>' for d in ds)
+        ents = ''.join(f'<div class="dealer"><h3>{esc(tr("names", d["name"]))}</h3>' + (f'<dl>{"".join(row(k, v) for k, v in d.get("rows") or [])}</dl>' if d.get('rows') else '') + '</div>' for d in ds)
         out.append(f'<div class="card prov-group reveal" data-prov="{esc(pv)}" id="p-{esc(pv.replace(" ", "-"))}"><h2>{esc(title)}</h2>{ents}</div>')
     note = f'<p class="prov-note">{esc(T["note"])}</p>' if T['note'] else ''
     return f'''<h2 class="reveal" style="margin-bottom:16px">{esc(T["list"])}</h2>
