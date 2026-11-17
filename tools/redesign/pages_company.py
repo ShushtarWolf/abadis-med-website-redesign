@@ -1496,8 +1496,7 @@ def install(write):
     vids = [('پرتابل', 'LiEf2'), ('تکی', 'Nc7hg'), ('سری', 'Yp2bl')]
     cards = ''.join(f'<div class="reveal"><h2 style="font-size:1.3rem;margin-bottom:12px">{t}</h2>{aparat(c, "راهنمای استفاده کاربر نهایی — " + t)}</div>' for t, c in vids)
     main = f'''{page_hero(p, [('راهنمای نصب', '../'), ('راهنمای استفاده کاربر نهایی', None)], 'راهنمای استفاده کاربر نهایی')}
-  <section class="section"><div class="wrap grid g-3" style="gap:20px">{cards}</div>
-  <div class="wrap"><p class="note" style="margin-top:18px">ویدیوها از آپارات آبادیس بارگذاری می‌شوند.</p></div></section>'''
+  <section class="section"><div class="wrap grid g-3" style="gap:20px">{cards}</div></section>'''
     write('install-guide/end-user/index.html', page(p, 'install', 'راهنمای استفاده کاربر نهایی', 'ویدیوهای راهنمای استفاده کاربر نهایی کیسه ساکشن آبادیس: پرتابل، تکی و سری', main))
 
 # ------------------------------------------------------------------ FAQ

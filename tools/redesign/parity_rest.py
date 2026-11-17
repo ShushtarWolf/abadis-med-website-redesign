@@ -85,16 +85,12 @@ def _videos(lang):
         'en': [('Portable', 'LiEf2'), ('Single', 'Nc7hg'), ('Series', 'Yp2bl')],
         'ar': [('محمول', 'LiEf2'), ('مفرد', 'Nc7hg'), ('متسلسل', 'Yp2bl')],
     }[lang]
-    note = {
-        'en': 'Videos are loaded from the Abadis Aparat channel.',
-        'ar': 'تُحمَّل الفيديوهات من قناة آباديس على Aparat.',
-    }[lang]
     cards = ''.join(
         f'<div class="reveal"><h2 style="font-size:1.3rem;margin-bottom:12px">{lab}</h2>'
         f'<div class="video-frame"><iframe src="https://www.aparat.com/video/video/embed/videohash/{code}/vt/frame" '
         f'title="{H.escape(lab)}" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe></div></div>'
         for lab, code in labels)
-    return f'<section class="section"><div class="wrap grid g-3" style="gap:20px">{cards}</div><div class="wrap"><p class="note" style="margin-top:18px">{note}</p></div></section>'
+    return f'<section class="section"><div class="wrap grid g-3" style="gap:20px">{cards}</div></section>'
 
 def patch_install():
     # EN hub: point the two self-links at the new subpages, in order
