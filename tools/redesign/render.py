@@ -44,7 +44,9 @@ def blocks_to_prose(bl, p, skip_title=None, gid='g'):
                 txt = f'<a href="{esc(h, quote=True)}"{" target=_blank rel=noopener" if ext else ""}>{txt}</a>'
             out.append(f'<h{lvl}>{txt}</h{lvl}>')
         elif t == 'html' and b.get('html'):
-            out.append(rewrite_html(b['html'], p))
+            # keep in-body pictures that are not in the local cache yet; localize_remote_images.py
+            # (run at the end of build.py) self-hosts them instead of the page silently losing them
+            out.append(rewrite_html(b['html'], p, drop_missing_img=False))
         elif t == 'img':
             pic = picture(p, b['src'], b.get('alt', ''), 1000)
             if pic: out.append(f'<figure>{pic}{f"<figcaption>{esc(b["cap"])}</figcaption>" if b.get("cap") else ""}</figure>')
