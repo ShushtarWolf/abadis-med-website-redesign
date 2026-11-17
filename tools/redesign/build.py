@@ -80,3 +80,6 @@ if __name__ == '__main__':
     # rewrite links/canonicals/hreflang/sitemap, leave redirect stubs + 301 rules at the old paths.
     import subprocess
     subprocess.run([sys.executable, str(pathlib.Path(__file__).resolve().parent / 'url_migrate.py')], check=True)
+    # Self-host any abadis-med.com image still hotlinked in post bodies / post cards, and give EN / AR posts
+    # their featured image (otherwise those pictures depend on the WordPress server and often do not show).
+    subprocess.run([sys.executable, str(pathlib.Path(__file__).resolve().parent / 'localize_remote_images.py')], check=True)
