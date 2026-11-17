@@ -409,7 +409,7 @@ def csr():
       <span class="chip">پویش نجات زاگرس · کاشت نهال بلوط</span>
       <h1>نجات زاگرس،‌مسئولیت اجتماعی آبادیس</h1>
       <p class="lead">کاشت نهال بلوط در ارتفاعات زاگرس؛ تا مکانی به نام آبادیس و به یاد صنعت سلامت کشور ثبت شود.</p>
-      <div class="hero-actions" style="justify-content:center"><a class="btn btn-primary" href="#story">داستان پویش</a><a class="btn btn-ghost" href="{CSR_URL}" target="_blank" rel="noopener" style="color:var(--brand)">صفحهٔ فعلی پویش ↗</a></div>
+      <div class="hero-actions" style="justify-content:center"><a class="btn btn-primary" href="#story">داستان پویش</a></div>
     </div>
   </section>
 
