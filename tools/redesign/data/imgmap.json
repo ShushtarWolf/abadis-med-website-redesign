@@ -4128,7 +4128,7 @@
     "ok": true,
     "file": "94c9f5203d33a021.jpg",
     "bytes": 172600,
-    "via": "live-2026-10-14"
+    "via": "i18n-post-sync"
   },
   "https://abadis-med.com/wp-content/uploads/2018/06/15-1024x835.jpg": {
     "ok": true,
@@ -4140,7 +4140,7 @@
     "ok": true,
     "file": "63c06dd4b77f2130.jpg",
     "bytes": 178156,
-    "via": "live-2026-10-14"
+    "via": "i18n-post-sync"
   },
   "https://abadis-med.com/wp-content/uploads/2019/06/Fixture-post-2-300x300.jpg": {
     "ok": true,
@@ -4152,7 +4152,7 @@
     "ok": true,
     "file": "c337f1082de7fd55.jpg",
     "bytes": 7130,
-    "via": "live-2026-10-14"
+    "via": "i18n-post-sync"
   },
   "https://abadis-med.com/wp-content/uploads/2019/06/Iran-Health-22-1-1-1.jpg": {
     "ok": true,
@@ -4164,61 +4164,61 @@
     "ok": true,
     "file": "6b12a53a2f0af7fa.jpg",
     "bytes": 137210,
-    "via": "live-2026-10-14"
+    "via": "i18n-post-sync"
   },
   "https://abadis-med.com/wp-content/uploads/2019/06/Iran-Health-22-1-10.jpg": {
     "ok": true,
     "file": "2212eaed66eff856.jpg",
     "bytes": 130498,
-    "via": "live-2026-10-14"
+    "via": "i18n-post-sync"
   },
   "https://abadis-med.com/wp-content/uploads/2019/06/Iran-Health-22-1-11.jpg": {
     "ok": true,
     "file": "7846ffddd0d7dc45.jpg",
     "bytes": 143768,
-    "via": "live-2026-10-14"
+    "via": "i18n-post-sync"
   },
   "https://abadis-med.com/wp-content/uploads/2019/06/Iran-Health-22-1-2.jpg": {
     "ok": true,
     "file": "8e477a2e5c1cd917.jpg",
     "bytes": 128556,
-    "via": "live-2026-10-14"
+    "via": "i18n-post-sync"
   },
   "https://abadis-med.com/wp-content/uploads/2019/06/Iran-Health-22-1-4.jpg": {
     "ok": true,
     "file": "4940f30c69742981.jpg",
     "bytes": 67175,
-    "via": "live-2026-10-14"
+    "via": "i18n-post-sync"
   },
   "https://abadis-med.com/wp-content/uploads/2019/06/Iran-Health-22-1-6.jpg": {
     "ok": true,
     "file": "7d898cea59f95ffd.jpg",
     "bytes": 106588,
-    "via": "live-2026-10-14"
+    "via": "i18n-post-sync"
   },
   "https://abadis-med.com/wp-content/uploads/2019/06/Iran-Health-22-1-7.jpg": {
     "ok": true,
     "file": "583550a71d366c10.jpg",
     "bytes": 117357,
-    "via": "live-2026-10-14"
+    "via": "i18n-post-sync"
   },
   "https://abadis-med.com/wp-content/uploads/2019/06/Iran-Health-22-1-8.jpg": {
     "ok": true,
     "file": "76263f2bfe868213.jpg",
     "bytes": 108333,
-    "via": "live-2026-10-14"
+    "via": "i18n-post-sync"
   },
   "https://abadis-med.com/wp-content/uploads/2019/06/Iran-Health-22-1-9.jpg": {
     "ok": true,
     "file": "8f20c41a827a59fc.jpg",
     "bytes": 128189,
-    "via": "live-2026-10-14"
+    "via": "i18n-post-sync"
   },
   "https://abadis-med.com/wp-content/uploads/2019/07/Photo-432.jpg": {
     "ok": true,
     "file": "c13d4a3fce63f3ce.jpg",
     "bytes": 76632,
-    "via": "live-2026-10-14"
+    "via": "i18n-post-sync"
   },
   "https://abadis-med.com/wp-content/uploads/2020/01/Abadis-New-New-1030x1030-1-1024x1024.jpg": {
     "ok": true,
@@ -7914,5 +7914,1979 @@
   "http://abadis-med.com/wp-content/uploads/2026/10/آگهی-کیسه_های-ساکشن-دامپزشکی.png": {
     "ok": false,
     "err": "fetch-failed"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/10/The-Future-of-Medical-Devices-with-Artificial-Intelligence-Technologies-Transforming-Healthcare.png": {
+    "ok": true,
+    "file": "b2a5ad5041b25f69.png",
+    "bytes": 499197,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/10/AI-Powered-Healthcare-Interface.png": {
+    "ok": true,
+    "file": "99ba8f55113c0ccd.png",
+    "bytes": 1865557,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/10/AI-Powered-Healthcare-Network.png": {
+    "ok": true,
+    "file": "ceffe76d48a962ff.png",
+    "bytes": 1898871,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/10/Reusable-Suction-Canisters-An-Economical-Choice-or-a-Hidden-Cost-for-Hospitals.png": {
+    "ok": true,
+    "file": "6e168526015ede5e.png",
+    "bytes": 496633,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/10/Hidden-Costs-of-Reusable-Canisters.png": {
+    "ok": true,
+    "file": "03bf146bdf11fc59.png",
+    "bytes": 2071998,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/10/Vintage-Suction-Canister-in-Sterile-Operating-Room.png": {
+    "ok": true,
+    "file": "ec7a8d74f141a62a.png",
+    "bytes": 1932482,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/10/Urine-Bag-Buying-Guide-Types-Features-and-Selection-Tips.png": {
+    "ok": true,
+    "file": "73a831debbc7cd85.png",
+    "bytes": 431266,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/10/Clinical-Urine-Collection-Bag-in-Hospital-Room.png": {
+    "ok": true,
+    "file": "6543295a76ff4853.png",
+    "bytes": 1747964,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/10/abadis_urine_bag_right_only.png": {
+    "ok": true,
+    "file": "30818d5f9a30684f.png",
+    "bytes": 861406,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/10/What-Are-PVA-Film-Bags-Applications-Benefits-and-Their-Role-in-Infection-Control.png": {
+    "ok": true,
+    "file": "67bae363cb869990.png",
+    "bytes": 527220,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/10/PVA_What_Is_It_EN.png": {
+    "ok": true,
+    "file": "b5f2a7c9e0db319a.png",
+    "bytes": 1052250,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/10/PVA_Soluble_Bags_EN.png": {
+    "ok": true,
+    "file": "c7f7f13008a2124a.png",
+    "bytes": 1038942,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/08/A-Guide-to-Purchasing-Disposable-Suction-Liner-Bags-for-Healthcare-Facilities.jpg": {
+    "ok": true,
+    "file": "34e754c24c52d991.jpg",
+    "bytes": 139529,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/08/کیسه-ساکشن-یکبار-مصرف-آبادیس.png2_.png": {
+    "ok": true,
+    "file": "224e396bbf4a04dc.png",
+    "bytes": 486087,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/08/درب-کیسه-ساکشن.png": {
+    "ok": true,
+    "file": "d83447c56c0337d9.png",
+    "bytes": 348701,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/08/کیسه-ساکشن-دو-لیتری-آبادس.png": {
+    "ok": true,
+    "file": "860334acd571fb96.png",
+    "bytes": 537065,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/08/What-Is-an-Oropharyngeal-Airway-OPA.jpg": {
+    "ok": true,
+    "file": "4fca13c3ab641547.jpg",
+    "bytes": 132159,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/08/ایروی.png": {
+    "ok": true,
+    "file": "bc06a9d4d6e260b6.png",
+    "bytes": 551469,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/08/لوله-هوا.png": {
+    "ok": true,
+    "file": "c73566df73f5f8bf.png",
+    "bytes": 489097,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/08/What-Is-a-Nelaton-Catheter.jpg": {
+    "ok": true,
+    "file": "055a2d10f1a2f1b5.jpg",
+    "bytes": 113876,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/08/سوند-نلاتون.png": {
+    "ok": true,
+    "file": "02195d9a050d48bd.png",
+    "bytes": 434689,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/07/What-Is-an-Extension-Tube.jpg": {
+    "ok": true,
+    "file": "a47f3920f7c5a296.jpg",
+    "bytes": 163181,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/07/اکستنشن-تیوب.png": {
+    "ok": true,
+    "file": "f518baafdfec88a0.png",
+    "bytes": 516048,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/07/What-Are-Antibacterial-Filters-and-Hydrophobic-Filters.jpg": {
+    "ok": true,
+    "file": "cd671486d1197dff.jpg",
+    "bytes": 113221,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/07/MEDICAL-FILTERS.png": {
+    "ok": true,
+    "file": "96b73a21c5819096.png",
+    "bytes": 344356,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/07/What-Is-a-Chest-Tube-1.jpg": {
+    "ok": true,
+    "file": "b20c8c7e4030e873.jpg",
+    "bytes": 137095,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/07/چست-تیوب-2.png": {
+    "ok": true,
+    "file": "04916495a0597941.png",
+    "bytes": 513538,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/07/The-Role-of-Disposable-Suction-Liners-in-Hospital-Infectious-Waste-Management-1.jpg": {
+    "ok": true,
+    "file": "00b0e70937cfe3df.jpg",
+    "bytes": 137239,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/07/کیسه-ساکشن.png": {
+    "ok": true,
+    "file": "74e649f574af6194.png",
+    "bytes": 445347,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/07/محفظه-جمع-آوری-مایعات-عفونی.png": {
+    "ok": true,
+    "file": "b2b026e3b721e741.png",
+    "bytes": 541217,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/06/WHAT-IS-SUCTION-SYSTEM.jpg": {
+    "ok": true,
+    "file": "20258426d58f12f9.jpg",
+    "bytes": 83915,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/06/ساکشن-دیواری.jpg": {
+    "ok": true,
+    "file": "78d3e84b2bc21439.jpg",
+    "bytes": 4728147,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/05/The-Role-of-Disposable-Suction-Bags-in-Reducing-the-Risk-of-Hantavirus-Transmission-in-Hospitals.jpg": {
+    "ok": true,
+    "file": "a8e11e29fa7ad34c.jpg",
+    "bytes": 189071,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/05/What-is-hantavirus.png": {
+    "ok": true,
+    "file": "bff3645765f44285.png",
+    "bytes": 641145,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/06/20-Leading-Scientific-Journals-in-the-Medical-Device-Industry.jpg": {
+    "ok": true,
+    "file": "75b63dd7d585b071.jpg",
+    "bytes": 182571,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/05/UBVtI35V_400x400.jpg": {
+    "ok": true,
+    "file": "1d50f83f2857f563.jpg",
+    "bytes": 20057,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/05/ieee_tbme_logo.jpg": {
+    "ok": true,
+    "file": "0d289e34ccecdd3b.jpg",
+    "bytes": 8611,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/05/10439.png": {
+    "ok": true,
+    "file": "b451d6c0d05e0265.png",
+    "bytes": 192395,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/05/X13504533.jpg": {
+    "ok": true,
+    "file": "dd1bdc652fedcab7.jpg",
+    "bytes": 429579,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/05/19_Journal_MED-icon-150.jpg": {
+    "ok": true,
+    "file": "24fff534b1b31a05.jpg",
+    "bytes": 179548,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/05/21922659.webp": {
+    "ok": true,
+    "file": "afc2deb01779b359.webp",
+    "bytes": 6678,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/05/X01429612.jpg": {
+    "ok": true,
+    "file": "e49f112235d093b8.jpg",
+    "bytes": 660569,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/05/X00104825.jpg": {
+    "ok": true,
+    "file": "480a09eb8de60678.jpg",
+    "bytes": 173842,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/05/LargeRollover.00004669-202604000-00000.CV_.jpeg": {
+    "ok": true,
+    "file": "89ce26b4189d2172.jpeg",
+    "bytes": 26359,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/05/showCoverImage-1.webp": {
+    "ok": true,
+    "file": "0a22062e0c09f5a5.webp",
+    "bytes": 2748,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/05/dmde20.v019.i00.cover_.jpg": {
+    "ok": true,
+    "file": "754c3a55da0d91fd.jpg",
+    "bytes": 17618,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/05/10544.webp": {
+    "ok": true,
+    "file": "74adac3143132205.webp",
+    "bytes": 10562,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/05/15524965-cover.jpg": {
+    "ok": true,
+    "file": "ce679e2b9ab2ca4d.jpg",
+    "bytes": 37219,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/05/mp.v53.6.cover_.jpg": {
+    "ok": true,
+    "file": "508f940be418f8ce.jpg",
+    "bytes": 45861,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/05/X15320464.jpg": {
+    "ok": true,
+    "file": "6e2774b1ada71b16.jpg",
+    "bytes": 409195,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/05/webnews.png": {
+    "ok": true,
+    "file": "d83144d4480c3be6.png",
+    "bytes": 51782,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/05/ieee-journal-of-biomedical-and-health-informatics-with-impact-factor.jpg": {
+    "ok": true,
+    "file": "01e363c59fec67c1.jpg",
+    "bytes": 39679,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/05/15251594.webp": {
+    "ok": true,
+    "file": "74327900c8e0f88c.webp",
+    "bytes": 8408,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/05/johe.v2020.1.cover_.jpg": {
+    "ok": true,
+    "file": "99e021a8b81e7ed6.jpg",
+    "bytes": 146709,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2026/05/acta_logo_1.jpg": {
+    "ok": true,
+    "file": "62e1ea1a252d1c28.jpg",
+    "bytes": 38055,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/12/Endotracheal-Tube-Fixation-Enhancing-Patient-Safety-Comfort-and-Infection-Control.jpg": {
+    "ok": true,
+    "file": "fe23e691a17f8166.jpg",
+    "bytes": 124343,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/11/Abadis-Medical-Filters-Maximum-Safety-in-Hospital-Infection-Control.jpg": {
+    "ok": true,
+    "file": "22f67a8a06571581.jpg",
+    "bytes": 100353,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/11/The-Role-of-Knowledge-Based-Industries-in-Achieving-Green-Governance.jpg": {
+    "ok": true,
+    "file": "204c888e279b91b3.jpg",
+    "bytes": 190791,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/10/Human-Capital-Development-at-Abadis-med-Co.jpg": {
+    "ok": true,
+    "file": "b6b3390fa73f168c.jpg",
+    "bytes": 96305,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/10/Gender-composition-based-on-organizational-units.png": {
+    "ok": true,
+    "file": "4ff8a71e1e06f2a0.png",
+    "bytes": 28992,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/10/age-range.png": {
+    "ok": true,
+    "file": "9aeb51c1408221ef.png",
+    "bytes": 24272,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/10/Average-age.png": {
+    "ok": true,
+    "file": "e9362c9b9659e3f5.png",
+    "bytes": 21260,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/10/Analysis-of-Employee-Age-Trends-from-2017-to-2025.png": {
+    "ok": true,
+    "file": "a08fc5964955f4a8.png",
+    "bytes": 32465,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/10/Marital-Status-of-Abadis-Employees.png": {
+    "ok": true,
+    "file": "a9d47a811f2351d3.png",
+    "bytes": 36643,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/10/Report-of-the-23rd-Iran-Health-International-Exhibition.png": {
+    "ok": true,
+    "file": "af927f655d672dfd.png",
+    "bytes": 714975,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/10/Full-interview-with-the-CEO-of-Abadis-on-Radio-Salamats-program-Ta-Soraya.jpg": {
+    "ok": true,
+    "file": "932f32da259101e9.jpg",
+    "bytes": 120142,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/10/کیسه-ساکشن-یکبار-مصرف.gif": {
+    "ok": true,
+    "file": "ff0702220c385c81.gif",
+    "bytes": 57719,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/10/filter-1.png": {
+    "ok": true,
+    "file": "922ed89c1991ac2e.png",
+    "bytes": 121975,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/10/Abadis-Bridges-Cooperation-Between-IranMed-Exhibition-and-Baloot-e-Dalahoo-Association.png": {
+    "ok": true,
+    "file": "ae755c73daf2b33f.png",
+    "bytes": 123343,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/10/iran-med.gif": {
+    "ok": true,
+    "file": "bfeecb53293819ad.gif",
+    "bytes": 1428610,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/11/What-Is-a-Sterile-Disposable-Suction-Bag.jpg": {
+    "ok": true,
+    "file": "623e5c918c67fdf4.jpg",
+    "bytes": 68993,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/08/Existing-Standards-in-the-Production-of-Medical-Suction-Tubes.gif": {
+    "ok": true,
+    "file": "a6e05b3cbf790550.gif",
+    "bytes": 167430,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/08/Iso-Abadis-1.png": {
+    "ok": true,
+    "file": "74f039c7b8988d91.png",
+    "bytes": 342668,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/08/15504-1397-19.jpg": {
+    "ok": true,
+    "file": "7b51115cce992007.jpg",
+    "bytes": 27460,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/08/Existing-Standards-for-the-Production-of-Disposable-Suction-Liner-Bags.jpg": {
+    "ok": true,
+    "file": "17172a0da3db765f.jpg",
+    "bytes": 139472,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/08/ISO-Abadis.png": {
+    "ok": true,
+    "file": "2d32fcf683e2219e.png",
+    "bytes": 113531,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/08/MDR-Abadis.png": {
+    "ok": true,
+    "file": "f5dc2b42a0b4fa0d.png",
+    "bytes": 71516,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/08/Abadis-Med-Publishes-Article-on-Medium.jpg": {
+    "ok": true,
+    "file": "dd361bc3178c49e6.jpg",
+    "bytes": 103828,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/07/The-Critical-Role-of-Medical-Grade-PVC-in-Suction-Tube-Products.jpg": {
+    "ok": true,
+    "file": "005fc26c54825c78.jpg",
+    "bytes": 156295,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/07/Picture1.jpg": {
+    "ok": true,
+    "file": "ed67370af96c622d.jpg",
+    "bytes": 47834,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/07/پی-وی-سی-مدیکال-گرید-آبادیس.png": {
+    "ok": true,
+    "file": "ac7977f626cc5c54.png",
+    "bytes": 646247,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/07/Standardized-Cleaning-Procedures-for-Reusable-Suction-Canisters-and-Safe-Handling-of-Disposable-Suction-Liners-in-Clinical-Settings.gif": {
+    "ok": true,
+    "file": "f71441b02398244c.gif",
+    "bytes": 173879,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/07/کیسه-ساکشن-یکبار-مصرف.gif": {
+    "ok": true,
+    "file": "b2409fe3e45342cb.gif",
+    "bytes": 57719,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/11/Why-Disposable-Suction-liner-bags-Can-Save-Patients-Lives.jpg": {
+    "ok": true,
+    "file": "7c6c985742eb7d86.jpg",
+    "bytes": 156571,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/10/Abadis-Medical-Publishes-Its-First-Comprehensive-Sustainability-Report-Up-to-March-2025.jpg": {
+    "ok": true,
+    "file": "2cdd0fa77d2bad92.jpg",
+    "bytes": 142510,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/10/The-First-Sustainability-Report-of-Abadis-Medical-Knowledge-Based-Company-–-Up-to-the-End-of-2024.jpg": {
+    "ok": true,
+    "file": "77ebdb2ef99c73a4.jpg",
+    "bytes": 131902,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/02/Top-5-Features-To-Look-For-In-a-Medical-Suction-Tube-Abadis-Med.jpg": {
+    "ok": true,
+    "file": "093c362410dfb64a.jpg",
+    "bytes": 79990,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/02/SUCTION-TUBE-Abadis-Med.webp": {
+    "ok": true,
+    "file": "5c63e5890c2dba24.webp",
+    "bytes": 22224,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/02/pvc-suction-tube-Abadis-Med.jpg": {
+    "ok": true,
+    "file": "66fdf10d4813ae35.jpg",
+    "bytes": 222905,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/11/Achievements-of-Abadis-Med-Company-in-Developing-Disposable-Suction-Bags.jpg": {
+    "ok": true,
+    "file": "d9f43c79a89cda39.jpg",
+    "bytes": 157453,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/11/دستاورد-آبادیس-صرفه-جویی-ها.webp": {
+    "ok": true,
+    "file": "aeb4f12b680049b3.webp",
+    "bytes": 16576,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/12/دستاورد-آبادیس-توسعه-پایدار-زاگرس.webp": {
+    "ok": true,
+    "file": "ee284fefdc33a2c8.webp",
+    "bytes": 22050,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/11/Water-Conservation-through-Abadis-Disposable-Suction-Bags.jpg": {
+    "ok": true,
+    "file": "05cd7dc4938ba673.jpg",
+    "bytes": 106050,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/11/Significant-Reduction-of-Water-Consumption-in-Hospitals-by-Using-Disposable-Suction-Bags.png": {
+    "ok": true,
+    "file": "a96f6884c92aadbc.png",
+    "bytes": 217208,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/11/1-1.png": {
+    "ok": true,
+    "file": "d184b1c91e5ab329.png",
+    "bytes": 26886,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/11/2.png": {
+    "ok": true,
+    "file": "f696aa21af4f2303.png",
+    "bytes": 26483,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/11/3.png": {
+    "ok": true,
+    "file": "82df8f093f5900cb.png",
+    "bytes": 27430,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/11/4.png": {
+    "ok": true,
+    "file": "f5514913e45fdd0c.png",
+    "bytes": 27802,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/11/5.png": {
+    "ok": true,
+    "file": "26ac49f4fba6a082.png",
+    "bytes": 28459,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/11/6-1.png": {
+    "ok": true,
+    "file": "c457002a2a366c8c.png",
+    "bytes": 28227,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/11/7.png": {
+    "ok": true,
+    "file": "d2625b152ce93a08.png",
+    "bytes": 28327,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/11/8.png": {
+    "ok": true,
+    "file": "94042803fd30aca2.png",
+    "bytes": 27842,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/11/10.png": {
+    "ok": true,
+    "file": "b86f73a972d7e8cc.png",
+    "bytes": 27101,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/11/10-1.png": {
+    "ok": true,
+    "file": "87316da604d4ae77.png",
+    "bytes": 25263,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/11/11.png": {
+    "ok": true,
+    "file": "0fce26ac60a63b9f.png",
+    "bytes": 26841,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/11/12.png": {
+    "ok": true,
+    "file": "8a995e9555392cf3.png",
+    "bytes": 25182,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/11/13.png": {
+    "ok": true,
+    "file": "e23f44e568eb24f7.png",
+    "bytes": 26267,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/11/14.png": {
+    "ok": true,
+    "file": "15ed9a7271d3e5e3.png",
+    "bytes": 27055,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/02/Why-Hospitals-Prefer-Disposable-Suction-Liner-Bags-Over-Reusable-Ones-Abadis-Med.jpg": {
+    "ok": true,
+    "file": "61e778cb8a486a54.jpg",
+    "bytes": 89236,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/11/PVA-Film-In-Medical-Equipment-Industry-Abadis.jpg": {
+    "ok": true,
+    "file": "6550f5ecc383bcdc.jpg",
+    "bytes": 63364,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/Super-Absorbent-Powder-In-Medical-Equipment-Industry.jpg": {
+    "ok": true,
+    "file": "906073a072dd80da.jpg",
+    "bytes": 150626,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/Superabsorbent-polymers-abadis.png": {
+    "ok": true,
+    "file": "9781148063125709.png",
+    "bytes": 124536,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/Superabsorbent-polymers-working-abadis.png": {
+    "ok": true,
+    "file": "3575e34a7034133b.png",
+    "bytes": 285290,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/08/Porous-Filter-in-Medical-industry-abadis.jpg": {
+    "ok": true,
+    "file": "f68bf68fab7ecf50.jpg",
+    "bytes": 58900,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/11/What-Is-a-Suction-Tube.png": {
+    "ok": true,
+    "file": "c14605002eda5ea4.png",
+    "bytes": 235462,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/03/اجزای-تشکیل-دهنده-لول-ساکشن-آبادیس.jpg": {
+    "ok": true,
+    "file": "9def7ea150b6a41a.jpg",
+    "bytes": 47547,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/03/مقاله-ساکشن-تیوب-آبادیس-1024x1024-1.jpg": {
+    "ok": true,
+    "file": "f9953cec65745f37.jpg",
+    "bytes": 57876,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/03/clean-room-in-factory-abadis-1024x521-1.jpeg": {
+    "ok": true,
+    "file": "3f2217a37d673766.jpeg",
+    "bytes": 74383,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/07/Suction-Tube-Abadis.png": {
+    "ok": true,
+    "file": "f34ef50229b84276.png",
+    "bytes": 478602,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/07/ABADIS-SUCTION-TUBE.jpg": {
+    "ok": true,
+    "file": "0ac20a78955521f0.jpg",
+    "bytes": 47547,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/07/Abadis-pvc-suction-tube.jpg": {
+    "ok": true,
+    "file": "a1c1e748f9e81ec9.jpg",
+    "bytes": 206925,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/10/Introduction-of-Disposable-Suction-Liner-Bags-A-Key-Solution-by-Abadis-for-Preventing-Nosocomial-Infections.jpg": {
+    "ok": true,
+    "file": "32a94a2b79a65eed.jpg",
+    "bytes": 83775,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/10/wall-suction.png": {
+    "ok": true,
+    "file": "9b0583d48d6e6bfc.png",
+    "bytes": 194245,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2025/10/filter.png": {
+    "ok": true,
+    "file": "446a6e0a38fa8147.png",
+    "bytes": 121975,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/08/The-Report-Of-The-Second-Salamat-Bonyan-Basic-Health-Exhibition-Abadis.jpg": {
+    "ok": true,
+    "file": "dbfdec58bb059c82.jpg",
+    "bytes": 137893,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/Management-Of-Hospital-Infectious-waste-Abadis.jpg": {
+    "ok": true,
+    "file": "94b8fd69d36afc2e.jpg",
+    "bytes": 204739,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/Assessment-Of-Hand-Hygiene-Compliance-Among-Health-Care-Staff-At-Zahedan-Social-Security-Hospital-In-2023.jpg": {
+    "ok": true,
+    "file": "83ab3924e5b0302a.jpg",
+    "bytes": 151724,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/06/Disposable-suction-bottle-Is-cost-effective-in-Iran-or-not.jpg": {
+    "ok": true,
+    "file": "607a3e6a19ea15b7.jpg",
+    "bytes": 112967,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/05/Infection-Control-Congress-Report-2023.jpg": {
+    "ok": true,
+    "file": "cc649caec9f7fada.jpg",
+    "bytes": 182352,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/05/افتتاحیه-کنگره-کنترل-عفونت-۱۴۰۲-و-حضور-آبادیس.jpg": {
+    "ok": true,
+    "file": "8a05ae79b6a982dd.jpg",
+    "bytes": 320131,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/05/افتتاحیه-یازدهمین-کنگره-کنترل-عفونت-و-حضور-آبادیس-.jpg": {
+    "ok": true,
+    "file": "d1a7aea7e3e345db.jpg",
+    "bytes": 274786,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/05/آبادیس-در-کنگره-کنترل-عفونت-۱۴۰۲.jpeg": {
+    "ok": true,
+    "file": "548a4c34a3b7a0c4.jpeg",
+    "bytes": 177419,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/05/کنگره-کنترل-عفونت-۱۴۰۲-غرفه-آبادیس-1-.jpg": {
+    "ok": true,
+    "file": "7092dc20c842edc6.jpg",
+    "bytes": 241250,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/05/تیم-آبادیس-در-یازدهمین-کنگره-کنترل-عفونت-.jpg": {
+    "ok": true,
+    "file": "1d5496b148f8ab1b.jpg",
+    "bytes": 306581,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/05/توضیح-محصولات-آبادیس-jpg.jpeg": {
+    "ok": true,
+    "file": "13c4270fbddfe21e.jpeg",
+    "bytes": 207144,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/05/نماینده-استان-مرکزی-در-غرفه-آبادیس-.jpg": {
+    "ok": true,
+    "file": "4d1204d730fd3d6f.jpg",
+    "bytes": 235123,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/05/نماینده-مازندران-در-غرفه-آبادیس-.jpg": {
+    "ok": true,
+    "file": "23d8a3ef124ab459.jpg",
+    "bytes": 234780,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/05/جناب-آقای-مهندس-طباطبایی-در-بازدید-از-غرفه-آبادیس-1-.jpg": {
+    "ok": true,
+    "file": "cd69e81181f1958f.jpg",
+    "bytes": 229734,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/05/پرستار-برتر-کشور-در-غرفه-آبادیس-1-.jpg": {
+    "ok": true,
+    "file": "a82b15b702feb5bd.jpg",
+    "bytes": 222569,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/05/رییس-انجمن-در-بازدید-از-غرفه-آبادیس-.jpg": {
+    "ok": true,
+    "file": "38a4f7c5afb00578.jpg",
+    "bytes": 252768,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/05/جناب-آقای-دکتر-معصومی-در-بازدید-از-غرفه-آبادیس-1-.jpg": {
+    "ok": true,
+    "file": "81ee8c2b63d0339a.jpg",
+    "bytes": 220217,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/05/جناب-آقای-دکتر-قصری-در-بازدید-از-غرفه-آبادیس-.jpg": {
+    "ok": true,
+    "file": "33e6e9c19e6a5681.jpg",
+    "bytes": 234229,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/05/هدای-یلدایی-آبادیس-1-.jpg": {
+    "ok": true,
+    "file": "e34bb7179fecf240.jpg",
+    "bytes": 210869,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/05/هدیه-یلدایی-آبادیس-در-دستان-بازدید-کننده-ها-.jpg": {
+    "ok": true,
+    "file": "85d6795204133743.jpg",
+    "bytes": 217705,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/05/مراسم-اختتامیه-کنگره-کنترل-عفونت-و-حضور-آبادیس-.jpg": {
+    "ok": true,
+    "file": "350f0cbf70653c73.jpg",
+    "bytes": 226580,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/05/شرکت-کننده-قرعه-کشی-آبادیس-1-.jpg": {
+    "ok": true,
+    "file": "2c02234621d11db3.jpg",
+    "bytes": 211465,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/05/قرعه-کشی-آبادیس-1.jpg": {
+    "ok": true,
+    "file": "4aca47b0fe962ea9.jpg",
+    "bytes": 234527,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/05/قرعه-کشی-آبادیس-در-مراسم-اختتامیه-1.jpg": {
+    "ok": true,
+    "file": "fc456d99dfa4b72a.jpg",
+    "bytes": 247786,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/05/قرعه-کشی-آبادیس-با-حضور-مدیران-.jpg": {
+    "ok": true,
+    "file": "b43c024b60966f9d.jpg",
+    "bytes": 272484,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/05/پانل-اختتامیه-و-مدیران-آبادیس-.jpg": {
+    "ok": true,
+    "file": "26dc55a314222504.jpg",
+    "bytes": 256763,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/Honoring-Ceremony-For-Professor-Mehrabi.jpg": {
+    "ok": true,
+    "file": "c5b276e56298f20b.jpg",
+    "bytes": 168869,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/Professor-Mehrabi.jpg": {
+    "ok": true,
+    "file": "c6f50415b3183a4f.jpg",
+    "bytes": 350694,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/Professor-Mehrabi-Abadis.jpg": {
+    "ok": true,
+    "file": "0c385dc2edf91b27.jpg",
+    "bytes": 282963,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/Professor-Mehrabi-Books-Abadis.jpg": {
+    "ok": true,
+    "file": "866efbc8dfb1bbbc.jpg",
+    "bytes": 296960,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/Professor-Mehrabis-Family-Abadis.jpg": {
+    "ok": true,
+    "file": "86c6752f9d18e94a.jpg",
+    "bytes": 379255,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/Abadis-Manager-in-Bahrami-Hospital.jpg": {
+    "ok": true,
+    "file": "061616b552beccea.jpg",
+    "bytes": 357717,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/Professor-Mehrabi-Abadis-Team.jpg": {
+    "ok": true,
+    "file": "b1acb4009eeb184f.jpg",
+    "bytes": 310427,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/Dr.-Mojtahedi-Abadis.jpg": {
+    "ok": true,
+    "file": "6d40f2491bcee295.jpg",
+    "bytes": 286220,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/Dr.-Choobdar-Abadis.jpg": {
+    "ok": true,
+    "file": "5c851d12577a0b1d.jpg",
+    "bytes": 239324,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/Dr.-Molayian-Abadis.jpg": {
+    "ok": true,
+    "file": "b0a3564071016406.jpg",
+    "bytes": 211384,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/Dr.-Shahgholi-Abadis.jpg": {
+    "ok": true,
+    "file": "bfa6a0d8a8ba68ca.jpg",
+    "bytes": 242457,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2023/10/Publication-of-an-article-by-Abadis-in-ISI-journal.jpg": {
+    "ok": true,
+    "file": "a3a1d038ecdeeb7e.jpg",
+    "bytes": 122542,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2023/10/Report-Of-The-Uzmedexpo-2023.jpg": {
+    "ok": true,
+    "file": "9abf2e9e7de1ff03.jpg",
+    "bytes": 189311,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2023/10/1.jpg": {
+    "ok": true,
+    "file": "51c0d188cad1c871.jpg",
+    "bytes": 757773,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2023/10/2.jpg": {
+    "ok": true,
+    "file": "61f466f5e219216c.jpg",
+    "bytes": 507781,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2023/10/3.jpg": {
+    "ok": true,
+    "file": "8b43f0ea8326218d.jpg",
+    "bytes": 455949,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2023/10/4.jpg": {
+    "ok": true,
+    "file": "f5ef72d21661750d.jpg",
+    "bytes": 839670,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2023/10/5.jpg": {
+    "ok": true,
+    "file": "6bd0cd8db2a16a70.jpg",
+    "bytes": 671641,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2023/10/6.jpg": {
+    "ok": true,
+    "file": "06ccd99d50410eb9.jpg",
+    "bytes": 453388,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2023/10/7.jpg": {
+    "ok": true,
+    "file": "54d486cd521cec60.jpg",
+    "bytes": 494113,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2023/09/Improving-The-Environmental-Effects-Of-Nosocomial-Infectious-Effluents-By-Using-Disposable-Suction-Liner-Bags-1.jpg": {
+    "ok": true,
+    "file": "25ef33b24eebbc44.jpg",
+    "bytes": 146130,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2023/09/Improving-the-environmental-effects-of-nosocomial-infectious-effluents-by-using-disposable-suction-liner-bags.jpg": {
+    "ok": true,
+    "file": "39ee7c871505d317.jpg",
+    "bytes": 234843,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2023/09/Disposable-Suction-liner-Bags-Market-Research-Report.jpg": {
+    "ok": true,
+    "file": "2cf3a6989b4d8e8e.jpg",
+    "bytes": 94147,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2023/09/The-Presence-Of-Abadis-At-Uzmedexpo-2023.jpg": {
+    "ok": true,
+    "file": "8b9045b31add5918.jpg",
+    "bytes": 97654,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2023/09/uzmed2.jpg": {
+    "ok": true,
+    "file": "5f84ea3d5769fccd.jpg",
+    "bytes": 16944,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/Hospital-Infection-Surveillance-System-And-Prevention-And-Control-Of-Infection-Associated-With-Health-care-Services-1.jpg": {
+    "ok": true,
+    "file": "793c5c066d808812.jpg",
+    "bytes": 142707,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/Executive-Guidelines-For-Disinfection-Of-Medical-Instruments-And-Equipment.jpg": {
+    "ok": true,
+    "file": "0def38797e5be5c6.jpg",
+    "bytes": 172295,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/Report-on-the-10th-Infection-Control-Congress-Abadis.jpg": {
+    "ok": true,
+    "file": "ae6cc41ff806315f.jpg",
+    "bytes": 142181,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/abadis-team-in-infection-control-congress-scaled.jpg": {
+    "ok": true,
+    "file": "212dd1fa43d0a7a6.jpg",
+    "bytes": 410427,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/infection-control-congress-abadis-scaled.jpg": {
+    "ok": true,
+    "file": "53ee635f60ce4e17.jpg",
+    "bytes": 492536,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/infection-control-abadis-lottery-scaled.jpg": {
+    "ok": true,
+    "file": "0e73881c7235e568.jpg",
+    "bytes": 473538,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/infection-control-congress-panel-abadis-scaled.jpg": {
+    "ok": true,
+    "file": "ccdf42aa347115de.jpg",
+    "bytes": 722368,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/09/infection-control-abadis-scaled.jpg": {
+    "ok": true,
+    "file": "c2d4e854d88c96cf.jpg",
+    "bytes": 436940,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/12/Launch-Abadis-New-Product-In-The-Filtration-Field.jpg": {
+    "ok": true,
+    "file": "32c44cdc6be78599.jpg",
+    "bytes": 82559,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2023/07/1.jpg": {
+    "ok": true,
+    "file": "6e84576690bb7425.jpg",
+    "bytes": 54955,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/11/The-Presence-of-Abadis-Med-At-The-Tabriz-Exhibition.jpg": {
+    "ok": true,
+    "file": "b8508e55ecca8fa0.jpg",
+    "bytes": 158010,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/11/image_6487327-2-768x576-1.jpg": {
+    "ok": true,
+    "file": "276dfae2e0511a6a.jpg",
+    "bytes": 68046,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/11/The-Presence-of-Abadis-Med-at-the-Mashhad-Exhibition.jpg": {
+    "ok": true,
+    "file": "f1689378e1958ad9.jpg",
+    "bytes": 156254,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/11/image_6487327-5-1030x578-1.jpg": {
+    "ok": true,
+    "file": "299747d4bc60862f.jpg",
+    "bytes": 92820,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/11/image_6487327-3-1030x578-1.jpg": {
+    "ok": true,
+    "file": "1bbac1d37c6629c4.jpg",
+    "bytes": 93911,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/Report-Of-The-23rd-Iran-Health-International-Exhibition.jpg": {
+    "ok": true,
+    "file": "61e4863da571fe81.jpg",
+    "bytes": 189174,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/13-1.jpg": {
+    "ok": true,
+    "file": "f92d83ff3ad7798c.jpg",
+    "bytes": 337152,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/15-1.jpg": {
+    "ok": true,
+    "file": "0cb9652971c7a18a.jpg",
+    "bytes": 212253,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/17.png": {
+    "ok": true,
+    "file": "472e5c47d96a77f6.png",
+    "bytes": 1470724,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/18.png": {
+    "ok": true,
+    "file": "ebb94fa3e20c45b3.png",
+    "bytes": 1452902,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/19-2.jpg": {
+    "ok": true,
+    "file": "7583b0c1bd47b8be.jpg",
+    "bytes": 262607,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/21-2-rotated-1.jpg": {
+    "ok": true,
+    "file": "cce1e646535f5249.jpg",
+    "bytes": 249405,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/22-1.jpg": {
+    "ok": true,
+    "file": "0c6e15b7792dace5.jpg",
+    "bytes": 243742,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/23-1.jpg": {
+    "ok": true,
+    "file": "cd9c5c4147f7b7a9.jpg",
+    "bytes": 253652,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/23-2.jpg": {
+    "ok": true,
+    "file": "9366b74a8ad32c17.jpg",
+    "bytes": 183519,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/24-1.jpg": {
+    "ok": true,
+    "file": "bd82b20560380c48.jpg",
+    "bytes": 184716,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/555.jpg": {
+    "ok": true,
+    "file": "627d0f91c867faa5.jpg",
+    "bytes": 213693,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/22-2.jpg": {
+    "ok": true,
+    "file": "452ff8acba181729.jpg",
+    "bytes": 238947,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/21-3.jpg": {
+    "ok": true,
+    "file": "8bc756aa600c6e6e.jpg",
+    "bytes": 298288,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/21-4.jpg": {
+    "ok": true,
+    "file": "7c2e2ee37ab5e5da.jpg",
+    "bytes": 313392,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/21-5.jpg": {
+    "ok": true,
+    "file": "b3de736c384d5808.jpg",
+    "bytes": 255478,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/21-6.jpg": {
+    "ok": true,
+    "file": "fd727ecfb2f542cb.jpg",
+    "bytes": 336847,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/21-7.jpg": {
+    "ok": true,
+    "file": "4ebd3cbca06b9ea9.jpg",
+    "bytes": 306361,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/21-8.jpg": {
+    "ok": true,
+    "file": "33fde788bfc6a764.jpg",
+    "bytes": 188702,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/21-9.jpg": {
+    "ok": true,
+    "file": "535f8e3729808092.jpg",
+    "bytes": 216558,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/21-10.jpg": {
+    "ok": true,
+    "file": "ce0f7ad6f3c558a3.jpg",
+    "bytes": 257578,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/21-11.jpg": {
+    "ok": true,
+    "file": "7a9520ce1d1569de.jpg",
+    "bytes": 301747,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/21-12.jpg": {
+    "ok": true,
+    "file": "790cdf8fc2dfde52.jpg",
+    "bytes": 382940,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/21-13.jpg": {
+    "ok": true,
+    "file": "c214dd91dff6c5a7.jpg",
+    "bytes": 364019,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/21-14.jpg": {
+    "ok": true,
+    "file": "744add2bc12a5518.jpg",
+    "bytes": 301877,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/21-15-1.jpg": {
+    "ok": true,
+    "file": "dc41ddca1267404d.jpg",
+    "bytes": 376875,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/21-16.jpg": {
+    "ok": true,
+    "file": "e7e60464dd6e74bf.jpg",
+    "bytes": 279137,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/21-17.jpg": {
+    "ok": true,
+    "file": "c796c390ace9c5fc.jpg",
+    "bytes": 276496,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/21-18.jpg": {
+    "ok": true,
+    "file": "c8fc5d82ac036c19.jpg",
+    "bytes": 290772,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/21-19.jpg": {
+    "ok": true,
+    "file": "6d686474c69cdd74.jpg",
+    "bytes": 204470,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/21-20.jpg": {
+    "ok": true,
+    "file": "e08179dc0f28e42a.jpg",
+    "bytes": 278552,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/21-21.jpg": {
+    "ok": true,
+    "file": "b2c13ca79069e6e8.jpg",
+    "bytes": 361352,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/07/21-22.jpg": {
+    "ok": true,
+    "file": "fdeb8879c641d58b.jpg",
+    "bytes": 363964,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/03/Interview-Of-Managers-Of-Abadis-Med-With-Medirence.jpg": {
+    "ok": true,
+    "file": "889eb854bda649c2.jpg",
+    "bytes": 89238,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2021/09/New-Products-Of-Abadis-Med.jpg": {
+    "ok": true,
+    "file": "140e2f35c6bacc7e.jpg",
+    "bytes": 88800,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2021/09/2.jpg": {
+    "ok": true,
+    "file": "eaedb7afda680d51.jpg",
+    "bytes": 3419609,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2021/09/1-1.jpg": {
+    "ok": true,
+    "file": "791d5a3ac7b5f59b.jpg",
+    "bytes": 2267787,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2021/09/Obtaining-Europe-CE-Certification.jpg": {
+    "ok": true,
+    "file": "632c3706ad437244.jpg",
+    "bytes": 75675,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2020/04/Abadis-Activities-During-The-Corona.jpg": {
+    "ok": true,
+    "file": "1e2f561203bb5a3d.jpg",
+    "bytes": 130956,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2020/03/Important-Health-Tips-in-the-Prevention-and-Control-of-Corona-Virus.jpg": {
+    "ok": true,
+    "file": "f00475f87ff60619.jpg",
+    "bytes": 126638,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2020/03/e22312179bf43e61576081a2f250f845__wn7qS6jEK4__1.jpg": {
+    "ok": true,
+    "file": "fbdfd1a77751fbe1.jpg",
+    "bytes": 376037,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2020/02/How-to-Distinguish-Corona-from-Colds-and-Flu.jpg": {
+    "ok": true,
+    "file": "a9b2745f551481b4.jpg",
+    "bytes": 128155,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2020/02/3607966.jpg": {
+    "ok": true,
+    "file": "82b5890e7e6924d1.jpg",
+    "bytes": 201638,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2020/02/3675431.jpg": {
+    "ok": true,
+    "file": "18b87779d31a7157.jpg",
+    "bytes": 384046,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2020/01/Abadis-In-The-14th-Isfahan-Medical-Equipment-Exhibition.jpg": {
+    "ok": true,
+    "file": "a087720fa7b35f5f.jpg",
+    "bytes": 164322,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2019/09/The-Presence-Of-Abadis-Med-At-The-Shiraz-Exhibition.jpg": {
+    "ok": true,
+    "file": "8b251d268a2fd691.jpg",
+    "bytes": 89138,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2019/07/Medical-Engineering-Monthly-Interview-With-Abadis-Strategic-Consultant.jpg": {
+    "ok": true,
+    "file": "2ba9863f65094bea.jpg",
+    "bytes": 90837,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2019/07/Types-Of-Suction-Devices.jpg": {
+    "ok": true,
+    "file": "954592da05fe65b9.jpg",
+    "bytes": 72264,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2019/06/What-is-a-Suction-Device.jpg": {
+    "ok": true,
+    "file": "4273bcfd5771157b.jpg",
+    "bytes": 70199,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2019/06/0c048b3a434e49e655c1247efb389cec__tgD31f4QrZ__1-1.jpg": {
+    "ok": true,
+    "file": "308df472307cbc04.jpg",
+    "bytes": 124153,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2019/06/بازتاب-خبری-مدیرنس-از-حضور-آبادیس-در-ایران-هلث-1398.gif": {
+    "ok": true,
+    "file": "88eb03f1ebaa7506.gif",
+    "bytes": 73091,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2019/06/Abadis-interview-with-Iran-Radio-in-22nd-Iran-Health-exhibition.jpg": {
+    "ok": true,
+    "file": "1d6c60adaf8ed5c1.jpg",
+    "bytes": 89880,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2019/06/Interview-with-Abadis-Team-at-the-22nd-Iran-Health-Exhibition.jpg": {
+    "ok": true,
+    "file": "b4e77118deca4324.jpg",
+    "bytes": 176516,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2019/06/Report-of-the-22nd-Iran-Health-International-Exhibition.jpg": {
+    "ok": true,
+    "file": "c1180229e826b851.jpg",
+    "bytes": 151472,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2019/06/Abadis-Ideas-Investment-Fund-in-Iran-Health-Exhibition.jpg": {
+    "ok": true,
+    "file": "072fb1d93c9c962a.jpg",
+    "bytes": 92552,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2019/06/رونمایی-از-محصول-فیکسر-آبادیس.gif": {
+    "ok": true,
+    "file": "6879c60e1d605f61.gif",
+    "bytes": 124705,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2019/05/Strategy-and-Necessity-of-Using-Disposable-Suction-Bags.jpg": {
+    "ok": true,
+    "file": "a76c6c1cfbdfbe65.jpg",
+    "bytes": 138354,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2019/05/a8240cb8235e9c493a0c30607586166c__dgpkwryVSq__1.jpg": {
+    "ok": true,
+    "file": "15d9217f8669e588.jpg",
+    "bytes": 187415,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2019/02/Strategy-and-Necessity-of-Using-Disposable-Suction-Bags.jpg": {
+    "ok": true,
+    "file": "9c9904a9fe9341c1.jpg",
+    "bytes": 138354,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2019/02/Introduction-Of-Disposable-Suction-Liner-Bag.jpg": {
+    "ok": true,
+    "file": "e5e822de50a60ac0.jpg",
+    "bytes": 77760,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/08/6133639.jpg": {
+    "ok": true,
+    "file": "455602aad7c7b41a.jpg",
+    "bytes": 204850,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/08/AMR_4893.jpg": {
+    "ok": true,
+    "file": "a0906a0d29bb79f9.jpg",
+    "bytes": 248018,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/08/AMR_4855.jpg": {
+    "ok": true,
+    "file": "5a17e78ca910fb56.jpg",
+    "bytes": 154691,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2022/08/129-610-hospivac-400-image.jpg": {
+    "ok": true,
+    "file": "4eff938c93d13d03.jpg",
+    "bytes": 53037,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2019/02/Definition-of-Nosocomial-Infections-and-Their-Types.jpg": {
+    "ok": true,
+    "file": "0b76662c56db53a1.jpg",
+    "bytes": 106021,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2019/01/Introducing-The-Most-Common-Pathogens.jpg": {
+    "ok": true,
+    "file": "09fa1c28597e2e27.jpg",
+    "bytes": 131536,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2019/01/Types-of-Nosocomial-Infections.jpg": {
+    "ok": true,
+    "file": "03ff252efa3b699c.jpg",
+    "bytes": 164505,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2019/01/High-Quality-Hospital-Equipment-and-Products.jpg": {
+    "ok": true,
+    "file": "5f5cb1a7b13afe8a.jpg",
+    "bytes": 189076,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/08/Report-on-the-2018-Infection-Control-Congress-Abadis.jpg": {
+    "ok": true,
+    "file": "a066c4c0bc8161e0.jpg",
+    "bytes": 136181,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2024/08/غرفه-آبادیس-کنگره-کنترل-عفونت-۹۷.jpeg": {
+    "ok": true,
+    "file": "38f38ac5362054e5.jpeg",
+    "bytes": 143850,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2018/06/Report-of-the-21rd-Iran-Health-International-Exhibition.jpg": {
+    "ok": true,
+    "file": "da588ffd7fe6c247.jpg",
+    "bytes": 177752,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2018/01/Nosocomial-Infections.jpg": {
+    "ok": true,
+    "file": "d2367a1b37da952a.jpg",
+    "bytes": 121271,
+    "via": "i18n-post-sync"
+  },
+  "https://www.abadis-med.com/en/wp-content/uploads/2017/06/Prevention-and-Control-of-Nosocomial-Infections.jpg": {
+    "ok": true,
+    "file": "01a1bdbc6f16ba98.jpg",
+    "bytes": 152771,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/13.jpg": {
+    "ok": true,
+    "file": "c69755e1fa309066.jpg",
+    "bytes": 172600,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/15.jpg": {
+    "ok": true,
+    "file": "2e9fe941482c78f6.jpg",
+    "bytes": 178156,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/Fixture-post-2.jpg": {
+    "ok": true,
+    "file": "e38f6c90ed7593d9.jpg",
+    "bytes": 7130,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/Iran-Health-22-1-1.jpg": {
+    "ok": true,
+    "file": "cad3b4b465f5f1c7.jpg",
+    "bytes": 137210,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/Iran-Health-22-1-2.jpg": {
+    "ok": true,
+    "file": "e60e10059445e1c2.jpg",
+    "bytes": 128556,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/Iran-Health-22-1-4.jpg": {
+    "ok": true,
+    "file": "de58a29e08bbc2fb.jpg",
+    "bytes": 67175,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/Iran-Health-22-1-5.jpg": {
+    "ok": true,
+    "file": "45cb8a2dc00a7451.jpg",
+    "bytes": 100570,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/Iran-Health-22-1-6.jpg": {
+    "ok": true,
+    "file": "223877986d5a8c27.jpg",
+    "bytes": 106588,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/Iran-Health-22-1-7.jpg": {
+    "ok": true,
+    "file": "74d2d7ab10eae904.jpg",
+    "bytes": 117357,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/Iran-Health-22-1-8.jpg": {
+    "ok": true,
+    "file": "0da692f0050f3874.jpg",
+    "bytes": 108333,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/Iran-Health-22-1-9.jpg": {
+    "ok": true,
+    "file": "0e564fda06b5e611.jpg",
+    "bytes": 128189,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/Iran-Health-22-1-10.jpg": {
+    "ok": true,
+    "file": "e961f29543a3fec7.jpg",
+    "bytes": 130498,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/Iran-Health-22-1-11.jpg": {
+    "ok": true,
+    "file": "0d2ad654bd1384a3.jpg",
+    "bytes": 143768,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/Photo-432.jpg": {
+    "ok": true,
+    "file": "264c2d8edae187f5.jpg",
+    "bytes": 76632,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/CE-1.jpg": {
+    "ok": true,
+    "file": "235672842ff5731e.jpg",
+    "bytes": 168362,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/رگولاتور-بزرگسال-مدل-VR-A1-scaled-1.jpg": {
+    "ok": true,
+    "file": "d03716e8f9a08f50.jpg",
+    "bytes": 235372,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/1-scaled-1.jpg": {
+    "ok": true,
+    "file": "e7b14ec3c58cd7f1.jpg",
+    "bytes": 1721350,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/پست-رونمایی-1.jpg": {
+    "ok": true,
+    "file": "9256b6eff96c4820.jpg",
+    "bytes": 80018,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/اسامی-برندگان-روز-پرستار.jpg": {
+    "ok": true,
+    "file": "961ece5f017c92fb.jpg",
+    "bytes": 628086,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/مصاحبه-با-مدیرنس-1.jpg": {
+    "ok": true,
+    "file": "f7ef28eff08f53f1.jpg",
+    "bytes": 149763,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/نوید-حسنعلی-scaled-1.jpg": {
+    "ok": true,
+    "file": "55060f0a3a0808df.jpg",
+    "bytes": 444683,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/علیرضا-حسنعلی.jpg": {
+    "ok": true,
+    "file": "854a94540abbe93e.jpg",
+    "bytes": 621482,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/Page398-iran-hels-7-711x1030-1.jpg": {
+    "ok": true,
+    "file": "7a60d0020fd62631.jpg",
+    "bytes": 174684,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/Page398-iran-hels-8-692x1030-1.jpg": {
+    "ok": true,
+    "file": "322389ddf4ca1d0e.jpg",
+    "bytes": 202946,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/13-1030x687-1.jpg": {
+    "ok": true,
+    "file": "0dd500f112e22e82.jpg",
+    "bytes": 105332,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/15-1030x686-1.jpg": {
+    "ok": true,
+    "file": "4bd03ecdfec9ec44.jpg",
+    "bytes": 103475,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/16.jpg": {
+    "ok": true,
+    "file": "ca136b5d27a5c446.jpg",
+    "bytes": 151834,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/18.png": {
+    "ok": true,
+    "file": "9a6a89f8e904dc74.png",
+    "bytes": 1452902,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/19-2.jpg": {
+    "ok": true,
+    "file": "840d42cdf52a658a.jpg",
+    "bytes": 262607,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/20-1.jpg": {
+    "ok": true,
+    "file": "d8083a559a789e92.jpg",
+    "bytes": 133493,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/21-2-rotated-1.jpg": {
+    "ok": true,
+    "file": "a86606477a8c92e5.jpg",
+    "bytes": 249405,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/21-3.jpg": {
+    "ok": true,
+    "file": "f2a974aec54490ff.jpg",
+    "bytes": 298288,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/21-4.jpg": {
+    "ok": true,
+    "file": "c87d054ef9e30bda.jpg",
+    "bytes": 313392,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/21-5.jpg": {
+    "ok": true,
+    "file": "b11aba7e299b18d5.jpg",
+    "bytes": 255478,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/22-1.jpg": {
+    "ok": true,
+    "file": "b8eca5bcfeea02d8.jpg",
+    "bytes": 243742,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/22-2.jpg": {
+    "ok": true,
+    "file": "e6212d031d7290f1.jpg",
+    "bytes": 238947,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/23-1.jpg": {
+    "ok": true,
+    "file": "2031be46152c816e.jpg",
+    "bytes": 253652,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/23-2.jpg": {
+    "ok": true,
+    "file": "3f3438f17c83b8e6.jpg",
+    "bytes": 183519,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/24-1.jpg": {
+    "ok": true,
+    "file": "020fc2abde6bed94.jpg",
+    "bytes": 184716,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/24-2.jpg": {
+    "ok": true,
+    "file": "c7c8382c0d95913c.jpg",
+    "bytes": 213693,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/21-6.jpg": {
+    "ok": true,
+    "file": "50940f6f435ca6e2.jpg",
+    "bytes": 336847,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/21-7.jpg": {
+    "ok": true,
+    "file": "a41821bdad5bf42d.jpg",
+    "bytes": 306361,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/21-8.jpg": {
+    "ok": true,
+    "file": "b7ecac953bfe7c8b.jpg",
+    "bytes": 188702,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/21-9.jpg": {
+    "ok": true,
+    "file": "90635760ad115e4f.jpg",
+    "bytes": 216558,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/21-10.jpg": {
+    "ok": true,
+    "file": "83d75d6ac3ac3e21.jpg",
+    "bytes": 257578,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/21-11.jpg": {
+    "ok": true,
+    "file": "a564f31aacc2582e.jpg",
+    "bytes": 301747,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/21-12.jpg": {
+    "ok": true,
+    "file": "8d64190b022cc3c0.jpg",
+    "bytes": 382940,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/21-13.jpg": {
+    "ok": true,
+    "file": "6335519f751c67ac.jpg",
+    "bytes": 364019,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/21-14.jpg": {
+    "ok": true,
+    "file": "dc259b58bca00453.jpg",
+    "bytes": 301877,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/21-15.jpg": {
+    "ok": true,
+    "file": "244be7bbe236a980.jpg",
+    "bytes": 376875,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/21-16.jpg": {
+    "ok": true,
+    "file": "1ecc330e304a0231.jpg",
+    "bytes": 279137,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/21-17.jpg": {
+    "ok": true,
+    "file": "717d064ad83c208c.jpg",
+    "bytes": 276496,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/21-18.jpg": {
+    "ok": true,
+    "file": "e04a9d40c1ec8d71.jpg",
+    "bytes": 290772,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/21-19.jpg": {
+    "ok": true,
+    "file": "033818d1ccc923d0.jpg",
+    "bytes": 204470,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/21-20.jpg": {
+    "ok": true,
+    "file": "4304a1e0668ecb9d.jpg",
+    "bytes": 278552,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/21-21.jpg": {
+    "ok": true,
+    "file": "189585c52c407339.jpg",
+    "bytes": 361352,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/21-22.jpg": {
+    "ok": true,
+    "file": "90348aa9a8fb22eb.jpg",
+    "bytes": 363964,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/image_6487327-5-1030x578-1-edited.jpg": {
+    "ok": true,
+    "file": "503867ffc64edc39.jpg",
+    "bytes": 85778,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/image_6487327-3-1030x578-1.jpg": {
+    "ok": true,
+    "file": "6594c55d48a8d3f3.jpg",
+    "bytes": 93911,
+    "via": "i18n-post-sync"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/ایده.jpg": {
+    "ok": true,
+    "file": "bfd9acbd35464270.jpg",
+    "bytes": 147496,
+    "via": "ar-featured"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/غذا-و-دارو.jpg": {
+    "ok": true,
+    "file": "2d5a23f7bb397693.jpg",
+    "bytes": 224002,
+    "via": "ar-featured"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/قرعه-کشی-1.jpg": {
+    "ok": true,
+    "file": "9a5d565b08124102.jpg",
+    "bytes": 93743,
+    "via": "ar-featured"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/نمایشگاه-شیراز-2.jpg": {
+    "ok": true,
+    "file": "def5fc7c574fabfa.jpg",
+    "bytes": 155827,
+    "via": "ar-featured"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/قرعه-کشیی.jpg": {
+    "ok": true,
+    "file": "3d6c837c92ead9b9.jpg",
+    "bytes": 92994,
+    "via": "ar-featured"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/قرعه-کشی.jpg-1.jpg": {
+    "ok": true,
+    "file": "6859b84ce55e7e74.jpg",
+    "bytes": 156509,
+    "via": "ar-featured"
+  },
+  "https://abadis-med.com/arabic/wp-content/uploads/2022/11/فضاهای-مجازی-آبادیس.jpg": {
+    "ok": true,
+    "file": "87ee8b414246ff88.jpg",
+    "bytes": 63741,
+    "via": "ar-featured"
   }
 }
