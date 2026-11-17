@@ -137,7 +137,6 @@ AR_DOWNLOADS = '''<main id="main">
   <section class="section"><div class="wrap"><div class="post-grid">
     {cards}
   </div>
-  <p class="note" style="margin-top:20px">تُنزَّل الملفات من خادم abadis-med.com.</p>
   </div></section>
 </main>'''
 
