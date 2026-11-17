@@ -172,6 +172,7 @@ NAV = {
             ('suction-tube', 'products/suction-tube/', 'ساکشن تیوب'),
             ('canister', 'products/canister/', 'مخازن و ظروف پزشکی'),
             ('connectors', 'products/connectors/', 'اتصالات و ملزومات ساکشن'),
+            ('other', 'محصولات/سایر-محصولات/', 'سایر محصولات'),
             ('oral', 'products/oral-hygiene/', 'سواب های دهانی و نگهدارنده'),
             ('waste', 'products/waste-bags/', 'کیسه های تخصصی و مدیریت پسماند'),
         ]),
@@ -197,6 +198,7 @@ NAV = {
         ('products', 'products/#by-product', 'Products', [
             ('canister', 'products/canisters/', 'Medical Canisters'),
             ('connectors', 'products/connections/', 'Connections'),
+            ('other', 'products/other-products/', 'Other Products'),
             ('waste', 'products/specialized-bags-waste-management/', 'Specialized Bags & Waste Management'),
             ('suction-tube', 'suction-tube/', 'Suction tube'),
             ('suction-bag', 'products/suction-bag/', 'Suction Bag'),

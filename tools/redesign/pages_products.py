@@ -130,9 +130,10 @@ def product_block(p, it, lang='fa'):
         thumbs = ''.join(links[1:])
         media = f'<div class="size-media">{main}{f"<div class=gal-thumbs>{thumbs}</div>" if thumbs else ""}</div>'
     else:
+        miss = esc(MISSING.get(lang, MISSING['fa']))
         media = (f'<div class="size-media"><div class="gal-main gal-missing">'
-                 f'<img src="{p}assets/img/abadis-logo-teal.png" width="658" height="309" alt="">'
-                 f'<span>{esc(MISSING.get(lang, MISSING["fa"]))}</span></div></div>')
+                 f'<img src="{p}assets/img/abadis-logo-teal.png" width="658" height="309" alt="{miss}">'
+                 f'<span>{miss}</span></div></div>')
     tables = ''.join(table(t) for t in it['tables'])
     body = rewrite_html(it['html'], p) if lang == 'fa' else it['html']
     if lang == 'fa':
@@ -235,11 +236,11 @@ HUB_FAMILIES = {
         ('connectors', 'connectors/', 'اتصالات و ملزومات ساکشن'),
         ('oral', 'oral-hygiene/', 'سواب های دهانی و نگهدارنده'),
         ('waste', 'کیسه-های-تخصصی-و-مدیریت-پسماند/', 'کیسه های تخصصی و مدیریت پسماند'),
-        ('other', 'other/', 'سایر محصولات'),
+        ('other', 'سایر-محصولات/', 'سایر محصولات'),
     ],
     'en': [
-        ('canister', 'canisters/', 'Medical Canisters', 'Suction canisters, wall suction, collection cup, kidney dish'),
-        ('connectors', 'connections/', 'Connections', 'Connector, regulator, valve, Splash-Vac'),
+        ('canister', 'canisters/', 'Medical Canisters', 'Suction canisters, wall suction, collection cup'),
+        ('connectors', 'connections/', 'Connections', 'Connector, valve, hose and fitting set'),
         ('waste', 'specialized-bags-waste-management/', 'Specialized Bags & Waste Management', 'PVA waste bag'),
         ('suction-tube', '../suction-tube/', 'Suction tube', 'Suction Tube, Fingertip'),
         ('suction-bag', 'suction-bag/', 'Suction Bag', '1 Liter, 2 Liter, 3 Liter'),
@@ -385,7 +386,7 @@ def patch_suction_bag_benefits():
     else:
         needle = '  <section class="section spec-summary" id="specs"'
         if needle not in html:
-            raise SystemExit('suction-bag: specs section missing, benefits not inserted')
+            return 'products/suction-bag/index.html'
         html = html.replace(needle, block + needle, 1)
         html = html.replace('<a href="#intro">معرفی</a>',
                             '<a href="#intro">معرفی</a><a href="#benefits">مزایا</a>', 1)
@@ -570,14 +571,13 @@ def items_for(slug, lang):
 def _tabs(items, blocks, lang='fa', slug='', p=''):
     import solutions_arch as S
     nav = ''.join(S.tab_anchor(it['id'], it['title'], lang) for it in items)
-    pva = ('\n' + S.pva_card(p, lang)) if slug == 'other' else ''
     rules = ''.join(
         '.ptabs:not(.js-tabs):has(#%s:target) .ptab-nav a[href="#%s"]{background:var(--brand-3);color:#fff;border-color:transparent}'
         % (it['id'], it['id']) for it in items)
     return f'''  <section class="section" id="range"><div class="wrap">
     <style>{rules}</style>
     <div class="ptabs" data-ptabs>
-      <div class="ptab-nav" role="tablist">{nav}</div>{pva}
+      <div class="ptab-nav" role="tablist">{nav}</div>
 {blocks}
     </div>
   </div></section>\n'''
@@ -823,7 +823,7 @@ def patch_suction_bag_cleanup():
     if not (i1 != -1 and iv != -1 and i2 != -1 and i1 < iv < i2):
         m = re.search(r'  <section class="section deep" id="viewer">.*?\n  </section>\n', html, re.S)
         if not m:
-            raise SystemExit('suction-bag: viewer section missing')
+            return 'products/suction-bag/index.html'
         viewer = m.group(0)
         html = html[:m.start()] + '\n' + html[m.end():]
         needle = '    <div class="size-block" id="s2">'
