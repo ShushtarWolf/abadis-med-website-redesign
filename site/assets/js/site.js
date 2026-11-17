@@ -192,6 +192,19 @@
     });
   });
 
+  /* ---------- lazy images in long prose / CSR grids ---------- */
+  function primeLazyImage(img) {
+    if (!img || img.dataset.primed === '1') return;
+    img.dataset.primed = '1';
+    const ds = img.getAttribute('data-src') || img.getAttribute('data-lazy-src');
+    if (ds && img.getAttribute('src') !== ds) img.setAttribute('src', ds);
+    if (img.loading === 'lazy' || img.getAttribute('loading') === 'lazy') img.loading = 'eager';
+  }
+  function primeLazyImages(root) {
+    const scope = root && root.querySelectorAll ? root : document;
+    scope.querySelectorAll('img[loading="lazy"], img[data-src], img[data-lazy-src]').forEach(primeLazyImage);
+  }
+
   /* ---------- scroll reveal ---------- */
   const rev = document.querySelectorAll('.reveal');
   const showInView = () => {
@@ -209,7 +222,11 @@
     // page whose only content is .reveal stays blank (opacity: 0).
     let io = null;
     const cb = (en) => en.forEach((x) => {
-      if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); }
+      if (x.isIntersecting) {
+        x.target.classList.add('in');
+        primeLazyImages(x.target);
+        io.unobserve(x.target);
+      }
     });
     try { io = new IntersectionObserver(cb, { rootMargin: '0px 0px -8% 0px' }); }
     catch (err) {
@@ -222,6 +239,18 @@
       window.addEventListener('load', showInView, { once: true });
       setTimeout(showInView, 400);
     }
+  }
+
+  if (!reduce && 'IntersectionObserver' in window) {
+  const proseGridImgs = document.querySelectorAll('.article.prose img, .photo-grid img');
+  if (proseGridImgs.length) {
+    const limgsIo = new IntersectionObserver((ents) => {
+      ents.forEach((x) => {
+        if (x.isIntersecting) { primeLazyImage(x.target); limgsIo.unobserve(x.target); }
+      });
+    }, { rootMargin: '280px 0px' });
+    proseGridImgs.forEach((img) => limgsIo.observe(img));
+  }
   }
 
   /* sustainability counters — final value is already in the element */
