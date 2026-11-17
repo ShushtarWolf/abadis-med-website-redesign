@@ -6022,7 +6022,7 @@
     "ok": true,
     "file": "a6343902a7dea337.jpg",
     "bytes": 81101,
-    "via": "live-2026-10-14"
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2024/01/نمودار-مقاله-آنتی-بیوتیک-آبادیس.png": {
     "ok": true,
@@ -10266,5 +10266,25 @@
     "ok": true,
     "file": "af92c5a5f7392259.png",
     "bytes": 590582
+  },
+  "https://abadis-med.com/wp-content/uploads/2024/01/Hospital-Wastewater-Treatment-Infographic-1024x512.png": {
+    "ok": true,
+    "file": "8abb2403999347d7.png",
+    "bytes": 866054
+  },
+  "https://abadis-med.com/wp-content/uploads/2024/01/Hospital-Wastewater-Treatment-Infographic.png": {
+    "ok": true,
+    "file": "8abb2403999347d7.png",
+    "bytes": 866054
+  },
+  "https://abadis-med.com/wp-content/uploads/2024/01/Hospital-Wastewater-Treatment-Infographic-1-1024x512.png": {
+    "ok": true,
+    "file": "32a8a6db5e8b8902.png",
+    "bytes": 779107
+  },
+  "https://abadis-med.com/wp-content/uploads/2024/01/Hospital-Wastewater-Treatment-Infographic-1.png": {
+    "ok": true,
+    "file": "32a8a6db5e8b8902.png",
+    "bytes": 779107
   }
 }
