@@ -158,9 +158,60 @@ def add_lead_images():
         f.write_text(s, encoding='utf-8'); n += 1
     print(n, 'EN/AR posts got their featured image')
 
+CARD = re.compile(r'(<a class="post-card[^>]*\shref=")([^"]+)("[^>]*>\s*<div class="ph\b[^"]*">\s*)(<img\b[^>]*>)')
+FEAT = re.compile(r'(<a class="news-feature"[^>]*\shref=")([^"]+)("[^>]*>)(<img\b[^>]*>)')
+LEAD = re.compile(r'<div class="lead-img">\s*(<img\b[^>]*>)')
+
+def post_cover(page):
+    """Local cover (src relative to the site root) of an EN / AR post page: lead image, else first local image in the article."""
+    s = page.read_text(encoding='utf-8')
+    m = LEAD.search(s)
+    cands = [m.group(1)] if m else []
+    a = ARTICLE.search(s)
+    if a: cands += IMG.findall(a.group(0))
+    for t in cands:
+        src = html.unescape(attr(t, 'src') or '')
+        if not src or REMOTE.match(src) or src.startswith(('http', 'data:')): continue
+        f = (page.parent / src).resolve()
+        if f.is_file() and 'post-thumb-fallback' not in src and f.suffix == '.webp':
+            return f
+    return None
+
+def card_thumb(f640_src, w=640):
+    from PIL import Image
+    name = f640_src.stem.replace('-1400', '') + f'-{w}.webp'
+    out = OUT / name
+    if not out.exists():
+        with Image.open(f640_src) as im:
+            iw, ih = im.size
+            nw, nh = (w, round(ih * w / iw)) if iw > w else (iw, ih)
+            im.convert('RGB').resize((nw, nh), Image.LANCZOS).save(out, 'WEBP', quality=78, method=5)
+    with Image.open(out) as im: nw, nh = im.size
+    return {'src': 'assets/img/c/' + name, 'w': nw, 'h': nh}
+
+def card_covers():
+    """EN / AR list cards used the shared fallback; show each post's own cover (already self-hosted) instead."""
+    n = 0
+    cache = {}
+    for root in ('en', 'arabic'):
+        for f in sorted((SITE / root).rglob('index.html')):
+            s = f.read_text(encoding='utf-8')
+            if 'post-card' not in s or 'post-thumb-fallback' not in s: continue
+            def sub(m):
+                if 'post-thumb-fallback' not in m.group(4): return m.group(0)
+                target = (f.parent / u.unquote(m.group(2))).resolve() / 'index.html'
+                if target not in cache:
+                    src = post_cover(target) if target.is_file() else None
+                    cache[target] = card_thumb(src) if src else None
+                r = cache[target]
+                return m.group(0) if not r else m.group(1) + m.group(2) + m.group(3) + retag(m.group(4), f, r)
+            t = FEAT.sub(sub, CARD.sub(sub, s))
+            if t != s: f.write_text(t, encoding='utf-8'); n += 1
+    print(n, 'EN/AR list pages got real card covers')
+
 def main():
     dry = '--dry' in sys.argv
-    if not dry: add_lead_images()
+    if not dry: add_lead_images(); card_covers()
     todo = collect()
     jobs = sorted({x for v in todo.values() for x in v})
     print(len(todo), 'pages,', len(jobs), 'remote images')
