@@ -11446,11 +11446,15 @@
     "bytes": 689968
   },
   "http://abadis-med.com/wp-content/uploads/2019/06/Iran-Health-22-1-5.jpg": {
-    "ok": false,
-    "err": "fetch-failed"
+    "ok": true,
+    "file": "45cb8a2dc00a7451.jpg",
+    "bytes": 100570,
+    "via": "alias:arabic/wp-content/uploads/2022/11/Iran-Health-22-1-5.jpg (EN 2019 upload 404 on WP)"
   },
   "https://abadis-med.com/wp-content/uploads/2019/06/Iran-Health-22-1-5.jpg": {
-    "ok": false,
-    "err": "fetch-failed"
+    "ok": true,
+    "file": "45cb8a2dc00a7451.jpg",
+    "bytes": 100570,
+    "via": "alias:arabic/wp-content/uploads/2022/11/Iran-Health-22-1-5.jpg (EN 2019 upload 404 on WP)"
   }
 }
