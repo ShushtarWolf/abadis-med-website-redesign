@@ -192,35 +192,55 @@
     });
   });
 
-  /* ---------- scroll reveal ---------- */
+  /* ---------- scroll reveal ----------
+     Fail-safe: IntersectionObserver is only the fast path. Some WebKit
+     builds (iOS Safari / in-app browsers, overflow-x:clip on html/body) skip
+     callbacks, which left every card below the first screen at opacity 0
+     ("only the first few images load"). So we also reveal on scroll/resize,
+     whenever a paged list shows more items, and reveal everything if the
+     observer never fires at all. */
   const rev = document.querySelectorAll('.reveal');
+  let ioFired = false;
+  const revealAll = () => rev.forEach((e) => e.classList.add('in'));
   const showInView = () => {
-    const vh = window.innerHeight || 0;
+    const vh = window.innerHeight || document.documentElement.clientHeight || 0;
     rev.forEach((e) => {
       if (e.classList.contains('in')) return;
       const r = e.getBoundingClientRect();
-      if (r.bottom > 0 && r.top < vh) e.classList.add('in');
+      if (!r.width && !r.height) return; // display:none (paged / filtered out)
+      // anything in view or already scrolled past
+      if (r.top < vh * 1.05) e.classList.add('in');
     });
   };
-  if (reduce || !('IntersectionObserver' in window)) rev.forEach((e) => e.classList.add('in'));
+  window.__abadisShowInView = showInView;
+  if (reduce || !('IntersectionObserver' in window)) revealAll();
   else {
-    // Percentage rootMargin throws on older WebKit. overflow-x:clip on html/body
-    // also makes iOS Safari skip the first intersection callback, so a short
-    // page whose only content is .reveal stays blank (opacity: 0).
+    // Percentage rootMargin throws on older WebKit.
     let io = null;
     const cb = (en) => en.forEach((x) => {
+      ioFired = true;
       if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); }
     });
     try { io = new IntersectionObserver(cb, { rootMargin: '0px 0px -8% 0px' }); }
     catch (err) {
       try { io = new IntersectionObserver(cb, { rootMargin: '0px 0px -40px 0px' }); }
-      catch (err2) { rev.forEach((e) => e.classList.add('in')); }
+      catch (err2) { io = null; revealAll(); }
     }
     if (io) {
       rev.forEach((e) => io.observe(e));
-      requestAnimationFrame(showInView);
+      let ticking = false;
+      const onScroll = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => { ticking = false; showInView(); });
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
       window.addEventListener('load', showInView, { once: true });
+      requestAnimationFrame(showInView);
       setTimeout(showInView, 400);
+      // observer never delivered a single entry: it is broken here, show all
+      setTimeout(() => { if (!ioFired) revealAll(); }, 2500);
     }
   }
 
@@ -556,7 +576,9 @@
   });
 
   /* ---------- phase 2: paged lists + live search ---------- */
-  const faNum = (n) => new Intl.NumberFormat('fa-IR').format(n);
+  const pageLang = (document.documentElement.lang || 'fa').slice(0, 2).toLowerCase();
+  const faNum = (n) => new Intl.NumberFormat(pageLang === 'en' ? 'en-US' : pageLang === 'ar' ? 'ar' : 'fa-IR').format(n);
+  const moreLabel = pageLang === 'en' ? 'Show more' : pageLang === 'ar' ? 'عرض المزيد' : 'نمایش بیشتر';
   document.querySelectorAll('[data-paged]').forEach((grid) => {
     const step = parseInt(grid.dataset.paged, 10) || 12;
     let shown = step;
@@ -568,7 +590,7 @@
     let btn = null;
     if (items.length > step) {
       const wrap = document.createElement('div'); wrap.className = 'more-wrap';
-      btn = document.createElement('button'); btn.type = 'button'; btn.className = 'btn btn-ghost'; btn.textContent = 'نمایش بیشتر';
+      btn = document.createElement('button'); btn.type = 'button'; btn.className = 'btn btn-ghost'; btn.textContent = moreLabel;
       wrap.appendChild(btn); grid.after(wrap);
       btn.addEventListener('click', () => { shown += step; apply(); });
     }
@@ -584,6 +606,8 @@
         el.classList.toggle('is-hidden', hide);
         if (!hide) visible++;
       });
+      // items that just became visible must not stay at reveal opacity 0
+      requestAnimationFrame(showInView);
       if (btn) btn.parentElement.hidden = !!q || shown >= items.length;
       if (count) count.textContent = faNum(n) + ' ' + unit;
       if (empty) empty.hidden = n > 0;
