@@ -1,0 +1,185 @@
+{
+ "_note": "EN/AR renderings of dealers.json values, keyed by the Persian text (matched after removing spaces/punctuation and unifying digits). AR digits are converted to Arabic-Indic at render time.",
+ "names": {
+  "شرکت نیک طب": {
+   "en": "Nik Teb Company",
+   "ar": "شركة نيك طب"
+  },
+  "نیک طب": {
+   "en": "Nik Teb",
+   "ar": "نيك طب"
+  },
+  "پردیس طب تجهیز": {
+   "en": "Pardis Teb Tajhiz",
+   "ar": "برديس طب تجهيز"
+  },
+  "کاراطب": {
+   "en": "Karateb",
+   "ar": "كاراطب"
+  },
+  "جام جم": {
+   "en": "Jam-e Jam",
+   "ar": "جام جم"
+  },
+  "مخازن طبی آبادیس": {
+   "en": "Abadis Medical Reservoirs",
+   "ar": "خزانات آباديس الطبية"
+  },
+  "کالای پزشکی بوشهر درمان": {
+   "en": "Bushehr Darman Medical Supplies",
+   "ar": "بوشهر درمان للمستلزمات الطبية"
+  },
+  "پویا طب معجزه": {
+   "en": "Pouya Teb Mojezeh",
+   "ar": "بويا طب معجزه"
+  },
+  "رادمان تجهیز آژمان": {
+   "en": "Radman Tajhiz Azhman",
+   "ar": "رادمان تجهيز آژمان"
+  },
+  "جهان درمان": {
+   "en": "Jahan Darman",
+   "ar": "جهان درمان"
+  },
+  "دانش نواندیشان بهپود": {
+   "en": "Danesh Noandishan Behpud",
+   "ar": "دانش نوانديشان بهبود"
+  },
+  "تجهیز گستر آبیدر": {
+   "en": "Tajhiz Gostar Abidar",
+   "ar": "تجهيز كستر آبيدر"
+  },
+  "کران مبتکر طبرستان": {
+   "en": "Karan Mobtaker Tabarestan",
+   "ar": "كران مبتكر طبرستان"
+  },
+  "تجهیزات پزشکی پاکان طبیب آرمان": {
+   "en": "Pakan Tabib Arman Medical Equipment",
+   "ar": "باكان طبيب آرمان للتجهيزات الطبية"
+  },
+  "هگمتان طب": {
+   "en": "Hegmatan Teb",
+   "ar": "هكمتان طب"
+  },
+  "بهسان تجهیز آبادیس": {
+   "en": "Behsan Tajhiz Abadis",
+   "ar": "بهسان تجهيز آباديس"
+  }
+ },
+ "people": {
+  "جناب آقای نیک منش": {
+   "en": "Mr. Nikmanesh",
+   "ar": "السيد نيك منش"
+  },
+  "سرکار خانم رعیتی": {
+   "en": "Ms. Raiyati",
+   "ar": "السيدة رعيتي"
+  },
+  "جناب آقای قنبریان": {
+   "en": "Mr. Ghanbarian",
+   "ar": "السيد قنبريان"
+  },
+  "جناب آقای نائل": {
+   "en": "Mr. Nael",
+   "ar": "السيد نائل"
+  },
+  "جناب آقای حسنعلی": {
+   "en": "Mr. Hassanali",
+   "ar": "السيد حسنعلي"
+  },
+  "جناب آقای محبوسی": {
+   "en": "Mr. Mahbousi",
+   "ar": "السيد محبوسي"
+  },
+  "جناب آقای مصلحی": {
+   "en": "Mr. Moslehi",
+   "ar": "السيد مصلحي"
+  },
+  "جناب آقای الاسوندی": {
+   "en": "Mr. Alasvandi",
+   "ar": "السيد الاسوندي"
+  },
+  "جناب آقای حاج غنی": {
+   "en": "Mr. Hajghani",
+   "ar": "السيد حاج غني"
+  },
+  "جناب آقای ترابی": {
+   "en": "Mr. Torabi",
+   "ar": "السيد ترابي"
+  },
+  "جناب آقای رضازاده": {
+   "en": "Mr. Rezazadeh",
+   "ar": "السيد رضازاده"
+  },
+  "جناب آقای احمدی": {
+   "en": "Mr. Ahmadi",
+   "ar": "السيد أحمدي"
+  },
+  "جناب آقای مجیدی": {
+   "en": "Mr. Majidi",
+   "ar": "السيد مجيدي"
+  },
+  "جناب آقای رفیعی": {
+   "en": "Mr. Rafiei",
+   "ar": "السيد رفيعي"
+  }
+ },
+ "addresses": {
+  "اردبیل، خیابان حافظ، جنب مرکز جراحی حافظ، تجهیزات پزشکی نیک طب": {
+   "en": "Nik Teb Medical Equipment, next to Hafez Surgery Center, Hafez St., Ardabil",
+   "ar": "أردبيل، شارع حافظ، بجوار مركز حافظ الجراحي، تجهيزات نيك طب الطبية"
+  },
+  "اصفهان خیابان شیخ مفید مجتمع سپهر واحد۳۲": {
+   "en": "Unit 32, Sepehr Complex, Sheikh Mofid St., Isfahan",
+   "ar": "أصفهان، شارع الشيخ المفيد، مجمع سبهر، الوحدة 32"
+  },
+  "اصفهان، خیبان طیب، کوچه 11 ، پلاک 39": {
+   "en": "No. 39, Alley 11, Tayyeb St., Isfahan",
+   "ar": "أصفهان، شارع طيب، الزقاق 11، رقم 39"
+  },
+  "اصفهان ، چهارراه فلسطین، جنب بانک صادرات": {
+   "en": "Next to Bank Saderat, Felestin Intersection, Isfahan",
+   "ar": "أصفهان، تقاطع فلسطين، بجوار بنك صادرات"
+  },
+  "تهران، قیطریه، خیابان اندرزگو، پلاک ۱۰۴، واحد۲": {
+   "en": "Unit 2, No. 104, Andarzgoo St., Gheytarieh, Tehran",
+   "ar": "طهران، قيطرية، شارع أندرزكو، رقم 104، الوحدة 2"
+  },
+  "بوشهر خیابان امام رو به روی مسجد توحید کوچه بانک انصار": {
+   "en": "Bank Ansar Alley, opposite Tohid Mosque, Imam St., Bushehr",
+   "ar": "بوشهر، شارع الإمام، مقابل مسجد التوحيد، زقاق بنك أنصار"
+  },
+  "بلوار ابوذر،خیابان شهید عباس وثیقی پلاک 14 طبقه همکف": {
+   "en": "Ground floor, No. 14, Shahid Abbas Vasighi St., Abuzar Blvd.",
+   "ar": "بوليفارد أبوذر، شارع الشهيد عباس وثيقي، رقم 14، الطابق الأرضي"
+  },
+  "اهواز ، کیان آباد، مابین خیابان 10 و 11 ، مجتمع اطلس ، واحد 4": {
+   "en": "Unit 4, Atlas Complex, between 10th and 11th St., Kianabad, Ahvaz",
+   "ar": "الأهواز، كيان آباد، بين الشارعين 10 و11، مجمع أطلس، الوحدة 4"
+  },
+  "کرمان، خیابان فلسطین ، کوچه ۷ پلاک ۲۳": {
+   "en": "No. 23, Alley 7, Felestin St., Kerman",
+   "ar": "كرمان، شارع فلسطين، الزقاق 7، رقم 23"
+  },
+  "شیراز، خیابان پوست چی،کوچه2، پلاک6ساختمان ایده": {
+   "en": "Ideh Building, No. 6, Alley 2, Poostchi St., Shiraz",
+   "ar": "شيراز، شارع بوستجي، الزقاق 2، رقم 6، مبنى إيده"
+  },
+  "ابتدای بلوار پاسداران نبش کوچه حافظ ساختمان قاسمیان طبقه سوم شمالی واحد5": {
+   "en": "Unit 5, 3rd floor (north), Ghasemian Building, corner of Hafez Alley, start of Pasdaran Blvd.",
+   "ar": "بداية بوليفارد باسداران، ناصية زقاق حافظ، مبنى قاسميان، الطابق الثالث الشمالي، الوحدة 5"
+  },
+  "اراک،قطب صنعتی،خیابان همت5،جاده(خمین)،ساختمان اداری شرکت مدیران صنایع واحد58": {
+   "en": "Unit 58, Modiran Sanaye Co. office building, Hemmat 5 St., Khomein Road, Industrial Hub, Arak",
+   "ar": "أراك، القطب الصناعي، شارع همت 5، طريق خمين، المبنى الإداري لشركة مديران صنايع، الوحدة 58"
+  },
+  "همدان میدان فردوسی ابتدای بلوار چیت سازیان ساختمان فردوسی طبقه دوم واحد4": {
+   "en": "Unit 4, 2nd floor, Ferdowsi Building, start of Chitsazian Blvd., Ferdowsi Square, Hamadan",
+   "ar": "همدان، ميدان فردوسي، بداية بوليفارد جيت سازيان، مبنى فردوسي، الطابق الثاني، الوحدة 4"
+  },
+  "یزد، بلوار طالقانی ، کوچه هدایتی، بن بست 1 گلزار پلاک 6 طبقه همکف کالای پزشکی رفیعی": {
+   "en": "Rafiei Medical Supplies, ground floor, No. 6, Golzar Dead-end 1, Hedayati Alley, Taleghani Blvd., Yazd",
+   "ar": "يزد، بوليفارد طالقاني، زقاق هدايتي، الطريق المسدود 1 كلزار، رقم 6، الطابق الأرضي، مستلزمات رفيعي الطبية"
+  }
+ }
+}
