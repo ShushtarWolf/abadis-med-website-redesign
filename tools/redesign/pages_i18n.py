@@ -93,6 +93,28 @@ def load_lang_posts(lang: str):
     return json.load(open(DATA / f'{lang}_posts.json', encoding='utf-8'))
 
 
+def _featured_url(wp):
+    og = (wp.get('yoast_head_json') or {}).get('og_image') or []
+    if og and isinstance(og[0], dict) and og[0].get('url'):
+        return og[0]['url']
+    raw = wp.get('content', {}).get('rendered', '') or ''
+    m = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', raw, flags=re.I)
+    return u.unquote(m.group(1)) if m else None
+
+
+def _card_ph(wp, title, p, w=640):
+    """Post-list thumbnail: featured media when archived, else the generic fallback."""
+    url = _featured_url(wp)
+    if url:
+        r = best_img(url, w) or best_img(url, 1400)
+        if r:
+            return (f'<div class="ph"><img src="{p}{r["src"]}" width="{r["w"]}" height="{r["h"]}" '
+                    f'alt="{esc(title)}" loading="lazy" decoding="async"></div>')
+    fb = f'{p}assets/img/post-thumb-fallback.webp'
+    return (f'<div class="ph txt"><img src="{fb}" width="1280" height="720" '
+            f'alt="{esc(title)}" loading="lazy"></div>')
+
+
 def page_by_slug(pages, slug):
     slug = _slug_decode(slug)
     for p in pages:
@@ -339,8 +361,7 @@ def _write_post_index(write, lang, site_path, cur, label, items):
             aud_pills = ''.join(f'<span class="art-aud-tag" hidden>{esc(lbl)}</span>' for lbl in am['aud_labels'][:1])
             cards.append(
                 f'<a class="post-card reveal" href="{href}" data-name="{esc(title)}"{attrs}>'
-                f'<div class="ph txt"><img src="{p}assets/img/post-thumb-fallback.webp" width="1280" height="720" alt="{esc(title)}" loading="lazy">'
-                '</div>'
+                f'{_card_ph(wp, title, p)}'
                 f'<div class="body"><div class="card-meta">{cat_badges}<span class="art-ctype-badge art-ctype-badge--{esc(am["ctype"])}">{esc(am["ctype_label"])}</span></div>'
                 f'<div class="card-sub"><span class="art-card-time">{esc(am["rtime_badge"])}</span></div>{aud_pills}'
                 f'<h3>{esc(title)}</h3><p>{esc(desc)}</p>'
@@ -360,8 +381,7 @@ def _write_post_index(write, lang, site_path, cur, label, items):
             fmt_pills = ''.join(f'<span class="news-fmt-pill">{esc(lbl)}</span>' for lbl in nm['format_labels'][:2])
             cards.append(
                 f'<a class="post-card reveal" href="{href}" data-name="{esc(title)}"{attrs}>'
-                f'<div class="ph txt"><img src="{p}assets/img/post-thumb-fallback.webp" width="1280" height="720" alt="{esc(title)}" loading="lazy">'
-                '</div>'
+                f'{_card_ph(wp, title, p)}'
                 f'<div class="body"><div class="card-meta">{cat_badges}<span class="news-fmt-badge news-fmt-badge--{esc(nm["format"])}">{esc(nm["format_label"])}</span></div><div class="card-sub"></div>'
                 f'<h3>{esc(title)}</h3><p>{esc(desc)}</p>'
                 f'<span class="go">{esc(nm["card_cta"])}</span></div></a>'
@@ -369,7 +389,7 @@ def _write_post_index(write, lang, site_path, cur, label, items):
             continue
         cards.append(
             f'<a class="post-card reveal" href="{href}" data-name="{esc(title)}"{attrs}>'
-            f'<div class="ph txt"><img src="{p}assets/img/post-thumb-fallback.webp" width="1280" height="720" alt="{esc(title)}" loading="lazy"></div>'
+            f'{_card_ph(wp, title, p)}'
             f'<div class="body"><h3>{esc(title)}</h3><p>{esc(desc)}</p>'
             f'<span class="go">{esc(L["read_more"])}</span></div></a>'
         )
