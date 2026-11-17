@@ -1948,6 +1948,8 @@ body.academy { background: #f3f8f8; }
   border: 1px solid var(--line); border-radius: 16px; padding: 12px; background: var(--surface); margin: 12px 0;
 }
 .ps-parts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.ps-misc { display: block; margin-top: 22px; scroll-margin-top: 120px; }
+.ps-misc-h { font-size: 1.05rem; font-weight: 900; margin: 0 0 12px; color: var(--ink); }
 .ps-part { display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: center; text-decoration: none; color: inherit; }
 .ps-part img { width: 96px; height: 72px; object-fit: contain; background: #f3fafa; border-radius: 10px; }
 .ps-part strong { display: block; }

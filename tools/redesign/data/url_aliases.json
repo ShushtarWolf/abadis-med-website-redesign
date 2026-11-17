@@ -40,7 +40,23 @@
   "type": "page"
  },
  "/en/دیگر-محصولات-2/": {
-  "to": "/en/products/other-products/",
+  "to": "/en/products/#other-products",
+  "type": "page"
+ },
+ "/en/products/other-products/": {
+  "to": "/en/products/#other-products",
+  "type": "page"
+ },
+ "/products/other/": {
+  "to": "/محصولات/#other-products",
+  "type": "page"
+ },
+ "/محصولات/سایر-محصولات/": {
+  "to": "/محصولات/#other-products",
+  "type": "page"
+ },
+ "/arabic/منتجات-اخری/": {
+  "to": "/arabic/منتجات/#other-products",
   "type": "page"
  },
  "/en/فوتر/": {

@@ -21,20 +21,20 @@ def _hub(lang):
 CALC = T('calculator/', 'calculator/', 'الحوسبة/')
 GREEN = T('customers/', 'our-customers/', 'customers/')
 SDGS = T('sdgs/', 'sdgs/', '~sdgs/')
-OTHER = T('products/other/', 'products/other-products/', 'منتجات-اخری/')
+OTHER = T('products/#other-products', 'products/#other-products', 'منتجات/#other-products')
 ORAL = T('products/oral-hygiene/', 'products/oral-hygiene/', 'نظافة-الفم/')
 CAT_HREF = {
     'fa': [
         'products/suction-bag/', 'products/canister/', 'products/stand/', 'products/connectors/',
-        'products/filters/', 'products/suction-tube/', 'products/oral-hygiene/', 'products/other/',
+        'products/filters/', 'products/suction-tube/', 'products/oral-hygiene/', 'products/#other-products',
     ],
     'en': [
         'products/suction-bag/', 'products/canisters/', 'products/base-and-holder/', 'products/connections/',
-        'products/filters/', 'suction-tube/', 'products/oral-hygiene/', 'products/other-products/',
+        'products/filters/', 'suction-tube/', 'products/oral-hygiene/', 'products/#other-products',
     ],
     'ar': [
         'كيس-الشفط/', 'خزانات/', 'تثبیت/', 'الوصلات/',
-        'الفلتر/', 'أنبوب-الشفط/', 'نظافة-الفم/', 'منتجات-اخری/',
+        'الفلتر/', 'أنبوب-الشفط/', 'نظافة-الفم/', 'منتجات/#other-products',
     ],
 }
 
@@ -122,7 +122,6 @@ THEME_PAGES = {
     'fluid': ['fluid-management'],
     'airway': ['airway-care'],
     'waste': ['waste-management-pva'],
-    'other': ['waste-management-pva'],
 }
 
 THEMES = [

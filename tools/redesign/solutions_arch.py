@@ -68,6 +68,7 @@ UI = {
         next='بعدی',
         rail_p='محصولات',
         rail_s='راهکارها',
+        misc_h='سایر محصولات',
     ),
     'en': dict(
         h1='Abadis Products & Solutions',
@@ -116,6 +117,7 @@ UI = {
         next='Next',
         rail_p='Products',
         rail_s='Solutions',
+        misc_h='Other products',
     ),
     'ar': dict(
         h1='منتجات وحلول آباديس',
@@ -164,14 +166,15 @@ UI = {
         next='التالي',
         rail_p='المنتجات',
         rail_s='الحلول',
+        misc_h='منتجات أخرى',
     ),
 }
 
 # Names and order are the live products-page cards, not the mobile menu.
 # FA https://abadis-med.com/محصولات/   EN /en/products/   AR /arabic/منتجات/
 # AR live hub lists six cards. Tube, oral swabs and waste bags are not on it;
-# they follow, in FA order, under translated names. سایر محصولات / Other Products
-# stay as pages (live still publishes them) but are not FA or EN hub cards.
+# they follow, in FA order, under translated names.
+# Regulator, kidney dish and Splash-Vac are listed on the products hub (#other-products), not as a family card.
 CATALOG = [
     dict(slug='suction-bag', photo='suction-bag',
          href=L('products/suction-bag/', 'products/suction-bag/', 'كيس-الشفط/'),
@@ -205,19 +208,14 @@ CATALOG = [
          href=L('products/waste-bags/', 'products/specialized-bags-waste-management/', 'أكياس-متخصصة-وإدارة-النفايات/'),
          title=L('کیسه های تخصصی و مدیریت پسماند', 'Specialized Bags & Waste Management', 'أكياس متخصصة وإدارة النفايات'),
          sub=L('کیسه زباله PVA', 'PVA waste bag', 'كيس نفايات PVA')),
-    dict(slug='other', photo='other',
-         href=L('products/other/', 'products/other-products/', 'منتجات-اخری/'),
-         title=L('سایر محصولات', 'Other Products', 'منتجات اخری'),
-         sub=L('مسواک ساکشن، نگهدارنده، رسیور', 'Suction brush, tube holder, kidney dish', 'فرشاة الشفط، حامل الأنبوب، الوعاء الكلوي')),
 ]
 BY_SLUG = {c['slug']: c for c in CATALOG}
 ORDER = {
     'fa': ['suction-bag', 'stand', 'filters', 'suction-tube', 'canister', 'connectors', 'oral', 'waste'],
     'en': ['canister', 'connectors', 'waste', 'suction-tube', 'suction-bag', 'stand', 'filters', 'oral'],
-    'ar': ['suction-bag', 'canister', 'stand', 'connectors', 'filters', 'other',
+    'ar': ['suction-bag', 'canister', 'stand', 'connectors', 'filters',
            'suction-tube', 'oral', 'waste'],
 }
-
 
 def catalog_for(lang):
     return [BY_SLUG[s] for s in ORDER[lang]]
@@ -258,6 +256,13 @@ PHOTO = {
 def P(slug, hash='', status='order', title=None, photo=None):
     return dict(slug=slug, hash=hash, status=status, title=title, photo=photo)
 
+# Canonical family pages for items formerly grouped under «سایر محصولات» / Other Products.
+MISC_PARTS = [
+    P('connectors', 'rgl', 'order', L('رگولاتور', 'Regulator', 'المنظّم'), 'rgl'),
+    P('canister', 'receiver', 'order', L('رسیور یکبار مصرف', 'Disposable kidney dish', 'وعاء تجميع ذو استعمال واحد'), 'receiver'),
+    P('connectors', 'splashvac', 'soon', L('مکش سطحی چند منظوره (Splash-Vac)', 'Splash-Vac', 'Splash-Vac'), None),
+]
+
 SOLS = [
     dict(
         slug='fluid-management', future=False,
@@ -266,7 +271,7 @@ SOLS = [
         parts=[
             P('suction-bag'), P('canister'), P('connectors'), P('stand'), P('suction-tube'),
             P('filters', 'ght', 'order', L('فیلتر قطع‌کننده جریان', 'Flow-stopper filter', 'فلتر قطع التدفق'), 'filters'),
-            P('other', 'rgl', 'order', L('رگولاتور', 'Regulator', 'المنظّم'), 'rgl'),
+            P('connectors', 'rgl', 'order', L('رگولاتور', 'Regulator', 'المنظّم'), 'rgl'),
         ],
     ),
     dict(
@@ -284,8 +289,8 @@ SOLS = [
         title=L('کنترل آلودگی و مدیریت پسماند', 'Contamination Control & Waste Management', 'السيطرة على التلوث وإدارة النفايات'),
         sub=L('فناوری مواد؛ افقی جدید در توسعه راهکارهای پایدار', 'Materials technology, a new horizon for sustainable solutions', 'تقنية المواد؛ أفق جديد لحلول مستدامة'),
         parts=[
-            P('other', 'pva', 'rnd', L('کیسه زباله PVA', 'PVA waste bag', 'كيس نفايات PVA'), None),
-            P('other', 'receiver', 'order', L('رسیور یکبار مصرف', 'Disposable receiver', 'وعاء تجميع ذو استعمال واحد'), 'receiver'),
+            P('waste', 'pva', 'rnd', L('کیسه زباله PVA', 'PVA waste bag', 'كيس نفايات PVA'), None),
+            P('canister', 'receiver', 'order', L('رسیور یکبار مصرف', 'Disposable receiver', 'وعاء تجميع ذو استعمال واحد'), 'receiver'),
         ],
     ),
 ]
@@ -299,7 +304,6 @@ RELATED = {
     'filters': ['fluid-management'],
     'suction-tube': ['fluid-management'],
     'oral': ['airway-care'],
-    'other': ['fluid-management', 'waste-management-pva'],
 }
 
 CATALOGUE = 'https://abadis-med.com/wp-content/uploads/2024/12/کاتالوگ-جامع-آبادیس.pdf'
@@ -400,7 +404,7 @@ def _part(p, lang, part):
     src = PHOTO.get(photo_key)
     img = (f'<img src="{p}{src}" alt="" width="96" height="72" loading="lazy">' if src else icons(p, 'product'))
     if part['hash'] == 'pva':
-        url = prod_href(p, lang, 'other', 'pva')
+        url = prod_href(p, lang, 'waste')
     else:
         url = prod_href(p, lang, part['slug'], part['hash'])
     return (f'<a class="ps-part" href="{url}">{img}<span>{badge(lang, part["status"])}'
@@ -670,7 +674,7 @@ def _comp_card(p, lang, part):
     title = part['title'][lang] if part['title'] else BY_SLUG[part['slug']]['title'][lang]
     photo_key = part['photo'] if part['photo'] is not None else (part['hash'] or part['slug'])
     src = PHOTO.get(photo_key) or 'assets/img/c/611f0398754f-640.webp'
-    url = prod_href(p, lang, 'other', 'pva') if part['hash'] == 'pva' else prod_href(p, lang, part['slug'], part['hash'])
+    url = prod_href(p, lang, 'waste') if part['hash'] == 'pva' else prod_href(p, lang, part['slug'], part['hash'])
     b = badge(lang, part['status'])
     return (
         f'<a class="sol-comp-card" href="{url}">'
@@ -949,6 +953,11 @@ def architecture(p, lang, default='product', layers=False):
         for s in SOLS)
     legend = (f'<p class="ps-legend"><span>{esc(ui["legend"])}</span>'
               f'{badge(lang, "future")}{badge(lang, "rnd")}</p>')
+    misc = ''.join(_part(p, lang, part) for part in MISC_PARTS)
+    misc_block = (
+        f'<small class="ps-misc" id="other-products"><h3 class="ps-misc-h">{esc(ui["misc_h"])}</h3>'
+        f'<div class="ps-parts">{misc}</div></small>'
+    ) if misc else ''
     p_on = 'true' if default == 'product' else 'false'
     s_on = 'true' if default == 'solution' else 'false'
     tabs = f'''<div class="ps-root" data-ps data-ps-default="{default}">
@@ -957,7 +966,7 @@ def architecture(p, lang, default='product', layers=False):
         <a role="tab" href="#by-solution" data-ps-tab="solution" aria-selected="{s_on}">{icons(p, "solution")}{esc(ui["by_s"])}</a>
       </div>
       <div class="ps-panel{" is-default" if default == "product" else ""}" id="by-product" data-ps-panel="product"{"" if default == "product" else " hidden"}>
-        {legend}<div class="ps-grid">{prod_cards}</div></div>
+        {legend}<div class="ps-grid">{prod_cards}</div>{misc_block}</div>
       <div class="ps-panel{" is-default" if default == "solution" else ""}" id="by-solution" data-ps-panel="solution"{"" if default == "solution" else " hidden"}>
         <p class="ps-note">{esc(ui["uneven"])}</p><div class="ps-grid">{sol_cards}</div></div>
     </div>'''
@@ -1141,7 +1150,6 @@ def infer_cur(rel):
         ('stand', ('products/stand/index.html', 'base-and-holder/index.html', 'تثبیت/index.html')),
         ('connectors', ('products/connectors/index.html', 'products/connections/index.html', 'الوصلات/index.html')),
         ('oral', ('products/oral-hygiene/index.html', 'نظافة-الفم/index.html')),
-        ('other', ('products/other/index.html', 'other-products/index.html', 'منتجات-اخری/index.html')),
     ]
     for slug, tails in hints:
         if any(rel.endswith(t) for t in tails):
@@ -1278,7 +1286,6 @@ PRODUCT_FILES = [
     ('products/stand/index.html', 'fa', 'stand', '../../'),
     ('products/connectors/index.html', 'fa', 'connectors', '../../'),
     ('products/oral-hygiene/index.html', 'fa', 'oral', '../../'),
-    ('products/other/index.html', 'fa', 'other', '../../'),
     ('en/products/suction-bag/index.html', 'en', 'suction-bag', '../../../'),
     ('en/suction-tube/index.html', 'en', 'suction-tube', '../../'),
     ('en/products/filters/index.html', 'en', 'filters', '../../../'),
@@ -1286,7 +1293,6 @@ PRODUCT_FILES = [
     ('en/products/base-and-holder/index.html', 'en', 'stand', '../../../'),
     ('en/products/connections/index.html', 'en', 'connectors', '../../../'),
     ('en/products/oral-hygiene/index.html', 'en', 'oral', '../../../'),
-    ('en/products/other-products/index.html', 'en', 'other', '../../../'),
     ('arabic/كيس-الشفط/index.html', 'ar', 'suction-bag', '../../'),
     ('arabic/أنبوب-الشفط/index.html', 'ar', 'suction-tube', '../../'),
     ('arabic/الفلتر/index.html', 'ar', 'filters', '../../'),
@@ -1294,7 +1300,6 @@ PRODUCT_FILES = [
     ('arabic/تثبیت/index.html', 'ar', 'stand', '../../'),
     ('arabic/الوصلات/index.html', 'ar', 'connectors', '../../'),
     ('arabic/نظافة-الفم/index.html', 'ar', 'oral', '../../'),
-    ('arabic/منتجات-اخری/index.html', 'ar', 'other', '../../'),
 ]
 
 
@@ -1303,9 +1308,6 @@ def stamp_product_html(html, p, lang, slug):
     html = badge_tabs(html, lang)
     html = badge_size_links(html, lang)
     html = badge_panel_heads(html, lang)
-    if slug == 'other' and 'id="pva"' not in html:
-        html = re.sub(r'(<div class="ptab-nav" role="tablist">.*?</div>)',
-                      lambda m: m.group(1) + pva_card(p, lang), html, count=1, flags=re.S)
     if 'id="related-solutions"' not in html:
         html = html.replace('</main>', related_section(p, lang, slug) + '</main>', 1)
     return html
@@ -1421,6 +1423,26 @@ RETIRED = {
     'contamination-control': 'waste-management-pva',
 }
 
+OTHER_PRODUCT_RETIRED = {
+    'fa': ('products/other/index.html', '../#other-products',
+           'این محصولات در صفحه محصولات لیست شده‌اند.'),
+    'en': ('en/products/other-products/index.html', '../#other-products',
+           'These products are listed on the products page.'),
+    'ar': ('arabic/منتجات-اخری/index.html', '../#other-products',
+           'هذه المنتجات مدرجة في صفحة المنتجات.'),
+}
+
+
+def _hop_html(lang, target, title, body):
+    return (
+        f'<!DOCTYPE html>\n<html lang="{lang}" data-theme="light">\n<head>\n'
+        f'<meta charset="UTF-8">\n<meta name="robots" content="noindex,nofollow">\n'
+        f'<meta http-equiv="refresh" content="0; url={target}">\n'
+        f'<title>{esc(title)}</title>\n'
+        f'<script>location.replace({target!r})</script>\n</head>\n'
+        f'<body><p><a href="{target}">{esc(body)}</a></p></body>\n</html>\n'
+    )
+
 
 def write_redirects():
     """Old solution URLs keep a noindex hop so bookmarks do not 404."""
@@ -1448,6 +1470,9 @@ def write_redirects():
                 f'<body><p><a href="{target}">{labels[lang]}</a></p></body>\n</html>\n'
             )
             written.append(_write(rel, html))
+    for lang, (rel, target, body) in OTHER_PRODUCT_RETIRED.items():
+        title = {'fa': 'انتقال', 'en': 'Moved', 'ar': 'تم النقل'}[lang]
+        written.append(_write(rel, _hop_html(lang, target, title, body)))
     return written
 
 
