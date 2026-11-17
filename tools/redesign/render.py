@@ -17,7 +17,7 @@ def gallery_link(p, url, group, alt='', thumbw=480, fullw=1600, cls='', zoom='')
     c = f' class="{cls}"' if cls else ''
     label = zoom or 'نمایش بزرگ‌تر'
     return (f'<a{c} href="{p}{f["src"]}" data-gallery="{group}" data-w="{f["w"]}" data-h="{f["h"]}" aria-label="{esc(label)}{": " + esc(alt) if alt else ""}">'
-            f'<img src="{p}{t["src"]}" width="{t["w"]}" height="{t["h"]}" loading="lazy" decoding="async" alt="{esc(alt)}"></a>')
+            f'<img src="{p}{t["src"]}" width="{t["w"]}" height="{t["h"]}" loading="eager" decoding="async" alt="{esc(alt)}"></a>')
 
 def table(rows):
     if not rows: return ''
