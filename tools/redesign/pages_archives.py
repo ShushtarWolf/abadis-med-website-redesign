@@ -689,12 +689,16 @@ class Builder:
         frows = fa.get('_franchise') or []
         # city id -> name
         cities = {c['id']: htmlmod.unescape(c.get('name') or '') for c in (fa.get('_citynmg') or [])}
+        dealer_provinces = {g.get('province') for g in dealer_rows()}
         ditems = []
         for r in frows:
             it = self.cpt_item(r, 'fa')
             cids = r.get('_citynmg') or []
             prov = cities.get(cids[0], '') if cids else ''
             it['province'] = prov
+            # A record whose province no longer has a group in dealers.json was removed (e.g. AB-70, Hormozgan).
+            if prov and prov not in dealer_provinces:
+                continue
             it['rows'] = contact_for(prov, it['title'])
             ditems.append(it)
         ditems.sort(key=lambda x: x['date'], reverse=True)
@@ -718,6 +722,8 @@ class Builder:
                 continue
             name = htmlmod.unescape(city.get('name') or '')
             mine = [it for it in ditems if it.get('province') == name]
+            if not mine:
+                continue  # province without a representative: no archive page
             self.listing(path, 'fa', H1[('province', 'fa')](name), plain(city.get('description') or ''),
                          mine, 'province',
                          [(UI['fa']['dealers'], self.section_href('fa', 'dealers')),
