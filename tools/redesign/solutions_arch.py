@@ -932,8 +932,7 @@ def architecture(p, lang, default='product', layers=False):
         f'<li><a href="{sol_href(p, lang, s["slug"])}">{esc(s["title"][lang])}'
         f'{badge(lang, "future") if s["future"] else ""}</a></li>' for s in SOLS)
     overview = f'''<div class="ps-overview">
-      <article class="ps-ov"><div class="ps-ov-h">{icons(p, "product")}<h3>{esc(ui["by_p"])}</h3></div>
-        <p class="ps-kicker">{esc(ui["keep"])}</p><ul class="ps-links">{prod_links}</ul></article>
+      <article class="ps-ov"><div class="ps-ov-h">{icons(p, "product")}<h3>{esc(ui["by_p"])}</h3></div><ul class="ps-links">{prod_links}</ul></article>
       <article class="ps-ov ps-ov--sol"><div class="ps-ov-h">{icons(p, "solution")}<h3>{esc(ui["by_s"])}</h3></div>
         <p class="ps-kicker">{esc(ui["new_path"])}</p><ul class="ps-links">{sol_links}</ul></article>
     </div>
