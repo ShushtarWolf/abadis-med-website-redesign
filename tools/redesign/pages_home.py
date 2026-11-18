@@ -632,7 +632,7 @@ def impact_section():
         {impact_title('fa')}
         <p class="eyebrow impact-now">اثر آبادیس، همین حالا</p>
         <strong class="impact-num" aria-live="off">۵۶٬۵۰۰٬۰۰۰</strong>
-        <span class="impact-unit">لیتر آب صرفه‌جویی‌شده از ابتدای سال ۱۴۰۵ (تخمینی)</span>
+        <span class="impact-unit">لیتر آب صرفه‌جویی‌شده</span>
       </div>
       </div>
       {impact_stats('fa')}
