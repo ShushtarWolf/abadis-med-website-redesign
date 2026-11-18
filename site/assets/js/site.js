@@ -740,11 +740,15 @@
       if (btn) btn.disabled = true;
       setFormStatus(form, T.sending, false);
       try {
+        // give up after 15 s (endpoint unreachable) and fall back to mailto
+        const ctl = typeof AbortController === 'function' ? new AbortController() : null;
+        const timer = ctl ? setTimeout(() => ctl.abort(), 15000) : 0;
         const res = await fetch(formEndpoint, {
           method: 'POST',
           body: fd,
           headers: { Accept: 'application/json' },
-        });
+          signal: ctl ? ctl.signal : undefined,
+        }).finally(() => clearTimeout(timer));
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const s = setFormStatus(form, T.sent, false);
         s.classList.add('is-success');
