@@ -1,0 +1,158 @@
+# Copy this file to .github/workflows/publish-wp.yml if the commit token cannot
+# update .github/workflows/ (it needs the workflow scope). Do not deploy the
+# forms app from tools/forms-liara/. Do not deploy the production abadis-med app.
+name: Publish WordPress posts
+
+on:
+  repository_dispatch:
+    types: [wordpress-publish]
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: wp-publish
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Pillow
+        run: pip install pillow
+
+      - name: Verify WordPress dispatch signature
+        if: github.event_name == 'repository_dispatch'
+        env:
+          ABADIS_WP_WEBHOOK_SECRET: ${{ secrets.ABADIS_WP_WEBHOOK_SECRET }}
+        run: node scripts/verify-wp-dispatch.mjs
+
+      - name: Sync main
+        id: sync_main
+        env:
+          ABADIS_WP_REST: ${{ secrets.ABADIS_WP_REST }}
+          ABADIS_WP_SITEMAP: ${{ secrets.ABADIS_WP_SITEMAP }}
+          ABADIS_WP_FEED: ${{ secrets.ABADIS_WP_FEED }}
+          ABADIS_WP_REST_EN: ${{ secrets.ABADIS_WP_REST_EN }}
+          ABADIS_WP_SITEMAP_EN: ${{ secrets.ABADIS_WP_SITEMAP_EN }}
+          ABADIS_WP_FEED_EN: ${{ secrets.ABADIS_WP_FEED_EN }}
+          ABADIS_WP_REST_AR: ${{ secrets.ABADIS_WP_REST_AR }}
+          ABADIS_WP_SITEMAP_AR: ${{ secrets.ABADIS_WP_SITEMAP_AR }}
+          ABADIS_WP_FEED_AR: ${{ secrets.ABADIS_WP_FEED_AR }}
+          ABADIS_WP_USER: ${{ secrets.ABADIS_WP_USER }}
+          ABADIS_WP_APP_PASSWORD: ${{ secrets.ABADIS_WP_APP_PASSWORD }}
+          ABADIS_MEDIA_ACCESS_KEY: ${{ secrets.ABADIS_MEDIA_ACCESS_KEY }}
+          ABADIS_MEDIA_SECRET_KEY: ${{ secrets.ABADIS_MEDIA_SECRET_KEY }}
+          ABADIS_MEDIA_S3_ENDPOINT: ${{ secrets.ABADIS_MEDIA_S3_ENDPOINT }}
+          ABADIS_MEDIA_PUBLIC_BASE: ${{ secrets.ABADIS_MEDIA_PUBLIC_BASE }}
+          ABADIS_MEDIA_BUCKET: abadis-media
+          ABADIS_SYNC_ACTION: ${{ github.event.client_payload.action || '' }}
+          ABADIS_SYNC_POST_ID: ${{ github.event.client_payload.post_id || '' }}
+          ABADIS_SYNC_LANG: ${{ github.event.client_payload.lang || '' }}
+        run: node scripts/sync-abadis-news.mjs --sync
+
+      - name: Build posts on main
+        if: steps.sync_main.outputs.changed == '1'
+        run: python3 tools/redesign/build.py posts home i18n archives
+
+      - name: Check main site size
+        if: steps.sync_main.outputs.changed == '1'
+        run: python3 tools/liara/check_site_size.py
+
+      - name: Sync liara-test without merging
+        if: steps.sync_main.outputs.changed == '1'
+        id: sync_liara
+        env:
+          ABADIS_WP_REST: ${{ secrets.ABADIS_WP_REST }}
+          ABADIS_WP_SITEMAP: ${{ secrets.ABADIS_WP_SITEMAP }}
+          ABADIS_WP_FEED: ${{ secrets.ABADIS_WP_FEED }}
+          ABADIS_WP_REST_EN: ${{ secrets.ABADIS_WP_REST_EN }}
+          ABADIS_WP_SITEMAP_EN: ${{ secrets.ABADIS_WP_SITEMAP_EN }}
+          ABADIS_WP_FEED_EN: ${{ secrets.ABADIS_WP_FEED_EN }}
+          ABADIS_WP_REST_AR: ${{ secrets.ABADIS_WP_REST_AR }}
+          ABADIS_WP_SITEMAP_AR: ${{ secrets.ABADIS_WP_SITEMAP_AR }}
+          ABADIS_WP_FEED_AR: ${{ secrets.ABADIS_WP_FEED_AR }}
+          ABADIS_WP_USER: ${{ secrets.ABADIS_WP_USER }}
+          ABADIS_WP_APP_PASSWORD: ${{ secrets.ABADIS_WP_APP_PASSWORD }}
+          ABADIS_MEDIA_ACCESS_KEY: ${{ secrets.ABADIS_MEDIA_ACCESS_KEY }}
+          ABADIS_MEDIA_SECRET_KEY: ${{ secrets.ABADIS_MEDIA_SECRET_KEY }}
+          ABADIS_MEDIA_S3_ENDPOINT: ${{ secrets.ABADIS_MEDIA_S3_ENDPOINT }}
+          ABADIS_MEDIA_PUBLIC_BASE: ${{ secrets.ABADIS_MEDIA_PUBLIC_BASE }}
+          ABADIS_MEDIA_BUCKET: abadis-media
+          ABADIS_SYNC_ACTION: ${{ github.event.client_payload.action || '' }}
+          ABADIS_SYNC_POST_ID: ${{ github.event.client_payload.post_id || '' }}
+          ABADIS_SYNC_LANG: ${{ github.event.client_payload.lang || '' }}
+        run: |
+          git fetch origin liara-test
+          git worktree add --detach /tmp/liara-test origin/liara-test
+          if [ -f tools/redesign/data/media-bucket.json ]; then
+            cp tools/redesign/data/media-bucket.json /tmp/liara-test/tools/redesign/data/media-bucket.json
+          fi
+          cd /tmp/liara-test
+          ABADIS_SYNC_ROOT=/tmp/liara-test node "$GITHUB_WORKSPACE/scripts/sync-abadis-news.mjs" --sync
+
+      - name: Build posts on liara-test
+        if: steps.sync_main.outputs.changed == '1' && steps.sync_liara.outputs.changed == '1'
+        working-directory: /tmp/liara-test
+        run: python3 tools/redesign/build.py posts home i18n archives
+
+      - name: Check liara-test site size
+        if: steps.sync_main.outputs.changed == '1' && steps.sync_liara.outputs.changed == '1'
+        working-directory: /tmp/liara-test
+        run: python3 tools/liara/check_site_size.py
+
+      - name: Commit main
+        if: steps.sync_main.outputs.changed == '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content tools/redesign/data/posts.json tools/redesign/data/en_posts.json tools/redesign/data/ar_posts.json tools/redesign/data/news-sync-state.json tools/redesign/data/news-delta.json tools/redesign/data/media-bucket.json tools/redesign/data/i18n_featured_urls.json tools/redesign/data/imgmap.json site
+          if git diff --cached --quiet; then
+            echo "main already matches the sync"
+          else
+            git commit -m "feat(site): publish WordPress news and articles"
+            git push origin HEAD:main
+          fi
+
+      - name: Commit liara-test
+        if: steps.sync_main.outputs.changed == '1' && steps.sync_liara.outputs.changed == '1'
+        working-directory: /tmp/liara-test
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content tools/redesign/data/posts.json tools/redesign/data/en_posts.json tools/redesign/data/ar_posts.json tools/redesign/data/news-sync-state.json tools/redesign/data/news-delta.json tools/redesign/data/media-bucket.json tools/redesign/data/i18n_featured_urls.json tools/redesign/data/imgmap.json site
+          if git diff --cached --quiet; then
+            echo "liara-test already matches the sync"
+          else
+            git commit -m "feat(site): publish WordPress news and articles"
+            git push origin HEAD:liara-test
+          fi
+
+      - name: Deploy abadis-test
+        if: steps.sync_main.outputs.changed == '1' && steps.sync_liara.outputs.changed == '1'
+        env:
+          LIARA_TOKEN: ${{ secrets.LIARA_API_TOKEN }}
+        run: |
+          if [ -z "$LIARA_TOKEN" ]; then
+            echo "LIARA_API_TOKEN is not set. Not deploying."
+            exit 1
+          fi
+          npm install -g @liara/cli@9
+          printf '%s\n' '{"platform":"static","app":"abadis-test","team-id":"6af9496176b2026d7493a542"}' > /tmp/abadis-test-liara.json
+          liara deploy --path /tmp/liara-test/site --app abadis-test --team-id 6af9496176b2026d7493a542 --platform static --liara-json /tmp/abadis-test-liara.json --api-token "$LIARA_TOKEN" --no-app-logs

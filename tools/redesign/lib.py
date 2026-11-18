@@ -10,14 +10,24 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 SITE = ROOT / 'site'
 DATA = pathlib.Path(__file__).resolve().parent / 'data'
 SITE_ORIGIN = 'https://abadis-med.com'
-# Public form POST URL (Formspree / Worker / n8n). Empty ⇒ client falls back to mailto.
-# Override locally with env ABADIS_FORM_ENDPOINT; never commit secrets or private keys.
-FORM_ENDPOINT = os.environ.get('ABADIS_FORM_ENDPOINT', '').strip()
-if not FORM_ENDPOINT:  # easy switch: put the Liara forms URL in data/form_endpoint.txt (empty = mailto)
+def _forms_enabled():
+    """Public site stays on mailto until ABADIS_FORMS_ENABLED is turned on."""
+    return os.environ.get('ABADIS_FORMS_ENABLED', '0').strip().lower() not in ('', '0', 'false', 'off', 'no')
+
+def _form_endpoint():
+    # Flag defaults off. A URL in the environment or form_endpoint.txt is ignored until the flag is on.
+    if not _forms_enabled():
+        return ''
+    value = os.environ.get('ABADIS_FORM_ENDPOINT', '').strip()
+    if value:
+        return value
     try:
-        FORM_ENDPOINT = open(os.path.join(os.path.dirname(__file__), 'data', 'form_endpoint.txt')).read().strip()
+        return open(os.path.join(os.path.dirname(__file__), 'data', 'form_endpoint.txt'), encoding='utf-8').read().strip()
     except OSError:
-        FORM_ENDPOINT = ''
+        return ''
+
+# Empty ⇒ site.js keeps the mailto fallback. Never commit a live endpoint or secrets.
+FORM_ENDPOINT = _form_endpoint()
 FORM_MAILTO = 'info@abadis-med.com'
 RAW = pathlib.Path(os.environ.get(
     'ABADIS_IMG_RAW',
@@ -31,6 +41,41 @@ def load(name):
 
 PAGES = load('pages.json')
 IMGMAP = load('imgmap.json')
+
+def _load_bucket():
+    """Source URL -> {url, w, h} for images uploaded to the abadis-media bucket."""
+    found = {}
+    p = DATA / 'media-bucket.json'
+    if not p.is_file():
+        return found
+    try:
+        data = json.load(open(p, encoding='utf-8'))
+    except (OSError, json.JSONDecodeError):
+        return found
+    items = data.get('items') if isinstance(data, dict) else None
+    if not isinstance(items, dict):
+        return found
+    for src, rec in items.items():
+        if isinstance(rec, dict) and rec.get('url'):
+            found[src] = rec
+            found[rec['url']] = rec
+    return found
+
+_BUCKET = _load_bucket()
+
+def _bucket_rec(url):
+    if not url:
+        return None
+    if url.startswith('//'):
+        url = 'https:' + url
+    for cand in (url, url.replace('http://', 'https://', 1), url.replace('https://', 'http://', 1)):
+        rec = _BUCKET.get(cand)
+        if rec:
+            return rec
+    base = os.environ.get('ABADIS_MEDIA_PUBLIC_BASE', '').strip().rstrip('/')
+    if base and (url == base or url.startswith(base + '/')):
+        return {'url': url, 'w': 0, 'h': 0}
+    return None
 
 FA = str.maketrans('0123456789', '۰۱۲۳۴۵۶۷۸۹')
 def fa(s): return str(s).translate(FA)
@@ -74,6 +119,9 @@ def img(url, maxw=1400):
     """
     if not url: return None
     if url.startswith('//'): url = 'https:' + url
+    hit = _bucket_rec(url)
+    if hit:
+        return {'src': hit['url'], 'w': int(hit.get('w') or 0), 'h': int(hit.get('h') or 0), 'external': True}
     key = _key(url)
     f = _IMG_BY_PATH.get(key)
     name = hashlib.sha1(key.encode()).hexdigest()[:12] + f'-{maxw}.webp'
@@ -204,6 +252,22 @@ def internal(url):
     return hit
 JOB_MAP = {}
 
+def placed_src(prefix, r):
+    """Page-relative src, or an absolute bucket URL unchanged."""
+    src = (r or {}).get('src') or ''
+    if r and (r.get('external') or src.startswith(('http://', 'https://', '//'))):
+        return src
+    return (prefix or '') + src
+
+def dim_attrs(r):
+    try:
+        w, h = int((r or {}).get('w') or 0), int((r or {}).get('h') or 0)
+    except (TypeError, ValueError):
+        return ''
+    if w > 0 and h > 0:
+        return f' width="{w}" height="{h}"'
+    return ''
+
 def href(url, p):
     """Return (href, external?) for templates."""
     i = internal(url)
@@ -226,7 +290,8 @@ def rewrite_html(h, p, imgw=1000, drop_missing_img=True):
         alt = re.search(r'alt="([^"]*)"', tag)
         r = best_img(html.unescape(src.group(1)), imgw) if src else None
         if not r: return '' if drop_missing_img else tag
-        return f'<img src="{p}{r["src"]}" width="{r["w"]}" height="{r["h"]}" loading="lazy" decoding="async" alt="{alt.group(1) if alt else ""}">'
+        alt_attr = alt.group(1) if alt else ''
+        return f'<img src="{placed_src(p, r)}"{dim_attrs(r)} loading="lazy" decoding="async" alt="{alt_attr}">'
     h = re.sub(r'<img [^>]*>', img_sub, h)
     h = re.sub(r'<figure>\s*(<figcaption>.*?</figcaption>)?\s*</figure>', '', h, flags=re.S)
     h = re.sub(r'<p>\s*</p>', '', h)

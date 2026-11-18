@@ -18,7 +18,10 @@ SMTP_USER = os.environ.get('SMTP_USER', '')
 SMTP_PASS = os.environ.get('SMTP_PASS', '')
 SMTP_TLS = os.environ.get('SMTP_TLS', 'starttls')  # starttls | ssl | none
 MAIL_FROM = os.environ.get('MAIL_FROM', SMTP_USER)
-MAIL_TO = os.environ.get('MAIL_TO', 'info@abadis-med.com')
+MAIL_TO = os.environ.get('MAIL_TO', '').strip()
+MAIL_TO_CONTACT = os.environ.get('MAIL_TO_CONTACT', '').strip()
+MAIL_TO_CAREERS = os.environ.get('MAIL_TO_CAREERS', '').strip()
+MAIL_TO_EXPORT = os.environ.get('MAIL_TO_EXPORT', '').strip()
 WHATSAPP_WEBHOOK_URL = os.environ.get('WHATSAPP_WEBHOOK_URL', '')  # placeholder, optional
 CRM_WEBHOOK_URL = os.environ.get('CRM_WEBHOOK_URL', '')            # placeholder, optional
 WEBHOOK_TOKEN = os.environ.get('WEBHOOK_TOKEN', '')
@@ -48,13 +51,27 @@ def limited(ip):
     return len(hits) > RATE_PER_MIN
 
 
-def send_mail(subject, body, files):
+def recipient_for(form_name):
+    key = (form_name or '').strip().lower()
+    specific = {
+        'contact': MAIL_TO_CONTACT,
+        'careers': MAIL_TO_CAREERS,
+        'export': MAIL_TO_EXPORT,
+        'quote': MAIL_TO_EXPORT,
+    }.get(key, '')
+    return specific or MAIL_TO
+
+
+def send_mail(subject, body, files, to=None):
     if not SMTP_HOST:
         raise RuntimeError('SMTP_HOST not set')
+    dest = (to or MAIL_TO).strip()
+    if not dest:
+        raise RuntimeError('MAIL_TO not set')
     msg = EmailMessage()
     msg['Subject'] = subject
     msg['From'] = MAIL_FROM
-    msg['To'] = MAIL_TO
+    msg['To'] = dest
     msg.set_content(body)
     for f in files:
         data = f.read()
@@ -111,7 +128,7 @@ def submit():
     subject = 'Abadis website form: ' + name + (' - ' + fields['topic'] if fields.get('topic') else '')
     body = '\n'.join(f'{k}: {v}' for k, v in fields.items()) + f'\n\nIP: {ip}\nOrigin: {origin}'
     try:
-        send_mail(subject, body, list(request.files.values()))
+        send_mail(subject, body, list(request.files.values()), recipient_for(name))
     except Exception as e:
         app.logger.error('mail failed: %s', e)
         return jsonify(ok=False, error='mail'), 502
