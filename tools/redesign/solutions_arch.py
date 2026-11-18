@@ -933,10 +933,8 @@ def architecture(p, lang, default='product', layers=False):
         f'{badge(lang, "future") if s["future"] else ""}</a></li>' for s in SOLS)
     overview = f'''<div class="ps-overview">
       <article class="ps-ov"><div class="ps-ov-h">{icons(p, "product")}<h3>{esc(ui["by_p"])}</h3></div><ul class="ps-links">{prod_links}</ul></article>
-      <article class="ps-ov ps-ov--sol"><div class="ps-ov-h">{icons(p, "solution")}<h3>{esc(ui["by_s"])}</h3></div>
-        <p class="ps-kicker">{esc(ui["new_path"])}</p><ul class="ps-links">{sol_links}</ul></article>
-    </div>
-    <p class="ps-note">{esc(ui["note"])}</p>'''
+      <article class="ps-ov ps-ov--sol"><div class="ps-ov-h">{icons(p, "solution")}<h3>{esc(ui["by_s"])}</h3></div><ul class="ps-links">{sol_links}</ul></article>
+    </div>'''
     cats = catalog_for(lang)
     prod_cards = ''.join(
         _card(p, lang, prod_href(p, lang, c['slug']), c['title'][lang], c['sub'][lang], c['photo'], 'product', badge(lang, 'order'))
@@ -956,8 +954,7 @@ def architecture(p, lang, default='product', layers=False):
       </div>
       <div class="ps-panel{" is-default" if default == "product" else ""}" id="by-product" data-ps-panel="product"{"" if default == "product" else " hidden"}>
         {legend}<div class="ps-grid">{prod_cards}</div></div>
-      <div class="ps-panel{" is-default" if default == "solution" else ""}" id="by-solution" data-ps-panel="solution"{"" if default == "solution" else " hidden"}>
-        <p class="ps-note">{esc(ui["uneven"])}</p><div class="ps-grid">{sol_cards}</div></div>
+      <div class="ps-panel{" is-default" if default == "solution" else ""}" id="by-solution" data-ps-panel="solution"{"" if default == "solution" else " hidden"}><div class="ps-grid">{sol_cards}</div></div>
     </div>'''
     layer = ''
     if layers:
