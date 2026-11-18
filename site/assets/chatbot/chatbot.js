@@ -241,9 +241,9 @@
     }
     choiceEl.textContent = '';
     if (item.id === 'catalogue') addMsg('bot', esc(T.catalogue) + startLinks(['catalogue', 'products']));
-    else if (item.id === 'price') addMsg('bot', esc(T.price) + startLinks(['contact']) + ctaLine());
+    else if (item.id === 'price') addMsg('bot', esc(T.price) + (ctaLine() || startLinks(['contact'])));
     else if (item.id === 'dealer') addMsg('bot', esc(T.dealer) + startLinks(['dealers', 'contact', 'careers']));
-    else addMsg('bot', esc(T.experts) + startLinks(['contact']) + ctaLine());
+    else addMsg('bot', esc(T.experts) + (ctaLine() || startLinks(['contact'])));
   }
 
   function fmt(n, lang) {
@@ -2016,7 +2016,18 @@
     choiceEl.textContent = '';
     addMsg('bot', esc(state.mode === 'academy' ? t().welcomeAcademy : t().welcomeSales));
     if (state.mode === 'sales') {
-      showChoices(START, 'start');
+      var box = el('div', 'abadis-chat-start');
+      START.forEach(function (item) {
+        var btn = el('button', 'abadis-chat-choice abadis-chat-start-btn');
+        btn.type = 'button';
+        btn.textContent = item[state.lang] || item.fa;
+        btn.addEventListener('click', function () {
+          addMsg('user', esc(item[state.lang] || item.fa));
+          answerStart(item);
+        });
+        box.appendChild(btn);
+      });
+      logEl.appendChild(box);
     }
   }
 
