@@ -37,6 +37,15 @@ The static sync reads the WordPress REST API from GitHub Actions. Public posts n
 
 The sync sends them as Basic auth only on `/wp-json/` requests, and only when both are set. `--check` against `abadis-med.com` leaves them unset.
 
+## Turn the Actions pipeline on
+
+The workflow job is a no-op until the repository variable `ABADIS_PUBLISH_ENABLED` is `1`. It is off by default, including the 15-minute schedule. Set the secrets first, then set the variable.
+
+1. Add GitHub Actions secrets `ABADIS_WP_REST` (the CMS REST base, not abadis-med.com), `ABADIS_MEDIA_ACCESS_KEY`, `ABADIS_MEDIA_SECRET_KEY`, `ABADIS_MEDIA_S3_ENDPOINT`, and `ABADIS_MEDIA_PUBLIC_BASE`. Also add `LIARA_API_TOKEN` and `ABADIS_WP_WEBHOOK_SECRET` (this plugin's `ABADIS_WEBHOOK_SECRET`). Add `ABADIS_WP_USER` and `ABADIS_WP_APP_PASSWORD` when the CMS is private.
+2. Set the repository variable `ABADIS_PUBLISH_ENABLED` to `1`.
+
+If publish is enabled and any of `ABADIS_WP_REST` or the four media secrets is missing, the sync step fails before it commits. It does not fall back to the live site and it does not hotlink wp-content images.
+
 ## Unpublish
 
 Trash, draft, and delete of a published post send `action=unpublish` or `action=delete` with that post id and language. The next sync removes that id from the manifest, `content/<lang>/.../<id>.md`, and the slug page. A scheduled sync also drops ids this pipeline previously wrote (see `tools/redesign/data/news-sync-state.json`) when a non-empty published REST list no longer contains them. Legacy archive posts that this pipeline has never written are left in place.
