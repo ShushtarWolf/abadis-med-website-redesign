@@ -179,7 +179,6 @@
     { id: 'filters', fa: 'فیلترها', en: 'Filter', ar: 'الفلاتر', blurb: { fa: 'انواع فیلترهای حفاظتی', en: 'Protective filter types', ar: 'أنواع الفلاتر الواقية' }, page: { fa: '/محصولات/فیلترها/', en: '/en/products/filters/', ar: '/arabic/الفلتر/' } },
     { id: 'tubes', fa: 'ساکشن تیوب', en: 'Suction Tube', ar: 'أنبوب الشفط', blurb: { fa: 'لوله‌ها و رابط‌های ساکشن', en: 'Tubes and suction connectors', ar: 'الأنابيب ووصلات الشفط' }, page: { fa: '/محصولات/ساکشن-تیوب/', en: '/en/suction-tube/', ar: '/arabic/أنبوب-الشفط/' } },
     { id: 'oral', fa: 'بهداشت دهان', en: 'Oral Hygiene', ar: 'نظافة الفم', blurb: { fa: 'مسواک ساکشن، سواب دهانی، فیکسر لوله تراشه', en: 'Suction toothbrush, oral swab, tube fixer', ar: 'فرشاة الشفط والمسحة ومثبّت الأنبوب' }, page: { fa: '/محصولات/سواب-های-دهانی-و-نگهدارنده/', en: '/en/products/oral-swabs-tube-holders/', ar: '/arabic/نظافة-الفم/' } },
-    { id: 'other', fa: 'سایر محصولات', en: 'Other Products', ar: 'منتجات أخرى', blurb: { fa: 'رگولاتور، کیسه زباله PVA، رسیور یکبار مصرف', en: 'Regulator, PVA waste bag, disposable receiver', ar: 'المنظّم وكيس نفايات PVA ووعاء التجميع' }, page: { fa: '/محصولات/سایر-محصولات/', en: '/en/products/other-products/', ar: '/arabic/منتجات-اخری/' } }
   ];
 
   /* AB-59: five quick-start buttons under the sales welcome (FA wording from the team; EN/AR equivalents). */
