@@ -22,7 +22,7 @@ import urllib.parse
 import urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from lib import DATA, SITE, esc, fa, jdate, best_img
+from lib import DATA, SITE, esc, fa, jdate, best_img, placed_src, dim_attrs
 from layout import page, page_hero
 from i18n import canonical_href
 
@@ -540,8 +540,12 @@ class Builder:
         else:
             local = best_img(src, 640) if src else None
             if local:
-                ph = (f'<div class="ph"><img src="{esc(rel_link(from_dir, "/" + local["src"]))}" '
-                      f'width="{local["w"]}" height="{local["h"]}" alt="{esc(title)}" loading="lazy" decoding="async"></div>')
+                if local.get('external') or str(local.get('src') or '').startswith(('http://', 'https://', '//')):
+                    src_out = placed_src('', local)
+                else:
+                    src_out = rel_link(from_dir, '/' + local['src'])
+                ph = (f'<div class="ph"><img src="{esc(src_out)}"{dim_attrs(local)} '
+                      f'alt="{esc(title)}" loading="lazy" decoding="async"></div>')
             elif src and str(src).startswith('http'):
                 ph = (f'<div class="ph"><img src="{esc(src)}" alt="{esc(title)}" loading="lazy" decoding="async"></div>')
             elif (SITE / FALLBACK).is_file():

@@ -15,9 +15,11 @@
  * --check and --dry-run never write. --sync is idempotent: a second run with
  * no newer live edits leaves the tree unchanged.
  */
-import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
+import { appendFileSync } from 'node:fs';
+import { mkdir, open, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { extractImageUrls, publishUrls, rewriteText } from './publish-post-media.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = process.env.ABADIS_SYNC_ROOT
@@ -26,33 +28,44 @@ const ROOT = process.env.ABADIS_SYNC_ROOT
 const UA = 'AbadisNewsSync/1.0 (+redesign cutover; info@abadis-med.com)';
 const FIELDS = 'id,date,date_gmt,modified,modified_gmt,slug,link,title,excerpt,content,featured_media,categories,status';
 
-const LOCALES = [
-  {
-    id: 'fa',
-    rest: 'http://abadis-med.com/wp-json/wp/v2',
-    sitemap: 'http://abadis-med.com/post-sitemap.xml',
-    feed: 'http://abadis-med.com/feed/',
-    manifest: 'tools/redesign/data/posts.json',
-    shape: 'archive',
-    html: [['site/news', 'news'], ['site/articles', 'articles']],
-  },
-  {
-    id: 'en',
-    rest: 'http://abadis-med.com/en/wp-json/wp/v2',
-    sitemap: 'http://abadis-med.com/en/post-sitemap.xml',
-    feed: 'http://abadis-med.com/en/feed/',
-    manifest: 'tools/redesign/data/en_posts.json',
-    shape: 'wp',
-  },
-  {
-    id: 'ar',
-    rest: 'http://abadis-med.com/arabic/wp-json/wp/v2',
-    sitemap: 'http://abadis-med.com/arabic/post-sitemap.xml',
-    feed: 'http://abadis-med.com/arabic/feed/',
-    manifest: 'tools/redesign/data/ar_posts.json',
-    shape: 'wp',
-  },
-];
+function envUrl(name, fallback) {
+  const v = (process.env[name] || '').trim();
+  return (v || fallback).replace(/\/$/, '');
+}
+
+/** REST, sitemap and feed bases. Defaults stay on the live site so --check still works. */
+export function localeCatalog() {
+  return [
+    {
+      id: 'fa',
+      rest: envUrl('ABADIS_WP_REST', 'http://abadis-med.com/wp-json/wp/v2'),
+      sitemap: envUrl('ABADIS_WP_SITEMAP', 'http://abadis-med.com/post-sitemap.xml'),
+      feed: envUrl('ABADIS_WP_FEED', 'http://abadis-med.com/feed/'),
+      manifest: 'tools/redesign/data/posts.json',
+      shape: 'archive',
+      html: [['site/news', 'news'], ['site/articles', 'articles']],
+      disk: 'site',
+    },
+    {
+      id: 'en',
+      rest: envUrl('ABADIS_WP_REST_EN', 'http://abadis-med.com/en/wp-json/wp/v2'),
+      sitemap: envUrl('ABADIS_WP_SITEMAP_EN', 'http://abadis-med.com/en/post-sitemap.xml'),
+      feed: envUrl('ABADIS_WP_FEED_EN', 'http://abadis-med.com/en/feed/'),
+      manifest: 'tools/redesign/data/en_posts.json',
+      shape: 'wp',
+      disk: 'site/en',
+    },
+    {
+      id: 'ar',
+      rest: envUrl('ABADIS_WP_REST_AR', 'http://abadis-med.com/arabic/wp-json/wp/v2'),
+      sitemap: envUrl('ABADIS_WP_SITEMAP_AR', 'http://abadis-med.com/arabic/post-sitemap.xml'),
+      feed: envUrl('ABADIS_WP_FEED_AR', 'http://abadis-med.com/arabic/feed/'),
+      manifest: 'tools/redesign/data/ar_posts.json',
+      shape: 'wp',
+      disk: 'site/arabic',
+    },
+  ];
+}
 
 const FA_CAT = {
   22: 'news', 6: 'articles', 74: 'skip', 20: 'articles', 21: 'articles',
@@ -84,9 +97,19 @@ modified news/academy posts into:
   tools/redesign/data/en_posts.json
   tools/redesign/data/ar_posts.json
   tools/redesign/data/news-delta.json         last report
-Then regenerate HTML with:  python3 tools/redesign/build.py posts
+Then regenerate HTML with:  python3 tools/redesign/build.py posts home i18n archives
+
+Env (all optional; defaults are the live abadis-med.com URLs)
+  ABADIS_WP_REST / ABADIS_WP_SITEMAP / ABADIS_WP_FEED
+  ABADIS_WP_REST_EN / ABADIS_WP_SITEMAP_EN / ABADIS_WP_FEED_EN
+  ABADIS_WP_REST_AR / ABADIS_WP_SITEMAP_AR / ABADIS_WP_FEED_AR
+  ABADIS_WP_USER + ABADIS_WP_APP_PASSWORD   Basic auth for REST only
+  ABADIS_MEDIA_*                           bucket upload; see docs/news-cutover-delta-sync.md
+  ABADIS_SYNC_ACTION / ABADIS_SYNC_POST_ID / ABADIS_SYNC_LANG
+                                           webhook unpublish of one post
 
 Exit 0 when the command finishes. Exit 1 on usage errors or a total fetch failure.
+Exit 2 when new images need the media bucket and its secrets are missing (nothing written).
 `);
 }
 
@@ -163,9 +186,16 @@ function kindFrom(p, catMap, lang) {
   return kinds[0] === 'skip' ? 'skip' : 'news';
 }
 
+function authHeaders(url) {
+  const user = (process.env.ABADIS_WP_USER || '').trim();
+  const pass = process.env.ABADIS_WP_APP_PASSWORD || '';
+  if (!user || !pass || !String(url).includes('/wp-json/')) return {};
+  return { Authorization: 'Basic ' + Buffer.from(`${user}:${pass}`).toString('base64') };
+}
+
 async function getText(url) {
   const res = await fetch(url, {
-    headers: { 'User-Agent': UA, Accept: '*/*' },
+    headers: { 'User-Agent': UA, Accept: '*/*', ...authHeaders(url) },
     signal: AbortSignal.timeout(40000),
     redirect: 'follow',
   });
@@ -203,8 +233,11 @@ async function fetchRest(locale) {
     if (!json.length) break;
     posts.push(...json);
     page += 1;
+    if (!total && json.length === 100) {
+      return { posts, source: 'rest', catMap, complete: false, warnings: ['REST did not report X-WP-TotalPages; refusing to prune'] };
+    }
   }
-  return { posts, source: 'rest', catMap };
+  return { posts, source: 'rest', catMap, complete: true };
 }
 
 function parseSitemap(xml) {
@@ -266,6 +299,41 @@ async function readJson(rel, fallback) {
   }
 }
 
+const RESERVED_SLUG = new Set(['assets', 'news', 'articles', 'products', 'en', 'arabic', 'about', 'contact', 'careers', 'faq', 'downloads', 'dealers', 'calculator', 'csr', 'sdgs', 'customers', 'experiences', 'install-guide', 'jobs', 'wp-content', 'search', 'author', 'category', 'tag', 'feed', 'page', 'fonts', 'css', 'js', 'img']);
+const SKIP_DISK_DIR = new Set(['assets', 'en', 'arabic', 'products', 'wp-content', 'node_modules', 'css', 'js', 'img', 'fonts']);
+
+export function normSlug(s) {
+  let v = String(s || '').trim();
+  try { v = decodeURIComponent(v); } catch { /* keep */ }
+  return v.replace(/\u200c/g, '').replace(/^\/+|\/+$/g, '').toLowerCase();
+}
+
+export function slugFromItem(item) {
+  if (!item) return '';
+  if (item.slug) return normSlug(item.slug);
+  const pathName = item.path || '';
+  if (pathName) {
+    const parts = String(pathName).split('/').filter(Boolean);
+    if (parts[0] === 'en' || parts[0] === 'arabic') parts.shift();
+    return normSlug(parts.join('/'));
+  }
+  return slugFromLink(item.link || item.url || '');
+}
+
+function slugFromLink(link) {
+  try {
+    const parts = decodeURIComponent(new URL(link).pathname).split('/').filter(Boolean);
+    if (parts[0] === 'en' || parts[0] === 'arabic') parts.shift();
+    return normSlug(parts.join('/'));
+  } catch {
+    return '';
+  }
+}
+
+function slugOfRemote(p) {
+  return slugFromItem(p) || slugFromLink(p.link || '');
+}
+
 async function htmlIds(locale) {
   const ids = new Map();
   for (const [dir, kind] of locale.html || []) {
@@ -278,53 +346,91 @@ async function htmlIds(locale) {
   return ids;
 }
 
+async function readHead(abs, n = 1200) {
+  let fh;
+  try { fh = await open(abs, 'r'); } catch { return ''; }
+  try {
+    const buf = Buffer.alloc(n);
+    const { bytesRead } = await fh.read(buf, 0, n, 0);
+    return buf.toString('utf8', 0, bytesRead);
+  } finally {
+    await fh.close();
+  }
+}
+
+/** Live slug directories after url_migrate (FA /<slug>/, EN /en/<slug>/, AR /arabic/<slug>/). */
+export async function diskSlugs(locale, root = ROOT) {
+  const set = new Set();
+  const base = path.join(root, locale.disk || 'site');
+  let names = [];
+  try { names = await readdir(base, { withFileTypes: true }); } catch { return set; }
+  for (const ent of names) {
+    if (!ent.isDirectory() || SKIP_DISK_DIR.has(ent.name) || RESERVED_SLUG.has(ent.name)) continue;
+    const index = path.join(base, ent.name, 'index.html');
+    const head = await readHead(index);
+    if (!head || head.includes('name="abadis-moved"')) continue;
+    set.add(normSlug(ent.name));
+  }
+  return set;
+}
+
 function localIndex(items, shape) {
   const byId = new Map();
+  const bySlug = new Map();
   for (const item of items || []) {
     const id = String(item.id ?? '');
     if (!id) continue;
     const modified = shape === 'archive' ? item.modified || item.date || '' : (item.modified_gmt || item.modified || item.date_gmt || item.date || '');
-    byId.set(id, {
+    const row = {
       id,
       modified,
       ms: stamp({ modified_gmt: modified, modified }),
       title: shape === 'archive' ? (item.title || '') : titleOf(item),
       link: item.link || item.url || '',
-    });
+      slug: slugFromItem(item),
+    };
+    byId.set(id, row);
+    if (row.slug) bySlug.set(row.slug, row);
   }
-  return byId;
+  return { byId, bySlug };
 }
 
-function diffLocale(locale, remote, local, html) {
+function diffLocale(locale, remote, local, html, disk = new Set()) {
   const fresh = [];
   const changed = [];
   const unchanged = [];
   const skipped = [];
   const partial = [];
+  const byId = local.byId || local;
+  const bySlug = local.bySlug || new Map();
   for (const p of remote.posts) {
     if ((p.status || 'publish') !== 'publish') continue;
     const kind = kindFrom(p, remote.catMap, locale.id);
     if (kind === 'skip') { skipped.push(String(p.id || '')); continue; }
     const id = String(p.id || '');
     const link = p.link || '';
+    const slug = slugOfRemote(p);
     const row = {
-      id, kind, link, title: titleOf(p), modified: isoOf(p, 'modified_gmt', 'modified') || p.modified || '',
+      id, kind, link, slug, title: titleOf(p), modified: isoOf(p, 'modified_gmt', 'modified') || p.modified || '',
       partial: !!p._partial,
     };
+    const slugHit = slug && (bySlug.get(slug) || disk.has(slug));
     if (!id) {
-      const known = [...local.values()].some((x) => x.link && link && x.link.replace(/\/$/, '') === link.replace(/\/$/, ''));
-      if (!known) partial.push(row);
+      const knownLink = [...byId.values()].some((x) => x.link && link && x.link.replace(/\/$/, '') === link.replace(/\/$/, ''));
+      if (!knownLink && !slugHit) partial.push(row);
       continue;
     }
-    const have = local.get(id);
-    const onDisk = html.get(id);
+    const have = byId.get(id) || (slug && bySlug.get(slug));
+    const onDisk = html.get(id) || (slug && disk.has(slug));
     if (!have && !onDisk) fresh.push(row);
     else if (have && stamp(p) - have.ms > 2000) changed.push(row);
     else unchanged.push(id);
   }
   return {
     locale: locale.id, source: remote.source, warnings: remote.warnings || [],
-    remote: remote.posts.length, local: local.size, html: html.size,
+    complete: !!remote.complete,
+    remote: remote.posts.length, local: byId.size, html: html.size, slugs: disk.size,
+    liveIds: (remote.posts || []).filter((p) => (p.status || 'publish') === 'publish' && p.id).map((p) => String(p.id)),
     new: fresh, modified: changed, unchanged: unchanged.length, skippedAds: skipped.length,
     partial,
   };
@@ -385,63 +491,211 @@ async function mediaUrl(locale, id) {
   } catch { return ''; }
 }
 
+function removalRequests(report, state) {
+  const out = [];
+  const action = (process.env.ABADIS_SYNC_ACTION || '').trim().toLowerCase();
+  const rid = String(process.env.ABADIS_SYNC_POST_ID || '').trim();
+  const rlang = (process.env.ABADIS_SYNC_LANG || '').trim();
+  if (['unpublish', 'trash', 'delete'].includes(action) && rid && (!rlang || rlang === report.locale)) {
+    out.push({ id: rid, reason: action });
+  }
+  if (report.source === 'rest' && report.complete && (report.liveIds || []).length) {
+    const live = new Set(report.liveIds.map(String));
+    const tracked = state.locales?.[report.locale] || {};
+    for (const id of Object.keys(tracked)) {
+      if (!live.has(String(id))) out.push({ id: String(id), reason: 'missing-from-rest' });
+    }
+  }
+  const seen = new Set();
+  return out.filter((r) => (seen.has(r.id) ? false : (seen.add(r.id), true)));
+}
+
+async function deleteIfPostPage(rel, title, slug) {
+  const abs = path.join(ROOT, rel);
+  const head = await readHead(abs, 12000);
+  if (!head) return false;
+  const posix = rel.replace(/\\/g, '/');
+  const legacy = /\/(?:news|articles)\/\d+\/index\.html$/.test(posix);
+  const stub = head.includes('name="abadis-moved"');
+  if (legacy) {
+    await rm(abs, { force: true });
+    return true;
+  }
+  if (stub) return false;
+  const needle = title && title.length >= 8 ? title.slice(0, 24) : '';
+  if ((needle && head.includes(needle)) || (slug && head.includes(slug))) {
+    await rm(abs, { force: true });
+    return true;
+  }
+  return false;
+}
+
+async function removePublished(locale, manifest, id, state) {
+  const idx = manifest.findIndex((item) => String(item.id) === String(id));
+  const item = idx >= 0 ? manifest[idx] : null;
+  const tracked = state.locales?.[locale.id]?.[String(id)] || {};
+  const slug = (item && slugFromItem(item)) || normSlug(tracked.slug || '');
+  const title = item ? (locale.shape === 'archive' ? (item.title || '') : titleOf(item)) : (tracked.title || '');
+  if (idx >= 0) manifest.splice(idx, 1);
+  for (const kind of ['news', 'articles']) {
+    await rm(path.join(ROOT, 'content', locale.id, kind, `${id}.md`), { force: true });
+  }
+  const paths = [];
+  if (slug && !RESERVED_SLUG.has(slug)) paths.push(slugPageRel(locale, slug));
+  paths.push(`site/news/${id}/index.html`, `site/articles/${id}/index.html`);
+  let removedFile = false;
+  for (const rel of paths) {
+    if (rel && await deleteIfPostPage(rel, title, slug)) removedFile = true;
+  }
+  if (state.locales?.[locale.id]) delete state.locales[locale.id][String(id)];
+  return idx >= 0 || removedFile;
+}
+
+function slugPageRel(locale, slug) {
+  const s = String(slug || '').replace(/^\/+|\/+$/g, '');
+  if (!s || s.includes('..') || s.includes('/') || RESERVED_SLUG.has(s)) return '';
+  if (locale.id === 'en') return path.posix.join('site/en', s, 'index.html');
+  if (locale.id === 'ar') return path.posix.join('site/arabic', s, 'index.html');
+  return path.posix.join('site', s, 'index.html');
+}
+
 async function applySync(reports, locales) {
   const statePath = path.join(ROOT, 'tools/redesign/data/news-sync-state.json');
   const state = await readJson('tools/redesign/data/news-sync-state.json', { version: 1, locales: {} });
-  let wrote = 0;
+  const pending = [];
+  const urls = [];
   for (const report of reports) {
     const locale = locales.find((l) => l.id === report.locale);
     const delta = [...report.new, ...report.modified].filter((r) => r.id && !r.partial);
+    report.removed = [];
     if (!delta.length) continue;
     if (report.source !== 'rest') {
       report.syncSkipped = 'REST content is required to write posts; sitemap/feed only listed them.';
       continue;
     }
-    const manifest = await readJson(locale.manifest, []);
-    const byId = new Map(manifest.map((item, i) => [String(item.id), i]));
     for (const row of delta) {
       const post = await fetchOne(locale, row.id);
       const image = await mediaUrl(locale, post.featured_media);
       const kind = row.kind === 'articles' ? 'articles' : 'news';
-      const rel = path.join('content', locale.id, kind, `${post.id}.md`);
-      const abs = path.join(ROOT, rel);
-      const md = markdown(locale.id, post, kind, image);
-      let prev = '';
-      try { prev = await readFile(abs, 'utf8'); } catch { /* new */ }
-      if (prev !== md) {
-        await mkdir(path.dirname(abs), { recursive: true });
-        await writeFile(abs, md);
-        wrote += 1;
-        row.file = rel;
-      }
-      if (locale.shape === 'archive') {
-        const rec = archiveRecord(post, image);
-        if (byId.has(String(post.id))) manifest[byId.get(String(post.id))] = { ...manifest[byId.get(String(post.id))], ...rec };
-        else manifest.push(rec);
-      } else if (byId.has(String(post.id))) {
-        manifest[byId.get(String(post.id))] = post;
-      } else manifest.push(post);
-      state.locales[locale.id] = state.locales[locale.id] || {};
-      state.locales[locale.id][String(post.id)] = { modified: row.modified, kind };
+      if (image) urls.push(image);
+      urls.push(...extractImageUrls(rendered(post.content)));
+      pending.push({ locale, report, row, post, image, kind });
     }
+  }
+  let mediaItems = {};
+  if (urls.length) {
+    const media = await publishUrls(urls);
+    if (media.missing.length) {
+      console.error('media upload needs these secrets (no values are printed): ' + media.missing.join(', '));
+      console.error('No manifests were written.');
+      return { wrote: 0, blocked: true };
+    }
+    mediaItems = media.map.items || {};
+    for (const job of pending) {
+      job.image = job.image ? rewriteText(job.image, mediaItems) : '';
+      if (job.post.content && job.post.content.rendered) {
+        job.post.content = { ...job.post.content, rendered: rewriteText(job.post.content.rendered, mediaItems) };
+      }
+    }
+  }
+  let wrote = 0;
+  const featPath = path.join(ROOT, 'tools/redesign/data/i18n_featured_urls.json');
+  let feat = null;
+  let featDirty = false;
+  try { feat = JSON.parse(await readFile(featPath, 'utf8')); } catch { feat = null; }
+  const manifests = new Map();
+  async function manifestOf(locale) {
+    if (!manifests.has(locale.id)) {
+      const items = await readJson(locale.manifest, []);
+      manifests.set(locale.id, { items, dirty: false });
+    }
+    return manifests.get(locale.id);
+  }
+  for (const job of pending) {
+    const { locale, row, post, kind } = job;
+    const image = job.image || '';
+    const held = await manifestOf(locale);
+    const manifest = held.items;
+    const byId = new Map(manifest.map((item, i) => [String(item.id), i]));
+    const rel = path.join('content', locale.id, kind, `${post.id}.md`);
+    const abs = path.join(ROOT, rel);
+    const md = markdown(locale.id, post, kind, image);
+    let prev = '';
+    try { prev = await readFile(abs, 'utf8'); } catch { /* new */ }
+    if (prev !== md) {
+      await mkdir(path.dirname(abs), { recursive: true });
+      await writeFile(abs, md);
+      wrote += 1;
+      row.file = rel;
+    }
+    if (locale.shape === 'archive') {
+      const rec = archiveRecord(post, image);
+      if (byId.has(String(post.id))) manifest[byId.get(String(post.id))] = { ...manifest[byId.get(String(post.id))], ...rec };
+      else manifest.push(rec);
+    } else {
+      const prevItem = byId.has(String(post.id)) ? manifest[byId.get(String(post.id))] : {};
+      const next = { ...prevItem, ...post };
+      if (prevItem.content || post.content) {
+        next.content = { ...(prevItem.content || {}), ...(post.content || {}) };
+      }
+      if (byId.has(String(post.id))) manifest[byId.get(String(post.id))] = next;
+      else manifest.push(next);
+      const mediaBase = (process.env.ABADIS_MEDIA_PUBLIC_BASE || '').trim().replace(/\/$/, '');
+      if (image && mediaBase && image.startsWith(mediaBase + '/')) {
+        if (!feat) feat = {};
+        const key = `${locale.id}:${post.id}`;
+        if (feat[key] !== image) {
+          feat[key] = image;
+          featDirty = true;
+        }
+      }
+    }
+    held.dirty = true;
+    state.locales[locale.id] = state.locales[locale.id] || {};
+    state.locales[locale.id][String(post.id)] = { modified: row.modified, kind, slug: row.slug || post.slug || '' };
+  }
+  for (const report of reports) {
+    const locale = locales.find((l) => l.id === report.locale);
+    const held = await manifestOf(locale);
+    for (const rem of removalRequests(report, state)) {
+      if (feat && `${locale.id}:${rem.id}` in feat) {
+        delete feat[`${locale.id}:${rem.id}`];
+        featDirty = true;
+      }
+      if (await removePublished(locale, held.items, rem.id, state)) {
+        report.removed.push(rem);
+        held.dirty = true;
+        wrote += 1;
+      }
+    }
+  }
+  for (const [id, held] of manifests) {
+    if (!held.dirty) continue;
+    const locale = locales.find((l) => l.id === id);
     const manAbs = path.join(ROOT, locale.manifest);
-    const next = JSON.stringify(manifest, null, 2) + '\n';
+    const next = JSON.stringify(held.items, null, 2) + '\n';
     let old = '';
     try { old = await readFile(manAbs, 'utf8'); } catch { /* new */ }
     if (old !== next) {
+      await mkdir(path.dirname(manAbs), { recursive: true });
       await writeFile(manAbs, next);
       wrote += 1;
     }
+  }
+  if (featDirty && feat) {
+    await mkdir(path.dirname(featPath), { recursive: true });
+    await writeFile(featPath, JSON.stringify(feat, null, 2) + '\n');
+    wrote += 1;
   }
   if (wrote) {
     await mkdir(path.dirname(statePath), { recursive: true });
     await writeFile(statePath, JSON.stringify(state, null, 2) + '\n');
     const summary = reports.map((r) => ({
-      locale: r.locale, source: r.source, new: r.new, modified: r.modified, partial: r.partial,
+      locale: r.locale, source: r.source, new: r.new, modified: r.modified, removed: r.removed, partial: r.partial,
     }));
     await writeFile(path.join(ROOT, 'tools/redesign/data/news-delta.json'), JSON.stringify({ at: new Date().toISOString(), summary }, null, 2) + '\n');
   }
-  return wrote;
+  return { wrote, blocked: false };
 }
 
 function printReport(reports, asJson) {
@@ -463,7 +717,7 @@ export async function run(argv = process.argv.slice(2)) {
   const args = parseArgs(argv);
   if (args.help) { help(); return 0; }
   if (args.self) return selfTest();
-  const locales = LOCALES.filter((l) => !args.locale || l.id === args.locale);
+  const locales = localeCatalog().filter((l) => !args.locale || l.id === args.locale);
   if (!locales.length) throw new Error('Unknown --locale');
   const reports = [];
   let failed = 0;
@@ -473,7 +727,8 @@ export async function run(argv = process.argv.slice(2)) {
     const manifest = await readJson(locale.manifest, []);
     const local = localIndex(manifest, locale.shape);
     const html = await htmlIds(locale);
-    reports.push(diffLocale(locale, remote, local, html));
+    const disk = await diskSlugs(locale);
+    reports.push(diffLocale(locale, remote, local, html, disk));
   }
   if (failed === locales.length) {
     printReport(reports, args.json);
@@ -481,8 +736,12 @@ export async function run(argv = process.argv.slice(2)) {
   }
   printReport(reports, args.json);
   if (args.sync) {
-    const n = await applySync(reports, locales);
-    console.log(n ? `sync wrote ${n} file(s). Regenerate with: python3 tools/redesign/build.py posts` : 'sync: already up to date');
+    const result = await applySync(reports, locales);
+    if (result.blocked) return 2;
+    const n = result.wrote;
+    console.log(n ? `sync wrote ${n} file(s). Regenerate with: python3 tools/redesign/build.py posts home i18n archives` : 'sync: already up to date');
+    console.log(`SYNC_RESULT writes=${n}`);
+    if (process.env.GITHUB_OUTPUT) appendFileSync(process.env.GITHUB_OUTPUT, `changed=${n ? '1' : '0'}\n`);
   } else if (args.dry) {
     const n = reports.reduce((s, r) => s + r.new.length + r.modified.length, 0);
     console.log(`dry-run: ${n} post(s) would be written under content/ and the manifests. No files changed.`);
@@ -508,6 +767,25 @@ async function selfTest() {
   if (report.modified.length !== 1 || report.modified[0].id !== '1') throw new Error('self-test: expected post 1 to be modified');
   const again = diffLocale(locale, { posts: [fixture.posts[0]], source: 'rest', catMap }, localIndex([{ ...local[0], modified: '2026-01-01T00:00:00+00:00' }], 'archive'), new Map([['1', 'news']]));
   if (again.modified.length || again.new.length) throw new Error('self-test: identical modified stamp must be unchanged');
+  const onDisk = diffLocale(locale, { posts: fixture.posts, source: 'rest', catMap, complete: true }, localIndex([], 'archive'), new Map(), new Set(['new']));
+  if (onDisk.new.some((r) => r.id === '2')) throw new Error('self-test: slug already on disk must not be new');
+  if (onDisk.new.length !== 1 || onDisk.new[0].id !== '1') throw new Error('self-test: only the off-disk post is new');
+  const savedRest = process.env.ABADIS_WP_REST;
+  const savedEn = process.env.ABADIS_WP_REST_EN;
+  const savedAr = process.env.ABADIS_WP_REST_AR;
+  process.env.ABADIS_WP_REST = 'http://cms.example/wp-json/wp/v2';
+  process.env.ABADIS_WP_REST_EN = 'http://cms.example/en/wp-json/wp/v2/';
+  process.env.ABADIS_WP_REST_AR = 'http://cms.example/arabic/wp-json/wp/v2';
+  const cat = localeCatalog();
+  if (cat[0].rest !== 'http://cms.example/wp-json/wp/v2') throw new Error('self-test: FA REST env');
+  if (cat[1].rest !== 'http://cms.example/en/wp-json/wp/v2') throw new Error('self-test: EN REST env');
+  if (cat[2].rest !== 'http://cms.example/arabic/wp-json/wp/v2') throw new Error('self-test: AR REST env');
+  if (cat[0].sitemap !== 'http://abadis-med.com/post-sitemap.xml') throw new Error('self-test: sitemap default');
+  if (savedRest === undefined) delete process.env.ABADIS_WP_REST; else process.env.ABADIS_WP_REST = savedRest;
+  if (savedEn === undefined) delete process.env.ABADIS_WP_REST_EN; else process.env.ABADIS_WP_REST_EN = savedEn;
+  if (savedAr === undefined) delete process.env.ABADIS_WP_REST_AR; else process.env.ABADIS_WP_REST_AR = savedAr;
+  const { mediaSelfTest } = await import('./publish-post-media.mjs');
+  await mediaSelfTest();
   await rm(dir, { recursive: true, force: true });
   console.log('self-test ok');
   return 0;
