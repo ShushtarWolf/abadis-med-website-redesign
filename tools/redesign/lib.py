@@ -295,6 +295,15 @@ def rewrite_html(h, p, imgw=1000, drop_missing_img=True):
     h = re.sub(r'<img [^>]*>', img_sub, h)
     h = re.sub(r'<figure>\s*(<figcaption>.*?</figcaption>)?\s*</figure>', '', h, flags=re.S)
     h = re.sub(r'<p>\s*</p>', '', h)
+    # AB-97: WordPress link embeds whose oEmbed never rendered arrive as a bare URL in a box;
+    # show them like the other reference links in the article.
+    def embed_sub(m):
+        u = html.unescape(m.group(1)); new, ext = href(u, p)
+        extra = ' target="_blank" rel="noopener"' if ext else ''
+        return f'<p><a href="{esc(new, quote=True)}"{extra}>{esc(u)}</a></p>'
+    h = re.sub(r'<figure class="wp-block-embed[^"]*">\s*<div class="wp-block-embed__wrapper">\s*(https?://[^\s<]+)\s*</div>\s*</figure>', embed_sub, h, flags=re.S)
+    # R-004 / AB-76: wide WordPress tables scroll sideways on phones
+    h = re.sub(r'<figure class="wp-block-table(?![^"]*table-scroll)', '<figure class="wp-block-table table-scroll', h)
     return h
 
 def strip_tags(h): return re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', ' ', h or ''))).strip()
