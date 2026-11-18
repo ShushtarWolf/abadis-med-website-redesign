@@ -19,6 +19,9 @@ permissions:
 
 jobs:
   publish:
+    # Off until a human sets the repository variable. Schedule, dispatch, and
+    # workflow_dispatch all skip, so a merge cannot publish the live site.
+    if: ${{ vars.ABADIS_PUBLISH_ENABLED == '1' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -65,7 +68,17 @@ jobs:
           ABADIS_SYNC_ACTION: ${{ github.event.client_payload.action || '' }}
           ABADIS_SYNC_POST_ID: ${{ github.event.client_payload.post_id || '' }}
           ABADIS_SYNC_LANG: ${{ github.event.client_payload.lang || '' }}
-        run: node scripts/sync-abadis-news.mjs --sync
+        run: |
+          missing=
+          for name in ABADIS_WP_REST ABADIS_MEDIA_ACCESS_KEY ABADIS_MEDIA_SECRET_KEY ABADIS_MEDIA_S3_ENDPOINT ABADIS_MEDIA_PUBLIC_BASE; do
+            if [ -z "${!name}" ]; then missing="${missing} ${name}"; fi
+          done
+          if [ -n "$missing" ]; then
+            echo "Publish is enabled but these secrets are missing:${missing}"
+            echo "Refusing to sync. This job will not fall back to abadis-med.com or hotlink wp-content images, and nothing will be committed."
+            exit 1
+          fi
+          node scripts/sync-abadis-news.mjs --sync
 
       - name: Build posts on main
         if: steps.sync_main.outputs.changed == '1'
@@ -103,6 +116,15 @@ jobs:
           git worktree add --detach /tmp/liara-test origin/liara-test
           if [ -f tools/redesign/data/media-bucket.json ]; then
             cp tools/redesign/data/media-bucket.json /tmp/liara-test/tools/redesign/data/media-bucket.json
+          fi
+          missing=
+          for name in ABADIS_WP_REST ABADIS_MEDIA_ACCESS_KEY ABADIS_MEDIA_SECRET_KEY ABADIS_MEDIA_S3_ENDPOINT ABADIS_MEDIA_PUBLIC_BASE; do
+            if [ -z "${!name}" ]; then missing="${missing} ${name}"; fi
+          done
+          if [ -n "$missing" ]; then
+            echo "Publish is enabled but these secrets are missing:${missing}"
+            echo "Refusing to sync. This job will not fall back to abadis-med.com or hotlink wp-content images, and nothing will be committed."
+            exit 1
           fi
           cd /tmp/liara-test
           ABADIS_SYNC_ROOT=/tmp/liara-test node "$GITHUB_WORKSPACE/scripts/sync-abadis-news.mjs" --sync

@@ -66,9 +66,13 @@ Trash, unpublish, or delete sends the mu-plugin in `wordpress/mu-plugins/` with 
 
 ## GitHub Actions
 
-`tools/liara/publish-wp.yml` is the workflow. If it is not already at `.github/workflows/publish-wp.yml`, copy it there (the push token may lack the workflow scope). It runs on `repository_dispatch` type `wordpress-publish`, every 15 minutes, and `workflow_dispatch`. It syncs, uploads media, runs the posts build, and commits each branch separately. It does not merge `main` into `liara-test`. It deploys `site/` to Liara app `abadis-test` only (`--app abadis-test`, team `6af9496176b2026d7493a542`, secret `LIARA_API_TOKEN`). It does not deploy `abadis-med`. The gzipped site must stay under 320 MB.
+`tools/liara/publish-wp.yml` is the workflow. If it is not already at `.github/workflows/publish-wp.yml`, copy it there (the push token may lack the workflow scope). It is registered for `repository_dispatch` type `wordpress-publish`, every 15 minutes, and `workflow_dispatch`, but the job does nothing until the repository variable `ABADIS_PUBLISH_ENABLED` is the string `1`. That variable is off by default. Schedule, dispatch, and manual runs all skip while it is unset or any other value.
 
-GitHub secrets a human adds: `LIARA_API_TOKEN`, `ABADIS_WP_WEBHOOK_SECRET`, `ABADIS_MEDIA_ACCESS_KEY`, `ABADIS_MEDIA_SECRET_KEY`, `ABADIS_MEDIA_S3_ENDPOINT`, `ABADIS_MEDIA_PUBLIC_BASE`, and, if the CMS is private, `ABADIS_WP_USER` and `ABADIS_WP_APP_PASSWORD`. Optional URL overrides use the `ABADIS_WP_REST*` names above. The WordPress side uses `ABADIS_DISPATCH_TOKEN` and `ABADIS_WEBHOOK_SECRET` (see `wordpress/mu-plugins/README.md`).
+Set the secrets first, then set `ABADIS_PUBLISH_ENABLED` to `1`. Required before a run will sync: `ABADIS_WP_REST`, `ABADIS_MEDIA_ACCESS_KEY`, `ABADIS_MEDIA_SECRET_KEY`, `ABADIS_MEDIA_S3_ENDPOINT`, and `ABADIS_MEDIA_PUBLIC_BASE`. If any of those is missing, the sync step exits before it writes or commits. It will not fall back to abadis-med.com and it will not publish hotlinked wp-content images. Local `--check` still uses the live site when those variables are unset. That command does not commit.
+
+When the variable is `1` and those secrets are set, the workflow syncs, uploads media, runs the posts build, and commits each branch separately. It does not merge `main` into `liara-test`. It deploys `site/` to Liara app `abadis-test` only (`--app abadis-test`, team `6af9496176b2026d7493a542`, secret `LIARA_API_TOKEN`). It does not deploy `abadis-med`. The gzipped site must stay under 320 MB.
+
+Other GitHub secrets: `LIARA_API_TOKEN`, `ABADIS_WP_WEBHOOK_SECRET`, and, if the CMS is private, `ABADIS_WP_USER` and `ABADIS_WP_APP_PASSWORD`. Optional URL overrides use the `ABADIS_WP_REST_EN`, `ABADIS_WP_REST_AR`, sitemap, and feed names above. The WordPress side uses `ABADIS_DISPATCH_TOKEN` and `ABADIS_WEBHOOK_SECRET` (see `wordpress/mu-plugins/README.md`).
 
 ## What it compares
 
