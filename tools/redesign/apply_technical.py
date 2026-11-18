@@ -334,7 +334,7 @@ SECTION_FOR_IMAGE = [
     ('ساکشن', 'products/suction-bag/'),
     ('suction', 'products/suction-bag/'),
     ('liner', 'products/suction-bag/'),
-    ('فیلتر', 'products/filters/'),
+    ('فیلترها', 'products/filters/'),
     ('filter', 'products/filters/'),
     ('پایه', 'products/stand/'),
     ('holder', 'products/stand/'),

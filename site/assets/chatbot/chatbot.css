@@ -449,3 +449,19 @@ body.page-bag .abadis-chat-launcher {
   opacity: .75;
   font-style: italic;
 }
+
+/* AB-59: quick-start buttons stacked under the sales welcome */
+.abadis-chat-start {
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  max-width: 88%;
+}
+.abadis-chat-start .abadis-chat-start-btn {
+  white-space: normal;
+  text-align: start;
+  line-height: 1.5;
+  cursor: pointer;
+}
