@@ -24,11 +24,11 @@ Opened: https://abadis-med.com/محصولات/مخزن/ (tab «مخازن ساک
 
 ## Photo-derived hose set 050103 (estimated, not factory CAD)
 Official sources:
-- Kit photo: https://abadis-med.com/wp-content/uploads/2022/12/23.jpg (green hose with a white T on one end and a yellow connector on the other).
+- Kit photo: https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/23.jpg (green hose with a white T on one end and a yellow connector on the other).
 - Kit photo EN: https://www.abadis-med.com/en/wp-content/uploads/2021/07/AMR_4789-scaled-1.jpg (T barbs inside the hose end).
-- T connector photo: https://abadis-med.com/wp-content/uploads/2022/12/18.jpg and drawing …/2026/11/Teal-Stippled-T-Barbed-Hose-Fitting.png.
-- Connector photo: https://abadis-med.com/wp-content/uploads/2022/12/20.jpg and drawing …/2026/11/Teal-Connector-Pipe-Diagram.png (6 cm).
-- Hose drawing: https://abadis-med.com/wp-content/uploads/2026/11/Hose-Dimensions-With-Connectors.png (30 cm; 37 cm with fittings).
+- T connector photo: https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/18.jpg and drawing …/2026/11/Teal-Stippled-T-Barbed-Hose-Fitting.png.
+- Connector photo: https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/20.jpg and drawing …/2026/11/Teal-Connector-Pipe-Diagram.png (6 cm).
+- Hose drawing: https://abadis-media.storage.iran.liara.site/wp-content/uploads/2026/11/Hose-Dimensions-With-Connectors.png (30 cm; 37 cm with fittings).
 
 Modelled (mm):
 - Hose: OD 13 / ID 7 (official 13×7), arc length exactly 300.0 (official 300). Lies on the floor in a gentle arc in front of the canister (presentation pose, est.).
