@@ -740,11 +740,15 @@
       if (btn) btn.disabled = true;
       setFormStatus(form, T.sending, false);
       try {
+        // give up after 15 s (endpoint unreachable) and fall back to mailto
+        const ctl = typeof AbortController === 'function' ? new AbortController() : null;
+        const timer = ctl ? setTimeout(() => ctl.abort(), 15000) : 0;
         const res = await fetch(formEndpoint, {
           method: 'POST',
           body: fd,
           headers: { Accept: 'application/json' },
-        });
+          signal: ctl ? ctl.signal : undefined,
+        }).finally(() => clearTimeout(timer));
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const s = setFormStatus(form, T.sent, false);
         s.classList.add('is-success');
@@ -1442,7 +1446,7 @@
   var base = cur ? cur.getAttribute('src').replace(/assets\/js\/site\.js.*$/, '') : '/';
   var css = document.createElement('link');
   css.rel = 'stylesheet';
-  css.href = base + 'assets/chatbot/chatbot.css?v=20261109c';
+  css.href = base + 'assets/chatbot/chatbot.css?v=20261118t62';
   document.head.appendChild(css);
   var btn = document.createElement('button');
   btn.type = 'button';
@@ -1453,7 +1457,7 @@
     if (btn.dataset.loading === '1') return;
     btn.dataset.loading = '1';
     var s = document.createElement('script');
-    s.src = base + 'assets/chatbot/chatbot.js?v=20261109b';
+    s.src = base + 'assets/chatbot/chatbot.js?v=20261118t62';
     s.setAttribute('data-kb', base + 'assets/data/abadis-knowledge-base.json?v=20261028p');
     s.onload = function () {
       btn.remove();

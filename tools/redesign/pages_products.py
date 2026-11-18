@@ -9,7 +9,7 @@ FAMILIES = [  # slug, live path, title, hub image, local fallback image
     ('canister', '/محصولات/مخزن/', 'مخزن ساکشن', 'https://abadis-med.com/wp-content/uploads/2022/12/AMR_4901.jpg', 'assets/img/p/p3-g1-t.webp'),
     ('stand', '/محصولات/پایه/', 'پایه و نگهدارنده‌ها', 'https://abadis-med.com/wp-content/uploads/2022/12/پایه-ترولی.jpg', 'assets/img/p/p1-g3-t.webp'),
     ('connectors', '/محصولات/اتصالات/', 'اتصالات', 'https://abadis-med.com/wp-content/uploads/2022/12/اتصالات-845x684-1.jpg', 'assets/img/p/p2-g3-t.webp'),
-    ('filters', '/محصولات/فیلترها/', 'فیلتر', 'https://abadis-med.com/wp-content/uploads/2022/12/فیلتر1-2-845x684-1.jpg', 'assets/img/filters/anti-1-t.webp'),
+    ('filters', '/محصولات/فیلترها/', 'فیلترها', 'https://abadis-med.com/wp-content/uploads/2022/12/فیلتر1-2-845x684-1.jpg', 'assets/img/filters/anti-1-t.webp'),
     ('suction-tube', '/محصولات/ساکشن-تیوب/', 'ساکشن تیوب', 'https://abadis-med.com/wp-content/uploads/2023/02/7e83722522e8aeb7512b7075311316b7__m8ULku2SAG__1-1-300x300.jpg', None),
     ('oral', None, 'بهداشت دهان', 'https://abadis-med.com/wp-content/uploads/2022/12/19-1024x880.jpg', None),
     ('other', '/محصولات/سایر-محصولات/', 'سایر محصولات',
@@ -228,9 +228,9 @@ HUB_UI = {
 # slug, href from the hub page, title, subtitle (FA subtitle is filled from the family pages)
 HUB_FAMILIES = {
     'fa': [
-        ('suction-bag', 'suction-bag/', 'کیسه های ساکشن'),
-        ('stand', 'stand/', 'پایه و نگهدارنده'),
-        ('filters', 'filters/', 'فیلتر'),
+        ('suction-bag', 'suction-bag/', 'کیسه ساکشن'),
+        ('stand', 'stand/', 'پایه و نگهدارنده ها'),
+        ('filters', 'filters/', 'فیلترها'),
         ('suction-tube', 'suction-tube/', 'ساکشن تیوب'),
         ('canister', 'canister/', 'مخازن و ظروف پزشکی'),
         ('connectors', 'connectors/', 'اتصالات و ملزومات ساکشن'),
@@ -436,12 +436,12 @@ IMG_REPLACE = {
 # rel, prefix, canonical, products-crumb href, h1 override (None = Persian page title)
 OUT = {
     'stand': {
-        'fa': ('products/stand/index.html', '../../', 'products/stand/', '../', 'پایه و نگهدارنده'),
+        'fa': ('products/stand/index.html', '../../', 'products/stand/', '../', 'پایه و نگهدارنده ها'),
         'en': ('en/products/base-and-holder/index.html', '../../../', 'en/products/base-and-holder/', '../', 'Base and Holder'),
         'ar': ('arabic/تثبیت/index.html', '../../', 'arabic/تثبیت/', '../منتجات/', 'تثبیت'),
     },
     'filters': {
-        'fa': ('products/filters/index.html', '../../', 'products/filters/', '../', 'فیلتر'),
+        'fa': ('products/filters/index.html', '../../', 'products/filters/', '../', 'فیلترها'),
         'en': ('en/products/filters/index.html', '../../../', 'en/products/filters/', '../', 'Filter'),
         'ar': ('arabic/الفلتر/index.html', '../../', 'arabic/الفلتر/', '../منتجات/', 'الفلتر'),
     },

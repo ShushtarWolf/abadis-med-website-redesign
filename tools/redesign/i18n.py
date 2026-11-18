@@ -166,9 +166,9 @@ NAV = {
             ('careers', 'careers/', 'فرصت‌های همکاری'),
         ]),
         ('products', 'products/#by-product', 'محصولات', [
-            ('suction-bag', 'products/suction-bag/', 'کیسه های ساکشن'),
-            ('stand', 'products/stand/', 'پایه و نگهدارنده'),
-            ('filters', 'products/filters/', 'فیلتر'),
+            ('suction-bag', 'products/suction-bag/', 'کیسه ساکشن'),
+            ('stand', 'products/stand/', 'پایه و نگهدارنده ها'),
+            ('filters', 'products/filters/', 'فیلترها'),
             ('suction-tube', 'products/suction-tube/', 'ساکشن تیوب'),
             ('canister', 'products/canister/', 'مخازن و ظروف پزشکی'),
             ('connectors', 'products/connectors/', 'اتصالات و ملزومات ساکشن'),
