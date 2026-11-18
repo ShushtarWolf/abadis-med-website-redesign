@@ -303,3 +303,25 @@ html, body { overflow-x: clip; }
 }
 html[data-theme="dark"] #postGrid .post-card .ph,
 html[data-theme="noir"] #postGrid .post-card .ph { background: #0f2224; }
+
+/* AB-100: filter chips must all be reachable with a mouse. On desktop / fine-pointer
+   devices the single-row horizontal scroll hid most chips (no wheel/drag scrolling),
+   so wrap them onto extra lines instead. Touch screens keep the swipe row. */
+.news-topics button, .news-years button, .ao-extra-filters button {
+  -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+@media (min-width: 861px), (hover: hover) and (pointer: fine) {
+  .news-panel .news-topics,
+  .news-panel .news-years,
+  .news-panel .ao-extra-filters,
+  [dir="ltr"] .news-panel .news-topics,
+  [dir="ltr"] .news-panel .news-years,
+  [dir="ltr"] .news-panel .ao-extra-filters {
+    flex-wrap: wrap; overflow: visible; padding-bottom: 0;
+    -webkit-mask-image: none; mask-image: none;
+  }
+  .news-panel .news-topics > *,
+  .news-panel .news-years > *,
+  .news-panel .ao-extra-filters > * { flex: 0 1 auto; white-space: nowrap; max-width: 100%; }
+}
