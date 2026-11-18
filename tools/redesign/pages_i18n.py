@@ -1,7 +1,7 @@
 """Build English (/en/) and Arabic (/arabic/) pages from REST snapshots."""
 from __future__ import annotations
 import html as html_module, json, pathlib, re, urllib.parse as u
-from lib import esc, best_img, SITE
+from lib import esc, best_img, SITE, placed_src, dim_attrs
 from layout import page, page_hero, crumbs
 import i18n as i18n_mod
 from i18n import (
@@ -146,7 +146,7 @@ def card_ph(p, wp, title, lang=None):
     alt = esc(title)
     if r:
         return (
-            f'<div class="ph"><img src="{p}{r["src"]}" width="{r["w"]}" height="{r["h"]}" '
+            f'<div class="ph"><img src="{placed_src(p, r)}"{dim_attrs(r)} '
             f'alt="{alt}" loading="lazy" decoding="async">'
         )
     return (

@@ -1,6 +1,6 @@
 """Render extracted crawl blocks into redesign markup."""
 import re
-from lib import esc, best_img, img, rewrite_html, href, strip_tags, fa
+from lib import esc, best_img, img, rewrite_html, href, strip_tags, fa, placed_src, dim_attrs
 
 def picture(p, url, alt='', maxw=1000, cls='', fallback=None, lazy=True):
     r = best_img(url, maxw)
@@ -9,15 +9,15 @@ def picture(p, url, alt='', maxw=1000, cls='', fallback=None, lazy=True):
         return ''
     c = f' class="{cls}"' if cls else ''
     lz = ' loading="lazy"' if lazy else ''
-    return f'<img{c} src="{p}{r["src"]}" width="{r["w"]}" height="{r["h"]}"{lz} decoding="async" alt="{esc(alt)}">'
+    return f'<img{c} src="{placed_src(p, r)}"{dim_attrs(r)}{lz} decoding="async" alt="{esc(alt)}">'
 
 def gallery_link(p, url, group, alt='', thumbw=480, fullw=1600, cls='', zoom=''):
     t = best_img(url, thumbw); f = best_img(url, fullw) or t
     if not t: return ''
     c = f' class="{cls}"' if cls else ''
     label = zoom or 'نمایش بزرگ‌تر'
-    return (f'<a{c} href="{p}{f["src"]}" data-gallery="{group}" data-w="{f["w"]}" data-h="{f["h"]}" aria-label="{esc(label)}{": " + esc(alt) if alt else ""}">'
-            f'<img src="{p}{t["src"]}" width="{t["w"]}" height="{t["h"]}" loading="eager" decoding="async" alt="{esc(alt)}"></a>')
+    return (f'<a{c} href="{placed_src(p, f)}" data-gallery="{group}" data-w="{f["w"]}" data-h="{f["h"]}" aria-label="{esc(label)}{": " + esc(alt) if alt else ""}">'
+            f'<img src="{placed_src(p, t)}"{dim_attrs(t)} loading="eager" decoding="async" alt="{esc(alt)}"></a>')
 
 def table(rows):
     if not rows: return ''

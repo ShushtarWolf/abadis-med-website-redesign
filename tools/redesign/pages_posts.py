@@ -1,6 +1,6 @@
 """News + articles lists and one page per archived post."""
 import html, json, re, urllib.parse as u
-from lib import load, esc, strip_tags, best_img, jdate, fa, POST_MAP, ROOT, SITE
+from lib import load, esc, strip_tags, best_img, jdate, fa, POST_MAP, ROOT, SITE, placed_src, dim_attrs
 from layout import page, page_hero
 from render import blocks_to_prose
 from cats import classify, strip_title
@@ -81,7 +81,7 @@ def card(p, post, from_list=True, tag='', topic='', year='', art_meta=None, news
         cat_badges = ''.join(f'<span class="art-card-badge">{esc(lbl)}</span>' for lbl in news_meta['cat_labels'][:1])
         meta_html = (f'<div class="card-meta">{cat_badges}<span class="news-fmt-badge news-fmt-badge--{esc(news_meta["format"])}">{esc(news_meta["format_label"])}</span></div>'
                      f'<div class="card-sub"><time datetime="{post["date"][:10]}">{jdate(post["date"])}</time></div>')
-    ph = (f'<div class="ph"><img src="{p}{r["src"]}" width="{r["w"]}" height="{r["h"]}" alt="{alt}" loading="lazy" decoding="async">{badges}</div>' if r
+    ph = (f'<div class="ph"><img src="{placed_src(p, r)}"{dim_attrs(r)} alt="{alt}" loading="lazy" decoding="async">{badges}</div>' if r
           else f'<div class="ph txt"><img src="{p}{FALLBACK_THUMB}" width="1280" height="720" alt="{alt}" loading="lazy">{badges}</div>')
     href = (post['rel'].split('/', 1)[1] if from_list else p + post['rel'])
     tag_html = f'<span class="tag">{esc(tag)}</span>' if tag else ''
@@ -174,7 +174,7 @@ def build(write):
             first_img = next((b for b in x['blocks'] if b['t'] in ('img', 'html')), None)
             dup = bool(first_img and first_img['t'] == 'img' and x.get('image') and re.sub(r'-\d+x\d+', '', first_img['src']).rsplit('.', 1)[0] == re.sub(r'-\d+x\d+', '', x['image']).rsplit('.', 1)[0])
             if r and not dup:
-                lead_img = f'<div class="lead-img"><img src="{p}{r["src"]}" width="{r["w"]}" height="{r["h"]}" alt="{esc(x["t"])}" decoding="async"></div>'
+                lead_img = f'<div class="lead-img"><img src="{placed_src(p, r)}"{dim_attrs(r)} alt="{esc(x["t"])}" decoding="async"></div>'
             elif not r:
                 lead_img = f'<div class="lead-img"><img src="{p}{FALLBACK_THUMB}" width="1280" height="720" alt="{esc(x["t"])}" decoding="async"></div>'
             else:
@@ -207,7 +207,7 @@ def build(write):
     {nav}
     {rel_html}
   </div></section>'''
-            og = (p + r['src']) if r else (p + FALLBACK_THUMB)
+            og = placed_src(p, r) if r else (p + FALLBACK_THUMB)
             doc_title = f'{x["t"]} | {LABEL[cat]}'
             write(f'{cat}/{x["id"]}/index.html', page(p, cat, doc_title, excerpt(x), main, og=og, lightbox='data-gallery' in body, fa_path=f'{cat}/'))
     try:
