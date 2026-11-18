@@ -24,7 +24,7 @@
       placeholder: 'سؤال یا نیاز بخش درمانی را بنویسید…',
       send: 'ارسال',
       close: 'بستن',
-      welcomeSales: 'سلام و وقت بخیر! خوش آمدید. درباره کیسه‌های ساکشن یکبارمصرف (۱، ۲ و ۳ لیتری)، راهکارهای بالینی هر بخش، دریافت پیش‌فاکتور یا محاسبه صرفه‌جویی بیمارستانتان هر سؤالی دارید بفرمایید.',
+      welcomeSales: 'سلام! به آبادیس خوش آمدید. من دستیار هوشمند آبادیس هستم. می‌توانم درباره محصولات، مشخصات فنی، راهنمای خرید و شرایط همکاری به شما کمک کنم. چه سؤالی دارید؟ خوشحال می‌شوم راهنمای شما باشم.',
       welcomeAcademy: 'سلام و وقت بخیر! به آکادمی آبادیس خوش آمدید. هر سؤالی درباره کنترل عفونت با ساکشن مدار بسته، عملکرد فیلتر هیدروفوبیک و پودر جاذب، یا مقالات علمی دارید بپرسید، یا «مصاحبه بالینی آکادمی» را شروع کنید.',
       bySolution: 'بر اساس راهکار',
       byProduct: 'بر اساس محصول',
@@ -69,7 +69,7 @@
       placeholder: 'Ask about a department, a volume, or a certificate…',
       send: 'Send',
       close: 'Close',
-      welcomeSales: 'Hello and welcome! I am the Abadis Medical AI Assistant. Ask me anything about our 1L/2L/3L disposable suction liners, clinical solutions, proforma quotes, or hospital savings calculations.',
+      welcomeSales: 'Hello! Welcome to Abadis. I am the Abadis smart assistant. I can help you with products, technical specifications, buying guidance and partnership terms. What would you like to ask? I will be glad to guide you.',
       welcomeAcademy: 'Hello and welcome to Abadis Academy! Ask about closed-system infection control vs. traditional glass bottles, shutoff filters, gelling powder, or start the interactive Clinical Interview.',
       bySolution: 'By solution',
       byProduct: 'By product',
@@ -114,7 +114,7 @@
       placeholder: 'اكتب سؤالًا عن القسم أو السعة أو الشهادة…',
       send: 'إرسال',
       close: 'إغلاق',
-      welcomeSales: 'ابدأ من حل سريري أو من سعة الكيس. حساب التوفير حتى ١٥٬٠٠٠ عملية ومن دون CO₂.',
+      welcomeSales: 'مرحبًا! أهلًا بكم في آباديس. أنا المساعد الذكي لآباديس. يمكنني مساعدتكم في المنتجات والمواصفات الفنية ودليل الشراء وشروط التعاون. ما سؤالكم؟ يسعدني أن أكون دليلكم.',
       welcomeAcademy: 'اسأل عن الاستخدام السريري أو النظام المغلق أو الشهادات أو إنقاذ زاغروس أو آباديس. الجواب من قاعدة المعرفة.',
       bySolution: 'حسب الحل',
       byProduct: 'حسب المنتج',
@@ -153,15 +153,15 @@
 
   var CHIPS = {
     fa: {
-      sales: ['راهکار مدیریت مایعات', 'کیسه ۲ لیتری برای ICU', 'صرفه‌جویی ۵۰۰۰ عمل'],
+      sales: [],
       academy: ['شروع مصاحبه بالینی آکادمی', 'فیلتر قطع‌کننده چه می‌کند؟', 'چرا ساکشن مدار بسته بهتر از شیشه‌ایه؟', 'ISO و IMED', 'نجات زاگرس چیست؟']
     },
     en: {
-      sales: ['Fluid management solution', '2 litre liner for ICU', 'Savings for 5000 surgeries'],
+      sales: [],
       academy: ['Start Academy clinical interview', 'Why are closed-system disposable liners better than traditional glass bottles?', 'What does the shutoff filter do?', 'ISO and IMED']
     },
     ar: {
-      sales: ['حل إدارة السوائل', 'كيس ٢ لتر لـ ICU', 'توفير ٥٠٠٠ عملية'],
+      sales: [],
       academy: ['ابدأ مقابلة الأكاديمية', 'ماذا يفعل فلتر قطع التدفق؟', 'ISO و IMED', 'ما إنقاذ زاغروس؟']
     }
   };
@@ -174,13 +174,77 @@
   var PRODUCTS = [
     { id: 'liners', volume: true, fa: 'کیسه ساکشن یکبار مصرف', en: 'Disposable Suction Bag', ar: 'أكياس الشفط ذات الاستخدام الواحد', blurb: { fa: 'مدل‌های ۱، ۲ و ۳ لیتری', en: '1, 2 and 3 litre models', ar: 'موديلات ١ و٢ و٣ لتر' }, page: { fa: '/محصولات/کیسه-ساکشن/', en: '/en/products/suction-bag/', ar: '/arabic/كيس-الشفط/' } },
     { id: 'canisters', fa: 'مخزن ساکشن', en: 'Suction Canister', ar: 'علبة الشفط', blurb: { fa: 'مخازن و سیستم‌های دیواری', en: 'Canisters and wall systems', ar: 'الخزانات والأنظمة الجدارية' }, page: { fa: '/محصولات/مخزن/', en: '/en/products/canisters/', ar: '/arabic/خزانات/' } },
-    { id: 'stands', fa: 'پایه و نگهدارنده‌ها', en: 'Stands & Holders', ar: 'الحوامل والمثبتات', blurb: { fa: 'ترولی، پایه و گیره‌ها', en: 'Trolley, stand and clamps', ar: 'ترولي وقاعدة ومشابك' }, page: { fa: '/محصولات/پایه/', en: '/en/products/base-and-holder/', ar: '/arabic/تثبیت/' } },
+    { id: 'stands', fa: 'پایه و نگهدارنده ها', en: 'Stands & Holders', ar: 'الحوامل والمثبتات', blurb: { fa: 'ترولی، پایه و گیره‌ها', en: 'Trolley, stand and clamps', ar: 'ترولي وقاعدة ومشابك' }, page: { fa: '/محصولات/پایه/', en: '/en/products/base-and-holder/', ar: '/arabic/تثبیت/' } },
     { id: 'connectors', fa: 'اتصالات', en: 'Connectors', ar: 'الوصلات', blurb: { fa: 'کانکتورها و شیرها', en: 'Connectors and valves', ar: 'الوصلات والصمامات' }, page: { fa: '/محصولات/اتصالات/', en: '/en/products/connections/', ar: '/arabic/الوصلات/' } },
-    { id: 'filters', fa: 'فیلتر', en: 'Filter', ar: 'الفلاتر', blurb: { fa: 'انواع فیلترهای حفاظتی', en: 'Protective filter types', ar: 'أنواع الفلاتر الواقية' }, page: { fa: '/محصولات/فیلترها/', en: '/en/products/filters/', ar: '/arabic/الفلتر/' } },
+    { id: 'filters', fa: 'فیلترها', en: 'Filter', ar: 'الفلاتر', blurb: { fa: 'انواع فیلترهای حفاظتی', en: 'Protective filter types', ar: 'أنواع الفلاتر الواقية' }, page: { fa: '/محصولات/فیلترها/', en: '/en/products/filters/', ar: '/arabic/الفلتر/' } },
     { id: 'tubes', fa: 'ساکشن تیوب', en: 'Suction Tube', ar: 'أنبوب الشفط', blurb: { fa: 'لوله‌ها و رابط‌های ساکشن', en: 'Tubes and suction connectors', ar: 'الأنابيب ووصلات الشفط' }, page: { fa: '/محصولات/ساکشن-تیوب/', en: '/en/suction-tube/', ar: '/arabic/أنبوب-الشفط/' } },
     { id: 'oral', fa: 'بهداشت دهان', en: 'Oral Hygiene', ar: 'نظافة الفم', blurb: { fa: 'مسواک ساکشن، سواب دهانی، فیکسر لوله تراشه', en: 'Suction toothbrush, oral swab, tube fixer', ar: 'فرشاة الشفط والمسحة ومثبّت الأنبوب' }, page: { fa: '/محصولات/سواب-های-دهانی-و-نگهدارنده/', en: '/en/products/oral-swabs-tube-holders/', ar: '/arabic/نظافة-الفم/' } },
     { id: 'other', fa: 'سایر محصولات', en: 'Other Products', ar: 'منتجات أخرى', blurb: { fa: 'رگولاتور، کیسه زباله PVA، رسیور یکبار مصرف', en: 'Regulator, PVA waste bag, disposable receiver', ar: 'المنظّم وكيس نفايات PVA ووعاء التجميع' }, page: { fa: '/محصولات/سایر-محصولات/', en: '/en/products/other-products/', ar: '/arabic/منتجات-اخری/' } }
   ];
+
+  /* AB-59: five quick-start buttons under the sales welcome (FA wording from the team; EN/AR equivalents). */
+  var START = [
+    { id: 'products', fa: 'آشنایی با محصولات آبادیس', en: 'About Abadis products', ar: 'التعرّف على منتجات آباديس' },
+    { id: 'catalogue', fa: 'دریافت اطلاعات فنی و کاتالوگ', en: 'Technical information and catalogues', ar: 'المعلومات الفنية والكتالوج' },
+    { id: 'price', fa: 'استعلام قیمت و شرایط خرید', en: 'Price inquiry and purchase terms', ar: 'الاستعلام عن الأسعار وشروط الشراء' },
+    { id: 'dealer', fa: 'همکاری و اخذ نمایندگی', en: 'Partnership and dealership', ar: 'التعاون والحصول على الوكالة' },
+    { id: 'experts', fa: 'ارتباط با کارشناسان آبادیس', en: 'Contact Abadis experts', ar: 'التواصل مع خبراء آباديس' }
+  ];
+  var START_PAGES = {
+    products: { fa: '/محصولات/', en: '/en/products/', ar: '/arabic/منتجات/' },
+    catalogue: { fa: '/کاتالوگ/', en: '/en/center-download/', ar: '/arabic/مركز-التنزيل/' },
+    contact: { fa: '/ارتباط-با-ما/', en: '/en/contact-us/', ar: '/arabic/اتصل-بنا/' },
+    dealers: { fa: '/لیست-نمایندگان/', en: '/en/representatives/', ar: '/arabic/قائمة-الممثلين/' },
+    careers: { fa: '/فرصت-های-همکاری/', en: '/en/collaboration-opportunities/', ar: '/arabic/careers/' }
+  };
+  var START_TEXT = {
+    fa: {
+      products: 'گروه‌های محصولات آبادیس: {list}. یکی از گروه‌ها را انتخاب کنید تا توضیح آن را ببینید، یا صفحه محصولات را باز کنید.',
+      catalogue: 'کاتالوگ‌ها و راهنماهای نصب محصولات آبادیس در مرکز دانلود به صورت PDF در دسترس است. مشخصات فنی هر محصول در صفحه همان محصول آمده است.',
+      price: 'برای استعلام قیمت و دریافت پیش‌فاکتور با واحد فروش تماس بگیرید (۰۲۱-۹۲۰۰۱۰۱۷ داخلی ۱۱) یا فرم ارتباط با ما را پر کنید. مراحل خرید: ۱) درخواست از فرم یا تماس با فروش ۲) تأیید پیش‌فاکتور ۳) واریز ۴) ارسال.',
+      dealer: 'فهرست نمایندگان فعلی آبادیس در صفحه لیست نمایندگان آمده است. برای درخواست همکاری یا اخذ نمایندگی با واحد فروش (۰۲۱-۹۲۰۰۱۰۱۷ داخلی ۱۱) یا از فرم ارتباط با ما در تماس باشید. برای همکاری شغلی، فرم صفحه فرصت‌های همکاری را پر کنید.',
+      experts: 'کارشناسان آبادیس از این راه‌ها پاسخگوی شما هستند: تلفن ۰۲۱-۹۲۰۰۱۰۱۷ (داخلی ۱۱ فروش)، واتس‌اپ، ایمیل info@abadis-med.com یا فرم ارتباط با ما.',
+      lProducts: 'صفحه محصولات', lCatalogue: 'مرکز دانلود', lContact: 'ارتباط با ما', lDealers: 'لیست نمایندگان', lCareers: 'فرصت‌های همکاری'
+    },
+    en: {
+      products: 'Abadis product groups: {list}. Pick a group to see its overview, or open the products page.',
+      catalogue: 'Abadis catalogues and installation guides are available as PDF files in the Download Center. Each product page lists its technical specifications.',
+      price: 'For prices and a proforma invoice, call sales (+98 21 92001017, extension 11) or use the contact form. Purchase steps: 1) request by form or call 2) confirm the proforma 3) pay 4) dispatch.',
+      dealer: 'Current Abadis representatives are listed on the representatives page. For partnership or dealership requests, contact sales (+98 21 92001017, extension 11) or use the contact form. For job applications, fill in the form on the collaboration opportunities page.',
+      experts: 'Abadis experts can be reached by phone at +98 21 92001017 (extension 11 for sales), on WhatsApp, by email at info@abadis-med.com, or through the contact form.',
+      lProducts: 'Products', lCatalogue: 'Download Center', lContact: 'Contact us', lDealers: 'Representatives', lCareers: 'Collaboration opportunities'
+    },
+    ar: {
+      products: 'مجموعات منتجات آباديس: {list}. اختاروا مجموعة لعرض نبذة عنها، أو افتحوا صفحة المنتجات.',
+      catalogue: 'كتالوجات وأدلة تركيب منتجات آباديس متاحة بصيغة PDF في مركز التنزيل. المواصفات الفنية لكل منتج موجودة في صفحته.',
+      price: 'للاستعلام عن الأسعار والحصول على فاتورة أولية اتصلوا بالمبيعات (+98 21 92001017، التحويلة 11) أو استخدموا نموذج الاتصال. خطوات الشراء: ١) الطلب عبر النموذج أو الاتصال ٢) اعتماد الفاتورة الأولية ٣) الدفع ٤) الشحن.',
+      dealer: 'قائمة ممثلي آباديس الحاليين في صفحة قائمة الممثلين. لطلبات التعاون أو الحصول على الوكالة اتصلوا بالمبيعات (+98 21 92001017، التحويلة 11) أو استخدموا نموذج الاتصال. للتوظيف املؤوا النموذج في صفحة فرص التعاون.',
+      experts: 'يمكنكم التواصل مع خبراء آباديس هاتفيًا على +98 21 92001017 (التحويلة 11 للمبيعات)، أو عبر واتساب، أو بالبريد info@abadis-med.com، أو من خلال نموذج الاتصال.',
+      lProducts: 'المنتجات', lCatalogue: 'مركز التنزيل', lContact: 'اتصل بنا', lDealers: 'قائمة الممثلين', lCareers: 'فرص التعاون'
+    }
+  };
+  function startLinks(keys) {
+    var T = START_TEXT[state.lang] || START_TEXT.fa;
+    var names = { products: T.lProducts, catalogue: T.lCatalogue, contact: T.lContact, dealers: T.lDealers, careers: T.lCareers };
+    return '<span class="abadis-chat-src">' + keys.map(function (k) {
+      return '<a href="' + esc(urlOf(START_PAGES[k])) + '">' + esc(names[k]) + '</a>';
+    }).join(' · ') + '</span>';
+  }
+  function answerStart(item) {
+    var T = START_TEXT[state.lang] || START_TEXT.fa;
+    var sep = state.lang === 'en' ? ', ' : '، ';
+    if (item.id === 'products') {
+      var list = PRODUCTS.map(function (p) { return p[state.lang] || p.fa; }).join(sep);
+      addMsg('bot', esc(T.products.replace('{list}', list)) + startLinks(['products']));
+      showChoices(PRODUCTS, 'product');
+      return;
+    }
+    choiceEl.textContent = '';
+    if (item.id === 'catalogue') addMsg('bot', esc(T.catalogue) + startLinks(['catalogue', 'products']));
+    else if (item.id === 'price') addMsg('bot', esc(T.price) + (ctaLine() || startLinks(['contact'])));
+    else if (item.id === 'dealer') addMsg('bot', esc(T.dealer) + startLinks(['dealers', 'contact', 'careers']));
+    else addMsg('bot', esc(T.experts) + (ctaLine() || startLinks(['contact'])));
+  }
 
   function fmt(n, lang) {
     var loc = lang === 'fa' ? 'fa-IR' : lang === 'ar' ? 'ar' : 'en-US';
@@ -461,6 +525,7 @@
   function paintChips() {
     chipEl.textContent = '';
     var list = (CHIPS[state.lang] || CHIPS.fa)[state.mode] || [];
+    chipEl.style.display = list.length ? "" : "none";
     list.forEach(function (label) {
       var b = el('button', 'abadis-chat-chip');
       b.type = 'button';
@@ -533,6 +598,10 @@
   }
 
   function onChoice(kind, item) {
+    if (kind === 'start') {
+      answerStart(item);
+      return;
+    }
     if (kind === 'path') {
       if (item.id === 'solution') {
         addMsg('bot', esc(t().pickSolution));
@@ -1947,10 +2016,18 @@
     choiceEl.textContent = '';
     addMsg('bot', esc(state.mode === 'academy' ? t().welcomeAcademy : t().welcomeSales));
     if (state.mode === 'sales') {
-      showChoices([
-        { id: 'solution', fa: t().bySolution, en: t().bySolution, ar: t().bySolution },
-        { id: 'product', fa: t().byProduct, en: t().byProduct, ar: t().byProduct }
-      ], 'path');
+      var box = el('div', 'abadis-chat-start');
+      START.forEach(function (item) {
+        var btn = el('button', 'abadis-chat-choice abadis-chat-start-btn');
+        btn.type = 'button';
+        btn.textContent = item[state.lang] || item.fa;
+        btn.addEventListener('click', function () {
+          addMsg('user', esc(item[state.lang] || item.fa));
+          answerStart(item);
+        });
+        box.appendChild(btn);
+      });
+      logEl.appendChild(box);
     }
   }
 
