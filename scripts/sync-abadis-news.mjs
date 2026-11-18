@@ -20,6 +20,7 @@ import { mkdir, open, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { extractImageUrls, publishUrls, rewriteText } from './publish-post-media.mjs';
+import { republishPost, unpublishPost } from './unpublish-posts.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = process.env.ABADIS_SYNC_ROOT
@@ -31,6 +32,22 @@ const FIELDS = 'id,date,date_gmt,modified,modified_gmt,slug,link,title,excerpt,c
 function envUrl(name, fallback) {
   const v = (process.env[name] || '').trim();
   return (v || fallback).replace(/\/$/, '');
+}
+
+/**
+ * Locales a --sync run may change. --check and --dry-run still see every language.
+ * EN and AR are opt-in: set their REST override, or list them in ABADIS_SYNC_LANGS.
+ * The default list is fa, so a FA-only CMS cannot unpublish English or Arabic.
+ */
+export function selectedLocales(catalog, mode) {
+  if (mode !== 'sync') return catalog;
+  const raw = process.env.ABADIS_SYNC_LANGS === undefined ? 'fa' : process.env.ABADIS_SYNC_LANGS;
+  const listed = new Set(raw.split(',').map((s) => s.trim()).filter(Boolean));
+  const overridden = new Set();
+  if ((process.env.ABADIS_WP_REST || '').trim()) overridden.add('fa');
+  if ((process.env.ABADIS_WP_REST_EN || '').trim()) overridden.add('en');
+  if ((process.env.ABADIS_WP_REST_AR || '').trim()) overridden.add('ar');
+  return catalog.filter((l) => listed.has(l.id) || overridden.has(l.id));
 }
 
 /** REST, sitemap and feed bases. Defaults stay on the live site so --check still works. */
@@ -105,8 +122,11 @@ Env (all optional; defaults are the live abadis-med.com URLs)
   ABADIS_WP_REST_AR / ABADIS_WP_SITEMAP_AR / ABADIS_WP_FEED_AR
   ABADIS_WP_USER + ABADIS_WP_APP_PASSWORD   Basic auth for REST only
   ABADIS_MEDIA_*                           bucket upload; see docs/news-cutover-delta-sync.md
+  ABADIS_SYNC_LANGS                        comma list for --sync (default fa)
   ABADIS_SYNC_ACTION / ABADIS_SYNC_POST_ID / ABADIS_SYNC_LANG
                                            webhook unpublish of one post
+--sync skips EN and AR unless ABADIS_WP_REST_EN / ABADIS_WP_REST_AR is set
+or ABADIS_SYNC_LANGS lists them. --check still compares all three with the live site.
 
 Exit 0 when the command finishes. Exit 1 on usage errors or a total fetch failure.
 Exit 2 when new images need the media bucket and its secrets are missing (nothing written).
@@ -548,6 +568,15 @@ async function removePublished(locale, manifest, id, state) {
     if (rel && await deleteIfPostPage(rel, title, slug)) removedFile = true;
   }
   if (state.locales?.[locale.id]) delete state.locales[locale.id][String(id)];
+  if ((idx >= 0 || removedFile) && slug && !RESERVED_SLUG.has(slug)) {
+    await unpublishPost(ROOT, {
+      locale: locale.id,
+      id,
+      kind: tracked.kind === 'articles' ? 'articles' : 'news',
+      slug,
+      item,
+    });
+  }
   return idx >= 0 || removedFile;
 }
 
@@ -651,6 +680,7 @@ async function applySync(reports, locales) {
       }
     }
     held.dirty = true;
+    await republishPost(ROOT, locale.id, String(post.id));
     state.locales[locale.id] = state.locales[locale.id] || {};
     state.locales[locale.id][String(post.id)] = { modified: row.modified, kind, slug: row.slug || post.slug || '' };
   }
@@ -717,8 +747,14 @@ export async function run(argv = process.argv.slice(2)) {
   const args = parseArgs(argv);
   if (args.help) { help(); return 0; }
   if (args.self) return selfTest();
-  const locales = localeCatalog().filter((l) => !args.locale || l.id === args.locale);
-  if (!locales.length) throw new Error('Unknown --locale');
+  const locales = selectedLocales(localeCatalog(), args.sync ? 'sync' : 'check').filter((l) => !args.locale || l.id === args.locale);
+  if (!locales.length) {
+    if (args.sync && args.locale) {
+      console.log(`sync: skipped ${args.locale}. Set its REST override or include it in ABADIS_SYNC_LANGS.`);
+      return 0;
+    }
+    throw new Error('Unknown --locale');
+  }
   const reports = [];
   let failed = 0;
   for (const locale of locales) {
@@ -784,8 +820,32 @@ async function selfTest() {
   if (savedRest === undefined) delete process.env.ABADIS_WP_REST; else process.env.ABADIS_WP_REST = savedRest;
   if (savedEn === undefined) delete process.env.ABADIS_WP_REST_EN; else process.env.ABADIS_WP_REST_EN = savedEn;
   if (savedAr === undefined) delete process.env.ABADIS_WP_REST_AR; else process.env.ABADIS_WP_REST_AR = savedAr;
+  const savedLangs = process.env.ABADIS_SYNC_LANGS;
+  const savedRest2 = process.env.ABADIS_WP_REST;
+  const savedEn2 = process.env.ABADIS_WP_REST_EN;
+  const savedAr2 = process.env.ABADIS_WP_REST_AR;
+  delete process.env.ABADIS_SYNC_LANGS;
+  process.env.ABADIS_WP_REST = 'http://cms.example/wp-json/wp/v2';
+  delete process.env.ABADIS_WP_REST_EN;
+  delete process.env.ABADIS_WP_REST_AR;
+  const onlyFa = selectedLocales(localeCatalog(), 'sync').map((l) => l.id);
+  if (onlyFa.join(',') !== 'fa') throw new Error('self-test: FA-only sync must not include EN/AR, got ' + onlyFa.join(','));
+  if (selectedLocales(localeCatalog(), 'check').length !== 3) throw new Error('self-test: --check still covers three languages');
+  process.env.ABADIS_WP_REST_EN = 'http://cms.example/en/wp-json/wp/v2';
+  const withEn = selectedLocales(localeCatalog(), 'sync').map((l) => l.id);
+  if (!withEn.includes('en') || withEn.includes('ar')) throw new Error('self-test: EN override should opt in only EN');
+  delete process.env.ABADIS_WP_REST_EN;
+  process.env.ABADIS_SYNC_LANGS = 'fa,ar';
+  const withAr = selectedLocales(localeCatalog(), 'sync').map((l) => l.id);
+  if (!withAr.includes('ar') || withAr.includes('en')) throw new Error('self-test: ABADIS_SYNC_LANGS should opt in AR');
+  if (savedLangs === undefined) delete process.env.ABADIS_SYNC_LANGS; else process.env.ABADIS_SYNC_LANGS = savedLangs;
+  if (savedRest2 === undefined) delete process.env.ABADIS_WP_REST; else process.env.ABADIS_WP_REST = savedRest2;
+  if (savedEn2 === undefined) delete process.env.ABADIS_WP_REST_EN; else process.env.ABADIS_WP_REST_EN = savedEn2;
+  if (savedAr2 === undefined) delete process.env.ABADIS_WP_REST_AR; else process.env.ABADIS_WP_REST_AR = savedAr2;
   const { mediaSelfTest } = await import('./publish-post-media.mjs');
   await mediaSelfTest();
+  const { unpublishSelfTest } = await import('./unpublish-posts.mjs');
+  await unpublishSelfTest();
   await rm(dir, { recursive: true, force: true });
   console.log('self-test ok');
   return 0;

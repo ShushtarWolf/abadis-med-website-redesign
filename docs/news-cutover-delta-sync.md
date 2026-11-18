@@ -62,7 +62,25 @@ A second `--sync` with no newer WordPress edits does not rewrite manifests and d
 
 ## Unpublish
 
-Trash, unpublish, or delete sends the mu-plugin in `wordpress/mu-plugins/` with `action=unpublish` or `action=delete`. The sync removes that id from the manifest, the markdown file, and the slug page. A scheduled sync also removes ids recorded in `tools/redesign/data/news-sync-state.json` when a non-empty published REST list no longer contains them. Posts this pipeline has never written stay in the archive. An empty REST response does not wipe the archive.
+Trash, unpublish, or delete sends the mu-plugin in `wordpress/mu-plugins/` with `action=unpublish` or `action=delete`. The sync removes that id from the manifest, the markdown file, `sitemap.xml`, and listing cards (news and articles indexes, category and tag pages, and the homepage carousel). It does not leave the slug as a live page.
+
+The old URL 301s to the post's category page when that page exists, otherwise to the news hub (`/آخرین-اخبار/`) or the articles hub (`/مقالات/`). English and Arabic use `/en/latest-news/` or `/en/blog/`, and `/arabic/الاخبار/` or `/arabic/articles/`. The same target is written for `/news/<id>/`, `/articles/<id>/`, and any other path already mapped onto that slug. Example:
+
+```
+rewrite "^/sample-post/?$" "https://$host/%D8%A2%D8%AE%D8%B1%DB%8C%D9%86-%D8%A7%D8%AE%D8%A8%D8%A7%D8%B1/" permanent;
+```
+
+The rules are one marked block, `# BEGIN abadis-unpublished-posts` … `# END abadis-unpublished-posts`, in `site/liara_nginx.conf` and the same paths in `site/_redirects`. A second run replaces the block instead of duplicating it. `url_migrate.py` keeps the block when it rewrites those files. Republishing the post removes its 301; the next posts build writes the page again.
+
+A scheduled sync also removes ids recorded in `tools/redesign/data/news-sync-state.json` when a non-empty published REST list no longer contains them. Posts this pipeline has never written stay in the archive. An empty or failed REST response does not remove anything.
+
+## FA only, until EN and AR are switched on
+
+`--check` and `--dry-run` still compare Persian, English, and Arabic, and they still use abadis-med.com when the overrides are unset.
+
+`--sync` does not. It changes a language only when that language is listed in `ABADIS_SYNC_LANGS` (default `fa`) or its REST override is set (`ABADIS_WP_REST`, `ABADIS_WP_REST_EN`, `ABADIS_WP_REST_AR`). With only the Persian override set, English and Arabic are not fetched, written, or unpublished. They are not treated as missing just because the Persian CMS does not list them.
+
+To publish English later, set `ABADIS_WP_REST_EN` (and the matching sitemap and feed if you need them), or set `ABADIS_SYNC_LANGS=fa,en`. Arabic is the same with `ABADIS_WP_REST_AR` or `ar` in `ABADIS_SYNC_LANGS`.
 
 ## GitHub Actions
 
