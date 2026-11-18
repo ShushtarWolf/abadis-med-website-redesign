@@ -1096,6 +1096,7 @@ def render_wizard_form(form_id_prefix):
           <button type="submit" class="cf-btn-submit">ثبت نهایی درخواست همکاری</button>
         </div>
         <p class="cf-submit-note">پس از ثبت، خلاصه ساختاریافته فرم به واحد منابع انسانی (info@abadis-med.com) ارسال می‌گردد.</p>
+        <p class="form-status" role="status" aria-live="polite"></p>
       </div>
     </form>'''
 
