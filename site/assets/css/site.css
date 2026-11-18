@@ -845,6 +845,7 @@ details.letter[open] summary { margin-bottom: 12px; }
 .prose h2 { font-size: 1.45rem; } .prose h3 { font-size: 1.2rem; } .prose h4 { font-size: 1.05rem; }
 .prose strong { color: var(--ink); }
 .prose a { font-weight: 700; }
+.prose a { overflow-wrap: anywhere; }
 .prose figure { margin: 22px 0; }
 .prose figure img, .prose > img { border-radius: 16px; max-width: 100%; height: auto; display: block; margin-inline: auto; }
 .prose figcaption { color: var(--muted); font-size: .85rem; text-align: center; margin-top: 6px; }
