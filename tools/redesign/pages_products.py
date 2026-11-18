@@ -642,7 +642,8 @@ def write_family_page(write, slug, lang):
     hero = S.inject_h1_badge(
         page_hero(p, [(products, crumb_href), (h1, None)], esc(h1), esc(lead), lang=lang), lang, 'order')
     main = (hero
-            + f'\n  <nav class="anchors" aria-label="{esc(products)}"><div class="wrap">{anchors}</div></nav>\n'
+            # AB-92: no separate anchors row; the in-page tabs (_tabs) are the one product nav
+            + '\n'
             + doc_bar(slug, lang)
             + _tabs(items, blocks, lang, slug, p)
             + S.related_section(p, lang, slug)
