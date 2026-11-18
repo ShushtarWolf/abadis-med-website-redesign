@@ -474,10 +474,58 @@
     });
   }
 
-  /* ---------- forms: POST to configurable endpoint, mailto fallback ---------- */
+  /* ---------- forms: POST to configurable endpoint, mailto fallback ----------
+     Validation is done here (form.noValidate) so multi-step forms (careers)
+     never fail silently: the first step with a missing/invalid field is opened,
+     the fields are outlined with an inline message, and an alert is shown. */
   const formEndpoint = (document.querySelector('meta[name="abadis-form-endpoint"]')?.content || '').trim();
   const formMailtoDefault = (document.querySelector('meta[name="abadis-form-mailto"]')?.content || 'info@abadis-med.com').trim();
   document.querySelectorAll('.form-offline-hint').forEach((el) => { el.hidden = !!formEndpoint; });
+
+  const formLang = (document.documentElement.lang || 'fa').slice(0, 2).toLowerCase();
+  const FORM_TXT = {
+    fa: {
+      required: 'این فیلد الزامی است.',
+      range: (a, b) => 'عددی بین ' + a + ' تا ' + b + ' وارد کنید.',
+      invalid: 'مقدار واردشده معتبر نیست.',
+      fixStep: (n) => 'لطفاً فیلدهای الزامی مشخص‌شده در گام ' + n + ' را تکمیل کنید.',
+      fix: 'لطفاً فیلدهای الزامی مشخص‌شده را تکمیل کنید.',
+      sending: 'در حال ارسال…',
+      sent: 'پیام شما ثبت شد. به‌زودی با شما تماس می‌گیریم.',
+      mailto: 'برنامهٔ ایمیل شما با متن درخواست باز شد؛ ایمیل را از همان‌جا ارسال کنید تا به دست ما برسد.',
+      fallback: (to) => 'اگر برنامهٔ ایمیل باز نشد، متن درخواست را کپی کنید و به ' + to + ' بفرستید.',
+      copy: 'کپی متن درخواست', copied: 'متن درخواست کپی شد.', openMail: 'باز کردن دوبارهٔ ایمیل',
+      serverFail: 'ارسال از طریق سرور ممکن نشد؛ ایمیل آماده باز می‌شود.',
+    },
+    en: {
+      required: 'This field is required.',
+      range: (a, b) => 'Enter a number from ' + a + ' to ' + b + '.',
+      invalid: 'Please enter a valid value.',
+      fixStep: (n) => 'Please complete the highlighted required fields in step ' + n + '.',
+      fix: 'Please complete the highlighted required fields.',
+      sending: 'Sending…',
+      sent: 'Your message has been received. We will contact you soon.',
+      mailto: 'Your email app has opened with your application. Send the email from there so it reaches us.',
+      fallback: (to) => 'If your email app did not open, copy the application text and send it to ' + to + '.',
+      copy: 'Copy application text', copied: 'Application text copied.', openMail: 'Open email again',
+      serverFail: 'Sending through the server failed; your email app will open with the message.',
+    },
+    ar: {
+      required: 'هذا الحقل مطلوب.',
+      range: (a, b) => 'أدخل رقمًا من ' + a + ' إلى ' + b + '.',
+      invalid: 'يرجى إدخال قيمة صحيحة.',
+      fixStep: (n) => 'يرجى إكمال الحقول المطلوبة المحددة في الخطوة ' + n + '.',
+      fix: 'يرجى إكمال الحقول المطلوبة المحددة.',
+      sending: 'جارٍ الإرسال…',
+      sent: 'تم استلام رسالتك. سنتواصل معك قريبًا.',
+      mailto: 'تم فتح تطبيق البريد الإلكتروني مع طلبك. أرسل الرسالة من هناك لتصل إلينا.',
+      fallback: (to) => 'إذا لم يُفتح تطبيق البريد، انسخ نص الطلب وأرسله إلى ' + to + '.',
+      copy: 'نسخ نص الطلب', copied: 'تم نسخ نص الطلب.', openMail: 'فتح البريد مرة أخرى',
+      serverFail: 'تعذّر الإرسال عبر الخادم؛ سيُفتح تطبيق البريد مع الرسالة.',
+    },
+  };
+  const T = FORM_TXT[formLang] || FORM_TXT.fa;
+  const locNum = (n) => new Intl.NumberFormat(formLang === 'en' ? 'en-US' : formLang === 'ar' ? 'ar-EG' : 'fa-IR').format(n);
 
   const asciiDigits = (s) => String(s ?? '').replace(/[۰-۹]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
     .replace(/[٠-٩]/g, (d) => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
@@ -492,7 +540,7 @@
     return lines.join('\n');
   }
 
-  function openMailto(form, fd) {
+  function mailtoParts(form, fd) {
     const to = form.dataset.mailtoForm || formMailtoDefault;
     let subject = form.dataset.subject || 'درخواست از وب‌سایت';
     if (form.id === 'leadForm' && fd.get('topic')) subject += ' — ' + fd.get('topic');
@@ -500,27 +548,181 @@
       ? ['نام: ' + (fd.get('name') || ''), 'مرکز درمانی / شرکت: ' + (fd.get('org') || ''),
          'تلفن: ' + (fd.get('phone') || ''), 'موضوع: ' + (fd.get('topic') || ''), '', fd.get('msg') || ''].join('\n')
       : formBodyLines(fd);
-    location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    return { to, subject, body, href: 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body) };
+  }
+
+  function openMailto(form, fd) {
+    const m = mailtoParts(form, fd);
+    location.href = m.href;
+    return m;
+  }
+
+  function statusEl(form) {
+    let s = form.querySelector('.form-status') || (form.id === 'leadForm' ? document.getElementById('formStatus') : null);
+    if (!s) {
+      s = document.createElement('p');
+      s.className = 'form-status';
+      s.setAttribute('role', 'status');
+      s.setAttribute('aria-live', 'polite');
+      const anchor = form.querySelector('.cf-submit-note') || form.querySelector('[type="submit"]');
+      if (anchor) anchor.after(s); else form.appendChild(s);
+    }
+    return s;
   }
 
   function setFormStatus(form, text, isError) {
-    const s = form.querySelector('.form-status') || document.getElementById('formStatus');
-    if (!s) return;
+    const s = statusEl(form);
     s.textContent = text;
     s.classList.toggle('is-error', !!isError);
+    s.classList.remove('is-success');
+    return s;
+  }
+
+  function showMailtoDone(form, m) {
+    const s = setFormStatus(form, '', false);
+    s.classList.add('is-success');
+    const p1 = document.createElement('span'); p1.className = 'form-status-line'; p1.textContent = T.mailto;
+    const p2 = document.createElement('span'); p2.className = 'form-status-line form-status-sub'; p2.textContent = T.fallback(m.to);
+    const acts = document.createElement('span'); acts.className = 'form-status-actions';
+    const copyBtn = document.createElement('button'); copyBtn.type = 'button'; copyBtn.className = 'cf-btn-ghost'; copyBtn.textContent = T.copy;
+    copyBtn.addEventListener('click', async () => {
+      const text = m.subject + '\n\n' + m.body;
+      try { await navigator.clipboard.writeText(text); }
+      catch (_) {
+        const ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch (__) {} ta.remove();
+      }
+      copyBtn.textContent = T.copied;
+    });
+    const link = document.createElement('a'); link.className = 'cf-btn-ghost'; link.href = m.href; link.textContent = T.openMail;
+    acts.append(copyBtn, link);
+    s.append(p1, p2, acts);
+    s.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
+  }
+
+  /* number fields: accept Persian/Arabic digits (type=number rejects them silently) */
+  function prepNumberFields(form) {
+    form.querySelectorAll('input[type="number"]').forEach((inp) => {
+      const min = inp.getAttribute('min'), max = inp.getAttribute('max');
+      inp.type = 'text';
+      inp.setAttribute('inputmode', 'numeric');
+      inp.dataset.numMin = min || '';
+      inp.dataset.numMax = max || '';
+    });
+  }
+  function checkNumberField(inp) {
+    if (!('numMin' in inp.dataset)) return;
+    const v = asciiDigits(inp.value).trim();
+    if (v !== inp.value) inp.value = v;
+    let msg = '';
+    if (v !== '') {
+      const n = Number(v);
+      const min = inp.dataset.numMin === '' ? -Infinity : Number(inp.dataset.numMin);
+      const max = inp.dataset.numMax === '' ? Infinity : Number(inp.dataset.numMax);
+      if (!/^-?\d+(\.\d+)?$/.test(v) || n < min || n > max) {
+        msg = (isFinite(min) && isFinite(max)) ? T.range(locNum(min), locNum(max)) : T.invalid;
+      }
+    }
+    inp.setCustomValidity(msg);
+  }
+
+  function fieldMsg(el) {
+    if (el.validity.valueMissing) return T.required;
+    if (el.validity.customError) return el.validationMessage;
+    return T.invalid;
+  }
+  function clearFieldError(el) {
+    el.classList.remove('is-invalid');
+    el.removeAttribute('aria-invalid');
+    const box = el.closest('label') || el.parentElement;
+    const err = box && box.querySelector(':scope > .cf-field-err');
+    if (err) err.remove();
+    const pane = el.closest('[data-step-pane]');
+    const form = el.form;
+    if (pane && form && !pane.querySelector('.is-invalid')) {
+      form.querySelectorAll('[data-step-btn="' + pane.dataset.stepPane + '"]').forEach((t) => t.classList.remove('has-error'));
+    }
+    if (form && !form.querySelector('.is-invalid')) {
+      const a = form.querySelector('.cf-form-alert'); if (a) { a.hidden = true; a.textContent = ''; }
+    }
+  }
+  function markFieldError(el) {
+    el.classList.add('is-invalid');
+    el.setAttribute('aria-invalid', 'true');
+    const box = el.closest('label') || el.parentElement;
+    if (!box) return;
+    let err = box.querySelector(':scope > .cf-field-err');
+    if (!err) { err = document.createElement('span'); err.className = 'cf-field-err'; box.appendChild(err); }
+    err.textContent = fieldMsg(el);
+  }
+
+  function showStep(form, n) {
+    const tab = form.querySelector('[data-step-btn="' + n + '"]');
+    if (tab) { tab.click(); return; }
+    form.querySelectorAll('.cf-step-pane').forEach((p) => p.classList.toggle('is-active', p.dataset.stepPane === String(n)));
+  }
+
+  /* returns true when valid; otherwise reveals the first problem and returns false */
+  function validateForm(form) {
+    form.querySelectorAll('input[data-num-min]').forEach(checkNumberField);
+    const bad = Array.from(form.elements).filter((el) => el.willValidate && !el.checkValidity());
+    form.querySelectorAll('.is-invalid').forEach((el) => { if (!bad.includes(el)) clearFieldError(el); });
+    if (!bad.length) return true;
+    bad.forEach(markFieldError);
+    const first = bad[0];
+    const pane = first.closest('[data-step-pane]');
+    let alertText = T.fix;
+    if (pane) {
+      const stepNo = pane.dataset.stepPane;
+      form.querySelectorAll('[data-step-btn]').forEach((t) => {
+        const p = form.querySelector('[data-step-pane="' + t.dataset.stepBtn + '"]');
+        t.classList.toggle('has-error', !!(p && p.querySelector('.is-invalid')));
+      });
+      if (!pane.classList.contains('is-active')) showStep(form, stepNo);
+      alertText = T.fixStep(locNum(Number(stepNo)));
+    }
+    let alertBox = form.querySelector('.cf-form-alert');
+    if (!alertBox) {
+      alertBox = document.createElement('p');
+      alertBox.className = 'cf-form-alert';
+      alertBox.setAttribute('role', 'alert');
+      const stepper = form.querySelector('.cf-stepper');
+      if (stepper) stepper.after(alertBox); else form.prepend(alertBox);
+    }
+    alertBox.textContent = alertText;
+    alertBox.hidden = false;
+    const st = form.querySelector('.form-status'); if (st) { st.textContent = ''; st.classList.remove('is-success', 'is-error'); }
+    requestAnimationFrame(() => {
+      first.scrollIntoView({ block: 'center', behavior: 'auto' });
+      try { first.focus({ preventScroll: true }); } catch (_) { first.focus(); }
+    });
+    return false;
   }
 
   document.querySelectorAll('form[data-abadis-form], form#leadForm, form[data-mailto-form]').forEach((form) => {
     if (form.dataset.formBound) return;
     form.dataset.formBound = '1';
+    form.noValidate = true;
+    prepNumberFields(form);
+    const onEdit = (e) => {
+      const el = e.target;
+      if (!el || !el.form) return;
+      if (el.dataset && 'numMin' in el.dataset) checkNumberField(el);
+      if (el.classList.contains('is-invalid')) {
+        if (el.checkValidity()) clearFieldError(el); else markFieldError(el);
+      }
+    };
+    form.addEventListener('input', onEdit);
+    form.addEventListener('change', onEdit);
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      if (!form.reportValidity()) return;
+      if (!validateForm(form)) return;
       const btn = form.querySelector('[type="submit"]');
       const fd = new FormData(form);
       // honeypot: pretend success, do nothing
       if ((fd.get('_gotcha') || '').toString().trim()) {
-        setFormStatus(form, 'پیام شما ثبت شد. به‌زودی با شما تماس می‌گیریم.', false);
+        setFormStatus(form, T.sent, false);
         form.reset();
         return;
       }
@@ -531,13 +733,12 @@
       if (!fd.get('form_name')) fd.set('form_name', form.dataset.abadisForm || form.id || 'form');
 
       if (!formEndpoint) {
-        openMailto(form, fd);
-        setFormStatus(form, 'برنامهٔ ایمیل شما باز شد؛ پیام بعد از ارسال از همان‌جا به دست ما می‌رسد.', false);
+        showMailtoDone(form, openMailto(form, fd));
         return;
       }
 
       if (btn) btn.disabled = true;
-      setFormStatus(form, 'در حال ارسال…', false);
+      setFormStatus(form, T.sending, false);
       try {
         const res = await fetch(formEndpoint, {
           method: 'POST',
@@ -545,15 +746,29 @@
           headers: { Accept: 'application/json' },
         });
         if (!res.ok) throw new Error('HTTP ' + res.status);
-        setFormStatus(form, 'پیام شما ثبت شد. به‌زودی با شما تماس می‌گیریم.', false);
+        const s = setFormStatus(form, T.sent, false);
+        s.classList.add('is-success');
+        s.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
         form.reset();
       } catch (err) {
-        setFormStatus(form, 'ارسال از طریق سرور ممکن نشد؛ ایمیل آماده باز می‌شود.', true);
-        openMailto(form, fd);
+        setFormStatus(form, T.serverFail, true);
+        const m = openMailto(form, fd);
+        showMailtoDone(form, m);
       } finally {
         if (btn) btn.disabled = false;
       }
     });
+  });
+
+  /* careers wizard: a row added by "add row" must not inherit the error marks of the row it was cloned from */
+  document.querySelectorAll('[data-cf-add]').forEach((btn) => {
+    btn.addEventListener('click', () => setTimeout(() => {
+      const rows = btn.closest('[data-cf-list]')?.querySelectorAll('.cf-list-row');
+      const last = rows && rows[rows.length - 1];
+      if (!last || rows.length < 2) return;
+      last.querySelectorAll('.cf-field-err').forEach((x) => x.remove());
+      last.querySelectorAll('.is-invalid').forEach((x) => { x.classList.remove('is-invalid'); x.removeAttribute('aria-invalid'); });
+    }, 0));
   });
 
   /* careers list fields: clone row */
