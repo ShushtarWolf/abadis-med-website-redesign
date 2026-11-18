@@ -2798,3 +2798,31 @@ html[dir="ltr"] .mh-bg-veil {
     font-size: 0.84rem;
   }
 }
+
+/* Form validation + submit feedback (AB-72) */
+.cf-form-alert {
+  margin: 0 0 16px; padding: 12px 14px; border-radius: 12px;
+  border: 1px solid #b42318; background: rgba(180, 35, 24, .07); color: #b42318;
+  font-size: .9rem; font-weight: 800;
+}
+.cf-form-alert[hidden] { display: none; }
+.cf-step-tab.has-error { border-color: #b42318; box-shadow: inset 0 0 0 1px #b42318; }
+.cf-step-tab.has-error:not(.is-active) .cf-step-num { background: #b42318; color: #fff; }
+.cf-lbl input.is-invalid, .cf-lbl select.is-invalid, .cf-lbl textarea.is-invalid,
+form input.is-invalid, form select.is-invalid, form textarea.is-invalid {
+  border-color: #b42318; box-shadow: 0 0 0 2px rgba(180, 35, 24, .18);
+}
+.cf-field-err { display: block; color: #b42318; font-size: .78rem; font-weight: 700; }
+.form-status:empty { display: none; }
+.form-status.is-success {
+  display: flex; flex-direction: column; gap: 8px;
+  margin-top: 14px; padding: 14px 16px; border-radius: 12px;
+  border: 1px solid #066163; background: #e8f3f3; color: #066163;
+}
+.form-status.is-success .form-status-sub { font-weight: 600; font-size: .86rem; }
+.form-status-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.form-status-actions .cf-btn-ghost { text-decoration: none; display: inline-flex; align-items: center; }
+html[data-theme="dark"] .form-status.is-success,
+html[data-theme="noir"] .form-status.is-success { background: transparent; border-color: var(--c-brand); color: var(--c-brand); }
+html[data-theme="dark"] .cf-form-alert, html[data-theme="noir"] .cf-form-alert,
+html[data-theme="dark"] .cf-field-err, html[data-theme="noir"] .cf-field-err { color: #f97066; border-color: #f97066; }
