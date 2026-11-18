@@ -130,19 +130,19 @@ THEMES = [
         key='fluid',
         title=T('مدیریت مایعات و ترشحات', 'Fluid and secretion management', 'إدارة السوائل والإفرازات'),
         products=T(
-            'کیسه ساکشن یکبارمصرف، مخزن ساکشن، اتصالات، پایه و نگهدارنده، ساکشن تیوب، فیلتر',
-            'Disposable suction liner bag, suction canister, connectors, stand and holder, suction tube, filter',
-            'كيس شفط ذو استعمال واحد، خزان الشفط، الوصلات، القاعدة والحامل، أنبوب الشفط، الفلتر'),
+            'کیسه ساکشن، مخازن و ظروف پزشکی، اتصالات و ملزومات ساکشن، پایه و نگهدارنده ها، ساکشن تیوب، فیلترها',
+            'Suction Bag, Medical Canisters, Connections, Base and Holder, Suction tube, Filter',
+            'كيس الشفط، خزانات، تثبیت، الوصلات، أنبوب الشفط، الفلتر'),
     ),
     dict(
         key='airway',
         title=T('ایمنی و مراقبت از راه هوایی (بهداشت دهان)', 'Airway safety and care (oral hygiene)', 'سلامة الطريق الهوائي والعناية به (صحة الفم)'),
-        products=T('براش و فیکسر', 'Brush and fixer', 'الفرشاة والمثبّت'),
+        products=T('سواب های دهانی و نگهدارنده', 'Oral Swabs & Tube Holders', 'مسحات الفم وحاملات الأنبوب'),
     ),
     dict(
         key='waste',
         title=T('کنترل آلودگی و مدیریت پسماند', 'Contamination control and waste management', 'السيطرة على التلوث وإدارة النفايات'),
-        products=T('کیسه زباله PVA', 'PVA waste bag', 'كيس نفايات PVA'),
+        products=T('کیسه های تخصصی و مدیریت پسماند', 'Specialized Bags & Waste Management', 'أكياس متخصصة وإدارة النفايات'),
     ),
 ]
 
@@ -525,10 +525,13 @@ def hub_html(lang, url):
         f'<td data-label="{esc(MAP_COL[1][lang])}">{esc(theme["title"][lang])}</td>'
         f'<td data-label="{esc(MAP_COL[2][lang])}">{_page_links(lang, url, THEME_PAGES[theme["key"]])}</td></tr>'
         for theme in THEMES)
-    nums = '۱۲۳۴۵۶۷۸' if lang == 'fa' else ('12345678' if lang == 'en' else '١٢٣٤٥٦٧٨')
+    import solutions_arch as SA  # AB-88: follow the current product menu (abadis-med.com/محصولات/); 'other' removed (AB-90)
+    cats = [c for c in SA.catalog_for(lang) if c['slug'] != 'other']
+    digits = '۰۱۲۳۴۵۶۷۸۹' if lang == 'fa' else ('0123456789' if lang == 'en' else '٠١٢٣٤٥٦٧٨٩')
+    num = lambda n: ''.join(digits[int(ch)] for ch in str(n))
     catalog = ''.join(
-        f'<li><b>{nums[i]}</b> <a href="{url(CAT_HREF[lang][i])}">{esc(PRODUCT_ROWS[i][lang])}</a></li>'
-        for i in range(8))
+        f'<li><b>{num(i + 1)}</b> <a href="{url(c["href"][lang])}">{esc(c["title"][lang])}</a></li>'
+        for i, c in enumerate(cats))
     map_head = ''.join(f'<th scope="col">{esc(h[lang])}</th>' for h in MAP_COL)
     return f'''<section class="section phil-sec" id="phil">
   <div class="wrap">
