@@ -132,7 +132,7 @@ AR_DOWNLOADS = '''<main id="main">
   <section class="page-hero"><div class="wrap">
     <p class="crumbs"><a href="../../arabic/">الرئيسية</a> › مركز التنزيل</p>
     <h1>مركز التنزيل</h1>
-    <p class="lead">كتالوجات وأدلة تركيب منتجات خزانات آباديس الطبية. عند عدم توفر ملف عربي يُستخدم ملف الإنجليزية.</p>
+    <p class="lead">كتالوجات وأدلة تركيب منتجات خزانات آباديس الطبية.</p>
   </div></section>
   <section class="section"><div class="wrap"><div class="post-grid">
     {cards}
