@@ -3333,7 +3333,8 @@
   "https://abadis-med.com/wp-content/uploads/2026/08/لوله-هوا-ایروی-چیست؟.jpg": {
     "ok": true,
     "file": "5857e0fcf524a5be.jpg",
-    "bytes": 122818
+    "bytes": 122818,
+    "via": "ok"
   },
   "http://abadis-med.com/wp-content/uploads/2026/08/لوله-هوا-ایروی-چیست؟.jpg": {
     "ok": false,
@@ -3534,7 +3535,7 @@
     "ok": true,
     "file": "673b3bc68f18ddaf.jpg",
     "bytes": 109344,
-    "via": "http-retry"
+    "via": "ok"
   },
   "http://abadis-med.com/wp-content/uploads/2026/07/فیلتر-آنتی‌باکتریال-و-فیلتر-هیدروفوبیک-چیست؟.jpg": {
     "ok": false,
@@ -3601,7 +3602,7 @@
     "ok": true,
     "file": "b6f75f38493be635.png",
     "bytes": 445347,
-    "via": "live-2026-10-14"
+    "via": "ok"
   },
   "http://abadis-med.com/wp-content/uploads/2026/07/کیسه-ساکشن.png": {
     "ok": false,
@@ -3611,7 +3612,7 @@
     "ok": true,
     "file": "f4ded1387675a317.png",
     "bytes": 541217,
-    "via": "live-2026-10-14"
+    "via": "ok"
   },
   "http://abadis-med.com/wp-content/uploads/2026/07/محفظه-جمع-آوری-مایعات-عفونی.png": {
     "ok": false,
@@ -7627,7 +7628,8 @@
   "https://abadis-med.com/wp-content/uploads/2026/10/بهداشت-دهان-در-بیمارستان؛-از-اهمیت-مراقبت-تا-تجهیزات-تخصصی.png": {
     "ok": true,
     "file": "1e07e28c9ba600be.png",
-    "bytes": 414131
+    "bytes": 414131,
+    "via": "ok"
   },
   "http://abadis-med.com/wp-content/uploads/2026/10/بهداشت-دهان-در-بیمارستان؛-از-اهمیت-مراقبت-تا-تجهیزات-تخصصی.png": {
     "ok": false,
@@ -7680,42 +7682,50 @@
   "https://abadis-med.com/wp-content/uploads/2026/10/چست-باتل-چیست؟-آشنایی-با-انواع،-کاربردها-و-نحوه-عملکرد.jpg": {
     "ok": true,
     "file": "f14894ce652dd2ed.jpg",
-    "bytes": 165861
+    "bytes": 165861,
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2026/10/Chest-Drainage-System-with-Lung-Illustration-1024x576.png": {
     "ok": true,
     "file": "9eb70a4693ba47ba.png",
-    "bytes": 649892
+    "bytes": 649892,
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2026/10/Chest-Drainage-System-with-Lung-Illustration.png": {
     "ok": true,
     "file": "9eb70a4693ba47ba.png",
-    "bytes": 649892
+    "bytes": 649892,
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2026/10/Chest-Tube-Drainage-System-Infographic-1-1024x512.png": {
     "ok": true,
     "file": "9803e8dbdc13628b.png",
-    "bytes": 724436
+    "bytes": 724436,
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2026/10/Chest-Tube-Drainage-System-Infographic-1.png": {
     "ok": true,
     "file": "9803e8dbdc13628b.png",
-    "bytes": 724436
+    "bytes": 724436,
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2026/10/Chest-Drainage-Systems-Infographic-2-1024x512.png": {
     "ok": true,
     "file": "97d3081f79de9538.png",
-    "bytes": 697150
+    "bytes": 697150,
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2026/10/Chest-Drainage-Systems-Infographic-2.png": {
     "ok": true,
     "file": "97d3081f79de9538.png",
-    "bytes": 697150
+    "bytes": 697150,
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2026/10/آینده-تجهیزات-پزشکی-با-هوش-مصنوعی؛-فناوری‌هایی-که-صنعت-سلامت-را-متحول-می‌کنند.jpg": {
     "ok": true,
     "file": "efa640f6fcc4b508.jpg",
-    "bytes": 191046
+    "bytes": 191046,
+    "via": "ok"
   },
   "http://abadis-med.com/wp-content/uploads/2026/10/آینده-تجهیزات-پزشکی-با-هوش-مصنوعی؛-فناوری‌هایی-که-صنعت-سلامت-را-متحول-می‌کنند.jpg": {
     "ok": false,
@@ -7758,27 +7768,32 @@
   "https://abadis-med.com/wp-content/uploads/2026/10/مخزن-ساکشن-دائمی؛-انتخابی-اقتصادی-یا-هزینه‌ای-پنهان-برای-بیمارستان‌ها؟.jpg": {
     "ok": true,
     "file": "40f655c5669f5d9e.jpg",
-    "bytes": 168195
+    "bytes": 168195,
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2026/10/Vintage-Suction-Canister-in-Sterile-Operating-Room-1024x576.png": {
     "ok": true,
     "file": "bf8dfb56a240425f.png",
-    "bytes": 676779
+    "bytes": 676779,
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2026/10/Vintage-Suction-Canister-in-Sterile-Operating-Room.png": {
     "ok": true,
     "file": "bf8dfb56a240425f.png",
-    "bytes": 676779
+    "bytes": 676779,
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2026/10/Hidden-Costs-of-Hospital-Suction-Canisters-1024x683.png": {
     "ok": true,
     "file": "873b6ca6ae86b01f.png",
-    "bytes": 841187
+    "bytes": 841187,
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2026/10/Hidden-Costs-of-Hospital-Suction-Canisters.png": {
     "ok": true,
     "file": "873b6ca6ae86b01f.png",
-    "bytes": 841187
+    "bytes": 841187,
+    "via": "ok"
   },
   "http://abadis-med.com/wp-content/uploads/2026/10/راهنمای-خرید-کیسه-ادرار-یورین-بگ.jpg": {
     "ok": false,
@@ -7787,7 +7802,8 @@
   "https://abadis-med.com/wp-content/uploads/2026/10/راهنمای-خرید-کیسه-ادرار-یورین-بگ.jpg": {
     "ok": true,
     "file": "e5dd937920fd6ce7.jpg",
-    "bytes": 138055
+    "bytes": 138055,
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2026/10/Clinical-Urine-Collection-Bag-in-Hospital-Room-1024x576.png": {
     "ok": true,
@@ -7812,7 +7828,8 @@
   "https://abadis-med.com/wp-content/uploads/2026/10/کیسه-PVA-چیست؟کاربردها،-مزایا-و-نقش-آن-در-کنترل-عفونت.jpg": {
     "ok": true,
     "file": "154fbdc172c3397d.jpg",
-    "bytes": 177163
+    "bytes": 177163,
+    "via": "ok"
   },
   "http://abadis-med.com/wp-content/uploads/2026/10/کیسه-PVA-چیست؟کاربردها،-مزایا-و-نقش-آن-در-کنترل-عفونت.jpg": {
     "ok": false,
@@ -7845,27 +7862,32 @@
   "https://abadis-med.com/wp-content/uploads/2026/10/آشنایی-با-دستگاه-ساکشن-دامپزشکی.jpg": {
     "ok": true,
     "file": "9a6bfede3b56d155.jpg",
-    "bytes": 179055
+    "bytes": 179055,
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2026/10/Veterinary-Surgery-with-Anesthetized-Dog-1-1024x576.png": {
     "ok": true,
     "file": "1015fd722ee8ad20.png",
-    "bytes": 761056
+    "bytes": 761056,
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2026/10/Veterinary-Surgery-with-Anesthetized-Dog-1.png": {
     "ok": true,
     "file": "1015fd722ee8ad20.png",
-    "bytes": 761056
+    "bytes": 761056,
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2026/10/Veterinary-Operating-Room-with-Ariovac-Suction-System-1-1024x683.png": {
     "ok": true,
     "file": "a65afa3e9169c7ac.png",
-    "bytes": 884712
+    "bytes": 884712,
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2026/10/Veterinary-Operating-Room-with-Ariovac-Suction-System-1.png": {
     "ok": true,
     "file": "a65afa3e9169c7ac.png",
-    "bytes": 884712
+    "bytes": 884712,
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2026/09/دستگاه-ساکشن-اشمن.png": {
     "ok": true,
@@ -7908,16 +7930,20 @@
     "err": "fetch-failed"
   },
   "https://abadis-med.com/wp-content/uploads/2026/10/آگهی-کیسه_های-ساکشن-دامپزشکی.png": {
-    "ok": false,
-    "err": "fetch-failed"
+    "ok": true,
+    "file": "1cc0c15f2a538e8d.png",
+    "bytes": 735407,
+    "via": "ok"
   },
   "http://abadis-med.com/wp-content/uploads/2026/10/آگهی-کیسه_های-ساکشن-دامپزشکی-1024x683.png": {
     "ok": false,
     "err": "fetch-failed"
   },
   "https://abadis-med.com/wp-content/uploads/2026/10/آگهی-کیسه_های-ساکشن-دامپزشکی-1024x683.png": {
-    "ok": false,
-    "err": "fetch-failed"
+    "ok": true,
+    "file": "1cc0c15f2a538e8d.png",
+    "bytes": 735407,
+    "via": "ok"
   },
   "http://abadis-med.com/wp-content/uploads/2026/10/آگهی-کیسه_های-ساکشن-دامپزشکی.png": {
     "ok": false,
@@ -8423,8 +8449,8 @@
   },
   "https://abadis-med.com/wp-content/uploads/2026/10/%D8%A2%DA%AF%D9%87%DB%8C-%DA%A9%DB%8C%D8%B3%D9%87_%D9%87%D8%A7%DB%8C-%D8%B3%D8%A7%DA%A9%D8%B4%D9%86-%D8%AF%D8%A7%D9%85%D9%BE%D8%B2%D8%B4%DA%A9%DB%8C.png": {
     "ok": true,
-    "file": "8f15bc55f621b37e.png",
-    "bytes": 1837817,
+    "file": "1cc0c15f2a538e8d.png",
+    "bytes": 735407,
     "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2026/11/1.png": {
@@ -8465,8 +8491,8 @@
   },
   "https://abadis-med.com/wp-content/uploads/2026/11/Medical-Suction-Collection-Products-Banner-1.png": {
     "ok": true,
-    "file": "da4895741bca289c.png",
-    "bytes": 1773096,
+    "file": "db4aabc54fc9b5dd.png",
+    "bytes": 576509,
     "via": "ok"
   },
   "https://www.abadis-med.com/en/wp-content/uploads/2018/01/Nosocomial-Infections.jpg": {
@@ -8483,8 +8509,8 @@
   },
   "https://abadis-med.com/wp-content/uploads/2026/11/مخازن-ساکشن-آبادیس؛-ایمنی-و-کیفیت-медицин_.png": {
     "ok": true,
-    "file": "013a56f9874dbcfc.png",
-    "bytes": 1845476,
+    "file": "27eee6debf7fde96.png",
+    "bytes": 611556,
     "via": "ok"
   },
   "https://www.abadis-med.com/en/wp-content/uploads/2019/01/High-Quality-Hospital-Equipment-and-Products.jpg": {
@@ -11574,5 +11600,167 @@
     "ok": true,
     "file": "ff0c83bdb6f9a6f2.jpg",
     "bytes": 232682
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/هوش-تجاری-BI؛-تحول-هوشمند-صنعت-تجهیزات-پزشکی.png": {
+    "ok": true,
+    "file": "1b822adab6a63018.png",
+    "bytes": 525118,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/Smart-Factory-Analytics-in-Action-1-1024x576.png": {
+    "ok": true,
+    "file": "f9ffb2b9beef794d.png",
+    "bytes": 797500,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/Smart-Factory-Analytics-in-Action-1.png": {
+    "ok": true,
+    "file": "f9ffb2b9beef794d.png",
+    "bytes": 797500,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/Cleanroom-Analytics-Dashboard-3-1024x576.png": {
+    "ok": true,
+    "file": "204686609a66a994.png",
+    "bytes": 657988,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/Cleanroom-Analytics-Dashboard-3.png": {
+    "ok": true,
+    "file": "204686609a66a994.png",
+    "bytes": 657988,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/High-Tech-Analytics-Control-Room-2-1024x576.png": {
+    "ok": true,
+    "file": "b8f77a72a5e56906.png",
+    "bytes": 693703,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/High-Tech-Analytics-Control-Room-2.png": {
+    "ok": true,
+    "file": "b8f77a72a5e56906.png",
+    "bytes": 693703,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/میکروست-چیست؟-کاربرد،-اجزا-و-تفاوت-با-ماکروست.png": {
+    "ok": true,
+    "file": "f2db60640eb49cf7.png",
+    "bytes": 412879,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/Microdrip-IV-Set-in-a-Clinical-Setting-1024x576.png": {
+    "ok": true,
+    "file": "203045b0621d7b4e.png",
+    "bytes": 584733,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/Microdrip-IV-Set-in-a-Clinical-Setting.png": {
+    "ok": true,
+    "file": "203045b0621d7b4e.png",
+    "bytes": 584733,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/ChatGPT-Image-Nov-10-2026-03_39_20-PM-1-1024x576.png": {
+    "ok": true,
+    "file": "f31c4683cc2d62cf.png",
+    "bytes": 590782,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/ChatGPT-Image-Nov-10-2026-03_39_20-PM-1.png": {
+    "ok": true,
+    "file": "f31c4683cc2d62cf.png",
+    "bytes": 590782,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/ChatGPT-Image-Nov-10-2026-03_41_34-PM-1024x576.png": {
+    "ok": true,
+    "file": "69dc4d3114292646.png",
+    "bytes": 593358,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/ChatGPT-Image-Nov-10-2026-03_41_34-PM.png": {
+    "ok": true,
+    "file": "69dc4d3114292646.png",
+    "bytes": 593358,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/ست-سرم-چیست؟-راهنمای-جامع-انواع،-اجزا،-کاربردها-و-استانداردهای-ایمنی.jpg": {
+    "ok": true,
+    "file": "687186ae96e029d9.jpg",
+    "bytes": 133459,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/Hospital-IV-Infusion-Set-on-Reflective-Table-1024x576.png": {
+    "ok": true,
+    "file": "fd8abc2e4d20a636.png",
+    "bytes": 515612,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/Hospital-IV-Infusion-Set-on-Reflective-Table.png": {
+    "ok": true,
+    "file": "fd8abc2e4d20a636.png",
+    "bytes": 515612,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/IV-Infusion-Set-Component-Guide-1024x576.png": {
+    "ok": true,
+    "file": "b17b0869cbe328c3.png",
+    "bytes": 624958,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/IV-Infusion-Set-Component-Guide.png": {
+    "ok": true,
+    "file": "b17b0869cbe328c3.png",
+    "bytes": 624958,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/Persian-Labeled-IV-Infusion-Set-Diagram-1024x683.png": {
+    "ok": true,
+    "file": "195b3a50936ad18e.png",
+    "bytes": 646062,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/Persian-Labeled-IV-Infusion-Set-Diagram.png": {
+    "ok": true,
+    "file": "195b3a50936ad18e.png",
+    "bytes": 646062,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/۴-برند-تولیدکننده-کیسه-ساکشن-در-جهان-که-باید-بشناسید؛-از-آبادیس-تا-سرس.jpg": {
+    "ok": true,
+    "file": "599f84455bdd76c4.jpg",
+    "bytes": 163479,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/Medical-Suction-Collection-Products-Banner-1-1024x576.png": {
+    "ok": true,
+    "file": "db4aabc54fc9b5dd.png",
+    "bytes": 576509,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/مخازن-ساکشن-آبادیس؛-ایمنی-و-کیفیت-медицин_-1024x576.png": {
+    "ok": true,
+    "file": "27eee6debf7fde96.png",
+    "bytes": 611556,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/10/از-اتاق-عمل-تا-کنترل-عفونت؛-نقش-کیسه-ساکشن-در-دامپزشکی.jpg": {
+    "ok": true,
+    "file": "8458f51b93da2b30.jpg",
+    "bytes": 138958,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/10/%D8%A2%DA%AF%D9%87%DB%8C-%DA%A9%DB%8C%D8%B3%D9%87_%D9%87%D8%A7%DB%8C-%D8%B3%D8%A7%DA%A9%D8%B4%D9%86-%D8%AF%D8%A7%D9%85%D9%BE%D8%B2%D8%B4%DA%A9%DB%8C-1024x683.png": {
+    "ok": true,
+    "file": "1cc0c15f2a538e8d.png",
+    "bytes": 735407,
+    "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/08/دستگاه-تزریق-چربی-چیست؟-1.jpg": {
+    "ok": true,
+    "file": "c0fd4fff41fbd47a.jpg",
+    "bytes": 69186,
+    "via": "ok"
   }
 }
