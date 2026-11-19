@@ -48,15 +48,21 @@ try:
     import pages_archives; GROUPS['archives'] = pages_archives.build
 except ImportError: pass
 
-if __name__ == '__main__':
-    try:
-        import solutions_arch
-        solutions_arch.assert_nav_catalog_sync()
-    except ImportError:
-        pass
-    want = sys.argv[1:] or [g for g in GROUPS if g not in ('en', 'ar')]  # full build includes i18n once
-    if 'posts' in GROUPS: pages_posts.prepare()   # fill POST_MAP first so every page links posts internally
-    # avoid double-running en/ar when both i18n and en/ar requested
+def _site_snapshot():
+    """WebP names plus a hash of HTML, so a posts build can tell that it changed the tree."""
+    import hashlib
+    names = []
+    img = SITE / 'assets/img/c'
+    if img.is_dir():
+        names = sorted(p.name for p in img.glob('*.webp'))
+    digest = hashlib.sha256()
+    for path in sorted(SITE.rglob('*.html')):
+        digest.update(path.relative_to(SITE).as_posix().encode())
+        digest.update(path.read_bytes())
+    return tuple(names), digest.hexdigest()
+
+def _run_groups(want, posts_scoped):
+    WRITTEN.clear()
     seen = set()
     for g in want:
         if g in seen: continue
@@ -64,7 +70,10 @@ if __name__ == '__main__':
             seen.update(('i18n', 'en', 'ar'))
         else:
             seen.add(g)
-        GROUPS[g](write)
+        if g == 'i18n' and posts_scoped:
+            pages_i18n.build_posts_only(write)
+        else:
+            GROUPS[g](write)
     print(len(WRITTEN), 'pages written'); [print(' ', w) for w in WRITTEN]
     if not sys.argv[1:] or 'solutions' in sys.argv[1:] or 'products' in sys.argv[1:]:
         import solutions_arch
@@ -75,8 +84,35 @@ if __name__ == '__main__':
         write_sitemap_and_robots()
     # SEO post-process (JSON-LD, alt text, canonical, self-hosted docs, 404, Liara nginx config)
     import seo_postprocess
-    seo_postprocess.main()
+    seo_postprocess.main(list(WRITTEN) if posts_scoped else None)
     # Live-identical URLs: move generated pages to the abadis-med.com paths (FA Persian slugs, /en/, /arabic/),
     # rewrite links/canonicals/hreflang/sitemap, leave redirect stubs + 301 rules at the old paths.
     import subprocess
     subprocess.run([sys.executable, str(pathlib.Path(__file__).resolve().parent / 'url_migrate.py')], check=True)
+
+if __name__ == '__main__':
+    try:
+        import solutions_arch
+        solutions_arch.assert_nav_catalog_sync()
+    except ImportError:
+        pass
+    want = sys.argv[1:] or [g for g in GROUPS if g not in ('en', 'ar')]  # full build includes i18n once
+    # A posts publish must not rebuild product or company pages. EN/AR still refresh their posts.
+    posts_scoped = bool(sys.argv[1:]) and set(sys.argv[1:]).issubset({'posts', 'home', 'i18n', 'archives', 'en', 'ar'})
+    if 'posts' in GROUPS: pages_posts.prepare()   # fill POST_MAP first so every page links posts internally
+    import pages_archives
+    pages_archives.SKIP_SPECIALS = posts_scoped
+    if posts_scoped:
+        # Repeat until HTML and WebP names settle so the next posts build does not
+        # change the tree. liara-test does not run localize_remote_images.py.
+        previous = _site_snapshot()
+        for _pass in range(1, 5):
+            print(f'posts pass {_pass}')
+            _run_groups(want, posts_scoped)
+            current = _site_snapshot()
+            if current == previous:
+                print(f'posts pass {_pass} stable')
+                break
+            previous = current
+    else:
+        _run_groups(want, posts_scoped)

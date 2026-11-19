@@ -82,6 +82,10 @@ A scheduled sync also removes ids recorded in `tools/redesign/data/news-sync-sta
 
 To publish English later, set `ABADIS_WP_REST_EN` (and the matching sitemap and feed if you need them), or set `ABADIS_SYNC_LANGS=fa,en`. Arabic is the same with `ABADIS_WP_REST_AR` or `ar` in `ABADIS_SYNC_LANGS`.
 
+## One slug, CMS wins
+
+Slugs are compared after percent-decoding and Unicode NFC, so a CMS path stored as `%D8%B3%D8%AA-...` and a legacy path stored as `ست-...` are the same page. When one post comes from `abadis-wp-test` and another was imported from `abadis-med.com`, the CMS post keeps the slug page. The legacy id is not deleted from `posts.json`. Its `/news/<id>/` and `/articles/<id>/` URLs 301 to that slug, so the old address still resolves and the legacy record is not dropped silently. Two posts that are not a CMS-plus-legacy pair still fail the build if they share a slug.
+
 ## GitHub Actions
 
 `tools/liara/publish-wp.yml` is the workflow. If it is not already at `.github/workflows/publish-wp.yml`, copy it there (the push token may lack the workflow scope). It is registered for `repository_dispatch` type `wordpress-publish`, every 15 minutes, and `workflow_dispatch`, but the job does nothing until the repository variable `ABADIS_PUBLISH_ENABLED` is the string `1`. That variable is off by default. Schedule, dispatch, and manual runs all skip while it is unset or any other value.

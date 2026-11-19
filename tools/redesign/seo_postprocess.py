@@ -219,14 +219,23 @@ def make_404():
     open(os.path.join(ROOT, '404.html'), 'w', encoding='utf-8').write(s)
 
 
-def main():
+def main(only_rels=None):
     global FORM_ENDPOINT
     import sys; sys.path.insert(0, os.path.dirname(__file__))
     from lib import FORM_ENDPOINT
-    make_404()
     docs = load_docs()
     stats = dict(pages=0, ld=0, docs=0)
-    for path in glob.glob(os.path.join(ROOT, '**', '*.html'), recursive=True):
+    if only_rels is None:
+        make_404()
+        paths = glob.glob(os.path.join(ROOT, '**', '*.html'), recursive=True)
+    else:
+        # Posts pipeline: do not restamp product, company, or other pages.
+        paths = []
+        for rel in only_rels:
+            path = os.path.join(ROOT, rel)
+            if os.path.isfile(path):
+                paths.append(path)
+    for path in paths:
         rel = os.path.relpath(path, ROOT)
         s0 = s = open(path, encoding='utf-8').read()
         s = rewrite_docs(s, rel, docs)
@@ -240,7 +249,8 @@ def main():
             s = lazy_images(s)
         if s != s0:
             open(path, 'w', encoding='utf-8').write(s); stats['pages'] += 1
-    stats['liara_rules'] = liara_conf()
+    if only_rels is None:
+        stats['liara_rules'] = liara_conf()
     print(stats)
 
 if __name__ == '__main__':
