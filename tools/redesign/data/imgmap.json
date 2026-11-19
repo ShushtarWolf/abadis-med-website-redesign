@@ -10455,8 +10455,10 @@
     "bytes": 699652
   },
   "https://abadis-med.com/wp-content/uploads/2025/11/خانم-دکتر-ابتکار.jpg": {
-    "ok": false,
-    "err": "fetch-failed"
+    "ok": true,
+    "file": "2530bf63d2e9a0f4.jpg",
+    "bytes": 434103,
+    "via": "ok"
   },
   "http://abadis-med.com/wp-content/uploads/2025/11/خانم-دکتر-ابتکار.jpg": {
     "ok": false,
@@ -10467,8 +10469,10 @@
     "err": "fetch-failed"
   },
   "https://abadis-med.com/wp-content/uploads/2025/11/خانم-دکتر-انصاری.jpg": {
-    "ok": false,
-    "err": "fetch-failed"
+    "ok": true,
+    "file": "198768de2d1e14a5.jpg",
+    "bytes": 308303,
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2025/11/abadis_green_innovation.png": {
     "ok": true,
@@ -10656,8 +10660,10 @@
     "bytes": 739651
   },
   "https://abadis-med.com/wp-content/uploads/2024/10/شاخص_های-کنترل-عفونت-بیمارستانی.png": {
-    "ok": false,
-    "err": "fetch-failed"
+    "ok": true,
+    "file": "f5090ca0e5aeae29.png",
+    "bytes": 1914541,
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2024/10/شاخص_های-کنترل-عفونت-بیمارستانی-1024x576.png": {
     "ok": false,
@@ -10790,8 +10796,10 @@
     "err": "fetch-failed"
   },
   "https://abadis-med.com/wp-content/uploads/2024/07/رسانه_های-سلامت؛-پل-ارتباطی-آینده-2.png": {
-    "ok": false,
-    "err": "fetch-failed"
+    "ok": true,
+    "file": "59d8758154714789.png",
+    "bytes": 2198310,
+    "via": "ok"
   },
   "http://abadis-med.com/wp-content/uploads/2024/07/رسانه_های-سلامت؛-پل-ارتباطی-آینده-2-1024x576.png": {
     "ok": false,
@@ -10838,8 +10846,10 @@
     "bytes": 695352
   },
   "https://abadis-med.com/wp-content/uploads/2024/01/کیفیت-آب،-ضامن-ایمنی-دیالیز-1.png": {
-    "ok": false,
-    "err": "fetch-failed"
+    "ok": true,
+    "file": "76c052289cf02182.png",
+    "bytes": 2081794,
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2024/01/کیفیت-آب،-ضامن-ایمنی-دیالیز-1-1024x512.png": {
     "ok": false,
@@ -10886,8 +10896,10 @@
     "err": "fetch-failed"
   },
   "https://abadis-med.com/wp-content/uploads/2024/01/مراقبت-بسته_ای-برای-پیشگیری-از-VAP.png": {
-    "ok": false,
-    "err": "fetch-failed"
+    "ok": true,
+    "file": "f3a9c8883bbfd747.png",
+    "bytes": 2019543,
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2024/01/ICU-Ventilator-Associated-Pneumonia-Prevention-Infographic-1024x512.png": {
     "ok": true,
@@ -11094,8 +11106,10 @@
     "err": "fetch-failed"
   },
   "https://abadis-med.com/wp-content/uploads/2023/12/ایمنی-دندانپزشکی-در-دوران-کووید-۱۹.png": {
-    "ok": false,
-    "err": "fetch-failed"
+    "ok": true,
+    "file": "da1fed9565f75d14.png",
+    "bytes": 1955251,
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2023/12/ایمنی-دندانپزشکی-در-دوران-کووید-۱۹-1024x576.png": {
     "ok": false,
@@ -11186,8 +11200,10 @@
     "err": "fetch-failed"
   },
   "https://abadis-med.com/wp-content/uploads/2023/01/نظام-مراقبت-عفونت_های-بیمارستانی.png": {
-    "ok": false,
-    "err": "fetch-failed"
+    "ok": true,
+    "file": "9877ae841f705bea.png",
+    "bytes": 1983679,
+    "via": "ok"
   },
   "http://abadis-med.com/wp-content/uploads/2023/01/نظام-مراقبت-عفونت_های-بیمارستانی-1024x683.png": {
     "ok": false,
@@ -11364,8 +11380,10 @@
     "err": "fetch-failed"
   },
   "https://abadis-med.com/wp-content/uploads/2020/03/ویروس-کرونا؛-از-شناسایی-تا-همه_گیری-جهانی.png": {
-    "ok": false,
-    "err": "fetch-failed"
+    "ok": true,
+    "file": "f0f3d5a0c2ac3a50.png",
+    "bytes": 2108642,
+    "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2020/03/ویروس-کرونا؛-از-شناسایی-تا-همه_گیری-جهانی-1024x512.png": {
     "ok": false,

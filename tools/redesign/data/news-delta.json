@@ -1,0 +1,34 @@
+{
+  "at": "2026-11-19T22:08:04.193Z",
+  "summary": [
+    {
+      "locale": "fa",
+      "source": "rest",
+      "new": [
+        {
+          "id": "34",
+          "kind": "news",
+          "link": "https://abadis-wp-test.liara.run/%d8%aa%d8%b3%d8%aa-%d8%a7%d9%86%d8%aa%d8%b4%d8%a7%d8%b1-%d8%ad%d8%b0%d9%81-%d8%ae%d9%88%d8%a7%d9%87%d8%af-%d8%b4%d8%af/",
+          "slug": "تست-انتشار-حذف-خواهد-شد",
+          "title": "تست انتشار &#8211; حذف خواهد شد",
+          "modified": "2026-11-19T22:07:13+00:00",
+          "partial": false,
+          "file": "content/fa/news/34.md"
+        },
+        {
+          "id": "23",
+          "kind": "articles",
+          "link": "https://abadis-wp-test.liara.run/%da%a9%db%8c%d8%b3%d9%87-%d8%b3%d8%a7%da%a9%d8%b4%d9%86-%d9%87%d8%b1-%da%86%d9%86%d8%af-%d9%88%d9%82%d8%aa-%db%8c%da%a9%d8%a8%d8%a7%d8%b1-%d8%a8%d8%a7%db%8c%d8%af-%d8%aa%d8%b9%d9%88%db%8c/",
+          "slug": "کیسه-ساکشن-هر-چند-وقت-یکبار-باید-تعوی",
+          "title": "کیسه ساکشن هر چند وقت یک‌بار باید تعویض شود؟ راهنمای علمی و کاربردی",
+          "modified": "2026-11-18T11:40:27+00:00",
+          "partial": false,
+          "file": "content/fa/articles/23.md"
+        }
+      ],
+      "modified": [],
+      "removed": [],
+      "partial": []
+    }
+  ]
+}
