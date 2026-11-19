@@ -29,7 +29,7 @@ The generator writes `<meta name="abadis-form-endpoint">` when a public URL is a
 - `ABADIS_FORM_ENDPOINT`, or `tools/redesign/data/form_endpoint.txt`
 - `ABADIS_FORMS_ENABLED` is not `0` / `false` / `off` / `no`. If the variable is unset, a non-empty `form_endpoint.txt` turns forms on, so a rebuild keeps the contact and careers endpoint.
 
-`form_endpoint.txt` holds `https://abadis-forms.vercel.app/submit`. Set `ABADIS_FORMS_ENABLED=0` to force mailto.
+`form_endpoint.txt` is empty, so the built site keeps the mailto fallback. Set `ABADIS_FORMS_ENABLED=0` to force mailto even after a URL is added.
 
 To point contact and careers at another inbox later:
 
