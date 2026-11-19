@@ -114,5 +114,7 @@ if __name__ == '__main__':
                 print(f'posts pass {_pass} stable')
                 break
             previous = current
+        from discovery import refresh_posts_sitemap
+        refresh_posts_sitemap()
     else:
         _run_groups(want, posts_scoped)
