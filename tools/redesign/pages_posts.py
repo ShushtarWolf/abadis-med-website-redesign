@@ -11,8 +11,13 @@ POSTS, MISSING = [], []
 
 def prepare():
     if POSTS: return
+    from post_slugs import loser_ids
+    records = load('posts.json')
+    skipped = loser_ids(records)
     kc = {u.unquote(k).rstrip('/'): v for k, v in load('known_cats.json').items()}
-    for p in load('posts.json'):
+    for p in records:
+        if str(p.get('id')) in skipped:
+            continue
         c = classify(p, kc)
         path = u.unquote(u.urlsplit(p['url']).path)
         if not path.endswith('/') and '.' not in path.rsplit('/', 1)[-1]:

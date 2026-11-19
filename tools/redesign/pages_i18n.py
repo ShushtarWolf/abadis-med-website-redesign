@@ -515,6 +515,12 @@ def build_lang(write, lang: str):
     return built, gaps
 
 
+def build_posts_only(write):
+    """EN/AR news and articles only. Product and company pages stay as they are."""
+    build_posts(write, 'en')
+    build_posts(write, 'ar')
+
+
 def build(write):
     i18n_mod._local_paths_cache = None  # rescan site/ after FA posts/pages exist
     report = {
