@@ -868,6 +868,9 @@ class Builder:
         return f'<nav class="arch-pager" aria-label="{esc(ui["pager"])}">{"".join(bits)}</nav>'
 
     def build_specials(self):
+        # Product and catalogue hubs are not part of a posts publish.
+        if SKIP_SPECIALS:
+            return
         self.waste_category()
         self.catalogue()
         self.reservoir()
@@ -985,6 +988,8 @@ class Builder:
             self.failed.append((p, 'no WordPress term or post matched this URL'))
         return self.stats, self.failed
 
+
+SKIP_SPECIALS = False
 
 def wanted_paths():
     want = set()

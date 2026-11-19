@@ -219,6 +219,82 @@ def card_covers():
             if t != s: f.write_text(t, encoding='utf-8'); n += 1
     print(n, 'EN/AR list pages got real card covers')
 
+def _reload_img_index():
+    """Pick up imgmap.json entries the localize subprocess wrote in an earlier pass."""
+    lib.IMGMAP = json.load(open(DATA / 'imgmap.json', encoding='utf-8'))
+    lib._IMG_BY_PATH.clear()
+    for key, rec in lib.IMGMAP.items():
+        if isinstance(rec, dict) and rec.get('ok') and rec.get('file'):
+            lib._IMG_BY_PATH[_key(key)] = rec['file']
+    lib._done.clear()
+
+
+def prefetch_post_images():
+    """Build card (640) and article (1400) WebPs from the raw cache before HTML is written.
+
+    lib.img() creates a width the first time the raw file exists. Downloads stay in
+    the localize pass. Converting cached raw files first means every page in this
+    write sees the same files, and the next posts build does not switch cards off
+    the fallback thumbnail.
+    """
+    _reload_img_index()
+    jobs = set()
+
+    def add(url, w):
+        url = html.unescape(url or '').strip()
+        if url and 'gravatar.com' not in url and not url.startswith('data:'):
+            jobs.add((url, w))
+
+    for post in json.load(open(DATA / 'posts.json', encoding='utf-8')):
+        if post.get('image'):
+            add(post['image'], 1400)
+        for block in post.get('blocks') or []:
+            srcs = []
+            if block.get('t') == 'img' and block.get('src'):
+                srcs.append(block['src'])
+            srcs += re.findall(r'<img [^>]*src="([^"]+)"', block.get('html') or '')
+            for src in srcs:
+                add(src, 1400)
+    for lang in ('en', 'ar'):
+        path = DATA / f'{lang}_posts.json'
+        if not path.exists():
+            continue
+        for wp in json.load(open(path, encoding='utf-8')):
+            for og in (wp.get('yoast_head_json') or {}).get('og_image') or []:
+                if og.get('url'):
+                    add(og['url'], 1400)
+            raw = (wp.get('content') or {}).get('rendered') or ''
+            for src in re.findall(r'<img[^>]+src=["\']([^"\']+)["\']', raw):
+                add(src, 1400)
+    feat = DATA / 'i18n_featured_urls.json'
+    if feat.exists():
+        for url in json.loads(feat.read_text(encoding='utf-8')).values():
+            if isinstance(url, str):
+                add(url, 1400)
+    for name in ('en_extra_featured.json', 'ar_featured.json'):
+        path = DATA / name
+        if not path.exists():
+            continue
+        for url in json.loads(path.read_text(encoding='utf-8')).values():
+            if isinstance(url, str):
+                add(url, 1400)
+    built = 0
+    for src, w in sorted(jobs):
+        if src.startswith(('../', 'assets/', '/assets/')):
+            continue
+        cands = {full_url(src), src}
+        if any((OUT / out_name(_key(c), w)).exists() for c in cands):
+            continue
+        if not any(lib._key(c) in lib._IMG_BY_PATH and (RAW / lib._IMG_BY_PATH[lib._key(c)]).exists() for c in cands):
+            continue
+        if not lib.best_img(src, w):
+            continue
+        # Reusing an existing width does not count: no new file was written.
+        if not had and any((OUT / out_name(_key(c), w)).exists() for c in cands):
+            built += 1
+    print(f'prefetch: {len(jobs)} image sizes, {built} newly built from raw cache')
+
+
 def main():
     dry = '--dry' in sys.argv
     if not dry: add_lead_images(); card_covers()

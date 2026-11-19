@@ -134,11 +134,24 @@ def img(url, maxw=1400):
         return {'src': hit['url'], 'w': int(hit.get('w') or 0), 'h': int(hit.get('h') or 0), 'external': True}
     key = _key(url)
     f = _IMG_BY_PATH.get(key)
-    name = hashlib.sha1(key.encode()).hexdigest()[:12] + f'-{maxw}.webp'
+    stem = hashlib.sha1(key.encode()).hexdigest()[:12]
+    name = stem + f'-{maxw}.webp'
     ck = (key, maxw)
     if ck in _done: return _done[ck]
     OUT_IMG.mkdir(parents=True, exist_ok=True)
     out = OUT_IMG / name
+    # Reuse a WebP already built for this upload, at any width, so a posts rebuild
+    # does not add a second derivative (the site is close to the Liara size cap).
+    if not out.exists():
+        alts = list(OUT_IMG.glob(stem + '-*.webp'))
+        if alts:
+            def _w(path):
+                try:
+                    return int(path.stem.rsplit('-', 1)[-1])
+                except ValueError:
+                    return 0
+            out = max(alts, key=_w)
+            name = out.name
     # Reuse built WebP even when RAW is absent (typical on a PC / fresh clone).
     if out.exists():
         try:
