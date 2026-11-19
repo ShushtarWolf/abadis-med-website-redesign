@@ -1,10 +1,21 @@
 {
-  "at": "2026-11-19T22:34:16.446Z",
+  "at": "2026-11-19T23:03:28.070Z",
   "summary": [
     {
       "locale": "fa",
       "source": "rest",
-      "new": [],
+      "new": [
+        {
+          "id": "37",
+          "kind": "news",
+          "link": "https://abadis-wp-test.liara.run/%d8%aa%d8%b3%d8%aa-%d8%a7%d9%86%d8%aa%d8%b4%d8%a7%d8%b1-%d8%ad%d8%b0%d9%81-%d8%ae%d9%88%d8%a7%d9%87%d8%af-%d8%b4%d8%af/",
+          "slug": "تست-انتشار-حذف-خواهد-شد",
+          "title": "تست انتشار &#8211; حذف خواهد شد",
+          "modified": "2026-11-19T22:59:54+00:00",
+          "partial": false,
+          "file": "content/fa/news/37.md"
+        }
+      ],
       "modified": [],
       "removed": [],
       "partial": []
