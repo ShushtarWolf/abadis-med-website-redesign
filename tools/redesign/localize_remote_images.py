@@ -3,8 +3,9 @@
 
 EN / AR posts (and a few hand-imported FA posts) were copied from the WordPress REST API with their
 <img src="https://(www.)abadis-med.com/...">. Those requests are slow or time out from many networks,
-so readers saw articles with no pictures. This pass downloads each image once (live https -> http ->
-Wayback original), converts it to WebP in site/assets/img/c/ with the same naming as lib.img(), registers
+so readers saw articles with no pictures. This pass tries the origin once and the Wayback
+Machine once (10s each). A 404/410 plus a Wayback miss is recorded in dead_images.json and
+not requested again. Converts to WebP in site/assets/img/c/ with the same naming as lib.img(), registers
 it in data/imgmap.json, and rewrites the tag to the local file (srcset/sizes dropped, width/height set).
 
 Scope: <img> inside <article> on every page, and post-card thumbnails (<div class="ph">).
@@ -35,28 +36,93 @@ def enc(url):
     p = u.urlsplit(html.unescape(url))
     return u.urlunsplit((p.scheme or 'https', p.netloc, u.quote(u.unquote(p.path)), '', ''))
 
-def _open(url, t=40):
+TIMEOUT = 10
+ATTEMPTS = 2
+DEAD_PATH = DATA / 'dead_images.json'
+DEAD = set()    # origin 404/410 and a Wayback miss; never requested again
+FAILED = set()  # other misses after the attempt budget; never requested again
+
+def _open(url, t=TIMEOUT):
     r = urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': UA}), timeout=t)
     d = r.read()
     ok = len(d) > 500 and (d[:4] in (b'\x89PNG', b'GIF8') or d[:2] == b'\xff\xd8' or (d[:4] == b'RIFF' and d[8:12] == b'WEBP'))
     return d if ok else None
 
-DEAD = set()   # 404 on the live site and nothing in the Wayback Machine
+def _url_keys(url):
+    raw = html.unescape(url or '').strip()
+    if raw.startswith('//'):
+        raw = 'https:' + raw
+    keys = {raw}
+    if raw.startswith('http://'):
+        keys.add('https://' + raw[len('http://'):])
+    elif raw.startswith('https://'):
+        keys.add('http://' + raw[len('https://'):])
+    if raw:
+        keys.add(full_url(raw))
+    return {k for k in keys if k}
+
+def load_remembered():
+    """Fill DEAD and FAILED from the committed file. Missing file means nothing is known yet."""
+    DEAD.clear()
+    FAILED.clear()
+    if not DEAD_PATH.is_file():
+        return
+    try:
+        data = json.loads(DEAD_PATH.read_text(encoding='utf-8'))
+    except (OSError, json.JSONDecodeError):
+        return
+    if not isinstance(data, dict):
+        return
+    for url in data.get('dead') or []:
+        DEAD.update(_url_keys(url))
+    for url in data.get('failed') or []:
+        FAILED.update(_url_keys(url))
+
+def save_remembered():
+    """Write canonical https URLs so a later build does not request them again."""
+    def canon(keys):
+        out = set()
+        for key in keys:
+            if key.startswith('http://'):
+                key = 'https://' + key[len('http://'):]
+            out.add(full_url(key) if key else key)
+        return sorted(k for k in out if k)
+    payload = {'dead': canon(DEAD), 'failed': canon(FAILED - DEAD)}
+    text = json.dumps(payload, ensure_ascii=False, indent=2) + '\n'
+    if DEAD_PATH.is_file() and DEAD_PATH.read_text(encoding='utf-8') == text:
+        return
+    DEAD_PATH.write_text(text, encoding='utf-8')
+
+def remembered(url):
+    return bool(_url_keys(url) & (DEAD | FAILED))
+
+def remember(url, kind):
+    bucket = DEAD if kind == 'dead' else FAILED
+    bucket.update(_url_keys(url))
+    save_remembered()
+    print(f'{kind}: {enc(url)}', flush=True)
 
 def fetch(url):
+    """At most two requests: the origin, then one Wayback capture. Timeouts are 10s."""
+    if remembered(url):
+        return None, None
     e = enc(url)
-    gone = False
-    http = e.replace('https://', 'http://', 1)
-    for c in (e, http, e, 'https://web.archive.org/web/2026id_/' + e, 'https://web.archive.org/web/2024id_/' + e):
+    origin_gone = False
+    tries = (e, 'https://web.archive.org/web/2026id_/' + e)[:ATTEMPTS]
+    for c in tries:
         try:
-            d = _open(c)
-            if d: return d, ('wayback' if 'archive.org' in c else 'ok')
+            d = _open(c, TIMEOUT)
+            if d:
+                return d, ('wayback' if 'archive.org' in c else 'ok')
         except urllib.error.HTTPError as ex:
-            gone = gone or (ex.code in (404, 410) and 'archive.org' not in c)
+            if ex.code in (404, 410) and 'archive.org' not in c:
+                origin_gone = True
         except Exception:
             pass
-    if gone: DEAD.add(url)
+    remember(url, 'dead' if origin_gone else 'failed')
     return None, None
+
+load_remembered()
 
 def out_name(key, maxw):
     return hashlib.sha1(key.encode()).hexdigest()[:12] + f'-{maxw}.webp'
@@ -295,6 +361,17 @@ def prefetch_post_images():
                 add(url, 1400)
     built = sum(1 for src, w in sorted(jobs) if _materialize_cached(src, w))
     print(f'prefetch: {len(jobs)} image sizes, {built} newly built from raw cache')
+    return built
+
+
+def unknown_remote_srcs():
+    """Remote image URLs still in the HTML that are not already recorded as dead or failed."""
+    found = set()
+    for pairs in collect().values():
+        for src, _w in pairs:
+            if not remembered(src):
+                found.add(src)
+    return found
 
 
 def main():

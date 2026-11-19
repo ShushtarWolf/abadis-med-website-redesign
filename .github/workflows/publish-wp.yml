@@ -21,6 +21,7 @@ jobs:
   publish:
     # Off until a human sets the repository variable. Schedule, dispatch, and
     # workflow_dispatch all skip, so a merge cannot publish the live site.
+    timeout-minutes: 20
     if: ${{ vars.ABADIS_PUBLISH_ENABLED == '1' }}
     runs-on: ubuntu-latest
     steps:
@@ -82,7 +83,8 @@ jobs:
 
       - name: Build posts on main
         if: steps.sync_main.outputs.changed == '1'
-        run: python3 tools/redesign/build.py posts home i18n archives
+        timeout-minutes: 20
+        run: python3 -u tools/redesign/build.py posts home i18n archives
 
       - name: Check main site size
         if: steps.sync_main.outputs.changed == '1'
@@ -131,8 +133,9 @@ jobs:
 
       - name: Build posts on liara-test
         if: steps.sync_main.outputs.changed == '1' && steps.sync_liara.outputs.changed == '1'
+        timeout-minutes: 20
         working-directory: /tmp/liara-test
-        run: python3 tools/redesign/build.py posts home i18n archives
+        run: python3 -u tools/redesign/build.py posts home i18n archives
 
       - name: Check liara-test site size
         if: steps.sync_main.outputs.changed == '1' && steps.sync_liara.outputs.changed == '1'
@@ -145,6 +148,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add content tools/redesign/data/posts.json tools/redesign/data/en_posts.json tools/redesign/data/ar_posts.json tools/redesign/data/news-sync-state.json tools/redesign/data/news-delta.json tools/redesign/data/media-bucket.json tools/redesign/data/i18n_featured_urls.json tools/redesign/data/imgmap.json site
+          if [ -f tools/redesign/data/dead_images.json ]; then git add tools/redesign/data/dead_images.json; fi
           if git diff --cached --quiet; then
             echo "main already matches the sync"
           else
@@ -159,6 +163,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add content tools/redesign/data/posts.json tools/redesign/data/en_posts.json tools/redesign/data/ar_posts.json tools/redesign/data/news-sync-state.json tools/redesign/data/news-delta.json tools/redesign/data/media-bucket.json tools/redesign/data/i18n_featured_urls.json tools/redesign/data/imgmap.json site
+          if [ -f tools/redesign/data/dead_images.json ]; then git add tools/redesign/data/dead_images.json; fi
           if git diff --cached --quiet; then
             echo "liara-test already matches the sync"
           else
