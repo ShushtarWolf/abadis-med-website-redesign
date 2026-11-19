@@ -650,7 +650,8 @@ def dealers_widget(lang):
     for g in groups:
         pv, ds = g['province'], g.get('dealers') or []
         title = (g.get('title') or T['title'].format(pv)) if lang == 'fa' else T['title'].format(_pname(lang, pv))
-        ents = ''.join(f'<div class="dealer"{"" if lang == "fa" else " lang=\"fa\" dir=\"rtl\""}><h3>{esc(d["name"])}</h3>' + (f'<dl>{"".join(row(k, v) for k, v in d.get("rows") or [])}</dl>' if d.get('rows') else '') + '</div>' for d in ds)
+        lang_attr = "" if lang == "fa" else ' lang="fa" dir="rtl"'
+        ents = ''.join(f'<div class="dealer"{lang_attr}><h3>{esc(d["name"])}</h3>' + (f'<dl>{"".join(row(k, v) for k, v in d.get("rows") or [])}</dl>' if d.get('rows') else '') + '</div>' for d in ds)
         out.append(f'<div class="card prov-group reveal" data-prov="{esc(pv)}" id="p-{esc(pv.replace(" ", "-"))}"><h2>{esc(title)}</h2>{ents}</div>')
     note = f'<p class="prov-note">{esc(T["note"])}</p>' if T['note'] else ''
     return f'''<h2 class="reveal" style="margin-bottom:16px">{esc(T["list"])}</h2>
