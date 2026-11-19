@@ -334,7 +334,7 @@ export async function unpublishSelfTest() {
       '</urlset>',
       '',
     ].join('\n'));
-    await wf(path.join(root, 'site/liara_nginx.conf'), 'charset utf-8;\n\nlocation / {\n  try_files $uri $uri/ =404;\n}\n');
+    await wf(path.join(root, 'site/liara_nginx.conf'), 'charset utf-8;\n\n# BEGIN abadis-unpublished-posts\n# END abadis-unpublished-posts\n\nlocation / {\n  try_files $uri $uri/ =404;\n}\n');
     await wf(path.join(root, 'site/_redirects'), '# 301 map\n/old/ /new/ 301\n');
     await wf(path.join(root, 'site/redirects-nginx.conf'), '# plain\n');
     const recorded = await unpublishPost(root, {
@@ -343,12 +343,22 @@ export async function unpublishSelfTest() {
       moves: { '/legacy-sample/': '/sample-post/' },
     });
     if (recorded.target !== '/news-topic/') throw new Error('unpublish: category page should win');
-    if (!recorded.sources.includes('/sample-post/') || !recorded.sources.includes('/news/9/') || !recorded.sources.includes('/legacy-sample/')) {
+    if (!recorded.sources.includes('/sample-post/') || !recorded.sources.includes('/news/9/') || !recorded.sources.includes('/articles/9/') || !recorded.sources.includes('/legacy-sample/')) {
       throw new Error('unpublish: missing source ' + recorded.sources.join(','));
+    }
+    const saved = JSON.parse(await readFile(path.join(root, DATA_REL), 'utf8'));
+    const savedPost = saved.posts.find((p) => p.id === '9');
+    if (!savedPost || !savedPost.sources.includes('/articles/9/') || !savedPost.sources.includes('/news/9/') || !savedPost.sources.includes('/sample-post/')) {
+      throw new Error('unpublish: unpublished-posts.json was not written');
     }
     const nginx = await readFile(path.join(root, 'site/liara_nginx.conf'), 'utf8');
     const sample = nginxRule('/sample-post/', '/news-topic/');
-    if (!nginx.includes(MARK_BEGIN) || !nginx.includes(sample)) throw new Error('unpublish: nginx block missing ' + sample);
+    const newsId = nginxRule('/news/9/', '/news-topic/');
+    const articlesId = nginxRule('/articles/9/', '/news-topic/');
+    const block = nginx.slice(nginx.indexOf(MARK_BEGIN), nginx.indexOf(MARK_END));
+    if (!nginx.includes(MARK_BEGIN) || !block.includes(sample) || !block.includes(newsId) || !block.includes(articlesId)) {
+      throw new Error('unpublish: nginx block missing the slug, /news/id/ or /articles/id/ 301');
+    }
     if (nginx.split(sample).length !== 2) throw new Error('unpublish: duplicate nginx rule');
     const redirects = await readFile(path.join(root, 'site/_redirects'), 'utf8');
     if (!redirects.includes('/sample-post/ /news-topic/ 301')) throw new Error('unpublish: _redirects missing');

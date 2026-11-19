@@ -540,6 +540,32 @@ def _strip_unpub(text):
         return text[:begin] + text[end + len(UNPUB_END):]
     return text
 
+def _fill_unpub_block(text, rule_lines):
+    """Write rule_lines into the managed block, including when the block is already empty.
+
+    Liara applies liara_nginx.conf. An empty BEGIN/END pair must be replaced, not left in place.
+    An empty rule list leaves whatever is already in the file.
+    """
+    if not rule_lines:
+        return text
+    block = UNPUB_BEGIN + '\n' + '\n'.join(rule_lines) + '\n' + UNPUB_END + '\n'
+    begin = text.find(UNPUB_BEGIN)
+    end = text.find(UNPUB_END, begin + 1) if begin >= 0 else -1
+    if begin >= 0 and end > begin:
+        tail = text[end + len(UNPUB_END):]
+        if tail.startswith('\n'):
+            tail = tail[1:]
+        head = text[:begin]
+        if head and not head.endswith('\n'):
+            head += '\n'
+        return head + block + tail
+    loc = text.find('\nlocation / {')
+    if loc >= 0:
+        return text[:loc + 1] + block + '\n' + text[loc + 1:]
+    if text and not text.endswith('\n'):
+        text += '\n'
+    return text + block
+
 def _unescape_nginx(pat):
     return re.sub(r'\\(.)', r'\1', pat or '')
 
@@ -743,13 +769,11 @@ def write_redirects(report):
                     continue
                 body.append(ln)
             text = '\n'.join(body) + ('\n' if original.endswith('\n') else '')
-        if fresh_nginx or (held_nginx and UNPUB_BEGIN not in text):
+        if fresh_nginx:
             if not text.endswith('\n'):
                 text += '\n'
-            if fresh_nginx:
-                text += '\n'.join(fresh_nginx) + '\n'
-            if held_nginx and UNPUB_BEGIN not in text:
-                text += UNPUB_BEGIN + '\n' + '\n'.join(held_nginx) + '\n' + UNPUB_END + '\n'
+            text += '\n'.join(fresh_nginx) + '\n'
+        text = _fill_unpub_block(text, held_nginx)
         open(nginx_path, 'w', encoding='utf-8').write(text)
         nginx = kept_nginx + fresh_nginx
     else:
