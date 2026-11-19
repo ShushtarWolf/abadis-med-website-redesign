@@ -11,7 +11,9 @@ app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = int(os.environ.get('MAX_UPLOAD_MB', '8')) * 1024 * 1024
 
 ALLOWED_ORIGINS = [o.strip() for o in os.environ.get(
-    'ALLOWED_ORIGINS', 'https://abadis-med.com,https://www.abadis-med.com').split(',') if o.strip()]
+    'ALLOWED_ORIGINS',
+    'https://abadis-test.liara.run,https://abadis-med.com,https://www.abadis-med.com,https://shushtarwolf.github.io',
+).split(',') if o.strip()]
 SMTP_HOST = os.environ.get('SMTP_HOST', '')
 SMTP_PORT = int(os.environ.get('SMTP_PORT', '587'))
 SMTP_USER = os.environ.get('SMTP_USER', '')

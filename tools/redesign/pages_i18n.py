@@ -253,8 +253,9 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
         title = {'en': 'Savings Calculator', 'ar': 'حاسبة التوفير'}[lang]
         extra_js = f'<script src="{p}assets/js/calc-i18n.js" defer></script>\n'
     if site_path in ('representatives/', 'قائمة-الممثلين/'):
-        from pages_company import intl_reps_widget
-        body = intl_reps_widget(lang, p)
+        from pages_company import dealers_widget, intl_reps_widget
+        # Same Iran-province map as the FA page, then the country list already on EN/AR.
+        body = dealers_widget(lang) + '\n' + intl_reps_widget(lang, p)
         title = {'en': 'Representatives', 'ar': 'قائمة الممثلين'}[lang]
         desc = {'en': 'Abadis Med country representatives outside Iran: contacts and addresses.',
                 'ar': 'ممثلو آباديس في الدول خارج إيران: أرقام الاتصال والعناوين.'}[lang]

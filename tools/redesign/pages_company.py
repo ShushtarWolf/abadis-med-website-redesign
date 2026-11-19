@@ -663,6 +663,12 @@ def dealers_widget(lang):
         hit = IDX[sec].get(_key(v))
         out = hit[lang] if hit else v
         return _num_text(lang, out)
+    def shown_name(d):
+        if lang != 'fa':
+            alt = (d.get('name_i18n') or {}).get(lang)
+            if alt:
+                return _num_text(lang, alt)
+        return tr('names', d['name'])
     def row(k, v):
         label = LABELS.get(lang, {}).get(k, k)
         if 'تلفن' in k or k == 'Phone' or label in ('Phone', 'رقم الهاتف'):
@@ -674,7 +680,7 @@ def dealers_widget(lang):
     for g in groups:
         pv, ds = g['province'], g.get('dealers') or []
         title = (g.get('title') or T['title'].format(pv)) if lang == 'fa' else T['title'].format(_pname(lang, pv))
-        ents = ''.join(f'<div class="dealer"><h3>{esc(tr("names", d["name"]))}</h3>' + (f'<dl>{"".join(row(k, v) for k, v in d.get("rows") or [])}</dl>' if d.get('rows') else '') + '</div>' for d in ds)
+        ents = ''.join(f'<div class="dealer"><h3>{esc(shown_name(d))}</h3>' + (f'<dl>{"".join(row(k, v) for k, v in d.get("rows") or [])}</dl>' if d.get('rows') else '') + '</div>' for d in ds)
         out.append(f'<div class="card prov-group reveal" data-prov="{esc(pv)}" id="p-{esc(pv.replace(" ", "-"))}"><h2>{esc(title)}</h2>{ents}</div>')
     note = f'<p class="prov-note">{esc(T["note"])}</p>' if T['note'] else ''
     return f'''<h2 class="reveal" style="margin-bottom:16px">{esc(T["list"])}</h2>

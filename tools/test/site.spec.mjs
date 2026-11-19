@@ -592,58 +592,21 @@ test('14 contact and careers forms', async ({ page }) => {
   await page.goto('/contact/', { waitUntil: 'domcontentloaded' });
   const lead = page.locator('#leadForm');
   details.hasLead = await lead.count() > 0;
-  details.endpointEmpty = await page.evaluate(() => {
-    const ep = document.querySelector('meta[name="abadis-form-endpoint"]')?.content || '';
-    return !ep.trim();
-  });
+  details.endpoint = await page.evaluate(() => (document.querySelector('meta[name="abadis-form-endpoint"]')?.content || '').trim());
+  details.endpointWired = details.endpoint === 'https://abadis-forms.vercel.app/submit';
   if (details.hasLead) {
     details.contactEmptyBlocked = await page.evaluate(() => !document.getElementById('leadForm').checkValidity());
-
-    await page.fill('input[name="name"]', 'تست');
-    await page.fill('input[name="org"]', 'بیمارستان');
-    await page.fill('input[name="phone"]', '۰۹۱۲۱۲۳۴۵۶۷');
-    await page.selectOption('select[name="topic"]', { index: 1 }).catch(() => {});
-    await page.fill('textarea[name="msg"]', 'پیام آزمایشی');
-
-    // site.js assigns location.href = 'mailto:…' when endpoint empty — capture via CDP
-    details.contactMailto = null;
-    const client = await page.context().newCDPSession(page);
-    await client.send('Page.setInterceptFileChooserDialog', { enabled: false }).catch(() => {});
-    page.on('framenavigated', () => {});
-    await page.evaluate(() => {
-      window.__mailtoHits = [];
-      const loc = window.location;
-      try {
-        // Spy on assignments used by openMailto()
-        const proto = Object.getPrototypeOf(loc);
-        const desc = Object.getOwnPropertyDescriptor(proto, 'href');
-        Object.defineProperty(proto, 'href', {
-          configurable: true,
-          enumerable: true,
-          get() { return desc.get.call(this); },
-          set(v) {
-            window.__mailtoHits.push(String(v));
-            if (String(v).startsWith('mailto:')) return;
-            return desc.set.call(this, v);
-          },
-        });
-      } catch (e) {
-        window.__mailtoHits.push('spy-failed:' + e.message);
-      }
+    details.contactFields = await page.evaluate(() => {
+      const f = document.getElementById('leadForm');
+      return {
+        formName: f.querySelector('input[name="form_name"]')?.value || '',
+        honeypot: !!f.querySelector('input[name="_gotcha"]'),
+      };
     });
-    await lead.locator('button[type="submit"]').first().click();
-    await page.waitForTimeout(400);
-    details.contactMailto = await page.evaluate(() => {
-      const hits = window.__mailtoHits || [];
-      return hits.find((h) => h.startsWith('mailto:')) || hits[hits.length - 1] || null;
-    });
-    // Also accept success status text as evidence mailto path ran
-    const status = await page.locator('#formStatus, .form-status').first().textContent().catch(() => '');
-    details.contactStatus = (status || '').trim();
-    details.contactMailtoBuilt = !!(
-      (details.contactMailto && details.contactMailto.startsWith('mailto:info@abadis-med.com'))
-      || /ایمیل/.test(details.contactStatus)
-    );
+    // Do not submit: the endpoint is live and a filled POST would be a real message.
+    details.contactMailtoBuilt = details.endpointWired
+      && details.contactFields.formName === 'contact'
+      && details.contactFields.honeypot;
   }
 
   await page.goto('/careers/', { waitUntil: 'domcontentloaded' });
@@ -656,7 +619,9 @@ test('14 contact and careers forms', async ({ page }) => {
     });
   }
 
-  const ok = details.hasLead && details.contactEmptyBlocked && details.contactMailtoBuilt && details.hasCareers && details.careersEmptyBlocked;
+  details.careersEndpoint = await page.evaluate(() => (document.querySelector('meta[name="abadis-form-endpoint"]')?.content || '').trim());
+  const ok = details.hasLead && details.contactEmptyBlocked && details.contactMailtoBuilt && details.hasCareers && details.careersEmptyBlocked
+    && details.careersEndpoint === 'https://abadis-forms.vercel.app/submit';
   record(14, {
     name: 'Forms contact + careers',
     scope: '/contact/ /careers/',

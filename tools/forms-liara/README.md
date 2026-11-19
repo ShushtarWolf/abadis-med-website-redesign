@@ -18,25 +18,25 @@ Every setting is an environment variable. `.env.example` has placeholders only (
 A human does this after the publishing pipeline is in place. Not part of the current task.
 
 1. In the Liara panel, create a Flask app (the name in `liara.json` is the placeholder `abadis-forms`). Do not point production forms at the test static app.
-2. Set the variables from `.env.example` in the Liara panel. For a test deploy, `ALLOWED_ORIGINS` must include `https://abadis-test.liara.run`. Keep `https://abadis-med.com` and `https://www.abadis-med.com` on the list for a later production cutover. Leave `WHATSAPP_WEBHOOK_URL` and `CRM_WEBHOOK_URL` empty.
+2. Set the variables from `.env.example` in the Liara panel. `ALLOWED_ORIGINS` must include `https://abadis-test.liara.run`, `https://abadis-med.com`, `https://www.abadis-med.com`, and `https://shushtarwolf.github.io`. Leave `WHATSAPP_WEBHOOK_URL` and `CRM_WEBHOOK_URL` empty.
 3. From `tools/forms-liara/`: `npm i -g @liara/cli && liara login && liara deploy`.
 4. Open `https://<app>.liara.run/health` and expect `{"ok": true}`.
 
 ## Later: turn the site flag on
 
-Still not part of this task. The generator writes `<meta name="abadis-form-endpoint">` only when both are true:
+The generator writes `<meta name="abadis-form-endpoint">` when a public URL is available:
 
-- `ABADIS_FORMS_ENABLED=1`
-- a URL is in `ABADIS_FORM_ENDPOINT` or `tools/redesign/data/form_endpoint.txt`
+- `ABADIS_FORM_ENDPOINT`, or `tools/redesign/data/form_endpoint.txt`
+- `ABADIS_FORMS_ENABLED` is not `0` / `false` / `off` / `no`. If the variable is unset, a non-empty `form_endpoint.txt` turns forms on, so a rebuild keeps the contact and careers endpoint.
 
-`form_endpoint.txt` is empty in git, and the flag defaults to off, so the built site keeps mailto.
+`form_endpoint.txt` holds `https://abadis-forms.vercel.app/submit`. Set `ABADIS_FORMS_ENABLED=0` to force mailto.
 
-To switch contact and careers later:
+To point contact and careers at another inbox later:
 
-1. Put `https://<app>.liara.run/submit` in `tools/redesign/data/form_endpoint.txt`, or export `ABADIS_FORM_ENDPOINT` to that URL.
-2. Export `ABADIS_FORMS_ENABLED=1`.
+1. Put the public POST URL in `tools/redesign/data/form_endpoint.txt`, or export `ABADIS_FORM_ENDPOINT`.
+2. Leave `ABADIS_FORMS_ENABLED` unset, or export `ABADIS_FORMS_ENABLED=1`.
 3. Run `python3 tools/redesign/seo_postprocess.py`, or `python3 tools/redesign/build.py posts home i18n archives`. That writes the meta tag. `site/assets/js/site.js` posts with fetch and opens mailto if the request fails.
-4. Clear the flag (or the URL) to go back to mailto.
+4. Clear the URL, or set `ABADIS_FORMS_ENABLED=0`, to go back to mailto.
 
 Do not set the flag in the WordPress publish workflow. Do not aim production forms at `abadis-test`.
 

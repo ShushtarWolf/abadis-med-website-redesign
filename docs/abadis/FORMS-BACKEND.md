@@ -53,9 +53,10 @@ Existing audit workflow notes live in `docs/abadis/N8N-WORKFLOW.md` (unrelated t
 
 | Place | Use |
 |---|---|
-| `tools/redesign/lib.py` → `FORM_ENDPOINT = 'https://…'` | Permanent public URL for production builds |
+| `tools/redesign/data/form_endpoint.txt` | Committed public POST URL. A non-empty file turns forms on when `ABADIS_FORMS_ENABLED` is unset, so a rebuild keeps contact and careers. |
 | Env `ABADIS_FORM_ENDPOINT` | CI / local override without editing the file |
-| Leave empty | Mailto-only preview (current default) |
+| `ABADIS_FORMS_ENABLED=0` | Force mailto even if the file has a URL |
+| Leave the file empty | Mailto-only preview |
 
 After changing it: `python3 tools/redesign/build.py` (at least `careers`) and `python3 tools/redesign/apply_shell.py` so hand-built `/contact/` gets the meta tag.
 

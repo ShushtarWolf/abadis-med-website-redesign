@@ -10,23 +10,33 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 SITE = ROOT / 'site'
 DATA = pathlib.Path(__file__).resolve().parent / 'data'
 SITE_ORIGIN = 'https://abadis-med.com'
-def _forms_enabled():
-    """Public site stays on mailto until ABADIS_FORMS_ENABLED is turned on."""
-    return os.environ.get('ABADIS_FORMS_ENABLED', '0').strip().lower() not in ('', '0', 'false', 'off', 'no')
-
-def _form_endpoint():
-    # Flag defaults off. A URL in the environment or form_endpoint.txt is ignored until the flag is on.
-    if not _forms_enabled():
-        return ''
-    value = os.environ.get('ABADIS_FORM_ENDPOINT', '').strip()
-    if value:
-        return value
+def _form_endpoint_file():
     try:
         return open(os.path.join(os.path.dirname(__file__), 'data', 'form_endpoint.txt'), encoding='utf-8').read().strip()
     except OSError:
         return ''
 
-# Empty ⇒ site.js keeps the mailto fallback. Never commit a live endpoint or secrets.
+def _forms_enabled():
+    """ABADIS_FORMS_ENABLED=0/false/off/no forces mailto.
+
+    With the variable unset, a public URL in form_endpoint.txt turns forms on
+    so a rebuild keeps the contact and careers endpoint.
+    """
+    raw = os.environ.get('ABADIS_FORMS_ENABLED')
+    if raw is not None and raw.strip() != '':
+        return raw.strip().lower() not in ('0', 'false', 'off', 'no')
+    return bool(_form_endpoint_file())
+
+def _form_endpoint():
+    # Explicit off ignores both the environment URL and form_endpoint.txt.
+    if not _forms_enabled():
+        return ''
+    value = os.environ.get('ABADIS_FORM_ENDPOINT', '').strip()
+    if value:
+        return value
+    return _form_endpoint_file()
+
+# Empty ⇒ site.js keeps the mailto fallback. The public POST URL may be committed; never commit secrets.
 FORM_ENDPOINT = _form_endpoint()
 FORM_MAILTO = 'info@abadis-med.com'
 RAW = pathlib.Path(os.environ.get(
