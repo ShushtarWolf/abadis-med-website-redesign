@@ -1013,6 +1013,8 @@ def drop_aliases(written):
         if path in written:
             aliases.pop(key)
             removed.append(path)
+    if not removed:
+        return removed
     json.dump(aliases, open(fp, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     fp.write_text(open(fp, encoding='utf-8').read().rstrip() + '\n', encoding='utf-8')
     return removed
@@ -1045,8 +1047,9 @@ def build(write):
         report['by_type'][kind] = report['by_type'].get(kind, 0) + 1
         key = f'{kind}/{lang}'
         report['by_type_lang'][key] = report['by_type_lang'].get(key, 0) + 1
-    out = DATA / 'archive-pages-report.json'
-    json.dump(report, open(out, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    # A posts publish only rebuilds post archives. Keep the full-site report.
+    if not SKIP_SPECIALS:
+        json.dump(report, open(DATA / 'archive-pages-report.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     print(json.dumps({k: report[k] for k in ('pages', 'by_type', 'by_type_lang', 'aliases_removed')}, ensure_ascii=False, indent=1))
     print('failed', len(failed))
     for p, why in failed[:30]:

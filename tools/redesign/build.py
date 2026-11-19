@@ -136,5 +136,7 @@ if __name__ == '__main__':
         else:
             _localize_once()
             _run_groups(want, posts_scoped, localize=False)
+        from discovery import refresh_posts_sitemap
+        refresh_posts_sitemap()
     else:
         _run_groups(want, posts_scoped, localize=True)

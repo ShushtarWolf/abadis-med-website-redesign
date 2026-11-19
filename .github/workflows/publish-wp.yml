@@ -158,6 +158,7 @@ jobs:
             tools/redesign/data/i18n_featured_urls.json \
             tools/redesign/data/imgmap.json \
             tools/redesign/data/dead_images.json \
+            tools/redesign/data/unpublished-posts.json \
             site
           do
             if [ -e "$path" ]; then git add -- "$path"; fi
@@ -186,6 +187,7 @@ jobs:
             tools/redesign/data/i18n_featured_urls.json \
             tools/redesign/data/imgmap.json \
             tools/redesign/data/dead_images.json \
+            tools/redesign/data/unpublished-posts.json \
             site
           do
             if [ -e "$path" ]; then git add -- "$path"; fi
