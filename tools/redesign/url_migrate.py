@@ -125,16 +125,62 @@ KEYS = sorted(M, key=len, reverse=True)
 MANIFEST_FILE = os.path.join(DATA, 'url_moves.json')
 MANIFEST = json.load(open(MANIFEST_FILE, encoding='utf-8')) if os.path.isfile(MANIFEST_FILE) else {}
 
+def _norm_dir(p):
+    p = urllib.parse.unquote(p or '')
+    if not p.startswith('/'):
+        p = '/' + p
+    if p != '/' and not p.endswith('/'):
+        p += '/'
+    return p
+
+def _post_id_from_old(old):
+    m = re.match(r'^/(?:articles|news)/([^/]+)/$', old or '')
+    return m.group(1) if m else ''
+
+def same_post_target(old, new, fp):
+    """True when `fp` is already this post, so a rebuild may replace it.
+
+    A match is the manifest id pointing at `new`, the page canonical equalling
+    `new`, or an id marker for that post. A canonical for a different URL, or
+    another post's id marker, is a real conflict.
+    """
+    pid = _post_id_from_old(old)
+    if not pid:
+        return False
+    if _norm_dir(load_posts().get(pid, '')) != _norm_dir(new):
+        return False
+    try:
+        text = open(fp, encoding='utf-8', errors='ignore').read(200000)
+    except OSError:
+        return False
+    for other in re.findall(r'data-abadis-post="([^"]*)"', text):
+        if other != pid:
+            return False
+    if f'data-abadis-post="{pid}"' in text:
+        return True
+    if f'/articles/{pid}/' in text or f'/news/{pid}/' in text:
+        return True
+    can = re.search(r'rel="canonical" href="([^"]*)"', text)
+    if can:
+        cpath = _norm_dir(urllib.parse.urlsplit(html.unescape(can.group(1))).path)
+        return cpath == _norm_dir(new)
+    return True
+
 def check_collisions():
     seen = {}
     for old, new in M.items():
         ofp = os.path.join(SITE, old.strip('/'), 'index.html')
         if not os.path.isfile(ofp) or is_stub(ofp): continue
         if new in seen:
-            sys.exit(f'collision: {old} and {seen[new]} both map to {new}')
+            prev = seen[new]
+            if _post_id_from_old(prev) and _post_id_from_old(prev) == _post_id_from_old(old):
+                continue
+            sys.exit(f'collision: {old} and {prev} both map to {new}')
         seen[new] = old
         fp = os.path.join(SITE, new.strip('/'), 'index.html')
         if os.path.isfile(fp) and not is_stub(fp) and new not in M and MANIFEST.get(old) != new:
+            if same_post_target(old, new, fp):
+                continue
             sys.exit(f'target exists: {old} -> {new} (a different page already lives there)')
 
 def map_path(p):
