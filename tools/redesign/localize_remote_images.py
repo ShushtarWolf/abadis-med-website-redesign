@@ -229,6 +229,21 @@ def _reload_img_index():
     lib._done.clear()
 
 
+def _materialize_cached(src, w):
+    """Build one WebP from the raw cache. True only when this call created the file."""
+    if src.startswith(('../', 'assets/', '/assets/')):
+        return False
+    cands = {full_url(src), src}
+    had = any((OUT / out_name(_key(c), w)).exists() for c in cands)
+    if had:
+        return False
+    if not any(lib._key(c) in lib._IMG_BY_PATH and (RAW / lib._IMG_BY_PATH[lib._key(c)]).exists() for c in cands):
+        return False
+    if not lib.best_img(src, w):
+        return False
+    return (not had) and any((OUT / out_name(_key(c), w)).exists() for c in cands)
+
+
 def prefetch_post_images():
     """Build card (640) and article (1400) WebPs from the raw cache before HTML is written.
 
@@ -278,20 +293,7 @@ def prefetch_post_images():
         for url in json.loads(path.read_text(encoding='utf-8')).values():
             if isinstance(url, str):
                 add(url, 1400)
-    built = 0
-    for src, w in sorted(jobs):
-        if src.startswith(('../', 'assets/', '/assets/')):
-            continue
-        cands = {full_url(src), src}
-        if any((OUT / out_name(_key(c), w)).exists() for c in cands):
-            continue
-        if not any(lib._key(c) in lib._IMG_BY_PATH and (RAW / lib._IMG_BY_PATH[lib._key(c)]).exists() for c in cands):
-            continue
-        if not lib.best_img(src, w):
-            continue
-        # Reusing an existing width does not count: no new file was written.
-        if not had and any((OUT / out_name(_key(c), w)).exists() for c in cands):
-            built += 1
+    built = sum(1 for src, w in sorted(jobs) if _materialize_cached(src, w))
     print(f'prefetch: {len(jobs)} image sizes, {built} newly built from raw cache')
 
 
