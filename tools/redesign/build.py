@@ -61,10 +61,18 @@ def _site_snapshot():
         digest.update(path.read_bytes())
     return tuple(names), digest.hexdigest()
 
-def _run_groups(want, posts_scoped):
+def _localize_once():
+    """One localizer process per build. python -u so each fetch line reaches the log."""
+    import subprocess
+    script = pathlib.Path(__file__).resolve().parent / 'localize_remote_images.py'
+    print('localize once')
+    subprocess.run([sys.executable, '-u', str(script)], check=True)
+
+def _run_groups(want, posts_scoped, localize):
+    built = 0
     if posts_scoped:
         import localize_remote_images
-        localize_remote_images.prefetch_post_images()
+        built = localize_remote_images.prefetch_post_images() or 0
     WRITTEN.clear()
     seen = set()
     for g in want:
@@ -92,9 +100,9 @@ def _run_groups(want, posts_scoped):
     # rewrite links/canonicals/hreflang/sitemap, leave redirect stubs + 301 rules at the old paths.
     import subprocess
     subprocess.run([sys.executable, str(pathlib.Path(__file__).resolve().parent / 'url_migrate.py')], check=True)
-    # Self-host any abadis-med.com image still hotlinked in post bodies / post cards, and give EN / AR posts
-    # their featured image (otherwise those pictures depend on the WordPress server and often do not show).
-    subprocess.run([sys.executable, str(pathlib.Path(__file__).resolve().parent / 'localize_remote_images.py')], check=True)
+    if localize:
+        _localize_once()
+    return built
 
 if __name__ == '__main__':
     try:
@@ -109,17 +117,24 @@ if __name__ == '__main__':
     import pages_archives
     pages_archives.SKIP_SPECIALS = posts_scoped
     if posts_scoped:
-        # The localize pass downloads images the first write could not embed.
-        # Repeat until HTML and WebP names settle (at most four writes) so the
-        # next invocation of this command does not change the tree again.
+        # Writes repeat until the HTML settles. The localizer runs after that,
+        # at most once, and a warm cache (nothing new to fetch) skips it.
         previous = _site_snapshot()
+        last_built = 0
         for _pass in range(1, 5):
             print(f'posts pass {_pass}')
-            _run_groups(want, posts_scoped)
+            last_built = _run_groups(want, posts_scoped, localize=False)
             current = _site_snapshot()
             if current == previous:
                 print(f'posts pass {_pass} stable')
                 break
             previous = current
+        import localize_remote_images
+        unknown = localize_remote_images.unknown_remote_srcs()
+        if last_built == 0 and not unknown:
+            print('localize skipped: cache warm, no unknown remote images')
+        else:
+            _localize_once()
+            _run_groups(want, posts_scoped, localize=False)
     else:
-        _run_groups(want, posts_scoped)
+        _run_groups(want, posts_scoped, localize=True)
