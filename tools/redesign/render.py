@@ -49,7 +49,9 @@ def blocks_to_prose(bl, p, skip_title=None, gid='g'):
             out.append(rewrite_html(b['html'], p, drop_missing_img=False))
         elif t == 'img':
             pic = picture(p, b['src'], b.get('alt', ''), 1000)
-            if pic: out.append(f'<figure>{pic}{f"<figcaption>{esc(b["cap"])}</figcaption>" if b.get("cap") else ""}</figure>')
+            if pic:
+                cap = f'<figcaption>{esc(b["cap"])}</figcaption>' if b.get("cap") else ""
+                out.append(f'<figure>{pic}{cap}</figure>')
         elif t == 'gallery':
             gi += 1
             items = ''.join(gallery_link(p, i['src'] if isinstance(i, dict) else i, f'{gid}{gi}', (i.get('alt') if isinstance(i, dict) else '') or '') for i in b['imgs'])
