@@ -281,6 +281,26 @@ async function loadMoves(root) {
   }
 }
 
+export async function scrubNewsDelta(root) {
+  const data = await loadUnpublished(root);
+  const ids = new Set((data.posts || []).map((p) => String(p.id)));
+  if (!ids.size) return false;
+  const abs = path.join(root, 'tools/redesign/data/news-delta.json');
+  let delta;
+  try { delta = JSON.parse(await readFile(abs, 'utf8')); } catch { return false; }
+  let changed = false;
+  for (const row of delta.summary || []) {
+    const removed = row.removed || [];
+    const next = removed.filter((item) => !ids.has(String(item.id)));
+    if (next.length !== removed.length) {
+      row.removed = next;
+      changed = true;
+    }
+  }
+  if (changed) await writeFile(abs, JSON.stringify(delta, null, 2) + '\n');
+  return changed;
+}
+
 export async function unpublishPost(root, spec) {
   const localeId = spec.locale;
   const id = String(spec.id);
@@ -296,6 +316,7 @@ export async function unpublishPost(root, spec) {
   data.posts.push({ locale: localeId, id, kind, slug, target, sources });
   await saveUnpublished(root, data);
   await writeRedirectFiles(root, data.posts);
+  await scrubNewsDelta(root);
   await stripSitemapOnDisk(root, sources);
   await stripListingsOnDisk(root, sources);
   return { locale: localeId, id, kind, target, sources };
@@ -337,6 +358,11 @@ export async function unpublishSelfTest() {
     await wf(path.join(root, 'site/liara_nginx.conf'), 'charset utf-8;\n\n# BEGIN abadis-unpublished-posts\n# END abadis-unpublished-posts\n\nlocation / {\n  try_files $uri $uri/ =404;\n}\n');
     await wf(path.join(root, 'site/_redirects'), '# 301 map\n/old/ /new/ 301\n');
     await wf(path.join(root, 'site/redirects-nginx.conf'), '# plain\n');
+    await mk(path.join(root, 'tools/redesign/data'), { recursive: true });
+    await wf(path.join(root, 'tools/redesign/data/news-delta.json'), JSON.stringify({
+      at: '2026-01-01T00:00:00.000Z',
+      summary: [{ locale: 'fa', source: 'rest', new: [], modified: [], removed: [{ id: '9', reason: 'missing-from-rest' }, { id: 'keep', reason: 'other' }], partial: [] }],
+    }, null, 2) + '\n');
     const recorded = await unpublishPost(root, {
       locale: 'fa', id: '9', kind: 'news', slug: 'sample-post',
       item: { category_path: '/news-topic/' },
@@ -346,6 +372,10 @@ export async function unpublishSelfTest() {
     if (!recorded.sources.includes('/sample-post/') || !recorded.sources.includes('/news/9/') || !recorded.sources.includes('/articles/9/') || !recorded.sources.includes('/legacy-sample/')) {
       throw new Error('unpublish: missing source ' + recorded.sources.join(','));
     }
+    const delta = JSON.parse(await readFile(path.join(root, 'tools/redesign/data/news-delta.json'), 'utf8'));
+    const removedIds = (delta.summary[0].removed || []).map((item) => String(item.id));
+    if (removedIds.includes('9')) throw new Error('unpublish: news-delta still lists the unpublished id');
+    if (!removedIds.includes('keep')) throw new Error('unpublish: news-delta dropped an unrelated removal');
     const saved = JSON.parse(await readFile(path.join(root, DATA_REL), 'utf8'));
     const savedPost = saved.posts.find((p) => p.id === '9');
     if (!savedPost || !savedPost.sources.includes('/articles/9/') || !savedPost.sources.includes('/news/9/') || !savedPost.sources.includes('/sample-post/')) {
