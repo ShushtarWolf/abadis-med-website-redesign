@@ -6,12 +6,7 @@
       "source": "rest",
       "new": [],
       "modified": [],
-      "removed": [
-        {
-          "id": "37",
-          "reason": "missing-from-rest"
-        }
-      ],
+      "removed": [],
       "partial": []
     }
   ]

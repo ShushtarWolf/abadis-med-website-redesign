@@ -20,7 +20,7 @@ import { mkdir, open, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { extractImageUrls, publishUrls, rewriteText } from './publish-post-media.mjs';
-import { republishPost, unpublishPost } from './unpublish-posts.mjs';
+import { republishPost, scrubNewsDelta, unpublishPost } from './unpublish-posts.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = process.env.ABADIS_SYNC_ROOT
@@ -213,26 +213,80 @@ function authHeaders(url) {
   return { Authorization: 'Basic ' + Buffer.from(`${user}:${pass}`).toString('base64') };
 }
 
-async function getText(url) {
+async function getText(url, timeoutMs = 40000) {
   const res = await fetch(url, {
     headers: { 'User-Agent': UA, Accept: '*/*', ...authHeaders(url) },
-    signal: AbortSignal.timeout(40000),
+    signal: AbortSignal.timeout(timeoutMs),
     redirect: 'follow',
   });
-  if (!res.ok) throw new Error(res.status + ' ' + url);
+  if (!res.ok) {
+    const err = new Error(res.status + ' ' + url);
+    err.status = res.status;
+    throw err;
+  }
   const pages = res.headers.get('x-wp-totalpages') || res.headers.get('X-WP-TotalPages');
   return { text: await res.text(), pages: Number(pages || 0), headers: res.headers };
 }
 
-async function getJson(url) {
-  const { text, pages } = await getText(url);
+async function getJson(url, timeoutMs) {
+  const { text, pages } = await getText(url, timeoutMs);
   return { json: JSON.parse(text), pages };
+}
+
+// One try, then 2s, 5s and 15s. A dead REST host must not jump straight to the sitemap.
+const REST_TIMEOUT_MS = 20000;
+const REST_RETRY_DELAYS_MS = [2000, 5000, 15000];
+
+export function isRetryableRestError(err) {
+  const status = Number(err && err.status);
+  if (status >= 500 && status <= 599) return true;
+  const msg = String((err && err.message) || '');
+  if (/^5\d\d\b/.test(msg)) return true;
+  if (/^4\d\d\b/.test(msg)) return false;
+  const name = String((err && err.name) || '');
+  if (name === 'AbortError' || name === 'TimeoutError') return true;
+  return /fetch failed|network|ECONNRESET|ECONNREFUSED|ETIMEDOUT|ENOTFOUND|EAI_AGAIN|socket|und_err|timed out|aborted/i.test(msg);
+}
+
+export function publicRestError(err) {
+  return String((err && err.message) || err)
+    .replace(/Basic\s+[A-Za-z0-9+/=]+/gi, 'Basic [redacted]')
+    .replace(/(https?:\/\/)[^/\s:@]+:[^/\s@]+@/gi, '$1[redacted]@')
+    .replace(/Authorization:\s*\S+/gi, 'Authorization: [redacted]');
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export async function withRestRetry(fn, opts = {}) {
+  const delays = opts.delays || REST_RETRY_DELAYS_MS;
+  const wait = opts.sleep || sleep;
+  const log = opts.log || ((line) => console.log(line));
+  let last;
+  const attempts = delays.length + 1;
+  for (let i = 0; i < attempts; i += 1) {
+    try {
+      return await fn();
+    } catch (err) {
+      last = err;
+      if (i >= delays.length || !isRetryableRestError(err)) throw err;
+      const ms = delays[i];
+      log(`REST retry ${i + 1}/${delays.length} in ${ms / 1000}s: ${publicRestError(err)}`);
+      await wait(ms);
+    }
+  }
+  throw last;
+}
+
+function restGetJson(url) {
+  return withRestRetry(() => getJson(url, REST_TIMEOUT_MS));
 }
 
 async function fetchCategories(rest) {
   const map = {};
   try {
-    const { json } = await getJson(rest + '/categories?per_page=100&_fields=id,slug,name');
+    const { json } = await restGetJson(rest + '/categories?per_page=100&_fields=id,slug,name');
     for (const c of json) {
       const slug = decodeURIComponent(c.slug || '');
       map[c.id] = SLUG_KIND[slug] || SLUG_KIND[c.slug] || '';
@@ -248,7 +302,7 @@ async function fetchRest(locale) {
   let pages = 1;
   while (page <= pages) {
     const url = `${locale.rest}/posts?per_page=100&page=${page}&status=publish&_fields=${FIELDS}`;
-    const { json, pages: total } = await getJson(url);
+    const { json, pages: total } = await restGetJson(url);
     if (total) pages = total;
     if (!json.length) break;
     posts.push(...json);
@@ -499,14 +553,14 @@ function archiveRecord(post, image) {
 }
 
 async function fetchOne(locale, id) {
-  const { json } = await getJson(`${locale.rest}/posts/${id}?_fields=${FIELDS}`);
+  const { json } = await restGetJson(`${locale.rest}/posts/${id}?_fields=${FIELDS}`);
   return json;
 }
 
 async function mediaUrl(locale, id) {
   if (!id) return '';
   try {
-    const { json } = await getJson(`${locale.rest}/media/${id}?_fields=source_url`);
+    const { json } = await restGetJson(`${locale.rest}/media/${id}?_fields=source_url`);
     return json.source_url || '';
   } catch { return ''; }
 }
@@ -725,6 +779,7 @@ async function applySync(reports, locales) {
     }));
     await writeFile(path.join(ROOT, 'tools/redesign/data/news-delta.json'), JSON.stringify({ at: new Date().toISOString(), summary }, null, 2) + '\n');
   }
+  if (await scrubNewsDelta(ROOT)) wrote += 1;
   return { wrote, blocked: false };
 }
 
@@ -842,6 +897,38 @@ async function selfTest() {
   if (savedRest2 === undefined) delete process.env.ABADIS_WP_REST; else process.env.ABADIS_WP_REST = savedRest2;
   if (savedEn2 === undefined) delete process.env.ABADIS_WP_REST_EN; else process.env.ABADIS_WP_REST_EN = savedEn2;
   if (savedAr2 === undefined) delete process.env.ABADIS_WP_REST_AR; else process.env.ABADIS_WP_REST_AR = savedAr2;
+  const retryLog = [];
+  let attempts = 0;
+  const recovered = await withRestRetry(() => {
+    attempts += 1;
+    if (attempts < 3) {
+      const err = new TypeError('fetch failed');
+      err.message = 'fetch failed Authorization: Basic c2VjcmV0 http://user:pass@cms.example/wp-json';
+      throw err;
+    }
+    return 'ok';
+  }, { delays: [0, 0, 0], sleep: async () => {}, log: (line) => retryLog.push(line) });
+  if (recovered !== 'ok' || attempts !== 3) throw new Error('self-test: REST retry did not recover, attempts=' + attempts);
+  if (retryLog.length !== 2 || !retryLog[0].startsWith('REST retry 1/3 in 0s:')) throw new Error('self-test: retry was not logged');
+  if (/c2VjcmV0|user:pass/.test(retryLog.join('\n'))) throw new Error('self-test: retry log leaked credentials');
+  let clientErrors = 0;
+  try {
+    await withRestRetry(() => {
+      clientErrors += 1;
+      throw new Error('404 http://cms.example/wp-json/wp/v2/posts');
+    }, { delays: [0, 0, 0], sleep: async () => {}, log: () => {} });
+    throw new Error('self-test: 404 should throw');
+  } catch (err) {
+    if (clientErrors !== 1) throw new Error('self-test: 404 must not retry');
+    if (!String(err.message).startsWith('404')) throw err;
+  }
+  let serverErrors = 0;
+  const after500 = await withRestRetry(() => {
+    serverErrors += 1;
+    if (serverErrors === 1) throw new Error('503 http://cms.example/wp-json/wp/v2/posts');
+    return 'up';
+  }, { delays: [0, 0, 0], sleep: async () => {}, log: () => {} });
+  if (after500 !== 'up' || serverErrors !== 2) throw new Error('self-test: 5xx should retry once');
   const { mediaSelfTest } = await import('./publish-post-media.mjs');
   await mediaSelfTest();
   const { unpublishSelfTest } = await import('./unpublish-posts.mjs');

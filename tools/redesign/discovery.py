@@ -8,6 +8,7 @@ import json
 import sys
 import pathlib
 import re
+import unicodedata
 from urllib.parse import quote, unquote, urlparse
 from xml.sax.saxutils import escape
 
@@ -34,9 +35,11 @@ def _xml_loc(site_path: str) -> str:
 
 
 def _page_key(src: str) -> str:
+    """Filesystem path for a post. WordPress stores the slug percent-encoded."""
     text = str(src or '').strip()
     if not text or text == '/':
         return ''
+    text = unicodedata.normalize('NFC', unquote(text))
     return text.strip('/') + '/'
 
 
@@ -99,12 +102,12 @@ def _post_paths():
         for item in json.loads(fp.read_text(encoding='utf-8')):
             slug = str(item.get('slug') or '').strip('/')
             if slug:
-                paths.append(prefix + slug + '/')
+                paths.append(_page_key(prefix + slug))
     return [p for p in paths if p]
 
 
 def _loc_key(loc: str) -> str:
-    path = unquote(urlparse(loc.strip()).path)
+    path = unicodedata.normalize('NFC', unquote(urlparse(loc.strip()).path))
     if path in ('', '/'):
         return ''
     return path.strip('/') + '/'
