@@ -76,14 +76,24 @@ DUPLICATES = {
     '/en/careers/': '/en/collaboration-opportunities/',
 }
 
-def load_posts():
-    m = {}
+def load_post_records():
     pj = os.path.join(DATA, 'posts.json')
-    if os.path.isfile(pj):
-        for p in json.load(open(pj, encoding='utf-8')):
-            path = urllib.parse.unquote(p.get('path') or urllib.parse.urlsplit(p.get('url', '')).path)
-            if path:
-                m[str(p['id'])] = path if path.endswith('/') else path + '/'
+    if not os.path.isfile(pj):
+        return []
+    return json.load(open(pj, encoding='utf-8'))
+
+def load_posts():
+    from post_slugs import norm_slug_path, resolve_slug_owners
+    m = {}
+    records = load_post_records()
+    winners, _losers = resolve_slug_owners(records)
+    for p in records:
+        pid = str(p.get('id'))
+        if pid not in winners:
+            continue
+        path = norm_slug_path(p.get('path') or urllib.parse.urlsplit(p.get('url', '')).path)
+        if path and path != '/':
+            m[pid] = path
     for md in glob.glob(os.path.join(REPO, 'content', 'fa', '*', '*.md')):
         t = open(md, encoding='utf-8').read(3000)
         i = re.search(r'^id:\s*"?([^"\n]+)"?', t, re.M); s = re.search(r'^slug:\s*"?([^"\n]+)"?', t, re.M)
@@ -467,6 +477,24 @@ def main():
             if s2 != s:
                 open(fp, 'w', encoding='utf-8').write(s2)
             report['merged_canonical'].append((old, tgt))
+    # A CMS post that shares a slug with a legacy import keeps the page.
+    # The legacy id stays reachable: its old /news/<id>/ and /articles/<id>/ become 301 stubs.
+    from post_slugs import resolve_slug_owners
+    _, _slug_losers = resolve_slug_owners(load_post_records())
+    for item in _slug_losers:
+        dst = _norm_dir(item['slug'])
+        for src in item['sources']:
+            src = _norm_dir(src)
+            if (src.rstrip('/') or '/') == (dst.rstrip('/') or '/'):
+                continue
+            fp = os.path.join(SITE, src.strip('/'), 'index.html')
+            os.makedirs(os.path.dirname(fp), exist_ok=True)
+            title = title_of(os.path.join(SITE, dst.strip('/'), 'index.html'))
+            html_out = stub_html(src, dst, title, lang_of_path(src))
+            prev = open(fp, encoding='utf-8').read() if os.path.isfile(fp) else ''
+            if prev != html_out:
+                open(fp, 'w', encoding='utf-8').write(html_out)
+            report['stubs'].append((src, dst))
     # manifest of every page move (lets a later build.py + url_migrate.py run overwrite its own earlier output)
     man = dict(MANIFEST); man.update(report['moved'])
     json.dump(dict(sorted(man.items())), open(MANIFEST_FILE, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
@@ -505,21 +533,123 @@ def unpublished_tables(posts):
                 src_to_dst[key] = dst if dst.endswith('/') else dst + '/'
     return src_to_dst
 
+def _strip_unpub(text):
+    begin = text.find(UNPUB_BEGIN)
+    end = text.find(UNPUB_END)
+    if begin >= 0 and end > begin:
+        return text[:begin] + text[end + len(UNPUB_END):]
+    return text
+
+def _unescape_nginx(pat):
+    return re.sub(r'\\(.)', r'\1', pat or '')
+
+def _read(path):
+    if not os.path.isfile(path):
+        return ''
+    return open(path, encoding='utf-8').read()
+
+def _rule_source_nginx(line):
+    m = re.match(r'^rewrite "\^(.+?)/\?\$"', line or '')
+    if not m:
+        return ''
+    return _norm_dir(_unescape_nginx(m.group(1))).rstrip('/') or '/'
+
+def _rule_source_redirect(line):
+    parts = (line or '').split()
+    if len(parts) < 3 or parts[-1] != '301' or line.startswith('#'):
+        return ''
+    return _norm_dir(urllib.parse.unquote(parts[0])).rstrip('/') or '/'
+
+def capture_shipped_rules():
+    """Exact 301 lines already on disk, outside the unpublished-posts block."""
+    nginx = _strip_unpub(_read(os.path.join(SITE, 'liara_nginx.conf')))
+    redirects = _strip_unpub(_read(os.path.join(SITE, '_redirects')))
+    nginx_lines = [ln for ln in nginx.splitlines() if ln.startswith('rewrite ')]
+    redir_lines = [ln for ln in redirects.splitlines() if _rule_source_redirect(ln)]
+    sources = set()
+    for ln in nginx_lines:
+        sources.add(_rule_source_nginx(ln))
+    for ln in redir_lines:
+        sources.add(_rule_source_redirect(ln))
+    sources.discard('')
+    return nginx_lines, redir_lines, sources
+
+def existing_redirects():
+    """Rules already shipped. Regeneration must not drop or retarget these.
+
+    The unpublished-posts block is excluded; that block is owned by the
+    unpublish logic and is written back separately.
+    """
+    frozen = {}
+    nginx = _strip_unpub(_read(os.path.join(SITE, 'liara_nginx.conf')))
+    for m in re.finditer(r'^rewrite "\^(.+?)/\?\$" "https://\$host([^"]*)" permanent;', nginx, re.M):
+        src = _norm_dir(_unescape_nginx(m.group(1)))
+        dst = _norm_dir(urllib.parse.unquote(m.group(2)))
+        frozen[src.rstrip('/') or '/'] = dst
+    redirects = _strip_unpub(_read(os.path.join(SITE, '_redirects')))
+    for line in redirects.splitlines():
+        parts = line.split()
+        if len(parts) < 3 or parts[-1] != '301' or line.startswith('#'):
+            continue
+        src = _norm_dir(urllib.parse.unquote(parts[0]))
+        dst = _norm_dir(urllib.parse.unquote(parts[1]))
+        key = src.rstrip('/') or '/'
+        frozen.setdefault(key, dst)
+    return frozen
+
+def existing_unpub_rules():
+    """Keep a managed block that is already in the file even if the json is empty."""
+    text = _read(os.path.join(SITE, 'liara_nginx.conf'))
+    begin = text.find(UNPUB_BEGIN)
+    end = text.find(UNPUB_END)
+    rules = {}
+    if begin >= 0 and end > begin:
+        block = text[begin + len(UNPUB_BEGIN):end]
+        for m in re.finditer(r'^rewrite "\^(.+?)/\?\$" "https://\$host([^"]*)" permanent;', block, re.M):
+            src = _norm_dir(_unescape_nginx(m.group(1)))
+            dst = _norm_dir(urllib.parse.unquote(m.group(2)))
+            rules[src.rstrip('/') or '/'] = dst
+    return rules
+
+def legacy_loser_rules():
+    from post_slugs import resolve_slug_owners
+    _, losers = resolve_slug_owners(load_post_records())
+    out = []
+    for item in losers:
+        dst = _norm_dir(item['slug'])
+        for src in item['sources']:
+            src = _norm_dir(src)
+            if (src.rstrip('/') or '/') != (dst.rstrip('/') or '/'):
+                out.append((src, dst))
+    return out
+
 def write_redirects(report):
-    """_redirects (Netlify/Cloudflare format) + liara_nginx.conf + redirects-nginx.conf"""
+    """_redirects (Netlify/Cloudflare format) + liara_nginx.conf + redirects-nginx.conf
+
+    Rules already in liara_nginx.conf or _redirects are kept with their current
+    target. New rules are added. The unpublished-posts block is the exception:
+    unpublish owns it, and a build must not drop it.
+    """
     src_to_dst = unpublished_tables(load_unpublished())
+    src_to_dst.update(existing_unpub_rules())
+    # json wins when both name the same source; load_unpublished was applied first,
+    # so re-apply it over the preserved block.
+    src_to_dst.update(unpublished_tables(load_unpublished()))
+    kept_nginx, kept_redir, kept_sources = capture_shipped_rules()
     rules = []   # (src, dst)
     seen = set()
-    def add(src, dst):
+    def add(src, dst, force=False):
         key = src.rstrip('/') or '/'
         if key in src_to_dst:
             dst = src_to_dst[key]
+        elif not force and key in kept_sources:
+            return
         else:
             landed = (dst or '').split('#')[0].rstrip('/') or '/'
             if landed in src_to_dst:
                 dst = src_to_dst[landed]
         if key in seen or key == (dst.rstrip('/') or '/'): return
-        seen.add(key); rules.append((src, dst))
+        seen.add(key); rules.append((src if src.endswith('/') else src + '/', dst if dst.endswith('/') else dst + '/'))
     # every OLD page dir -> NEW (all stubs we manage)
     for dp, dns, fns in os.walk(SITE):
         if 'index.html' in fns:
@@ -543,6 +673,8 @@ def write_redirects(report):
             if not (tp == '/' or os.path.isfile(os.path.join(SITE, tp.strip('/'), 'index.html'))):
                 continue
             add(src if src.endswith('/') else src + '/', dst)
+    for src, dst in legacy_loser_rules():
+        add(src, dst)
     rules.sort(key=lambda r: r[0])
     # Unpublished slugs are written once, inside the managed block, not again above it.
     main_rules = [r for r in rules if (r[0].rstrip('/') or '/') not in src_to_dst]
@@ -570,12 +702,16 @@ def write_redirects(report):
         return lines
     with open(os.path.join(SITE, '_redirects'), 'w', encoding='utf-8') as fh:
         fh.write('# 301 map, generated by tools/redesign/url_migrate.py (old redesign paths and unbuilt live URLs -> live-identical URLs)\n')
+        for ln in kept_redir:
+            fh.write(ln + '\n')
         emit_redirects(fh, main_rules)
         if held_rules:
             fh.write(UNPUB_BEGIN + '\n')
             emit_redirects(fh, held_rules)
             fh.write(UNPUB_END + '\n')
-    nginx = emit_nginx(main_rules)
+    kept_nginx = [ln for ln in kept_nginx if _rule_source_nginx(ln) not in src_to_dst]
+    kept_redir = [ln for ln in kept_redir if _rule_source_redirect(ln) not in src_to_dst]
+    nginx = kept_nginx + emit_nginx(main_rules)
     held_nginx = emit_nginx(held_rules)
     conf = ['# Liara static (nginx) config, generated by tools/redesign/url_migrate.py',
             '# Included inside the server block by Liara. See docs.liara.ir/paas/static/how-tos/customize-nginx/',
