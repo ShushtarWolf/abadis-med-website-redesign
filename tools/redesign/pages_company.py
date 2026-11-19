@@ -1460,7 +1460,8 @@ def downloads(write):
         bt = next((x for x in it['blocks'] if x['t'] == 'btn'), None)
         pic = picture(p, im['src'], title, 600) if im else ''
         ph = f'<div class="ph">{pic}</div>' if pic else f'<div class="ph txt"><img src="{p}assets/img/abadis-logo-teal.png" width="658" height="309" alt=""></div>'
-        cards.append(f'<a class="post-card dl-card reveal" href="{esc(bt["href"])}" target="_blank" rel="noopener">{ph.replace("class=\"ph\"", "class=\"ph\" style=\"aspect-ratio:1;background:#fff\"")}<div class="body"><h3>{esc(title)}</h3><span class="go">{esc(bt["text"])} (PDF) ↓</span></div></a>')
+        ph_style = ph.replace('class="ph"', 'class="ph" style="aspect-ratio:1;background:#fff"')
+        cards.append(f'<a class="post-card dl-card reveal" href="{esc(bt["href"])}" target="_blank" rel="noopener">{ph_style}<div class="body"><h3>{esc(title)}</h3><span class="go">{esc(bt["text"])} (PDF) ↓</span></div></a>')
     main = f'''{page_hero(p, [('مرکز دانلود', None)], 'مرکز دانلود', 'کاتالوگ‌ها و راهنماهای محصولات مخازن طبی آبادیس')}
   <section class="section"><div class="wrap"><div class="post-grid">{''.join(cards)}</div></div></section>'''
     write('downloads/index.html', page(p, 'downloads', 'مرکز دانلود', 'دانلود کاتالوگ محصولات مخازن طبی آبادیس', main))
