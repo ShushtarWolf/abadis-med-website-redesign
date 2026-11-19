@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "source": "site/dial-practical/common/abadis-common.js — F.surgery. The file comment says these are the formulas on the live abadis-med.com calculator: water = n * 1.6 * 9.3, cost = n * 2.5 * 85000, hours = n * 1.7 / 60 * 2.2 * 7.1. Factors below are copied unchanged. Do not replace them with rounded marketing figures.",
+  "formula": {
+    "waterLitres": {
+      "factors": [
+        1.6,
+        9.3
+      ],
+      "expression": "1.6 * 9.3"
+    },
+    "costToman": {
+      "factors": [
+        2.5,
+        85000
+      ],
+      "expression": "2.5 * 85000"
+    },
+    "staffHours": {
+      "expression": "1.7 / 60 * 2.2 * 7.1",
+      "minutes": 1.7,
+      "k1": 2.2,
+      "k2": 7.1
+    }
+  },
+  "chemicals": {
+    "placeholder": true,
+    "amount": null,
+    "showCounter": false,
+    "why": "dial-practical has no separate chemical quantity. Wash and disinfectant cost is already inside costToman (calculator label: هزینه شست‌وشو و ضدعفونی). Do not show a bottle count or a chemical volume. showCounter stays false until a real figure exists."
+  },
+  "display": {
+    "roundTotalsLikeCalculator": true,
+    "note": "The calculator displays Math.round of each running total. This game keeps the exact products and rounds only when drawing the total, the same way."
+  },
+  "links": {
+    "calculator": "https://shushtarwolf.github.io/abadis-med-website-redesign/dial-practical/",
+    "zagros": "https://shushtarwolf.github.io/abadis-med-website-redesign/zagros-names/4-mix/"
+  },
+  "gameRules": {
+    "note": "Everything in gameRules is pacing for the toy, not a hospital statistic. Savings per completed swap still come only from formula.",
+    "surgeryTypes": [
+      {
+        "id": "standard",
+        "sizeL": 2
+      },
+      {
+        "id": "short",
+        "sizeL": 1
+      },
+      {
+        "id": "long",
+        "sizeL": 3
+      }
+    ],
+    "correctBin": "infectious",
+    "seedsPerCleanSwap": 1,
+    "bonusSeedsForCorrectBin": 1,
+    "mistakeDelayMs": 1100,
+    "sealMs": 880,
+    "sealMsSavedPerLevel": 220,
+    "seedFlightMs": 1150,
+    "milestones": [
+      3,
+      8,
+      15,
+      40
+    ],
+    "wildlifeAtTrees": {
+      "birds": 2,
+      "squirrel": 5,
+      "goat": 8,
+      "leopard": 10
+    },
+    "green": {
+      "midFrom": 0,
+      "midTo": 4,
+      "greenFrom": 2,
+      "greenTo": 9
+    },
+    "streamSwaps": 4,
+    "tankSwaps": 8,
+    "washRetireTrees": 16,
+    "upgrades": {
+      "second": {
+        "seeds": 8
+      },
+      "sealer": {
+        "seeds": 4,
+        "max": 2
+      },
+      "lamp": {
+        "seeds": 3,
+        "max": 2
+      },
+      "wildlife": {
+        "seeds": 5,
+        "max": 3,
+        "treesEarlier": 4
+      }
+    },
+    "nightShift": {
+      "capHours": 8,
+      "msPerTree": 3600000,
+      "minAwayMs": 90000
+    },
+    "switchAfterRounds": 3
+  }
+}
