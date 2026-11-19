@@ -147,8 +147,21 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add content tools/redesign/data/posts.json tools/redesign/data/en_posts.json tools/redesign/data/ar_posts.json tools/redesign/data/news-sync-state.json tools/redesign/data/news-delta.json tools/redesign/data/media-bucket.json tools/redesign/data/i18n_featured_urls.json tools/redesign/data/imgmap.json site
-          if [ -f tools/redesign/data/dead_images.json ]; then git add tools/redesign/data/dead_images.json; fi
+          for path in \
+            content \
+            tools/redesign/data/posts.json \
+            tools/redesign/data/en_posts.json \
+            tools/redesign/data/ar_posts.json \
+            tools/redesign/data/news-sync-state.json \
+            tools/redesign/data/news-delta.json \
+            tools/redesign/data/media-bucket.json \
+            tools/redesign/data/i18n_featured_urls.json \
+            tools/redesign/data/imgmap.json \
+            tools/redesign/data/dead_images.json \
+            site
+          do
+            if [ -e "$path" ]; then git add -- "$path"; fi
+          done
           if git diff --cached --quiet; then
             echo "main already matches the sync"
           else
@@ -162,8 +175,21 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add content tools/redesign/data/posts.json tools/redesign/data/en_posts.json tools/redesign/data/ar_posts.json tools/redesign/data/news-sync-state.json tools/redesign/data/news-delta.json tools/redesign/data/media-bucket.json tools/redesign/data/i18n_featured_urls.json tools/redesign/data/imgmap.json site
-          if [ -f tools/redesign/data/dead_images.json ]; then git add tools/redesign/data/dead_images.json; fi
+          for path in \
+            content \
+            tools/redesign/data/posts.json \
+            tools/redesign/data/en_posts.json \
+            tools/redesign/data/ar_posts.json \
+            tools/redesign/data/news-sync-state.json \
+            tools/redesign/data/news-delta.json \
+            tools/redesign/data/media-bucket.json \
+            tools/redesign/data/i18n_featured_urls.json \
+            tools/redesign/data/imgmap.json \
+            tools/redesign/data/dead_images.json \
+            site
+          do
+            if [ -e "$path" ]; then git add -- "$path"; fi
+          done
           if git diff --cached --quiet; then
             echo "liara-test already matches the sync"
           else
