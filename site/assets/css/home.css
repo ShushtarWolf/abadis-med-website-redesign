@@ -901,7 +901,8 @@ video.home-or-fill:not(.is-playing) {
 .cust-marquee-track {
   display: flex;
   width: max-content;
-  animation: cust-marquee 50s linear infinite;
+  /* JS sets duration from set width / speed. This is the no-JS floor. */
+  animation: cust-marquee 300s linear infinite;
   will-change: transform;
 }
 .cust-marquee-set {
