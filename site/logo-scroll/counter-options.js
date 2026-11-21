@@ -177,7 +177,10 @@
     var io = new IntersectionObserver(function (e) { if (e.some(function (x) { return x.isIntersecting; })) { io.disconnect(); cb(); } }, { threshold: 0.35 });
     io.observe(root);
   }
-  var ease = function (t) { return 1 - Math.pow(1 - t, 3); };
+
+  /* Live litres as soon as the script runs. The card is below the fold, so do not
+     wait for the 35% observer and do not paint the March base. */
+  num.textContent = fmt(L(Date.now()));
 
   /* ---------- M1 odometer ---------- */
   if (mode === 'm1') {
@@ -202,16 +205,8 @@
       return d + (lower > 9 ? (lower - 9) : 0);
     }
     function paint(v) { cols.forEach(function (c) { c.st.style.transform = 'translateY(' + (-(posFor(v, c.place) % 10) * 1.2) + 'em)'; }); sr.textContent = fmt(v); }
-    var base = 56500000;
-    paint(base);
-    onView(function () {
-      var t0 = performance.now(), D = 2200;
-      (function f(now) {
-        var t = Math.min(1, (now - t0) / D), target = L(Date.now());
-        paint(base + (target - base) * ease(t));
-        requestAnimationFrame(t < 1 ? f : function g() { paint(L(Date.now())); requestAnimationFrame(g); });
-      })(t0);
-    });
+    paint(L(Date.now()));
+    (function g() { paint(L(Date.now())); requestAnimationFrame(g); })();
     return;
   }
 
@@ -225,16 +220,19 @@
     root.insertBefore(clip, root.firstChild); root.appendChild(drop);
     // fraction of the current Persian year (from base date, one 365-day year)
     function frac() { return Math.min(1, Math.max(0, (Date.now() - Date.parse(COUNTER_BASE_DATE)) / 31536e6)); }
-    num.textContent = fmt(56500000);
+    var last = Math.floor(L(Date.now()));
+    num.textContent = fmt(last);
+    (function f() {
+      var iv = Math.floor(L(Date.now()));
+      if (iv !== last) {
+        if (last > 0) { drop.classList.remove('go'); void drop.offsetWidth; drop.classList.add('go'); }
+        num.textContent = fmt(iv);
+        last = iv;
+      }
+      requestAnimationFrame(f);
+    })();
     onView(function () {
       root.style.setProperty('--fill', (frac() * 100).toFixed(2) + '%');
-      var t0 = performance.now(), D = 2000, last = -1;
-      (function f(now) {
-        var t = Math.min(1, (now - t0) / D), v = t < 1 ? 56500000 + (L(Date.now()) - 56500000) * ease(t) : L(Date.now());
-        var iv = Math.floor(v);
-        if (iv !== last) { if (t >= 1 && last > 0) { drop.classList.remove('go'); void drop.offsetWidth; drop.classList.add('go'); } num.textContent = fmt(iv); last = iv; }
-        requestAnimationFrame(f);
-      })(t0);
     });
     return;
   }
@@ -244,25 +242,21 @@
   var bar = document.createElement('div'); bar.className = 'cnt-bar'; bar.innerHTML = '<i></i>';
   var barLbl = document.createElement('p'); barLbl.className = 'cnt-barlbl';
   root.appendChild(rate); root.appendChild(bar); root.appendChild(barLbl);
-  num.textContent = fmt(56500000);
   function render(iv, prev) {
     var a = fmt(iv), b = prev == null ? '' : fmt(prev), h = '';
     for (var i = 0; i < a.length; i++) h += (b.length === a.length && b[i] !== a[i]) ? '<span class="chg">' + a[i] + '</span>' : a[i];
     num.innerHTML = '<span dir="ltr" aria-hidden="true">' + h + '</span>';
     num.appendChild(sr); sr.textContent = a;
   }
-  onView(function () {
-    var t0 = performance.now(), D = 1800, last = null;
-    (function f(now) {
-      var t = Math.min(1, (now - t0) / D), real = L(Date.now()), v = t < 1 ? 56500000 + (real - 56500000) * ease(t) : real;
-      var iv = Math.floor(v);
-      if (iv !== last) { render(iv, t >= 1 ? last : null); last = iv; }
-      var r = rateNow(Date.now());
-      rate.innerHTML = '<bdi dir="ltr">+' + nf2.format(r) + '</bdi> لیتر در هر ثانیه';
-      var rem = real % 1000;
-      bar.firstChild.style.width = (rem / 10).toFixed(2) + '%';
-      barLbl.textContent = '≈ ' + nf.format(Math.ceil((1000 - rem) / r)) + ' ثانیه تا هزار لیتر بعدی';
-      requestAnimationFrame(f);
-    })(t0);
-  });
+  var lastM3 = null;
+  (function f() {
+    var real = L(Date.now()), iv = Math.floor(real);
+    if (iv !== lastM3) { render(iv, lastM3); lastM3 = iv; }
+    var r = rateNow(Date.now());
+    rate.innerHTML = '<bdi dir="ltr">+' + nf2.format(r) + '</bdi> لیتر در هر ثانیه';
+    var rem = real % 1000;
+    bar.firstChild.style.width = (rem / 10).toFixed(2) + '%';
+    barLbl.textContent = '≈ ' + nf.format(Math.ceil((1000 - rem) / r)) + ' ثانیه تا هزار لیتر بعدی';
+    requestAnimationFrame(f);
+  })();
 })();

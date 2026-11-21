@@ -594,12 +594,12 @@ def logo_scroll_css(prefix=''):
 
 def counter_options_css(prefix=''):
     """M2 water counter. Load after home.css."""
-    return f'<link rel="stylesheet" href="{prefix}logo-scroll/counter-options.css">'
+    return f'<link rel="stylesheet" href="{prefix}logo-scroll/counter-options.css?v=20261121a">'
 
 
 def counter_options_script(prefix=''):
     """Replaces home-impact.js. The formula lives in the script; the card only sets data-counter."""
-    return f'<script src="{prefix}logo-scroll/counter-options.js" defer></script>\n'
+    return f'<script src="{prefix}logo-scroll/counter-options.js?v=20261121a" defer></script>\n'
 
 
 def logo_scroll_scripts(prefix='', existing=''):
@@ -631,7 +631,7 @@ def impact_section():
         {section_mark('', 'impact', 'sec-mark--lg')}
         {impact_title('fa')}
         <p class="eyebrow impact-now">اثر آبادیس، همین حالا</p>
-        <strong class="impact-num" aria-live="off">۵۶٬۵۰۰٬۰۰۰</strong>
+        <strong class="impact-num" aria-live="off">—</strong>
         <span class="impact-unit">لیتر آب صرفه‌جویی‌شده</span>
       </div>
       </div>
