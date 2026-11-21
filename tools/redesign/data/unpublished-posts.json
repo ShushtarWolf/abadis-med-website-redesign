@@ -24,6 +24,16 @@
         "/news/39/",
         "/articles/39/"
       ]
+    },
+    {
+      "locale": "en",
+      "id": "4405",
+      "kind": "news",
+      "slug": "new-products-makhazen-tebi-abadis",
+      "target": "/en/latest-news/",
+      "sources": [
+        "/en/new-products-makhazen-tebi-abadis/"
+      ]
     }
   ]
 }
