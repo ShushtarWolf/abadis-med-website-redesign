@@ -46,13 +46,12 @@ body.home .zh-exit {
 }
 #customers.section { --lc-fade: var(--bg); }
 #customers.section--alt { --lc-fade: var(--bg-2); }
-/* Extra vertical room so scaled center + teal glow never hard-clips */
-#customers.section { overflow: visible; }
-#customers .wrap { overflow: visible; }
-/* Extra section air so glow never meets a hard sibling edge */
-#customers.section { padding-block: 72px 80px; }
+/* The logo row is a masked marquee; clip it so the track cannot widen the page */
+#customers.section { overflow: hidden; }
+#customers .wrap { overflow: hidden; min-width: 0; }
+#customers.section { padding-block: 28px 32px; }
 @media (max-width: 620px) {
-  #customers.section { padding-block: 56px 64px; }
+  #customers.section { padding-block: 20px 24px; }
 }
 
 .logo-carousel-track {
@@ -703,9 +702,14 @@ video.home-or-fill:not(.is-playing) {
   white-space: nowrap;
 }
 
-/* #12 Customers: tighten empty band; readable logos; no bottom clip */
+/* #12 Customers: tight band around the logo row */
+#customers .section-head { margin-bottom: 12px; }
+#customers .section-head p { margin-top: 6px; }
+#customers .home-logo-cta { margin-top: 12px; margin-bottom: 0; }
+#customers .cust-count { white-space: nowrap; }
+
 @media (max-width: 560px) {
-  #customers.section { padding-block: 32px 36px; }
+  #customers.section { padding-block: 16px 20px; }
   #customers .section-head { margin-bottom: 8px; }
   #customers .section-head p { margin-top: 4px; }
   #customers .home-logo-cta { margin-top: 8px; }
@@ -869,4 +873,123 @@ video.home-or-fill:not(.is-playing) {
     max-width: 100%;
     min-width: 0;
   }
+}
+
+/* Customers marquee: one height, no glow, seamless CSS loop, edge masks.
+   The track is physical LTR so -50% meets the duplicate exactly.
+   FA/AR (rtl) play that loop backwards so logos travel with the reading direction. */
+.cust-marquee {
+  direction: ltr;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+}
+.cust-marquee-viewport {
+  overflow: hidden;
+  width: 100%;
+  min-width: 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+}
+.cust-marquee-viewport:focus {
+  outline: none;
+}
+.cust-marquee-viewport:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+.cust-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: cust-marquee 50s linear infinite;
+  will-change: transform;
+}
+.cust-marquee-set {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding-inline-end: 40px;
+}
+html[dir="rtl"] .cust-marquee-track {
+  animation-direction: reverse;
+}
+@keyframes cust-marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@media (hover: hover) and (pointer: fine) {
+  .cust-marquee:hover .cust-marquee-track {
+    animation-play-state: paused;
+  }
+}
+.cust-marquee:focus-within .cust-marquee-track,
+.cust-marquee.is-paused .cust-marquee-track {
+  animation-play-state: paused;
+}
+.cust-logo {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 72px;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  opacity: 0.62;
+  filter: grayscale(1);
+  transition: opacity .35s ease, filter .35s ease;
+}
+.cust-logo img {
+  height: 72px;
+  width: auto;
+  max-width: none;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+.cust-logo:hover,
+.cust-logo:focus-visible,
+.cust-logo:active {
+  opacity: 1;
+  filter: none;
+}
+[data-theme="dark"] .cust-logo {
+  opacity: 0.78;
+  filter: grayscale(1) brightness(1.45);
+}
+[data-theme="noir"] .cust-logo {
+  opacity: 0.76;
+  filter: grayscale(1) brightness(1.35);
+}
+[data-theme="dark"] .cust-logo:hover,
+[data-theme="dark"] .cust-logo:focus-visible,
+[data-theme="dark"] .cust-logo:active,
+[data-theme="noir"] .cust-logo:hover,
+[data-theme="noir"] .cust-logo:focus-visible,
+[data-theme="noir"] .cust-logo:active {
+  opacity: 1;
+  filter: none;
+}
+@media (max-width: 719px) {
+  .cust-marquee-set { gap: 28px; padding-inline-end: 28px; }
+  .cust-logo,
+  .cust-logo img { height: 56px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cust-marquee-viewport {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .cust-marquee-track {
+    animation: none;
+    transform: none;
+  }
+  .cust-marquee-set[aria-hidden="true"] { display: none; }
+  .cust-logo { scroll-snap-align: center; transition: none; }
 }
