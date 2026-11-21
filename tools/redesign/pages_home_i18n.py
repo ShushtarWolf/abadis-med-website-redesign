@@ -129,7 +129,7 @@ def build_home(write, lang):
       <figure class="video-slot reveal" data-video-slot="home-about"><img src="{img('86201b7b17')}" alt="{esc(t['video_alt'])}" width="1024" height="576" loading="lazy" decoding="async"><figcaption>{esc(t['video_cap'])}</figcaption></figure>
     </div></section>'''
     lines = ''.join(f'<span class="slogan-line" style="--i:{i}">{esc(s)}</span>' for i, s in enumerate(t['slogan']))
-    zero = '56,500,000' if lang == 'en' else '٥٦٬٥٠٠٬٠٠٠'
+    zero = '—'
     impact = f'''  <section class="section deep impact" id="impact"><div class="wrap">
       <div class="impact-inner">
       <div class="impact-slogan reveal">{H.IMPACT_MARK}
