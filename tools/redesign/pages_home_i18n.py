@@ -1,7 +1,6 @@
 """EN / AR home in the same Alireza order (1-10) as the FA home, with live abadis-med.com/en + /arabic text (re-read 2026-10-15)."""
 from lib import esc, load, SITE
 from layout import page, section_mark
-from render import picture
 import pages_home as H
 
 AR_D = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
@@ -192,26 +191,19 @@ def build_home(write, lang):
     logos = ''.join(f'<li><img src="{img(n)}" alt="{esc(t["mem_alt"])}" loading="lazy" decoding="async"></li>' for n in H.MEMBERSHIPS if (SITE / H._live(n)).exists())
     core = 'Moving targets' if lang == 'en' else 'أهداف قيد الحركة'
     mem = f'''  <section class="section" id="memberships"><div class="wrap"><div class="section-head reveal"><p class="eyebrow">{esc(t['mem_eb'])}</p><h2>{esc(t['mem_h'])}</h2></div><ul class="member-logos reveal">{logos}</ul></div></section>'''
-    bl = H._B('/مشتریان-ما/'); lg = []
-    for it in bl[1]['items']:
-        if len(lg) >= H.LOGO_STRIP_N: break
-        im = next((x for x in it['blocks'] if x['t'] == 'img'), None); name = next((x['text'] for x in it['blocks'] if x['t'] == 'h'), '')
-        pic = picture(p, im['src'], im.get('alt') or name, 300) if im else ''
-        if pic: lg.append(f'<div class="home-logo" role="group" aria-label="{esc(name)}" title="{esc(name)}" lang="fa">{pic}</div>')
+    lg = H.customer_logo_items(p, mark_lang=True)
     cust = f'''  <section class="section" id="customers"><div class="wrap">
-      <div class="section-head reveal"><p class="eyebrow">{esc(t['cust_eb'])}</p><h2>{esc(t['cust_h'])}</h2><p>{esc(H.customers_lead(lang))}</p></div>
-      <div class="logo-carousel reveal" data-logo-carousel><button type="button" class="logo-carousel-btn logo-carousel-prev" aria-label="{esc(t['prev'])}">‹</button>
-        <div class="logo-carousel-track" tabindex="0" aria-label="{esc(t['cust_aria'])}">{''.join(lg)}</div>
-        <button type="button" class="logo-carousel-btn logo-carousel-next" aria-label="{esc(t['next'])}">›</button></div>
+      <div class="section-head reveal"><h2>{esc(t['cust_h'])}</h2><p>{H.customers_lead(lang)}</p></div>
+      {H.customers_marquee(lg, t['cust_aria'])}
       <p class="home-logo-cta reveal"><a class="btn btn-ghost" href="{_h(t, p, t['cust_href'])}">{esc(t['cust_btn'])}</a></p>
     </div></section>'''
     # Same order as the FA home: intro → about → products → impact → why → quick → stories → memberships → customers.
     main = '\n'.join([hero, about, products, impact, why, quick, stories, mem, cust])
     if lang == 'en': main = main.replace('←', '→')
     import w2_orbit
-    extra_head = f'<link rel="preload" as="image" href="{p}assets/img/p/hero-bags.webp" type="image/webp">\n<link rel="stylesheet" href="{p}assets/css/home.css?v=20261028f">\n{H.logo_scroll_css(p)}\n{H.counter_options_css(p)}\n{w2_orbit.assets(p)}\n{factory_hero.head(p)}'
+    extra_head = f'<link rel="preload" as="image" href="{p}assets/img/p/hero-bags.webp" type="image/webp">\n<link rel="stylesheet" href="{p}assets/css/home.css?v=20261121b">\n{H.logo_scroll_css(p)}\n{H.counter_options_css(p)}\n{w2_orbit.assets(p)}\n{factory_hero.head(p)}'
     html = page(p, None, t['title'], t['desc'], main, lang=lang, fa_path='', canonical_path=t['root'],
-                extra_head=extra_head, scripts=factory_hero.scripts(p) + H.logo_scroll_scripts(p) + H.counter_options_script(p), main_class='home-page', body_class='home', lightbox=True,
+                extra_head=extra_head, scripts=factory_hero.scripts(p) + H.logo_scroll_scripts(p) + H.counter_options_script(p) + H.customers_marquee_script(p), main_class='home-page', body_class='home', lightbox=True,
                 html_attrs='data-slogan="t1"')
     write(t['root'] + 'index.html', html)
     return t['root'] + 'index.html'

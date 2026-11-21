@@ -32,8 +32,6 @@ HOME_DESC = ('شرکت دانش‌بنیان مخازن طبی آبادیس؛ ت
 # Hero positioning: Alireza, 17 Oct 2026.
 HOME_TITLE = 'پیشرو در کنترل عفونت و مدیریت مایعات بیمارستانی — مخازن طبی آبادیس'
 CALC_TEASER = 'جهت محاسبه آنلاین میزان صرفه‌جویی در مصرف آب و زباله‌های عفونی مرکز خود می‌توانید روی دکمه زیر کلیک نمایید.'
-LOGO_STRIP_N = 24
-
 # Live home counters (abadis-med.com, read 2026-10-24) still showed 612
 # active customers. The redesign publishes the customers-map total: 1,284
 # hospitals and surgery centres (iran-hospitals-centers.json).
@@ -76,13 +74,50 @@ def fmt_stat(n, lang, decimals=0):
 
 
 def customers_lead(lang):
-    """Logo strip is a sample. The total is the full active-centre list, not 155 or 600."""
+    """Intro under the customers heading. The figure stays on one line."""
     n = fmt_stat(active_centre_count(), lang)
+    num = f'<span class="cust-count">{esc(n)}</span>'
     if lang == 'en':
-        return f'A selection of healthcare-centre logos, out of {n} active treatment centres.'
+        return f'A selection of healthcare-centre logos, out of {num} active treatment centres.'
     if lang == 'ar':
-        return f'نماذج من شعارات المراكز الطبية مع آباديس، من أصل {n} مركزًا طبيًا نشطًا.'
-    return f'نمونه‌ای از لوگوهای مراکز درمانی همراه آبادیس، از میان {n} مرکز درمانی فعال.'
+        return f'نماذج من شعارات المراكز الطبية مع آباديس، من أصل {num} مركزًا طبيًا نشطًا.'
+    return f'نمونه‌ای از لوگوهای مراکز درمانی همراه آبادیس، از میان {num} مرکز درمانی فعال.'
+
+
+def customer_logo_items(prefix='', mark_lang=False):
+    """Every logo on the customers listing, in source order. None are dropped."""
+    items = _B('/مشتریان-ما/')[1]['items']
+    logos = []
+    for it in items:
+        im = next((x for x in it['blocks'] if x['t'] == 'img'), None)
+        name = next((x['text'] for x in it['blocks'] if x['t'] == 'h'), '')
+        if not im:
+            continue
+        pic = picture(prefix, im['src'], im.get('alt') or name, 300)
+        if not pic:
+            continue
+        lang = ' lang="fa"' if mark_lang else ''
+        logos.append(
+            f'<div class="cust-logo" role="group" aria-label="{esc(name)}" title="{esc(name)}"{lang}>{pic}</div>'
+        )
+    return logos
+
+
+def customers_marquee(logos, label):
+    """One row, duplicated so a CSS translate of -50% loops with no gap."""
+    row = ''.join(logos)
+    return (
+        f'<div class="cust-marquee reveal" data-cust-marquee>'
+        f'<div class="cust-marquee-viewport" tabindex="0" role="region" aria-label="{esc(label)}">'
+        f'<div class="cust-marquee-track">'
+        f'<div class="cust-marquee-set">{row}</div>'
+        f'<div class="cust-marquee-set" aria-hidden="true">{row}</div>'
+        f'</div></div></div>'
+    )
+
+
+def customers_marquee_script(prefix=''):
+    return f'<script src="{prefix}assets/js/customers-marquee.js?v=20261121b" defer></script>\n'
 
 
 def _impact_rows():
@@ -424,35 +459,12 @@ def articles_section():
 
 
 def customers_section():
-    p = ''
-    bl = _B('/مشتریان-ما/')
-    items = bl[1]['items']
-    logos = []
-    for it in items:
-        if len(logos) >= LOGO_STRIP_N:
-            break
-        im = next((x for x in it['blocks'] if x['t'] == 'img'), None)
-        name = next((x['text'] for x in it['blocks'] if x['t'] == 'h'), '')
-        if not im:
-            continue
-        pic = picture(p, im['src'], im.get('alt') or name, 300)
-        if not pic:
-            continue
-        logos.append(
-            f'<div class="home-logo" role="group" aria-label="{esc(name)}" title="{esc(name)}">{pic}</div>'
-        )
+    logos = customer_logo_items('')
     return f'''  <section class="section" id="customers">
     <div class="wrap">
-      <div class="section-head reveal"><p class="eyebrow">مشتریان</p><h2>مشتریان</h2>
-        <p>{esc(customers_lead('fa'))}</p>
-        <p><a class="more-link" style="margin:0" href="customers/">همهٔ مشتریان</a></p></div>
-      <div class="logo-carousel reveal" data-logo-carousel>
-        <button type="button" class="logo-carousel-btn logo-carousel-prev" aria-label="قبلی">‹</button>
-        <div class="logo-carousel-track" tabindex="0" aria-label="نمونهٔ مشتریان">
-          {''.join(logos)}
-        </div>
-        <button type="button" class="logo-carousel-btn logo-carousel-next" aria-label="بعدی">›</button>
-      </div>
+      <div class="section-head reveal"><h2>مشتریان</h2>
+        <p>{customers_lead('fa')}</p></div>
+      {customers_marquee(logos, 'نمونهٔ مشتریان')}
       <p class="home-logo-cta reveal"><a class="btn btn-ghost" href="customers/">مشاهدهٔ فهرست مشتریان</a></p>
     </div>
   </section>'''
@@ -769,10 +781,10 @@ def build(write):
         customers_section(),
     ])
     import w2_orbit
-    extra_head = '''<link rel="stylesheet" href="assets/css/home.css?v=20261028f">
+    extra_head = '''<link rel="stylesheet" href="assets/css/home.css?v=20261121b">
 ''' + logo_scroll_css('') + '\n' + counter_options_css('') + '\n' + w2_orbit.assets('')
     extra_head += '\n' + factory_hero.head('')
-    scripts = factory_hero.scripts('') + logo_scroll_scripts('') + counter_options_script('')
+    scripts = factory_hero.scripts('') + logo_scroll_scripts('') + counter_options_script('') + customers_marquee_script('')
     html = page(
         '', None, HOME_TITLE, HOME_DESC, main,
         fa_path='', canonical_path='',
