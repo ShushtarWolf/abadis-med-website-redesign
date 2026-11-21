@@ -117,7 +117,7 @@ def customers_marquee(logos, label):
 
 
 def customers_marquee_script(prefix=''):
-    return f'<script src="{prefix}assets/js/customers-marquee.js?v=20261121b" defer></script>\n'
+    return f'<script src="{prefix}assets/js/customers-marquee.js?v=20261121c" defer></script>\n'
 
 
 def _impact_rows():
@@ -781,7 +781,7 @@ def build(write):
         customers_section(),
     ])
     import w2_orbit
-    extra_head = '''<link rel="stylesheet" href="assets/css/home.css?v=20261121b">
+    extra_head = '''<link rel="stylesheet" href="assets/css/home.css?v=20261121c">
 ''' + logo_scroll_css('') + '\n' + counter_options_css('') + '\n' + w2_orbit.assets('')
     extra_head += '\n' + fingerprint_hero.head('')
     scripts = fingerprint_hero.scripts('') + logo_scroll_scripts('') + counter_options_script('') + customers_marquee_script('')
