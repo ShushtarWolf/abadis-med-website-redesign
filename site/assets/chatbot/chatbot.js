@@ -376,7 +376,7 @@
     panel.appendChild(chipEl);
 
     var llm = el('details', 'abadis-chat-llm');
-    llm.hidden = !demo;
+    llm.hidden = true;
     var sum = el('summary');
     llm.appendChild(sum);
     var tiers = el('div', 'abadis-chat-tiers');

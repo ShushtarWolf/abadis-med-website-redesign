@@ -1446,10 +1446,10 @@
   var base = cur ? cur.getAttribute('src').replace(/assets\/js\/site\.js.*$/, '') : '/';
   var css = document.createElement('link');
   css.rel = 'stylesheet';
-  css.href = base + 'assets/chatbot/chatbot.css?v=20261122a';
+  css.href = base + 'assets/chatbot/chatbot.css?v=20261122b';
   document.head.appendChild(css);
   var cb = document.createElement('script');
-  cb.src = base + 'assets/chatbot/chatbot.js?v=20261118t62';
+  cb.src = base + 'assets/chatbot/chatbot.js?v=20261122b';
   cb.defer = true;
   cb.setAttribute('data-kb', base + 'assets/data/abadis-knowledge-base.json?v=20261031l');
   document.head.appendChild(cb);

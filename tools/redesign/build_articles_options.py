@@ -436,7 +436,7 @@ def wrap_with_site_shell(title, active_key, main_inner):
 {main_inner}
 </main>
 {footer_html}
-<script src="../assets/js/site.js?v=20261028f" defer></script>
+<script src="../assets/js/site.js?v=20261122b" defer></script>
 <script src="../assets/js/news-finalist.js" defer></script>
 <script>{SHARED_JS}</script>
 </body>
