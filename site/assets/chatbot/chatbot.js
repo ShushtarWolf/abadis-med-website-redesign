@@ -172,11 +172,13 @@
     { id: 'infection-waste', fa: 'کنترل آلودگی و مدیریت پسماند', en: 'Contamination Control & Waste Management', ar: 'السيطرة على التلوث وإدارة النفايات' }
   ];
   var PRODUCTS = [
-    { id: 'canisters-liners', fa: 'کیسه و مخزن', en: 'Liners & canisters', ar: 'الأكياس والخزانات' },
-    { id: 'suction-instruments', fa: 'تیوب ساکشن', en: 'Suction tubes', ar: 'أنبوب الشفط' },
-    { id: 'airway', fa: 'راه هوایی', en: 'Airway care', ar: 'الطريق الهوائي' },
-    { id: 'anesthesia-icu', fa: 'بیهوشی و ICU', en: 'Anesthesia & ICU', ar: 'التخدير وICU' },
-    { id: 'general-consumables', fa: 'ملزومات عمومی', en: 'General consumables', ar: 'مستهلكات عامة' }
+    { id: 'liners', volume: true, fa: 'کیسه ساکشن یکبار مصرف', en: 'Disposable Suction Bag', ar: 'أكياس الشفط ذات الاستخدام الواحد', blurb: { fa: 'مدل‌های ۱، ۲ و ۳ لیتری', en: '1, 2 and 3 litre models', ar: 'موديلات ١ و٢ و٣ لتر' }, page: { fa: '/محصولات/کیسه-ساکشن/', en: '/en/products/suction-bag/', ar: '/arabic/كيس-الشفط/' } },
+    { id: 'canisters', fa: 'مخزن ساکشن', en: 'Suction Canister', ar: 'علبة الشفط', blurb: { fa: 'مخازن و سیستم‌های دیواری', en: 'Canisters and wall systems', ar: 'الخزانات والأنظمة الجدارية' }, page: { fa: '/محصولات/مخزن/', en: '/en/products/canisters/', ar: '/arabic/خزانات/' } },
+    { id: 'stands', fa: 'پایه و نگهدارنده ها', en: 'Stands & Holders', ar: 'الحوامل والمثبتات', blurb: { fa: 'ترولی، پایه و گیره‌ها', en: 'Trolley, stand and clamps', ar: 'ترولي وقاعدة ومشابك' }, page: { fa: '/محصولات/پایه/', en: '/en/products/base-and-holder/', ar: '/arabic/تثبیت/' } },
+    { id: 'connectors', fa: 'اتصالات', en: 'Connectors', ar: 'الوصلات', blurb: { fa: 'کانکتورها و شیرها', en: 'Connectors and valves', ar: 'الوصلات والصمامات' }, page: { fa: '/محصولات/اتصالات/', en: '/en/products/connections/', ar: '/arabic/الوصلات/' } },
+    { id: 'filters', fa: 'فیلترها', en: 'Filter', ar: 'الفلاتر', blurb: { fa: 'انواع فیلترهای حفاظتی', en: 'Protective filter types', ar: 'أنواع الفلاتر الواقية' }, page: { fa: '/محصولات/فیلترها/', en: '/en/products/filters/', ar: '/arabic/الفلتر/' } },
+    { id: 'tubes', fa: 'ساکشن تیوب', en: 'Suction Tube', ar: 'أنبوب الشفط', blurb: { fa: 'لوله‌ها و رابط‌های ساکشن', en: 'Tubes and suction connectors', ar: 'الأنابيب ووصلات الشفط' }, page: { fa: '/محصولات/ساکشن-تیوب/', en: '/en/suction-tube/', ar: '/arabic/أنبوب-الشفط/' } },
+    { id: 'oral', fa: 'بهداشت دهان', en: 'Oral Hygiene', ar: 'نظافة الفم', blurb: { fa: 'مسواک ساکشن، سواب دهانی، فیکسر لوله تراشه', en: 'Suction toothbrush, oral swab, tube fixer', ar: 'فرشاة الشفط والمسحة ومثبّت الأنبوب' }, page: { fa: '/محصولات/سواب-های-دهانی-و-نگهدارنده/', en: '/en/products/oral-swabs-tube-holders/', ar: '/arabic/نظافة-الفم/' } },
   ];
 
   /* AB-59: five quick-start buttons under the sales welcome (FA wording from the team; EN/AR equivalents). */
@@ -437,6 +439,11 @@
       window.visualViewport.addEventListener('scroll', syncViewport);
     }
     window.addEventListener('resize', syncViewport);
+    document.addEventListener('keydown', function (ev) {
+      if (!state.open || ev.key !== 'Escape') return;
+      ev.preventDefault();
+      close();
+    });
     panel.appendChild(form);
 
     root.appendChild(launcher);
@@ -560,6 +567,12 @@
     return null;
   }
 
+  function findProductPage(id) {
+    var list = (state.kb && state.kb.product_pages) || [];
+    for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
+    return null;
+  }
+
   function onChoice(kind, item) {
     if (kind === 'start') {
       answerStart(item);
@@ -591,22 +604,31 @@
     }
     if (kind === 'product') {
       state.choice = item.id;
-      var product = findCatalog(item.id);
-      var summary = product ? textOf(product.summary) + '\n' + textOf(product.applications) : '';
-      var href = product && product.links && product.links[0] ? urlOf(product.links[0]) : '/محصولات/';
-      addMsg('bot', esc(summary).replace(/\n/g, '<br>') + linkLine(href, href) + (item.id === 'canisters-liners' || item.id === 'anesthesia-icu' || item.id === 'gastroenterology' || item.id === 'gynecology' ? '<br>' + esc(t().pickVolume) : '<br>' + ctaLine()));
-      if (item.id === 'canisters-liners' || item.id === 'anesthesia-icu') {
+      var page = findProductPage(item.id);
+      var href = (item.page && (item.page[state.lang] || item.page.fa)) || '/محصولات/';
+      var summary = item.blurb ? textOf(item.blurb) : '';
+      if (page && page.sections && page.sections.length) {
+        var bits = [];
+        var acc = '';
+        for (var si = 0; si < page.sections.length && acc.length < 700; si++) {
+          var sec = page.sections[si];
+          var line = ((sec.heading || '') + '\n' + (sec.body || '')).trim();
+          if (!line) continue;
+          bits.push(line);
+          acc = bits.join('\n');
+        }
+        if (acc) summary = acc.slice(0, 700);
+      }
+      if (!summary) summary = textOf(item);
+      addMsg('bot', esc(summary).replace(/\n/g, '<br>') + linkLine(href, href) + (item.volume ? '<br>' + esc(t().pickVolume) : '<br>' + ctaLine()));
+      if (item.volume) {
         showChoices([
           { id: '1', fa: '۱ لیتر', en: '1 litre', ar: '١ لتر' },
           { id: '2', fa: '۲ لیتر', en: '2 litres', ar: '٢ لتر' },
           { id: '3', fa: '۳ لیتر', en: '3 litres', ar: '٣ لتر' }
         ], 'volume');
       } else {
-        showChoices([
-          { id: '1000', fa: '۱۰۰۰ عمل', en: '1000 surgeries', ar: '١٠٠٠ عملية' },
-          { id: '5000', fa: '۵۰۰۰ عمل', en: '5000 surgeries', ar: '٥٠٠٠ عملية' },
-          { id: '15000', fa: '۱۵۰۰۰ عمل', en: '15000 surgeries', ar: '١٥٠٠٠ عملية' }
-        ], 'savings');
+        choiceEl.textContent = '';
       }
       return;
     }
@@ -1824,7 +1846,9 @@
     panel.hidden = true;
     root.classList.remove('is-open', 'is-typing');
     unlockMobileBody();
-    root.querySelector('.abadis-chat-launcher').setAttribute('aria-expanded', 'false');
+    var launcher = root.querySelector('.abadis-chat-launcher');
+    launcher.setAttribute('aria-expanded', 'false');
+    if (launcher && launcher.focus) launcher.focus();
   }
 
   function dock(host) {
