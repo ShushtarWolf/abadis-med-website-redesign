@@ -246,24 +246,35 @@
   font-size: .78rem;
 }
 
-/* Single horizontal scrollable rail for suggestions — never stacks into multiple messy rows */
+/* Choice chips wrap onto extra lines so every option stays visible (FA/EN/AR, RTL and LTR).
+   A thin vertical scrollbar appears only if a very long set exceeds the cap. */
 .abadis-chat-choices,
 .abadis-chat-chips {
   display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  overflow-y: hidden;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  overflow-x: hidden;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(6, 97, 99, .45) transparent;
   gap: 7px;
   padding: 7px 12px;
   background: var(--ac-bg);
   border-top: 1px solid rgba(6, 97, 99, .08);
   flex-shrink: 0;
+  max-height: min(46dvh, 320px);
 }
 .abadis-chat-choices::-webkit-scrollbar,
 .abadis-chat-chips::-webkit-scrollbar {
-  display: none;
+  width: 8px;
+  height: 8px;
+}
+.abadis-chat-choices::-webkit-scrollbar-thumb,
+.abadis-chat-chips::-webkit-scrollbar-thumb {
+  background: rgba(6, 97, 99, .45);
+  border-radius: 999px;
 }
 .abadis-chat-choices:empty,
 .abadis-chat-chips:empty {
@@ -276,8 +287,12 @@
 
 .abadis-chat-chip,
 .abadis-chat-choice {
-  flex: 0 0 auto;
-  white-space: nowrap;
+  flex: 0 1 auto;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: break-word;
+  text-align: start;
+  line-height: 1.45;
   border: 1px solid var(--ac-line);
   background: var(--ac-bg);
   color: var(--ac-ink);
@@ -286,6 +301,11 @@
   font-size: .81rem;
   font-weight: 700;
   transition: background .15s ease, border-color .15s ease, color .15s ease;
+}
+.abadis-chat-chip:focus-visible,
+.abadis-chat-choice:focus-visible {
+  outline: 2px solid var(--ac-teal);
+  outline-offset: 2px;
 }
 .abadis-chat-choice {
   background: rgba(6, 97, 99, .08);
@@ -442,7 +462,8 @@ body:has(.consent-bar:not([hidden])) .abadis-chat-launcher {
   flex-direction: column;
   align-items: flex-start;
   gap: 6px;
-  max-width: 88%;
+  max-width: min(88%, 100%);
+  min-width: 0;
 }
 .abadis-chat-start .abadis-chat-start-btn {
   white-space: normal;
