@@ -75,6 +75,7 @@ body {
 main, .section { overflow-x: clip; }
 html[lang="en"] body { font-family: "KalamehLatinDigits", "Kalameh", Tahoma, sans-serif; }
 img, video, canvas { max-width: 100%; display: block; }
+video.restored-video { width: 100%; max-width: 640px; height: auto; }
 a { color: var(--brand); }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
 .skip { position: absolute; inset-inline-start: 12px; top: -60px; z-index: 300; background: var(--btn-bg); color: var(--btn-ink); padding: 10px 16px; border-radius: 10px; }

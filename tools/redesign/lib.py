@@ -109,8 +109,148 @@ def _key(url):
     return u.unquote(p.path)
 _IMG_BY_PATH = {}
 for k, v in IMGMAP.items():
-    if v.get('ok'): _IMG_BY_PATH[_key(k)] = v['file']
+    if v.get('ok') and v.get('file'): _IMG_BY_PATH[_key(k)] = v['file']
 _done = {}
+
+# Files recovered after the WordPress move. They are served from the media bucket;
+# the old abadis-med.com uploads 404. Paths stay the WordPress upload paths.
+MEDIA_PUBLIC = 'https://abadis-media.storage.iran.liara.site/wp-content/uploads/'
+RECOVERED_IMAGES = {
+    '2017/08/suction_bag.jpg': ('2017/08/suction_bag.webp', 500, 500),
+    '2017/08/compare.png': ('2017/08/compare.webp', 346, 142),
+    '2019/05/Fixture-2.jpg': ('2019/05/Fixture-2.webp', 600, 400),
+    '2021/10/AMR_4806-scaled-1.jpg': ('2021/10/AMR_4806-scaled-1.webp', 1600, 1067),
+    '2022/06/پروتکل‌هایی-که-برای-کنترل-عفونت-باید-رعایت-کرد.jpg': (
+        '2022/06/پروتکل‌هایی-که-برای-کنترل-عفونت-باید-رعایت-کرد.webp', 768, 511),
+}
+RECOVERED_VIDEOS = {
+    '2019/06/Voice.mp4': '2019/06/Voice.mp4',
+    '2019/06/medirence-Abadis-Iranhealth.mp4': '2019/06/medirence-Abadis-Iranhealth.mp4',
+    '2020/04/Final.mp4': '2020/04/Final.mp4',
+}
+VOICE_POSTER = '/assets/img/c/8aa3f73d39c6-1200.webp'
+_RECOVERED_ALT = {
+    '2017/08/compare.png': 'مقایسه کیسه ساکشن یکبار مصرف آبادیس با کیسه ساکشن معمولی',
+    '2017/08/compare.webp': 'مقایسه کیسه ساکشن یکبار مصرف آبادیس با کیسه ساکشن معمولی',
+    '2019/05/Fixture-2.jpg': 'فیکسر نگهدارنده لوله تراشه',
+    '2019/05/Fixture-2.webp': 'فیکسر نگهدارنده لوله تراشه',
+}
+_RECOVERED_BY_REL = {}
+for _src, (_dest, _w, _h) in RECOVERED_IMAGES.items():
+    _RECOVERED_BY_REL[_src] = (_dest, _w, _h)
+    _RECOVERED_BY_REL[_dest] = (_dest, _w, _h)
+
+def bucket_url(rel):
+    return MEDIA_PUBLIC + '/'.join(u.quote(part) for part in rel.split('/'))
+
+def upload_rel(url):
+    if not url: return ''
+    if url.startswith('//'): url = 'https:' + url
+    path = u.unquote(u.urlsplit(html.unescape(url)).path)
+    mark = '/wp-content/uploads/'
+    i = path.find(mark)
+    if i < 0: return ''
+    return path[i + len(mark):]
+
+def recovered_image(url):
+    rec = _RECOVERED_BY_REL.get(upload_rel(url))
+    if not rec: return None
+    dest, w, h = rec
+    return {'src': bucket_url(dest), 'w': w, 'h': h, 'external': True}
+
+def _video_player(src, poster=''):
+    poster_attr = f' poster="{esc(poster, quote=True)}"' if poster else ''
+    return (
+        '<video class="restored-video" controls preload="none" playsinline '
+        'style="width:100%;max-width:640px;height:auto"'
+        f'{poster_attr}><source src="{esc(src, quote=True)}" type="video/mp4"></video>'
+    )
+
+def _video_for_url(url, posters=None):
+    rel = upload_rel(url)
+    dest = RECOVERED_VIDEOS.get(rel)
+    if not dest: return None
+    poster = ''
+    if posters:
+        poster = posters.get(rel) or posters.get(dest) or ''
+    if not poster and dest == '2019/06/Voice.mp4':
+        poster = VOICE_POSTER
+    return _video_player(bucket_url(dest), poster)
+
+def _balanced_div_end(h, start):
+    """End index (exclusive) of the div that begins at start."""
+    i, depth, n = start, 0, len(h)
+    while i < n:
+        open_at = h.lower().find('<div', i)
+        close_at = h.lower().find('</div>', i)
+        if close_at < 0: return None
+        if open_at != -1 and open_at < close_at:
+            nxt = h[open_at + 4:open_at + 5]
+            if nxt in ('', ' ', '\n', '\t', '\r', '>'):
+                depth += 1
+                i = open_at + 4
+                continue
+        depth -= 1
+        i = close_at + 6
+        if depth == 0: return i
+    return None
+
+def restore_recovered_media(h, posters=None):
+    """Point recovered images and videos at the media bucket. Add-only for tags that exist."""
+    if not h: return h
+    def img_sub(m):
+        tag = m.group(0)
+        sm = re.search(r'\bsrc=(["\'])(.*?)\1', tag, re.I)
+        if not sm: return tag
+        rec = recovered_image(html.unescape(sm.group(2)))
+        if not rec: return tag
+        alt_m = re.search(r'\balt=(["\'])(.*?)\1', tag, re.I)
+        alt = html.unescape(alt_m.group(2)) if alt_m else ''
+        if not alt:
+            alt = _RECOVERED_ALT.get(upload_rel(sm.group(2)), '')
+        return (f'<img src="{esc(rec["src"], quote=True)}" width="{rec["w"]}" height="{rec["h"]}" '
+                f'loading="lazy" decoding="async" alt="{esc(alt)}">')
+    h = re.sub(r'<img\b[^>]*>', img_sub, h, flags=re.I)
+    out, i = [], 0
+    token = '<div class="wp-video"'
+    low = h.lower()
+    while True:
+        j = low.find(token, i)
+        if j < 0:
+            out.append(h[i:]); break
+        end = _balanced_div_end(h, j)
+        if end is None:
+            out.append(h[i:]); break
+        block = h[j:end]
+        player = None
+        for url in re.findall(r'https?://[^"\'\s>]+\.mp4[^"\'\s<]*', block, re.I):
+            player = _video_for_url(html.unescape(url), posters)
+            if player: break
+        out.append(h[i:j])
+        out.append(player if player else block)
+        i = end
+        low = h.lower()
+    h = ''.join(out)
+    def video_sub(m):
+        block = m.group(0)
+        for url in re.findall(r'https?://[^"\'\s>]+\.mp4[^"\'\s<]*', block, re.I):
+            player = _video_for_url(html.unescape(url), posters)
+            if player: return player
+        return block
+    h = re.sub(r'<video\b[^>]*>.*?</video>', video_sub, h, flags=re.I | re.S)
+    def a_sub(m):
+        player = _video_for_url(html.unescape(m.group(2)), posters)
+        return player if player else m.group(0)
+    h = re.sub(
+        r'<a\b[^>]*\bhref=(["\'])(https?://[^"\']+\.mp4[^"\']*)\1[^>]*>.*?</a>',
+        a_sub, h, flags=re.I | re.S)
+    # Broken MediaElement chrome left beside the replaced player.
+    if 'restored-video' in h:
+        h = re.sub(
+            r'<div class="mejs-[^"]*"[^>]*>\s*(?:<span\b[^>]*>.*?</span>\s*)?</div>\s*',
+            '', h, flags=re.I | re.S)
+    return h
+
 def img(url, maxw=1400):
     """Return dict(src, w, h) relative to site root for a remote abadis image, or None if not archived.
 
@@ -119,6 +259,8 @@ def img(url, maxw=1400):
     """
     if not url: return None
     if url.startswith('//'): url = 'https:' + url
+    hit = recovered_image(url)
+    if hit: return hit
     hit = _bucket_rec(url)
     if hit:
         return {'src': hit['url'], 'w': int(hit.get('w') or 0), 'h': int(hit.get('h') or 0), 'external': True}
@@ -304,7 +446,9 @@ def rewrite_html(h, p, imgw=1000, drop_missing_img=True):
         r = best_img(html.unescape(src.group(1)), imgw) if src else None
         if not r: return '' if drop_missing_img else tag
         alt_attr = alt.group(1) if alt else ''
-        return f'<img src="{placed_src(p, r)}"{dim_attrs(r)} loading="lazy" decoding="async" alt="{alt_attr}">'
+        if not alt_attr and src:
+            alt_attr = _RECOVERED_ALT.get(upload_rel(html.unescape(src.group(1))), '')
+        return f'<img src="{placed_src(p, r)}"{dim_attrs(r)} loading="lazy" decoding="async" alt="{esc(alt_attr)}">'
     h = re.sub(r'<img [^>]*>', img_sub, h)
     h = re.sub(r'<figure>\s*(<figcaption>.*?</figcaption>)?\s*</figure>', '', h, flags=re.S)
     h = re.sub(r'<p>\s*</p>', '', h)
@@ -317,6 +461,6 @@ def rewrite_html(h, p, imgw=1000, drop_missing_img=True):
     h = re.sub(r'<figure class="wp-block-embed[^"]*">\s*<div class="wp-block-embed__wrapper">\s*(https?://[^\s<]+)\s*</div>\s*</figure>', embed_sub, h, flags=re.S)
     # R-004 / AB-76: wide WordPress tables scroll sideways on phones
     h = re.sub(r'<figure class="wp-block-table(?![^"]*table-scroll)', '<figure class="wp-block-table table-scroll', h)
-    return h
+    return restore_recovered_media(h)
 
 def strip_tags(h): return re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', ' ', h or ''))).strip()

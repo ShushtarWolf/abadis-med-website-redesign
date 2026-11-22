@@ -545,7 +545,8 @@ def clean_html(html: str, lang: str = 'en', prefix: str = '../') -> str:
 
     h = re.sub(r'<img\b[^>]*>', img_sub, h, flags=re.I)
     h = re.sub(r'<video\b[^>]*>\s*</video>', '', h, flags=re.I)
-    return h.strip()
+    from lib import restore_recovered_media
+    return restore_recovered_media(h).strip()
 
 
 def asset_prefix(lang: str, depth: int) -> str:

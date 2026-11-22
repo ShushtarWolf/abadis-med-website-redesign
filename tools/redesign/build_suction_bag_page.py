@@ -888,6 +888,11 @@ GALLERIES = {
             'en': 'Suction liner beside the graduated polycarbonate canister',
             'ar': 'كيس الشفط بجانب الخزان المدرج من البولي كربونات',
         }),
+        ('https://abadis-media.storage.iran.liara.site/wp-content/uploads/2021/10/AMR_4806-scaled-1.webp', True, {
+            'fa': 'کیسه های ساکشن 1 لیتری مخازن طبی آبادیس',
+            'en': 'Abadis 1 litre suction liner bags',
+            'ar': 'أكياس شفط آباديس سعة ١ لتر',
+        }, 1600, 1067),
     ],
     '2': [
         ('p2-g1.webp', False, {
@@ -933,13 +938,16 @@ GALLERIES = {
 def gallery_for(size, lang, pfx):
     ui = UI[lang]
     cards = []
-    for name, contain, alts in GALLERIES[size]:
+    for item in GALLERIES[size]:
+        name, contain, alts = item[0], item[1], item[2]
+        w, h = (item[3], item[4]) if len(item) > 4 else (1200, 800)
         alt = esc(alts[lang])
         klass = 'gal-card gal-contain' if contain else 'gal-card'
         loading = 'eager' if not cards else 'lazy'
+        src = name if name.startswith('http') else f'{pfx}assets/img/p/{name}'
         cards.append(
             f'<figure class="{klass}"><div class="gal-frame">'
-            f'<img src="{pfx}assets/img/p/{name}" alt="{alt}" width="1200" height="800" loading="{loading}" decoding="async">'
+            f'<img src="{src}" alt="{alt}" width="{w}" height="{h}" loading="{loading}" decoding="async">'
             f'</div><figcaption>{alt}</figcaption></figure>'
         )
     cap = ui['iso_cap']
