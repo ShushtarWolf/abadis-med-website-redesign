@@ -305,7 +305,15 @@
 .abadis-chat-chip:focus-visible,
 .abadis-chat-choice:focus-visible {
   outline: 2px solid var(--ac-teal);
-  outline-offset: 2px;
+  outline-offset: 1px;
+}
+html[data-theme="dark"] .abadis-chat-chip:focus-visible,
+html[data-theme="dark"] .abadis-chat-choice:focus-visible {
+  outline-color: #9ff0e4;
+}
+html[data-theme="noir"] .abadis-chat-chip:focus-visible,
+html[data-theme="noir"] .abadis-chat-choice:focus-visible {
+  outline-color: #c4b5fd;
 }
 .abadis-chat-choice {
   background: rgba(6, 97, 99, .08);
@@ -430,11 +438,7 @@ html[data-theme="noir"] .abadis-chat-choice {
     height: 40px;
     font-size: 1.4rem;
   }
-  /* When user focuses input to type on mobile, hide suggestion rail and tighten chrome so keyboard + chat log have full room */
-  .abadis-chat.is-typing .abadis-chat-choices,
-  .abadis-chat.is-typing .abadis-chat-chips {
-    display: none;
-  }
+  /* Keep choice chips on screen while the field is focused so keyboard users can still reach every chip. */
   .abadis-chat.is-typing .abadis-chat-tabs {
     padding: 4px 10px;
   }

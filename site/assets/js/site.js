@@ -1446,7 +1446,7 @@
   var base = cur ? cur.getAttribute('src').replace(/assets\/js\/site\.js.*$/, '') : '/';
   var css = document.createElement('link');
   css.rel = 'stylesheet';
-  css.href = base + 'assets/chatbot/chatbot.css?v=20261122a';
+  css.href = base + 'assets/chatbot/chatbot.css?v=20261122b';
   document.head.appendChild(css);
   var btn = document.createElement('button');
   btn.type = 'button';
@@ -1457,7 +1457,7 @@
     if (btn.dataset.loading === '1') return;
     btn.dataset.loading = '1';
     var s = document.createElement('script');
-    s.src = base + 'assets/chatbot/chatbot.js?v=20261118t62';
+    s.src = base + 'assets/chatbot/chatbot.js?v=20261122b';
     s.setAttribute('data-kb', base + 'assets/data/abadis-knowledge-base.json?v=20261028p');
     s.onload = function () {
       btn.remove();
