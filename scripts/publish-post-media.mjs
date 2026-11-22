@@ -260,6 +260,17 @@ export async function publishUrls(urls, opts = {}) {
   let uploaded = 0;
   let reused = 0;
   for (const url of pending) {
+    const httpsUrl = url.replace(/^http:\/\//i, 'https://');
+    const httpUrl = url.replace(/^https:\/\//i, 'http://');
+    const prevEarly = map.items[url] || map.items[httpsUrl] || map.items[httpUrl];
+    // Recovered originals 404 on abadis-med.com. Keep the bucket object already recorded.
+    if (prevEarly && prevEarly.recovered && prevEarly.url) {
+      if (!map.items[url]) map.items[url] = prevEarly;
+      if (!map.items[httpsUrl]) map.items[httpsUrl] = prevEarly;
+      if (!map.items[httpUrl]) map.items[httpUrl] = prevEarly;
+      reused += 1;
+      continue;
+    }
     const bin = await download(url);
     const webp = await convert(bin);
     const sha = sha256hex(webp.bytes);

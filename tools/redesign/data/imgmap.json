@@ -6,8 +6,11 @@
     "via": "ok"
   },
   "https://abadis-med.com/wp-content/uploads/2017/08/suction_bag.jpg": {
-    "ok": false,
-    "err": "fetch-failed"
+    "ok": true,
+    "via": "recovered-bucket",
+    "url": "https://abadis-media.storage.iran.liara.site/wp-content/uploads/2017/08/suction_bag.webp",
+    "w": 500,
+    "h": 500
   },
   "https://abadis-med.com/wp-content/uploads/2018/06/گزارش-نمایشگاه-ایران-هلث-1397.jpg": {
     "ok": true,
@@ -3958,20 +3961,32 @@
     "via": "ok"
   },
   "http://abadis-med.com/wp-content/uploads/2021/10/AMR_4806-scaled-1.jpg": {
-    "ok": false,
-    "err": "fetch-failed"
+    "ok": true,
+    "via": "recovered-bucket",
+    "url": "https://abadis-media.storage.iran.liara.site/wp-content/uploads/2021/10/AMR_4806-scaled-1.webp",
+    "w": 1600,
+    "h": 1067
   },
   "https://abadis-med.com/wp-content/uploads/2021/10/AMR_4806-scaled-1.jpg": {
-    "ok": false,
-    "err": "fetch-failed"
+    "ok": true,
+    "via": "recovered-bucket",
+    "url": "https://abadis-media.storage.iran.liara.site/wp-content/uploads/2021/10/AMR_4806-scaled-1.webp",
+    "w": 1600,
+    "h": 1067
   },
   "http://abadis-med.com/wp-content/uploads/2022/06/پروتکل‌هایی-که-برای-کنترل-عفونت-باید-رعایت-کرد.jpg": {
-    "ok": false,
-    "err": "fetch-failed"
+    "ok": true,
+    "via": "recovered-bucket",
+    "url": "https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/06/%D9%BE%D8%B1%D9%88%D8%AA%DA%A9%D9%84%E2%80%8C%D9%87%D8%A7%DB%8C%DB%8C-%DA%A9%D9%87-%D8%A8%D8%B1%D8%A7%DB%8C-%DA%A9%D9%86%D8%AA%D8%B1%D9%84-%D8%B9%D9%81%D9%88%D9%86%D8%AA-%D8%A8%D8%A7%DB%8C%D8%AF-%D8%B1%D8%B9%D8%A7%DB%8C%D8%AA-%DA%A9%D8%B1%D8%AF.webp",
+    "w": 768,
+    "h": 511
   },
   "https://abadis-med.com/wp-content/uploads/2022/06/پروتکل‌هایی-که-برای-کنترل-عفونت-باید-رعایت-کرد.jpg": {
-    "ok": false,
-    "err": "fetch-failed"
+    "ok": true,
+    "via": "recovered-bucket",
+    "url": "https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/06/%D9%BE%D8%B1%D9%88%D8%AA%DA%A9%D9%84%E2%80%8C%D9%87%D8%A7%DB%8C%DB%8C-%DA%A9%D9%87-%D8%A8%D8%B1%D8%A7%DB%8C-%DA%A9%D9%86%D8%AA%D8%B1%D9%84-%D8%B9%D9%81%D9%88%D9%86%D8%AA-%D8%A8%D8%A7%DB%8C%D8%AF-%D8%B1%D8%B9%D8%A7%DB%8C%D8%AA-%DA%A9%D8%B1%D8%AF.webp",
+    "w": 768,
+    "h": 511
   },
   "http://abadis-med.com/wp-content/uploads/2022/06/روش‌های-مؤثر-و-مهم-کنترل-عفونت‌ها-یا-بیماری‌ها-چیست؟.png": {
     "ok": false,
@@ -4094,12 +4109,18 @@
     "err": "fetch-failed"
   },
   "http://abadis-med.com/wp-content/uploads/2017/08/compare.png": {
-    "ok": false,
-    "err": "fetch-failed"
+    "ok": true,
+    "via": "recovered-bucket",
+    "url": "https://abadis-media.storage.iran.liara.site/wp-content/uploads/2017/08/compare.webp",
+    "w": 346,
+    "h": 142
   },
   "https://abadis-med.com/wp-content/uploads/2017/08/compare.png": {
-    "ok": false,
-    "err": "fetch-failed"
+    "ok": true,
+    "via": "recovered-bucket",
+    "url": "https://abadis-media.storage.iran.liara.site/wp-content/uploads/2017/08/compare.webp",
+    "w": 346,
+    "h": 142
   },
   "https://abadis-med.com/wp-content/uploads/2017/06/خطرناک-ترین-ویروس-در-دنیای-امروزه-کرونا-بوده-است..jpg": {
     "ok": true,
@@ -4282,8 +4303,11 @@
     "via": "live-2026-10-14"
   },
   "https://abadis-med.com/wp-content/uploads/2019/05/Fixture-2.jpg": {
-    "ok": false,
-    "err": "fetch-failed"
+    "ok": true,
+    "via": "recovered-bucket",
+    "url": "https://abadis-media.storage.iran.liara.site/wp-content/uploads/2019/05/Fixture-2.webp",
+    "w": 600,
+    "h": 400
   },
   "https://abadis-med.com/wp-content/uploads/2021/11/پست-رونمایی-1-300x200.jpg": {
     "ok": true,
@@ -11780,5 +11804,60 @@
     "file": "c0fd4fff41fbd47a.jpg",
     "bytes": 69186,
     "via": "ok"
+  },
+  "https://abadis-med.com/wp-content/uploads/2026/11/infographic_rectangle_fixed-1.png": {
+    "ok": true,
+    "file": "e67f59edc62b97e0.png",
+    "bytes": 379464,
+    "via": "ok"
+  },
+  "http://abadis-med.com/wp-content/uploads/2017/08/suction_bag.jpg": {
+    "ok": true,
+    "via": "recovered-bucket",
+    "url": "https://abadis-media.storage.iran.liara.site/wp-content/uploads/2017/08/suction_bag.webp",
+    "w": 500,
+    "h": 500
+  },
+  "https://abadis-media.storage.iran.liara.site/wp-content/uploads/2017/08/suction_bag.webp": {
+    "ok": true,
+    "via": "recovered-bucket",
+    "url": "https://abadis-media.storage.iran.liara.site/wp-content/uploads/2017/08/suction_bag.webp",
+    "w": 500,
+    "h": 500
+  },
+  "https://abadis-media.storage.iran.liara.site/wp-content/uploads/2017/08/compare.webp": {
+    "ok": true,
+    "via": "recovered-bucket",
+    "url": "https://abadis-media.storage.iran.liara.site/wp-content/uploads/2017/08/compare.webp",
+    "w": 346,
+    "h": 142
+  },
+  "http://abadis-med.com/wp-content/uploads/2019/05/Fixture-2.jpg": {
+    "ok": true,
+    "via": "recovered-bucket",
+    "url": "https://abadis-media.storage.iran.liara.site/wp-content/uploads/2019/05/Fixture-2.webp",
+    "w": 600,
+    "h": 400
+  },
+  "https://abadis-media.storage.iran.liara.site/wp-content/uploads/2019/05/Fixture-2.webp": {
+    "ok": true,
+    "via": "recovered-bucket",
+    "url": "https://abadis-media.storage.iran.liara.site/wp-content/uploads/2019/05/Fixture-2.webp",
+    "w": 600,
+    "h": 400
+  },
+  "https://abadis-media.storage.iran.liara.site/wp-content/uploads/2021/10/AMR_4806-scaled-1.webp": {
+    "ok": true,
+    "via": "recovered-bucket",
+    "url": "https://abadis-media.storage.iran.liara.site/wp-content/uploads/2021/10/AMR_4806-scaled-1.webp",
+    "w": 1600,
+    "h": 1067
+  },
+  "https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/06/%D9%BE%D8%B1%D9%88%D8%AA%DA%A9%D9%84%E2%80%8C%D9%87%D8%A7%DB%8C%DB%8C-%DA%A9%D9%87-%D8%A8%D8%B1%D8%A7%DB%8C-%DA%A9%D9%86%D8%AA%D8%B1%D9%84-%D8%B9%D9%81%D9%88%D9%86%D8%AA-%D8%A8%D8%A7%DB%8C%D8%AF-%D8%B1%D8%B9%D8%A7%DB%8C%D8%AA-%DA%A9%D8%B1%D8%AF.webp": {
+    "ok": true,
+    "via": "recovered-bucket",
+    "url": "https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/06/%D9%BE%D8%B1%D9%88%D8%AA%DA%A9%D9%84%E2%80%8C%D9%87%D8%A7%DB%8C%DB%8C-%DA%A9%D9%87-%D8%A8%D8%B1%D8%A7%DB%8C-%DA%A9%D9%86%D8%AA%D8%B1%D9%84-%D8%B9%D9%81%D9%88%D9%86%D8%AA-%D8%A8%D8%A7%DB%8C%D8%AF-%D8%B1%D8%B9%D8%A7%DB%8C%D8%AA-%DA%A9%D8%B1%D8%AF.webp",
+    "w": 768,
+    "h": 511
   }
 }
