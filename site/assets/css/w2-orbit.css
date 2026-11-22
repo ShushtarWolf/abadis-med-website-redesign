@@ -513,116 +513,61 @@ html[lang="en"] .w2-live .orb-node.is-satellite .orb-node-title { font-size: 9px
   text-align: center;
 }
 
-/* Phones: drop the radial diagram for a hub plus a 2-column card grid.
-   Desktop and tablet above 480px keep the orbit. Inline geometry on the
-   nodes is overridden here so a regenerate of the HTML cannot bring the
-   overlap back. Break only at spaces, ZWNJ and hyphens — never mid-word. */
+/* The stat line is created for the phone orbit and stays out of the desktop panel. */
+.w2-live .w2-node-statline { display: none; }
+
+/* Phones keep the radial orbit. Geometry is recomputed in w2-orbit.js.
+   Bubbles show the number and the short title; the stat moves to the detail panel. */
 @media (max-width: 480px) {
-  .w2-live .w2-stage-fit {
-    width: 100%;
-    overflow: visible;
+  .w2-live .orb-stage--w2 { zoom: 1 !important; }
+  .w2-live.is-phone .orb-node-stat { display: none !important; }
+  .w2-live.is-phone .orb-node-title,
+  .w2-live.is-phone .orb-node.is-satellite .orb-node-title,
+  html[lang="en"] .w2-live.is-phone .orb-node-title,
+  html[lang="en"] .w2-live.is-phone .orb-node.is-satellite .orb-node-title {
+    word-break: normal;
+    overflow-wrap: normal;
+    hyphens: none;
+    -webkit-hyphens: none;
+    line-break: strict;
+    white-space: normal;
+    line-height: 1.25;
   }
-  .w2-live .orb-stage--w2 {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 10px;
-    align-items: stretch;
-    direction: rtl;
-    width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-    zoom: 1 !important;
-    overflow: visible;
-    padding: 14px 12px 16px;
-    box-sizing: border-box;
-  }
-  html[dir="ltr"] .w2-live .orb-stage--w2 { direction: ltr; }
-  .w2-live .orb-svg,
-  .w2-live .orb-hub-pulse,
-  .w2-live .orb-node-halo { display: none !important; }
-  .w2-live .orb-hub {
-    position: relative !important;
-    left: auto !important;
-    right: auto !important;
-    top: auto !important;
-    bottom: auto !important;
-    grid-column: 1 / -1;
-    justify-self: center;
-    order: -1;
-    margin: 2px auto 4px;
-    z-index: 1;
-  }
-  .w2-live .orb-node,
-  .w2-live .orb-node.is-satellite,
-  .w2-live .orb-stage.is-animated .orb-node {
-    position: relative !important;
-    left: auto !important;
-    right: auto !important;
-    top: auto !important;
-    bottom: auto !important;
-    width: auto !important;
-    height: auto !important;
-    min-width: 0;
-    min-height: 108px;
-    border-radius: 16px;
-    padding: 12px 10px 11px;
-    opacity: 1 !important;
-    transform: none !important;
-    animation: none !important;
-  }
-  .w2-live .orb-node[data-idx="0"] { order: 1; }
-  .w2-live .orb-node[data-idx="1"] { order: 2; }
-  .w2-live .orb-node[data-idx="2"] { order: 3; }
-  .w2-live .orb-node[data-idx="3"] { order: 4; }
-  .w2-live .orb-node[data-idx="4"] { order: 5; }
-  .w2-live .orb-node[data-idx="5"] { order: 6; }
-  .w2-live .orb-node[data-idx="6"] { order: 7; }
-  .w2-live .orb-node[data-idx="7"] { order: 8; }
-  .w2-live .orb-stage--w2 .orb-node .orb-node-inner,
-  .w2-live .orb-stage--w2 .orb-node.is-satellite .orb-node-inner {
-    width: 100% !important;
-    max-width: 100% !important;
+  .w2-live.is-phone .orb-stage--w2 .orb-node .orb-node-inner,
+  .w2-live.is-phone .orb-stage--w2 .orb-node.is-satellite .orb-node-inner {
+    width: 74% !important;
+    max-width: 74% !important;
     padding: 0;
-    gap: 4px;
+    gap: 2px;
   }
-  .w2-live .orb-stage--w2 .orb-node .orb-node-num {
-    font-size: 11px;
-    margin-bottom: 1px;
-    white-space: nowrap;
-  }
-  .w2-live .orb-stage--w2 .orb-node .orb-node-title,
-  .w2-live .orb-stage--w2 .orb-node.is-satellite .orb-node-title,
-  html[lang="en"] .w2-live .orb-stage--w2 .orb-node .orb-node-title,
-  html[lang="en"] .w2-live .orb-stage--w2 .orb-node.is-satellite .orb-node-title {
-    font-size: 14px;
-    line-height: 1.45;
-    max-width: 100%;
-    white-space: normal;
-    word-break: normal;
-    overflow-wrap: normal;
-    hyphens: none;
-    -webkit-hyphens: none;
-    line-break: strict;
-  }
-  .w2-live .orb-stage--w2 .orb-node .orb-node-stat,
-  .w2-live .orb-stage--w2 .orb-node.is-satellite .orb-node-stat {
+  .w2-live.is-phone .orb-node-num { font-size: 10px; white-space: nowrap; }
+  .w2-live.is-phone .orb-hub-q2 { width: 26px; height: 26px; }
+  .w2-live.is-phone .orb-hub-title,
+  html[lang="en"] .w2-live.is-phone .orb-hub-title {
     font-size: 12px;
+    max-width: 68px;
+    line-height: 1.2;
+  }
+  .w2-live.is-phone .orb-hub-sub { font-size: 9px; max-width: 64px; }
+  .w2-live.is-phone .orb-hub-pulse { inset: -5px; }
+  .w2-live.is-phone .w2-node-statline {
+    display: block;
+    margin: -2px 0 12px;
+    font-size: 0.95rem;
+    font-weight: 800;
     line-height: 1.45;
-    max-width: 100%;
-    white-space: normal;
-    word-break: normal;
-    overflow-wrap: normal;
-    hyphens: none;
-    -webkit-hyphens: none;
-    line-break: strict;
+    color: var(--brand-2);
+  }
+  .w2-live.is-phone .orb-stage.is-animated .orb-node {
+    animation: w2BloomNode 0.58s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: calc(0.48s + var(--i, 0) * 0.09s);
   }
 }
 @media (max-width: 480px) and (prefers-reduced-motion: reduce) {
-  .w2-live .orb-node,
   .w2-live .orb-stage.is-animated .orb-node,
-  .w2-live .orb-hub-pulse,
-  .w2-live .orb-node.is-active .orb-node-halo {
+  .w2-live.is-phone .orb-stage.is-animated .orb-node {
     animation: none !important;
-    transform: none !important;
+    opacity: 1;
+    transform: none;
   }
 }
