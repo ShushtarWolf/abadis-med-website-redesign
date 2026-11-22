@@ -1446,7 +1446,7 @@
   var base = cur ? cur.getAttribute('src').replace(/assets\/js\/site\.js.*$/, '') : '/';
   var css = document.createElement('link');
   css.rel = 'stylesheet';
-  css.href = base + 'assets/chatbot/chatbot.css?v=20261118t62';
+  css.href = base + 'assets/chatbot/chatbot.css?v=20261122a';
   document.head.appendChild(css);
   var btn = document.createElement('button');
   btn.type = 'button';
