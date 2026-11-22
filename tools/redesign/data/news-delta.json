@@ -1,10 +1,21 @@
 {
-  "at": "2026-11-19T23:36:44.081Z",
+  "at": "2026-11-22T09:59:10.239Z",
   "summary": [
     {
       "locale": "fa",
       "source": "rest",
-      "new": [],
+      "new": [
+        {
+          "id": "41",
+          "kind": "news",
+          "link": "https://abadis-wp-test.liara.run/test-please-ignore/",
+          "slug": "test-please-ignore",
+          "title": "Test – please ignore",
+          "modified": "2026-11-22T09:53:14+00:00",
+          "partial": false,
+          "file": "content/fa/news/41.md"
+        }
+      ],
       "modified": [],
       "removed": [],
       "partial": []
