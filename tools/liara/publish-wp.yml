@@ -1,6 +1,6 @@
 # Copy this file to .github/workflows/publish-wp.yml if the commit token cannot
 # update .github/workflows/ (it needs the workflow scope). Do not deploy the
-# forms app from tools/forms-liara/. Do not deploy the production abadis-med app.
+# forms app from tools/forms-liara/.
 name: Publish WordPress posts
 
 on:
@@ -199,15 +199,53 @@ jobs:
             git push origin HEAD:liara-test
           fi
 
-      - name: Deploy abadis-test
-        if: steps.sync_main.outputs.changed == '1' && steps.sync_liara.outputs.changed == '1'
+      - name: Strip production noindex
+        if: success() && steps.sync_main.outputs.changed == '1' && steps.sync_liara.outputs.changed == '1'
+        id: prod_strip
+        working-directory: /tmp/liara-test
+        run: python3 tools/liara/prod_strip.py site
+
+      - name: Guard production strip
+        if: success() && steps.sync_main.outputs.changed == '1' && steps.sync_liara.outputs.changed == '1'
+        env:
+          STAGED: ${{ steps.prod_strip.outputs.staged }}
+        run: |
+          if [ -z "${STAGED}" ] || [ ! -f "$STAGED/index.html" ]; then
+            echo "staged site is missing"
+            exit 1
+          fi
+          fail=0
+          for rel in index.html en/index.html arabic/index.html; do
+            if [ ! -f "$STAGED/$rel" ]; then
+              echo "missing $rel"
+              fail=1
+              continue
+            fi
+            if grep -q 'noindex' "$STAGED/$rel"; then
+              echo "noindex still present in $rel"
+              fail=1
+            fi
+          done
+          if grep -q 'Disallow: /' "$STAGED/robots.txt"; then
+            echo "robots.txt still contains Disallow: /"
+            fail=1
+          fi
+          exit "$fail"
+
+      - name: Deploy abadis-med
+        if: success() && steps.sync_main.outputs.changed == '1' && steps.sync_liara.outputs.changed == '1'
         env:
           LIARA_TOKEN: ${{ secrets.LIARA_API_TOKEN }}
+          STAGED: ${{ steps.prod_strip.outputs.staged }}
         run: |
           if [ -z "$LIARA_TOKEN" ]; then
             echo "LIARA_API_TOKEN is not set. Not deploying."
             exit 1
           fi
+          if [ -z "$STAGED" ] || [ ! -d "$STAGED" ]; then
+            echo "staged site is missing. Not deploying."
+            exit 1
+          fi
           npm install -g @liara/cli@9
-          printf '%s\n' '{"platform":"static","app":"abadis-test","team-id":"6af9496176b2026d7493a542"}' > /tmp/abadis-test-liara.json
-          liara deploy --path /tmp/liara-test/site --app abadis-test --team-id 6af9496176b2026d7493a542 --platform static --liara-json /tmp/abadis-test-liara.json --api-token "$LIARA_TOKEN" --no-app-logs
+          printf '%s\n' '{"platform":"static","app":"abadis-med","team-id":"6af9496176b2026d7493a542"}' > /tmp/abadis-med-liara.json
+          liara deploy --path "$STAGED" --app abadis-med --team-id 6af9496176b2026d7493a542 --platform static --liara-json /tmp/abadis-med-liara.json --api-token "$LIARA_TOKEN" --no-app-logs
