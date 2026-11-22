@@ -549,7 +549,8 @@ def clean_html(html: str, lang: str = 'en', prefix: str = '../') -> str:
     h = re.sub(r'<video\b[^>]*>\s*</video>', '', h, flags=re.I)
     # Self-host when a built WebP already exists; otherwise keep WP src for localize_remote_images.py.
     h = rewrite_html(h, prefix, imgw=1400, drop_missing_img=False)
-    return h.strip()
+    from lib import restore_recovered_media
+    return restore_recovered_media(h).strip()
 
 
 def asset_prefix(lang: str, depth: int) -> str:
