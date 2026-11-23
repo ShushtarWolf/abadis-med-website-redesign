@@ -698,12 +698,18 @@ class Builder:
         for r in frows:
             it = self.cpt_item(r, 'fa')
             cids = r.get('_citynmg') or []
-            prov = cities.get(cids[0], '') if cids else ''
-            it['province'] = prov
+            # Keep every assigned province, not only the first. شرکت نیک طب is
+            # tagged اردبیل + زنجان + گیلان; using only cids[0] left the Zanjan
+            # and Gilan archive pages empty.
+            provs = [cities.get(cid, '') for cid in cids]
+            provs = [p for p in provs if p]
+            kept = [p for p in provs if p in dealer_provinces]
             # A record whose province no longer has a group in dealers.json was removed (e.g. AB-70, Hormozgan).
-            if prov and prov not in dealer_provinces:
+            if provs and not kept:
                 continue
-            it['rows'] = contact_for(prov, it['title'])
+            it['provinces'] = kept
+            it['province'] = kept[0] if kept else ''
+            it['rows'] = contact_for(it['province'], it['title']) if it['province'] else []
             ditems.append(it)
         ditems.sort(key=lambda x: x['date'], reverse=True)
         base = '/_franchise/'
@@ -725,7 +731,15 @@ class Builder:
             if not self.wanted(path):
                 continue
             name = htmlmod.unescape(city.get('name') or '')
-            mine = [it for it in ditems if it.get('province') == name]
+            mine = []
+            for it in ditems:
+                names = it.get('provinces') or ([it.get('province')] if it.get('province') else [])
+                if name not in names:
+                    continue
+                card = dict(it)
+                card['province'] = name
+                card['rows'] = contact_for(name, it['title'])
+                mine.append(card)
             if not mine:
                 continue  # province without a representative: no archive page
             self.listing(path, 'fa', H1[('province', 'fa')](name), plain(city.get('description') or ''),
