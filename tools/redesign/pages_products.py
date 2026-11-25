@@ -25,6 +25,8 @@ FALLBACK = {
     'anti': ['local:assets/img/filters/anti-1.webp', 'local:assets/img/filters/anti-2.webp'],
     'ght': ['local:assets/img/filters/stop-1.webp', 'local:assets/img/filters/stop-2.webp'],
     'mot': ['local:assets/img/filters/porous-1.webp'],
+    # Clean product photo of the fat-collection canister (stainless stand, 2 L ABADIS canister).
+    'lipo': ['local:assets/img/canister/fat-injection.webp'],
 }
 LOCAL_DIMS = {}
 def local_link(p, path, gid, alt, cls='', zoom='نمایش بزرگ‌تر'):
@@ -429,7 +431,7 @@ LIPO_HTML = (
     '<li>امکان کنترل جریان تزریق از طریق پمپ دستگاه</li>'
     '<li>کمک به پیوستگی فرایند برداشت، آماده‌سازی و تزریق چربی</li></ul>'
 )
-NO_PHOTO = {'collectioncup', 'splashvac', 'lipo'}
+NO_PHOTO = {'collectioncup', 'splashvac'}
 IMG_REPLACE = {
     'sdv': 'https://abadis-med.com/wp-content/uploads/2022/12/ساکشن-دیواری-بزرگسال-1030x1030-1.jpg',
 }
@@ -538,7 +540,6 @@ def prepare_family(slug):
         items.append({
             'id': 'lipo', 'title': 'دستگاه تزریق چربی (جمع‌آوری چربی)', 'html': LIPO_HTML,
             'imgs': [], 'tables': [[['نام کالا', 'کد کالا'], ['دستگاه تزریق چربی', '']]],
-            'force_missing': True,
         })
         # Live مخزن / Medical Canisters / خزانات lists the disposable kidney dish here.
         _oh, oth = family('/محصولات/سایر-محصولات/')
