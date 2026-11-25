@@ -265,7 +265,6 @@ SOLS = [
         parts=[
             P('suction-bag'), P('canister'), P('connectors'), P('stand'), P('suction-tube'),
             P('filters', 'ght', 'order', L('فیلتر قطع‌کننده جریان', 'Flow-stopper filter', 'فلتر قطع التدفق'), 'filters'),
-            P('other', 'rgl', 'order', L('رگولاتور', 'Regulator', 'المنظّم'), 'rgl'),
         ],
     ),
     dict(
