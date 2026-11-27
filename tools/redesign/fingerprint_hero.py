@@ -5,7 +5,7 @@ Kalameh only, shared header/nav, products CTA, FA/EN/AR strings.
 """
 from html import escape as esc
 
-V = '20261101a'
+V = '20261127b'
 
 T = {
     'fa': dict(
@@ -48,11 +48,13 @@ T = {
     ),
     'ar': dict(
         aria='أثر بصمة إصبع',
-        h1_before='نترك أثراً بقدر ',
+        section_aria='أثرنا لطيف بقدر أنملة',
+        row_aria='على الإنسان، على الطبيعة، على العالم',
+        h1_before='أثرنا لطيف بقدر ',
         h1_em='أنملة',
         h1_after='',
-        to_prefix='إلى',
-        chips=('أنتم', 'الطبيعة', 'العالم'),
+        to_prefix='على',
+        chips=('الإنسان', 'الطبيعة', 'العالم'),
         caps=(
             'خطوط البصمة، هوية إنسان',
             'الخطوط نفسها في خطوط الجبال وحلقات جذوع الأشجار',
@@ -78,46 +80,42 @@ def scripts(p):
 def _chip_row(t, lang):
     """Prefix + rotating chip + comma.
 
-    FA/AR keep the original flat flex items. EN groups each phrase so the
-    comma is in the same box as the chip (no flex gap before it) and the
-    row's column-gap is the single space after the comma. dir=ltr keeps a
-    Latin comma from picking up an RTL embedding.
+    FA stays the original flat flex row. EN and AR group each phrase so the
+    comma is in the same box as its word. Spacing lives in .fp-to--even, which
+    cancels the idle chip's start padding so every word sits the same distance
+    from its prefix whether or not that chip is highlighted.
     """
     labels = t['chips']
     n = len(labels)
-    if lang != 'en':
-        sep = '،' if lang == 'fa' else ','
+    if lang == 'fa':
         chips = ''.join(
             f'<span>{esc(t["to_prefix"])}</span>'
             f'<button class="fp-chip" type="button" data-mode="{i}" '
             f'aria-pressed="{"true" if i == 0 else "false"}">{esc(label)}</button>'
-            + ('' if i == n - 1 else f'<span>{sep}</span>')
+            + ('' if i == n - 1 else '<span>،</span>')
             for i, label in enumerate(labels)
         )
-        return chips, '', '--d:1.8s'
+        return chips, '', '--d:1.8s', ''
+    sep = '،' if lang == 'ar' else ','
     parts = []
     for i, label in enumerate(labels):
-        # End padding is the gap before a following comma. Keep it hairline so
-        # the comma sits on the word, outside the teal fill. The last chip has
-        # no comma and keeps the normal chip padding.
-        end_pad = '' if i == n - 1 else ' style="padding-inline-end:.06em"'
-        comma = '' if i == n - 1 else '<span class="fp-comma">,</span>'
+        comma = '' if i == n - 1 else f'<span class="fp-comma">{sep}</span>'
         parts.append(
-            '<span class="fp-phrase" style="display:inline-flex;align-items:center;gap:.35em;unicode-bidi:isolate">'
+            '<span class="fp-phrase">'
             f'<span class="fp-prep">{esc(t["to_prefix"])}</span>'
-            '<span class="fp-term" style="display:inline-flex;align-items:center;unicode-bidi:isolate">'
-            f'<button class="fp-chip"{end_pad} type="button" data-mode="{i}" '
+            '<span class="fp-term">'
+            f'<button class="fp-chip" type="button" data-mode="{i}" '
             f'aria-pressed="{"true" if i == 0 else "false"}">{esc(label)}</button>'
             f'{comma}'
             '</span></span>'
         )
-    # column-gap is the single space after each comma, before the next "on".
-    return ''.join(parts), ' dir="ltr" lang="en"', '--d:1.8s;gap:.35em .4em;unicode-bidi:isolate'
+    direction = 'rtl' if lang == 'ar' else 'ltr'
+    return ''.join(parts), f' dir="{direction}" lang="{lang}"', '--d:1.8s', ' fp-to--even'
 
 
 def hero(p, lang='fa'):
     t = T[lang]
-    chips, row_dir, row_style = _chip_row(t, lang)
+    chips, row_dir, row_style, row_class = _chip_row(t, lang)
     caps_json = esc('|'.join(t['caps']))
     section_aria = t.get('section_aria', t['aria'])
     row_aria = t.get('row_aria', t['aria'])
@@ -127,7 +125,7 @@ def hero(p, lang='fa'):
     <div class="fp-ui">
       <div class="fp-main">
         <h1 class="fp-rise" style="--d:1.4s">{esc(t['h1_before'])}<em>{esc(t['h1_em'])}</em>{esc(t['h1_after'])}</h1>
-        <div class="fp-to fp-rise"{row_dir} style="{row_style}" role="group" aria-label="{esc(row_aria)}">{chips}</div>
+        <div class="fp-to fp-rise{row_class}"{row_dir} style="{row_style}" role="group" aria-label="{esc(row_aria)}">{chips}</div>
         <p class="fp-cap fp-rise" style="--d:2s" aria-live="polite">{esc(t['caps'][0])}</p>
         <a class="fp-cta fp-rise" style="--d:2.2s" href="{p}{esc(t['products'])}" data-track="products_click" data-track-label="home_fp_hero">
           {esc(t['cta'])}
