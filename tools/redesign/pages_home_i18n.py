@@ -17,7 +17,7 @@ T = {
   about='Abadis Med, a knowledge-based company, leverages cutting-edge technology and innovative solutions for managing hospital fluid waste and infectious waste. With a strong commitment to infection control and sustainable development, we strive to make a real impact on healthcare facilities and environmental protection.',
   goals_h='Our Goals', goals=['Optimized Management of Infectious and Hospital Liquid Waste', 'Reducing and Controlling Infections Caused by Hospital Waste and Fluids', 'Promoting Awareness and Maximizing the Use of Our Solutions in Hospitals and Healthcare Centers'],
   more='Read more →', about_href='about-us/', video_alt='Abadis Med knowledge-based factory', video_cap='Placeholder for the Abadis introduction video (video file pending)',
-  slogan=['We affect as much as a fingertip', 'To You', 'To Nature', 'To World'],
+  slogan=['Our impact is as gentle as a fingertip', 'on you,', 'on nature,', 'on the world'],
   imp_eb='Abadis impact, right now', imp_unit='litres of water saved',
   why_eb='', why_h='Why Is Abadis Impactful?', why_sub='From product design and manufacturing to training and support, we strive to enhance safety, improve efficiency, and meet the real needs of healthcare centers.',
   values=[('Cost Reduction', 'Reduce costs related to cleanser, water consumption, electricity and manpower'), ('Hospital and Infectious Waste Management', 'Better collection of liquid and infectious waste'), ('Recycling', 'Reduces medical waste and preserves the environment'), ('Easy To Use', 'Eliminating activities related to tank cleaning and convenient use for collecting waste during surgery')],
