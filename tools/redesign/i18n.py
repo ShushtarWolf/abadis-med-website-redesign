@@ -395,9 +395,17 @@ def _norm_abadis_path(url: str):
 def map_i18n_href(url: str, lang: str, prefix: str) -> str | None:
     """Map an abadis-med.com href to a site-relative path, or None to keep as-is.
 
-    Keeps wp-content asset URLs (no local page). Rewrites pages/posts that exist
-    under /en/, /arabic/, or FA site paths.
+    Upload images map to the local WebP (every WordPress size variant included).
+    PDFs and other wp-content files stay as written. Pages and posts that exist
+    under /en/, /arabic/, or FA site paths are rewritten.
     """
+    try:
+        from lib import local_wp_image
+        loc = local_wp_image(url)
+    except Exception:
+        loc = None
+    if loc and loc.get('src') and not str(loc['src']).startswith(('http://', 'https://', '//')):
+        return (prefix or '') + loc['src']
     parsed = _norm_abadis_path(url)
     if not parsed:
         return None
@@ -504,6 +512,8 @@ def clean_html(html: str, lang: str = 'en', prefix: str = '../') -> str:
     if not html:
         return ''
     h = html
+    from lib import localize_abadis_upload_urls
+    h = localize_abadis_upload_urls(h, prefix)
     h = re.sub(r'<script\b[^>]*>.*?</script>', '', h, flags=re.S | re.I)
     h = re.sub(r'<style\b[^>]*>.*?</style>', '', h, flags=re.S | re.I)
     h = re.sub(r'<noscript\b[^>]*>.*?</noscript>', '', h, flags=re.S | re.I)

@@ -368,7 +368,22 @@ _CERT_ANCHOR = re.compile(
     re.I)
 
 
-def regroup_i18n_certs(html, lang):
+def _local_cert_src(href, prefix):
+    """Local WebP for a certificate hotlink. Keeps the IMED export tile with the rest."""
+    from lib import local_wp_image, recovered_image
+    rec = recovered_image(href)
+    if rec:
+        return rec['src']
+    loc = local_wp_image(href)
+    if loc and loc.get('src'):
+        src = loc['src']
+        if src.startswith(('http://', 'https://', '//')):
+            return src
+        return (prefix or '') + src
+    return href
+
+
+def regroup_i18n_certs(html, lang, prefix=''):
     """Reorder the EN/AR About license galleries into the same four groups. Idempotent."""
     spec = {
         'en': (['<h2>Certificates</h2>', '<h2>Licenses</h2>'], '<h2>Business Partners</h2>'),
@@ -411,9 +426,10 @@ def regroup_i18n_certs(html, lang):
                 if bit:
                     cap = bit
                     break
+            src = _local_cert_src(href, prefix)
             tiles.append(
-                f'<figure class="cert-item"><a class="cert-tile" href="{esc(href)}" data-gallery="certs">'
-                f'<img src="{esc(href)}" alt="{esc(cap or label)}" loading="lazy" decoding="async"></a>'
+                f'<figure class="cert-item"><a class="cert-tile" href="{esc(src)}" data-gallery="certs">'
+                f'<img src="{esc(src)}" alt="{esc(cap or label)}" loading="lazy" decoding="async"></a>'
                 + (f'<figcaption>{esc(cap)}</figcaption>' if cap else '')
                 + '</figure>'
             )
@@ -449,9 +465,9 @@ _PARTNER_LINK = {'fa': 'وب سایت مجموعه', 'en': 'Visit Website', 'ar'
 PARTNERS = [
     {
         'img': {
-            'fa': 'https://abadis-med.com/wp-content/uploads/2022/12/gulf-innovation-gate-1030x510-1-1024x507.png',
-            'en': 'https://www.abadis-med.com/en/wp-content/uploads/2026/10/gulf-innovation-gate-logo.png',
-            'ar': 'https://www.abadis-med.com/en/wp-content/uploads/2026/10/gulf-innovation-gate-logo.png',
+            'fa': 'assets/img/c/dbab851074d3-600.webp',
+            'en': 'assets/img/c/20ca6590590d-600.webp',
+            'ar': 'assets/img/c/20ca6590590d-600.webp',
         },
         'href': 'https://gulfinnovationgate.com/',
         'alt': 'Gulf Innovation Gate',
@@ -463,9 +479,9 @@ PARTNERS = [
     },
     {
         'img': {
-            'fa': 'https://abadis-med.com/wp-content/uploads/2022/12/Group-2.jpg',
-            'en': 'https://abadis-med.com/wp-content/uploads/2022/12/Group-2.jpg',
-            'ar': 'https://abadis-med.com/wp-content/uploads/2022/12/Group-2.jpg',
+            'fa': 'assets/img/c/3075eeaa7c5d-600.webp',
+            'en': 'assets/img/c/3075eeaa7c5d-600.webp',
+            'ar': 'assets/img/c/3075eeaa7c5d-600.webp',
         },
         'href': {'fa': 'https://goharangostar.com/fa/', 'en': 'https://goharangostar.com/', 'ar': 'https://goharangostar.com/'},
         'alt': {'fa': 'گوهران گستر نادین', 'en': 'Goharan Gostar Nadin', 'ar': 'گوهران گستر نادین'},
@@ -477,9 +493,9 @@ PARTNERS = [
     },
     {
         'img': {
-            'fa': 'https://abadis-med.com/wp-content/uploads/2023/12/v-mn-02-1.webp',
-            'en': 'https://abadis-med.com/wp-content/uploads/2023/12/v-mn-02-1.webp',
-            'ar': 'https://abadis-med.com/wp-content/uploads/2023/12/v-mn-02-1.webp',
+            'fa': 'assets/img/c/d555c5ddc1d5-600.webp',
+            'en': 'assets/img/c/d555c5ddc1d5-600.webp',
+            'ar': 'assets/img/c/d555c5ddc1d5-600.webp',
         },
         'href': 'https://virakam.com/',
         'alt': {'fa': 'ویراکام', 'en': 'Virakam', 'ar': 'ویراکام'},
@@ -491,9 +507,9 @@ PARTNERS = [
     },
     {
         'img': {
-            'fa': 'https://abadis-med.com/wp-content/uploads/2026/10/logo-ADPmed.jpg',
-            'en': 'https://www.abadis-med.com/en/wp-content/uploads/2026/10/logo-adp.png',
-            'ar': 'https://www.abadis-med.com/en/wp-content/uploads/2026/10/logo-adp.png',
+            'fa': 'assets/img/c/c83936b980b6-600.webp',
+            'en': 'assets/img/c/0a5e37f8ffc7-600.webp',
+            'ar': 'assets/img/c/0a5e37f8ffc7-600.webp',
         },
         'href': {'fa': 'https://abadis-med.com/', 'en': 'https://www.abadis-med.com/en/', 'ar': 'https://abadis-med.com/'},
         'alt': {'fa': 'شرکت ابزار درمان پرشیا', 'en': 'Abzar Darman Persia', 'ar': 'شركة ابزار درمان پرشيا'},
@@ -520,7 +536,17 @@ def partners_html(lang, prefix):
         href = _partner_field(spec, 'href', lang)
         alt = _partner_field(spec, 'alt', lang)
         url = _partner_field(spec, 'img', lang)
-        pic = picture(prefix, url, alt, 600) or picture(prefix, _partner_field(spec, 'img', 'fa'), alt, 600)
+        from lib import local_wp_image
+        loc = local_wp_image(url)
+        if not loc:
+            loc = local_wp_image(_partner_field(spec, 'img', 'fa'))
+        if loc and loc.get('src') and not str(loc['src']).startswith(('http://', 'https://', '//')):
+            pic = (f'<img src="{esc(prefix + loc["src"])}" width="{loc["w"]}" height="{loc["h"]}" '
+                   f'alt="{esc(alt)}" loading="lazy" decoding="async">')
+        elif str(url).startswith('assets/'):
+            pic = f'<img src="{esc(prefix + url)}" alt="{esc(alt)}" loading="lazy" decoding="async">'
+        else:
+            pic = picture(prefix, url, alt, 600) or picture(prefix, _partner_field(spec, 'img', 'fa'), alt, 600)
         logo = f'<a href="{esc(href)}" target="_blank" rel="noopener">{pic}</a>' if pic else ''
         text = _partner_field(spec, 'text', lang)
         label = _PARTNER_LINK.get(lang, _PARTNER_LINK['en'])

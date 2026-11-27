@@ -235,7 +235,7 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
         from pages_company import regroup_i18n_certs, apply_live_about, about_copy
         from about_motion import inject_about_motion
         body = apply_live_about(body, lang)
-        body = regroup_i18n_certs(body, lang)
+        body = regroup_i18n_certs(body, lang, p)
         body = inject_about_motion(body, lang, p)
         desc = about_copy(lang)['intro'][0]
     if site_path == 'sdgs/' and lang == 'en':
