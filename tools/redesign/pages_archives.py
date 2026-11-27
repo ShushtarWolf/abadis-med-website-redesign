@@ -22,7 +22,7 @@ import urllib.parse
 import urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from lib import DATA, SITE, esc, fa, jdate, best_img, placed_src, dim_attrs
+from lib import DATA, SITE, esc, fa, jdate, best_img, placed_src, dim_attrs, local_wp_image
 from layout import page, page_hero
 from i18n import canonical_href
 
@@ -798,7 +798,12 @@ class Builder:
         trail.append((item['title'], None))
         fig = ''
         if img:
-            fig = f'<p><img class="arch-cover" src="{esc(img)}" alt="{esc(item["title"])}" loading="lazy" decoding="async"></p>'
+            loc = best_img(img, 1200)
+            if loc:
+                fig = (f'<p><img class="arch-cover" src="{esc(placed_src(self.prefix(path), loc))}"'
+                       f'{dim_attrs(loc)} alt="{esc(item["title"])}" loading="lazy" decoding="async"></p>')
+            else:
+                fig = f'<p><img class="arch-cover" src="{esc(img)}" alt="{esc(item["title"])}" loading="lazy" decoding="async"></p>'
         main = f'''{page_hero(self.prefix(path), trail, esc(item["title"]), '', '', lang=lang)}
   <section class="section"><div class="wrap prose">{fig}{extra_html}</div></section>'''
         cur = {'customers': 'customers', 'dealers': 'dealers', 'downloads': 'downloads', 'jobs': 'careers'}.get(section, '')
@@ -928,30 +933,39 @@ class Builder:
         path = '/en/catalogue/'
         # titles are the live download-centre headings; files are the ones that page links
         docs = [
-            ('Abadis Catalouge', 'https://www.abadis-med.com/en/wp-content/uploads/2025/03/Abadis-Med-Catalouge.jpg',
+            ('Abadis Catalouge', 'assets/img/c/7de75af172d5-1600.webp',
              '../wp-content/uploads/2025/02/Abadis-Catalouge.pdf'),
-            ('Wall Suction', 'https://www.abadis-med.com/en/wp-content/uploads/2023/01/ساکشن-دیواری-بزرگسال-1030x1030-1-768x768-1.jpg',
+            ('Wall Suction', 'assets/img/c/abcd068284d9-1600.webp',
              '../wp-content/uploads/2021/12/wall-suction-en.pdf'),
-            ('Abadis Filters', 'https://www.abadis-med.com/en/wp-content/uploads/2021/12/filters-catalouge-en-1-1030x1030.jpg',
+            ('Abadis Filters', 'assets/img/c/0b9f4203444c-1600.webp',
              '../wp-content/uploads/2021/12/filters-catalouge-en.pdf'),
-            ('Endotracheal Tube Holder', 'https://www.abadis-med.com/en/wp-content/uploads/2021/12/endotracheal-tube-holder-catalog-ٍ-En-1-1030x1030.jpg',
+            ('Endotracheal Tube Holder', 'assets/img/c/c3139627556b-1600.webp',
              '../wp-content/uploads/2021/12/endotracheal-tube-holder-catalog-ٍ-En.pdf'),
-            ('Abadis Suction Bag', 'https://www.abadis-med.com/en/wp-content/uploads/2024/01/Abadis-Suction-liner-bag-catalouge-2-1030x1030.jpg',
+            ('Abadis Suction Bag', 'assets/img/c/aafe595bf7cc-1600.webp',
              '../wp-content/uploads/2021/12/suction-bag-catalog-En.pdf'),
-            ('Installation on a rail bracket', 'https://www.abadis-med.com/en/wp-content/uploads/2024/02/Installation-on-a-rail-bracket-1-1030x1030.jpg',
+            ('Installation on a rail bracket', 'assets/img/c/a81b93f23793-1600.webp',
              '../wp-content/uploads/2024/02/Installation-on-a-rail-bracket.pdf'),
-            ('Installation on a trolley base', 'https://www.abadis-med.com/en/wp-content/uploads/2024/02/Installation-on-a-trolley-1030x1030.jpg',
+            ('Installation on a trolley base', 'assets/img/c/f5f6d2e42dc2-1600.webp',
              '../wp-content/uploads/2024/02/Installation-on-a-trolley-base.pdf'),
-            ('Installation on the console', 'https://www.abadis-med.com/en/wp-content/uploads/2024/02/Installation-on-the-console-1030x1030.jpg',
+            ('Installation on the console', 'assets/img/c/6960c0debe0a-1600.webp',
              '../wp-content/uploads/2024/02/Installation-on-the-console.pdf'),
         ]
         cards = []
+        cover_prefix = self.prefix(path)
         for title, img, pdf in docs:
-            # pdf path is relative to /en/ (same depth as center-download)
+            # pdf path is relative to /en/ (same depth as center-download).
+            # Cover images are local WebPs; the PDF links stay under /en/wp-content/.
             href = pdf  # ../wp-content/... from /en/catalogue/ resolves to /en/wp-content/
+            loc = local_wp_image(img)
+            if loc:
+                src = cover_prefix + loc['src']
+            elif img.startswith(('http://', 'https://', '//')):
+                src = img
+            else:
+                src = cover_prefix + img
             cards.append(
                 f'<a class="post-card dl-card reveal" href="{esc(href)}" target="_blank" rel="noopener">'
-                f'<div class="ph" style="background:#fff"><img src="{esc(img)}" alt="{esc(title)}" loading="lazy" decoding="async"></div>'
+                f'<div class="ph" style="background:#fff"><img src="{esc(src)}" alt="{esc(title)}" loading="lazy" decoding="async"></div>'
                 f'<div class="body"><h3>{esc(title)}</h3><span class="go">Download Catalogue (PDF)</span></div></a>'
             )
         h1 = 'Catalogue'
