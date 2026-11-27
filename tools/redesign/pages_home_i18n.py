@@ -17,7 +17,7 @@ T = {
   about='Abadis Med, a knowledge-based company, leverages cutting-edge technology and innovative solutions for managing hospital fluid waste and infectious waste. With a strong commitment to infection control and sustainable development, we strive to make a real impact on healthcare facilities and environmental protection.',
   goals_h='Our Goals', goals=['Optimized Management of Infectious and Hospital Liquid Waste', 'Reducing and Controlling Infections Caused by Hospital Waste and Fluids', 'Promoting Awareness and Maximizing the Use of Our Solutions in Hospitals and Healthcare Centers'],
   more='Read more →', about_href='about-us/', video_alt='Abadis Med knowledge-based factory', video_cap='Placeholder for the Abadis introduction video (video file pending)',
-  slogan=['We affect as much as a fingertip', 'To You', 'To Nature', 'To World'],
+  slogan=['Our impact is as gentle as a fingertip', 'on you,', 'on nature,', 'on the world'],
   imp_eb='Abadis impact, right now', imp_unit='litres of water saved',
   why_eb='', why_h='Why Is Abadis Impactful?', why_sub='From product design and manufacturing to training and support, we strive to enhance safety, improve efficiency, and meet the real needs of healthcare centers.',
   values=[('Cost Reduction', 'Reduce costs related to cleanser, water consumption, electricity and manpower'), ('Hospital and Infectious Waste Management', 'Better collection of liquid and infectious waste'), ('Recycling', 'Reduces medical waste and preserves the environment'), ('Easy To Use', 'Eliminating activities related to tank cleaning and convenient use for collecting waste during surgery')],
@@ -118,7 +118,12 @@ def build_home(write, lang):
     </div>
   </section>'''
     import factory_hero
-    hero = factory_hero.hero(p, lang, quote_href=_h(t, p, t['quote_href']))
+    import fingerprint_hero
+    # EN home is the fingerprint hero. AR stays on the factory hero this branch already generates.
+    if lang == 'en':
+        hero = fingerprint_hero.hero(p, lang)
+    else:
+        hero = factory_hero.hero(p, lang, quote_href=_h(t, p, t['quote_href']))
     goals = ''.join(f'<li>{esc(g)}</li>' for g in t['goals'])
     about = f'''  <section class="section" id="about"><div class="wrap split">
       <div class="reveal"><p class="eyebrow">{esc(t['about_eb'])}</p><h2>{esc(t['about_h'])}</h2>
@@ -201,9 +206,10 @@ def build_home(write, lang):
     main = '\n'.join([hero, about, products, impact, why, quick, stories, mem, cust])
     if lang == 'en': main = main.replace('←', '→')
     import w2_orbit
-    extra_head = f'<link rel="preload" as="image" href="{p}assets/img/p/hero-bags.webp" type="image/webp">\n<link rel="stylesheet" href="{p}assets/css/home.css?v=20261121c">\n{H.logo_scroll_css(p)}\n{H.counter_options_css(p)}\n{w2_orbit.assets(p)}\n{factory_hero.head(p)}'
+    hero_assets = fingerprint_hero if lang == 'en' else factory_hero
+    extra_head = f'<link rel="preload" as="image" href="{p}assets/img/p/hero-bags.webp" type="image/webp">\n<link rel="stylesheet" href="{p}assets/css/home.css?v=20261121c">\n{H.logo_scroll_css(p)}\n{H.counter_options_css(p)}\n{w2_orbit.assets(p)}\n{hero_assets.head(p)}'
     html = page(p, None, t['title'], t['desc'], main, lang=lang, fa_path='', canonical_path=t['root'],
-                extra_head=extra_head, scripts=factory_hero.scripts(p) + H.logo_scroll_scripts(p) + H.counter_options_script(p) + H.customers_marquee_script(p), main_class='home-page', body_class='home', lightbox=True,
+                extra_head=extra_head, scripts=hero_assets.scripts(p) + H.logo_scroll_scripts(p) + H.counter_options_script(p) + H.customers_marquee_script(p), main_class='home-page', body_class='home', lightbox=True,
                 html_attrs='data-slogan="t1"')
     write(t['root'] + 'index.html', html)
     return t['root'] + 'index.html'
