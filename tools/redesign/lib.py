@@ -158,6 +158,181 @@ def recovered_image(url):
     dest, w, h = rec
     return {'src': bucket_url(dest), 'w': w, 'h': h, 'external': True}
 
+# WordPress appends -WIDTHxHEIGHT before the extension. One local WebP stands in
+# for every size variant of the same upload. See data/wp_local_images.json.
+_SIZE_SUFFIX = re.compile(r'-\d+x\d+(?=\.[A-Za-z0-9]+$)')
+_UPLOAD_IMG_EXT = re.compile(r'\.(?:jpe?g|png|gif|webp|svg|bmp|avif)$', re.I)
+_WP_LOCAL = None
+_WP_STEMS = None
+_WP_DIM = {}
+
+
+def unsized_upload_path(path):
+    return _SIZE_SUFFIX.sub('', path or '')
+
+
+def upload_image_path(url):
+    """Site path of an abadis-med.com upload image, or '' for anything else.
+
+    Liara bucket URLs and PDFs are not upload images for this lookup.
+    """
+    if not url:
+        return ''
+    raw = html.unescape(str(url).strip())
+    if raw.startswith('//'):
+        raw = 'https:' + raw
+    if raw.startswith('http://') or raw.startswith('https://'):
+        parts = u.urlsplit(raw)
+        host = parts.netloc.lower()
+        if host.startswith('www.'):
+            host = host[4:]
+        if host != 'abadis-med.com':
+            return ''
+        path = u.unquote(parts.path or '')
+    else:
+        path = u.unquote(raw.split('#', 1)[0].split('?', 1)[0])
+        if 'wp-content/uploads/' not in path:
+            return ''
+        if not path.startswith('/'):
+            path = '/' + path[path.find('wp-content/uploads/'):]
+    path = path.split('?', 1)[0].split('#', 1)[0]
+    if '/wp-content/uploads/' not in path or not _UPLOAD_IMG_EXT.search(path):
+        return ''
+    return path
+
+
+def _wp_local_map():
+    global _WP_LOCAL
+    if _WP_LOCAL is None:
+        fp = DATA / 'wp_local_images.json'
+        try:
+            _WP_LOCAL = json.load(open(fp, encoding='utf-8'))
+        except OSError:
+            _WP_LOCAL = {}
+    return _WP_LOCAL
+
+
+def _wp_stem_index():
+    global _WP_STEMS
+    if _WP_STEMS is None:
+        found = {}
+        if OUT_IMG.is_dir():
+            for f in OUT_IMG.glob('*.webp'):
+                m = re.match(r'^([0-9a-f]{12})-(\d+)\.webp$', f.name)
+                if m:
+                    found.setdefault(m.group(1), []).append(f)
+        _WP_STEMS = found
+    return _WP_STEMS
+
+
+def reset_wp_image_cache():
+    global _WP_LOCAL, _WP_STEMS
+    _WP_LOCAL = None
+    _WP_STEMS = None
+    _WP_DIM.clear()
+
+
+def local_wp_image(url):
+    """Local WebP for a leftover abadis-med.com upload image, or None.
+
+    Size variants share one file. A hit is {src, w, h} with src relative to site/.
+    """
+    path = upload_image_path(url)
+    if not path:
+        return None
+    canon = unsized_upload_path(path)
+    mapped = _wp_local_map()
+    rec = mapped.get(path) or mapped.get(canon)
+    if rec and rec.get('src') and (SITE / rec['src']).is_file():
+        return {'src': rec['src'], 'w': int(rec.get('w') or 0), 'h': int(rec.get('h') or 0)}
+    idx = _wp_stem_index()
+    hits = []
+    for key in (canon, path):
+        stem = hashlib.sha1(key.encode()).hexdigest()[:12]
+        hits.extend(idx.get(stem) or [])
+    if not hits:
+        return None
+
+    def nominal(f):
+        m = re.search(r'-(\d+)\.webp$', f.name)
+        return int(m.group(1)) if m else 0
+
+    best = max(hits, key=lambda f: (nominal(f), f.stat().st_size if f.is_file() else 0))
+    ck = str(best)
+    if ck not in _WP_DIM:
+        try:
+            with Image.open(best) as im:
+                _WP_DIM[ck] = im.size
+        except Exception:
+            return None
+    w, h = _WP_DIM[ck]
+    return {'src': 'assets/img/c/' + best.name, 'w': w, 'h': h}
+
+
+_UPLOAD_URL_RE = re.compile(
+    r'(?i)(?:https?:)?//(?:www\.)?abadis-med\.com(/(?:en/|arabic/)?wp-content/uploads/[^"\'\\\s,)]+)'
+    r'|'
+    r'(?<![A-Za-z0-9@])((?:\.\./)+(?:en/|arabic/)?wp-content/uploads/[^"\'\\\s,)]+)'
+    r'|'
+    r'(?<![A-Za-z0-9@])(/(?:en/|arabic/)?wp-content/uploads/[^"\'\\\s,)]+)'
+    r'|'
+    r'(?<![A-Za-z0-9@./])((?:en/|arabic/)?wp-content/uploads/[^"\'\\\s,)]+)'
+)
+
+
+def localize_abadis_upload_urls(text, prefix='', page_rel=''):
+    """Point leftover upload image URLs at local WebPs (or the media bucket).
+
+    PDFs, Liara URLs and files that already exist on disk are left in place.
+    `page_rel` is the HTML path under site/, used to resolve ../ references.
+    """
+    if not text or 'wp-content/uploads' not in text:
+        return text
+    import posixpath
+    base = posixpath.dirname(page_rel) if page_rel else ''
+
+    def site_path_for(m):
+        abs_path, ups, rooted, bare = m.group(1), m.group(2), m.group(3), m.group(4)
+        if abs_path:
+            return u.unquote(html.unescape(abs_path.split('?', 1)[0].split('#', 1)[0]))
+        raw = ups or rooted or bare or ''
+        raw = u.unquote(html.unescape(raw.split('?', 1)[0].split('#', 1)[0]))
+        if raw.startswith('/'):
+            return raw
+        if raw.startswith('../') or raw.startswith('./'):
+            joined = posixpath.normpath(posixpath.join(base, raw))
+            if joined.startswith('..'):
+                return ''
+            return '/' + joined
+        if 'wp-content/uploads/' in raw:
+            return '/' + raw[raw.find('wp-content/uploads/'):]
+        return ''
+
+    def repl(m):
+        path = site_path_for(m)
+        if not path or not _UPLOAD_IMG_EXT.search(path):
+            return m.group(0)
+        # A relative URL that already resolves to a file in the repo is not a hotlink.
+        if not m.group(1):
+            local_file = SITE / path.lstrip('/')
+            if local_file.is_file():
+                return m.group(0)
+        abs_url = 'https://abadis-med.com' + path
+        rel = path.split('/wp-content/uploads/', 1)[-1]
+        canon_url = 'https://abadis-med.com/wp-content/uploads/' + unsized_upload_path(rel)
+        rec = recovered_image(abs_url) or recovered_image(canon_url)
+        if rec:
+            return rec['src']
+        loc = local_wp_image(abs_url)
+        if not loc:
+            return m.group(0)
+        src = loc['src']
+        if src.startswith(('http://', 'https://', '//')):
+            return src
+        return (prefix or '') + src
+
+    return _UPLOAD_URL_RE.sub(repl, text)
+
 def _video_player(src, poster=''):
     poster_attr = f' poster="{esc(poster, quote=True)}"' if poster else ''
     return (
@@ -260,6 +435,8 @@ def img(url, maxw=1400):
     if not url: return None
     if url.startswith('//'): url = 'https:' + url
     hit = recovered_image(url)
+    if hit: return hit
+    hit = local_wp_image(url)
     if hit: return hit
     hit = _bucket_rec(url)
     if hit:
