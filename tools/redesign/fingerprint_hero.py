@@ -5,7 +5,7 @@ Kalameh only, shared header/nav, products CTA, FA/EN/AR strings.
 """
 from html import escape as esc
 
-V = '20261101a'
+V = '20261127b'
 
 T = {
     'fa': dict(
@@ -28,14 +28,16 @@ T = {
     ),
     'en': dict(
         aria='A fingertip mark',
-        h1_before='We leave a mark as light as a ',
+        section_aria='Our impact is as gentle as a fingertip',
+        row_aria='on you, on nature, on the world',
+        h1_before='Our impact is as gentle as a ',
         h1_em='fingertip',
         h1_after='',
-        to_prefix='to',
+        to_prefix='on',
         chips=('you', 'nature', 'the world'),
         caps=(
             'Fingerprint lines, a human identity',
-            'The same lines in mountain contours and tree rings',
+            'The same lines found in mountain contours and tree rings',
             'One mark, felt anywhere in the world',
         ),
         cta='View products',
@@ -46,11 +48,13 @@ T = {
     ),
     'ar': dict(
         aria='أثر بصمة إصبع',
-        h1_before='نترك أثراً بقدر ',
+        section_aria='أثرنا لطيف بقدر أنملة',
+        row_aria='على الإنسان، على الطبيعة، على العالم',
+        h1_before='أثرنا لطيف بقدر ',
         h1_em='أنملة',
         h1_after='',
-        to_prefix='إلى',
-        chips=('أنتم', 'الطبيعة', 'العالم'),
+        to_prefix='على',
+        chips=('الإنسان', 'الطبيعة', 'العالم'),
         caps=(
             'خطوط البصمة، هوية إنسان',
             'الخطوط نفسها في خطوط الجبال وحلقات جذوع الأشجار',
@@ -73,24 +77,55 @@ def scripts(p):
     return f'<script src="{p}assets/js/fingerprint-hero.js?v={V}" defer></script>\n'
 
 
+def _chip_row(t, lang):
+    """Prefix + rotating chip + comma.
+
+    FA stays the original flat flex row. EN and AR group each phrase so the
+    comma is in the same box as its word. Spacing lives in .fp-to--even, which
+    cancels the idle chip's start padding so every word sits the same distance
+    from its prefix whether or not that chip is highlighted.
+    """
+    labels = t['chips']
+    n = len(labels)
+    if lang == 'fa':
+        chips = ''.join(
+            f'<span>{esc(t["to_prefix"])}</span>'
+            f'<button class="fp-chip" type="button" data-mode="{i}" '
+            f'aria-pressed="{"true" if i == 0 else "false"}">{esc(label)}</button>'
+            + ('' if i == n - 1 else '<span>،</span>')
+            for i, label in enumerate(labels)
+        )
+        return chips, '', '--d:1.8s', ''
+    sep = '،' if lang == 'ar' else ','
+    parts = []
+    for i, label in enumerate(labels):
+        comma = '' if i == n - 1 else f'<span class="fp-comma">{sep}</span>'
+        parts.append(
+            '<span class="fp-phrase">'
+            f'<span class="fp-prep">{esc(t["to_prefix"])}</span>'
+            '<span class="fp-term">'
+            f'<button class="fp-chip" type="button" data-mode="{i}" '
+            f'aria-pressed="{"true" if i == 0 else "false"}">{esc(label)}</button>'
+            f'{comma}'
+            '</span></span>'
+        )
+    direction = 'rtl' if lang == 'ar' else 'ltr'
+    return ''.join(parts), f' dir="{direction}" lang="{lang}"', '--d:1.8s', ' fp-to--even'
+
+
 def hero(p, lang='fa'):
     t = T[lang]
-    sep = '،' if lang == 'fa' else ','
-    chips = ''.join(
-        f'<span>{esc(t["to_prefix"])}</span>'
-        f'<button class="fp-chip" type="button" data-mode="{i}" '
-        f'aria-pressed="{"true" if i == 0 else "false"}">{esc(label)}</button>'
-        + ('' if i == len(t['chips']) - 1 else f'<span>{sep}</span>')
-        for i, label in enumerate(t['chips'])
-    )
+    chips, row_dir, row_style, row_class = _chip_row(t, lang)
     caps_json = esc('|'.join(t['caps']))
-    return f'''  <section class="fp-hero" id="intro" data-tone="dark" data-lang="{esc(lang)}" data-digits="{esc(t['digits'])}" data-count-tpl="{esc(t['count'])}" data-caps="{caps_json}" aria-label="{esc(t['aria'])}">
+    section_aria = t.get('section_aria', t['aria'])
+    row_aria = t.get('row_aria', t['aria'])
+    return f'''  <section class="fp-hero" id="intro" data-tone="dark" data-lang="{esc(lang)}" data-digits="{esc(t['digits'])}" data-count-tpl="{esc(t['count'])}" data-caps="{caps_json}" aria-label="{esc(section_aria)}">
     <div class="fp-stage" aria-hidden="true"><canvas class="fp-canvas"></canvas></div>
     <div class="fp-shade" aria-hidden="true"></div>
     <div class="fp-ui">
       <div class="fp-main">
         <h1 class="fp-rise" style="--d:1.4s">{esc(t['h1_before'])}<em>{esc(t['h1_em'])}</em>{esc(t['h1_after'])}</h1>
-        <div class="fp-to fp-rise" style="--d:1.8s" role="group" aria-label="{esc(t['aria'])}">{chips}</div>
+        <div class="fp-to fp-rise{row_class}"{row_dir} style="{row_style}" role="group" aria-label="{esc(row_aria)}">{chips}</div>
         <p class="fp-cap fp-rise" style="--d:2s" aria-live="polite">{esc(t['caps'][0])}</p>
         <a class="fp-cta fp-rise" style="--d:2.2s" href="{p}{esc(t['products'])}" data-track="products_click" data-track-label="home_fp_hero">
           {esc(t['cta'])}
