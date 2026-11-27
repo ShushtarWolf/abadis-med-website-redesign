@@ -166,6 +166,27 @@ html[dir="ltr"] .fp-cta:hover svg { transform: scaleX(-1) translateX(-5px); }
   .fp-main { align-self: end; }
   .fp-foot { flex-wrap: wrap; row-gap: 6px; }
 }
+/* EN/AR chip row. The teal box keeps its start padding, but that padding is
+   pulled back with a negative margin so an idle chip does not open a hole
+   before the word. FA does not use this class. */
+.fp-to--even {
+  column-gap: 0.36em;
+  row-gap: 0.32em;
+  unicode-bidi: isolate;
+}
+.fp-to--even .fp-phrase,
+.fp-to--even .fp-term {
+  display: inline-flex;
+  align-items: center;
+  unicode-bidi: isolate;
+}
+.fp-to--even .fp-phrase { column-gap: 0.36em; }
+.fp-to--even .fp-chip {
+  padding-block: 0.05em 0.12em;
+  padding-inline: 0.28em 0.06em;
+  margin-inline-start: -0.28em;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .fp-hero *, .fp-hero *::before, .fp-hero *::after {
     animation: none !important;

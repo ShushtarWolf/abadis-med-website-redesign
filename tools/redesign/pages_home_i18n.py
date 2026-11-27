@@ -42,7 +42,7 @@ T = {
   about='شركة مخازن طبية آباديس المعرفية تعتمد على المعرفة الحديثة وتقديم منتجات وحلول مبتكرة في إدارة السوائل والنفايات العفنية في المستشفيات، وقد اتخذت خطوات فعّالة في السيطرة على العدوى المستشفوية وتحقيق التنمية المستدامة. هدفنا هو تحقيق تأثير حقيقي في تحسين صحة المراكز الصحية وحماية البيئة.',
   goals_h='أهدافنا', goals=['إدارة مثلى للنفايات العفنية والسوائل المستشفوية', 'تقليل والسيطرة على العدوى الناتجة عن النفايات والسوائل المستشفوية', 'نشر ثقافة الاستخدام الأمثل لحلولنا ومنتجاتنا في المراكز الصحية والمستشفيات'],
   more='اقرأ أكثر ←', about_href='من-نحن/', video_alt='مصنع آباديس المعرفي', video_cap='مكان فيديو التعريف بآباديس (ملف الفيديو قيد الانتظار)',
-  slogan=['نحن نؤثر بقدر طرف إصبع', 'عليك', 'على الطبيعة', 'على العالم'],
+  slogan=['أثرنا لطيف بقدر أنملة', 'على الإنسان،', 'على الطبيعة،', 'على العالم'],
   imp_eb='أثر آباديس، الآن', imp_unit='لتر من الماء تم توفيره',
   why_eb='', why_h='لماذا تُحدث آباديس أثراً؟', why_sub='من تصميم وتصنيع المنتجات إلى التدريب والدعم، نسعى للارتقاء بالسلامة وتحسين الكفاءة وتلبية الاحتياجات الفعلية للمراكز العلاجية.',
   values=[('تقليص التكاليف', 'تقليص التكاليف المتعلقة بالمنظّفات واستهلاك المياه والكهرباء واستخدام الموارد البشرية'), ('إدارة مخلفات المستشفيات والنفايات المعدية', 'تؤدي إلى تجميع النفايات السائلة والمعدية بشكل أفضل'), ('قابلة لإعادة التدوير', 'تؤدي إلى تقليل كميّة مخلفات المستشفيات والحفاظ على البيئة'), ('الاستخدام البسيط', 'التخلص من عملية غسيل الخزانات والاستخدام المريح لتجميع النفايات أثناء العمل')],
@@ -117,13 +117,9 @@ def build_home(write, lang):
       </div>
     </div>
   </section>'''
-    import factory_hero
     import fingerprint_hero
-    # EN home is the fingerprint hero. AR stays on the factory hero this branch already generates.
-    if lang == 'en':
-        hero = fingerprint_hero.hero(p, lang)
-    else:
-        hero = factory_hero.hero(p, lang, quote_href=_h(t, p, t['quote_href']))
+    # Both language homes use the fingerprint hero that is already on the page.
+    hero = fingerprint_hero.hero(p, lang)
     goals = ''.join(f'<li>{esc(g)}</li>' for g in t['goals'])
     about = f'''  <section class="section" id="about"><div class="wrap split">
       <div class="reveal"><p class="eyebrow">{esc(t['about_eb'])}</p><h2>{esc(t['about_h'])}</h2>
@@ -206,10 +202,9 @@ def build_home(write, lang):
     main = '\n'.join([hero, about, products, impact, why, quick, stories, mem, cust])
     if lang == 'en': main = main.replace('←', '→')
     import w2_orbit
-    hero_assets = fingerprint_hero if lang == 'en' else factory_hero
-    extra_head = f'<link rel="preload" as="image" href="{p}assets/img/p/hero-bags.webp" type="image/webp">\n<link rel="stylesheet" href="{p}assets/css/home.css?v=20261121c">\n{H.logo_scroll_css(p)}\n{H.counter_options_css(p)}\n{w2_orbit.assets(p)}\n{hero_assets.head(p)}'
+    extra_head = f'<link rel="preload" as="image" href="{p}assets/img/p/hero-bags.webp" type="image/webp">\n<link rel="stylesheet" href="{p}assets/css/home.css?v=20261121c">\n{H.logo_scroll_css(p)}\n{H.counter_options_css(p)}\n{w2_orbit.assets(p)}\n{fingerprint_hero.head(p)}'
     html = page(p, None, t['title'], t['desc'], main, lang=lang, fa_path='', canonical_path=t['root'],
-                extra_head=extra_head, scripts=hero_assets.scripts(p) + H.logo_scroll_scripts(p) + H.counter_options_script(p) + H.customers_marquee_script(p), main_class='home-page', body_class='home', lightbox=True,
+                extra_head=extra_head, scripts=fingerprint_hero.scripts(p) + H.logo_scroll_scripts(p) + H.counter_options_script(p) + H.customers_marquee_script(p), main_class='home-page', body_class='home', lightbox=True,
                 html_attrs='data-slogan="t1"')
     write(t['root'] + 'index.html', html)
     return t['root'] + 'index.html'
