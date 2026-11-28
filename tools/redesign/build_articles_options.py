@@ -423,7 +423,7 @@ def wrap_with_site_shell(title, active_key, main_inner):
 <script>(function(){{var t;try{{var q=new URLSearchParams(location.search).get('theme');if(q){{localStorage.setItem('abadis-theme',q)}}t=localStorage.getItem('abadis-theme')}}catch(e){{}}var d=document.documentElement;d.dataset.theme=(t==='dark'||t==='noir')?t:'light';d.classList.add('js')}})();</script>
 <link rel="preload" href="../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/css/site.css?v=20261028f">
+<link rel="stylesheet" href="../assets/css/site.css?v=20261128b">
 <link rel="stylesheet" href="../assets/css/boss-order.css?v=20261028f">
 <link rel="stylesheet" href="../assets/css/footer-motion.css">
 <link rel="stylesheet" href="../assets/css/news-finalist.css">
