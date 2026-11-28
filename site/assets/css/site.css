@@ -131,7 +131,7 @@ a { color: var(--brand); }
 }
 .lang-switch.on-light .lang-sep { color: var(--header-ink); opacity: .4; }
 .logo { position: relative; display: flex; align-items: center; flex: none; }
-.logo img { height: 54px; width: auto; transition: opacity .3s ease; }
+.logo img { height: 69px; width: auto; transition: opacity .3s ease; }
 .logo .lg-dark { position: absolute; inset-inline-start: 0; top: 50%; transform: translateY(-50%); }
 .logo .lg-light { opacity: 0; }
 .logo.on-light .lg-light { opacity: 1; }
@@ -253,8 +253,9 @@ a { color: var(--brand); }
   .lang-switch { order: 3; gap: 4px; }
   .theme-toggle { order: 4; }
   .nav { order: 5; }
-  .logo img { height: 44px; max-width: min(46vw, 168px); width: auto; object-fit: contain; }
-  .anchors { top: 64px; }
+  .logo { flex: none; }
+  .logo img { flex: none; height: 64px; max-width: none; width: auto; object-fit: contain; }
+  .anchors { top: 88px; }
   /* the menu opens as its own floating panel; the header bar itself stays transparent */
   .nav {
     position: absolute; top: calc(100% + 4px); inset-inline: 12px; margin: 0;
@@ -521,7 +522,7 @@ h2 { font-size: clamp(1.55rem, 3.2vw, 2.25rem); font-weight: 900; line-height: 1
 /* ---------- product page ---------- */
 .crumbs { font-size: .85rem; color: rgba(255,255,255,.75); margin-bottom: 8px; }
 .crumbs a { color: inherit; }
-.anchors { position: sticky; top: 78px; z-index: 50; background: var(--header-bg); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+.anchors { position: sticky; top: 96px; z-index: 50; background: var(--header-bg); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
 .anchors .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: none; }
 .anchors a { white-space: nowrap; text-decoration: none; color: var(--ink); font-weight: 700; font-size: .88rem; padding: 6px 12px; border-radius: 999px; background: var(--surface-2); }
 .size-block { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 30px 24px; box-shadow: var(--shadow); margin-bottom: 26px; scroll-margin-top: 130px; }
@@ -692,6 +693,7 @@ details.letter[open] summary { margin-bottom: 12px; }
 .foot-col-brand { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
 .foot-brand p { margin: 0; }
 .site-footer img { height: 54px; width: auto; margin-bottom: 12px; }
+.site-footer .foot-brand img { height: 128px; width: auto; }
 .site-footer h3,
 .foot-acc > summary {
   color: var(--on-deep); font-size: .98rem; font-weight: 800; margin-bottom: 10px;
@@ -819,7 +821,7 @@ details.letter[open] summary { margin-bottom: 12px; }
   /* Promote brand/nav into the 2-col grid: brand full-width, منو | بیشتر */
   .foot-col-brand { display: contents; }
   .foot-brand { grid-column: 1 / -1; text-align: center; }
-  .foot-brand img { margin-inline: auto; height: 46px; }
+  .foot-brand img { margin-inline: auto; height: 112px; }
   .foot-brand p { font-size: .88rem; }
   .foot-nav, .foot-more { min-width: 0; }
   .foot-contact { grid-column: 1 / -1; }
@@ -1222,8 +1224,13 @@ html[dir="ltr"] .prose ul, html[dir="ltr"] .prose ol { padding-inline-start: 1.3
     /* keep tools from colliding with logo/menu */
     flex-wrap: nowrap;
   }
-  .logo { flex: 0 1 auto; min-width: 0; }
-  .logo img { height: 38px; max-width: min(38vw, 132px); }
+  /* Emblem only. A full lockup at a legible ring size is wider than the
+     360px bar, so the side wordmark is cropped off before the emblem shrinks. */
+  .logo { flex: none; min-width: auto; }
+  .logo img {
+    flex: none; height: 54px; width: 54px; max-width: 54px;
+    object-fit: cover; object-position: right center;
+  }
   .menu-btn {
     width: 40px; height: 40px; min-width: 40px; min-height: 40px;
     margin-inline-end: auto; /* preserve wide gap to lang/theme */
@@ -2069,7 +2076,7 @@ body.academy { background: #f3f8f8; }
   }
 }
 /* Sticky-header-aware anchors on solutions pages */
-html { scroll-padding-top: var(--sticky-offset, 96px); }
+html { scroll-padding-top: var(--sticky-offset, 112px); }
 [data-dim-card], .sol-showcase-card, .sol-showcase-card h2, #sol-detail, #sol-showcase { scroll-margin-top: var(--sticky-offset, 96px); }
 
 /* Footer cert strip — Daneshbonyan + NACI chips beside CE/ISO/IMED */
