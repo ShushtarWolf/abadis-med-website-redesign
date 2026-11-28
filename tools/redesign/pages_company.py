@@ -1065,7 +1065,7 @@ def contact(write):
     s = re.sub(r'(<main id="main">)(.*?)(</main>)', lambda m: m.group(1) + decorate_fa_contact_main(m.group(2)) + m.group(3), s, count=1, flags=re.S)
     s = re.sub(r'<section class="page-hero(?:[^"]*)">.*?</section>', lambda m: contact_video_hero('../', 'fa'), s, count=1, flags=re.S)
     if 'boss-order.css' not in s:
-        s = s.replace('site.css?v=20261128b">', 'site.css?v=20261128b">\n<link rel="stylesheet" href="../assets/css/boss-order.css?v=20261028p">', 1)
+        s = s.replace('site.css?v=20261128c">', 'site.css?v=20261128c">\n<link rel="stylesheet" href="../assets/css/boss-order.css?v=20261028p">', 1)
     write('contact/index.html', s)
 
 

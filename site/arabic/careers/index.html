@@ -8,7 +8,7 @@
 <!-- TODO(launch): remove this robots meta when the site is published on https://abadis-med.com/ -->
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#e8f3f3">
-<meta name="abadis-form-endpoint" content="">
+<meta name="abadis-form-endpoint" content="https://abadis-forms.liara.run/submit">
 <meta name="abadis-form-mailto" content="info@abadis-med.com">
 <script>(function(){var t;try{var q=new URLSearchParams(location.search).get('theme');if(q){localStorage.setItem('abadis-theme',q)}t=localStorage.getItem('abadis-theme')}catch(e){}var d=document.documentElement;d.dataset.theme=(t==='dark'||t==='noir')?t:'light';d.classList.add('js')})();</script>
 <link rel="icon" href="../../favicon.ico" sizes="any">
@@ -22,7 +22,7 @@
 <meta property="og:image" content="../../assets/img/og-image.jpg">
 <link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/css/site.css?v=20261128b">
+<link rel="stylesheet" href="../../assets/css/site.css?v=20261128c">
 <link rel="stylesheet" href="../../assets/css/boss-order.css?v=20261118ab72">
 <link rel="stylesheet" href="../../assets/css/consent.css">
 <link rel="stylesheet" href="../../assets/css/footer-motion.css">
@@ -91,6 +91,7 @@
       <div class="cf-card">
 <form class="cf-form" id="c1-form" data-abadis-form="careers" data-mailto-form="info@abadis-med.com" data-subject="طلب التعاون — آباديس" dir="rtl">
 <input type="hidden" name="form_name" value="careers">
+<label class="hp-field" aria-hidden="true">Leave blank<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label>
 <div class="cf-stepper" role="tablist" aria-label="خطوات الطلب"><button type="button" class="cf-step-tab is-active" data-step-btn="1" role="tab" aria-selected="true"><span class="cf-step-num">١</span><span class="cf-step-txt">الفرصة والبيانات الشخصية</span></button><button type="button" class="cf-step-tab" data-step-btn="2" role="tab" aria-selected="false"><span class="cf-step-num">٢</span><span class="cf-step-txt">التحصيل العلمي والخبرة</span></button><button type="button" class="cf-step-tab" data-step-btn="3" role="tab" aria-selected="false"><span class="cf-step-num">٣</span><span class="cf-step-txt">أولويات بيئة العمل (١ إلى ٨)</span></button><button type="button" class="cf-step-tab" data-step-btn="4" role="tab" aria-selected="false"><span class="cf-step-num">٤</span><span class="cf-step-txt">اللغة والحاسوب والمهارات</span></button></div>
 <div class="cf-step-pane is-active" data-step-pane="1">
 <div class="cf-pane-head"><h3>الخطوة ١ — الفرصة والبيانات الشخصية</h3><p>اختر الفرصة أو إرسال سيرة عامة، ثم أدخل البيانات الشخصية.</p></div>
@@ -99,17 +100,16 @@
 <label class="cf-lbl"><span>الاسم *</span><input type="text" name="نام" required autocomplete="given-name"></label>
 <label class="cf-lbl"><span>اسم العائلة *</span><input type="text" name="نام خانوادگی" required autocomplete="family-name"></label>
 <label class="cf-lbl"><span>اسم الأب *</span><input type="text" name="نام پدر" required></label>
-<label class="cf-lbl"><span>حالة الخدمة العسكرية (إن وجدت)</span><input type="text" name="وضعیت نظام وظیفه"></label>
+<label class="cf-lbl"><span>حالة الخدمة العسكرية *</span><input type="text" name="وضعیت نظام وظیفه" required></label>
 <label class="cf-lbl"><span>تاريخ الميلاد *</span><input type="text" name="تاریخ تولد" placeholder="١٣٧٠/٠١/٠١" inputmode="numeric" required></label>
 <label class="cf-lbl"><span>مكان الميلاد *</span><input type="text" name="محل تولد" required></label>
-<label class="cf-lbl"><span>رقم الهوية الوطنية / جواز السفر *</span><input type="text" name="شماره شناسنامه" required></label>
+<label class="cf-lbl"><span>رقم الهوية الوطنية / جواز السفر *</span><input type="text" name="شماره شناسنامه" inputmode="numeric" required></label>
 <label class="cf-lbl"><span>مكان الإصدار *</span><input type="text" name="محل صدور" required></label>
 <label class="cf-lbl"><span>الحالة الاجتماعية *</span><select name="وضعیت تاهل" required><option value="">اختر…</option><option>أعزب</option><option>متزوج</option></select></label>
 <label class="cf-lbl"><span>مرض خاص أو سابقة دخول مستشفى *</span><select name="بیماری خاص یا سابقه بستری" required><option value="">اختر…</option><option>لا</option><option>نعم</option></select></label>
 <label class="cf-lbl"><span>الهاتف الأرضي *</span><input type="tel" dir="ltr" name="تلفن ثابت" required inputmode="tel"></label>
 <label class="cf-lbl"><span>الهاتف المحمول *</span><input type="tel" dir="ltr" name="تلفن همراه" required inputmode="tel"></label>
-<label class="cf-lbl"><span>البريد الإلكتروني</span><input type="email" dir="ltr" name="email" autocomplete="email"></label>
-<label class="cf-lbl cf-col-span-2"><span>عنوان السكن الكامل *</span><input type="text" name="آدرس محل سکونت" placeholder="المحافظة، المدينة، الشارع، البناء" required></label>
+<label class="cf-lbl cf-col-span-2"><span>عنوان السكن الكامل *</span><input type="text" name="آدرس محل سکونت" placeholder="المحافظة، المدينة، الشارع، الرقم، الوحدة" required></label>
 </div>
 <div class="cf-step-nav"><span>الخطوة ١ من ٤</span><button type="button" class="cf-btn-primary" data-step-go="2">المتابعة إلى الخطوة ٢ — التحصيل والخبرة</button></div>
 </div>
@@ -121,13 +121,13 @@
 <div class="cf-grid-2" style="margin-top:16px">
 <label class="cf-lbl"><span>آخر راتب *</span><input type="text" name="آخرین حقوق دریافتی" inputmode="numeric" required></label>
 <label class="cf-lbl"><span>الراتب المطلوب *</span><input type="text" name="حقوق درخواستی" inputmode="numeric" required></label>
-<label class="cf-lbl cf-col-span-2"><span>كيف تعرفت على آباديس؟ *</span><input type="text" name="طریق مراجعه به شرکت جهت استخدام" placeholder="الموقع، لينكدإن، زميل، معرض إيران هلث…" required></label>
+<label class="cf-lbl cf-col-span-2"><span>كيف تعرفت على آباديس؟ *</span><input type="text" name="طریق مراجعه به شرکت جهت استخدام" placeholder="الموقع الرسمي لأباديس، لينكدإن، زميل، معرض إيران هلث…" required></label>
 </div>
 <div class="cf-step-nav"><button type="button" class="cf-btn-ghost" data-step-go="1">العودة إلى الخطوة ١</button><button type="button" class="cf-btn-primary" data-step-go="3">المتابعة إلى الخطوة ٣ — الأولويات</button></div>
 </div>
 <div class="cf-step-pane" data-step-pane="3">
 <div class="cf-pane-head"><h3>الخطوة ٣ — أولوياتك في بيئة العمل (من ١ إلى ٨)</h3><p>أعطِ كل معيار من الثمانية رقماً من ١ إلى ٨ حسب أولويتك.</p></div>
-<div class="cf-expect-grid"><label class="cf-lbl cf-expect-item"><span>الأمان الوظيفي</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — امنیت شغلی" placeholder="1–8" required></label><label class="cf-lbl cf-expect-item"><span>بيئة هادئة</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — محیط آرام" placeholder="1–8" required></label><label class="cf-lbl cf-expect-item"><span>الزملاء</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — همکاران" placeholder="1–8" required></label><label class="cf-lbl cf-expect-item"><span>قرب مكان العمل</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — نزدیکی محل" placeholder="1–8" required></label><label class="cf-lbl cf-expect-item"><span>التقدم الوظيفي</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — پیشرفت شغلی" placeholder="1–8" required></label><label class="cf-lbl cf-expect-item"><span>الارتباط بالدراسة</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — مرتبط با تحصیلات" placeholder="1–8" required></label><label class="cf-lbl cf-expect-item"><span>الدخل</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — درآمد" placeholder="1–8" required></label><label class="cf-lbl cf-expect-item"><span>المكانة</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — پرستیژ" placeholder="1–8" required></label></div>
+<div class="cf-expect-grid"><label class="cf-lbl cf-expect-item"><span>الأمان الوظيفي</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — امنیت شغلی" placeholder="١ إلى ٨" required></label><label class="cf-lbl cf-expect-item"><span>بيئة هادئة</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — محیط آرام" placeholder="١ إلى ٨" required></label><label class="cf-lbl cf-expect-item"><span>الزملاء</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — همکاران" placeholder="١ إلى ٨" required></label><label class="cf-lbl cf-expect-item"><span>قرب مكان العمل</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — نزدیکی محل" placeholder="١ إلى ٨" required></label><label class="cf-lbl cf-expect-item"><span>التقدم الوظيفي</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — پیشرفت شغلی" placeholder="١ إلى ٨" required></label><label class="cf-lbl cf-expect-item"><span>الارتباط بالدراسة</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — مرتبط با تحصیلات" placeholder="١ إلى ٨" required></label><label class="cf-lbl cf-expect-item"><span>الدخل</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — درآمد" placeholder="١ إلى ٨" required></label><label class="cf-lbl cf-expect-item"><span>المكانة</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — پرستیژ" placeholder="١ إلى ٨" required></label></div>
 <div class="cf-step-nav"><button type="button" class="cf-btn-ghost" data-step-go="2">العودة إلى الخطوة ٢</button><button type="button" class="cf-btn-primary" data-step-go="4">المتابعة إلى الخطوة ٤ — المهارات</button></div>
 </div>
 <div class="cf-step-pane" data-step-pane="4">
@@ -238,7 +238,7 @@
   </div>
   <div class="wrap foot-copy">جميع الحقوق محفوظة: خزانات طبي آباديس · معاينة إعادة التصميم</div>
 </footer>
-<script src="../../assets/js/site.js?v=20261122b" defer></script>
+<script src="../../assets/js/site.js?v=20261128c" defer></script>
 <script src="../../assets/js/consent.js" defer></script>
 <script src="../../assets/js/footer-motion.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>

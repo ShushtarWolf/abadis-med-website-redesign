@@ -1013,15 +1013,15 @@ COPY = {
         choose='Select…',
         general='General talent pool / not listed above',
         first='First name *', last='Last name *', father="Father's name *",
-        military='Military service status (if applicable)',
-        birth='Date of birth *', birthph='YYYY/MM/DD',
+        military='Military service status *',
+        birth='Date of birth *', birthph='1370/01/01',
         birthplace='Place of birth *',
         nid='National ID / passport number *',
         issue='Place of issue *',
         marital='Marital status *', single='Single', married='Married',
         illness='Serious illness or hospital admission *', no='No', yes='Yes',
-        land='Landline *', mobile='Mobile phone *', email='Email',
-        address='Full home address *', addressph='City, street, building',
+        land='Landline *', mobile='Mobile phone *',
+        address='Full home address *', addressph='Province, city, street, number, unit',
         next2='Continue to step 2 — education and work',
         s2h='Step 2 — Education, work history and pay',
         s2p='Add your education, previous roles and current job.',
@@ -1035,7 +1035,8 @@ COPY = {
         manager='Manager', phone='Phone', why='Reason for leaving',
         lastpay='Last salary *', askpay='Requested salary *',
         heard='How did you hear about Abadis? *',
-        heardph='Website, LinkedIn, a colleague, Iran Health…',
+        heardph='Official Abadis website, LinkedIn, a colleague, Iran Health…',
+        rankph='1 to 8',
         back1='Back to step 1', next3='Continue to step 3 — priorities',
         s3h='Step 3 — What you want from a workplace (rank 1 to 8)',
         s3p='Give each of the eight items a rank from 1 to 8.',
@@ -1065,15 +1066,15 @@ COPY = {
         choose='اختر…',
         general='إرسال سيرة ذاتية عامة / خارج الوظائف المعروضة',
         first='الاسم *', last='اسم العائلة *', father='اسم الأب *',
-        military='حالة الخدمة العسكرية (إن وجدت)',
+        military='حالة الخدمة العسكرية *',
         birth='تاريخ الميلاد *', birthph='١٣٧٠/٠١/٠١',
         birthplace='مكان الميلاد *',
         nid='رقم الهوية الوطنية / جواز السفر *',
         issue='مكان الإصدار *',
         marital='الحالة الاجتماعية *', single='أعزب', married='متزوج',
         illness='مرض خاص أو سابقة دخول مستشفى *', no='لا', yes='نعم',
-        land='الهاتف الأرضي *', mobile='الهاتف المحمول *', email='البريد الإلكتروني',
-        address='عنوان السكن الكامل *', addressph='المحافظة، المدينة، الشارع، البناء',
+        land='الهاتف الأرضي *', mobile='الهاتف المحمول *',
+        address='عنوان السكن الكامل *', addressph='المحافظة، المدينة، الشارع، الرقم، الوحدة',
         next2='المتابعة إلى الخطوة ٢ — التحصيل والخبرة',
         s2h='الخطوة ٢ — التحصيل العلمي والخبرة والراتب',
         s2p='أدخل المراحل الدراسية والخبرات السابقة والعمل الحالي.',
@@ -1087,7 +1088,8 @@ COPY = {
         manager='اسم المدير', phone='الهاتف', why='سبب انتهاء التعاون',
         lastpay='آخر راتب *', askpay='الراتب المطلوب *',
         heard='كيف تعرفت على آباديس؟ *',
-        heardph='الموقع، لينكدإن، زميل، معرض إيران هلث…',
+        heardph='الموقع الرسمي لأباديس، لينكدإن، زميل، معرض إيران هلث…',
+        rankph='١ إلى ٨',
         back1='العودة إلى الخطوة ١', next3='المتابعة إلى الخطوة ٣ — الأولويات',
         s3h='الخطوة ٣ — أولوياتك في بيئة العمل (من ١ إلى ٨)',
         s3p='أعطِ كل معيار من الثمانية رقماً من ١ إلى ٨ حسب أولويتك.',
@@ -1215,7 +1217,7 @@ def career_form(lang, roles):
     soft_names = ['آشنایی با کامپیوتر — نوع نرم افزار', 'آشنایی با کامپیوتر — میزان آشنایی (متوسط-خوب-عالی)', 'آشنایی با کامپیوتر — توضیحات']
     expects = ''.join(
         f'<label class="cf-lbl cf-expect-item"><span>{esc(lab)}</span>'
-        f'<input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — {esc(fa_name)}" placeholder="1–8" required></label>'
+        f'<input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — {esc(fa_name)}" placeholder="{esc(c["rankph"])}" required></label>'
         for lab, fa_name in zip(c['expects'],
                                 ['امنیت شغلی', 'محیط آرام', 'همکاران', 'نزدیکی محل', 'پیشرفت شغلی', 'مرتبط با تحصیلات', 'درآمد', 'پرستیژ'])
     )
@@ -1223,9 +1225,9 @@ def career_form(lang, roles):
         f'<label class="cf-check"><input type="checkbox" name="زبان‌های خارجی" value="{esc(v)}"><span>{esc(v)}</span></label>'
         for v in c['lang_opts']
     )
-    return f'''<div class="cf-card">
-<form class="cf-form" id="c1-form" data-abadis-form="careers" data-mailto-form="info@abadis-med.com" data-subject="{esc(c["subject"])}" dir="{c["dir"]}">
+    return f'''<form class="cf-form" id="c1-form" data-abadis-form="careers" data-mailto-form="info@abadis-med.com" data-subject="{esc(c["subject"])}" dir="{c["dir"]}">
 <input type="hidden" name="form_name" value="careers">
+<label class="hp-field" aria-hidden="true">Leave blank<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label>
 <div class="cf-stepper" role="tablist" aria-label="{esc(c["legend"])}">{''.join(tabs)}</div>
 <div class="cf-step-pane is-active" data-step-pane="1">
 <div class="cf-pane-head"><h3>{esc(c["s1h"])}</h3><p>{esc(c["s1p"])}</p></div>
@@ -1234,16 +1236,15 @@ def career_form(lang, roles):
 <label class="cf-lbl"><span>{esc(c["first"])}</span><input type="text" name="نام" required autocomplete="given-name"></label>
 <label class="cf-lbl"><span>{esc(c["last"])}</span><input type="text" name="نام خانوادگی" required autocomplete="family-name"></label>
 <label class="cf-lbl"><span>{esc(c["father"])}</span><input type="text" name="نام پدر" required></label>
-<label class="cf-lbl"><span>{esc(c["military"])}</span><input type="text" name="وضعیت نظام وظیفه"></label>
+<label class="cf-lbl"><span>{esc(c["military"])}</span><input type="text" name="وضعیت نظام وظیفه" required></label>
 <label class="cf-lbl"><span>{esc(c["birth"])}</span><input type="text" name="تاریخ تولد" placeholder="{esc(c["birthph"])}" inputmode="numeric" required></label>
 <label class="cf-lbl"><span>{esc(c["birthplace"])}</span><input type="text" name="محل تولد" required></label>
-<label class="cf-lbl"><span>{esc(c["nid"])}</span><input type="text" name="شماره شناسنامه" required></label>
+<label class="cf-lbl"><span>{esc(c["nid"])}</span><input type="text" name="شماره شناسنامه" inputmode="numeric" required></label>
 <label class="cf-lbl"><span>{esc(c["issue"])}</span><input type="text" name="محل صدور" required></label>
 <label class="cf-lbl"><span>{esc(c["marital"])}</span><select name="وضعیت تاهل" required><option value="">{esc(c["choose"])}</option><option>{esc(c["single"])}</option><option>{esc(c["married"])}</option></select></label>
 <label class="cf-lbl"><span>{esc(c["illness"])}</span><select name="بیماری خاص یا سابقه بستری" required><option value="">{esc(c["choose"])}</option><option>{esc(c["no"])}</option><option>{esc(c["yes"])}</option></select></label>
 <label class="cf-lbl"><span>{esc(c["land"])}</span><input type="tel" dir="ltr" name="تلفن ثابت" required inputmode="tel"></label>
 <label class="cf-lbl"><span>{esc(c["mobile"])}</span><input type="tel" dir="ltr" name="تلفن همراه" required inputmode="tel"></label>
-<label class="cf-lbl"><span>{esc(c["email"])}</span><input type="email" dir="ltr" name="email" autocomplete="email"></label>
 <label class="cf-lbl cf-col-span-2"><span>{esc(c["address"])}</span><input type="text" name="آدرس محل سکونت" placeholder="{esc(c["addressph"])}" required></label>
 </div>
 <div class="cf-step-nav"><span>{esc(c["stepof"].format(n=1 if lang=="en" else "١"))}</span><button type="button" class="cf-btn-primary" data-step-go="2">{esc(c["next2"])}</button></div>
@@ -1274,7 +1275,7 @@ def career_form(lang, roles):
 <p class="cf-submit-note">{esc(c["foot"])}</p>
 <p class="form-status" role="status" aria-live="polite"></p>
 </div>
-</form></div>'''
+</form>'''
 
 
 def install_careers():

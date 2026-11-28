@@ -8,7 +8,7 @@
 <!-- TODO(launch): remove this robots meta when the site is published on https://abadis-med.com/ -->
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#e8f3f3">
-<meta name="abadis-form-endpoint" content="">
+<meta name="abadis-form-endpoint" content="https://abadis-forms.liara.run/submit">
 <meta name="abadis-form-mailto" content="info@abadis-med.com">
 <script>(function(){var t;try{var q=new URLSearchParams(location.search).get('theme');if(q){localStorage.setItem('abadis-theme',q)}t=localStorage.getItem('abadis-theme')}catch(e){}var d=document.documentElement;d.dataset.theme=(t==='dark'||t==='noir')?t:'light';d.classList.add('js')})();</script>
 <link rel="icon" href="../../favicon.ico" sizes="any">
@@ -24,7 +24,7 @@
 <meta property="og:image" content="../../assets/img/og-image.jpg">
 <link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/css/site.css?v=20261128b">
+<link rel="stylesheet" href="../../assets/css/site.css?v=20261128c">
 <link rel="stylesheet" href="../../assets/css/boss-order.css?v=20261028p">
 <link rel="stylesheet" href="../../assets/css/consent.css">
 <link rel="stylesheet" href="../../assets/css/footer-motion.css">
@@ -85,7 +85,9 @@
 </section>
 <section class="section sol-sec" id="parts"><div class="wrap"><h2>۳. اجزای راهکار</h2><div class="ps-parts"><a class="ps-part" href="../../محصولات/کیسه-ساکشن/"><img src="../../assets/img/c/611f0398754f-640.webp" alt="کیسه ساکشن یکبار مصرف" width="96" height="72" loading="lazy"><span><strong>کیسه ساکشن</strong></span></a><a class="ps-part" href="../../محصولات/مخزن/"><img src="../../assets/img/c/38a87bcfaf85-1600.webp" alt="مخزن ساکشن" width="96" height="72" loading="lazy"><span><strong>مخازن و ظروف پزشکی</strong></span></a><a class="ps-part" href="../../محصولات/اتصالات/"><img src="../../assets/img/c/9b6630cc8eaa-640.webp" alt="اتصالات" width="96" height="72" loading="lazy"><span><strong>اتصالات و ملزومات ساکشن</strong></span></a><a class="ps-part" href="../../محصولات/پایه/"><img src="../../assets/img/c/90d179b67447-1600.webp" alt="پایه و نگهدارنده‌ها" width="96" height="72" loading="lazy"><span><strong>پایه و نگهدارنده ها</strong></span></a><a class="ps-part" href="../../محصولات/ساکشن-تیوب/"><img src="../../assets/img/c/92b676038309-1600.webp" alt="ساکشن تیوب" width="96" height="72" loading="lazy"><span><strong>ساکشن تیوب</strong></span></a><a class="ps-part" href="../../محصولات/فیلترها/#ght"><img src="../../assets/img/c/ad713458f652-640.webp" alt="فیلتر قطع‌کننده جریان" width="96" height="72" loading="lazy"><span><strong>فیلتر قطع‌کننده جریان</strong></span></a></div></div></section><section class="section sol-sec section--alt" id="sales"><div class="wrap"><h2>۸. تماس با فروش</h2><p>درخواست مشاوره، نمونه، کاتالوگ یا پیشنهاد فنی و تجاری. فرم زیر سفارش قطعی ثبت نمی‌کند؛ خلاصه را برای واحد فروش می‌فرستد.</p><div class="ps-actions"><a class="btn btn-primary" href="../../ارتباط-با-ما/">استعلام قیمت</a><button class="btn btn-ghost" type="button" data-sol-open>درخواست راهکار مناسب مرکز درمانی من</button></div><div class="doc-links"><a href="https://abadis-media.storage.iran.liara.site/wp-content/uploads/2024/12/%DA%A9%D8%A7%D8%AA%D8%A7%D9%84%D9%88%DA%AF-%D8%AC%D8%A7%D9%85%D8%B9-%D8%A2%D8%A8%D8%A7%D8%AF%DB%8C%D8%B3.pdf" target="_blank" rel="noopener" data-track="catalogue_download">کاتالوگ جامع</a><a href="../../ارتباط-با-ما/">استعلام قیمت</a><a href="../../محاسبه-گر/">۶. ارزش اقتصادی</a></div></div></section>
 <dialog class="ps-dialog" id="sol-config">
-  <form data-sol-form data-subject="درخواست راهکار آبادیس" data-reco-label="پیشنهاد تکمیلی از اجزای همین راهکار" method="dialog">
+  <form data-sol-form data-abadis-form="solution" data-subject="درخواست راهکار آبادیس" data-reco-label="پیشنهاد تکمیلی از اجزای همین راهکار" method="dialog">
+    <input type="hidden" name="form_name" value="solution">
+    <label class="hp-field" aria-hidden="true">Leave blank<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label>
     <h2>درخواست راهکار مناسب مرکز درمانی من</h2>
     <div class="ps-fields">
       <label>بخش بیمارستان<select name="dept" data-sum="بخش بیمارستان" required><option value=""></option><option>اتاق عمل (OR)</option><option>مراقبت‌های ویژه (ICU / CCU)</option><option>اورژانس (ER)</option><option>بخش‌های بستری و جنرال</option><option>کلینیک / مرکز جراحی محدود</option><option>کل بیمارستان (تجهیز جامع)</option></select></label>
@@ -102,6 +104,7 @@
       <button class="btn btn-primary" type="submit">ثبت و دیدن خلاصه</button>
       <button class="btn btn-ghost" type="button" onclick="this.closest('dialog').close()">بستن</button>
     </div>
+  <p class="form-status" role="status" aria-live="polite"></p>
   </form>
   <div class="ps-summary" id="sol-summary" hidden>
     <h3>خلاصه پیکربندی</h3>
@@ -180,7 +183,7 @@
   </div>
   <div class="wrap foot-copy">کلیه حقوق مادی و معنوی این وبسایت متعلق است به: مخازن طبی آبادیس · نسخهٔ پیش‌نمایش بازطراحی</div>
 </footer>
-<script src="../../assets/js/site.js?v=20261122b" defer></script>
+<script src="../../assets/js/site.js?v=20261128c" defer></script>
 <script src="../../assets/js/consent.js" defer></script>
 <script src="../../assets/js/footer-motion.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>

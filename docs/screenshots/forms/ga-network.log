@@ -1,0 +1,7 @@
+EMPTY_ID before accept: []
+EMPTY_ID after accept: []
+EMPTY_ID after reject: []
+GATE reject before click: []
+GATE reject after click: []
+GATE accept before click: []
+GATE accept after click: ["https://www.googletagmanager.com/gtag/js?id=G-TESTPLACE"]

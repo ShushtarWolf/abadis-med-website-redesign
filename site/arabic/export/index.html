@@ -8,7 +8,7 @@
 <!-- TODO(launch): remove this robots meta when the site is published on https://abadis-med.com/ -->
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#e8f3f3">
-<meta name="abadis-form-endpoint" content="">
+<meta name="abadis-form-endpoint" content="https://abadis-forms.liara.run/submit">
 <meta name="abadis-form-mailto" content="info@abadis-med.com">
 <script>(function(){var t;try{var q=new URLSearchParams(location.search).get('theme');if(q){localStorage.setItem('abadis-theme',q)}t=localStorage.getItem('abadis-theme')}catch(e){}var d=document.documentElement;d.dataset.theme=(t==='dark'||t==='noir')?t:'light';d.classList.add('js')})();</script>
 <link rel="icon" href="../../favicon.ico" sizes="any">
@@ -22,7 +22,7 @@
 <meta property="og:image" content="../../assets/img/og-image.jpg">
 <link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/css/site.css?v=20261128b">
+<link rel="stylesheet" href="../../assets/css/site.css?v=20261128c">
 <link rel="stylesheet" href="../../assets/css/boss-order.css?v=20261028p">
 <link rel="stylesheet" href="../../assets/css/consent.css">
 <link rel="stylesheet" href="../../assets/css/footer-motion.css">
@@ -83,11 +83,14 @@
         <a class="btn btn-ghost" href="https://wa.me/989100145809" target="_blank" rel="noopener">WhatsApp</a>
       </div>
     </div>
-    <div class="reveal"><form class="quote-form card" id="quote" data-quote-form data-to="info@abadis-med.com" data-subject="طلب عرض سعر تصديري — آباديس" action="mailto:info@abadis-med.com" method="post" enctype="text/plain">
+    <div class="reveal"><form class="quote-form card" id="quote" data-quote-form data-abadis-form="export" data-to="info@abadis-med.com" data-subject="طلب عرض سعر تصديري — آباديس" method="post">
       <h2>نموذج طلب عرض سعر / تعاون تصديري</h2>
+      <input type="hidden" name="form_name" value="export">
+      <label class="hp-field" aria-hidden="true">Leave blank<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label>
       <div class="qf-grid"><div class="qf-field"><label for="qf-ar-name">الاسم الكامل <span aria-hidden="true">*</span></label><input id="qf-ar-name" name="name" type="text" autocomplete="name" required></div><div class="qf-field"><label for="qf-ar-company">اسم الشركة / المؤسسة الصحية <span aria-hidden="true">*</span></label><input id="qf-ar-company" name="company" type="text" autocomplete="organization" required></div><div class="qf-field"><label for="qf-ar-country">الدولة <span aria-hidden="true">*</span></label><input id="qf-ar-country" name="country" type="text" autocomplete="country-name" required></div><div class="qf-field"><label for="qf-ar-email">البريد الإلكتروني الرسمي <span aria-hidden="true">*</span></label><input id="qf-ar-email" name="email" type="email" autocomplete="email" required></div><div class="qf-field"><label for="qf-ar-phone">الهاتف / واتساب (مع رمز الدولة)</label><input id="qf-ar-phone" name="phone" type="tel" autocomplete="tel"></div><div class="qf-field"><label for="qf-ar-product">المنتج أو الفئة <span aria-hidden="true">*</span></label><select id="qf-ar-product" name="product" required><option value=""></option><option>كيس الشفط ١ لتر</option><option>كيس الشفط ٢ لتر</option><option>كيس الشفط ٣ لتر</option><option>نظام الشفط المتكامل (أكياس + خزانات + حوامل)</option><option>فلاتر كارهة للماء ومضادة للبكتيريا (٩٩٫٩٩٩٪)</option><option>أنبوب الشفط الطبي (CH25 / CH30 / CH35)</option><option>منتجات العناية بالطريق الهوائي</option><option>وكالة توزيع شاملة للمنتجات</option></select></div><div class="qf-field"><label for="qf-ar-qty">الكمية التقريبية (كرتون / حاوية)</label><input id="qf-ar-qty" name="qty" type="text" autocomplete="off"></div><div class="qf-field qf-wide"><label for="qf-ar-msg">ملاحظات (شروط التسليم Incoterms والميناء)</label><textarea id="qf-ar-msg" name="msg" rows="4"></textarea></div></div>
-      <p class="qf-note">عند الإرسال يُفتح تطبيق البريد مع تفاصيل طلبكم لقسم التصدير.</p>
+      <p class="qf-note">عند الإرسال يصل الطلب إلى قسم التصدير.</p>
       <button class="btn btn-primary" type="submit">إرسال طلب التصدير</button>
+      <p class="form-status" role="status" aria-live="polite"></p>
       <p class="qf-done" hidden role="status">إذا لم يُفتح تطبيق البريد تلقائياً، راسلونا عبر: <a href="mailto:info@abadis-med.com">info@abadis-med.com</a></p>
     </form></div>
   </div></section>
@@ -158,13 +161,13 @@
   </div>
   <div class="wrap foot-copy">جميع الحقوق محفوظة: خزانات طبي آباديس · معاينة إعادة التصميم</div>
 </footer>
-<script src="../../assets/js/site.js?v=20261122b" defer></script>
+<script src="../../assets/js/site.js?v=20261128c" defer></script>
 <script src="../../assets/js/consent.js" defer></script>
 <script src="../../assets/js/footer-motion.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
 <script src="../../assets/js/logo-scroll.js?v=20261028f" defer></script>
 <script src="../../assets/js/slogan-options.js?v=20261028f" defer></script>
-<script src="../../assets/js/quote-form.js" defer></script>
+<script src="../../assets/js/quote-form.js?v=20261128c" defer></script>
 </body>
 </html>
