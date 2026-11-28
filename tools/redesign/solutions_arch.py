@@ -284,7 +284,7 @@ RELATED = {
     'other': ['fluid-management', 'waste-management-pva'],
 }
 
-CATALOGUE = 'https://abadis-med.com/wp-content/uploads/2024/12/کاتالوگ-جامع-آبادیس.pdf'
+CATALOGUE = 'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2024/12/%DA%A9%D8%A7%D8%AA%D8%A7%D9%84%D9%88%DA%AF-%D8%AC%D8%A7%D9%85%D8%B9-%D8%A2%D8%A8%D8%A7%D8%AF%DB%8C%D8%B3.pdf'
 CONTACT = L('contact/', 'contact-us/', 'اتصل-بنا/')
 
 

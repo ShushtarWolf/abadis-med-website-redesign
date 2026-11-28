@@ -279,15 +279,15 @@ def patch_html(rel: str, text: str) -> str:
         text = text.replace('class="lang-link" href=""', 'class="lang-link" href="./"')
     if rel == 'en/index.html':
         text = text.replace(
-            'https://www.abadis-med.com/en/wp-content/uploads/2022/04/Imed-Certificate-scaled.jpg',
+            'https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2022/04/Imed-Certificate-scaled.jpg',
             '../assets/img/certs/cert-imed.webp',
         )
         text = text.replace(
-            'https://www.abadis-med.com/en/wp-content/uploads/2022/05/ISO-scaled-1.jpg',
+            'https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2022/05/ISO-scaled-1.jpg',
             '../assets/img/c/19ffe783abd3-1600.webp',
         )
         text = text.replace(
-            'https://www.abadis-med.com/en/wp-content/uploads/2022/05/CE-scaled-1.jpg',
+            'https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2022/05/CE-scaled-1.jpg',
             '../assets/img/certs/cert-ce.webp',
         )
     text = github_to_relative(rel, text)
