@@ -27,19 +27,19 @@ UA = 'AbadisRedesignBot/1.0 (+local rebuild; contact info@abadis-med.com)'
 TIMEOUT = 20
 MAX_WORKERS = 4
 ISO_URLS = [
-    'https://abadis-med.com/wp-content/uploads/2025/04/ISO.jpg',
-    'https://abadis-med.com/wp-content/uploads/2025/01/گواهینامه-ایزو-scaled.jpg',
+    'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2025/04/ISO.jpg',
+    'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2025/01/%DA%AF%D9%88%D8%A7%D9%87%DB%8C%D9%86%D8%A7%D9%85%D9%87-%D8%A7%DB%8C%D8%B2%D9%88-scaled.jpg',
 ]
 PRODUCT_URLS = [
-    'https://abadis-med.com/wp-content/uploads/2022/12/کیسه-ساکشن.jpg',
-    'https://abadis-med.com/wp-content/uploads/2022/12/پایه-ترولی.jpg',
-    'https://abadis-med.com/wp-content/uploads/2022/12/فیلتر1-2-845x684-1.jpg',
+    'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/%DA%A9%DB%8C%D8%B3%D9%87-%D8%B3%D8%A7%DA%A9%D8%B4%D9%86.jpg',
+    'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/%D9%BE%D8%A7%DB%8C%D9%87-%D8%AA%D8%B1%D9%88%D9%84%DB%8C.jpg',
+    'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/%D9%81%DB%8C%D9%84%D8%AA%D8%B11-2-845x684-1.jpg',
     'https://abadis-med.com/wp-content/uploads/2022/12/ساکشن-تیوب-7e83722522e8aeb7512b7075311316b7__m8ULku2SAG__1-1-300x300.jpg',
-    'https://abadis-med.com/wp-content/uploads/2022/12/AMR_4901.jpg',
-    'https://abadis-med.com/wp-content/uploads/2022/12/اتصالات-845x684-1.jpg',
-    'https://abadis-med.com/wp-content/uploads/2022/12/ساکشن-دیواری-بزرگسال-1030x1030-1.jpg',
-    'https://abadis-med.com/wp-content/uploads/2022/12/نگهدارنده-لوله-تراشه-1030x1030-1.jpg',
-    'https://abadis-med.com/wp-content/uploads/2022/12/ANIMATED-LINER-BAG-01.png',
+    'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/AMR_4901.jpg',
+    'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/%D8%A7%D8%AA%D8%B5%D8%A7%D9%84%D8%A7%D8%AA-845x684-1.jpg',
+    'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/%D8%B3%D8%A7%DA%A9%D8%B4%D9%86-%D8%AF%DB%8C%D9%88%D8%A7%D8%B1%DB%8C-%D8%A8%D8%B2%D8%B1%DA%AF%D8%B3%D8%A7%D9%84-1030x1030-1.jpg',
+    'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/%D9%86%DA%AF%D9%87%D8%AF%D8%A7%D8%B1%D9%86%D8%AF%D9%87-%D9%84%D9%88%D9%84%D9%87-%D8%AA%D8%B1%D8%A7%D8%B4%D9%87-1030x1030-1.jpg',
+    'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/ANIMATED-LINER-BAG-01.png',
 ]
 
 
