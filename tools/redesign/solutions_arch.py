@@ -410,8 +410,10 @@ def configurator(lang):
     depts = ''.join(f'<option>{esc(x)}</option>' for x in ui['depts'])
     systems = ''.join(f'<option>{esc(x)}</option>' for x in ui['systems'])
     return f'''<dialog class="ps-dialog" id="sol-config">
-  <form data-sol-form data-subject="{esc(ui["subject"])}" data-reco-label="{esc(ui["reco"])}" method="dialog">
+  <form data-sol-form data-abadis-form="solution" data-subject="{esc(ui["subject"])}" data-reco-label="{esc(ui["reco"])}" method="dialog">
     <h2>{esc(ui["config"])}</h2>
+    <input type="hidden" name="form_name" value="solution">
+    <label class="hp-field" aria-hidden="true">Leave blank<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label>
     <div class="ps-fields">
       <label>{esc(ui["dept"])}<select name="dept" data-sum="{esc(ui["dept"])}" required><option value=""></option>{depts}</select></label>
       <p style="margin:0;font-weight:800">{esc(ui["use"])}</p>
@@ -427,6 +429,7 @@ def configurator(lang):
       <button class="btn btn-primary" type="submit">{esc(ui["send"])}</button>
       <button class="btn btn-ghost" type="button" onclick="this.closest('dialog').close()">{esc(ui["close"])}</button>
     </div>
+    <p class="form-status" role="status" aria-live="polite"></p>
   </form>
   <div class="ps-summary" id="sol-summary" hidden>
     <h3>{esc(ui["summary"])}</h3>

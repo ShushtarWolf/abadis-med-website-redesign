@@ -1,6 +1,6 @@
 """Export page + export quote request form (fa /export/, en /en/export/, ar /arabic/export/).
 Complete, placeholder-free B2B export hub (Navid Item 3)."""
-from lib import esc
+from lib import esc, FORM_ENDPOINT
 from layout import page, crumbs
 from pages_company import about_motion_tags, _SVG_PHONE_HERO, _SVG_WA_HERO
 
@@ -59,7 +59,7 @@ T = {
        ('email','پست الکترونیک رسمی','email',True),('phone','تلفن / واتس‌اپ (با کد کشور)','tel',False),('product','محصول یا گروه کالایی','select',True),
        ('qty','تیراژ درخواستی (کارتن / کانتینر)','text',False),('msg','توضیحات (اینکوترمز مورد نظر، بندر مقصد و...)','textarea',False)],
     products=['کیسه ساکشن ۱ لیتری','کیسه ساکشن ۲ لیتری','کیسه ساکشن ۳ لیتری','پکیج کامل سیستم ساکشن (کیسه + مخزن + پایه)','فیلترهای هیدروفوبیک و آنتی‌باکتریال (۹۹.۹۹۹٪)','ساکشن تیوب (CH25 / CH30 / CH35)','محصولات مراقبت راه هوایی (مسواک ساکشن و فیکسر)','نمایندگی توزیع سبد کامل محصولات'],
-    send='ثبت و ارسال درخواست صادراتی', note='با ارسال فرم، خلاصه درخواست شما مستقیماً برای واحد بازرگانی خارجی آماده ارسال می‌شود.', done='در صورت عدم باز شدن خودکار ایمیل، مستقیم به این آدرس پیام دهید: ',
+    send='ثبت و ارسال درخواست صادراتی', note='با ارسال فرم، درخواست برای واحد بازرگانی خارجی ارسال می‌شود.', done='درخواست ثبت شد.',
     dl='دانلود کاتالوگ جامع (PDF)', dl_href='downloads/'),
   'en': dict(
     root='en/', title='Export & International Partnership', crumb='Export',
@@ -89,7 +89,7 @@ T = {
        ('email','Business Email','email',True),('phone','Phone / WhatsApp (with country code)','tel',False),('product','Product Category','select',True),
        ('qty','Estimated Quantity (cartons / containers)','text',False),('msg','Message (Preferred Incoterms, destination port, etc.)','textarea',False)],
     products=['Disposable Suction Bag 1 L','Disposable Suction Bag 2 L','Disposable Suction Bag 3 L','Complete Suction System (Bags + Canisters + Stands)','Hydrophobic & Antibacterial Filters (99.999%)','Medical Suction Tubes (CH25 / CH30 / CH35)','Airway Care Range (Suction Toothbrush & Tube Fixer)','Full Portfolio Regional Distribution'],
-    send='Submit Export Inquiry', note='Submitting opens your email client with the formatted inquiry addressed to our Export Desk.', done='If your email app did not open automatically, email us at: ',
+    send='Submit Export Inquiry', note='Submitting sends the inquiry to the export desk.', done='Your request has been received.',
     dl='Download Full Catalogue (PDF)', dl_href='en/center-download/'),
   'ar': dict(
     root='arabic/', title='التصدير والتعاون الدولي', crumb='التصدير',
@@ -119,7 +119,7 @@ T = {
        ('email','البريد الإلكتروني الرسمي','email',True),('phone','الهاتف / واتساب (مع رمز الدولة)','tel',False),('product','المنتج أو الفئة','select',True),
        ('qty','الكمية التقريبية (كرتون / حاوية)','text',False),('msg','ملاحظات (شروط التسليم Incoterms والميناء)','textarea',False)],
     products=['كيس الشفط ١ لتر','كيس الشفط ٢ لتر','كيس الشفط ٣ لتر','نظام الشفط المتكامل (أكياس + خزانات + حوامل)','فلاتر كارهة للماء ومضادة للبكتيريا (٩٩٫٩٩٩٪)','أنبوب الشفط الطبي (CH25 / CH30 / CH35)','منتجات العناية بالطريق الهوائي','وكالة توزيع شاملة للمنتجات'],
-    send='إرسال طلب التصدير', note='عند الإرسال يُفتح تطبيق البريد مع تفاصيل طلبكم لقسم التصدير.', done='إذا لم يُفتح تطبيق البريد تلقائياً، راسلونا عبر: ',
+    send='إرسال طلب التصدير', note='عند الإرسال يصل الطلب إلى قسم التصدير.', done='تم استلام الطلب.',
     dl='تحميل الكتالوج الشامل (PDF)', dl_href='arabic/مركز-التنزيل/'),
 }
 
@@ -146,12 +146,16 @@ def form_html(L, lang):
             ctl = f'<input id="{fid}" name="{n}" type="{typ}" autocomplete="{ac}"{r}>'
         wide = ' qf-wide' if typ == 'textarea' else ''
         fields.append(f'<div class="qf-field{wide}"><label for="{fid}">{esc(lab)}{star}</label>{ctl}</div>')
-    return f'''<form class="quote-form card" id="quote" data-quote-form data-to="{EMAIL}" data-subject="{esc(L['subject'])}" action="mailto:{EMAIL}" method="post" enctype="text/plain">
+    action = esc(FORM_ENDPOINT) if FORM_ENDPOINT else f'mailto:{EMAIL}'
+    return f'''<form class="quote-form card" id="quote" data-quote-form data-abadis-form="export" data-to="{EMAIL}" data-subject="{esc(L['subject'])}" action="{action}" method="post">
       <h2>{esc(L['form_h'])}</h2>
+      <input type="hidden" name="form_name" value="export">
+      <label class="hp-field" aria-hidden="true">Leave blank<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label>
       <div class="qf-grid">{''.join(fields)}</div>
       <p class="qf-note">{esc(L['note'])}</p>
       <button class="btn btn-primary" type="submit">{esc(L['send'])}</button>
-      <p class="qf-done" hidden role="status">{esc(L['done'])}<a href="mailto:{EMAIL}">{EMAIL}</a></p>
+      <p class="form-status" role="status" aria-live="polite"></p>
+      <p class="qf-done" hidden role="status">{esc(L['done'])}</p>
     </form>'''
 
 
@@ -213,5 +217,5 @@ def build(write):
         html = page(p, 'export', L['title'], L['lead'], main, lang=lang,
                     fa_path='export/', canonical_path=L['root'] + 'export/',
                     extra_head=h_css, html_attrs='data-slogan="t1"',
-                    scripts=m_js + f'<script src="{p}assets/js/quote-form.js" defer></script>\n')
+                    scripts=m_js + f'<script src="{p}assets/js/quote-form.js?v=20261128c" defer></script>\n')
         write(rel, html)

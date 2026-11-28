@@ -242,6 +242,8 @@ def build_c1_careers_i18n(write, lang, p='../../'):
         for dept, st, dlbl, slbl, jtitle, jsum, jexp, jpub, jslug in jobs
     )
     role_opts = ''.join(f'<option value="{esc(j[4])}">{esc(j[4])}</option>' for j in jobs)
+    from close_gaps import career_form, WIZARD
+    coop_form = career_form('en' if is_en else 'ar', [j[4] for j in jobs])
 
     main = f'''  <section class="page-hero about-hero careers-hero co-hero has-playing-video">
     <video class="co-hero-video is-playing" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" tabindex="-1" aria-hidden="true" poster="{p}assets/media/hero-careers-poster.jpg?v=20261028p">
@@ -273,19 +275,7 @@ def build_c1_careers_i18n(write, lang, p='../../'):
   </section>
   <section class="co-sec co-sec--alt" id="apply">
     <div class="co-wrap">
-      <form class="cf-card" data-abadis-form="careers" data-mailto-form="info@abadis-med.com" data-subject="Job Application — Abadis Med">
-        <h2 style="margin:0 0 18px;font-size:1.35rem">{esc(form_h)}</h2>
-        <div class="cf-grid-2">
-          <label class="cf-lbl">{esc(f_name)}<input name="name" required autocomplete="name"></label>
-          <label class="cf-lbl">{esc(f_role)}<select name="role" id="roleSelect"><option value="General Talent Pool">{esc(banner_cta)}</option>{role_opts}</select></label>
-          <label class="cf-lbl">{esc(f_phone)}<input name="phone" type="tel" dir="ltr" required autocomplete="tel"></label>
-          <label class="cf-lbl">{esc(f_email)}<input name="email" type="email" dir="ltr" autocomplete="email"></label>
-          <label class="cf-lbl cf-col-span-2">{esc(f_exp)}<input name="experience" required></label>
-          <label class="cf-lbl cf-col-span-2">{esc(f_msg)}<textarea name="msg" rows="4"></textarea></label>
-        </div>
-        <div style="margin-top:16px"><button type="submit" class="cf-btn-primary">{esc(f_send)}</button></div>
-        <p class="form-status" role="status" aria-live="polite"></p>
-      </form>
+      <div class="cf-card">{coop_form}</div>
     </div>
   </section>
   <script>(function(){{
@@ -316,7 +306,8 @@ def build_c1_careers_i18n(write, lang, p='../../'):
         if (sel) sel.value = a.getAttribute('data-select-role');
       }});
     }});
-  }})();</script>'''
+  }})();</script>
+  {WIZARD}'''
 
     if is_en:
         for rel, can in (('en/collaboration-opportunities/index.html', 'en/collaboration-opportunities/'), ('en/careers/index.html', 'en/collaboration-opportunities/')):
