@@ -833,6 +833,7 @@ details.letter[open] summary { margin-bottom: 12px; }
 .page-hero .lead { color: rgba(255,255,255,.86); max-width: 46rem; font-size: 1.05rem; }
 .page-hero .crumbs, .page-hero .crumbs a, .hero .crumbs, .hero .crumbs a { color: rgba(255,255,255,.78); }
 .page-hero .meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.page-hero .meta { color: rgba(255,255,255,.86); }
 .page-hero .meta span { background: rgba(255,255,255,.14); border-radius: 999px; padding: 4px 12px; font-size: .84rem; font-weight: 700; }
 .page-hero .meta a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 /* product pages */
