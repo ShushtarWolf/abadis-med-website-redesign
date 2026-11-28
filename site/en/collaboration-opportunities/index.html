@@ -8,7 +8,7 @@
 <!-- TODO(launch): remove this robots meta when the site is published on https://abadis-med.com/ -->
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#e8f3f3">
-<meta name="abadis-form-endpoint" content="">
+<meta name="abadis-form-endpoint" content="https://abadis-forms.liara.run/submit">
 <meta name="abadis-form-mailto" content="info@abadis-med.com">
 <script>(function(){var t;try{var q=new URLSearchParams(location.search).get('theme');if(q){localStorage.setItem('abadis-theme',q)}t=localStorage.getItem('abadis-theme')}catch(e){}var d=document.documentElement;d.dataset.theme=(t==='dark'||t==='noir')?t:'light';d.classList.add('js')})();</script>
 <link rel="icon" href="../../favicon.ico" sizes="any">
@@ -22,7 +22,7 @@
 <meta property="og:image" content="../../assets/img/og-image.jpg">
 <link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/css/site.css?v=20261128b">
+<link rel="stylesheet" href="../../assets/css/site.css?v=20261128c">
 <link rel="stylesheet" href="../../assets/css/boss-order.css?v=20261118ab72">
 <link rel="stylesheet" href="../../assets/css/consent.css">
 <link rel="stylesheet" href="../../assets/css/footer-motion.css">
@@ -91,6 +91,7 @@
       <div class="cf-card">
 <form class="cf-form" id="c1-form" data-abadis-form="careers" data-mailto-form="info@abadis-med.com" data-subject="Job Application — Abadis Med" dir="ltr">
 <input type="hidden" name="form_name" value="careers">
+<label class="hp-field" aria-hidden="true">Leave blank<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label>
 <div class="cf-stepper" role="tablist" aria-label="Application steps"><button type="button" class="cf-step-tab is-active" data-step-btn="1" role="tab" aria-selected="true"><span class="cf-step-num">1</span><span class="cf-step-txt">Role and personal details</span></button><button type="button" class="cf-step-tab" data-step-btn="2" role="tab" aria-selected="false"><span class="cf-step-num">2</span><span class="cf-step-txt">Education and work history</span></button><button type="button" class="cf-step-tab" data-step-btn="3" role="tab" aria-selected="false"><span class="cf-step-num">3</span><span class="cf-step-txt">Workplace priorities (1 to 8)</span></button><button type="button" class="cf-step-tab" data-step-btn="4" role="tab" aria-selected="false"><span class="cf-step-num">4</span><span class="cf-step-txt">Languages, software and skills</span></button></div>
 <div class="cf-step-pane is-active" data-step-pane="1">
 <div class="cf-pane-head"><h3>Step 1 — Role and personal details</h3><p>Choose a role, or the general talent pool, and enter your personal details.</p></div>
@@ -99,17 +100,16 @@
 <label class="cf-lbl"><span>First name *</span><input type="text" name="نام" required autocomplete="given-name"></label>
 <label class="cf-lbl"><span>Last name *</span><input type="text" name="نام خانوادگی" required autocomplete="family-name"></label>
 <label class="cf-lbl"><span>Father&#x27;s name *</span><input type="text" name="نام پدر" required></label>
-<label class="cf-lbl"><span>Military service status (if applicable)</span><input type="text" name="وضعیت نظام وظیفه"></label>
-<label class="cf-lbl"><span>Date of birth *</span><input type="text" name="تاریخ تولد" placeholder="YYYY/MM/DD" inputmode="numeric" required></label>
+<label class="cf-lbl"><span>Military service status *</span><input type="text" name="وضعیت نظام وظیفه" required></label>
+<label class="cf-lbl"><span>Date of birth *</span><input type="text" name="تاریخ تولد" placeholder="1370/01/01" inputmode="numeric" required></label>
 <label class="cf-lbl"><span>Place of birth *</span><input type="text" name="محل تولد" required></label>
-<label class="cf-lbl"><span>National ID / passport number *</span><input type="text" name="شماره شناسنامه" required></label>
+<label class="cf-lbl"><span>National ID / passport number *</span><input type="text" name="شماره شناسنامه" inputmode="numeric" required></label>
 <label class="cf-lbl"><span>Place of issue *</span><input type="text" name="محل صدور" required></label>
 <label class="cf-lbl"><span>Marital status *</span><select name="وضعیت تاهل" required><option value="">Select…</option><option>Single</option><option>Married</option></select></label>
 <label class="cf-lbl"><span>Serious illness or hospital admission *</span><select name="بیماری خاص یا سابقه بستری" required><option value="">Select…</option><option>No</option><option>Yes</option></select></label>
 <label class="cf-lbl"><span>Landline *</span><input type="tel" dir="ltr" name="تلفن ثابت" required inputmode="tel"></label>
 <label class="cf-lbl"><span>Mobile phone *</span><input type="tel" dir="ltr" name="تلفن همراه" required inputmode="tel"></label>
-<label class="cf-lbl"><span>Email</span><input type="email" dir="ltr" name="email" autocomplete="email"></label>
-<label class="cf-lbl cf-col-span-2"><span>Full home address *</span><input type="text" name="آدرس محل سکونت" placeholder="City, street, building" required></label>
+<label class="cf-lbl cf-col-span-2"><span>Full home address *</span><input type="text" name="آدرس محل سکونت" placeholder="Province, city, street, number, unit" required></label>
 </div>
 <div class="cf-step-nav"><span>Step 1 of 4</span><button type="button" class="cf-btn-primary" data-step-go="2">Continue to step 2 — education and work</button></div>
 </div>
@@ -121,13 +121,13 @@
 <div class="cf-grid-2" style="margin-top:16px">
 <label class="cf-lbl"><span>Last salary *</span><input type="text" name="آخرین حقوق دریافتی" inputmode="numeric" required></label>
 <label class="cf-lbl"><span>Requested salary *</span><input type="text" name="حقوق درخواستی" inputmode="numeric" required></label>
-<label class="cf-lbl cf-col-span-2"><span>How did you hear about Abadis? *</span><input type="text" name="طریق مراجعه به شرکت جهت استخدام" placeholder="Website, LinkedIn, a colleague, Iran Health…" required></label>
+<label class="cf-lbl cf-col-span-2"><span>How did you hear about Abadis? *</span><input type="text" name="طریق مراجعه به شرکت جهت استخدام" placeholder="Official Abadis website, LinkedIn, a colleague, Iran Health…" required></label>
 </div>
 <div class="cf-step-nav"><button type="button" class="cf-btn-ghost" data-step-go="1">Back to step 1</button><button type="button" class="cf-btn-primary" data-step-go="3">Continue to step 3 — priorities</button></div>
 </div>
 <div class="cf-step-pane" data-step-pane="3">
 <div class="cf-pane-head"><h3>Step 3 — What you want from a workplace (rank 1 to 8)</h3><p>Give each of the eight items a rank from 1 to 8.</p></div>
-<div class="cf-expect-grid"><label class="cf-lbl cf-expect-item"><span>Job security</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — امنیت شغلی" placeholder="1–8" required></label><label class="cf-lbl cf-expect-item"><span>A calm workplace</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — محیط آرام" placeholder="1–8" required></label><label class="cf-lbl cf-expect-item"><span>Colleagues</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — همکاران" placeholder="1–8" required></label><label class="cf-lbl cf-expect-item"><span>Close to home</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — نزدیکی محل" placeholder="1–8" required></label><label class="cf-lbl cf-expect-item"><span>Career growth</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — پیشرفت شغلی" placeholder="1–8" required></label><label class="cf-lbl cf-expect-item"><span>Related to my studies</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — مرتبط با تحصیلات" placeholder="1–8" required></label><label class="cf-lbl cf-expect-item"><span>Income</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — درآمد" placeholder="1–8" required></label><label class="cf-lbl cf-expect-item"><span>Prestige</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — پرستیژ" placeholder="1–8" required></label></div>
+<div class="cf-expect-grid"><label class="cf-lbl cf-expect-item"><span>Job security</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — امنیت شغلی" placeholder="1 to 8" required></label><label class="cf-lbl cf-expect-item"><span>A calm workplace</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — محیط آرام" placeholder="1 to 8" required></label><label class="cf-lbl cf-expect-item"><span>Colleagues</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — همکاران" placeholder="1 to 8" required></label><label class="cf-lbl cf-expect-item"><span>Close to home</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — نزدیکی محل" placeholder="1 to 8" required></label><label class="cf-lbl cf-expect-item"><span>Career growth</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — پیشرفت شغلی" placeholder="1 to 8" required></label><label class="cf-lbl cf-expect-item"><span>Related to my studies</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — مرتبط با تحصیلات" placeholder="1 to 8" required></label><label class="cf-lbl cf-expect-item"><span>Income</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — درآمد" placeholder="1 to 8" required></label><label class="cf-lbl cf-expect-item"><span>Prestige</span><input type="number" min="1" max="8" inputmode="numeric" name="انتظار از محیط کار — پرستیژ" placeholder="1 to 8" required></label></div>
 <div class="cf-step-nav"><button type="button" class="cf-btn-ghost" data-step-go="2">Back to step 2</button><button type="button" class="cf-btn-primary" data-step-go="4">Continue to step 4 — skills</button></div>
 </div>
 <div class="cf-step-pane" data-step-pane="4">
@@ -237,7 +237,7 @@
   </div>
   <div class="wrap foot-copy">All rights reserved: Abadis Medical Reservoirs · redesign preview</div>
 </footer>
-<script src="../../assets/js/site.js?v=20261122b" defer></script>
+<script src="../../assets/js/site.js?v=20261128c" defer></script>
 <script src="../../assets/js/consent.js" defer></script>
 <script src="../../assets/js/footer-motion.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>

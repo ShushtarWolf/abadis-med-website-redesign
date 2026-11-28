@@ -10,23 +10,28 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 SITE = ROOT / 'site'
 DATA = pathlib.Path(__file__).resolve().parent / 'data'
 SITE_ORIGIN = 'https://abadis-med.com'
+# Liara Flask app in tools/forms-liara (service name abadis-forms).
+DEFAULT_FORM_ENDPOINT = 'https://abadis-forms.liara.run/submit'
+
 def _forms_enabled():
-    """Public site stays on mailto until ABADIS_FORMS_ENABLED is turned on."""
-    return os.environ.get('ABADIS_FORMS_ENABLED', '0').strip().lower() not in ('', '0', 'false', 'off', 'no')
+    """On unless ABADIS_FORMS_ENABLED is explicitly turned off."""
+    return os.environ.get('ABADIS_FORMS_ENABLED', '1').strip().lower() not in ('0', 'false', 'off', 'no')
 
 def _form_endpoint():
-    # Flag defaults off. A URL in the environment or form_endpoint.txt is ignored until the flag is on.
+    # A rebuild or a WordPress publish keeps this URL. Override with
+    # ABADIS_FORM_ENDPOINT, or with a single line in data/form_endpoint.txt.
+    # ABADIS_FORMS_ENABLED=0 clears it. Never commit SMTP secrets.
     if not _forms_enabled():
         return ''
     value = os.environ.get('ABADIS_FORM_ENDPOINT', '').strip()
     if value:
         return value
     try:
-        return open(os.path.join(os.path.dirname(__file__), 'data', 'form_endpoint.txt'), encoding='utf-8').read().strip()
+        file_value = open(os.path.join(os.path.dirname(__file__), 'data', 'form_endpoint.txt'), encoding='utf-8').read().strip()
     except OSError:
-        return ''
+        file_value = ''
+    return file_value or DEFAULT_FORM_ENDPOINT
 
-# Empty ⇒ site.js keeps the mailto fallback. Never commit a live endpoint or secrets.
 FORM_ENDPOINT = _form_endpoint()
 FORM_MAILTO = 'info@abadis-med.com'
 RAW = pathlib.Path(os.environ.get(

@@ -140,6 +140,15 @@ def render_content_page(write, lang, site_path, wp, cur_key, chip):
         # must not put the scraped Elementor dump back.
         import pages_products
         return pages_products.write_products_hub(write, lang)
+    if site_path == 'collaboration-opportunities/':
+        # The designed cooperation page is not the old Gravity Form in the WP
+        # snapshot. Refresh the shared form in place so a rebuild cannot revert it.
+        rel = LANGS[lang]['root'] + 'collaboration-opportunities/index.html'
+        existing = SITE / rel
+        if existing.is_file() and 'data-abadis-form="careers"' in existing.read_text(encoding='utf-8'):
+            from close_gaps import install_careers
+            install_careers()
+            return rel
     import pages_products
     fam = pages_products.I18N_PATH.get((lang, site_path))
     if fam:

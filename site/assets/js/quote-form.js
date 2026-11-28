@@ -2,6 +2,7 @@
    and reports form_submit to dataLayer via window.abadisTrack (site.js). */
 (function () {
   document.querySelectorAll('form[data-quote-form]').forEach(function (f) {
+    if (f.dataset.formBound) return;
     f.addEventListener('submit', function (e) {
       e.preventDefault();
       if (!f.reportValidity()) return;

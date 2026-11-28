@@ -8,7 +8,7 @@
 <!-- TODO(launch): remove this robots meta when the site is published on https://abadis-med.com/ -->
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#e8f3f3">
-<meta name="abadis-form-endpoint" content="">
+<meta name="abadis-form-endpoint" content="https://abadis-forms.liara.run/submit">
 <meta name="abadis-form-mailto" content="info@abadis-med.com">
 <script>(function(){var t;try{var q=new URLSearchParams(location.search).get('theme');if(q){localStorage.setItem('abadis-theme',q)}t=localStorage.getItem('abadis-theme')}catch(e){}var d=document.documentElement;d.dataset.theme=(t==='dark'||t==='noir')?t:'light';d.classList.add('js')})();</script>
 <link rel="icon" href="../../../favicon.ico" sizes="any">
@@ -24,7 +24,7 @@
 <meta property="og:image" content="../../../assets/img/og-image.jpg">
 <link rel="preload" href="../../../assets/fonts/kalameh/KalamehWeb-FaNum-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../../assets/fonts/kalameh/KalamehWeb-FaNum-Black.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../../assets/css/site.css?v=20261128b">
+<link rel="stylesheet" href="../../../assets/css/site.css?v=20261128c">
 <link rel="stylesheet" href="../../../assets/css/boss-order.css?v=20261028p">
 <link rel="stylesheet" href="../../../assets/css/consent.css">
 <link rel="stylesheet" href="../../../assets/css/footer-motion.css">
@@ -85,7 +85,9 @@
 </section>
 <section class="section sol-sec" id="parts"><div class="wrap"><h2>3. Components</h2><div class="ps-parts"><a class="ps-part" href="../../../en/products/suction-bag/"><img src="../../../assets/img/c/611f0398754f-640.webp" alt="Disposable Suction Bag" width="96" height="72" loading="lazy"><span><strong>Suction Bag</strong></span></a><a class="ps-part" href="../../../en/products/canisters/"><img src="../../../assets/img/c/38a87bcfaf85-1600.webp" alt="Suction Canister" width="96" height="72" loading="lazy"><span><strong>Medical Canisters</strong></span></a><a class="ps-part" href="../../../en/products/connections/"><img src="../../../assets/img/c/9b6630cc8eaa-640.webp" alt="Connectors" width="96" height="72" loading="lazy"><span><strong>Connections</strong></span></a><a class="ps-part" href="../../../en/products/base-and-holder/"><img src="../../../assets/img/c/90d179b67447-1600.webp" alt="Stands &amp; Holders" width="96" height="72" loading="lazy"><span><strong>Base and Holder</strong></span></a><a class="ps-part" href="../../../en/suction-tube/"><img src="../../../assets/img/c/92b676038309-1600.webp" alt="Suction Tube" width="96" height="72" loading="lazy"><span><strong>Suction tube</strong></span></a><a class="ps-part" href="../../../en/products/filters/#ght"><img src="../../../assets/img/c/ad713458f652-640.webp" alt="Flow-stopper filter" width="96" height="72" loading="lazy"><span><strong>Flow-stopper filter</strong></span></a></div></div></section><section class="section sol-sec section--alt" id="sales"><div class="wrap"><h2>8. Contact sales</h2><p>Ask for advice, a sample, the catalogue, or a technical and commercial proposal. This form does not place an order; it sends the summary to sales.</p><div class="ps-actions"><a class="btn btn-primary" href="../../../en/contact-us/">Request a price</a><button class="btn btn-ghost" type="button" data-sol-open>Request the right solution for my centre</button></div><div class="doc-links"><a href="../../../wp-content/uploads/2024/12/کاتالوگ-جامع-آبادیس.pdf" target="_blank" rel="noopener" data-track="catalogue_download">Full catalogue</a><a href="../../../en/contact-us/">Request a price</a><a href="../../../en/calculator/">6. Economic value</a></div></div></section>
 <dialog class="ps-dialog" id="sol-config">
-  <form data-sol-form data-subject="Abadis solution request" data-reco-label="Complementary products from this solution" method="dialog">
+  <form data-sol-form data-abadis-form="solution" data-subject="Abadis solution request" data-reco-label="Complementary products from this solution" method="dialog">
+    <input type="hidden" name="form_name" value="solution">
+    <label class="hp-field" aria-hidden="true">Leave blank<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label>
     <h2>Request the right solution for my centre</h2>
     <div class="ps-fields">
       <label>Hospital department<select name="dept" data-sum="Hospital department" required><option value=""></option><option>Operating room (OR)</option><option>Intensive care (ICU / CCU)</option><option>Emergency (ER)</option><option>Inpatient and general wards</option><option>Clinic / limited surgery centre</option><option>Whole hospital</option></select></label>
@@ -102,6 +104,7 @@
       <button class="btn btn-primary" type="submit">Save and show the summary</button>
       <button class="btn btn-ghost" type="button" onclick="this.closest('dialog').close()">Close</button>
     </div>
+  <p class="form-status" role="status" aria-live="polite"></p>
   </form>
   <div class="ps-summary" id="sol-summary" hidden>
     <h3>Configuration summary</h3>
@@ -178,7 +181,7 @@
   </div>
   <div class="wrap foot-copy">All rights reserved: Abadis Medical Reservoirs · redesign preview</div>
 </footer>
-<script src="../../../assets/js/site.js?v=20261122b" defer></script>
+<script src="../../../assets/js/site.js?v=20261128c" defer></script>
 <script src="../../../assets/js/consent.js" defer></script>
 <script src="../../../assets/js/footer-motion.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
