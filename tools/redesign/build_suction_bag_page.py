@@ -191,7 +191,7 @@ UI = {
         close_p='برای انتخاب مدل، فیلتر و بسته‌بندی با فروش آبادیس در تماس باشید.',
         call='تماس با فروش',
         catalog='دانلود کاتالوگ',
-        catalog_href='../../wp-content/uploads/2022/12/suction-bag-catalog-Fa.pdf',
+        catalog_href='https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/suction-bag-catalog-Fa.pdf',
         guide='راهنمای استفاده کاربر نهایی',
         guide_href='../../install-guide/end-user/',
         how='برای مشاهده نحوه استفاده از کیسه ساکشن ها به این صفحه مراجعه نمایید .',
@@ -250,7 +250,7 @@ UI = {
         close_p='Abadis sales can help with model, filter and packaging.',
         call='Call sales',
         catalog='Download catalog',
-        catalog_href='../../wp-content/uploads/2021/12/suction-bag-catalog-En.pdf',
+        catalog_href='https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2021/12/suction-bag-catalog-En.pdf',
         guide='End-user guide',
         guide_href='../../installation-manual/',
         export='Export enquiry',
@@ -311,7 +311,7 @@ UI = {
         close_p='فريق مبيعات آباديس يساعد في اختيار الموديل والفلتر والتعبئة.',
         call='اتصل بالمبيعات',
         catalog='تنزيل الكتالوج',
-        catalog_href='../../wp-content/uploads/2022/12/suction-bag-catalog-Fa.pdf',
+        catalog_href='https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/suction-bag-catalog-Fa.pdf',
         guide='دليل المستخدم النهائي',
         guide_href='../دليل-التركيب/',
         how='اذهب إلى هذه الصفحة لمعرفة كيفية استخدام أكياس الشفط.',
@@ -1278,7 +1278,7 @@ def glance_i18n(lang, pfx):
             ('Filtration', 'Hydrophobic, dual and mechanical; with or without gelling powder'),
             ('Accessories', f'<a href="../filters/">Filters</a>, <a href="../base-and-holder/">Stands and holders</a>, <a href="../connections/">Connectors</a>, <a href="../canisters/">Canister</a>'),
             ('Certificates', '<bdi dir="ltr">IMED, ISO, CE</bdi>'),
-            ('Catalogue and guide', f'<a href="../../wp-content/uploads/2021/12/suction-bag-catalog-En.pdf" data-track="catalogue_download">Catalogue (PDF)</a>, <a href="../../installation-manual/user-manuals/">End-user guide</a>'),
+            ('Catalogue and guide', f'<a href="https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2021/12/suction-bag-catalog-En.pdf" data-track="catalogue_download">Catalogue (PDF)</a>, <a href="../../installation-manual/user-manuals/">End-user guide</a>'),
         ]
         h = 'Specifications at a glance'
     else:
@@ -1298,7 +1298,7 @@ def glance_i18n(lang, pfx):
             ('الترشيح', 'كاره للماء، ومزدوج، وميكانيكي؛ مع مسحوق التهليم أو من دونه'),
             ('الملحقات', f'<a href="../الفلتر/">الفلاتر</a>، <a href="../تثبیت/">القواعد والحاملات</a>، <a href="../الوصلات/">الوصلات</a>، <a href="../خزانات/">الخزان</a>'),
             ('الشهادات', '<bdi dir="ltr">IMED, ISO, CE</bdi>'),
-            ('الكتالوج والدليل', f'<a href="../../en/wp-content/uploads/2021/12/suction-bag-catalog-En.pdf" data-track="catalogue_download">الكتالوج (PDF)</a>، <a href="../دليل-التركيب/دليل-المستخدم/">دليل المستخدم النهائي</a>'),
+            ('الكتالوج والدليل', f'<a href="https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2021/12/suction-bag-catalog-En.pdf" data-track="catalogue_download">الكتالوج (PDF)</a>، <a href="../دليل-التركيب/دليل-المستخدم/">دليل المستخدم النهائي</a>'),
         ]
         h = 'المواصفات في لمحة'
     body = ''.join(f'<tr><th scope="row">{esc(label)}</th><td>{val}</td></tr>' for label, val in rows)
@@ -1340,8 +1340,8 @@ def glance_block(lang, pfx):
         f'<a href="{pfx}products/canister/">مخزن</a>'
     )
     catalogs = (
-        f'<a href="{pfx}wp-content/uploads/2022/12/suction-bag-catalog-Fa.pdf" data-track="catalogue_download">کاتالوگ فارسی (<bdi dir="ltr">PDF</bdi>)</a> ، '
-        f'<a href="{pfx}en/wp-content/uploads/2021/12/suction-bag-catalog-En.pdf" data-track="catalogue_download"><bdi dir="ltr">Catalogue (EN, PDF)</bdi></a> ، '
+        f'<a href="https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/suction-bag-catalog-Fa.pdf" data-track="catalogue_download">کاتالوگ فارسی (<bdi dir="ltr">PDF</bdi>)</a> ، '
+        f'<a href="https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2021/12/suction-bag-catalog-En.pdf" data-track="catalogue_download"><bdi dir="ltr">Catalogue (EN, PDF)</bdi></a> ، '
         f'<a href="{pfx}install-guide/end-user/">راهنمای استفاده کاربر نهایی</a>'
     )
     rows = [

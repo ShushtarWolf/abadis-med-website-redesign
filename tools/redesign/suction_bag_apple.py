@@ -53,7 +53,7 @@ COPY = {
         close_sales='تماس با فروش',
         close_cat='دانلود کاتالوگ',
         close_sales_href='tel:+982192001017',
-        close_cat_href='https://abadis-med.com/wp-content/uploads/2022/12/suction-bag-catalog-Fa.pdf',
+        close_cat_href='https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/suction-bag-catalog-Fa.pdf',
         poster_alt='عکس محصول کیسه ساکشن ۱ لیتری آبادیس',
     ),
     'en': dict(
@@ -100,7 +100,7 @@ COPY = {
         close_sales='Call sales',
         close_cat='Download catalog',
         close_sales_href='tel:+982192001017',
-        close_cat_href='https://www.abadis-med.com/en/wp-content/uploads/2021/12/suction-bag-catalog-En.pdf',
+        close_cat_href='https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2021/12/suction-bag-catalog-En.pdf',
         poster_alt='Abadis 1L suction bag product photo',
     ),
     'ar': dict(
@@ -147,7 +147,7 @@ COPY = {
         close_sales='اتصل بالمبيعات',
         close_cat='تنزيل الكتالوج',
         close_sales_href='tel:+982192001017',
-        close_cat_href='https://abadis-med.com/wp-content/uploads/2022/12/suction-bag-catalog-Fa.pdf',
+        close_cat_href='https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/suction-bag-catalog-Fa.pdf',
         poster_alt='صورة منتج كيس الشفط سعة ١ لتر من آباديس',
     ),
 }

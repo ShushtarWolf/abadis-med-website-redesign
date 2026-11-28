@@ -241,7 +241,7 @@ HERO_H1 = 'پیشرو در کنترل عفونت و مدیریت مایعات ب
 HERO_SUB_LIVE = 'نخستین و بزرگ‌ترین تولیدکننده دانش‌بنیان کیسه‌های ساکشن یکبارمصرف مدار بسته و فیلترهای قطع‌کننده جریان در ایران؛ حذف عفونت متقاطع، شست‌وشوی مخازن و سرریز مایعات در ۱٬۲۸۴ مرکز درمانی در سراسر ۳۱ استان کشور.'
 # Provable from abadis-med.com: certificates (hero slider) + sizes/filters (product page)
 HERO_SUB = 'دارای گواهی‌های IMED، ISO و CE؛ کیسه ساکشن در حجم‌های ۱، ۲ و ۳ لیتری با فیلتر هیدروفوبیک، دوئال و مکانیکی.'
-CATALOGUE = 'https://abadis-med.com/wp-content/uploads/2024/12/کاتالوگ-جامع-آبادیس.pdf'
+CATALOGUE = 'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2024/12/%DA%A9%D8%A7%D8%AA%D8%A7%D9%84%D9%88%DA%AF-%D8%AC%D8%A7%D9%85%D8%B9-%D8%A2%D8%A8%D8%A7%D8%AF%DB%8C%D8%B3.pdf'
 
 
 def or_hero(media, zagros='csr/img/hero/'):
@@ -338,10 +338,10 @@ def experiences_teaser():
   </section>'''
 
 
-DOCS = [('https://abadis-med.com/wp-content/uploads/2024/12/کاتالوگ-جامع-آبادیس.pdf', 'کاتالوگ جامع آبادیس'),
-        ('https://abadis-med.com/wp-content/uploads/2022/12/suction-bag-catalog-Fa.pdf', 'کاتالوگ کیسه ساکشن'),
-        ('https://abadis-med.com/wp-content/uploads/2022/12/Filter-catalog-Fa.pdf', 'کاتالوگ فیلترها'),
-        ('https://abadis-med.com/wp-content/uploads/2026/01/کاتالوگ-ساکشن-تیوب-1.pdf', 'کاتالوگ ساکشن تیوب')]
+DOCS = [('https://abadis-media.storage.iran.liara.site/wp-content/uploads/2024/12/%DA%A9%D8%A7%D8%AA%D8%A7%D9%84%D9%88%DA%AF-%D8%AC%D8%A7%D9%85%D8%B9-%D8%A2%D8%A8%D8%A7%D8%AF%DB%8C%D8%B3.pdf', 'کاتالوگ جامع آبادیس'),
+        ('https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/suction-bag-catalog-Fa.pdf', 'کاتالوگ کیسه ساکشن'),
+        ('https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/Filter-catalog-Fa.pdf', 'کاتالوگ فیلترها'),
+        ('https://abadis-media.storage.iran.liara.site/wp-content/uploads/2026/01/%DA%A9%D8%A7%D8%AA%D8%A7%D9%84%D9%88%DA%AF-%D8%B3%D8%A7%DA%A9%D8%B4%D9%86-%D8%AA%DB%8C%D9%88%D8%A8-1.pdf', 'کاتالوگ ساکشن تیوب')]
 
 
 def docs_section():

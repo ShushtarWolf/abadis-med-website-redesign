@@ -1,6 +1,6 @@
 """SEO post-process over the built site (idempotent). Run after build.py:
     python3 tools/redesign/seo_postprocess.py
-- self-hosted docs: rewrites abadis-med.com wp-content/uploads doc links to the mirrored copies in site/
+- self-hosted docs: spreadsheet links stay mirrored in site/; site PDFs are rewritten to the media bucket
 - canonical: FA article/news detail pages point to themselves (were pointing to the section)
 - JSON-LD (schema.org): Organization on all pages, Product on product pages,
   Article/NewsArticle on posts, BreadcrumbList from the visible .crumbs trail
@@ -35,13 +35,20 @@ def load_docs():
     for u in open(os.path.join(os.path.dirname(__file__), 'data', 'self_hosted_docs.txt')).read().split():
         sp = urllib.parse.urlsplit(u)
         local = urllib.parse.unquote(sp.path).lstrip('/')
+        # PDFs are served from the media bucket, not copied back into site/.
+        if local.lower().endswith('.pdf'):
+            continue
         if os.path.isfile(os.path.join(ROOT, local)):
             m[u] = local
     return m
 
 def rewrite_docs(s, rel, docs):
+    from pdf_bucket import rewrite_site_pdf_urls
+    s = rewrite_site_pdf_urls(s, rel)
     d = os.path.dirname(rel)
     for u, local in docs.items():
+        if local.lower().endswith('.pdf'):
+            continue
         if u in s:
             s = s.replace(u, os.path.relpath(local, d or '.'))
     return s
