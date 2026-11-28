@@ -150,14 +150,14 @@ def _dl(href, img, alt, title):
 
 def patch_downloads():
     cards = ''.join([
-        _dl('../../en/wp-content/uploads/2025/02/Abadis-Catalouge.pdf', 'fbfb29bd37b3-600.webp', 'الكتالوج الشامل', 'الكتالوج الشامل لآباديس'),
-        _dl('../../en/wp-content/uploads/2021/12/suction-bag-catalog-En.pdf', '9b1d8607f71e-600.webp', 'كيس الشفط', 'كيس الشفط أحادي الاستعمال'),
-        _dl('../../en/wp-content/uploads/2021/12/filters-catalouge-en.pdf', '3e597a3f88f9-600.webp', 'الفلاتر', 'فلاتر خزانات آباديس الطبية'),
-        _dl('../../en/wp-content/uploads/2021/12/wall-suction-en.pdf', 'd981ab7fae6e-600.webp', 'الشفط الجداري', 'الشفط الجداري للبالغين'),
-        _dl('../../en/wp-content/uploads/2021/12/endotracheal-tube-holder-catalog-ٍ-En.pdf', 'b6aa51502dbf-600.webp', 'حامل أنبوب الرغامي', 'حامل أنبوب الرغامي'),
-        _dl('../../en/wp-content/uploads/2024/02/Installation-on-the-console.pdf', '4c5616648faa-600.webp', 'التركيب على الكونسول', 'دليل التركيب على الكونسول'),
-        _dl('../../en/wp-content/uploads/2024/02/Installation-on-a-trolley-base.pdf', 'd1d18e4d4b60-600.webp', 'التركيب على قاعدة الترولي', 'دليل التركيب على قاعدة الترولي'),
-        _dl('../../en/wp-content/uploads/2024/02/Installation-on-a-rail-bracket.pdf', '0bcc3e66ff94-600.webp', 'التركيب على القاعدة المحمولة', 'دليل التركيب على القاعدة المحمولة'),
+        _dl('https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2025/02/Abadis-Catalouge.pdf', 'fbfb29bd37b3-600.webp', 'الكتالوج الشامل', 'الكتالوج الشامل لآباديس'),
+        _dl('https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2021/12/suction-bag-catalog-En.pdf', '9b1d8607f71e-600.webp', 'كيس الشفط', 'كيس الشفط أحادي الاستعمال'),
+        _dl('https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2021/12/filters-catalouge-en.pdf', '3e597a3f88f9-600.webp', 'الفلاتر', 'فلاتر خزانات آباديس الطبية'),
+        _dl('https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2021/12/wall-suction-en.pdf', 'd981ab7fae6e-600.webp', 'الشفط الجداري', 'الشفط الجداري للبالغين'),
+        _dl('https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2021/12/endotracheal-tube-holder-catalog-%D9%8D-En.pdf', 'b6aa51502dbf-600.webp', 'حامل أنبوب الرغامي', 'حامل أنبوب الرغامي'),
+        _dl('https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2024/02/Installation-on-the-console.pdf', '4c5616648faa-600.webp', 'التركيب على الكونسول', 'دليل التركيب على الكونسول'),
+        _dl('https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2024/02/Installation-on-a-trolley-base.pdf', 'd1d18e4d4b60-600.webp', 'التركيب على قاعدة الترولي', 'دليل التركيب على قاعدة الترولي'),
+        _dl('https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2024/02/Installation-on-a-rail-bracket.pdf', '0bcc3e66ff94-600.webp', 'التركيب على القاعدة المحمولة', 'دليل التركيب على القاعدة المحمولة'),
     ])
     replace_main(SITE / 'arabic/مركز-التنزيل/index.html', AR_DOWNLOADS.format(cards=cards))
     set_meta(SITE / 'arabic/مركز-التنزيل/index.html', 'مركز التنزيل — خزانات طبي آباديس',

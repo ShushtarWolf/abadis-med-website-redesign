@@ -927,23 +927,15 @@ def add_catalogues():
     cards = []
     for href, title, img in fa_items:
         name = urllib.parse.unquote(urllib.parse.urlsplit(href).path).split('/')[-1]
-        dest = SITE / 'wp-content' / 'uploads' / '2026' / '11' / name
-        raw_href = href.replace('https://', 'http://')
-        parts = urllib.parse.urlsplit(raw_href)
-        raw_href = urllib.parse.urlunsplit((
-            parts.scheme, parts.netloc,
-            urllib.parse.quote(urllib.parse.unquote(parts.path), safe='/%'),
-            parts.query, ''))
-        data = urllib.request.urlopen(urllib.request.Request(raw_href, headers={'User-Agent': UA}), timeout=90).read()
-        before, after = compress_pdf(data, dest)
-        NEW_BYTES['pdf'] += after
+        from pdf_bucket import pdf_bucket_url
+        rel = pdf_bucket_url('wp-content/uploads/2026/11/' + name)
+        before = after = 0
         cover = img_tag(img, '/کاتالوگ/') if img else ''
         if not cover:
             cover = '<img src="../assets/img/post-thumb-fallback.webp" width="1280" height="720" alt="" loading="lazy">'
         # img_tag includes a full tag; dl-card wants it inside .ph
         if 'src=' not in cover:
             cover = '<img src="../assets/img/post-thumb-fallback.webp" width="1280" height="720" alt="" loading="lazy">'
-        rel = '../wp-content/uploads/2026/11/' + name
         cards.append(
             f'<a class="post-card dl-card reveal" href="{esc(rel)}" target="_blank" rel="noopener">'
             f'<div class="ph" style="aspect-ratio:1;background:#fff">{cover}</div>'
@@ -963,17 +955,9 @@ def add_catalogues():
     et = efp.read_text(encoding='utf-8')
     for href, title, img in en_items:
         name = urllib.parse.unquote(urllib.parse.urlsplit(href).path).split('/')[-1]
-        dest = SITE / 'en' / 'wp-content' / 'uploads' / '2026' / '11' / name
-        raw_href = href.replace('https://', 'http://')
-        parts = urllib.parse.urlsplit(raw_href)
-        raw_href = urllib.parse.urlunsplit((
-            parts.scheme, parts.netloc,
-            urllib.parse.quote(urllib.parse.unquote(parts.path), safe='/%'),
-            parts.query, ''))
-        data = urllib.request.urlopen(urllib.request.Request(raw_href, headers={'User-Agent': UA}), timeout=90).read()
-        before, after = compress_pdf(data, dest)
-        NEW_BYTES['pdf'] += after
-        rel = '../wp-content/uploads/2026/11/' + name
+        from pdf_bucket import pdf_bucket_url
+        rel = pdf_bucket_url('en/wp-content/uploads/2026/11/' + name)
+        before = after = 0
         cover = ''
         if img:
             info = ensure_image(img_url_of(img), 800)
