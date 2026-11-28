@@ -1,49 +1,52 @@
 # Abadis forms backend (Liara, Flask)
 
-Deploy-ready only. Do not create the Liara app and do not run `liara deploy` for this folder in the publishing-pipeline task. The static site keeps its mailto fallback until a human turns the flag on later.
+The static site posts every delivery form to `POST /submit` on this app. The app checks a honeypot and a per-IP rate limit, validates the fields, and emails `FORM_TO` (default inbox `info@abadis-med.com`) over SMTP. No secrets belong in git. `.env.example` has placeholders only.
 
-The app receives the static site's contact and careers forms and emails them. Export quotes stay on `site/assets/js/quote-form.js` mailto. WhatsApp and CRM URLs stay empty until a provider is chosen. No analytics snippets.
+Service name in `liara.json`: `abadis-forms` (Flask, port 8000).
 
-- `POST /submit`: multipart or urlencoded form data (file uploads are attached to the email)
-- `GET /health`: health check
-- Spam: honeypot field `_gotcha` plus a per-IP rate limit
-- CORS: only origins in `ALLOWED_ORIGINS`
-- Recipients: `MAIL_TO_CONTACT`, `MAIL_TO_CAREERS`, and `MAIL_TO_EXPORT` when set, otherwise `MAIL_TO`
-- Optional JSON copy to `WHATSAPP_WEBHOOK_URL` and `CRM_WEBHOOK_URL` (leave empty)
+- `POST /submit` — multipart or urlencoded. File fields are attached to the email.
+- `GET /health` — `{"ok": true, "smtp": true}` when `SMTP_HOST` and `FORM_TO` are set.
+- Spam: honeypot `_gotcha` (silent success, nothing is sent) and `RATE_PER_MIN` per IP.
+- CORS: only origins listed in `ALLOWED_ORIGINS`.
+- Forms: `contact`, `careers` (cooperation), `export` / `quote`, `solution`.
 
-Every setting is an environment variable. `.env.example` has placeholders only (`smtp.example.com`, `forms-placeholder@example.com`). Do not commit real mailboxes or passwords.
+## Environment variables
 
-## Later: deploy on Liara
+Set these on the Liara app. Never commit them.
 
-A human does this after the publishing pipeline is in place. Not part of the current task.
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `SMTP_HOST` | yes | SMTP server reachable from Iran |
+| `SMTP_PORT` | yes | Usually `587` |
+| `SMTP_TLS` | yes | `starttls`, `ssl`, or `none` |
+| `SMTP_USER` | yes, if the server requires login | SMTP username |
+| `SMTP_PASS` | yes, if the server requires login | SMTP password |
+| `MAIL_FROM` | recommended | From address. Falls back to `SMTP_USER` |
+| `FORM_TO` | yes | Inbox. Use `info@abadis-med.com` |
+| `FORM_TO_CONTACT` | no | Overrides `FORM_TO` for the contact and solution forms |
+| `FORM_TO_CAREERS` | no | Overrides `FORM_TO` for the cooperation form |
+| `FORM_TO_EXPORT` | no | Overrides `FORM_TO` for the export quote form |
+| `ALLOWED_ORIGINS` | yes | `https://abadis-med.com,https://www.abadis-med.com` |
+| `RATE_PER_MIN` | no | Default `5` |
+| `MAX_UPLOAD_MB` | no | Default `8` |
+| `MAX_FIELD_CHARS` | no | Default `4000` |
 
-1. In the Liara panel, create a Flask app (the name in `liara.json` is the placeholder `abadis-forms`). Do not point production forms at the test static app.
-2. Set the variables from `.env.example` in the Liara panel. `ALLOWED_ORIGINS` must include `https://abadis-test.liara.run`, `https://abadis-med.com`, `https://www.abadis-med.com`, and `https://shushtarwolf.github.io`. Leave `WHATSAPP_WEBHOOK_URL` and `CRM_WEBHOOK_URL` empty.
+`MAIL_TO`, `MAIL_TO_CONTACT`, `MAIL_TO_CAREERS` and `MAIL_TO_EXPORT` are accepted aliases of the `FORM_TO*` variables.
+
+## Deploy on Liara
+
+1. In the Liara panel, create a Flask app named `abadis-forms` (the name in `liara.json`). Do not deploy this folder into the static `abadis-med` app.
+2. Set the variables above in the Liara panel.
 3. From `tools/forms-liara/`: `npm i -g @liara/cli && liara login && liara deploy`.
-4. Open `https://<app>.liara.run/health` and expect `{"ok": true}`.
+4. Open `https://abadis-forms.liara.run/health` and expect `{"ok": true, "smtp": true}`.
 
-## Later: turn the site flag on
-
-The generator writes `<meta name="abadis-form-endpoint">` when a public URL is available:
-
-- `ABADIS_FORM_ENDPOINT`, or `tools/redesign/data/form_endpoint.txt`
-- `ABADIS_FORMS_ENABLED` is not `0` / `false` / `off` / `no`. If the variable is unset, a non-empty `form_endpoint.txt` turns forms on, so a rebuild keeps the contact and careers endpoint.
-
-`form_endpoint.txt` is empty, so the built site keeps the mailto fallback. Set `ABADIS_FORMS_ENABLED=0` to force mailto even after a URL is added.
-
-To point contact and careers at another inbox later:
-
-1. Put the public POST URL in `tools/redesign/data/form_endpoint.txt`, or export `ABADIS_FORM_ENDPOINT`.
-2. Leave `ABADIS_FORMS_ENABLED` unset, or export `ABADIS_FORMS_ENABLED=1`.
-3. Run `python3 tools/redesign/seo_postprocess.py`, or `python3 tools/redesign/build.py posts home i18n archives`. That writes the meta tag. `site/assets/js/site.js` posts with fetch and opens mailto if the request fails.
-4. Clear the URL, or set `ABADIS_FORMS_ENABLED=0`, to go back to mailto.
-
-Do not set the flag in the WordPress publish workflow. Do not aim production forms at `abadis-test`.
+The static site posts to `https://abadis-forms.liara.run/submit`. That URL is the default of `FORM_ENDPOINT` in `tools/redesign/lib.py`, written into `<meta name="abadis-form-endpoint">`. A rebuild or a WordPress publish keeps it. Set `ABADIS_FORM_ENDPOINT` to another URL to override, or `ABADIS_FORMS_ENABLED=0` to clear the meta tag.
 
 ## Local test
 
 ```
 pip install -r requirements.txt
-SMTP_HOST=localhost SMTP_PORT=1025 SMTP_TLS=none MAIL_TO=forms-placeholder@example.com python app.py
-curl -F form_name=contact -F name=Test -F msg=Hi http://localhost:8000/submit
+python3 test_local.py
 ```
+
+`test_local.py` starts a debugging SMTP server and posts one message for each form.

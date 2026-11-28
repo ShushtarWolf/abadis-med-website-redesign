@@ -496,6 +496,10 @@
       fallback: (to) => 'اگر برنامهٔ ایمیل باز نشد، متن درخواست را کپی کنید و به ' + to + ' بفرستید.',
       copy: 'کپی متن درخواست', copied: 'متن درخواست کپی شد.', openMail: 'باز کردن دوبارهٔ ایمیل',
       serverFail: 'ارسال از طریق سرور ممکن نشد؛ ایمیل آماده باز می‌شود.',
+      email: 'نشانی پست الکترونیک معتبر نیست.',
+      phone: 'شماره تماس معتبر نیست.',
+      rate: 'درخواست‌های زیادی ارسال شد. لطفاً یک دقیقه بعد دوباره تلاش کنید.',
+      fail: 'ارسال انجام نشد. لطفاً دوباره تلاش کنید یا به info@abadis-med.com بنویسید.',
     },
     en: {
       required: 'This field is required.',
@@ -509,6 +513,10 @@
       fallback: (to) => 'If your email app did not open, copy the application text and send it to ' + to + '.',
       copy: 'Copy application text', copied: 'Application text copied.', openMail: 'Open email again',
       serverFail: 'Sending through the server failed; your email app will open with the message.',
+      email: 'Enter a valid email address.',
+      phone: 'Enter a valid phone number.',
+      rate: 'Too many requests. Please wait a minute and try again.',
+      fail: 'The message could not be sent. Please try again, or write to info@abadis-med.com.',
     },
     ar: {
       required: 'هذا الحقل مطلوب.',
@@ -522,6 +530,10 @@
       fallback: (to) => 'إذا لم يُفتح تطبيق البريد، انسخ نص الطلب وأرسله إلى ' + to + '.',
       copy: 'نسخ نص الطلب', copied: 'تم نسخ نص الطلب.', openMail: 'فتح البريد مرة أخرى',
       serverFail: 'تعذّر الإرسال عبر الخادم؛ سيُفتح تطبيق البريد مع الرسالة.',
+      email: 'أدخل بريدًا إلكترونيًا صالحًا.',
+      phone: 'أدخل رقم هاتف صالحًا.',
+      rate: 'طلبات كثيرة. انتظر دقيقة ثم أعد المحاولة.',
+      fail: 'تعذّر إرسال الرسالة. أعد المحاولة أو راسل info@abadis-med.com.',
     },
   };
   const T = FORM_TXT[formLang] || FORM_TXT.fa;
@@ -700,7 +712,19 @@
     return false;
   }
 
-  document.querySelectorAll('form[data-abadis-form], form#leadForm, form[data-mailto-form]').forEach((form) => {
+  function applyServerFields(form, fields) {
+    Object.keys(fields || {}).forEach((name) => {
+      const sel = (window.CSS && CSS.escape) ? CSS.escape(name) : name.replace(/"/g, '\\"');
+      const el = form.querySelector('[name="' + sel + '"]');
+      if (!el || !el.setCustomValidity) return;
+      const code = fields[name];
+      el.setCustomValidity(code === 'email' ? T.email : code === 'phone' ? T.phone : T.required);
+    });
+    if (!validateForm(form)) return;
+    setFormStatus(form, T.invalid, true);
+  }
+
+  document.querySelectorAll('form[data-abadis-form], form#leadForm, form[data-mailto-form], form[data-quote-form]').forEach((form) => {
     if (form.dataset.formBound) return;
     form.dataset.formBound = '1';
     form.noValidate = true;
@@ -708,6 +732,7 @@
     const onEdit = (e) => {
       const el = e.target;
       if (!el || !el.form) return;
+      if (el.setCustomValidity) el.setCustomValidity('');
       if (el.dataset && 'numMin' in el.dataset) checkNumberField(el);
       if (el.classList.contains('is-invalid')) {
         if (el.checkValidity()) clearFieldError(el); else markFieldError(el);
@@ -727,37 +752,56 @@
         return;
       }
       // normalize Persian/Arabic digits in tel-like fields
-      ['phone', 'تلفن ثابت', 'تلفن همراه', 'شماره شناسنامه', 'تاریخ تولد'].forEach((k) => {
-        if (fd.has(k)) fd.set(k, asciiDigits(fd.get(k)));
+      const phoneKeys = [];
+      fd.forEach((v, k) => {
+        if (k === 'phone' || k.indexOf('تلفن') !== -1 || k === 'شماره شناسنامه' || k === 'تاریخ تولد') phoneKeys.push(k);
       });
+      phoneKeys.forEach((k) => { if (typeof fd.get(k) === 'string') fd.set(k, asciiDigits(fd.get(k))); });
       if (!fd.get('form_name')) fd.set('form_name', form.dataset.abadisForm || form.id || 'form');
+      if (!fd.get('lang')) fd.set('lang', formLang);
+      if (!fd.get('page')) fd.set('page', location.pathname);
+      if (formEndpoint && form.getAttribute('method') !== 'dialog') {
+        form.setAttribute('action', formEndpoint);
+        form.method = 'post';
+      }
 
       if (!formEndpoint) {
-        showMailtoDone(form, openMailto(form, fd));
+        setFormStatus(form, T.fail, true);
         return;
       }
 
       if (btn) btn.disabled = true;
       setFormStatus(form, T.sending, false);
       try {
-        // give up after 15 s (endpoint unreachable) and fall back to mailto
         const ctl = typeof AbortController === 'function' ? new AbortController() : null;
-        const timer = ctl ? setTimeout(() => ctl.abort(), 15000) : 0;
+        const timer = ctl ? setTimeout(() => ctl.abort(), 20000) : 0;
         const res = await fetch(formEndpoint, {
           method: 'POST',
           body: fd,
           headers: { Accept: 'application/json' },
           signal: ctl ? ctl.signal : undefined,
         }).finally(() => clearTimeout(timer));
-        if (!res.ok) throw new Error('HTTP ' + res.status);
+        let data = {};
+        try { data = await res.json(); } catch (_) { data = {}; }
+        if (res.status === 400 && data && data.fields) {
+          applyServerFields(form, data.fields);
+          return;
+        }
+        if (res.status === 429 || (data && data.error === 'rate')) {
+          setFormStatus(form, T.rate, true);
+          return;
+        }
+        if (!res.ok || !data.ok) {
+          setFormStatus(form, T.fail, true);
+          return;
+        }
         const s = setFormStatus(form, T.sent, false);
         s.classList.add('is-success');
         s.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
         form.reset();
+        if (window.abadisTrack) window.abadisTrack('form_submit', { form: String(fd.get('form_name') || ''), lang: formLang });
       } catch (err) {
-        setFormStatus(form, T.serverFail, true);
-        const m = openMailto(form, fd);
-        showMailtoDone(form, m);
+        setFormStatus(form, T.fail, true);
       } finally {
         if (btn) btn.disabled = false;
       }
@@ -1096,9 +1140,29 @@
    Events: catalogue_download, contact_click, form_submit, language_switch. */
 (function () {
   window.dataLayer = window.dataLayer || [];
+  /* Single GA4 switch. Empty keeps Google Analytics off. No measurement ID is in this repo. */
+  var ABADIS_GA_MEASUREMENT_ID = '';
   function consentGranted() {
     try { return localStorage.getItem('abadis-consent') === 'accepted'; } catch (e) { return false; }
   }
+  function loadGA() {
+    var id = ABADIS_GA_MEASUREMENT_ID;
+    if (!id || !/^G-[A-Z0-9]+$/.test(id) || !consentGranted()) return;
+    if (document.querySelector('script[data-abadis-ga]')) return;
+    window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', id, { anonymize_ip: true });
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(id);
+    s.setAttribute('data-abadis-ga', id);
+    document.head.appendChild(s);
+  }
+  loadGA();
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest && e.target.closest('.consent-accept');
+    if (btn) loadGA();
+  });
   function track(name, data) {
     /* Cookie banner (consent.js) must be accepted before any analytics event. */
     if (!consentGranted()) return;
@@ -1344,6 +1408,7 @@
   if (!form) return;
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+    if (form.querySelector('.is-invalid')) return;
     var lines = [];
     form.querySelectorAll('[data-sum]').forEach(function (field) {
       var val = (field.value || '').trim();

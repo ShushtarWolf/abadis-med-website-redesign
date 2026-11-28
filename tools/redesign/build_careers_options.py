@@ -982,6 +982,7 @@ def render_wizard_form(form_id_prefix):
     return f'''
     <form class="cf-form" id="{form_id_prefix}-form" data-abadis-form="careers" data-mailto-form="info@abadis-med.com" data-subject="ثبت درخواست همکاری">
       <input type="hidden" name="form_name" value="careers">
+      <label class="hp-field" aria-hidden="true">Leave blank<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label>
       <div class="cf-stepper" role="tablist" aria-label="مراحل فرم درخواست همکاری">
         <button type="button" class="cf-step-tab is-active" data-step-btn="1" role="tab" aria-selected="true">
           <span class="cf-step-num">۱</span>

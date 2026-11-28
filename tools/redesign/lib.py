@@ -16,27 +16,26 @@ def _form_endpoint_file():
     except OSError:
         return ''
 
-def _forms_enabled():
-    """ABADIS_FORMS_ENABLED=0/false/off/no forces mailto.
+# Liara Flask app in tools/forms-liara (service name abadis-forms).
+DEFAULT_FORM_ENDPOINT = 'https://abadis-forms.liara.run/submit'
 
-    With the variable unset, a public URL in form_endpoint.txt turns forms on
-    so a rebuild keeps the contact and careers endpoint.
-    """
+def _forms_enabled():
+    """On unless ABADIS_FORMS_ENABLED is explicitly turned off."""
     raw = os.environ.get('ABADIS_FORMS_ENABLED')
     if raw is not None and raw.strip() != '':
         return raw.strip().lower() not in ('0', 'false', 'off', 'no')
-    return bool(_form_endpoint_file())
+    return True
 
 def _form_endpoint():
-    # Explicit off ignores both the environment URL and form_endpoint.txt.
+    # A rebuild keeps this URL. Override with ABADIS_FORM_ENDPOINT or
+    # data/form_endpoint.txt. ABADIS_FORMS_ENABLED=0 clears it.
     if not _forms_enabled():
         return ''
     value = os.environ.get('ABADIS_FORM_ENDPOINT', '').strip()
     if value:
         return value
-    return _form_endpoint_file()
+    return _form_endpoint_file() or DEFAULT_FORM_ENDPOINT
 
-# Empty ⇒ site.js keeps the mailto fallback. The public POST URL may be committed; never commit secrets.
 FORM_ENDPOINT = _form_endpoint()
 FORM_MAILTO = 'info@abadis-med.com'
 RAW = pathlib.Path(os.environ.get(
