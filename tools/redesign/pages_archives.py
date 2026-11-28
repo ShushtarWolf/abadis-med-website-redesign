@@ -934,21 +934,21 @@ class Builder:
         # titles are the live download-centre headings; files are the ones that page links
         docs = [
             ('Abadis Catalouge', 'assets/img/c/7de75af172d5-1600.webp',
-             '../wp-content/uploads/2025/02/Abadis-Catalouge.pdf'),
+             'https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2025/02/Abadis-Catalouge.pdf'),
             ('Wall Suction', 'assets/img/c/abcd068284d9-1600.webp',
-             '../wp-content/uploads/2021/12/wall-suction-en.pdf'),
+             'https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2021/12/wall-suction-en.pdf'),
             ('Abadis Filters', 'assets/img/c/0b9f4203444c-1600.webp',
-             '../wp-content/uploads/2021/12/filters-catalouge-en.pdf'),
+             'https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2021/12/filters-catalouge-en.pdf'),
             ('Endotracheal Tube Holder', 'assets/img/c/c3139627556b-1600.webp',
-             '../wp-content/uploads/2021/12/endotracheal-tube-holder-catalog-ٍ-En.pdf'),
+             'https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2021/12/endotracheal-tube-holder-catalog-%D9%8D-En.pdf'),
             ('Abadis Suction Bag', 'assets/img/c/aafe595bf7cc-1600.webp',
-             '../wp-content/uploads/2021/12/suction-bag-catalog-En.pdf'),
+             'https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2021/12/suction-bag-catalog-En.pdf'),
             ('Installation on a rail bracket', 'assets/img/c/a81b93f23793-1600.webp',
-             '../wp-content/uploads/2024/02/Installation-on-a-rail-bracket.pdf'),
+             'https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2024/02/Installation-on-a-rail-bracket.pdf'),
             ('Installation on a trolley base', 'assets/img/c/f5f6d2e42dc2-1600.webp',
-             '../wp-content/uploads/2024/02/Installation-on-a-trolley-base.pdf'),
+             'https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2024/02/Installation-on-a-trolley-base.pdf'),
             ('Installation on the console', 'assets/img/c/6960c0debe0a-1600.webp',
-             '../wp-content/uploads/2024/02/Installation-on-the-console.pdf'),
+             'https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2024/02/Installation-on-the-console.pdf'),
         ]
         cards = []
         cover_prefix = self.prefix(path)
