@@ -172,16 +172,15 @@ INQUIRY = '''  <section class="section" id="inquiry"><div class="wrap">
     </div>
   </div></section>'''
 
-UP = 'https://abadis-med.com/wp-content/uploads/'
-CAT_ALL = (UP + '2024/12/کاتالوگ-جامع-آبادیس.pdf', 'کاتالوگ جامع آبادیس (PDF)')
+CAT_ALL = ('https://abadis-media.storage.iran.liara.site/wp-content/uploads/2024/12/%DA%A9%D8%A7%D8%AA%D8%A7%D9%84%D9%88%DA%AF-%D8%AC%D8%A7%D9%85%D8%B9-%D8%A2%D8%A8%D8%A7%D8%AF%DB%8C%D8%B3.pdf', 'کاتالوگ جامع آبادیس (PDF)')
 DOCS = {  # real files linked from the live download centre
-    'filters': [(UP + '2022/12/Filter-catalog-Fa.pdf', 'کاتالوگ فیلترها (PDF)'), CAT_ALL],
-    'suction-tube': [(UP + '2026/01/کاتالوگ-ساکشن-تیوب-1.pdf', 'کاتالوگ ساکشن تیوب (PDF)'), CAT_ALL],
-    'stand': [(UP + '2024/02/راهنمای-نصب-مخازن-بر-روی-پایه-ترولی.pdf', 'راهنمای نصب روی پایه ترولی (PDF)'),
-              (UP + '2024/02/راهنمای-نصب-مخازن-بر-روی-پایه-پرتابل.pdf', 'راهنمای نصب روی پایه پرتابل (PDF)'),
-              (UP + '2024/02/راهنمای-نصب-مخازن-بر-روی-کنسول.pdf', 'راهنمای نصب روی کنسول (PDF)'), CAT_ALL],
+    'filters': [('https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/Filter-catalog-Fa.pdf', 'کاتالوگ فیلترها (PDF)'), CAT_ALL],
+    'suction-tube': [('https://abadis-media.storage.iran.liara.site/wp-content/uploads/2026/01/%DA%A9%D8%A7%D8%AA%D8%A7%D9%84%D9%88%DA%AF-%D8%B3%D8%A7%DA%A9%D8%B4%D9%86-%D8%AA%DB%8C%D9%88%D8%A8-1.pdf', 'کاتالوگ ساکشن تیوب (PDF)'), CAT_ALL],
+    'stand': [('https://abadis-media.storage.iran.liara.site/wp-content/uploads/2024/02/%D8%B1%D8%A7%D9%87%D9%86%D9%85%D8%A7%DB%8C-%D9%86%D8%B5%D8%A8-%D9%85%D8%AE%D8%A7%D8%B2%D9%86-%D8%A8%D8%B1-%D8%B1%D9%88%DB%8C-%D9%BE%D8%A7%DB%8C%D9%87-%D8%AA%D8%B1%D9%88%D9%84%DB%8C.pdf', 'راهنمای نصب روی پایه ترولی (PDF)'),
+              ('https://abadis-media.storage.iran.liara.site/wp-content/uploads/2024/02/%D8%B1%D8%A7%D9%87%D9%86%D9%85%D8%A7%DB%8C-%D9%86%D8%B5%D8%A8-%D9%85%D8%AE%D8%A7%D8%B2%D9%86-%D8%A8%D8%B1-%D8%B1%D9%88%DB%8C-%D9%BE%D8%A7%DB%8C%D9%87-%D9%BE%D8%B1%D8%AA%D8%A7%D8%A8%D9%84.pdf', 'راهنمای نصب روی پایه پرتابل (PDF)'),
+              ('https://abadis-media.storage.iran.liara.site/wp-content/uploads/2024/02/%D8%B1%D8%A7%D9%87%D9%86%D9%85%D8%A7%DB%8C-%D9%86%D8%B5%D8%A8-%D9%85%D8%AE%D8%A7%D8%B2%D9%86-%D8%A8%D8%B1-%D8%B1%D9%88%DB%8C-%DA%A9%D9%86%D8%B3%D9%88%D9%84.pdf', 'راهنمای نصب روی کنسول (PDF)'), CAT_ALL],
     'canister': [CAT_ALL], 'connectors': [CAT_ALL],
-    'oral': [(UP + '2022/12/endotracheal-tube-holder-catalog-Fa.pdf', 'کاتالوگ نگهدارنده لوله تراشه (PDF)'), CAT_ALL],
+    'oral': [('https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/endotracheal-tube-holder-catalog-Fa.pdf', 'کاتالوگ نگهدارنده لوله تراشه (PDF)'), CAT_ALL],
     'other': [CAT_ALL],
 }
 def doc_bar(slug, lang='fa'):
@@ -708,9 +707,9 @@ def write_bag(write, lang):
     filters = '../filters/' if lang == 'en' else '../الفلتر/'
     guide = '../../installation-manual/' if lang == 'en' else '../دليل-التركيب/'
     downloads = '../../center-download/' if lang == 'en' else '../مركز-التنزيل/'
-    cat = 'https://abadis-med.com/wp-content/uploads/2022/12/suction-bag-catalog-Fa.pdf'
+    cat = 'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/suction-bag-catalog-Fa.pdf'
     if lang == 'en':
-        cat = 'https://www.abadis-med.com/en/wp-content/uploads/2021/12/suction-bag-catalog-En.pdf'
+        cat = 'https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2021/12/suction-bag-catalog-En.pdf'
     media = {
         '1': ('p1-main.webp', 900, 900, 'p1-g5.webp', 'p1-g5-t.webp', '11 cm', '15.5 cm', '57.5 × 42.5 × 44'),
         '2': ('p2-main.webp', 900, 900, 'p2-g4.webp', 'p2-g4-t.webp', '11 cm', '24.5 cm', '57.5 × 42.5 × 44'),

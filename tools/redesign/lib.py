@@ -293,9 +293,13 @@ _UPLOAD_URL_RE = re.compile(
 def localize_abadis_upload_urls(text, prefix='', page_rel=''):
     """Point leftover upload image URLs at local WebPs (or the media bucket).
 
-    PDFs, Liara URLs and files that already exist on disk are left in place.
+    Site PDFs are rewritten to the media bucket. Image files that already exist
+    on disk stay as they are.
     `page_rel` is the HTML path under site/, used to resolve ../ references.
     """
+    from pdf_bucket import rewrite_old_downloads, rewrite_site_pdf_urls
+    text = rewrite_site_pdf_urls(text or '', page_rel)
+    text = rewrite_old_downloads(text or '', page_rel)
     if not text or 'wp-content/uploads' not in text:
         return text
     import posixpath
@@ -611,6 +615,10 @@ def dim_attrs(r):
 
 def href(url, p):
     """Return (href, external?) for templates."""
+    from pdf_bucket import bucket_for_reference, old_download_bucket
+    bucket = old_download_bucket(url or '') or bucket_for_reference(url or '')
+    if bucket:
+        return bucket, True
     i = internal(url)
     if i is not None: return p + i if i else (p or './'), False
     if url and url.startswith('//'): url = 'https:' + url
@@ -619,6 +627,9 @@ def href(url, p):
 
 def rewrite_html(h, p, imgw=1000, drop_missing_img=True):
     """Rewrite links + images inside sanitized crawl HTML."""
+    from pdf_bucket import rewrite_old_downloads, rewrite_site_pdf_urls
+    h = rewrite_site_pdf_urls(h or '')
+    h = rewrite_old_downloads(h)
     def a_sub(m):
         url = html.unescape(m.group(1))
         new, ext = href(url, p)
