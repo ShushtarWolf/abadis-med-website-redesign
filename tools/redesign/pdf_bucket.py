@@ -9,6 +9,7 @@ removed from the repo. PDFs under docs/ are not site files and are not mapped.
 import html
 import os
 import posixpath
+import re
 import urllib.parse
 
 BUCKET = 'https://abadis-media.storage.iran.liara.site'
@@ -138,6 +139,118 @@ def bucket_for_reference(token, page_rel=''):
         if not joined.startswith('..') and joined in known:
             return pdf_bucket_url(joined)
     return _bucket_for_path(path, known)
+
+
+# Downloads that used to live on WordPress. The bucket mirrors wp-content/uploads
+# 1:1. These two objects were checked and are not in the bucket.
+_DOWNLOAD_EXTS = ('.pdf', '.doc', '.docx', '.xlsx', '.mp4', '.zip')
+_OLD_DOWNLOAD_HOSTS = {'abadis-med.com', 'www.abadis-med.com', '45.138.134.42'}
+_NOT_MIRRORED = {
+    'wp-content/uploads/2022/03/33da398f9dea0eca0a045ec9c115885517630214-240p.mp4',
+    'wp-content/uploads/2022/03/df856f7e5793b40b5034500be1a9b03617853585-240p.mp4',
+}
+_OLD_DL_RE = re.compile(
+    r'(?i)(?:https?:)?//(?:www\.)?(?:abadis-med\.com|45\.138\.134\.42)'
+    r'(?:/[^"\'\s<>\\]*)?\.(?:pdf|docx?|xlsx|mp4|zip)'
+    r'|(?:\.\./)+(?:en/|arabic/)?wp-content/uploads/[^"\'\s<>\\]*\.(?:pdf|docx?|xlsx|mp4|zip)'
+    r'|(?<![A-Za-z0-9./])/(?:en/|arabic/)?wp-content/uploads/[^"\'\s<>\\]*\.(?:pdf|docx?|xlsx|mp4|zip)'
+)
+_TRAIL_ENTITY = re.compile(r'(?:&#\d+;|&#x[0-9a-fA-F]+;|&[a-zA-Z]+;)+$')
+
+
+def _is_download(path):
+    low = (path or '').lower().split('?', 1)[0].split('#', 1)[0]
+    return low.endswith(_DOWNLOAD_EXTS)
+
+
+def _private_customer_list(path):
+    name = (path or '').rsplit('/', 1)[-1]
+    return 'لیست-مشتریان' in name or 'لیست-مشتريان' in name
+
+
+def old_download_bucket(token, page_rel='', relative=True):
+    """Bucket URL for an old WordPress download, or None to leave the link.
+
+    Absolute abadis-med.com, www.abadis-med.com and 45.138.134.42 upload URLs
+    are mapped. A relative /wp-content/uploads/ path is mapped only when that
+    file is not already in site/. The customer-list workbook is never given a
+    public bucket URL. Objects known to be missing from the bucket stay put.
+    """
+    if not token:
+        return None
+    raw = html.unescape(token.strip())
+    raw = _TRAIL_ENTITY.sub('', raw)
+    if raw.startswith('//'):
+        raw = 'https:' + raw
+    page_rel = (page_rel or '').replace('\\', '/').lstrip('/')
+    if page_rel.endswith('/'):
+        page_rel += 'index.html'
+
+    if '://' in raw:
+        parts = urllib.parse.urlsplit(raw)
+        host = (parts.hostname or parts.netloc or '').lower()
+        if host not in _OLD_DOWNLOAD_HOSTS:
+            return None
+        path = _strip_dot_segments(_unquote(parts.path or ''))
+        if 'wp-content/uploads/' not in path or not _is_download(path):
+            return None
+        if _private_customer_list(path) or path in _NOT_MIRRORED:
+            return None
+        return pdf_bucket_url(path)
+
+    if not relative or 'wp-content/uploads/' not in raw:
+        return None
+    path = _unquote(raw.split('#', 1)[0].split('?', 1)[0])
+    if page_rel and not path.startswith('/'):
+        joined = posixpath.normpath(posixpath.join(posixpath.dirname(page_rel), path))
+        if not joined.startswith('..'):
+            path = joined
+        else:
+            path = _strip_dot_segments(path)
+    else:
+        path = _strip_dot_segments(path.lstrip('/'))
+    if 'wp-content/uploads/' not in path or not _is_download(path):
+        return None
+    if _private_customer_list(path) or path in _NOT_MIRRORED:
+        return None
+    if os.path.isfile(os.path.join(SITE, path)):
+        return None
+    return pdf_bucket_url(path)
+
+
+def rewrite_old_downloads(text, page_rel='', allowed=None, relative=True):
+    """Point leftover WordPress download links at the bucket.
+
+    `allowed`, when set, limits the rewrite to those bucket URLs (used after a
+    HEAD check). Customer-list workbooks and files present in site/ are kept.
+    """
+    if not text or 'wp-content/uploads' not in text:
+        return text
+    parts = []
+    last = 0
+    idx = 0
+    while True:
+        m = _OLD_DL_RE.search(text, idx)
+        if not m:
+            break
+        token = _TRAIL_ENTITY.sub('', m.group(0))
+        start, end = m.start(), m.start() + len(token)
+        bucket = old_download_bucket(token, page_rel, relative=relative)
+        if bucket and bucket != token and (allowed is None or bucket in allowed):
+            span_s, span_e, repl = _expand_span(text, start, end, bucket)
+            if span_s < last:
+                idx = m.end()
+                continue
+            parts.append(text[last:span_s])
+            parts.append(repl)
+            last = span_e
+            idx = span_e
+        else:
+            idx = end if end > m.start() else m.end()
+    if not parts:
+        return text
+    parts.append(text[last:])
+    return ''.join(parts)
 
 
 def _expand_span(text, start, end, bucket):

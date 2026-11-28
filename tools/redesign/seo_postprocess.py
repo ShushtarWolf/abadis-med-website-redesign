@@ -35,16 +35,17 @@ def load_docs():
     for u in open(os.path.join(os.path.dirname(__file__), 'data', 'self_hosted_docs.txt')).read().split():
         sp = urllib.parse.urlsplit(u)
         local = urllib.parse.unquote(sp.path).lstrip('/')
-        # PDFs are served from the media bucket, not copied back into site/.
-        if local.lower().endswith('.pdf'):
+        # Downloads are served from the media bucket, not copied back into site/.
+        if local.lower().endswith(('.pdf', '.doc', '.docx', '.xlsx', '.mp4', '.zip')):
             continue
         if os.path.isfile(os.path.join(ROOT, local)):
             m[u] = local
     return m
 
 def rewrite_docs(s, rel, docs):
-    from pdf_bucket import rewrite_site_pdf_urls
+    from pdf_bucket import rewrite_old_downloads, rewrite_site_pdf_urls
     s = rewrite_site_pdf_urls(s, rel)
+    s = rewrite_old_downloads(s, rel)
     d = os.path.dirname(rel)
     for u, local in docs.items():
         if local.lower().endswith('.pdf'):
