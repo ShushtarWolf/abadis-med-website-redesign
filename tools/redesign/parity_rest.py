@@ -481,7 +481,7 @@ def patch_articles():
         print('EN', slug, len(body))
 
 def patch_pva():
-    img = 'https://abadis-med.com/wp-content/uploads/2026/10/Premium-medical-laundry-bag-showcase.png'
+    img = 'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2026/10/Premium-medical-laundry-bag-showcase.png'
     def page(lang):
         if lang == 'fa':
             return dict(

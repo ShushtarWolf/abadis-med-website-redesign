@@ -482,7 +482,7 @@ LIVE_VALUES = [('کاهش هزینه‌ها', 'کاهش هزینه‌های مر
                ('استفاده آسان', 'حذف فعالیت‌های مربوط به شست‌و‌شوی مخازن و استفاده راحت برای جمع‌آوری ضایعات حین عمل')]
 SLOGAN = ['ما به اندازه یک سرانگشت اثر می‌گذاریم،', 'به شما', 'به طبیعت', 'به جهان']
 import hashlib as _hl
-_UP = 'https://abadis-med.com/wp-content/uploads/'
+_UP = 'https://abadis-media.storage.iran.liara.site/wp-content/uploads/'
 MEMBERSHIP_URLS = [_UP + '2023/03/' + x for x in ('Template_0000_1-2-copy.webp', 'Template_0000_logo2-copy.webp', 'Template_0000_main-logo-copy.webp',
                    'Template_0000s_0000_logo_1-1-1-copy.webp', 'Template_0001_ISCC1-copy.webp', 'Template_0004_2-copy.webp', 'Template_0006_download-copy.webp')] + \
                   [_UP + '2023/12/-صنعت-و-معدن-جوانان-ایران-e1702381162586.png', _UP + '2023/12/مجمع-خیرین-صنف-تجهیزات-پزشکی.png']

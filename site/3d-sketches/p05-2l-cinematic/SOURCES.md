@@ -16,7 +16,7 @@ The manufacturer specifies transparent polycarbonate, 2 L volume, product code *
 
 ## Actual 2 L branding, not stretched 1 L markings
 Original official source photograph:
-https://www.abadis-med.com/en/wp-content/uploads/2021/07/AMR_4901-scaled-1.jpg
+https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2021/07/AMR_4901-scaled-1.jpg
 
 Native resolution 2560 × 2081. Original local photo `/workspace/_qa_p05/branding/AMR_4901-scaled-1.jpg`. The **middle canister is explicitly labelled “2 ltr”**; only this vessel's print is used. Native crop `(980,770,1540,1910)` is retained at `/workspace/_qa_p05_2l/v1/official-2l-crop.png`. The separate left 1 L and right 3 L vessels supply no print pixels to this page.
 

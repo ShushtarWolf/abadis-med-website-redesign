@@ -5,23 +5,23 @@ from layout import page, page_hero, section_mark
 from render import table, gallery_link, secs
 
 FAMILIES = [  # slug, live path, title, hub image, local fallback image
-    ('suction-bag', '/محصولات/کیسه-ساکشن/', 'کیسه ساکشن یکبار مصرف', 'https://abadis-med.com/wp-content/uploads/2022/12/کیسه-ساکشن.jpg', 'assets/img/p/p2-main.webp'),
-    ('canister', '/محصولات/مخزن/', 'مخزن ساکشن', 'https://abadis-med.com/wp-content/uploads/2022/12/AMR_4901.jpg', 'assets/img/p/p3-g1-t.webp'),
-    ('stand', '/محصولات/پایه/', 'پایه و نگهدارنده‌ها', 'https://abadis-med.com/wp-content/uploads/2022/12/پایه-ترولی.jpg', 'assets/img/p/p1-g3-t.webp'),
-    ('connectors', '/محصولات/اتصالات/', 'اتصالات', 'https://abadis-med.com/wp-content/uploads/2022/12/اتصالات-845x684-1.jpg', 'assets/img/p/p2-g3-t.webp'),
-    ('filters', '/محصولات/فیلترها/', 'فیلتر', 'https://abadis-med.com/wp-content/uploads/2022/12/فیلتر1-2-845x684-1.jpg', 'assets/img/filters/anti-1-t.webp'),
-    ('suction-tube', '/محصولات/ساکشن-تیوب/', 'ساکشن تیوب', 'https://abadis-med.com/wp-content/uploads/2023/02/7e83722522e8aeb7512b7075311316b7__m8ULku2SAG__1-1-300x300.jpg', None),
-    ('oral', None, 'بهداشت دهان', 'https://abadis-med.com/wp-content/uploads/2022/12/19-1024x880.jpg', None),
+    ('suction-bag', '/محصولات/کیسه-ساکشن/', 'کیسه ساکشن یکبار مصرف', 'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/%DA%A9%DB%8C%D8%B3%D9%87-%D8%B3%D8%A7%DA%A9%D8%B4%D9%86.jpg', 'assets/img/p/p2-main.webp'),
+    ('canister', '/محصولات/مخزن/', 'مخزن ساکشن', 'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/AMR_4901.jpg', 'assets/img/p/p3-g1-t.webp'),
+    ('stand', '/محصولات/پایه/', 'پایه و نگهدارنده‌ها', 'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/%D9%BE%D8%A7%DB%8C%D9%87-%D8%AA%D8%B1%D9%88%D9%84%DB%8C.jpg', 'assets/img/p/p1-g3-t.webp'),
+    ('connectors', '/محصولات/اتصالات/', 'اتصالات', 'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/%D8%A7%D8%AA%D8%B5%D8%A7%D9%84%D8%A7%D8%AA-845x684-1.jpg', 'assets/img/p/p2-g3-t.webp'),
+    ('filters', '/محصولات/فیلترها/', 'فیلتر', 'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/%D9%81%DB%8C%D9%84%D8%AA%D8%B11-2-845x684-1.jpg', 'assets/img/filters/anti-1-t.webp'),
+    ('suction-tube', '/محصولات/ساکشن-تیوب/', 'ساکشن تیوب', 'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2023/02/7e83722522e8aeb7512b7075311316b7__m8ULku2SAG__1-1-300x300.jpg', None),
+    ('oral', None, 'بهداشت دهان', 'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/19-1024x880.jpg', None),
     ('other', '/محصولات/سایر-محصولات/', 'سایر محصولات',
-     'https://abadis-med.com/wp-content/uploads/2022/12/26.jpg', None),
+     'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/26.jpg', None),
 ]
 # Fallback photos when the item's own image was never archived by the Wayback Machine.
 # Only images that verifiably show that exact product are used (family hub photo / phase-1 asset).
 FALLBACK = {
-    'msk': ['https://abadis-med.com/wp-content/uploads/2022/12/AMR_4901.jpg'],
-    'sdv': ['https://abadis-med.com/wp-content/uploads/2022/12/ساکشن-دیواری-بزرگسال-1030x1030-1.jpg'],
-    'paye': ['https://abadis-med.com/wp-content/uploads/2022/12/پایه-ترولی.jpg'],
-    'negahdarande': ['https://abadis-med.com/wp-content/uploads/2022/12/نگهدارنده-لوله-تراشه-1030x1030-1.jpg'],
+    'msk': ['https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/AMR_4901.jpg'],
+    'sdv': ['https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/%D8%B3%D8%A7%DA%A9%D8%B4%D9%86-%D8%AF%DB%8C%D9%88%D8%A7%D8%B1%DB%8C-%D8%A8%D8%B2%D8%B1%DA%AF%D8%B3%D8%A7%D9%84-1030x1030-1.jpg'],
+    'paye': ['https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/%D9%BE%D8%A7%DB%8C%D9%87-%D8%AA%D8%B1%D9%88%D9%84%DB%8C.jpg'],
+    'negahdarande': ['https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/%D9%86%DA%AF%D9%87%D8%AF%D8%A7%D8%B1%D9%86%D8%AF%D9%87-%D9%84%D9%88%D9%84%D9%87-%D8%AA%D8%B1%D8%A7%D8%B4%D9%87-1030x1030-1.jpg'],
     'anti': ['local:assets/img/filters/anti-1.webp', 'local:assets/img/filters/anti-2.webp'],
     'ght': ['local:assets/img/filters/stop-1.webp', 'local:assets/img/filters/stop-2.webp'],
     'mot': ['local:assets/img/filters/porous-1.webp'],
@@ -263,13 +263,13 @@ HUB_FAMILIES = {
 }
 # photo id, href from the hub, title, parent family
 SOL_PHOTO = {
-    'paye': 'https://abadis-med.com/wp-content/uploads/2022/12/11.jpg',
-    'wallp': 'https://abadis-med.com/wp-content/uploads/2022/12/13.jpg',
-    'sdv': 'https://abadis-med.com/wp-content/uploads/2022/12/ساکشن-دیواری-بزرگسال-1030x1030-1.jpg',
-    'wallg': 'https://abadis-med.com/wp-content/uploads/2022/12/12.jpg',
-    'mesvak': 'https://abadis-med.com/wp-content/uploads/2022/12/19-1024x880.jpg',
-    'negahdarande': 'https://abadis-med.com/wp-content/uploads/2022/12/24-1024x683.jpg',
-    'receiver': 'https://abadis-med.com/wp-content/uploads/2022/12/26.jpg',
+    'paye': 'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/11.jpg',
+    'wallp': 'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/13.jpg',
+    'sdv': 'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/%D8%B3%D8%A7%DA%A9%D8%B4%D9%86-%D8%AF%DB%8C%D9%88%D8%A7%D8%B1%DB%8C-%D8%A8%D8%B2%D8%B1%DA%AF%D8%B3%D8%A7%D9%84-1030x1030-1.jpg',
+    'wallg': 'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/12.jpg',
+    'mesvak': 'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/19-1024x880.jpg',
+    'negahdarande': 'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/24-1024x683.jpg',
+    'receiver': 'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/26.jpg',
 }
 SOLUTIONS = {
     'fa': [
@@ -428,7 +428,7 @@ LIPO_HTML = (
 )
 NO_PHOTO = {'collectioncup', 'splashvac'}
 IMG_REPLACE = {
-    'sdv': 'https://abadis-med.com/wp-content/uploads/2022/12/ساکشن-دیواری-بزرگسال-1030x1030-1.jpg',
+    'sdv': 'https://abadis-media.storage.iran.liara.site/wp-content/uploads/2022/12/%D8%B3%D8%A7%DA%A9%D8%B4%D9%86-%D8%AF%DB%8C%D9%88%D8%A7%D8%B1%DB%8C-%D8%A8%D8%B2%D8%B1%DA%AF%D8%B3%D8%A7%D9%84-1030x1030-1.jpg',
 }
 # rel, prefix, canonical, products-crumb href, h1 override (None = Persian page title)
 OUT = {

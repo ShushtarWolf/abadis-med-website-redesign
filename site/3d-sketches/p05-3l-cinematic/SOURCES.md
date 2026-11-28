@@ -18,7 +18,7 @@ Verified 3 L transparent polycarbonate canister, code **0402013**. Do not confus
 
 ## Actual right-hand 3 L photo print
 Official original source used:
-https://www.abadis-med.com/en/wp-content/uploads/2021/07/AMR_4901-scaled-1.jpg
+https://abadis-media.storage.iran.liara.site/en/wp-content/uploads/2021/07/AMR_4901-scaled-1.jpg
 
 Native photograph 2560 × 2081, local `/workspace/_qa_p05/branding/AMR_4901-scaled-1.jpg`. The **right-hand tallest vessel explicitly reads “3 ltr”**. Only this genuine 3 L print is used. Crop `(1650,185,2200,1910)`, native 550 × 1725 pixels, saved as `/workspace/_qa_p05_3l/v1/official-3l-crop.png`. No 1 L/2 L artwork or numeric scale is stretched, reused, redrawn or synthesized.
 
